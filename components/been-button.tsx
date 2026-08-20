@@ -20,7 +20,7 @@ export function BeenButton({ marked, language, onMark }: BeenButtonProps) {
     <button
       type="button"
       onClick={onMark}
-      className="rounded-full border border-line bg-foam px-3 py-1 text-xs text-ink hover:border-bean hover:text-bean"
+      className="text-xs text-ink-soft underline-offset-2 hover:underline"
     >
       {copy.beenHere[language]}
     </button>

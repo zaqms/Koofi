@@ -18,7 +18,7 @@ type PickListProps = {
 
 export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
   return (
-    <ol className="mt-3 grid gap-2">
+    <ol className="grid gap-2">
       {picks.map((pick, index) => {
         const name = shopDisplayName(pick, language);
         const other = shopDisplayName(
@@ -43,9 +43,9 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                   className="min-w-0 flex-1"
                   dir={language === "ar" ? "rtl" : "ltr"}
                 >
-                  <p className="text-sm text-ink-soft">{index + 1}</p>
-                  <h3 className="text-base font-semibold leading-tight">{name}</h3>
-                  <p className="text-xs text-ink-soft" dir="auto">
+                  <p className="text-[11px] text-ink-soft">{index + 1}</p>
+                  <h3 className="text-lg font-semibold leading-tight">{name}</h3>
+                  <p className="text-[11px] leading-4 text-ink-soft" dir="auto">
                     {other} · {pick.neighborhoodLabel}
                   </p>
                   {!pick.example && pick.rating != null ? (
@@ -67,13 +67,13 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                 </div>
               </div>
               {isExampleShop(pick) ? (
-                <span className="shrink-0 rounded-full bg-paper-deep px-2 py-0.5 text-[11px] text-ink-soft">
+                <span className="shrink-0 text-[11px] text-ink-soft">
                   {exampleBadge(language)}
                 </span>
               ) : null}
             </div>
-            <p className="mt-2 text-sm leading-6">{pick.why}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+            <p className="mt-2 truncate text-sm leading-5">{pick.why}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
               <a
                 href={pick.mapsHref}
                 className="rounded-full bg-bean px-3 py-1 text-xs text-foam hover:bg-bean-deep"

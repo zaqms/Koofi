@@ -272,6 +272,14 @@ export function Chat({ landing }: ChatProps) {
     send(label, { suggesting: false });
   }
 
+  const hasThread =
+    busy ||
+    messages.some(
+      (message) =>
+        message.role === "user" ||
+        (message.role === "assistant" && message.id !== "opener"),
+    );
+
   return (
     <div
       className="mx-auto flex h-dvh max-h-dvh w-full max-w-md flex-col overflow-hidden bg-paper"
@@ -293,7 +301,11 @@ export function Chat({ landing }: ChatProps) {
 
       <div
         ref={listRef}
-        className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
+        className={
+          hasThread
+            ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
+            : "shrink-0 space-y-2 px-4 pt-4 pb-1"
+        }
         aria-live="polite"
       >
         {messages.map((message) =>
@@ -307,39 +319,36 @@ export function Chat({ landing }: ChatProps) {
               </p>
             </div>
           ) : (
-            <div key={message.id} className="flex justify-end">
-              <div
-                className="max-w-[92%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6"
-                dir={message.language === "ar" ? "rtl" : "ltr"}
-              >
-                {message.id === "opener" ? (
-                  <p>{opener}</p>
-                ) : (
-                  <p className="whitespace-pre-wrap">{message.text}</p>
-                )}
-                {message.id === "opener" ? (
-                  <div className="mt-3">
-                    <VibeChips
-                      language={landing}
-                      disabled={busy}
-                      onPick={sendChip}
-                    />
-                  </div>
-                ) : null}
-                {message.picks?.length ? (
-                  <PickList
-                    picks={message.picks}
-                    language={message.language}
-                    beenIds={been.ids}
-                    onBeen={been.mark}
-                  />
-                ) : null}
-                {message.thinCatalog ? (
-                  <p className="mt-3 text-xs leading-5 text-ink-soft">
-                    {copy.thinCatalog[message.language]}
-                  </p>
-                ) : null}
+            <div
+              key={message.id}
+              className="space-y-2"
+              dir={message.language === "ar" ? "rtl" : "ltr"}
+            >
+              <div className="flex justify-end">
+                <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
+                  {message.id === "opener" ? opener : message.text}
+                </p>
               </div>
+              {message.id === "opener" && !hasThread ? (
+                <VibeChips
+                  language={landing}
+                  disabled={busy}
+                  onPick={sendChip}
+                />
+              ) : null}
+              {message.picks?.length ? (
+                <PickList
+                  picks={message.picks}
+                  language={message.language}
+                  beenIds={been.ids}
+                  onBeen={been.mark}
+                />
+              ) : null}
+              {message.thinCatalog ? (
+                <p className="text-xs leading-5 text-ink-soft">
+                  {copy.thinCatalog[message.language]}
+                </p>
+              ) : null}
             </div>
           ),
         )}
@@ -350,18 +359,22 @@ export function Chat({ landing }: ChatProps) {
             </p>
           </div>
         ) : null}
-        <div aria-hidden className="h-3 shrink-0" />
+        {hasThread ? <div aria-hidden className="h-3 shrink-0" /> : null}
       </div>
 
       <form
         ref={footerRef}
-        className="shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+        className={
+          hasThread
+            ? "shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+        }
         onSubmit={(event) => {
           event.preventDefault();
           send(draft);
         }}
       >
-        {messages.some((message) => message.role === "user") ? (
+        {hasThread ? (
           <div className="mb-2">
             <VibeChips language={landing} disabled={busy} onPick={sendChip} />
           </div>

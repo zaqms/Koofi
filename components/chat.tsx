@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PickList, type ChatPick } from "@/components/pick-list";
-import { markBeenHere, readBeenIds } from "@/lib/been";
+import { useBeenIds } from "@/lib/been";
 import { copy, LOCKED_OPENER, PRODUCT_NAME_AR } from "@/lib/copy";
 import type { Language } from "@/lib/types";
 
@@ -41,13 +41,9 @@ export function Chat() {
   ]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
-  const [beenIds, setBeenIds] = useState<string[]>([]);
+  const been = useBeenIds();
   const [composerLanguage, setComposerLanguage] = useState<Language>("ar");
   const listRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setBeenIds(readBeenIds());
-  }, []);
 
   useEffect(() => {
     listRef.current?.scrollTo({
@@ -74,7 +70,7 @@ export function Chat() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: trimmed, beenIds }),
+        body: JSON.stringify({ text: trimmed, beenIds: been.ids }),
       });
 
       if (!response.ok) {
@@ -153,8 +149,8 @@ export function Chat() {
                   <PickList
                     picks={message.picks}
                     language={message.language}
-                    beenIds={beenIds}
-                    onBeen={(id) => setBeenIds(markBeenHere(id))}
+                    beenIds={been.ids}
+                    onBeen={been.mark}
                   />
                 ) : null}
                 {message.thinCatalog ? (

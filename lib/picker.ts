@@ -48,7 +48,7 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
 
   return language === "ar"
     ? `تناسب ${neighborhood} بهالأجواء: ${shop.vibeTags.slice(0, 2).join("، ")}.`
-    : `Fits ${neighborhood} right now: ${shop.vibeTags.slice(0, 2).join(", ")}.`;
+    : `Fits ${neighborhood} for this moment.`;
 }
 
 function scoreShop(

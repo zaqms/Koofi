@@ -10,17 +10,19 @@ export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const challenge = verifyWebhookChallenge(
-    url.searchParams.get("hub.mode"),
-    url.searchParams.get("hub.verify_token"),
-    url.searchParams.get("hub.challenge"),
-  );
+  const mode = url.searchParams.get("hub.mode");
+  const token = url.searchParams.get("hub.verify_token");
+  const requestChallenge = url.searchParams.get("hub.challenge");
 
-  if (challenge) {
-    return new Response(challenge, {
-      status: 200,
-      headers: { "Content-Type": "text/plain" },
-    });
+  if (mode || token || requestChallenge) {
+    const challenge = verifyWebhookChallenge(mode, token, requestChallenge);
+    if (challenge) {
+      return new Response(challenge, {
+        status: 200,
+        headers: { "Content-Type": "text/plain" },
+      });
+    }
+    return new Response("forbidden", { status: 403 });
   }
 
   return Response.json(

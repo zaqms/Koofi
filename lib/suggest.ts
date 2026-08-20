@@ -52,10 +52,12 @@ function nameFromMapsLocation(url: string): string | undefined {
 function titleFromHtml(html: string): string | undefined {
   const match = html.match(/<title[^>]*>([^<]+)<\/title>/i);
   if (!match?.[1]) return undefined;
-  return match[1]
+  const cleaned = match[1]
     .replace(/\s*[-\u2013\u2014]\s*Google Maps.*$/i, "")
     .replace(/\s+/g, " ")
-    .trim() || undefined;
+    .trim();
+  if (!cleaned || /^google maps$/i.test(cleaned)) return undefined;
+  return cleaned;
 }
 
 async function fetchMapsHop(url: string): Promise<Response> {

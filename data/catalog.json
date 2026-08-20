@@ -1,0 +1,38 @@
+{
+  "note": "Real shops come from Amjad. v1 ships an empty real catalog plus fictional example shops so chat can be demonstrated. Do not invent real Riyadh cafe names, hours, ratings, or official claims.",
+  "shops": [
+    {
+      "id": "example-roaster",
+      "nameAr": "محمصة المثال",
+      "nameEn": "Example Roaster",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "هيتين",
+      "vibeTags": ["محمصة", "فلتر", "كاونتر"],
+      "momentTags": ["roaster", "qahwa", "work"],
+      "example": true
+    },
+    {
+      "id": "example-quiet-corner",
+      "nameAr": "ركن المثال الهادئ",
+      "nameEn": "Example Quiet Corner",
+      "city": "riyadh",
+      "neighborhood": "al-malqa",
+      "neighborhoodAr": "الملقا",
+      "vibeTags": ["هادئ", "طاولات", "لابتوب"],
+      "momentTags": ["quiet", "work"],
+      "example": true
+    },
+    {
+      "id": "example-late-qahwa",
+      "nameAr": "قهوة المثال المسائية",
+      "nameEn": "Example Late Qahwa",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قعدة", "متأخر", "أصحاب"],
+      "momentTags": ["late", "friend", "qahwa"],
+      "example": true
+    }
+  ]
+}

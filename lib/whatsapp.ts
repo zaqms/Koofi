@@ -1,6 +1,9 @@
 import { ENV_KEYS, readEnv } from "./env";
-import { formatWhatsAppReply, pickCafes } from "./picker";
-import { cardHref } from "./public-url";
+import {
+  formatWhatsAppReply,
+  pickCafes,
+  whatsAppLocations,
+} from "./picker";
 
 type WhatsAppTextMessage = {
   from?: string;
@@ -19,6 +22,8 @@ type WhatsAppPayload = {
   object?: string;
   entry?: { changes?: WhatsAppChange[] }[];
 };
+
+type SendResult = { ok: boolean; skipped: boolean; status?: number };
 
 export function extractInboundTexts(payload: WhatsAppPayload): {
   from: string;
@@ -42,9 +47,15 @@ export function extractInboundTexts(payload: WhatsAppPayload): {
   return inbound;
 }
 
-export function replyForWhatsApp(text: string): string {
+export function replyForWhatsApp(text: string): {
+  body: string;
+  locations: ReturnType<typeof whatsAppLocations>;
+} {
   const result = pickCafes({ text });
-  return formatWhatsAppReply(result, cardHref);
+  return {
+    body: formatWhatsAppReply(result),
+    locations: whatsAppLocations(result),
+  };
 }
 
 export function isWhatsAppConfigured(): boolean {
@@ -54,10 +65,9 @@ export function isWhatsAppConfigured(): boolean {
   );
 }
 
-export async function sendWhatsAppText(
-  to: string,
-  body: string,
-): Promise<{ ok: boolean; skipped: boolean; status?: number }> {
+async function graphMessage(
+  payload: Record<string, unknown>,
+): Promise<SendResult> {
   const token = readEnv(ENV_KEYS.WHATSAPP_ACCESS_TOKEN);
   const phoneNumberId = readEnv(ENV_KEYS.WHATSAPP_PHONE_NUMBER_ID);
 
@@ -75,14 +85,39 @@ export async function sendWhatsAppText(
       },
       body: JSON.stringify({
         messaging_product: "whatsapp",
-        to,
-        type: "text",
-        text: { body, preview_url: true },
+        ...payload,
       }),
     },
   );
 
   return { ok: response.ok, skipped: false, status: response.status };
+}
+
+export async function sendWhatsAppText(
+  to: string,
+  body: string,
+): Promise<SendResult> {
+  return graphMessage({
+    to,
+    type: "text",
+    text: { body, preview_url: true },
+  });
+}
+
+export async function sendWhatsAppLocation(
+  to: string,
+  location: { lat: number; lng: number; name: string; address: string },
+): Promise<SendResult> {
+  return graphMessage({
+    to,
+    type: "location",
+    location: {
+      latitude: location.lat,
+      longitude: location.lng,
+      name: location.name,
+      address: location.address,
+    },
+  });
 }
 
 export function verifyWebhookChallenge(

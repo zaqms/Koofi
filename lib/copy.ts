@@ -59,13 +59,17 @@ export const copy = {
     ar: "ما راح أجيبها كجديدة",
     en: "Won't offer this as new",
   },
+  maps: {
+    ar: "الخريطة",
+    en: "Maps",
+  },
   cardLink: {
     ar: "بطاقة المكان",
     en: "Cafe card",
   },
   directions: {
-    ar: "افتح الموقع في الخرائط",
-    en: "Open in maps",
+    ar: "الخريطة",
+    en: "Maps",
   },
   noPin: {
     ar: "ما فيه موقع بعد.",

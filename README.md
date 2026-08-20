@@ -10,12 +10,12 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 
 - Opens with the locked line: **اي قهوة ناوي تروح؟**
 - They answer with a vibe or a neighborhood.
-- Koofi sends **exactly three** cafe picks when it can, each with a one-line why, plus a shareable card link.
+- Koofi sends **exactly three** cafe picks when it can. The share unit is the chat reply: name, one-line why, and a Google Maps pin. People forward the Maps pin to go. The `/c/[id]` card is optional and secondary.
 - Riyadh only. First neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. No stars. Neighborhood and moment over “best in Riyadh”.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
-- Shareable card at `/c/[id]`: name AR/EN, neighborhood, pin, hours only if we have them from a legal source, vibe tags. A link, not an app. Cards can ship with no photo.
+- Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, hours only if we have them from a legal source, vibe tags. Do not ask people to share the Koofi URL.
 
 ## What v1 leaves out
 
@@ -34,6 +34,7 @@ v1 ships:
 - an empty **real** catalog
 - **three fictional example shops** (`example: true`, names like Example Roaster) so the chat can be demonstrated
 - those shops are labeled **مثال / Example** in the UI
+- example pins are fictional demo points so Maps links work; they are not a real venue
 
 When Amjad adds shops he likes (target 30–40), append them with `"example": false`. Do not invent names to fill the gap.
 
@@ -73,7 +74,7 @@ Do not commit secrets.
 Same picker as the web chat. Webhook:
 
 - `GET /api/whatsapp` — Meta verification (`hub.mode`, `hub.verify_token`, `hub.challenge`)
-- `POST /api/whatsapp` — inbound text messages, then the same three-pick reply
+- `POST /api/whatsapp` — inbound text messages, then the same three-pick reply with `maps.google.com` links so the pin can unfurl. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
 
 The webhook is stubbed so the web app runs without Meta credentials. If tokens are missing, inbound POSTs still run the picker and return `200`; they just skip sending.
 
@@ -84,9 +85,8 @@ The webhook is stubbed so the web app runs without Meta credentials. If tokens a
 3. Set the verify token to the same value as `WHATSAPP_VERIFY_TOKEN`.
 4. Subscribe to messages.
 5. Put `WHATSAPP_ACCESS_TOKEN` and `WHATSAPP_PHONE_NUMBER_ID` in the host’s environment if you want Koofi to reply on WhatsApp.
-6. Optionally set `KOOFI_PUBLIC_URL` to that same host so card links in WhatsApp are absolute.
 
-Directions on a card hand off to the user’s maps app when a pin exists.
+People forward the Maps pin, not a Koofi URL.
 
 ## Project shape
 

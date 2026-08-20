@@ -46,9 +46,15 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
             </div>
             <p className="mt-2 text-sm leading-6">{pick.why}</p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
+              <a
+                href={pick.mapsHref}
+                className="rounded-full bg-bean px-3 py-1 text-xs text-foam hover:bg-bean-deep"
+              >
+                {copy.maps[language]}
+              </a>
               <Link
                 href={pick.cardPath}
-                className="rounded-full bg-bean px-3 py-1 text-xs text-foam hover:bg-bean-deep"
+                className="text-xs text-ink-soft underline-offset-2 hover:underline"
               >
                 {copy.cardLink[language]}
               </Link>

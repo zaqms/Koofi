@@ -2,6 +2,7 @@ import {
   extractInboundTexts,
   isWhatsAppConfigured,
   replyForWhatsApp,
+  sendWhatsAppLocation,
   sendWhatsAppText,
   verifyWebhookChallenge,
 } from "@/lib/whatsapp";
@@ -52,13 +53,18 @@ export async function POST(request: Request) {
   const replies = [];
 
   for (const message of inbound) {
-    const body = replyForWhatsApp(message.text);
-    const send = await sendWhatsAppText(message.from, body);
+    const reply = replyForWhatsApp(message.text);
+    const send = await sendWhatsAppText(message.from, reply.body);
+    const locations = [];
+    for (const location of reply.locations) {
+      locations.push(await sendWhatsAppLocation(message.from, location));
+    }
     replies.push({
       from: message.from,
       messageId: message.messageId,
       sent: send.ok,
       skippedSend: send.skipped,
+      locations: locations.length,
     });
   }
 

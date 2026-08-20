@@ -74,6 +74,50 @@ export const NEIGHBORHOODS: Record<
       "ar-rabwah",
     ],
   },
+  "al-rabi": {
+    id: "al-rabi",
+    ar: "الربيع",
+    en: "Al Rabi",
+    aliases: [
+      "الربيع",
+      "ربيع",
+      "rabi",
+      "ar rabi",
+      "al rabi",
+      "al-rabi",
+      "ar-rabi",
+    ],
+  },
+  "al-masif": {
+    id: "al-masif",
+    ar: "المصيف",
+    en: "Al Masif",
+    aliases: [
+      "المصيف",
+      "مصيف",
+      "masif",
+      "massif",
+      "al masif",
+      "al-masif",
+      "al massif",
+      "al-massif",
+    ],
+  },
+  "al-rahmaniyyah": {
+    id: "al-rahmaniyyah",
+    ar: "الرحمانية",
+    en: "Al Rahmaniyyah",
+    aliases: [
+      "الرحمانية",
+      "رحمانية",
+      "rahmaniyyah",
+      "rahmaniyah",
+      "ar rahmaniyyah",
+      "al rahmaniyyah",
+      "al-rahmaniyyah",
+      "ar-rahmaniyyah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

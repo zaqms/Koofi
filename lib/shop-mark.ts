@@ -1,6 +1,7 @@
 const SKIP = new Set([
   "cafe",
   "coffee",
+  "roasters",
   "downtown",
   "and",
   "مقهى",

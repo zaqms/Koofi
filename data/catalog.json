@@ -86,6 +86,66 @@
       "example": false
     },
     {
+      "id": "breehant-olaya",
+      "nameAr": "Breehant",
+      "nameEn": "Breehant",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/1W1z3uVUnxhC3aU57?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "coyard-sulimaniyah",
+      "nameAr": "كويارد",
+      "nameEn": "COYARD",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/5UsXWtRGgq392vcJ8?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "piccolo-al-rabi",
+      "nameAr": "Piccolo Roasters",
+      "nameEn": "Piccolo Roasters",
+      "city": "riyadh",
+      "neighborhood": "al-rabi",
+      "neighborhoodAr": "الربيع",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/ix1Hwn4hZ5CxxQyG9?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "roasting-house-al-masif",
+      "nameAr": "بيت التحميص المصيف",
+      "nameEn": "Roasting House",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/nqXZUk9kNZP23hTq6?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "camel-step-al-rahmaniyyah",
+      "nameAr": "Camel Step",
+      "nameEn": "Camel Step",
+      "city": "riyadh",
+      "neighborhood": "al-rahmaniyyah",
+      "neighborhoodAr": "الرحمانية",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/4GiNxoEVKcPvPgTE7?g_st=ic",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

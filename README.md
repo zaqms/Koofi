@@ -12,7 +12,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Ten vibe chips under the opener, one label each. Tapping still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. Typing the other language still flips the reply. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
 - They can also type a vibe or a neighborhood.
 - Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary.
-- Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود), Al Rabwah (الربوة).
+- Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود), Al Rabwah (الربوة), Al Rabi (الربيع), Al Masif (المصيف), Al Rahmaniyyah (الرحمانية).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. No stars. Neighborhood and moment over “best in Riyadh”.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.

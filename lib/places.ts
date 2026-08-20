@@ -50,7 +50,7 @@ function writeCache<T>(
 function hexCidToDecimal(hex: string): string | undefined {
   try {
     const value = BigInt(hex);
-    if (value <= 0n) return undefined;
+    if (value <= BigInt(0)) return undefined;
     return value.toString();
   } catch {
     return undefined;

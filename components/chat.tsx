@@ -54,6 +54,7 @@ export function Chat({ landing }: ChatProps) {
   const [composerLanguage, setComposerLanguage] = useState<Language>(landing);
   const [awaitingMaps, setAwaitingMaps] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -68,10 +69,22 @@ export function Chat({ landing }: ChatProps) {
   }, [landing]);
 
   useEffect(() => {
-    listRef.current?.scrollTo({
-      top: listRef.current.scrollHeight,
-      behavior: "smooth",
+    const list = listRef.current;
+    const footer = footerRef.current;
+    if (!list) return;
+
+    function scrollToEnd() {
+      list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
+    }
+
+    scrollToEnd();
+    if (!footer || typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      scrollToEnd();
     });
+    observer.observe(footer);
+    return () => observer.disconnect();
   }, [messages, busy]);
 
   async function send(text: string, options?: { suggesting?: boolean }) {
@@ -154,11 +167,11 @@ export function Chat({ landing }: ChatProps) {
 
   return (
     <div
-      className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
+      className="mx-auto flex h-dvh max-h-dvh w-full max-w-md flex-col overflow-hidden bg-paper"
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
-      <header className="sticky top-0 z-10 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur">
+      <header className="shrink-0 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur">
         <div className="flex items-center justify-between gap-3">
           <p className="text-lg font-semibold">{PRODUCT_NAME}</p>
           <Link
@@ -173,7 +186,7 @@ export function Chat({ landing }: ChatProps) {
 
       <div
         ref={listRef}
-        className="flex-1 space-y-3 overflow-y-auto px-4 py-4"
+        className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
         aria-live="polite"
       >
         {messages.map((message) =>
@@ -196,12 +209,11 @@ export function Chat({ landing }: ChatProps) {
                   <p>{opener}</p>
                 ) : (
                   <p className="whitespace-pre-wrap">
-                    {message.picks?.length ? null : message.text}
                     {message.picks?.length
                       ? message.picks.length === 3
                         ? copy.threePicks[message.language]
                         : copy.fewerPicks[message.language]
-                      : null}
+                      : message.text}
                   </p>
                 )}
                 {message.id === "opener" ? (
@@ -237,10 +249,12 @@ export function Chat({ landing }: ChatProps) {
             </p>
           </div>
         ) : null}
+        <div aria-hidden className="h-3 shrink-0" />
       </div>
 
       <form
-        className="sticky bottom-0 border-t border-line bg-paper px-3 py-3"
+        ref={footerRef}
+        className="shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
         onSubmit={(event) => {
           event.preventDefault();
           void send(draft);

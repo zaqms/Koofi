@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function EnglishHome() {
   return (
-    <main>
+    <main className="h-dvh overflow-hidden">
       <Chat landing="en" />
     </main>
   );

@@ -11,8 +11,8 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Opens with the locked line: **اي قهوة ناوي تروح؟**
 - Under the opener, ten compact vibe chips (Arabic labels by default). Tapping one sends that vibe as the message and still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
 - They can also type a vibe or a neighborhood.
-- Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. People forward the Maps pin to go. The `/c/[id]` card is optional and secondary.
-- Riyadh only. First neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا).
+- Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary.
+- Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. No stars. Neighborhood and moment over “best in Riyadh”.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
@@ -26,20 +26,20 @@ App store app, browse-the-city marketing site, rest of KSA, reviews/stars, booki
 
 The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
-Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, and `example`.
+Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, optional `mapsShareUrl`, and `example`. `shopMapsHref` prefers `mapsShareUrl`, then pin, then a name search.
 
 The locked chip list lives in [`lib/product.ts`](lib/product.ts) (`VIBE_CHIPS`: id, Arabic label, English label, moment tag). The coffee chip maps onto `qahwa`. Chat UI and copy import that list; do not duplicate the opener string or the chip labels.
 
-**The real list is still coming from Amjad.** The real shop list is still waiting. This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source.
+**Real shops come from Amjad as Maps pins.** This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source. Do not invent coordinates for a real shop when `mapsShareUrl` is present.
 
 v1 ships:
 
-- an empty **real** catalog
-- **fictional example shops** (`example: true`, names like Example Roaster / مثال) so each vibe chip can match at least one shop and the chat can still return three picks
-- those shops are labeled **مثال / Example** in the UI
+- the **first real shops** Amjad sent (`example: false`), each with his exact Maps short link
+- **fictional example shops** (`example: true`, names like Example Roaster / مثال) so other neighborhoods and vibe chips can still demo a three-pick reply
+- example shops are labeled **مثال / Example** in the UI
 - example pins are fictional demo points so Maps links work; they are not a real venue
 
-When Amjad adds shops he likes (target 30–40), append them with `"example": false`. Do not invent names to fill the gap.
+When Amjad adds more shops he likes (target 30–40), append them with `"example": false` and his Maps share URL. Do not invent names to fill the gap.
 
 Discovery filters the catalog (Riyadh, not been, neighborhood/moment fit) and picks three with a light editorial hand. If the catalog is too small, Koofi says so in Arabic and still returns what it can. It never invents a real shop.
 
@@ -77,7 +77,7 @@ Do not commit secrets.
 Same picker as the web chat. Webhook:
 
 - `GET /api/whatsapp` — Meta verification (`hub.mode`, `hub.verify_token`, `hub.challenge`)
-- `POST /api/whatsapp` — inbound text messages, then the same three-pick reply with `maps.google.com` links so the pin can unfurl. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
+- `POST /api/whatsapp` — inbound text messages, then the same three-pick reply. Real shops use Amjad’s `maps.app.goo.gl` short links; example shops still use a pin or name search. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
 
 The webhook is stubbed so the web app runs without Meta credentials. If tokens are missing, inbound POSTs still run the picker and return `200`; they just skip sending.
 

@@ -22,8 +22,9 @@ export function mapsHref(lat: number, lng: number): string {
 }
 
 export function shopMapsHref(
-  shop: Pick<Shop, "nameEn" | "neighborhood" | "pin">,
+  shop: Pick<Shop, "nameEn" | "neighborhood" | "pin" | "mapsShareUrl">,
 ): string {
+  if (shop.mapsShareUrl) return shop.mapsShareUrl;
   if (shop.pin) return mapsHref(shop.pin.lat, shop.pin.lng);
   const query = `${shop.nameEn} ${neighborhoodLabel(shop.neighborhood, "en")} Riyadh`;
   return `https://maps.google.com/?q=${encodeURIComponent(query)}`;

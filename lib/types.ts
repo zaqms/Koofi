@@ -7,6 +7,8 @@ export const NEIGHBORHOOD_IDS = [
   "al-nakheel",
   "al-yasmin",
   "olaya",
+  "sulimaniyah",
+  "al-wurud",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 
@@ -44,6 +46,7 @@ export type Shop = {
   officialSite?: string;
   pin?: Pin;
   hours?: string;
+  mapsShareUrl?: string;
   example: boolean;
 };
 

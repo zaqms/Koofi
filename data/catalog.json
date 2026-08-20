@@ -1,6 +1,78 @@
 {
-  "note": "Real shops come from Amjad. v1 ships an empty real catalog plus fictional example shops so chat can be demonstrated. Do not invent real Riyadh cafe names, hours, ratings, or official claims. Example pins are fictional demo points in the neighborhood, not a real venue.",
+  "note": "Real shops come from Amjad as Google Maps share links. Do not invent real Riyadh cafe names, hours, ratings, or official claims, and do not reconstruct lat/lng for a real shop when mapsShareUrl is present. Example shops stay fictional so other neighborhoods and chips can still demo. Example pins are fictional demo points, not a real venue.",
   "shops": [
+    {
+      "id": "ik-coffee-downtown",
+      "nameAr": "IK coffee Downtown",
+      "nameEn": "IK coffee Downtown",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/obFNscTUoTgWXPiq7?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "woods-olaya",
+      "nameAr": "مقهى ومحمصة وودز",
+      "nameEn": "WOODS Cafe and Roastery",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/mcWvHp2ZNNdpUpBT6?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "cafu-olaya",
+      "nameAr": "كفو كافيه",
+      "nameEn": "Cafu Cafe",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/QDFM2fT9EJYsyioo6?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "one-gram-sulimaniyah",
+      "nameAr": "ONE GRAM",
+      "nameEn": "ONE GRAM",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/HVZNkDK66T11T7uj7?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "joe-barrel-al-wurud",
+      "nameAr": "Joe Barrel Coffee",
+      "nameEn": "Joe Barrel Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-wurud",
+      "neighborhoodAr": "الورود",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/yGT36px9Lj8HZsrG9?g_st=ic",
+      "example": false
+    },
+    {
+      "id": "btw-olaya",
+      "nameAr": "By The Way",
+      "nameEn": "By The Way",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/BMmM9yo53tE2AqMr7?g_st=ic",
+      "example": false
+    },
     {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",

@@ -34,6 +34,32 @@ export const NEIGHBORHOODS: Record<
     en: "Olaya",
     aliases: ["العليا", "عليا", "olaya", "ulayya", "olaia"],
   },
+  sulimaniyah: {
+    id: "sulimaniyah",
+    ar: "السليمانية",
+    en: "Sulimaniyah",
+    aliases: [
+      "السليمانية",
+      "سليمانية",
+      "sulimaniyah",
+      "sulaymaniyah",
+      "sulaymaniyya",
+    ],
+  },
+  "al-wurud": {
+    id: "al-wurud",
+    ar: "الورود",
+    en: "Al Wurud",
+    aliases: [
+      "الورود",
+      "ورود",
+      "wurud",
+      "al wurud",
+      "al-wurud",
+      "al-woroud",
+      "woroud",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

@@ -47,6 +47,8 @@ export type Shop = {
   pin?: Pin;
   hours?: string;
   mapsShareUrl?: string;
+  photoUrl?: string;
+  logoUrl?: string;
   example: boolean;
 };
 
@@ -59,6 +61,16 @@ export type ChatPick = {
   why: string;
   mapsHref: string;
   cardPath: string;
+  photoUrl?: string;
+  logoUrl?: string;
+};
+
+export type ShopSuggestion = {
+  id: string;
+  mapsUrl: string;
+  resolvedName?: string;
+  neighborhood?: NeighborhoodId;
+  createdAt: string;
 };
 
 export type CatalogFile = {

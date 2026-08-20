@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
+import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import type { ChatPick, Language } from "@/lib/types";
@@ -31,12 +32,23 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
             className="rounded-2xl border border-line bg-foam px-3 py-3"
           >
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-sm text-ink-soft">{index + 1}</p>
-                <h3 className="text-base font-semibold leading-tight">{name}</h3>
-                <p className="text-xs text-ink-soft" dir="auto">
-                  {other} · {pick.neighborhoodLabel}
-                </p>
+              <div className="flex min-w-0 items-start gap-3" dir="ltr">
+                <ShopVisual
+                  nameAr={pick.nameAr}
+                  nameEn={pick.nameEn}
+                  photoUrl={pick.photoUrl}
+                  logoUrl={pick.logoUrl}
+                />
+                <div
+                  className="min-w-0 flex-1"
+                  dir={language === "ar" ? "rtl" : "ltr"}
+                >
+                  <p className="text-sm text-ink-soft">{index + 1}</p>
+                  <h3 className="text-base font-semibold leading-tight">{name}</h3>
+                  <p className="text-xs text-ink-soft" dir="auto">
+                    {other} · {pick.neighborhoodLabel}
+                  </p>
+                </div>
               </div>
               {isExampleShop(pick) ? (
                 <span className="shrink-0 rounded-full bg-paper-deep px-2 py-0.5 text-[11px] text-ink-soft">

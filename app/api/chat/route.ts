@@ -1,10 +1,14 @@
+import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import { formatReply, pickCafes, toChatPicks } from "@/lib/picker";
+import { bilingual, recordSuggestion } from "@/lib/suggest";
+import { copy } from "@/lib/copy";
 
 export const runtime = "nodejs";
 
 type ChatRequest = {
   text?: string;
   beenIds?: string[];
+  suggesting?: boolean;
 };
 
 export async function POST(request: Request) {
@@ -24,6 +28,27 @@ export async function POST(request: Request) {
   const beenIds = Array.isArray(body.beenIds)
     ? body.beenIds.filter((id): id is string => typeof id === "string")
     : [];
+
+  if (extractMapsUrl(text)) {
+    const suggestion = await recordSuggestion(text);
+    return Response.json({
+      language: "ar",
+      reply: suggestion.reply,
+      thinCatalog: false,
+      picks: [],
+      suggestion: suggestion.ok,
+    });
+  }
+
+  if (body.suggesting || looksLikeHttpUrl(text)) {
+    return Response.json({
+      language: "ar",
+      reply: bilingual(copy.suggestBad),
+      thinCatalog: false,
+      picks: [],
+      suggestion: false,
+    });
+  }
 
   const result = pickCafes({ text, beenIds });
 

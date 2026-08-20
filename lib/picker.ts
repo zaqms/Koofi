@@ -252,5 +252,7 @@ export function toChatPicks(result: PickResult): ChatPick[] {
     why: pick.why,
     mapsHref: shopMapsHref(pick.shop),
     cardPath: cardPath(pick.shop.id),
+    photoUrl: pick.shop.photoUrl,
+    logoUrl: pick.shop.logoUrl,
   }));
 }

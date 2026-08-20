@@ -17,6 +17,8 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Reason over rating. No stars. Neighborhood and moment over “best in Riyadh”.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
 - Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, hours only if we have them from a legal source, vibe tags. Do not ask people to share the Koofi URL.
+- Each pick card has a small 44px letter mark from the shop name (IK, WO, …). A `photoUrl` is shown only if Amjad sets one. Do not scrape Maps photos.
+- **أضف قهوة / Add a shop** under the chips. Drop a Google Maps link. Koofi thanks them and stores a suggestion for Amjad — it does not go into `catalog.json`.
 
 ## What v1 leaves out
 
@@ -26,7 +28,7 @@ App store app, browse-the-city marketing site, rest of KSA, reviews/stars, booki
 
 The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
-Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, optional `mapsShareUrl`, and `example`. `shopMapsHref` prefers `mapsShareUrl`, then pin, then a name search.
+Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, optional `mapsShareUrl`, optional `photoUrl`, optional `logoUrl`, and `example`. `shopMapsHref` prefers `mapsShareUrl`, then pin, then a name search. Leave `photoUrl` / `logoUrl` empty unless there is a legal photo. Never hotlink a scraped Maps CDN URL.
 
 The locked openers and chip list live in [`lib/product.ts`](lib/product.ts) (`LOCKED_OPENER`, `LOCKED_OPENER_EN`, `VIBE_CHIPS`). The coffee chip maps onto `qahwa`. Chat UI and copy import those; do not duplicate the opener strings or the chip labels.
 
@@ -69,15 +71,27 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `WHATSAPP_VERIFY_TOKEN` | No | Token you set in the Meta webhook callback. Used by `GET /api/whatsapp`. |
 | `WHATSAPP_ACCESS_TOKEN` | No | Cloud API token used only if you want the webhook to send a reply. |
 | `WHATSAPP_PHONE_NUMBER_ID` | No | Phone number ID for outbound WhatsApp messages. |
+| `GOOGLE_PLACES_API_KEY` | No | Optional Place Photo lookup for a shop that already has `mapsShareUrl`. If empty, cards use a letter mark. No scrape fallback. |
+| `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 
 Do not commit secrets.
+
+## Shop suggestions
+
+Crowdsource-with-curation. Suggestions are **not** the live catalog.
+
+- Web: **أضف قهوة / Add a shop**, then paste a `maps.app.goo.gl` or Google Maps URL. Pasting a Maps link without tapping first is also a suggestion, not a cafe search.
+- `POST /api/suggest` `{ "mapsUrl": "https://maps.app.goo.gl/..." }` — validates host, follows redirects on Google hosts only, reads a place name from the Location path or `<title>` if it can. Does not scrape reviews or photos.
+- `GET /api/suggest` returns `{ note, suggestions }` (`mapsUrl`, `resolvedName`, `neighborhood` if obvious, `createdAt`).
+- Persist: in-memory + `/tmp/koofi-pending.json` + log the JSON. If `GITHUB_TOKEN` is set, also open a GitHub issue. Do not write suggestions into `catalog.json`.
+- WhatsApp: a Maps URL runs the same suggest path.
 
 ## WhatsApp door
 
 Same picker as the web chat. Webhook:
 
 - `GET /api/whatsapp` — Meta verification (`hub.mode`, `hub.verify_token`, `hub.challenge`)
-- `POST /api/whatsapp` — inbound text messages, then the same three-pick reply. Real shops use Amjad’s `maps.app.goo.gl` short links; example shops still use a pin or name search. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
+- `POST /api/whatsapp` — inbound text messages. A Maps URL is a shop suggestion (thank-you, no picks). Anything else is the same three-pick reply. Real shops use Amjad’s `maps.app.goo.gl` short links; example shops still use a pin or name search. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
 
 The webhook is stubbed so the web app runs without Meta credentials. If tokens are missing, inbound POSTs still run the picker and return `200`; they just skip sending.
 
@@ -94,12 +108,17 @@ People forward the Maps pin, not a Koofi URL.
 ## Project shape
 
 ```
-app/page.tsx              thin web chat
-app/c/[id]/page.tsx       shareable cafe card
-app/api/chat/route.ts     web picker
-app/api/whatsapp/route.ts WhatsApp door
-data/catalog.json         editorial catalog (shop names / ids)
-lib/product.ts            Koofi, opener, vibe chips, example flag, card path
-lib/env.ts                WhatsApp env key names
-lib/picker.ts             shared three-pick logic
+app/page.tsx                    thin web chat
+app/c/[id]/page.tsx             shareable cafe card
+app/api/chat/route.ts           web picker + Maps-link suggestions
+app/api/suggest/route.ts        pending suggestions
+app/api/place-photo/[id]        optional Places photo (no-op without key)
+app/api/whatsapp/route.ts       WhatsApp door
+data/catalog.json               editorial catalog (shop names / ids)
+data/pending.json               suggestion file shape (not the live catalog)
+lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
+lib/shop-mark.ts                letter marks on pick cards
+lib/suggest.ts                  Maps-link suggestions
+lib/env.ts                      env key names
+lib/picker.ts                   shared three-pick logic
 ```

@@ -18,6 +18,26 @@ export const copy = {
     ar: "اختار أجواء",
     en: "Pick a vibe",
   },
+  addShop: {
+    ar: "أضف قهوة",
+    en: "Add a shop",
+  },
+  askMaps: {
+    ar: "ارمِ رابط قوقل ماب للمكان.",
+    en: "Drop the Google Maps link for the shop.",
+  },
+  suggestThanks: {
+    ar: "وصلت. نشوفها، وإذا ناسبت القائمة نضيفها.",
+    en: "Got it. We’ll look at it, and add it if it fits the list.",
+  },
+  suggestBad: {
+    ar: "أبي رابط قوقل ماب بس — maps.app.goo.gl أو خريطة قوقل.",
+    en: "Just a Google Maps link — maps.app.goo.gl or a Google Maps URL.",
+  },
+  mapsPlaceholder: {
+    ar: "رابط قوقل ماب…",
+    en: "A Google Maps link…",
+  },
   cityOnly: {
     ar: "الرياض فقط",
     en: "Riyadh only",

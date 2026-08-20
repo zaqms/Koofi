@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AddShopButton } from "@/components/add-shop-button";
 import { PickList, type ChatPick } from "@/components/pick-list";
 import { VibeChips } from "@/components/vibe-chips";
 import { useBeenIds } from "@/lib/been";
@@ -45,6 +46,7 @@ export function Chat() {
   const [busy, setBusy] = useState(false);
   const been = useBeenIds();
   const [composerLanguage, setComposerLanguage] = useState<Language>("ar");
+  const [awaitingMaps, setAwaitingMaps] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,9 +56,10 @@ export function Chat() {
     });
   }, [messages, busy]);
 
-  async function send(text: string) {
+  async function send(text: string, options?: { suggesting?: boolean }) {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    const suggesting = options?.suggesting ?? awaitingMaps;
 
     const userMessage: UserMessage = {
       id: crypto.randomUUID(),
@@ -66,13 +69,18 @@ export function Chat() {
 
     setMessages((current) => [...current, userMessage]);
     setDraft("");
+    setAwaitingMaps(false);
     setBusy(true);
 
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: trimmed, beenIds: been.ids }),
+        body: JSON.stringify({
+          text: trimmed,
+          beenIds: been.ids,
+          suggesting,
+        }),
       });
 
       if (!response.ok) {
@@ -105,6 +113,24 @@ export function Chat() {
     } finally {
       setBusy(false);
     }
+  }
+
+  function askForShop() {
+    if (busy) return;
+    setAwaitingMaps(true);
+    setMessages((current) => [
+      ...current,
+      {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        language: "ar",
+        text: `${copy.askMaps.ar}\n${copy.askMaps.en}`,
+      },
+    ]);
+  }
+
+  function sendChip(label: string) {
+    void send(label, { suggesting: false });
   }
 
   return (
@@ -154,10 +180,10 @@ export function Chat() {
                 )}
                 {message.id === "opener" ? (
                   <div className="mt-3">
-                    <VibeChips
-                      disabled={busy}
-                      onPick={(label) => void send(label)}
-                    />
+                    <VibeChips disabled={busy} onPick={sendChip} />
+                    <div className="mt-2">
+                      <AddShopButton disabled={busy} onAdd={askForShop} />
+                    </div>
                   </div>
                 ) : null}
                 {message.picks?.length ? (
@@ -195,14 +221,16 @@ export function Chat() {
       >
         {messages.some((message) => message.role === "user") ? (
           <div className="mb-2">
-            <VibeChips
-              disabled={busy}
-              onPick={(label) => void send(label)}
-            />
+            <VibeChips disabled={busy} onPick={sendChip} />
+            <div className="mt-2">
+              <AddShopButton disabled={busy} onAdd={askForShop} />
+            </div>
           </div>
         ) : null}
         <label className="sr-only" htmlFor="koofi-ask">
-          {copy.placeholder[composerLanguage]}
+          {awaitingMaps
+            ? copy.mapsPlaceholder[composerLanguage]
+            : copy.placeholder[composerLanguage]}
         </label>
         <div className="flex items-end gap-2">
           <textarea
@@ -217,7 +245,11 @@ export function Chat() {
                 void send(draft);
               }
             }}
-            placeholder={copy.placeholder[composerLanguage]}
+            placeholder={
+              awaitingMaps
+                ? copy.mapsPlaceholder[composerLanguage]
+                : copy.placeholder[composerLanguage]
+            }
             className="min-h-11 flex-1 resize-none rounded-2xl border border-line bg-foam px-3 py-2 text-sm outline-none focus:border-bean"
           />
           <button

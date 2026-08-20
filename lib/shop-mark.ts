@@ -1,7 +1,6 @@
 const SKIP = new Set([
   "cafe",
   "coffee",
-  "roastery",
   "downtown",
   "and",
   "مقهى",
@@ -29,6 +28,9 @@ function lettersFrom(name: string): string {
   }
   if (first.length <= 2 && first === first.toUpperCase()) {
     return first.toUpperCase();
+  }
+  if (first.length >= 4 && first === first.toUpperCase()) {
+    return first.slice(0, 2).toUpperCase();
   }
 
   return `${first[0] ?? ""}${tokens[1][0] ?? ""}`.toUpperCase();

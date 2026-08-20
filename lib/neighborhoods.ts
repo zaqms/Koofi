@@ -60,6 +60,20 @@ export const NEIGHBORHOODS: Record<
       "woroud",
     ],
   },
+  "al-rabwah": {
+    id: "al-rabwah",
+    ar: "الربوة",
+    en: "Al Rabwah",
+    aliases: [
+      "الربوة",
+      "ربوة",
+      "rabwah",
+      "al rabwah",
+      "ar rabwah",
+      "al-rabwah",
+      "ar-rabwah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

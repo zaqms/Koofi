@@ -74,6 +74,18 @@
       "example": false
     },
     {
+      "id": "good-roastery-al-rabwah",
+      "nameAr": "محمصة كيرف للقهوة المختصة",
+      "nameEn": "Good Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/c1agtFTp3HA9529C8?g_st=ic",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

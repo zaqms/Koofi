@@ -1,7 +1,7 @@
-import { EXAMPLE_BADGE, LOCKED_OPENER, VIBE_CHIPS } from "./product";
+import { EXAMPLE_BADGE, LOCKED_OPENER, LOCKED_OPENER_EN, VIBE_CHIPS } from "./product";
 import type { Language } from "./types";
 
-export { LOCKED_OPENER, PRODUCT_NAME, VIBE_CHIPS } from "./product";
+export { LOCKED_OPENER, LOCKED_OPENER_EN, PRODUCT_NAME, VIBE_CHIPS } from "./product";
 
 export function t<T extends Record<Language, string>>(
   language: Language,
@@ -12,6 +12,7 @@ export function t<T extends Record<Language, string>>(
 
 export const copy = {
   opener: LOCKED_OPENER,
+  openerEn: LOCKED_OPENER_EN,
   chips: VIBE_CHIPS,
   pickVibe: {
     ar: "اختار أجواء",

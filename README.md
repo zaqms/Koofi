@@ -8,8 +8,8 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 
 ## What it does
 
-- Opens with the locked line: **اي قهوة ناوي تروح؟**
-- Under the opener, ten compact vibe chips (Arabic labels by default). Tapping one sends that vibe as the message and still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
+- Opens with both locked lines on the same first screen: **اي قهوة ناوي تروح؟** and, under it, **Which coffee you heading to?** Same chat, same URL. No `/en` page.
+- Under the opener, ten bilingual vibe chips (Arabic on top, English under). Each chip has two tap targets: Arabic sends the Arabic label, English sends the English label so replies follow `detectLanguage`. Tapping still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
 - They can also type a vibe or a neighborhood.
 - Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary.
 - Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود).
@@ -28,7 +28,7 @@ The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
 Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, optional `mapsShareUrl`, and `example`. `shopMapsHref` prefers `mapsShareUrl`, then pin, then a name search.
 
-The locked chip list lives in [`lib/product.ts`](lib/product.ts) (`VIBE_CHIPS`: id, Arabic label, English label, moment tag). The coffee chip maps onto `qahwa`. Chat UI and copy import that list; do not duplicate the opener string or the chip labels.
+The locked openers and chip list live in [`lib/product.ts`](lib/product.ts) (`LOCKED_OPENER`, `LOCKED_OPENER_EN`, `VIBE_CHIPS`). The coffee chip maps onto `qahwa`. Chat UI and copy import those; do not duplicate the opener strings or the chip labels.
 
 **Real shops come from Amjad as Maps pins.** This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source. Do not invent coordinates for a real shop when `mapsShareUrl` is present.
 

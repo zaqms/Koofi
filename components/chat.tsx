@@ -135,22 +135,26 @@ export function Chat() {
                 className="max-w-[92%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6"
                 dir={message.language === "ar" ? "rtl" : "ltr"}
               >
-                <p className="whitespace-pre-wrap">
-                  {message.picks?.length ? null : message.text}
-                  {message.picks?.length
-                    ? message.language === "ar"
+                {message.id === "opener" ? (
+                  <div>
+                    <p>{copy.opener}</p>
+                    <p className="mt-1 text-xs leading-5 text-ink-soft" dir="ltr">
+                      {copy.openerEn}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="whitespace-pre-wrap">
+                    {message.picks?.length ? null : message.text}
+                    {message.picks?.length
                       ? message.picks.length === 3
-                        ? copy.threePicks.ar
-                        : copy.fewerPicks.ar
-                      : message.picks.length === 3
-                        ? copy.threePicks.en
-                        : copy.fewerPicks.en
-                    : null}
-                </p>
+                        ? copy.threePicks[message.language]
+                        : copy.fewerPicks[message.language]
+                      : null}
+                  </p>
+                )}
                 {message.id === "opener" ? (
                   <div className="mt-3">
                     <VibeChips
-                      language={composerLanguage}
                       disabled={busy}
                       onPick={(label) => void send(label)}
                     />
@@ -192,7 +196,6 @@ export function Chat() {
         {messages.some((message) => message.role === "user") ? (
           <div className="mb-2">
             <VibeChips
-              language={composerLanguage}
               disabled={busy}
               onPick={(label) => void send(label)}
             />

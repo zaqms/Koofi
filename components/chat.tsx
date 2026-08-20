@@ -177,19 +177,21 @@ export function Chat({ landing }: ChatProps) {
     const footer = footerRef.current;
     if (!list) return;
 
-    function pinToEnd() {
-      list.scrollTop = list.scrollHeight;
+    function pinToEnd(scroller: HTMLElement) {
+      scroller.scrollTop = scroller.scrollHeight;
     }
 
-    function nearEnd() {
-      return list.scrollHeight - list.scrollTop - list.clientHeight < 96;
+    function nearEnd(scroller: HTMLElement) {
+      return scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 96;
     }
 
-    pinToEnd();
+    pinToEnd(list);
     if (typeof ResizeObserver === "undefined") return;
 
     const observer = new ResizeObserver(() => {
-      if (busy || nearEnd()) pinToEnd();
+      const scroller = listRef.current;
+      if (!scroller) return;
+      if (busy || nearEnd(scroller)) pinToEnd(scroller);
     });
     observer.observe(list);
     if (footer) observer.observe(footer);

@@ -34,27 +34,58 @@ type ChatResponse = {
   picks: ChatPick[];
 };
 
+type PendingResult =
+  | { ok: true; data: ChatResponse }
+  | { ok: false; language: Language };
+
+type PendingSend = {
+  id: string;
+  promise: Promise<PendingResult>;
+  applied: boolean;
+};
+
+type LiveThread = {
+  messages: Message[];
+  composerLanguage: Language;
+  awaitingMaps: boolean;
+};
+
 type ChatProps = {
   landing: Language;
 };
 
+const threads: Partial<Record<Language, LiveThread>> = {};
+const pendingSends: Partial<Record<Language, PendingSend>> = {};
+
+function openerMessage(landing: Language): AssistantMessage {
+  return {
+    id: "opener",
+    role: "assistant",
+    language: landing,
+    text: landing === "ar" ? copy.opener : copy.openerEn,
+  };
+}
+
 export function Chat({ landing }: ChatProps) {
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "opener",
-      role: "assistant",
-      language: landing,
-      text: opener,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>(
+    () => threads[landing]?.messages ?? [openerMessage(landing)],
+  );
   const [draft, setDraft] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [pendingId, setPendingId] = useState(
+    () => pendingSends[landing]?.id ?? null,
+  );
+  const [busy, setBusy] = useState(() => Boolean(pendingSends[landing]));
   const been = useBeenIds();
-  const [composerLanguage, setComposerLanguage] = useState<Language>(landing);
-  const [awaitingMaps, setAwaitingMaps] = useState(false);
+  const [composerLanguage, setComposerLanguage] = useState<Language>(
+    () => threads[landing]?.composerLanguage ?? landing,
+  );
+  const [awaitingMaps, setAwaitingMaps] = useState(
+    () => threads[landing]?.awaitingMaps ?? false,
+  );
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
+  const inFlightRef = useRef(Boolean(pendingSends[landing]));
 
   useEffect(() => {
     const html = document.documentElement;
@@ -69,27 +100,105 @@ export function Chat({ landing }: ChatProps) {
   }, [landing]);
 
   useEffect(() => {
+    threads[landing] = {
+      messages,
+      composerLanguage,
+      awaitingMaps,
+    };
+  }, [landing, messages, composerLanguage, awaitingMaps]);
+
+  useEffect(() => {
+    const pending = pendingSends[landing];
+    if (!pending) return;
+
+    inFlightRef.current = true;
+    let cancelled = false;
+
+    void pending.promise.then((result) => {
+      if (cancelled || pending.applied) return;
+      pending.applied = true;
+      if (pendingSends[landing] === pending) {
+        delete pendingSends[landing];
+      }
+      inFlightRef.current = false;
+      setBusy(false);
+      setPendingId(null);
+
+      if (result.ok) {
+        setComposerLanguage(result.data.language);
+        setMessages((current) => {
+          const next: Message[] = [
+            ...current,
+            {
+              id: crypto.randomUUID(),
+              role: "assistant",
+              language: result.data.language,
+              text: result.data.reply,
+              picks: result.data.picks,
+              thinCatalog: result.data.thinCatalog,
+            },
+          ];
+          threads[landing] = {
+            messages: next,
+            composerLanguage: result.data.language,
+            awaitingMaps: false,
+          };
+          return next;
+        });
+        return;
+      }
+
+      setMessages((current) => {
+        const next: Message[] = [
+          ...current,
+          {
+            id: crypto.randomUUID(),
+            role: "assistant",
+            language: result.language,
+            text: copy.error[result.language],
+          },
+        ];
+        threads[landing] = {
+          messages: next,
+          composerLanguage: result.language,
+          awaitingMaps: false,
+        };
+        return next;
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [landing, pendingId]);
+
+  useEffect(() => {
     const list = listRef.current;
     const footer = footerRef.current;
     if (!list) return;
 
-    function scrollToEnd() {
-      list.scrollTo({ top: list.scrollHeight, behavior: "smooth" });
+    function pinToEnd() {
+      list.scrollTop = list.scrollHeight;
     }
 
-    scrollToEnd();
-    if (!footer || typeof ResizeObserver === "undefined") return;
+    function nearEnd() {
+      return list.scrollHeight - list.scrollTop - list.clientHeight < 96;
+    }
+
+    pinToEnd();
+    if (typeof ResizeObserver === "undefined") return;
 
     const observer = new ResizeObserver(() => {
-      scrollToEnd();
+      if (busy || nearEnd()) pinToEnd();
     });
-    observer.observe(footer);
+    observer.observe(list);
+    if (footer) observer.observe(footer);
     return () => observer.disconnect();
   }, [messages, busy]);
 
-  async function send(text: string, options?: { suggesting?: boolean }) {
+  function send(text: string, options?: { suggesting?: boolean }) {
     const trimmed = text.trim();
-    if (!trimmed || busy) return;
+    if (!trimmed || inFlightRef.current) return;
     const suggesting = options?.suggesting ?? awaitingMaps;
 
     const userMessage: UserMessage = {
@@ -98,57 +207,54 @@ export function Chat({ landing }: ChatProps) {
       text: trimmed,
     };
 
-    setMessages((current) => [...current, userMessage]);
+    inFlightRef.current = true;
     setDraft("");
     setAwaitingMaps(false);
     setBusy(true);
+    setMessages((current) => {
+      const next = [...current, userMessage];
+      threads[landing] = {
+        messages: next,
+        composerLanguage,
+        awaitingMaps: false,
+      };
+      return next;
+    });
 
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text: trimmed,
-          beenIds: been.ids,
-          suggesting,
-          landing,
-        }),
-      });
+    const pending: PendingSend = {
+      id: crypto.randomUUID(),
+      applied: false,
+      promise: (async (): Promise<PendingResult> => {
+        try {
+          const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              text: trimmed,
+              beenIds: been.ids,
+              suggesting,
+              landing,
+            }),
+          });
 
-      if (!response.ok) {
-        throw new Error("chat_failed");
-      }
+          if (!response.ok) {
+            throw new Error("chat_failed");
+          }
 
-      const data = (await response.json()) as ChatResponse;
-      setComposerLanguage(data.language);
-      setMessages((current) => [
-        ...current,
-        {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          language: data.language,
-          text: data.reply,
-          picks: data.picks,
-          thinCatalog: data.thinCatalog,
-        },
-      ]);
-    } catch {
-      setMessages((current) => [
-        ...current,
-        {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          language: composerLanguage,
-          text: copy.error[composerLanguage],
-        },
-      ]);
-    } finally {
-      setBusy(false);
-    }
+          const data = (await response.json()) as ChatResponse;
+          return { ok: true, data };
+        } catch {
+          return { ok: false, language: composerLanguage };
+        }
+      })(),
+    };
+
+    pendingSends[landing] = pending;
+    setPendingId(pending.id);
   }
 
   function askForShop() {
-    if (busy) return;
+    if (busy || inFlightRef.current) return;
     setAwaitingMaps(true);
     setMessages((current) => [
       ...current,
@@ -162,7 +268,7 @@ export function Chat({ landing }: ChatProps) {
   }
 
   function sendChip(label: string) {
-    void send(label, { suggesting: false });
+    send(label, { suggesting: false });
   }
 
   return (
@@ -257,7 +363,7 @@ export function Chat({ landing }: ChatProps) {
         className="shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
         onSubmit={(event) => {
           event.preventDefault();
-          void send(draft);
+          send(draft);
         }}
       >
         {messages.some((message) => message.role === "user") ? (
@@ -280,7 +386,7 @@ export function Chat({ landing }: ChatProps) {
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
-                void send(draft);
+                send(draft);
               }
             }}
             placeholder={

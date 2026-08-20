@@ -51,3 +51,42 @@ export function extractMapsUrl(text: string): string | null {
 export function looksLikeHttpUrl(text: string): boolean {
   return /https?:\/\//i.test(text) || /\bwww\./i.test(text);
 }
+
+/** Follow Google Maps short links. Google hosts only. Does not scrape the page. */
+export async function followGoogleRedirects(start: string): Promise<string> {
+  let current = start;
+  const seen = new Set<string>();
+
+  for (let i = 0; i < 5; i += 1) {
+    if (seen.has(current)) break;
+    seen.add(current);
+
+    const parsed = parseHttpUrl(current);
+    if (!parsed || !isAllowedMapsHost(parsed.host)) break;
+
+    let response: Response;
+    try {
+      response = await fetch(current, {
+        method: "GET",
+        redirect: "manual",
+        headers: { Accept: "text/html" },
+        signal: AbortSignal.timeout(8000),
+      });
+    } catch {
+      break;
+    }
+
+    const location = response.headers.get("location");
+    if (!location) break;
+
+    try {
+      const next = new URL(location, current).toString();
+      if (!isAllowedMapsHost(new URL(next).host)) break;
+      current = next;
+    } catch {
+      break;
+    }
+  }
+
+  return current;
+}

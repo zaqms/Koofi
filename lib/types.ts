@@ -67,6 +67,9 @@ export type ChatPick = {
   cardPath: string;
   photoUrl?: string;
   logoUrl?: string;
+  rating?: number;
+  reviewCount?: number;
+  reviewSnippet?: string;
 };
 
 export type ShopSuggestion = {

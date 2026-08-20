@@ -8,6 +8,7 @@ import {
   isExampleShop,
   shopDisplayName,
 } from "./product";
+import { decorateChatPicks } from "./places";
 import { shopLocation, shopMapsHref } from "./public-url";
 import type {
   ChatPick,
@@ -255,4 +256,14 @@ export function toChatPicks(result: PickResult): ChatPick[] {
     photoUrl: pick.shop.photoUrl,
     logoUrl: pick.shop.logoUrl,
   }));
+}
+
+export async function toChatPicksWithPlaces(
+  result: PickResult,
+): Promise<ChatPick[]> {
+  return decorateChatPicks(
+    toChatPicks(result),
+    result.picks.map((pick) => pick.shop),
+    result.language,
+  );
 }

@@ -48,6 +48,22 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                   <p className="text-xs text-ink-soft" dir="auto">
                     {other} · {pick.neighborhoodLabel}
                   </p>
+                  {!pick.example && pick.rating != null ? (
+                    <p className="mt-1 text-xs leading-5 text-ink-soft">
+                      <span dir="ltr">
+                        {pick.rating.toFixed(1)}
+                        {pick.reviewCount != null
+                          ? ` · ${pick.reviewCount} ${copy.reviews[language]}`
+                          : null}
+                      </span>
+                      {pick.reviewSnippet ? (
+                        <span dir="auto">
+                          {" "}
+                          · “{pick.reviewSnippet}”
+                        </span>
+                      ) : null}
+                    </p>
+                  ) : null}
                 </div>
               </div>
               {isExampleShop(pick) ? (

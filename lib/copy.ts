@@ -91,6 +91,10 @@ export const copy = {
     ar: "الخريطة",
     en: "Maps",
   },
+  reviews: {
+    ar: "تقييم",
+    en: "reviews",
+  },
   cardLink: {
     ar: "بطاقة المكان",
     en: "Cafe card",

@@ -1,6 +1,6 @@
 import { copy } from "@/lib/copy";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
-import { formatReply, pickCafes, toChatPicks } from "@/lib/picker";
+import { formatReply, pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
 import type { Language } from "@/lib/types";
 
@@ -64,6 +64,6 @@ export async function POST(request: Request) {
     language: result.language,
     reply: formatReply(result),
     thinCatalog: result.thinCatalog,
-    picks: toChatPicks(result),
+    picks: await toChatPicksWithPlaces(result),
   });
 }

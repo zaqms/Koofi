@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { PickList, type ChatPick } from "@/components/pick-list";
@@ -33,21 +34,38 @@ type ChatResponse = {
   picks: ChatPick[];
 };
 
-export function Chat() {
+type ChatProps = {
+  landing: Language;
+};
+
+export function Chat({ landing }: ChatProps) {
+  const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "opener",
       role: "assistant",
-      language: "ar",
-      text: copy.opener,
+      language: landing,
+      text: opener,
     },
   ]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const been = useBeenIds();
-  const [composerLanguage, setComposerLanguage] = useState<Language>("ar");
+  const [composerLanguage, setComposerLanguage] = useState<Language>(landing);
   const [awaitingMaps, setAwaitingMaps] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previousLang = html.lang;
+    const previousDir = html.dir;
+    html.lang = landing;
+    html.dir = landing === "ar" ? "rtl" : "ltr";
+    return () => {
+      html.lang = previousLang;
+      html.dir = previousDir;
+    };
+  }, [landing]);
 
   useEffect(() => {
     listRef.current?.scrollTo({
@@ -80,6 +98,7 @@ export function Chat() {
           text: trimmed,
           beenIds: been.ids,
           suggesting,
+          landing,
         }),
       });
 
@@ -123,8 +142,8 @@ export function Chat() {
       {
         id: crypto.randomUUID(),
         role: "assistant",
-        language: "ar",
-        text: `${copy.askMaps.ar}\n${copy.askMaps.en}`,
+        language: landing,
+        text: copy.askMaps[landing],
       },
     ]);
   }
@@ -134,10 +153,22 @@ export function Chat() {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper">
+    <div
+      className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
+      dir={landing === "ar" ? "rtl" : "ltr"}
+      lang={landing}
+    >
       <header className="sticky top-0 z-10 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur">
-        <p className="text-lg font-semibold">{PRODUCT_NAME}</p>
-        <p className="text-xs text-ink-soft">{copy.cityOnly.ar} · {copy.cityOnly.en}</p>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-lg font-semibold">{PRODUCT_NAME}</p>
+          <Link
+            href={landing === "ar" ? "/en" : "/"}
+            className="text-xs text-ink-soft underline-offset-2 hover:underline"
+          >
+            {copy.switchLanguage[landing]}
+          </Link>
+        </div>
+        <p className="text-xs text-ink-soft">{copy.cityOnly[landing]}</p>
       </header>
 
       <div
@@ -162,12 +193,7 @@ export function Chat() {
                 dir={message.language === "ar" ? "rtl" : "ltr"}
               >
                 {message.id === "opener" ? (
-                  <div>
-                    <p>{copy.opener}</p>
-                    <p className="mt-1 text-xs leading-5 text-ink-soft" dir="ltr">
-                      {copy.openerEn}
-                    </p>
-                  </div>
+                  <p>{opener}</p>
                 ) : (
                   <p className="whitespace-pre-wrap">
                     {message.picks?.length ? null : message.text}
@@ -180,10 +206,11 @@ export function Chat() {
                 )}
                 {message.id === "opener" ? (
                   <div className="mt-3">
-                    <VibeChips disabled={busy} onPick={sendChip} />
-                    <div className="mt-2">
-                      <AddShopButton disabled={busy} onAdd={askForShop} />
-                    </div>
+                    <VibeChips
+                      language={landing}
+                      disabled={busy}
+                      onPick={sendChip}
+                    />
                   </div>
                 ) : null}
                 {message.picks?.length ? (
@@ -221,23 +248,20 @@ export function Chat() {
       >
         {messages.some((message) => message.role === "user") ? (
           <div className="mb-2">
-            <VibeChips disabled={busy} onPick={sendChip} />
-            <div className="mt-2">
-              <AddShopButton disabled={busy} onAdd={askForShop} />
-            </div>
+            <VibeChips language={landing} disabled={busy} onPick={sendChip} />
           </div>
         ) : null}
         <label className="sr-only" htmlFor="koofi-ask">
           {awaitingMaps
-            ? copy.mapsPlaceholder[composerLanguage]
-            : copy.placeholder[composerLanguage]}
+            ? copy.mapsPlaceholder[landing]
+            : copy.placeholder[landing]}
         </label>
         <div className="flex items-end gap-2">
           <textarea
             id="koofi-ask"
             value={draft}
             rows={1}
-            dir="auto"
+            dir={landing === "ar" ? "rtl" : "ltr"}
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
@@ -247,8 +271,8 @@ export function Chat() {
             }}
             placeholder={
               awaitingMaps
-                ? copy.mapsPlaceholder[composerLanguage]
-                : copy.placeholder[composerLanguage]
+                ? copy.mapsPlaceholder[landing]
+                : copy.placeholder[landing]
             }
             className="min-h-11 flex-1 resize-none rounded-2xl border border-line bg-foam px-3 py-2 text-sm outline-none focus:border-bean"
           />
@@ -257,8 +281,15 @@ export function Chat() {
             disabled={busy || !draft.trim()}
             className="h-11 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
           >
-            {copy.send[composerLanguage]}
+            {copy.send[landing]}
           </button>
+        </div>
+        <div className="mt-2">
+          <AddShopButton
+            language={landing}
+            disabled={busy}
+            onAdd={askForShop}
+          />
         </div>
       </form>
     </div>

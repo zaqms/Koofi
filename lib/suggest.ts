@@ -8,7 +8,7 @@ import {
   parseHttpUrl,
 } from "./maps-url";
 import { NEIGHBORHOODS } from "./neighborhoods";
-import type { NeighborhoodId, ShopSuggestion } from "./types";
+import type { Language, NeighborhoodId, ShopSuggestion } from "./types";
 
 const TMP_PATH = "/tmp/koofi-pending.json";
 const GITHUB_REPO = "zaqms/Koofi";
@@ -174,10 +174,6 @@ async function openGithubIssue(suggestion: ShopSuggestion): Promise<void> {
   }
 }
 
-export function bilingual(table: { ar: string; en: string }): string {
-  return `${table.ar}\n${table.en}`;
-}
-
 export function listSuggestions(): PendingFile {
   const byId = new Map<string, ShopSuggestion>();
   for (const row of [...readTmp(), ...memory]) {
@@ -191,7 +187,10 @@ export function listSuggestions(): PendingFile {
   };
 }
 
-export async function recordSuggestion(raw: string): Promise<{
+export async function recordSuggestion(
+  raw: string,
+  language: Language = "ar",
+): Promise<{
   ok: boolean;
   reason: "saved" | "bad_url";
   suggestion?: ShopSuggestion;
@@ -199,7 +198,7 @@ export async function recordSuggestion(raw: string): Promise<{
 }> {
   const mapsUrl = extractMapsUrl(raw);
   if (!mapsUrl || !isMapsUrl(mapsUrl)) {
-    return { ok: false, reason: "bad_url", reply: bilingual(copy.suggestBad) };
+    return { ok: false, reason: "bad_url", reply: copy.suggestBad[language] };
   }
 
   const resolved = await resolveMapsLink(mapsUrl);
@@ -225,6 +224,6 @@ export async function recordSuggestion(raw: string): Promise<{
     ok: true,
     reason: "saved",
     suggestion,
-    reply: bilingual(copy.suggestThanks),
+    reply: copy.suggestThanks[language],
   };
 }

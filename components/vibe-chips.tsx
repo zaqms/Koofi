@@ -1,43 +1,35 @@
 import { copy } from "@/lib/copy";
-import { VIBE_CHIPS } from "@/lib/product";
+import { VIBE_CHIPS, vibeChipLabel } from "@/lib/product";
+import type { Language } from "@/lib/types";
 
 type VibeChipsProps = {
+  language: Language;
   disabled?: boolean;
   onPick: (label: string) => void;
 };
 
-export function VibeChips({ disabled, onPick }: VibeChipsProps) {
+export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
   return (
     <div
       className="flex flex-wrap gap-1.5"
       role="group"
-      aria-label={`${copy.pickVibe.ar} · ${copy.pickVibe.en}`}
+      aria-label={copy.pickVibe[language]}
+      dir={language === "ar" ? "rtl" : "ltr"}
     >
-      {VIBE_CHIPS.map((chip) => (
-        <div
-          key={chip.id}
-          className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-line bg-foam"
-        >
+      {VIBE_CHIPS.map((chip) => {
+        const label = vibeChipLabel(chip, language);
+        return (
           <button
+            key={chip.id}
             type="button"
-            dir="rtl"
             disabled={disabled}
-            onClick={() => onPick(chip.ar)}
-            className="px-2.5 pt-1.5 pb-0.5 text-start text-[11px] leading-4 text-ink hover:bg-paper-deep disabled:opacity-50"
+            onClick={() => onPick(label)}
+            className="rounded-full border border-line bg-foam px-2.5 py-1 text-[11px] leading-5 text-ink hover:border-bean hover:bg-paper-deep disabled:opacity-50"
           >
-            {chip.ar}
+            {label}
           </button>
-          <button
-            type="button"
-            dir="ltr"
-            disabled={disabled}
-            onClick={() => onPick(chip.en)}
-            className="px-2.5 pt-0 pb-1.5 text-start text-[10px] leading-4 text-ink-soft hover:bg-paper-deep disabled:opacity-50"
-          >
-            {chip.en}
-          </button>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

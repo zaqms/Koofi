@@ -8,8 +8,8 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 
 ## What it does
 
-- Opens with both locked lines on the same first screen: **اي قهوة ناوي تروح؟** and, under it, **Which coffee you heading to?** Same chat, same URL. No `/en` page.
-- Under the opener, ten bilingual vibe chips (Arabic on top, English under). Each chip has two tap targets: Arabic sends the Arabic label, English sends the English label so replies follow `detectLanguage`. Tapping still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
+- Two landings, same chat: **`/`** is Arabic (`اي قهوة ناوي تروح؟`, Arabic chips, RTL). **`/en`** is English (`Which coffee you heading to?`, English chips, LTR). Header switches with `EN` / `عربي`. Not a marketing site. Not both languages stacked in one bubble.
+- Ten vibe chips under the opener, one label each. Tapping still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. Typing the other language still flips the reply. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
 - They can also type a vibe or a neighborhood.
 - Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary.
 - Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود).
@@ -18,7 +18,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
 - Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, hours only if we have them from a legal source, vibe tags. Do not ask people to share the Koofi URL.
 - Each pick card has a small 44px letter mark from the shop name (IK, WO, …). A `photoUrl` is shown only if Amjad sets one. Do not scrape Maps photos.
-- **أضف قهوة / Add a shop** under the chips. Drop a Google Maps link. Koofi thanks them and stores a suggestion for Amjad — it does not go into `catalog.json`.
+- **أضف قهوة / Add a shop** sits under the composer, not in the chip row. Drop a Google Maps link. Koofi thanks them and stores a suggestion for Amjad — it does not go into `catalog.json`.
 
 ## What v1 leaves out
 
@@ -30,7 +30,7 @@ The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
 Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, optional `mapsShareUrl`, optional `photoUrl`, optional `logoUrl`, and `example`. `shopMapsHref` prefers `mapsShareUrl`, then pin, then a name search. Leave `photoUrl` / `logoUrl` empty unless there is a legal photo. Never hotlink a scraped Maps CDN URL.
 
-The locked openers and chip list live in [`lib/product.ts`](lib/product.ts) (`LOCKED_OPENER`, `LOCKED_OPENER_EN`, `VIBE_CHIPS`). The coffee chip maps onto `qahwa`. Chat UI and copy import those; do not duplicate the opener strings or the chip labels.
+The locked openers and chip list live in [`lib/product.ts`](lib/product.ts) (`LOCKED_OPENER` on `/`, `LOCKED_OPENER_EN` on `/en`, `VIBE_CHIPS`). The coffee chip maps onto `qahwa`. Chat UI and copy import those; do not duplicate the opener strings or the chip labels.
 
 **Real shops come from Amjad as Maps pins.** This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source. Do not invent coordinates for a real shop when `mapsShareUrl` is present.
 
@@ -80,7 +80,7 @@ Do not commit secrets.
 
 Crowdsource-with-curation. Suggestions are **not** the live catalog.
 
-- Web: **أضف قهوة / Add a shop**, then paste a `maps.app.goo.gl` or Google Maps URL. Pasting a Maps link without tapping first is also a suggestion, not a cafe search.
+- Web: **أضف قهوة / Add a shop** under the composer, then paste a `maps.app.goo.gl` or Google Maps URL. Pasting a Maps link without tapping first is also a suggestion, not a cafe search.
 - `POST /api/suggest` `{ "mapsUrl": "https://maps.app.goo.gl/..." }` — validates host, follows redirects on Google hosts only, reads a place name from the Location path or `<title>` if it can. Does not scrape reviews or photos.
 - `GET /api/suggest` returns `{ note, suggestions }` (`mapsUrl`, `resolvedName`, `neighborhood` if obvious, `createdAt`).
 - Persist: in-memory + `/tmp/koofi-pending.json` + log the JSON. If `GITHUB_TOKEN` is set, also open a GitHub issue. Do not write suggestions into `catalog.json`.
@@ -108,7 +108,8 @@ People forward the Maps pin, not a Koofi URL.
 ## Project shape
 
 ```
-app/page.tsx                    thin web chat
+app/page.tsx                    Arabic landing
+app/en/page.tsx                 English landing
 app/c/[id]/page.tsx             shareable cafe card
 app/api/chat/route.ts           web picker + Maps-link suggestions
 app/api/suggest/route.ts        pending suggestions

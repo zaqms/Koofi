@@ -6,7 +6,7 @@ export const PRODUCT_NAME = "Koofi";
 /** Locked until Amjad picks a GenZ line. */
 export const LOCKED_OPENER = "اي قهوة ناوي تروح؟";
 
-/** English sits under the Arabic opener on the first screen. Same chat, same URL. */
+/** English landing opener on `/en`. Arabic opener stays on `/`. */
 export const LOCKED_OPENER_EN = "Which coffee you heading to?";
 
 export type VibeChip = {

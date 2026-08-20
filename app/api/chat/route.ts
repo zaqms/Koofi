@@ -1,7 +1,8 @@
+import { copy } from "@/lib/copy";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import { formatReply, pickCafes, toChatPicks } from "@/lib/picker";
-import { bilingual, recordSuggestion } from "@/lib/suggest";
-import { copy } from "@/lib/copy";
+import { recordSuggestion } from "@/lib/suggest";
+import type { Language } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -9,7 +10,12 @@ type ChatRequest = {
   text?: string;
   beenIds?: string[];
   suggesting?: boolean;
+  landing?: Language;
 };
+
+function landingLanguage(value: unknown): Language {
+  return value === "en" ? "en" : "ar";
+}
 
 export async function POST(request: Request) {
   let body: ChatRequest;
@@ -25,14 +31,16 @@ export async function POST(request: Request) {
     return Response.json({ error: "empty_text" }, { status: 400 });
   }
 
+  const landing = landingLanguage(body.landing);
+
   const beenIds = Array.isArray(body.beenIds)
     ? body.beenIds.filter((id): id is string => typeof id === "string")
     : [];
 
   if (extractMapsUrl(text)) {
-    const suggestion = await recordSuggestion(text);
+    const suggestion = await recordSuggestion(text, landing);
     return Response.json({
-      language: "ar",
+      language: landing,
       reply: suggestion.reply,
       thinCatalog: false,
       picks: [],
@@ -42,8 +50,8 @@ export async function POST(request: Request) {
 
   if (body.suggesting || looksLikeHttpUrl(text)) {
     return Response.json({
-      language: "ar",
-      reply: bilingual(copy.suggestBad),
+      language: landing,
+      reply: copy.suggestBad[landing],
       thinCatalog: false,
       picks: [],
       suggestion: false,

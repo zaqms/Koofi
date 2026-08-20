@@ -18,6 +18,10 @@ export const copy = {
     ar: "اختار أجواء",
     en: "Pick a vibe",
   },
+  switchLanguage: {
+    ar: "EN",
+    en: "عربي",
+  },
   addShop: {
     ar: "أضف قهوة",
     en: "Add a shop",

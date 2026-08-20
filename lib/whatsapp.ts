@@ -5,7 +5,7 @@ import {
   pickCafes,
   whatsAppLocations,
 } from "./picker";
-import { bilingual, recordSuggestion } from "./suggest";
+import { recordSuggestion } from "./suggest";
 import { copy } from "./copy";
 
 type WhatsAppTextMessage = {
@@ -60,7 +60,7 @@ export async function replyForWhatsApp(text: string): Promise<{
   }
 
   if (looksLikeHttpUrl(text)) {
-    return { body: bilingual(copy.suggestBad), locations: [] };
+    return { body: copy.suggestBad.ar, locations: [] };
   }
 
   const result = pickCafes({ text });

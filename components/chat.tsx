@@ -176,24 +176,23 @@ export function Chat({ landing }: ChatProps) {
     const list = listRef.current;
     const footer = footerRef.current;
     if (!list) return;
+    const el = list;
 
-    function pinToEnd(scroller: HTMLElement) {
-      scroller.scrollTop = scroller.scrollHeight;
+    function pinToEnd() {
+      el.scrollTop = el.scrollHeight;
     }
 
-    function nearEnd(scroller: HTMLElement) {
-      return scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 96;
+    function nearEnd() {
+      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
     }
 
-    pinToEnd(list);
+    pinToEnd();
     if (typeof ResizeObserver === "undefined") return;
 
     const observer = new ResizeObserver(() => {
-      const scroller = listRef.current;
-      if (!scroller) return;
-      if (busy || nearEnd(scroller)) pinToEnd(scroller);
+      if (busy || nearEnd()) pinToEnd();
     });
-    observer.observe(list);
+    observer.observe(el);
     if (footer) observer.observe(footer);
     return () => observer.disconnect();
   }, [messages, busy]);

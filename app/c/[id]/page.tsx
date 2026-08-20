@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CafeCard } from "@/components/cafe-card";
 import { getShop, listShops } from "@/lib/catalog";
-import { copy, PRODUCT_NAME_AR } from "@/lib/copy";
+import { copy } from "@/lib/copy";
+import { PRODUCT_NAME } from "@/lib/product";
 
 type CardPageProps = {
   params: Promise<{ id: string }>;
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: CardPageProps) {
   const { id } = await params;
   const shop = getShop(id);
   if (!shop) {
-    return { title: `${PRODUCT_NAME_AR} · البطاقة` };
+    return { title: `${PRODUCT_NAME} · البطاقة` };
   }
 
   return {
@@ -33,7 +34,7 @@ export default async function CafeCardPage({ params }: CardPageProps) {
   return (
     <main className="mx-auto min-h-dvh w-full max-w-md px-4 py-6">
       <p className="text-xs text-ink-soft">
-        {PRODUCT_NAME_AR} · {copy.shareHint.ar}
+        {PRODUCT_NAME} · {copy.shareHint.ar}
       </p>
       <CafeCard shop={shop} />
       <p className="mt-6">

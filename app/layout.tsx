@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { PRODUCT_NAME } from "@/lib/product";
 import "./globals.css";
 
 const plexArabic = IBM_Plex_Sans_Arabic({
@@ -10,7 +11,7 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "كوفي · Koofi",
+  title: PRODUCT_NAME,
   description: "وين القهوة الحين — ثلاث قهاوي، وسبب لكل وحدة. الرياض.",
 };
 

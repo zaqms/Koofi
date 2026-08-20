@@ -3,17 +3,10 @@
 import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
 import { copy } from "@/lib/copy";
-import type { Language } from "@/lib/types";
+import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
+import type { ChatPick, Language } from "@/lib/types";
 
-export type ChatPick = {
-  id: string;
-  nameAr: string;
-  nameEn: string;
-  neighborhoodLabel: string;
-  example: boolean;
-  why: string;
-  cardPath: string;
-};
+export type { ChatPick };
 
 type PickListProps = {
   picks: ChatPick[];
@@ -26,8 +19,11 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
   return (
     <ol className="mt-3 grid gap-2">
       {picks.map((pick, index) => {
-        const name = language === "ar" ? pick.nameAr : pick.nameEn;
-        const other = language === "ar" ? pick.nameEn : pick.nameAr;
+        const name = shopDisplayName(pick, language);
+        const other = shopDisplayName(
+          pick,
+          language === "ar" ? "en" : "ar",
+        );
 
         return (
           <li
@@ -42,9 +38,9 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                   {other} · {pick.neighborhoodLabel}
                 </p>
               </div>
-              {pick.example ? (
+              {isExampleShop(pick) ? (
                 <span className="shrink-0 rounded-full bg-paper-deep px-2 py-0.5 text-[11px] text-ink-soft">
-                  {copy.exampleBadge[language]}
+                  {exampleBadge(language)}
                 </span>
               ) : null}
             </div>

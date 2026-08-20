@@ -42,6 +42,16 @@ export type Shop = {
   example: boolean;
 };
 
+export type ChatPick = {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  neighborhoodLabel: string;
+  example: boolean;
+  why: string;
+  cardPath: string;
+};
+
 export type CatalogFile = {
   note: string;
   shops: Shop[];

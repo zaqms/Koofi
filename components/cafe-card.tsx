@@ -1,6 +1,7 @@
 import { CardBeen } from "@/components/card-been";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
+import { exampleBadge, isExampleShop } from "@/lib/product";
 import { mapsHref } from "@/lib/public-url";
 import type { Shop } from "@/lib/types";
 
@@ -21,14 +22,14 @@ export function CafeCard({ shop }: CafeCardProps) {
             {shop.nameEn}
           </p>
         </div>
-        {shop.example ? (
+        {isExampleShop(shop) ? (
           <span className="rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">
-            {copy.exampleBadge.ar}
+            {exampleBadge("ar")}
           </span>
         ) : null}
       </div>
 
-      {shop.example ? (
+      {isExampleShop(shop) ? (
         <p className="mt-3 text-sm leading-6 text-ink-soft">{copy.exampleNote.ar}</p>
       ) : null}
 

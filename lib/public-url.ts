@@ -1,11 +1,12 @@
+import { ENV_KEYS, readEnv } from "./env";
+import { cardPath } from "./product";
+
+export { cardPath };
+
 export function publicOrigin(): string | null {
-  const raw = process.env.KOOFI_PUBLIC_URL?.trim();
+  const raw = readEnv(ENV_KEYS.KOOFI_PUBLIC_URL);
   if (!raw) return null;
   return raw.replace(/\/$/, "");
-}
-
-export function cardPath(id: string): string {
-  return `/c/${encodeURIComponent(id)}`;
 }
 
 export function cardHref(id: string): string {

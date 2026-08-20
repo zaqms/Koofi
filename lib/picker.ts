@@ -2,7 +2,14 @@ import { listShops } from "./catalog";
 import { copy } from "./copy";
 import { neighborhoodLabel } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
+import {
+  cardPath,
+  exampleBadge,
+  isExampleShop,
+  shopDisplayName,
+} from "./product";
 import type {
+  ChatPick,
   Language,
   MomentTag,
   NeighborhoodId,
@@ -56,7 +63,7 @@ function scoreShop(
   neighborhoods: NeighborhoodId[],
   moments: MomentTag[],
 ): number {
-  let score = shop.example ? 0 : 8;
+  let score = isExampleShop(shop) ? 0 : 8;
 
   if (neighborhoods.length === 0) {
     score += 1;
@@ -180,10 +187,10 @@ export function formatReply(result: PickResult): string {
   lines.push("");
 
   picks.forEach((pick, index) => {
-    const name = language === "ar" ? pick.shop.nameAr : pick.shop.nameEn;
+    const name = shopDisplayName(pick.shop, language);
     const place = neighborhoodLabel(pick.shop.neighborhood, language);
-    const example = pick.shop.example
-      ? ` · ${copy.exampleBadge[language]}`
+    const example = isExampleShop(pick.shop)
+      ? ` · ${exampleBadge(language)}`
       : "";
     lines.push(`${index + 1}. ${name} — ${place}${example}`);
     lines.push(`   ${pick.why}`);
@@ -211,4 +218,19 @@ export function formatWhatsAppReply(
   });
 
   return `${body}\n\n${extras.join("\n")}`;
+}
+
+export function toChatPicks(result: PickResult): ChatPick[] {
+  return result.picks.map((pick) => ({
+    id: pick.shop.id,
+    nameAr: pick.shop.nameAr,
+    nameEn: pick.shop.nameEn,
+    neighborhoodLabel: neighborhoodLabel(
+      pick.shop.neighborhood,
+      result.language,
+    ),
+    example: isExampleShop(pick.shop),
+    why: pick.why,
+    cardPath: cardPath(pick.shop.id),
+  }));
 }

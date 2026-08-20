@@ -1,10 +1,7 @@
+import { EXAMPLE_BADGE, LOCKED_OPENER, PRODUCT_NAME } from "./product";
 import type { Language } from "./types";
 
-/** Locked opener until Amjad changes it. */
-export const LOCKED_OPENER = "اي قهوة ناوي تروح؟";
-
-export const PRODUCT_NAME_AR = "كوفي";
-export const PRODUCT_NAME_EN = "Koofi";
+export { LOCKED_OPENER, PRODUCT_NAME };
 
 export function t<T extends Record<Language, string>>(
   language: Language,
@@ -46,10 +43,7 @@ export const copy = {
     ar: "ما عندي قهوة تناسب هالطلب في القائمة الحين. القائمة الحقيقية لسه جايه.",
     en: "I don't have a cafe for that on the list yet. The real list is still coming.",
   },
-  exampleBadge: {
-    ar: "مثال",
-    en: "Example",
-  },
+  exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",
     en: "A demo shop — not a real Riyadh cafe.",

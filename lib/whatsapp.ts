@@ -1,3 +1,4 @@
+import { ENV_KEYS, readEnv } from "./env";
 import { formatWhatsAppReply, pickCafes } from "./picker";
 import { cardHref } from "./public-url";
 
@@ -48,7 +49,8 @@ export function replyForWhatsApp(text: string): string {
 
 export function isWhatsAppConfigured(): boolean {
   return Boolean(
-    process.env.WHATSAPP_ACCESS_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID,
+    readEnv(ENV_KEYS.WHATSAPP_ACCESS_TOKEN) &&
+      readEnv(ENV_KEYS.WHATSAPP_PHONE_NUMBER_ID),
   );
 }
 
@@ -56,8 +58,8 @@ export async function sendWhatsAppText(
   to: string,
   body: string,
 ): Promise<{ ok: boolean; skipped: boolean; status?: number }> {
-  const token = process.env.WHATSAPP_ACCESS_TOKEN;
-  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const token = readEnv(ENV_KEYS.WHATSAPP_ACCESS_TOKEN);
+  const phoneNumberId = readEnv(ENV_KEYS.WHATSAPP_PHONE_NUMBER_ID);
 
   if (!token || !phoneNumberId) {
     return { ok: true, skipped: true };
@@ -88,7 +90,7 @@ export function verifyWebhookChallenge(
   token: string | null,
   challenge: string | null,
 ): string | null {
-  const expected = process.env.WHATSAPP_VERIFY_TOKEN;
+  const expected = readEnv(ENV_KEYS.WHATSAPP_VERIFY_TOKEN);
   if (!expected) return null;
   if (mode === "subscribe" && token === expected && challenge) {
     return challenge;

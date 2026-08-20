@@ -1,4 +1,5 @@
 import catalogFile from "../data/catalog.json";
+import { isExampleShop } from "./product";
 import type { CatalogFile, Shop } from "./types";
 
 const catalog = catalogFile as CatalogFile;
@@ -12,5 +13,5 @@ export function getShop(id: string): Shop | undefined {
 }
 
 export function realShopCount(): number {
-  return listShops().filter((shop) => !shop.example).length;
+  return listShops().filter((shop) => !isExampleShop(shop)).length;
 }

@@ -1,4 +1,4 @@
-# كوفي · Koofi
+# Koofi
 
 A consumer agent for one job: **where should I go for coffee right now, and why?**
 
@@ -57,6 +57,8 @@ npm start
 
 Copy `.env.example` to `.env.local` if you need WhatsApp later. **None of these are required for the web chat.**
 
+These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. Do not rename one without the others.
+
 | Variable | Required for web chat | What it does |
 | --- | --- | --- |
 | `KOOFI_PUBLIC_URL` | No | Optional origin used only to turn `/c/[id]` into an absolute link in WhatsApp replies. Leave empty locally. Do not invent a production domain. |
@@ -93,6 +95,8 @@ app/page.tsx              thin web chat
 app/c/[id]/page.tsx       shareable cafe card
 app/api/chat/route.ts     web picker
 app/api/whatsapp/route.ts WhatsApp door
-data/catalog.json         editorial catalog
+data/catalog.json         editorial catalog (shop names / ids)
+lib/product.ts            Koofi, opener, example flag, card path
+lib/env.ts                WhatsApp env key names
 lib/picker.ts             shared three-pick logic
 ```

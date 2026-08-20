@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { PickList, type ChatPick } from "@/components/pick-list";
 import { useBeenIds } from "@/lib/been";
-import { copy, LOCKED_OPENER, PRODUCT_NAME_AR } from "@/lib/copy";
+import { copy } from "@/lib/copy";
+import { LOCKED_OPENER, PRODUCT_NAME } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type AssistantMessage = {
@@ -108,7 +109,7 @@ export function Chat() {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper">
       <header className="sticky top-0 z-10 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur">
-        <p className="text-lg font-semibold">{PRODUCT_NAME_AR}</p>
+        <p className="text-lg font-semibold">{PRODUCT_NAME}</p>
         <p className="text-xs text-ink-soft">{copy.cityOnly.ar} · {copy.cityOnly.en}</p>
       </header>
 

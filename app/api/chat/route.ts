@@ -1,6 +1,4 @@
-import { formatReply, pickCafes } from "@/lib/picker";
-import { cardPath } from "@/lib/public-url";
-import { neighborhoodLabel } from "@/lib/neighborhoods";
+import { formatReply, pickCafes, toChatPicks } from "@/lib/picker";
 
 export const runtime = "nodejs";
 
@@ -33,22 +31,6 @@ export async function POST(request: Request) {
     language: result.language,
     reply: formatReply(result),
     thinCatalog: result.thinCatalog,
-    picks: result.picks.map((pick) => ({
-      id: pick.shop.id,
-      nameAr: pick.shop.nameAr,
-      nameEn: pick.shop.nameEn,
-      neighborhood: pick.shop.neighborhood,
-      neighborhoodLabel: neighborhoodLabel(
-        pick.shop.neighborhood,
-        result.language,
-      ),
-      neighborhoodAr: pick.shop.neighborhoodAr,
-      vibeTags: pick.shop.vibeTags,
-      momentTags: pick.shop.momentTags,
-      example: pick.shop.example,
-      why: pick.why,
-      cardPath: cardPath(pick.shop.id),
-      hasPin: Boolean(pick.shop.pin),
-    })),
+    picks: toChatPicks(result),
   });
 }

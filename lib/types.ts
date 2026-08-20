@@ -88,6 +88,7 @@ export type CatalogFile = {
 export type Intent = {
   language: Language;
   neighborhoods: NeighborhoodId[];
+  avoidedNeighborhoods: NeighborhoodId[];
   moments: MomentTag[];
   raw: string;
 };
@@ -102,5 +103,6 @@ export type PickResult = {
   picks: PickReason[];
   thinCatalog: boolean;
   askedNeighborhoods: NeighborhoodId[];
+  avoidedNeighborhoods: NeighborhoodId[];
   askedMoments: MomentTag[];
 };

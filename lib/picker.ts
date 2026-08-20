@@ -150,10 +150,15 @@ function diversify(shops: Shop[], moments: MomentTag[]): Shop[] {
 export function pickCafes(input: {
   text: string;
   beenIds?: string[];
+  language?: Language;
 }): PickResult {
   const intent = parseIntent(input.text);
+  const language = input.language ?? intent.language;
   const been = new Set((input.beenIds ?? []).filter(Boolean));
-  const available = listShops().filter((shop) => !been.has(shop.id));
+  const avoided = new Set(intent.avoidedNeighborhoods);
+  const available = listShops().filter(
+    (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
+  );
 
   const neighborhoodMatches = available.filter(
     (shop) =>
@@ -178,7 +183,7 @@ export function pickCafes(input: {
 
   const picks: PickReason[] = ranked.map((shop) => ({
     shop,
-    why: editorialWhy(shop, intent.moments, intent.language),
+    why: editorialWhy(shop, intent.moments, language),
   }));
 
   const thinCatalog =
@@ -188,25 +193,29 @@ export function pickCafes(input: {
       neighborhoodMatches.length < TARGET_PICKS);
 
   return {
-    language: intent.language,
+    language,
     picks,
     thinCatalog,
     askedNeighborhoods: intent.neighborhoods,
+    avoidedNeighborhoods: intent.avoidedNeighborhoods,
     askedMoments: intent.moments,
   };
 }
 
-export function formatReply(result: PickResult): string {
+export function headingForPicks(result: PickResult): string {
+  if (result.picks.length === 0) return copy.emptyCatalog[result.language];
+  return result.picks.length === TARGET_PICKS
+    ? copy.threePicks[result.language]
+    : copy.fewerPicks[result.language];
+}
+
+export function formatReply(result: PickResult, spoken?: string): string {
   const { language, picks, thinCatalog } = result;
 
   if (picks.length === 0) return copy.emptyCatalog[language];
 
   const lines: string[] = [];
-  lines.push(
-    picks.length === TARGET_PICKS
-      ? copy.threePicks[language]
-      : copy.fewerPicks[language],
-  );
+  lines.push(spoken?.trim() || headingForPicks(result));
   lines.push("");
 
   picks.forEach((pick, index) => {
@@ -228,8 +237,11 @@ export function formatReply(result: PickResult): string {
   return lines.join("\n");
 }
 
-export function formatWhatsAppReply(result: PickResult): string {
-  return formatReply(result);
+export function formatWhatsAppReply(
+  result: PickResult,
+  spoken?: string,
+): string {
+  return formatReply(result, spoken);
 }
 
 export function whatsAppLocations(result: PickResult) {

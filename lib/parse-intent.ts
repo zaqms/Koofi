@@ -177,12 +177,49 @@ function exactChipMoment(haystack: string): MomentTag | null {
   return null;
 }
 
+const AVOID_MARKERS = [
+  "ابعد عن",
+  "بعيد عن",
+  "away from",
+  "stay away from",
+  "not in",
+  "except",
+  "other than",
+  "besides",
+  "بدون",
+  "غير",
+  "مو في",
+].map((marker) => normalize(marker));
+
+function aliasIndex(haystack: string, alias: string): number {
+  const needle = normalize(alias);
+  if (!needle) return -1;
+  if (needle.includes(" ")) return haystack.indexOf(needle);
+  const match = haystack.match(
+    new RegExp(`(^|\\s)(${escapeRegExp(needle)})(\\s|$)`, "u"),
+  );
+  if (!match || match.index == null) return -1;
+  return match.index + match[1].length;
+}
+
+function isAvoidedMention(haystack: string, alias: string): boolean {
+  const index = aliasIndex(haystack, alias);
+  if (index < 0) return false;
+  const before = haystack.slice(Math.max(0, index - 24), index);
+  return AVOID_MARKERS.some((marker) => before.includes(marker));
+}
+
 export function parseIntent(raw: string): Intent {
   const haystack = normalize(raw);
   const neighborhoods: NeighborhoodId[] = [];
+  const avoidedNeighborhoods: NeighborhoodId[] = [];
 
   for (const place of Object.values(NEIGHBORHOODS)) {
-    if (place.aliases.some((alias) => includesAlias(haystack, alias))) {
+    const hit = place.aliases.find((alias) => includesAlias(haystack, alias));
+    if (!hit) continue;
+    if (isAvoidedMention(haystack, hit)) {
+      avoidedNeighborhoods.push(place.id);
+    } else {
       neighborhoods.push(place.id);
     }
   }
@@ -206,6 +243,7 @@ export function parseIntent(raw: string): Intent {
   return {
     language: detectLanguage(raw),
     neighborhoods,
+    avoidedNeighborhoods,
     moments,
     raw,
   };

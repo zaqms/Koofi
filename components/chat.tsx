@@ -315,13 +315,7 @@ export function Chat({ landing }: ChatProps) {
                 {message.id === "opener" ? (
                   <p>{opener}</p>
                 ) : (
-                  <p className="whitespace-pre-wrap">
-                    {message.picks?.length
-                      ? message.picks.length === 3
-                        ? copy.threePicks[message.language]
-                        : copy.fewerPicks[message.language]
-                      : message.text}
-                  </p>
+                  <p className="whitespace-pre-wrap">{message.text}</p>
                 )}
                 {message.id === "opener" ? (
                   <div className="mt-3">

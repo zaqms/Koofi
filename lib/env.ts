@@ -1,6 +1,6 @@
 /**
  * Env key contract. README, .env.example, and webhook code must use these
- * exact names. None are required for the web chat.
+ * exact names. None are required for the three pick cards.
  */
 export const ENV_KEYS = {
   KOOFI_PUBLIC_URL: "KOOFI_PUBLIC_URL",
@@ -9,6 +9,7 @@ export const ENV_KEYS = {
   WHATSAPP_PHONE_NUMBER_ID: "WHATSAPP_PHONE_NUMBER_ID",
   GOOGLE_PLACES_API_KEY: "GOOGLE_PLACES_API_KEY",
   GITHUB_TOKEN: "GITHUB_TOKEN",
+  XAI_API_KEY: "XAI_API_KEY",
 } as const;
 
 export type EnvKey = (typeof ENV_KEYS)[keyof typeof ENV_KEYS];

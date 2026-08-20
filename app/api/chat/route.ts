@@ -1,8 +1,9 @@
 import { copy } from "@/lib/copy";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
-import { formatReply, pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
+import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
 import type { Language } from "@/lib/types";
+import { speakForPicks } from "@/lib/voice";
 
 export const runtime = "nodejs";
 
@@ -58,12 +59,16 @@ export async function POST(request: Request) {
     });
   }
 
-  const result = pickCafes({ text, beenIds });
+  const result = pickCafes({ text, beenIds, language: landing });
+  const [picks, reply] = await Promise.all([
+    toChatPicksWithPlaces(result),
+    speakForPicks({ userText: text, landing, result }),
+  ]);
 
   return Response.json({
     language: result.language,
-    reply: formatReply(result),
+    reply,
     thinCatalog: result.thinCatalog,
-    picks: await toChatPicksWithPlaces(result),
+    picks,
   });
 }

@@ -10,8 +10,8 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 
 - Two landings, same chat: **`/`** is Arabic (`اي قهوة ناوي تروح؟`, Arabic chips, RTL). **`/en`** is English (`Which coffee you heading to?`, English chips, LTR). Header switches with `EN` / `عربي`. Not a marketing site. Not both languages stacked in one bubble.
 - Ten vibe chips under the opener, one label each. Tapping still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. Typing the other language still flips the reply. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
-- They can also type a vibe or a neighborhood.
-- Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary.
+- They can also type a vibe or a neighborhood. A follow-up like `أبعد عن العليا` / `away from Olaya` gets another spoken line and a new three from the remaining catalog — not a general chat.
+- Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. A short spoken line sits above the cards (xAI chat completions, `grok-4.6`). The share unit is still the cards: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary. If `XAI_API_KEY` is missing or the model call fails, the spoken line falls back to today’s heading copy. Cards still send.
 - Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود), Al Rabwah (الربوة), Al Rabi (الربيع), Al Masif (المصيف), Al Rahmaniyyah (الرحمانية).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. Example/مثال shops never show a rating. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
@@ -61,7 +61,7 @@ npm start
 
 ## Environment
 
-Copy `.env.example` to `.env.local` if you need WhatsApp later. **None of these are required for the web chat.**
+Copy `.env.example` to `.env.local` if you need WhatsApp or a spoken line. **None of these are required for the three pick cards.**
 
 These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. Do not rename one without the others.
 
@@ -73,6 +73,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `WHATSAPP_PHONE_NUMBER_ID` | No | Phone number ID for outbound WhatsApp messages. |
 | `GOOGLE_PLACES_API_KEY` | No | Optional live Place Details for a real shop (rating, review count, one snippet, optional photo). If empty, cards hide the rating row and keep the letter mark. No scrape fallback. Not used to rank picks. |
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
+| `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |
 
 Do not commit secrets.
 
@@ -122,5 +123,6 @@ lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names
 lib/picker.ts                   shared three-pick logic
+lib/voice.ts                    optional spoken line via xAI (fallback heading)
 lib/places.ts                   live Place Details (rating row; not pick order)
 ```

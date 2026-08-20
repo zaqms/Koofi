@@ -6,6 +6,7 @@ import {
   whatsAppLocations,
 } from "./picker";
 import { recordSuggestion } from "./suggest";
+import { speakForPicks } from "./voice";
 import { copy } from "./copy";
 
 type WhatsAppTextMessage = {
@@ -64,8 +65,13 @@ export async function replyForWhatsApp(text: string): Promise<{
   }
 
   const result = pickCafes({ text });
+  const spoken = await speakForPicks({
+    userText: text,
+    landing: result.language,
+    result,
+  });
   return {
-    body: formatWhatsAppReply(result),
+    body: formatWhatsAppReply(result, spoken),
     locations: whatsAppLocations(result),
   };
 }

@@ -1,5 +1,5 @@
-import { EXAMPLE_BADGE, LOCKED_OPENER, PRODUCT_NAME } from "./product";
-import type { Language } from "./types";
+import { EXAMPLE_BADGE, LOCKED_OPENER, PRODUCT_NAME } from "@/lib/product";
+import type { Language } from "@/lib/types";
 
 export { LOCKED_OPENER, PRODUCT_NAME };
 
@@ -11,6 +11,7 @@ export function t<T extends Record<Language, string>>(
 }
 
 export const copy = {
+  opener: LOCKED_OPENER,
   cityOnly: {
     ar: "الرياض فقط",
     en: "Riyadh only",

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { PickList, type ChatPick } from "@/components/pick-list";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
-import { LOCKED_OPENER, PRODUCT_NAME } from "@/lib/product";
+import { PRODUCT_NAME } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type AssistantMessage = {
@@ -37,7 +37,7 @@ export function Chat() {
       id: "opener",
       role: "assistant",
       language: "ar",
-      text: LOCKED_OPENER,
+      text: copy.opener,
     },
   ]);
   const [draft, setDraft] = useState("");

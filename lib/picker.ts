@@ -19,6 +19,7 @@ import type {
   Shop,
 } from "./types";
 
+/** Always aim for three cards. Never collapse to a single pick when three shops exist. */
 const TARGET_PICKS = 3;
 
 function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): string {
@@ -49,6 +50,26 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
     late: {
       ar: `لقعدة متأخرة في ${neighborhood}.`,
       en: `For a late sit in ${neighborhood}.`,
+    },
+    popular: {
+      ar: `من الأكثر طلباً عندي في ${neighborhood} بهالحين.`,
+      en: `Among the more asked-for fits I have in ${neighborhood} right now.`,
+    },
+    pastry: {
+      ar: `لو تبي معجنات مع القهوة في ${neighborhood}.`,
+      en: `If you want pastry with the coffee in ${neighborhood}.`,
+    },
+    study: {
+      ar: `للدراسة في ${neighborhood} — أهدى من الزحمة.`,
+      en: `For studying in ${neighborhood} — quieter than the rush.`,
+    },
+    outdoor: {
+      ar: `جلسة برا في ${neighborhood}.`,
+      en: `Outdoor seating in ${neighborhood}.`,
+    },
+    date: {
+      ar: `لموعد هادي في ${neighborhood}.`,
+      en: `For a date in ${neighborhood}.`,
     },
   };
 

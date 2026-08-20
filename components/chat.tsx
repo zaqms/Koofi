@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PickList, type ChatPick } from "@/components/pick-list";
+import { VibeChips } from "@/components/vibe-chips";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
 import { PRODUCT_NAME } from "@/lib/product";
@@ -146,6 +147,15 @@ export function Chat() {
                         : copy.fewerPicks.en
                     : null}
                 </p>
+                {message.id === "opener" ? (
+                  <div className="mt-3">
+                    <VibeChips
+                      language={composerLanguage}
+                      disabled={busy}
+                      onPick={(label) => void send(label)}
+                    />
+                  </div>
+                ) : null}
                 {message.picks?.length ? (
                   <PickList
                     picks={message.picks}
@@ -179,6 +189,15 @@ export function Chat() {
           void send(draft);
         }}
       >
+        {messages.some((message) => message.role === "user") ? (
+          <div className="mb-2">
+            <VibeChips
+              language={composerLanguage}
+              disabled={busy}
+              onPick={(label) => void send(label)}
+            />
+          </div>
+        ) : null}
         <label className="sr-only" htmlFor="koofi-ask">
           {copy.placeholder[composerLanguage]}
         </label>

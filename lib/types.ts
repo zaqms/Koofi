@@ -17,6 +17,11 @@ export const MOMENT_TAGS = [
   "roaster",
   "quiet",
   "late",
+  "popular",
+  "pastry",
+  "study",
+  "outdoor",
+  "date",
 ] as const;
 export type MomentTag = (typeof MOMENT_TAGS)[number];
 

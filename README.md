@@ -9,8 +9,9 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 ## What it does
 
 - Opens with the locked line: **اي قهوة ناوي تروح؟**
-- They answer with a vibe or a neighborhood.
-- Koofi sends **exactly three** cafe picks when it can. The share unit is the chat reply: name, one-line why, and a Google Maps pin. People forward the Maps pin to go. The `/c/[id]` card is optional and secondary.
+- Under the opener, ten compact vibe chips (Arabic labels by default). Tapping one sends that vibe as the message and still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
+- They can also type a vibe or a neighborhood.
+- Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. The share unit is the chat reply: name, one-line why, and a Google Maps pin. People forward the Maps pin to go. The `/c/[id]` card is optional and secondary.
 - Riyadh only. First neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. No stars. Neighborhood and moment over “best in Riyadh”.
@@ -25,14 +26,16 @@ App store app, browse-the-city marketing site, rest of KSA, reviews/stars, booki
 
 The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
-Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late`), optional `officialSite`, optional `pin`, optional `hours`, and `example`.
+Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `date`), optional `officialSite`, optional `pin`, optional `hours`, and `example`.
+
+The locked chip list lives in [`lib/product.ts`](lib/product.ts) (`VIBE_CHIPS`: id, Arabic label, English label, moment tag). The coffee chip maps onto `qahwa`. Chat UI and copy import that list; do not duplicate the opener string or the chip labels.
 
 **The real list is still coming from Amjad.** The real shop list is still waiting. This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source.
 
 v1 ships:
 
 - an empty **real** catalog
-- **three fictional example shops** (`example: true`, names like Example Roaster) so the chat can be demonstrated
+- **fictional example shops** (`example: true`, names like Example Roaster / مثال) so each vibe chip can match at least one shop and the chat can still return three picks
 - those shops are labeled **مثال / Example** in the UI
 - example pins are fictional demo points so Maps links work; they are not a real venue
 
@@ -96,7 +99,7 @@ app/c/[id]/page.tsx       shareable cafe card
 app/api/chat/route.ts     web picker
 app/api/whatsapp/route.ts WhatsApp door
 data/catalog.json         editorial catalog (shop names / ids)
-lib/product.ts            Koofi, opener, example flag, card path
+lib/product.ts            Koofi, opener, vibe chips, example flag, card path
 lib/env.ts                WhatsApp env key names
 lib/picker.ts             shared three-pick logic
 ```

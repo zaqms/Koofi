@@ -9,7 +9,7 @@
       "neighborhood": "hittin",
       "neighborhoodAr": "هيتين",
       "vibeTags": ["محمصة", "فلتر", "كاونتر"],
-      "momentTags": ["roaster", "qahwa", "work"],
+      "momentTags": ["roaster", "qahwa", "work", "popular"],
       "pin": { "lat": 24.7582, "lng": 46.6279 },
       "example": true
     },
@@ -21,7 +21,7 @@
       "neighborhood": "al-malqa",
       "neighborhoodAr": "الملقا",
       "vibeTags": ["هادئ", "طاولات", "لابتوب"],
-      "momentTags": ["quiet", "work"],
+      "momentTags": ["quiet", "work", "study"],
       "pin": { "lat": 24.8011, "lng": 46.6124 },
       "example": true
     },
@@ -33,8 +33,44 @@
       "neighborhood": "olaya",
       "neighborhoodAr": "العليا",
       "vibeTags": ["قعدة", "متأخر", "أصحاب"],
-      "momentTags": ["late", "friend", "qahwa"],
+      "momentTags": ["late", "friend", "qahwa", "date"],
       "pin": { "lat": 24.6874, "lng": 46.6858 },
+      "example": true
+    },
+    {
+      "id": "example-pastry",
+      "nameAr": "معجنات المثال",
+      "nameEn": "Example Pastry",
+      "city": "riyadh",
+      "neighborhood": "al-nakheel",
+      "neighborhoodAr": "النخيل",
+      "vibeTags": ["معجنات", "كرواسون", "فنجان"],
+      "momentTags": ["pastry", "popular", "qahwa"],
+      "pin": { "lat": 24.7694, "lng": 46.6518 },
+      "example": true
+    },
+    {
+      "id": "example-outdoor",
+      "nameAr": "جلسة المثال برا",
+      "nameEn": "Example Outdoor",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["برا", "جلسة", "هواء"],
+      "momentTags": ["outdoor", "date", "friend"],
+      "pin": { "lat": 24.8196, "lng": 46.6432 },
+      "example": true
+    },
+    {
+      "id": "example-study",
+      "nameAr": "ركن المثال للدراسة",
+      "nameEn": "Example Study Nook",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "هيتين",
+      "vibeTags": ["دراسة", "هادئ", "طاولات"],
+      "momentTags": ["study", "quiet", "work"],
+      "pin": { "lat": 24.7608, "lng": 46.6331 },
       "example": true
     }
   ]

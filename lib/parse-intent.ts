@@ -1,8 +1,9 @@
 import { detectLanguage } from "./language";
 import { NEIGHBORHOODS } from "./neighborhoods";
+import { VIBE_CHIPS } from "./product";
 import type { Intent, MomentTag, NeighborhoodId } from "./types";
 
-const MOMENT_ALIASES: Record<MomentTag, string[]> = {
+const EXTRA_ALIASES: Record<MomentTag, string[]> = {
   work: [
     "شغل",
     "أشتغل",
@@ -41,11 +42,14 @@ const MOMENT_ALIASES: Record<MomentTag, string[]> = {
   roaster: [
     "محمصة",
     "محمصه",
+    "محامص",
     "مختصة",
     "مختصه",
     "فلتر",
     "روستر",
     "roaster",
+    "roastery",
+    "roasteries",
     "filter",
     "pour over",
     "specialty",
@@ -54,9 +58,11 @@ const MOMENT_ALIASES: Record<MomentTag, string[]> = {
     "هادئ",
     "هادي",
     "هدوء",
+    "دافئ",
     "أقرأ",
     "اقرا",
     "quiet",
+    "cozy",
     "calm",
     "silent",
     "read",
@@ -68,10 +74,74 @@ const MOMENT_ALIASES: Record<MomentTag, string[]> = {
     "سهران",
     "آخر الليل",
     "اخر الليل",
+    "open late",
     "late",
     "night",
     "evening",
   ],
+  popular: [
+    "طلبا",
+    "مطلوب",
+    "ترند",
+    "popular",
+    "most popular",
+    "most requested",
+    "trending",
+    "trendy",
+  ],
+  pastry: [
+    "معجنات",
+    "معجنه",
+    "كرواسون",
+    "مخبز",
+    "pastry",
+    "pastries",
+    "croissant",
+    "bakery",
+  ],
+  study: [
+    "دراسة",
+    "ادرس",
+    "مذاكرة",
+    "مذاكره",
+    "study",
+    "studies",
+    "homework",
+  ],
+  outdoor: [
+    "برا",
+    "تيراس",
+    "outdoor",
+    "outside",
+    "patio",
+    "terrace",
+  ],
+  date: [
+    "موعد",
+    "ديت",
+    "date",
+    "dating",
+  ],
+};
+
+function chipAliases(moment: MomentTag): string[] {
+  return VIBE_CHIPS.filter((chip) => chip.momentTag === moment).flatMap(
+    (chip) => [chip.ar, chip.en],
+  );
+}
+
+const MOMENT_ALIASES: Record<MomentTag, string[]> = {
+  work: [...chipAliases("work"), ...EXTRA_ALIASES.work],
+  friend: [...chipAliases("friend"), ...EXTRA_ALIASES.friend],
+  qahwa: [...chipAliases("qahwa"), ...EXTRA_ALIASES.qahwa],
+  roaster: [...chipAliases("roaster"), ...EXTRA_ALIASES.roaster],
+  quiet: [...chipAliases("quiet"), ...EXTRA_ALIASES.quiet],
+  late: [...chipAliases("late"), ...EXTRA_ALIASES.late],
+  popular: [...chipAliases("popular"), ...EXTRA_ALIASES.popular],
+  pastry: [...chipAliases("pastry"), ...EXTRA_ALIASES.pastry],
+  study: [...chipAliases("study"), ...EXTRA_ALIASES.study],
+  outdoor: [...chipAliases("outdoor"), ...EXTRA_ALIASES.outdoor],
+  date: [...chipAliases("date"), ...EXTRA_ALIASES.date],
 };
 
 function normalize(text: string): string {
@@ -98,6 +168,15 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function exactChipMoment(haystack: string): MomentTag | null {
+  for (const chip of VIBE_CHIPS) {
+    if (normalize(chip.ar) === haystack || normalize(chip.en) === haystack) {
+      return chip.momentTag;
+    }
+  }
+  return null;
+}
+
 export function parseIntent(raw: string): Intent {
   const haystack = normalize(raw);
   const neighborhoods: NeighborhoodId[] = [];
@@ -108,13 +187,19 @@ export function parseIntent(raw: string): Intent {
     }
   }
 
+  const exactMoment = exactChipMoment(haystack);
   const moments: MomentTag[] = [];
-  for (const [moment, aliases] of Object.entries(MOMENT_ALIASES) as [
-    MomentTag,
-    string[],
-  ][]) {
-    if (aliases.some((alias) => includesAlias(haystack, alias))) {
-      moments.push(moment);
+
+  if (exactMoment) {
+    moments.push(exactMoment);
+  } else {
+    for (const [moment, aliases] of Object.entries(MOMENT_ALIASES) as [
+      MomentTag,
+      string[],
+    ][]) {
+      if (aliases.some((alias) => includesAlias(haystack, alias))) {
+        moments.push(moment);
+      }
     }
   }
 

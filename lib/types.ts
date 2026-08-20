@@ -49,6 +49,7 @@ export type ChatPick = {
   neighborhoodLabel: string;
   example: boolean;
   why: string;
+  mapsHref: string;
   cardPath: string;
 };
 

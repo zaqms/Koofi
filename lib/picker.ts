@@ -8,6 +8,7 @@ import {
   isExampleShop,
   shopDisplayName,
 } from "./product";
+import { shopLocation, shopMapsHref } from "./public-url";
 import type {
   ChatPick,
   Language,
@@ -194,6 +195,7 @@ export function formatReply(result: PickResult): string {
       : "";
     lines.push(`${index + 1}. ${name} — ${place}${example}`);
     lines.push(`   ${pick.why}`);
+    lines.push(`   ${copy.maps[language]}: ${shopMapsHref(pick.shop)}`);
   });
 
   if (thinCatalog) {
@@ -204,20 +206,16 @@ export function formatReply(result: PickResult): string {
   return lines.join("\n");
 }
 
-export function formatWhatsAppReply(
-  result: PickResult,
-  cardHref: (id: string) => string,
-): string {
-  const body = formatReply(result);
-  if (result.picks.length === 0) return body;
+export function formatWhatsAppReply(result: PickResult): string {
+  return formatReply(result);
+}
 
-  const extras = result.picks.map((pick) => {
-    const label =
-      result.language === "ar" ? copy.cardLink.ar : copy.cardLink.en;
-    return `${label}: ${cardHref(pick.shop.id)}`;
-  });
-
-  return `${body}\n\n${extras.join("\n")}`;
+export function whatsAppLocations(result: PickResult) {
+  return result.picks
+    .map((pick) => shopLocation(pick.shop))
+    .filter((location): location is NonNullable<typeof location> =>
+      Boolean(location),
+    );
 }
 
 export function toChatPicks(result: PickResult): ChatPick[] {
@@ -231,6 +229,7 @@ export function toChatPicks(result: PickResult): ChatPick[] {
     ),
     example: isExampleShop(pick.shop),
     why: pick.why,
+    mapsHref: shopMapsHref(pick.shop),
     cardPath: cardPath(pick.shop.id),
   }));
 }

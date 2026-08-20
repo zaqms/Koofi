@@ -1,5 +1,7 @@
 import { ENV_KEYS, readEnv } from "./env";
+import { neighborhoodLabel } from "./neighborhoods";
 import { cardPath } from "./product";
+import type { Pin, Shop } from "./types";
 
 export { cardPath };
 
@@ -16,5 +18,24 @@ export function cardHref(id: string): string {
 }
 
 export function mapsHref(lat: number, lng: number): string {
-  return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  return `https://maps.google.com/?q=${lat},${lng}`;
+}
+
+export function shopMapsHref(
+  shop: Pick<Shop, "nameEn" | "neighborhood" | "pin">,
+): string {
+  if (shop.pin) return mapsHref(shop.pin.lat, shop.pin.lng);
+  const query = `${shop.nameEn} ${neighborhoodLabel(shop.neighborhood, "en")} Riyadh`;
+  return `https://maps.google.com/?q=${encodeURIComponent(query)}`;
+}
+
+export function shopLocation(
+  shop: Pick<Shop, "nameAr" | "nameEn" | "neighborhood" | "neighborhoodAr" | "pin">,
+): (Pin & { name: string; address: string }) | null {
+  if (!shop.pin) return null;
+  return {
+    ...shop.pin,
+    name: shop.nameEn,
+    address: `${shop.neighborhoodAr} · ${neighborhoodLabel(shop.neighborhood, "en")}, Riyadh`,
+  };
 }

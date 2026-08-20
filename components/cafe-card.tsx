@@ -2,7 +2,7 @@ import { CardBeen } from "@/components/card-been";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { exampleBadge, isExampleShop } from "@/lib/product";
-import { mapsHref } from "@/lib/public-url";
+import { shopMapsHref } from "@/lib/public-url";
 import type { Shop } from "@/lib/types";
 
 type CafeCardProps = {
@@ -55,16 +55,12 @@ export function CafeCard({ shop }: CafeCardProps) {
       </dl>
 
       <div className="mt-5 flex flex-col gap-2">
-        {shop.pin ? (
-          <a
-            href={mapsHref(shop.pin.lat, shop.pin.lng)}
-            className="rounded-2xl bg-bean px-4 py-3 text-center text-sm text-foam hover:bg-bean-deep"
-          >
-            {copy.directions.ar}
-          </a>
-        ) : (
-          <p className="text-sm text-ink-soft">{copy.noPin.ar}</p>
-        )}
+        <a
+          href={shopMapsHref(shop)}
+          className="rounded-2xl bg-bean px-4 py-3 text-center text-sm text-foam hover:bg-bean-deep"
+        >
+          {copy.maps.ar}
+        </a>
         {site ? (
           <a
             href={site}

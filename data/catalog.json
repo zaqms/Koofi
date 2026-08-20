@@ -1,5 +1,5 @@
 {
-  "note": "Real shops come from Amjad. v1 ships an empty real catalog plus fictional example shops so chat can be demonstrated. Do not invent real Riyadh cafe names, hours, ratings, or official claims.",
+  "note": "Real shops come from Amjad. v1 ships an empty real catalog plus fictional example shops so chat can be demonstrated. Do not invent real Riyadh cafe names, hours, ratings, or official claims. Example pins are fictional demo points in the neighborhood, not a real venue.",
   "shops": [
     {
       "id": "example-roaster",
@@ -10,6 +10,7 @@
       "neighborhoodAr": "هيتين",
       "vibeTags": ["محمصة", "فلتر", "كاونتر"],
       "momentTags": ["roaster", "qahwa", "work"],
+      "pin": { "lat": 24.7582, "lng": 46.6279 },
       "example": true
     },
     {
@@ -21,6 +22,7 @@
       "neighborhoodAr": "الملقا",
       "vibeTags": ["هادئ", "طاولات", "لابتوب"],
       "momentTags": ["quiet", "work"],
+      "pin": { "lat": 24.8011, "lng": 46.6124 },
       "example": true
     },
     {
@@ -32,6 +34,7 @@
       "neighborhoodAr": "العليا",
       "vibeTags": ["قعدة", "متأخر", "أصحاب"],
       "momentTags": ["late", "friend", "qahwa"],
+      "pin": { "lat": 24.6874, "lng": 46.6858 },
       "example": true
     }
   ]

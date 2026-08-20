@@ -27,7 +27,7 @@ The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
 Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late`), optional `officialSite`, optional `pin`, optional `hours`, and `example`.
 
-**The real list is still coming from Amjad.** This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source.
+**The real list is still coming from Amjad.** The real shop list is still waiting. This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Hours, ratings, and official claims stay empty until there is a legal source.
 
 v1 ships:
 

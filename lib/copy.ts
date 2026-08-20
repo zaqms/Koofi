@@ -59,8 +59,8 @@ export const copy = {
     en: "Looking…",
   },
   threePicks: {
-    ar: "ثلاث قهاوي تناسب هالحين:",
-    en: "Three cafes for right now:",
+    ar: "ثلاث قهاوي تناسب اختيارك",
+    en: "Three cafes that suit your choice:",
   },
   fewerPicks: {
     ar: "هذي اللي أقدر أقترحها الحين:",

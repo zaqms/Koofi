@@ -15,7 +15,7 @@ export const copy = {
   openerEn: LOCKED_OPENER_EN,
   chips: VIBE_CHIPS,
   pickVibe: {
-    ar: "اختار أجواء",
+    ar: "اختار جو",
     en: "Pick a vibe",
   },
   switchLanguage: {
@@ -27,11 +27,11 @@ export const copy = {
     en: "Add a shop",
   },
   askMaps: {
-    ar: "ارمِ رابط قوقل ماب للمكان.",
+    ar: "ارمي رابط قوقل ماب للمكان.",
     en: "Drop the Google Maps link for the shop.",
   },
   suggestThanks: {
-    ar: "وصلت. نشوفها، وإذا ناسبت القائمة نضيفها.",
+    ar: "وصلت. نشوفها، وإذا مشت مع القائمة نضيفها.",
     en: "Got it. We’ll look at it, and add it if it fits the list.",
   },
   suggestBad: {
@@ -43,7 +43,7 @@ export const copy = {
     en: "A Google Maps link…",
   },
   cityOnly: {
-    ar: "الرياض فقط",
+    ar: "الرياض بس",
     en: "Riyadh only",
   },
   placeholder: {
@@ -67,15 +67,15 @@ export const copy = {
     en: "This is what I can suggest right now:",
   },
   thinCatalog: {
-    ar: "القائمة عندي لسه صغيرة — هذي اللي أقدر أقترحها، بدون ما ألف أسماء.",
+    ar: "القائمة عندي بعد صغيرة — هذي اللي أقدر أقترحها، من غير ما ألف أسماء.",
     en: "The list is still small — this is what I can suggest, without inventing names.",
   },
   emptyCatalog: {
-    ar: "ما عندي قهوة تناسب هالطلب في القائمة الحين. القائمة الحقيقية لسه جايه.",
+    ar: "ما عندي قهوة تمشي مع هالطلب في القائمة الحين. القائمة الحقيقية بعد جايه.",
     en: "I don't have a cafe for that on the list yet. The real list is still coming.",
   },
   offTopic: {
-    ar: `احنا هنا للقهوة في الرياض. ${LOCKED_OPENER}`,
+    ar: `أنا هنا للقهوة في الرياض. ${LOCKED_OPENER}`,
     en: `We're here for coffee in Riyadh. ${LOCKED_OPENER_EN}`,
   },
   exampleBadge: EXAMPLE_BADGE,
@@ -108,11 +108,11 @@ export const copy = {
     en: "Maps",
   },
   noPin: {
-    ar: "ما فيه موقع بعد.",
+    ar: "ما فيه موقع للحين.",
     en: "No pin yet.",
   },
   noHours: {
-    ar: "ما نحط ساعات إلا من مصدر رسمي.",
+    ar: "ما نحط ساعات إلا يجي مصدر رسمي.",
     en: "Hours stay empty until we have a legal source.",
   },
   hours: {
@@ -124,7 +124,7 @@ export const copy = {
     en: "Official site",
   },
   vibe: {
-    ar: "الأجواء",
+    ar: "الجو",
     en: "Vibe",
   },
   neighborhood: {
@@ -132,7 +132,7 @@ export const copy = {
     en: "Neighborhood",
   },
   backToChat: {
-    ar: "ارجع للدردشة",
+    ar: "ارجع للشات",
     en: "Back to chat",
   },
   shareHint: {

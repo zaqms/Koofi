@@ -21,16 +21,16 @@ export type VibeChip = {
  * The coffee chip maps onto `qahwa` so picker scoring stays consistent.
  */
 export const VIBE_CHIPS = [
-  { id: "popular", ar: "الأكثر طلباً", en: "Most Popular", momentTag: "popular" },
+  { id: "popular", ar: "اللي عليها طلب", en: "Most Popular", momentTag: "popular" },
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "أفضل معجنات", en: "Best Pastries", momentTag: "pastry" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
-  { id: "quiet", ar: "دافئ وهادئ", en: "Cozy and Quiet", momentTag: "quiet" },
-  { id: "work", ar: "مناسب للشغل", en: "Best for Work", momentTag: "work" },
-  { id: "study", ar: "مناسب للدراسة", en: "Best for Studies", momentTag: "study" },
-  { id: "late", ar: "مفتوح لوقت متأخر", en: "Open late", momentTag: "late" },
+  { id: "quiet", ar: "جلسة هادية", en: "Cozy and Quiet", momentTag: "quiet" },
+  { id: "work", ar: "قعدة شغل", en: "Best for Work", momentTag: "work" },
+  { id: "study", ar: "قعدة مذاكرة", en: "Best for Studies", momentTag: "study" },
+  { id: "late", ar: "مفتوح لآخر الليل", en: "Open late", momentTag: "late" },
   { id: "outdoor", ar: "جلسة برا", en: "Outdoor seating", momentTag: "outdoor" },
-  { id: "date", ar: "مناسب لموعد", en: "Good for a date", momentTag: "date" },
+  { id: "date", ar: "لموعد", en: "Good for a date", momentTag: "date" },
 ] as const satisfies readonly VibeChip[];
 
 export type VibeChipId = (typeof VIBE_CHIPS)[number]["id"];

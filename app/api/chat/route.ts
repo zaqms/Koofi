@@ -1,4 +1,5 @@
 import { copy } from "@/lib/copy";
+import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
@@ -12,6 +13,8 @@ type ChatRequest = {
   beenIds?: string[];
   suggesting?: boolean;
   landing?: Language;
+  via?: "typed" | "chip";
+  session?: string;
 };
 
 function landingLanguage(value: unknown): Language {
@@ -64,6 +67,14 @@ export async function POST(request: Request) {
     toChatPicksWithPlaces(result),
     speakForPicks({ userText: text, landing, result }),
   ]);
+
+  recordLearnAsk({
+    text,
+    landing,
+    via: body.via,
+    session: body.session,
+    shopIds: picks.map((pick) => pick.id),
+  });
 
   return Response.json({
     language: result.language,

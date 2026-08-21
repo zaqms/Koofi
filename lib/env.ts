@@ -10,6 +10,7 @@ export const ENV_KEYS = {
   GOOGLE_PLACES_API_KEY: "GOOGLE_PLACES_API_KEY",
   GITHUB_TOKEN: "GITHUB_TOKEN",
   XAI_API_KEY: "XAI_API_KEY",
+  LEARNING_READ_TOKEN: "LEARNING_READ_TOKEN",
 } as const;
 
 export type EnvKey = (typeof ENV_KEYS)[keyof typeof ENV_KEYS];

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
+import { postLearnMaps } from "@/lib/learn-session";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import type { ChatPick, Language } from "@/lib/types";
 
@@ -77,6 +78,9 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
               <a
                 href={pick.mapsHref}
                 className="rounded-full bg-bean px-3 py-1 text-xs text-foam hover:bg-bean-deep"
+                onClick={() => {
+                  postLearnMaps({ shopId: pick.id, pickIndex: index });
+                }}
               >
                 {copy.maps[language]}
               </a>

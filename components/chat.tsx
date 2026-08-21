@@ -7,6 +7,7 @@ import { PickList, type ChatPick } from "@/components/pick-list";
 import { VibeChips } from "@/components/vibe-chips";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
+import { readLearnSession } from "@/lib/learn-session";
 import { PRODUCT_NAME } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
@@ -197,10 +198,14 @@ export function Chat({ landing }: ChatProps) {
     return () => observer.disconnect();
   }, [messages, busy]);
 
-  function send(text: string, options?: { suggesting?: boolean }) {
+  function send(
+    text: string,
+    options?: { suggesting?: boolean; via?: "typed" | "chip" },
+  ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
     const suggesting = options?.suggesting ?? awaitingMaps;
+    const via = options?.via ?? "typed";
 
     const userMessage: UserMessage = {
       id: crypto.randomUUID(),
@@ -235,6 +240,8 @@ export function Chat({ landing }: ChatProps) {
               beenIds: been.ids,
               suggesting,
               landing,
+              via,
+              session: readLearnSession(),
             }),
           });
 
@@ -269,7 +276,7 @@ export function Chat({ landing }: ChatProps) {
   }
 
   function sendChip(label: string) {
-    send(label, { suggesting: false });
+    send(label, { suggesting: false, via: "chip" });
   }
 
   const hasThread =

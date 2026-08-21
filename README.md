@@ -74,8 +74,31 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `GOOGLE_PLACES_API_KEY` | No | Optional live Place Details for a real shop (rating, review count, one snippet, optional photo). If empty, cards hide the rating row and keep the letter mark. No scrape fallback. Not used to rank picks. |
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 | `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |
+| `LEARNING_READ_TOKEN` | No | Optional Bearer token for the private `GET /api/learn` pile. If empty, that read is 404. Chat and Maps still work. Never commit a real token. |
 
 Do not commit secrets.
+
+## Learning log
+
+Quiet first-party notes so Ajz can later add shops and fix copy. **Not a ranker. Not a dashboard. No third-party pixels.**
+
+We store only three things:
+
+1. The ask — typed line or chip label, `typed` / `chip`, landing `ar` / `en`
+2. The three shop ids Koofi sent
+3. A Maps tap — shop id + pick index (0–2)
+
+Maps tap is the conversion. The spoken line and the cards appearing are not.
+
+- `/api/chat` writes an `ask` event when it returns exactly three shops. Logging is best-effort and never fails the reply.
+- The Maps pill `POST`s `/api/learn` `{ kind: "maps", shopId, pickIndex, session }`. Cafe card and Been here are not logged.
+- Session is an anonymous 12-hex id in `sessionStorage`. No IP, no user-agent dump, no fingerprint beyond that id.
+- Each event is also a Vercel log line: `koofi_learn` + JSON. `/tmp` and memory are instance-local (serverless files do not persist).
+
+Ajz reads the pile:
+
+1. Vercel project logs — filter `koofi_learn` (survives deploys).
+2. Private read, not linked in the UI: `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/learn`
 
 ## Shop suggestions
 
@@ -113,6 +136,7 @@ app/page.tsx                    Arabic landing
 app/en/page.tsx                 English landing
 app/c/[id]/page.tsx             shareable cafe card
 app/api/chat/route.ts           web picker + Maps-link suggestions
+app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
 app/api/whatsapp/route.ts       WhatsApp door
@@ -122,6 +146,7 @@ lib/product.ts                  Koofi, opener, vibe chips, example flag, card pa
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names
+lib/learn.ts                    first-party ask + Maps tap log
 lib/picker.ts                   shared three-pick logic
 lib/voice.ts                    optional spoken line via xAI (fallback heading)
 lib/places.ts                   live Place Details (rating row; not pick order)

@@ -5,6 +5,7 @@ import type { Intent, MomentTag, NeighborhoodId } from "./types";
 
 const EXTRA_ALIASES: Record<MomentTag, string[]> = {
   work: [
+    "مناسب للشغل",
     "شغل",
     "أشتغل",
     "اشتغل",
@@ -61,6 +62,7 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "هادئ",
     "هادي",
     "هدوء",
+    "دافئ وهادئ",
     "دافئ",
     "أقرأ",
     "اقرا",
@@ -71,6 +73,7 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "read",
   ],
   late: [
+    "مفتوح لوقت متأخر",
     "بالليل",
     "متأخر",
     "متأخرة",
@@ -85,6 +88,8 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
   popular: [
     "طلبا",
     "مطلوب",
+    "الأكثر طلباً",
+    "الأكثر طلبا",
     "ترند",
     "popular",
     "most popular",
@@ -103,6 +108,7 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "bakery",
   ],
   study: [
+    "مناسب للدراسة",
     "دراسة",
     "ادرس",
     "مذاكرة",
@@ -120,6 +126,7 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "terrace",
   ],
   date: [
+    "مناسب لموعد",
     "موعد",
     "ديت",
     "date",

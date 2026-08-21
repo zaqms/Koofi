@@ -29,7 +29,7 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
 
   const reasons: Record<MomentTag, Record<Language, string>> = {
     work: {
-      ar: `للشغل في ${neighborhood} — طاولة وهدوء أكثر من ضجيج.`,
+      ar: `لقعدة شغل في ${neighborhood} — طاولة وهدوء، مو زحمة.`,
       en: `For work in ${neighborhood} — a table and quiet over buzz.`,
     },
     friend: {
@@ -45,7 +45,7 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
       en: `A roaster in ${neighborhood} if you want filter and coffee talk.`,
     },
     quiet: {
-      ar: `أهدى خيار عندي في ${neighborhood} لهالحين.`,
+      ar: `أهدى وحدة عندي في ${neighborhood} لهالحين.`,
       en: `The quieter fit I have in ${neighborhood} right now.`,
     },
     late: {
@@ -53,7 +53,7 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
       en: `For a late sit in ${neighborhood}.`,
     },
     popular: {
-      ar: `من الأكثر طلباً عندي في ${neighborhood} بهالحين.`,
+      ar: `من اللي عليها طلب عندي في ${neighborhood} بهالحين.`,
       en: `Among the more asked-for fits I have in ${neighborhood} right now.`,
     },
     pastry: {
@@ -61,7 +61,7 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
       en: `If you want pastry with the coffee in ${neighborhood}.`,
     },
     study: {
-      ar: `للدراسة في ${neighborhood} — أهدى من الزحمة.`,
+      ar: `لقعدة مذاكرة في ${neighborhood} — أهدى من الزحمة.`,
       en: `For studying in ${neighborhood} — quieter than the rush.`,
     },
     outdoor: {
@@ -77,7 +77,7 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
   if (hit) return reasons[hit][language];
 
   return language === "ar"
-    ? `تناسب ${neighborhood} بهالأجواء: ${shop.vibeTags.slice(0, 2).join("، ")}.`
+    ? `تمشي مع ${neighborhood} بهالجو: ${shop.vibeTags.slice(0, 2).join("، ")}.`
     : `Fits ${neighborhood} for this moment.`;
 }
 

@@ -7,7 +7,7 @@ import type { Language, PickResult } from "./types";
 const XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions";
 /** Current xAI chat model. `grok-4` is not the live chat id. */
 const XAI_MODEL = "grok-4.6";
-const TIMEOUT_MS = 8000;
+const TIMEOUT_MS = 2500;
 const MAX_CHARS = 220;
 
 type SpeakInput = {
@@ -47,9 +47,10 @@ function systemPrompt(landing: Language): string {
   return landing === "ar"
     ? [
         "أنت كوفي، صاحب يقترح قهوة في الرياض. مو شات عام.",
-        "رد بجملة قصيرة أو جملتين، خليجية/سعودية، كأنك تكلم صديق.",
+        "تكلم نجدي رياضي، مثل صاحب في المدينة. لا فصحى. لا مصري. لا شامي.",
+        "رد بجملة قصيرة أو جملتين.",
         "احكِ عن المحلات المعطاة فقط. لا تخترع محل، ساعات، تقييم، أو ادعاء رسمي.",
-        "لا تعيد قائمة مرقمة. لا ترتب بالنجوم. الكروت بتجي بعدك.",
+        "لا تعيد قائمة مرقمة. لا ترتب بالنجوم. الكروت تجي بعدك.",
       ].join(" ")
     : [
         "You are Koofi, a friend picking coffee in Riyadh. Not a general chatbot.",
@@ -82,7 +83,6 @@ export async function speakForPicks(input: SpeakInput): Promise<string> {
         stream: false,
         temperature: 0.8,
         max_completion_tokens: 120,
-        search_parameters: { mode: "off" },
         messages: [
           { role: "system", content: systemPrompt(input.landing) },
           {

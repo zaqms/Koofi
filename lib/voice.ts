@@ -7,7 +7,7 @@ import type { Language, PickResult } from "./types";
 const XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions";
 /** Current xAI chat model. `grok-4` is not the live chat id. */
 const XAI_MODEL = "grok-4.6";
-const TIMEOUT_MS = 8000;
+const TIMEOUT_MS = 2500;
 const MAX_CHARS = 220;
 
 type SpeakInput = {

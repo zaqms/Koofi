@@ -7,6 +7,12 @@ export const NEIGHBORHOOD_IDS = [
   "al-nakheel",
   "al-yasmin",
   "olaya",
+  "sulimaniyah",
+  "al-wurud",
+  "al-rabwah",
+  "al-rabi",
+  "al-masif",
+  "al-rahmaniyyah",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 
@@ -17,6 +23,11 @@ export const MOMENT_TAGS = [
   "roaster",
   "quiet",
   "late",
+  "popular",
+  "pastry",
+  "study",
+  "outdoor",
+  "date",
 ] as const;
 export type MomentTag = (typeof MOMENT_TAGS)[number];
 
@@ -39,6 +50,9 @@ export type Shop = {
   officialSite?: string;
   pin?: Pin;
   hours?: string;
+  mapsShareUrl?: string;
+  photoUrl?: string;
+  logoUrl?: string;
   example: boolean;
 };
 
@@ -51,6 +65,19 @@ export type ChatPick = {
   why: string;
   mapsHref: string;
   cardPath: string;
+  photoUrl?: string;
+  logoUrl?: string;
+  rating?: number;
+  reviewCount?: number;
+  reviewSnippet?: string;
+};
+
+export type ShopSuggestion = {
+  id: string;
+  mapsUrl: string;
+  resolvedName?: string;
+  neighborhood?: NeighborhoodId;
+  createdAt: string;
 };
 
 export type CatalogFile = {
@@ -61,6 +88,7 @@ export type CatalogFile = {
 export type Intent = {
   language: Language;
   neighborhoods: NeighborhoodId[];
+  avoidedNeighborhoods: NeighborhoodId[];
   moments: MomentTag[];
   raw: string;
 };
@@ -75,5 +103,6 @@ export type PickResult = {
   picks: PickReason[];
   thinCatalog: boolean;
   askedNeighborhoods: NeighborhoodId[];
+  avoidedNeighborhoods: NeighborhoodId[];
   askedMoments: MomentTag[];
 };

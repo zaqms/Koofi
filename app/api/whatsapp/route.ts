@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   const replies = [];
 
   for (const message of inbound) {
-    const reply = replyForWhatsApp(message.text);
+    const reply = await replyForWhatsApp(message.text);
     const send = await sendWhatsAppText(message.from, reply.body);
     const locations = [];
     for (const location of reply.locations) {

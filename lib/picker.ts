@@ -8,6 +8,7 @@ import {
   isExampleShop,
   shopDisplayName,
 } from "./product";
+import { decorateChatPicks } from "./places";
 import { shopLocation, shopMapsHref } from "./public-url";
 import type {
   ChatPick,
@@ -19,6 +20,7 @@ import type {
   Shop,
 } from "./types";
 
+/** Always aim for three cards. Never collapse to a single pick when three shops exist. */
 const TARGET_PICKS = 3;
 
 function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): string {
@@ -49,6 +51,26 @@ function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): str
     late: {
       ar: `لقعدة متأخرة في ${neighborhood}.`,
       en: `For a late sit in ${neighborhood}.`,
+    },
+    popular: {
+      ar: `من الأكثر طلباً عندي في ${neighborhood} بهالحين.`,
+      en: `Among the more asked-for fits I have in ${neighborhood} right now.`,
+    },
+    pastry: {
+      ar: `لو تبي معجنات مع القهوة في ${neighborhood}.`,
+      en: `If you want pastry with the coffee in ${neighborhood}.`,
+    },
+    study: {
+      ar: `للدراسة في ${neighborhood} — أهدى من الزحمة.`,
+      en: `For studying in ${neighborhood} — quieter than the rush.`,
+    },
+    outdoor: {
+      ar: `جلسة برا في ${neighborhood}.`,
+      en: `Outdoor seating in ${neighborhood}.`,
+    },
+    date: {
+      ar: `لموعد هادي في ${neighborhood}.`,
+      en: `For a date in ${neighborhood}.`,
     },
   };
 
@@ -128,10 +150,15 @@ function diversify(shops: Shop[], moments: MomentTag[]): Shop[] {
 export function pickCafes(input: {
   text: string;
   beenIds?: string[];
+  language?: Language;
 }): PickResult {
   const intent = parseIntent(input.text);
+  const language = input.language ?? intent.language;
   const been = new Set((input.beenIds ?? []).filter(Boolean));
-  const available = listShops().filter((shop) => !been.has(shop.id));
+  const avoided = new Set(intent.avoidedNeighborhoods);
+  const available = listShops().filter(
+    (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
+  );
 
   const neighborhoodMatches = available.filter(
     (shop) =>
@@ -156,7 +183,7 @@ export function pickCafes(input: {
 
   const picks: PickReason[] = ranked.map((shop) => ({
     shop,
-    why: editorialWhy(shop, intent.moments, intent.language),
+    why: editorialWhy(shop, intent.moments, language),
   }));
 
   const thinCatalog =
@@ -166,25 +193,29 @@ export function pickCafes(input: {
       neighborhoodMatches.length < TARGET_PICKS);
 
   return {
-    language: intent.language,
+    language,
     picks,
     thinCatalog,
     askedNeighborhoods: intent.neighborhoods,
+    avoidedNeighborhoods: intent.avoidedNeighborhoods,
     askedMoments: intent.moments,
   };
 }
 
-export function formatReply(result: PickResult): string {
+export function headingForPicks(result: PickResult): string {
+  if (result.picks.length === 0) return copy.emptyCatalog[result.language];
+  return result.picks.length === TARGET_PICKS
+    ? copy.threePicks[result.language]
+    : copy.fewerPicks[result.language];
+}
+
+export function formatReply(result: PickResult, spoken?: string): string {
   const { language, picks, thinCatalog } = result;
 
   if (picks.length === 0) return copy.emptyCatalog[language];
 
   const lines: string[] = [];
-  lines.push(
-    picks.length === TARGET_PICKS
-      ? copy.threePicks[language]
-      : copy.fewerPicks[language],
-  );
+  lines.push(spoken?.trim() || headingForPicks(result));
   lines.push("");
 
   picks.forEach((pick, index) => {
@@ -206,8 +237,11 @@ export function formatReply(result: PickResult): string {
   return lines.join("\n");
 }
 
-export function formatWhatsAppReply(result: PickResult): string {
-  return formatReply(result);
+export function formatWhatsAppReply(
+  result: PickResult,
+  spoken?: string,
+): string {
+  return formatReply(result, spoken);
 }
 
 export function whatsAppLocations(result: PickResult) {
@@ -231,5 +265,17 @@ export function toChatPicks(result: PickResult): ChatPick[] {
     why: pick.why,
     mapsHref: shopMapsHref(pick.shop),
     cardPath: cardPath(pick.shop.id),
+    photoUrl: pick.shop.photoUrl,
+    logoUrl: pick.shop.logoUrl,
   }));
+}
+
+export async function toChatPicksWithPlaces(
+  result: PickResult,
+): Promise<ChatPick[]> {
+  return decorateChatPicks(
+    toChatPicks(result),
+    result.picks.map((pick) => pick.shop),
+    result.language,
+  );
 }

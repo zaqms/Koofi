@@ -1,11 +1,25 @@
-import { formatReply, pickCafes, toChatPicks } from "@/lib/picker";
+import { copy } from "@/lib/copy";
+import { recordLearnAsk } from "@/lib/learn";
+import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
+import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
+import { recordSuggestion } from "@/lib/suggest";
+import type { Language } from "@/lib/types";
+import { speakForPicks } from "@/lib/voice";
 
 export const runtime = "nodejs";
 
 type ChatRequest = {
   text?: string;
   beenIds?: string[];
+  suggesting?: boolean;
+  landing?: Language;
+  via?: "typed" | "chip";
+  session?: string;
 };
+
+function landingLanguage(value: unknown): Language {
+  return value === "en" ? "en" : "ar";
+}
 
 export async function POST(request: Request) {
   let body: ChatRequest;
@@ -21,16 +35,51 @@ export async function POST(request: Request) {
     return Response.json({ error: "empty_text" }, { status: 400 });
   }
 
+  const landing = landingLanguage(body.landing);
+
   const beenIds = Array.isArray(body.beenIds)
     ? body.beenIds.filter((id): id is string => typeof id === "string")
     : [];
 
-  const result = pickCafes({ text, beenIds });
+  if (extractMapsUrl(text)) {
+    const suggestion = await recordSuggestion(text, landing);
+    return Response.json({
+      language: landing,
+      reply: suggestion.reply,
+      thinCatalog: false,
+      picks: [],
+      suggestion: suggestion.ok,
+    });
+  }
+
+  if (body.suggesting || looksLikeHttpUrl(text)) {
+    return Response.json({
+      language: landing,
+      reply: copy.suggestBad[landing],
+      thinCatalog: false,
+      picks: [],
+      suggestion: false,
+    });
+  }
+
+  const result = pickCafes({ text, beenIds, language: landing });
+  const [picks, reply] = await Promise.all([
+    toChatPicksWithPlaces(result),
+    speakForPicks({ userText: text, landing, result }),
+  ]);
+
+  recordLearnAsk({
+    text,
+    landing,
+    via: body.via,
+    session: body.session,
+    shopIds: picks.map((pick) => pick.id),
+  });
 
   return Response.json({
     language: result.language,
-    reply: formatReply(result),
+    reply,
     thinCatalog: result.thinCatalog,
-    picks: toChatPicks(result),
+    picks,
   });
 }

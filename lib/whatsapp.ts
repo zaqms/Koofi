@@ -1,9 +1,13 @@
 import { ENV_KEYS, readEnv } from "./env";
+import { extractMapsUrl, looksLikeHttpUrl } from "./maps-url";
 import {
   formatWhatsAppReply,
   pickCafes,
   whatsAppLocations,
 } from "./picker";
+import { recordSuggestion } from "./suggest";
+import { speakForPicks } from "./voice";
+import { copy } from "./copy";
 
 type WhatsAppTextMessage = {
   from?: string;
@@ -47,13 +51,27 @@ export function extractInboundTexts(payload: WhatsAppPayload): {
   return inbound;
 }
 
-export function replyForWhatsApp(text: string): {
+export async function replyForWhatsApp(text: string): Promise<{
   body: string;
   locations: ReturnType<typeof whatsAppLocations>;
-} {
+}> {
+  if (extractMapsUrl(text)) {
+    const suggestion = await recordSuggestion(text);
+    return { body: suggestion.reply, locations: [] };
+  }
+
+  if (looksLikeHttpUrl(text)) {
+    return { body: copy.suggestBad.ar, locations: [] };
+  }
+
   const result = pickCafes({ text });
+  const spoken = await speakForPicks({
+    userText: text,
+    landing: result.language,
+    result,
+  });
   return {
-    body: formatWhatsAppReply(result),
+    body: formatWhatsAppReply(result, spoken),
     locations: whatsAppLocations(result),
   };
 }

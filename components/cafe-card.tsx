@@ -1,4 +1,5 @@
 import { CardBeen } from "@/components/card-been";
+import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { exampleBadge, isExampleShop } from "@/lib/product";
@@ -16,11 +17,19 @@ export function CafeCard({ shop }: CafeCardProps) {
   return (
     <article className="mt-4 rounded-[28px] border border-line bg-foam p-5 shadow-[0_12px_40px_rgba(28,20,16,0.06)]">
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold leading-tight">{shop.nameAr}</h1>
-          <p className="mt-1 text-base text-ink-soft" dir="ltr">
-            {shop.nameEn}
-          </p>
+        <div className="flex min-w-0 items-start gap-3" dir="ltr">
+          <ShopVisual
+            nameAr={shop.nameAr}
+            nameEn={shop.nameEn}
+            photoUrl={shop.photoUrl}
+            logoUrl={shop.logoUrl}
+          />
+          <div className="min-w-0 flex-1" dir="rtl">
+            <h1 className="text-2xl font-semibold leading-tight">{shop.nameAr}</h1>
+            <p className="mt-1 text-base text-ink-soft" dir="ltr">
+              {shop.nameEn}
+            </p>
+          </div>
         </div>
         {isExampleShop(shop) ? (
           <span className="rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">

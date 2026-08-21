@@ -1,9 +1,7 @@
-import { LOCKED_OPENER } from "./product";
-import { EXAMPLE_BADGE, PRODUCT_NAME } from "./product";
+import { EXAMPLE_BADGE, LOCKED_OPENER, LOCKED_OPENER_EN, VIBE_CHIPS } from "./product";
 import type { Language } from "./types";
 
-export { LOCKED_OPENER } from "./product";
-export { PRODUCT_NAME };
+export { LOCKED_OPENER, LOCKED_OPENER_EN, PRODUCT_NAME, VIBE_CHIPS } from "./product";
 
 export function t<T extends Record<Language, string>>(
   language: Language,
@@ -14,6 +12,36 @@ export function t<T extends Record<Language, string>>(
 
 export const copy = {
   opener: LOCKED_OPENER,
+  openerEn: LOCKED_OPENER_EN,
+  chips: VIBE_CHIPS,
+  pickVibe: {
+    ar: "اختار أجواء",
+    en: "Pick a vibe",
+  },
+  switchLanguage: {
+    ar: "EN",
+    en: "عربي",
+  },
+  addShop: {
+    ar: "أضف قهوة",
+    en: "Add a shop",
+  },
+  askMaps: {
+    ar: "ارمِ رابط قوقل ماب للمكان.",
+    en: "Drop the Google Maps link for the shop.",
+  },
+  suggestThanks: {
+    ar: "وصلت. نشوفها، وإذا ناسبت القائمة نضيفها.",
+    en: "Got it. We’ll look at it, and add it if it fits the list.",
+  },
+  suggestBad: {
+    ar: "أبي رابط قوقل ماب بس — maps.app.goo.gl أو خريطة قوقل.",
+    en: "Just a Google Maps link — maps.app.goo.gl or a Google Maps URL.",
+  },
+  mapsPlaceholder: {
+    ar: "رابط قوقل ماب…",
+    en: "A Google Maps link…",
+  },
   cityOnly: {
     ar: "الرياض فقط",
     en: "Riyadh only",
@@ -31,8 +59,8 @@ export const copy = {
     en: "Looking…",
   },
   threePicks: {
-    ar: "ثلاث قهاوي تناسب هالحين:",
-    en: "Three cafes for right now:",
+    ar: "ثلاث قهاوي تناسب اختيارك",
+    en: "Three cafes that suit your choice:",
   },
   fewerPicks: {
     ar: "هذي اللي أقدر أقترحها الحين:",
@@ -62,6 +90,10 @@ export const copy = {
   maps: {
     ar: "الخريطة",
     en: "Maps",
+  },
+  reviews: {
+    ar: "تقييم",
+    en: "reviews",
   },
   cardLink: {
     ar: "بطاقة المكان",

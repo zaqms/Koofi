@@ -1,3 +1,4 @@
+import { isAddShopIntent } from "./add-shop-intent";
 import { ENV_KEYS, readEnv } from "./env";
 import { extractMapsUrl, looksLikeHttpUrl } from "./maps-url";
 import {
@@ -62,6 +63,10 @@ export async function replyForWhatsApp(text: string): Promise<{
 
   if (looksLikeHttpUrl(text)) {
     return { body: copy.suggestBad.ar, locations: [] };
+  }
+
+  if (isAddShopIntent(text)) {
+    return { body: copy.askMaps.ar, locations: [] };
   }
 
   const result = pickCafes({ text });

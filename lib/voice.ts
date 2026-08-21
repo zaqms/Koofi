@@ -82,7 +82,6 @@ export async function speakForPicks(input: SpeakInput): Promise<string> {
         stream: false,
         temperature: 0.8,
         max_completion_tokens: 120,
-        search_parameters: { mode: "off" },
         messages: [
           { role: "system", content: systemPrompt(input.landing) },
           {

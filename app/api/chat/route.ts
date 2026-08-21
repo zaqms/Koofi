@@ -1,5 +1,6 @@
 import { isAddShopIntent } from "@/lib/add-shop-intent";
 import { copy } from "@/lib/copy";
+import { isOffTopicAsk } from "@/lib/off-topic-intent";
 import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
@@ -70,6 +71,15 @@ export async function POST(request: Request) {
       thinCatalog: false,
       picks: [],
       awaitingMaps: true,
+    });
+  }
+
+  if (body.via !== "chip" && isOffTopicAsk(text)) {
+    return Response.json({
+      language: landing,
+      reply: copy.offTopic[landing],
+      thinCatalog: false,
+      picks: [],
     });
   }
 

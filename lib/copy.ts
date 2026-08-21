@@ -74,6 +74,10 @@ export const copy = {
     ar: "ما عندي قهوة تناسب هالطلب في القائمة الحين. القائمة الحقيقية لسه جايه.",
     en: "I don't have a cafe for that on the list yet. The real list is still coming.",
   },
+  offTopic: {
+    ar: `احنا هنا للقهوة في الرياض. ${LOCKED_OPENER}`,
+    en: `We're here for coffee in Riyadh. ${LOCKED_OPENER_EN}`,
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",

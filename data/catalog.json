@@ -821,6 +821,18 @@
       "example": false
     },
     {
+      "id": "dear-you-sulimaniyah",
+      "nameAr": "دير يو",
+      "nameEn": "Dear You",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["هادئ", "قهوة"],
+      "momentTags": ["quiet", "work", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Dear+You+Makkah+Al+Mukarramah+Road+Al+Sulaimaniyah+Riyadh",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

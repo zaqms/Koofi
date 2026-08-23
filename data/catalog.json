@@ -833,6 +833,42 @@
       "example": false
     },
     {
+      "id": "carve-coffee-bar-al-wurud",
+      "nameAr": "قهوة كارڤ",
+      "nameEn": "Carve Coffee Bar",
+      "city": "riyadh",
+      "neighborhood": "al-wurud",
+      "neighborhoodAr": "الورود",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://maps.app.goo.gl/99LHxhqbL6JbBCSN7",
+      "example": false
+    },
+    {
+      "id": "eya-specialty-coffee-al-wurud",
+      "nameAr": "إيا",
+      "nameEn": "EYA Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-wurud",
+      "neighborhoodAr": "الورود",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Eya+Specialty+Coffee+Prince+Ahmad+Ibn+Abd+Al+Aziz+Al+Wurud+Riyadh",
+      "example": false
+    },
+    {
+      "id": "the-gate-specialty-coffee-al-wurud",
+      "nameAr": "The Gate",
+      "nameEn": "The Gate Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-wurud",
+      "neighborhoodAr": "الورود",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=The+Gate+Specialty+Coffee+Al+Olaya+Street+Al+Wurud+Riyadh",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

@@ -22,7 +22,7 @@
       "neighborhoodAr": "العليا",
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://maps.app.goo.gl/mcWvHp2ZNNdpUpBT6?g_st=ic",
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=WOODS+Specialty+Caf%C3%A9+%26+Roastery%2C+MMXM%2B78C%2C+Al+Olaya%2C+Riyadh+12241",
       "example": false
     },
     {
@@ -70,7 +70,7 @@
       "neighborhoodAr": "العليا",
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://maps.app.goo.gl/BMmM9yo53tE2AqMr7?g_st=ic",
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=By+The+Way+BTW%2C+Mousa+Bin+Naseer+Street%2C+Al+Olaya%2C+Riyadh",
       "example": false
     },
     {
@@ -606,6 +606,107 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Tree15+Coffee+Roastery,+Abi+Bakr+As+Siddiq+Street,+Al+Yasmin,+Riyadh",
+      "example": false
+    },
+    {
+      "id": "idmi-olaya",
+      "nameAr": "IDMI",
+      "nameEn": "IDMI Coffee Roasters (Al Olaya)",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.6942%2C46.6834",
+      "pin": { "lat": 24.6942, "lng": 46.6834 },
+      "example": false
+    },
+    {
+      "id": "amber-olaya",
+      "nameAr": "Amber",
+      "nameEn": "Amber Speciality Coffee & Roastery",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Amber+Speciality+Coffee+%26+Roastery%2C+Al+Olaya+Street%2C+Riyadh",
+      "example": false
+    },
+    {
+      "id": "boss-co-olaya",
+      "nameAr": "BOSS.CO",
+      "nameEn": "BOSS.CO Roastery",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.6952%2C46.6847",
+      "pin": { "lat": 24.6952, "lng": 46.6847 },
+      "example": false
+    },
+    {
+      "id": "qaf-olaya",
+      "nameAr": "قاف",
+      "nameEn": "Qaf Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.6867%2C46.6889",
+      "pin": { "lat": 24.6867, "lng": 46.6889 },
+      "example": false
+    },
+    {
+      "id": "good-neighbor-olaya",
+      "nameAr": "Good Neighbor",
+      "nameEn": "Good Neighbor",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Good+Neighbor%2C+Street+40%2C+Al+Olaya%2C+Riyadh",
+      "example": false
+    },
+    {
+      "id": "first-series-olaya",
+      "nameAr": "First Series",
+      "nameEn": "First Series Coffee",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.6815%2C46.6917",
+      "pin": { "lat": 24.6815, "lng": 46.6917 },
+      "example": false
+    },
+    {
+      "id": "drip-olaya",
+      "nameAr": "Drip",
+      "nameEn": "Drip Coffee – Al Olaya",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.7025%2C46.6809",
+      "pin": { "lat": 24.7025, "lng": 46.6809 },
+      "example": false
+    },
+    {
+      "id": "tobys-estate-olaya",
+      "nameAr": "Toby's Estate",
+      "nameEn": "Toby's Estate – Olaya Towers",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Toby%27s+Estate%2C+Olaya+Towers%2C+Prince+Mohammad+Bin+Abdulaziz%2C+Al+Olaya%2C+Riyadh",
       "example": false
     },
     {

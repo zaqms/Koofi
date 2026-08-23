@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ar" dir="rtl" className={plexArabic.variable}>
-      <body className="h-dvh overflow-hidden bg-paper text-ink antialiased">
+      <body className="min-h-dvh bg-paper text-ink antialiased">
         {children}
       </body>
     </html>

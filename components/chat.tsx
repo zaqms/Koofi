@@ -289,7 +289,11 @@ export function Chat({ landing }: ChatProps) {
 
   return (
     <div
-      className="mx-auto flex h-dvh max-h-dvh w-full max-w-md flex-col overflow-hidden bg-paper"
+      className={
+        hasThread
+          ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
+          : "mx-auto flex w-full max-w-md flex-col bg-paper"
+      }
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
@@ -373,7 +377,7 @@ export function Chat({ landing }: ChatProps) {
         ref={footerRef}
         className={
           hasThread
-            ? "shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
             : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
         }
         onSubmit={(event) => {

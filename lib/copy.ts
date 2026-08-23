@@ -127,6 +127,18 @@ export const copy = {
     ar: "الحي",
     en: "Neighborhood",
   },
+  directory: {
+    ar: "القائمة",
+    en: "The list",
+  },
+  directoryHint: {
+    ar: "من الكتالوج. الخريطة آخر ضغطة.",
+    en: "From the catalog. Maps is the last click.",
+  },
+  allDistricts: {
+    ar: "كل الأحياء",
+    en: "All areas",
+  },
   backToChat: {
     ar: "ارجع للدردشة",
     en: "Back to chat",

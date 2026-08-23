@@ -102,17 +102,34 @@ function scoreShop(
   return score;
 }
 
-function sortShops(
+function shuffle<T>(items: T[]): T[] {
+  const next = [...items];
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const current = next[i];
+    next[i] = next[j] as T;
+    next[j] = current as T;
+  }
+  return next;
+}
+
+/** Score first. Shuffle equal scores so generic asks are not stuck on the same three ids. */
+function rankShops(
   shops: Shop[],
   neighborhoods: NeighborhoodId[],
   moments: MomentTag[],
 ): Shop[] {
-  return [...shops].sort((a, b) => {
-    const delta =
-      scoreShop(b, neighborhoods, moments) - scoreShop(a, neighborhoods, moments);
-    if (delta !== 0) return delta;
-    return a.id.localeCompare(b.id);
-  });
+  const buckets = new Map<number, Shop[]>();
+  for (const shop of shops) {
+    const score = scoreShop(shop, neighborhoods, moments);
+    const bucket = buckets.get(score);
+    if (bucket) bucket.push(shop);
+    else buckets.set(score, [shop]);
+  }
+
+  return [...buckets.keys()]
+    .sort((a, b) => b - a)
+    .flatMap((score) => shuffle(buckets.get(score) ?? []));
 }
 
 function diversify(shops: Shop[], moments: MomentTag[]): Shop[] {
@@ -159,8 +176,11 @@ export function pickCafes(input: {
   const available = listShops().filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
   );
+  const realAvailable = available.filter((shop) => !isExampleShop(shop));
+  const source =
+    realAvailable.length >= TARGET_PICKS ? realAvailable : available;
 
-  const neighborhoodMatches = available.filter(
+  const neighborhoodMatches = source.filter(
     (shop) =>
       intent.neighborhoods.length === 0 ||
       intent.neighborhoods.includes(shop.neighborhood),
@@ -174,10 +194,11 @@ export function pickCafes(input: {
 
   let pool = momentMatches;
   if (pool.length < TARGET_PICKS) pool = neighborhoodMatches;
+  if (pool.length < TARGET_PICKS) pool = source;
   if (pool.length < TARGET_PICKS) pool = available;
 
   const ranked = diversify(
-    sortShops(pool, intent.neighborhoods, intent.moments),
+    rankShops(pool, intent.neighborhoods, intent.moments),
     intent.moments,
   );
 

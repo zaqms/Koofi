@@ -106,7 +106,7 @@
       "neighborhoodAr": "السليمانية",
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://maps.app.goo.gl/5UsXWtRGgq392vcJ8?g_st=ic",
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Coyard+Coffee+Roasters,+King+Saud+Rd,+As+Sulimaniyah,+Riyadh+12621",
       "example": false
     },
     {
@@ -731,6 +731,93 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=RoR+Coffee+Roasters+-+%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%88+%D9%85%D9%82%D9%87%D9%89+%D8%A7%D8%B1+%D8%A7%D9%88+%D8%A7%D8%B1,+Al+Yasmeen,+Riyadh+13322",
+      "example": false
+    },
+    {
+      "id": "yamm-olaya",
+      "nameAr": "يَمّ محمصة وقهوة",
+      "nameEn": "Yamm Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Yamm+Coffee+Roasters%2C+Al+Takhasousi+Street%2C+Al+Olaya%2C+Riyadh",
+      "pin": { "lat": 24.7073712, "lng": 46.6644448 },
+      "example": false
+    },
+    {
+      "id": "brew-crew-sulimaniyah",
+      "nameAr": "Brew Crew",
+      "nameEn": "Brew Crew – As Sulimaniyah",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Brew+Crew&query_place_id=ChIJ2UGMhEADLz4RzpMTWkDPWA8",
+      "example": false
+    },
+    {
+      "id": "urth-caffe-tahlia-sulimaniyah",
+      "nameAr": "Urth Caffé",
+      "nameEn": "Urth Caffé Tahlia",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Urth+Caff%C3%A9+Tahlia/@24.6937175,46.6775955,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03673c0048e9:0x1b7d59048a9775f0!8m2!3d24.6937175!4d46.6775955",
+      "pin": { "lat": 24.6937175, "lng": 46.6775955 },
+      "example": false
+    },
+    {
+      "id": "alchemy-coffee-roasters-sulimaniyah",
+      "nameAr": "Alchemy",
+      "nameEn": "Alchemy Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Alchemy%20Coffee%20Roasters%2C%20Prince%20Abdul%20Aziz%20Bin%20Musaid%20Bin%20Jalawi%20Street%2C%20Al%20Sulaimaniyah%2C%20Riyadh",
+      "example": false
+    },
+    {
+      "id": "sombrero-sulimaniyah",
+      "nameAr": "سومبريرو",
+      "nameEn": "Sombrero",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Sombrero%2C%204086%20Prince%20Muhammad%20Ibn%20Abd%20Al%20Aziz%2C%20As%20Sulimaniyah%2C%20Riyadh%2012242",
+      "example": false
+    },
+    {
+      "id": "seven-beans-sulimaniyah",
+      "nameAr": "Seven Beans",
+      "nameEn": "Seven Beans",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Seven%20Beans%2C%20Prince%20Muhammad%20Ibn%20Abd%20Al%20Aziz%2C%20As%20Sulimaniyah%2C%20Riyadh%2012223",
+      "example": false
+    },
+    {
+      "id": "draft-cafe-sulimaniyah",
+      "nameAr": "Draft Café",
+      "nameEn": "Draft Café",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Draft+Caf%C3%A9/@24.700589,46.7021,17z",
+      "pin": { "lat": 24.700589, "lng": 46.7021 },
       "example": false
     },
     {

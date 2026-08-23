@@ -710,6 +710,30 @@
       "example": false
     },
     {
+      "id": "hjeen-roaster-factory-al-yasmin",
+      "nameAr": "محمصة هجين المصنع",
+      "nameEn": "Hjeen Roaster Factory",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps?cid=17097278547075657564",
+      "example": false
+    },
+    {
+      "id": "ror-coffee-roasters-al-yasmin",
+      "nameAr": "محمصة و مقهى ار او ار",
+      "nameEn": "RoR Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=RoR+Coffee+Roasters+-+%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%88+%D9%85%D9%82%D9%87%D9%89+%D8%A7%D8%B1+%D8%A7%D9%88+%D8%A7%D8%B1,+Al+Yasmeen,+Riyadh+13322",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

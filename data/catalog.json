@@ -561,6 +561,54 @@
       "example": false
     },
     {
+      "id": "shovel-al-yasmin",
+      "nameAr": "محمصة شفل",
+      "nameEn": "Shovel Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Shovel+Roastery,+Olaya+Street,+Al+Yasmin,+Riyadh",
+      "example": false
+    },
+    {
+      "id": "basementers-al-yasmin",
+      "nameAr": "Basementers",
+      "nameEn": "Basementers Roastery and Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Basementers+Roastery,+Al+Khayalah+Street,+Al+Yasmin,+Riyadh",
+      "example": false
+    },
+    {
+      "id": "volume-al-yasmin",
+      "nameAr": "Volume",
+      "nameEn": "Volume Coffee Roasters – Al Yasmin",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Volume+Coffee+Roasters,+King+Abdul+Aziz+Road,+Al+Yasmin,+Riyadh",
+      "example": false
+    },
+    {
+      "id": "tree15-al-yasmin",
+      "nameAr": "Tree15",
+      "nameEn": "Tree15 Coffee Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-yasmin",
+      "neighborhoodAr": "الياسمين",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Tree15+Coffee+Roastery,+Abi+Bakr+As+Siddiq+Street,+Al+Yasmin,+Riyadh",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

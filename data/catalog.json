@@ -58,7 +58,7 @@
       "neighborhoodAr": "الورود",
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://maps.app.goo.gl/yGT36px9Lj8HZsrG9?g_st=ic",
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f034f1e2720db:0x20aaab526ce8309c",
       "example": false
     },
     {
@@ -830,6 +830,19 @@
       "vibeTags": ["هادئ", "قهوة"],
       "momentTags": ["quiet", "work", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Dear+You+Makkah+Al+Mukarramah+Road+Al+Sulaimaniyah+Riyadh",
+      "example": false
+    },
+    {
+      "id": "sand-clock-sulimaniyah",
+      "nameAr": "ساعة الرمل",
+      "nameEn": "Sand Clock",
+      "city": "riyadh",
+      "neighborhood": "sulimaniyah",
+      "neighborhoodAr": "السليمانية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.7136,46.6837",
+      "pin": { "lat": 24.7136, "lng": 46.6837 },
       "example": false
     },
     {

@@ -1077,6 +1077,78 @@
       "example": false
     },
     {
+      "id": "offbrief-cafe-diriyah",
+      "nameAr": "OFFBRiEF Cafe",
+      "nameEn": "OFFBRiEF Cafe",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/OFFBRiEF+Cafe/data=!4m2!3m1!1s0x3e2ee1bb7da3ee8b:0xb6c5b0f2c13f289b",
+      "example": false
+    },
+    {
+      "id": "cosefan-diriyah",
+      "nameAr": "كوزفن",
+      "nameEn": "Cosefan",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Cosefan/data=!4m2!3m1!1s0x3e2ee184c8ccfa3d:0x42abf840875a9e01",
+      "example": false
+    },
+    {
+      "id": "khasib-al-bun-diriyah",
+      "nameAr": "خَصيب البُن",
+      "nameEn": "Khasib Al Bun",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/%D8%AE%D9%8E%D8%B5%D9%8A%D8%A8+%D8%A7%D9%84%D8%A8%D9%8F%D9%86/data=!4m2!3m1!1s0x3e2ee13c877e69e5:0xdcd304f6eb96d32b",
+      "example": false
+    },
+    {
+      "id": "dips-plus-diriyah",
+      "nameAr": "دبس بلس",
+      "nameEn": "dips plus",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/dips+plus/data=!4m2!3m1!1s0x3e2ee10b745b7cdb:0x32ebe08917cff51",
+      "example": false
+    },
+    {
+      "id": "sirius-speciality-coffee-diriyah",
+      "nameAr": "SIRIUS Speciality Coffee",
+      "nameEn": "SIRIUS Speciality Coffee",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/SIRIUS+Speciality+Coffee/data=!4m2!3m1!1s0x3e2ee700651cad2f:0xfaac84f72c0ea1b5",
+      "example": false
+    },
+    {
+      "id": "jazel-speciality-cafe-diriyah",
+      "nameAr": "جازل",
+      "nameEn": "Jazel speciality cafe",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Jazel+speciality+cafe/data=!4m2!3m1!1s0x3e2ee1051fe26dff:0x55d50d6241f1053",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

@@ -321,7 +321,7 @@ export function Chat({ landing }: ChatProps) {
       >
         {messages.map((message) =>
           message.role === "user" ? (
-            <div key={message.id} className="flex justify-start">
+            <div key={message.id} className="flex justify-end">
               <p
                 className="max-w-[90%] rounded-2xl rounded-tr-sm bg-ink px-3 py-2 text-sm leading-6 text-foam"
                 dir="auto"
@@ -340,7 +340,7 @@ export function Chat({ landing }: ChatProps) {
                   {opener}
                 </p>
               ) : (
-                <div className="flex justify-end">
+                <div className="flex justify-start">
                   <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
                     {message.id === "opener" ? opener : message.text}
                   </p>
@@ -370,7 +370,7 @@ export function Chat({ landing }: ChatProps) {
           ),
         )}
         {busy ? (
-          <div className="flex justify-end">
+          <div className="flex justify-start">
             <p className="rounded-2xl bg-paper-deep px-3 py-2 text-sm text-ink-soft">
               {copy.looking[composerLanguage]}
             </p>

@@ -407,19 +407,6 @@
       "example": false
     },
     {
-      "id": "caturra-al-nakheel",
-      "nameAr": "Caturra",
-      "nameEn": "Caturra",
-      "city": "riyadh",
-      "neighborhood": "al-nakheel",
-      "neighborhoodAr": "النخيل",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps?q=24.733398,46.611047",
-      "pin": { "lat": 24.733398, "lng": 46.611047 },
-      "example": false
-    },
-    {
       "id": "pass-cafe-al-nakheel",
       "nameAr": "Pass Cafe",
       "nameEn": "Pass Cafe",

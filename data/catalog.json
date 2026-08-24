@@ -269,18 +269,6 @@
       "example": false
     },
     {
-      "id": "najd-roastery-al-malqa",
-      "nameAr": "محمصة نجد",
-      "nameEn": "Najd Roastery",
-      "city": "riyadh",
-      "neighborhood": "al-malqa",
-      "neighborhoodAr": "الملقا",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Najd+Roastery/@24.8166789,46.6005932,17z/data=!4m6!3m5!1s0x3e2ee542cd6d0bf7:0xcbf7ec6df92970!8m2!3d24.8166789!4d46.6005932!16s%2Fg%2F11tcc_hrz6",
-      "example": false
-    },
-    {
       "id": "sohba-al-malqa",
       "nameAr": "قهوة صحبة",
       "nameEn": "Sohba Coffee",

@@ -45,6 +45,8 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "محامص",
     "مختصة",
     "مختصه",
+    "قهوة مختصة",
+    "قهوه مختصه",
     "فلتر",
     "روستر",
     "roaster",
@@ -53,6 +55,7 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "filter",
     "pour over",
     "specialty",
+    "specialty coffee",
   ],
   quiet: [
     "هادئ",

@@ -25,6 +25,7 @@ export const VIBE_CHIPS = [
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "أفضل معجنات", en: "Best Pastries", momentTag: "pastry" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
+  { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
   { id: "quiet", ar: "دافئ وهادئ", en: "Cozy and Quiet", momentTag: "quiet" },
   { id: "work", ar: "مناسب للشغل", en: "Best for Work", momentTag: "work" },
   { id: "study", ar: "مناسب للدراسة", en: "Best for Studies", momentTag: "study" },

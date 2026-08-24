@@ -1149,6 +1149,42 @@
       "example": false
     },
     {
+      "id": "repository-coffee-roasters-al-narjis",
+      "nameAr": "Repository Coffee Roasters",
+      "nameEn": "Repository Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Repository+Coffee+Roasters/data=!4m2!3m1!1s0x3e2efb18e02bf623:0x799fea70c9d223bb",
+      "example": false
+    },
+    {
+      "id": "core-coffee-and-roastery-al-narjis",
+      "nameAr": "CORE COFFEE & ROASTERY",
+      "nameEn": "CORE COFFEE & ROASTERY",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/CORE+COFFEE+%26+ROASTERY/data=!4m2!3m1!1s0x3e2efda09e7919d1:0x736112019aced374",
+      "example": false
+    },
+    {
+      "id": "hjeen-roaster-al-narjis",
+      "nameAr": "Hjeen Roaster",
+      "nameEn": "Hjeen Roaster",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Hjeen+Roaster/data=!4m2!3m1!1s0x3e2efb18622e5d79:0xf39b2674733ce028",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

@@ -1,7 +1,7 @@
 import { ENV_KEYS, readEnv } from "./env";
 import { neighborhoodLabel } from "./neighborhoods";
 import { cardPath } from "./product";
-import type { Pin, Shop } from "./types";
+import type { Language, Pin, Shop } from "./types";
 
 export { cardPath };
 
@@ -11,9 +11,9 @@ export function publicOrigin(): string | null {
   return raw.replace(/\/$/, "");
 }
 
-export function cardHref(id: string): string {
+export function cardHref(id: string, language: Language = "ar"): string {
   const origin = publicOrigin();
-  const path = cardPath(id);
+  const path = cardPath(id, language);
   return origin ? `${origin}${path}` : path;
 }
 

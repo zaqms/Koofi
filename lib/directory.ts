@@ -1,4 +1,4 @@
-import { NEIGHBORHOOD_IDS, type NeighborhoodId } from "./types";
+import { NEIGHBORHOOD_IDS, type MomentTag, type NeighborhoodId } from "./types";
 
 export type DirectoryShop = {
   id: string;
@@ -7,6 +7,7 @@ export type DirectoryShop = {
   neighborhood: NeighborhoodId;
   neighborhoodAr: string;
   vibeTags: string[];
+  momentTags: MomentTag[];
   mapsHref: string;
   photoUrl?: string;
   logoUrl?: string;

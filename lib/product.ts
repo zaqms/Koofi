@@ -52,15 +52,19 @@ export const EXAMPLE_BADGE = {
 
 export const CARD_PATH_PREFIX = "/c";
 
-export function cardPath(id: string): string {
-  return `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
+export function cardPath(id: string, language: Language = "ar"): string {
+  const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
+  return language === "en" ? `/en${slug}` : slug;
 }
 
 export function shopDisplayName(
   shop: { nameAr: string; nameEn: string },
   language: Language,
 ): string {
-  return language === "ar" ? shop.nameAr : shop.nameEn;
+  const nameAr = shop.nameAr.trim();
+  const nameEn = shop.nameEn.trim();
+  if (language === "en") return nameEn;
+  return nameAr || nameEn;
 }
 
 export function isExampleShop(shop: { [EXAMPLE_FLAG]: boolean }): boolean {

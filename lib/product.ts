@@ -53,6 +53,10 @@ export const EXAMPLE_BADGE = {
 
 export const CARD_PATH_PREFIX = "/c";
 
+export function homePath(language: Language = "ar"): string {
+  return language === "en" ? "/en" : "/";
+}
+
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;

@@ -8,7 +8,7 @@ import { VibeChips } from "@/components/vibe-chips";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
 import { readLearnSession } from "@/lib/learn-session";
-import { PRODUCT_NAME } from "@/lib/product";
+import { BrandHomeLink } from "@/components/brand-home-link";
 import type { Language } from "@/lib/types";
 
 type AssistantMessage = {
@@ -302,7 +302,10 @@ export function Chat({ landing }: ChatProps) {
     >
       <header className="shrink-0 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-lg font-semibold">{PRODUCT_NAME}</p>
+          <BrandHomeLink
+            language={landing}
+            className="text-lg font-semibold"
+          />
           <Link
             href={landing === "ar" ? "/en" : "/"}
             className="text-xs text-ink-soft underline-offset-2 hover:underline"

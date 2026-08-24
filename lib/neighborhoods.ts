@@ -132,6 +132,12 @@ export const NEIGHBORHOODS: Record<
       "as-sahafah",
     ],
   },
+  kafd: {
+    id: "kafd",
+    ar: "كافد",
+    en: "KAFD",
+    aliases: ["كافد", "kafd", "king abdullah financial district"],
+  },
 };
 
 export function neighborhoodLabel(

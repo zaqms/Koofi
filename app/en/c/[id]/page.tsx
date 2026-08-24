@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { CafeCardPageView } from "@/components/cafe-card-page";
 import { getShop, listShops } from "@/lib/catalog";
+import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { PRODUCT_NAME } from "@/lib/product";
 
 type CardPageProps = {
@@ -19,8 +20,8 @@ export async function generateMetadata({ params }: CardPageProps) {
   }
 
   return {
-    title: `${shop.nameEn} · ${shop.nameAr}`,
-    description: `${shop.nameEn} · ${shop.neighborhoodAr}`,
+    title: `${shop.nameEn} · ${PRODUCT_NAME}`,
+    description: `${shop.nameEn} · ${neighborhoodLabel(shop.neighborhood, "en")}`,
   };
 }
 

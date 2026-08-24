@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MapsLink } from "@/components/maps-link";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
@@ -46,12 +47,12 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
         </div>
       </Link>
       <div className="mt-3">
-        <a
+        <MapsLink
           href={shop.mapsHref}
           className="inline-flex min-h-11 items-center rounded-full bg-bean px-4 text-sm text-foam hover:bg-bean-deep"
         >
           {copy.maps[language]}
-        </a>
+        </MapsLink>
       </div>
     </li>
   );

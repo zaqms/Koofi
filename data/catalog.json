@@ -861,19 +861,6 @@
       "example": false
     },
     {
-      "id": "anqaa-specialty-coffee-ar-rabwah",
-      "nameAr": "عنقاء",
-      "nameEn": "Anqaa",
-      "city": "riyadh",
-      "neighborhood": "al-rabwah",
-      "neighborhoodAr": "الربوة",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/%D8%B9%D9%86%D9%82%D8%A7%D8%A1+%7C+%D9%82%D9%87%D9%88%D8%A9+%D9%85%D8%AE%D8%AA%D8%B5%D9%91%D8%A9%E2%80%AD/@24.6971206,46.7718897,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f070004a50a79:0xa154b7297966a387!8m2!3d24.6971206!4d46.7718897!16s%2Fg%2F11vyg2crg4",
-      "pin": { "lat": 24.697098, "lng": 46.771871 },
-      "example": false
-    },
-    {
       "id": "carve-coffee-bar-al-wurud",
       "nameAr": "قهوة كارڤ",
       "nameEn": "Carve Coffee Bar",

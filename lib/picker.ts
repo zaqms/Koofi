@@ -285,7 +285,7 @@ export function toChatPicks(result: PickResult): ChatPick[] {
     example: isExampleShop(pick.shop),
     why: pick.why,
     mapsHref: shopMapsHref(pick.shop),
-    cardPath: cardPath(pick.shop.id),
+    cardPath: cardPath(pick.shop.id, result.language),
     photoUrl: pick.shop.photoUrl,
     logoUrl: pick.shop.logoUrl,
   }));

@@ -15,19 +15,19 @@ export async function generateMetadata({ params }: CardPageProps) {
   const { id } = await params;
   const shop = getShop(id);
   if (!shop) {
-    return { title: `${PRODUCT_NAME} · البطاقة` };
+    return { title: `${PRODUCT_NAME} · Cafe card` };
   }
 
   return {
-    title: `${shop.nameAr} · ${shop.nameEn}`,
-    description: `${shop.neighborhoodAr} · ${shop.vibeTags.join("، ")}`,
+    title: `${shop.nameEn} · ${shop.nameAr}`,
+    description: `${shop.nameEn} · ${shop.neighborhoodAr}`,
   };
 }
 
-export default async function CafeCardPage({ params }: CardPageProps) {
+export default async function EnglishCafeCardPage({ params }: CardPageProps) {
   const { id } = await params;
   const shop = getShop(id);
   if (!shop) notFound();
 
-  return <CafeCardPageView shop={shop} language="ar" />;
+  return <CafeCardPageView shop={shop} language="en" />;
 }

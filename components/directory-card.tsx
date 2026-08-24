@@ -16,7 +16,7 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
   const other = shopDisplayName(shop, language === "ar" ? "en" : "ar");
   const area = language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
   const vibe = shop.vibeTags.slice(0, 3).join(" · ");
-  const href = cardPath(shop.id);
+  const href = cardPath(shop.id, language);
 
   return (
     <li className="rounded-2xl border border-line bg-foam px-3 py-3">

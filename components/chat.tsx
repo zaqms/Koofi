@@ -335,11 +335,17 @@ export function Chat({ landing }: ChatProps) {
               className="space-y-2"
               dir={message.language === "ar" ? "rtl" : "ltr"}
             >
-              <div className="flex justify-end">
-                <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
-                  {message.id === "opener" ? opener : message.text}
+              {message.id === "opener" && !hasThread ? (
+                <p className="text-start text-sm leading-6 whitespace-pre-wrap">
+                  {opener}
                 </p>
-              </div>
+              ) : (
+                <div className="flex justify-end">
+                  <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
+                    {message.id === "opener" ? opener : message.text}
+                  </p>
+                </div>
+              )}
               {message.id === "opener" && !hasThread ? (
                 <VibeChips
                   language={landing}
@@ -413,7 +419,7 @@ export function Chat({ landing }: ChatProps) {
                 ? copy.mapsPlaceholder[landing]
                 : copy.placeholder[landing]
             }
-            className="min-h-11 flex-1 resize-none rounded-2xl border border-line bg-foam px-3 py-2 text-sm outline-none focus:border-bean"
+            className="min-h-11 flex-1 resize-none rounded-2xl border border-line bg-foam px-3 py-2 text-start text-sm outline-none focus:border-bean"
           />
           <button
             type="submit"
@@ -423,7 +429,7 @@ export function Chat({ landing }: ChatProps) {
             {copy.send[landing]}
           </button>
         </div>
-        <div className="mt-2">
+        <div className="mt-2 text-start">
           <AddShopButton
             language={landing}
             disabled={busy}

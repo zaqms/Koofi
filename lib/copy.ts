@@ -24,7 +24,7 @@ export const copy = {
   },
   addShop: {
     ar: "أضف قهوة",
-    en: "Add a shop",
+    en: "Add a coffee shop",
   },
   askMaps: {
     ar: "ارمِ رابط قوقل ماب للمكان.",

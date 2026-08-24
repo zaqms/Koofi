@@ -11,7 +11,7 @@ type VibeChipsProps = {
 export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
   return (
     <div
-      className="flex flex-wrap gap-1.5"
+      className="flex flex-wrap justify-start gap-1.5"
       role="group"
       aria-busy={disabled || undefined}
       aria-label={copy.pickVibe[language]}

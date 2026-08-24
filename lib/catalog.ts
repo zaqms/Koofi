@@ -45,6 +45,7 @@ export function listDirectoryShops(): DirectoryShop[] {
       neighborhood: shop.neighborhood,
       neighborhoodAr: shop.neighborhoodAr,
       vibeTags: shop.vibeTags,
+      momentTags: shop.momentTags,
       mapsHref: shopMapsHref(shop),
       photoUrl: shop.photoUrl,
       logoUrl: shop.logoUrl,

@@ -5,6 +5,7 @@ import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
 import type { Language, Shop } from "@/lib/types";
+import { vibeLine } from "@/lib/vibe-labels";
 
 type CafeCardProps = {
   shop: Shop;
@@ -15,12 +16,13 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
   const hours = shop.hours?.trim();
   const site = shop.officialSite?.trim();
   const primary = shopDisplayName(shop, language);
-  const other = shopDisplayName(shop, language === "ar" ? "en" : "ar");
+  const other = language === "ar" ? shopDisplayName(shop, "en") : null;
   const dir = language === "ar" ? "rtl" : "ltr";
   const areaPrimary =
     language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
   const areaOther =
-    language === "ar" ? neighborhoodLabel(shop.neighborhood, "en") : shop.neighborhoodAr;
+    language === "ar" ? neighborhoodLabel(shop.neighborhood, "en") : null;
+  const vibe = vibeLine(shop, language);
 
   return (
     <article
@@ -38,12 +40,11 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
           />
           <div className="min-w-0 flex-1" dir={dir}>
             <h1 className="text-2xl font-semibold leading-tight">{primary}</h1>
-            <p
-              className="mt-1 text-base text-ink-soft"
-              dir={language === "ar" ? "ltr" : "rtl"}
-            >
-              {other}
-            </p>
+            {other ? (
+              <p className="mt-1 text-base text-ink-soft" dir="ltr">
+                {other}
+              </p>
+            ) : null}
           </div>
         </div>
         {isExampleShop(shop) ? (
@@ -64,15 +65,17 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
           <dt className="text-xs text-ink-soft">{copy.neighborhood[language]}</dt>
           <dd>
             {areaPrimary}
-            <span className="text-ink-soft" dir={language === "ar" ? "ltr" : "rtl"}>
-              {" "}
-              · {areaOther}
-            </span>
+            {areaOther ? (
+              <span className="text-ink-soft" dir="ltr">
+                {" "}
+                · {areaOther}
+              </span>
+            ) : null}
           </dd>
         </div>
         <div>
           <dt className="text-xs text-ink-soft">{copy.vibe[language]}</dt>
-          <dd>{shop.vibeTags.join(" · ")}</dd>
+          <dd>{vibe}</dd>
         </div>
         <div>
           <dt className="text-xs text-ink-soft">{copy.hours[language]}</dt>

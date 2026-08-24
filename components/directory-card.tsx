@@ -5,6 +5,7 @@ import type { DirectoryShop } from "@/lib/directory";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, shopDisplayName } from "@/lib/product";
 import type { Language } from "@/lib/types";
+import { vibeLine } from "@/lib/vibe-labels";
 
 type DirectoryCardProps = {
   shop: DirectoryShop;
@@ -13,9 +14,10 @@ type DirectoryCardProps = {
 
 export function DirectoryCard({ shop, language }: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
-  const other = shopDisplayName(shop, language === "ar" ? "en" : "ar");
   const area = language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
-  const vibe = shop.vibeTags.slice(0, 3).join(" · ");
+  const other =
+    language === "ar" ? shopDisplayName(shop, "en") : null;
+  const vibe = vibeLine(shop, language);
   const href = cardPath(shop.id, language);
 
   return (
@@ -37,7 +39,7 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
         >
           <h3 className="text-lg font-semibold leading-tight">{name}</h3>
           <p className="text-[11px] leading-4 text-ink-soft" dir="auto">
-            {other} · {area}
+            {other ? `${other} · ${area}` : area}
           </p>
           {vibe ? (
             <p className="mt-1 truncate text-sm leading-5">{vibe}</p>

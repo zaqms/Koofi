@@ -152,6 +152,20 @@ export const NEIGHBORHOODS: Record<
       "ad-diriyah",
     ],
   },
+  "al-narjis": {
+    id: "al-narjis",
+    ar: "النرجس",
+    en: "Al Narjis",
+    aliases: [
+      "النرجس",
+      "نرجس",
+      "narjis",
+      "an narjis",
+      "al narjis",
+      "al-narjis",
+      "an-narjis",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

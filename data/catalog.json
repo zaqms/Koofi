@@ -1233,6 +1233,18 @@
       "example": false
     },
     {
+      "id": "nosound-al-narjis",
+      "nameAr": "نوساوند",
+      "nameEn": "NOSOUND",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/NOSOUND/data=!4m2!3m1!1s0x3e2fabff69afccd5:0x47f58a1dd2433bd1",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

@@ -118,6 +118,20 @@ export const NEIGHBORHOODS: Record<
       "ar-rahmaniyyah",
     ],
   },
+  "as-sahafah": {
+    id: "as-sahafah",
+    ar: "الصحافة",
+    en: "Al Sahafah",
+    aliases: [
+      "الصحافة",
+      "صحافة",
+      "sahafah",
+      "al sahafah",
+      "as sahafah",
+      "al-sahafah",
+      "as-sahafah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

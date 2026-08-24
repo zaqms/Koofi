@@ -897,6 +897,42 @@
       "example": false
     },
     {
+      "id": "taim-specialty-coffee-as-sahafah",
+      "nameAr": "تَيْم",
+      "nameEn": "Taim Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-sahafah",
+      "neighborhoodAr": "الصحافة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Taim+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee5f0cbad29b3:0xc801bd35db3ed4b5",
+      "example": false
+    },
+    {
+      "id": "y97-specialty-coffee-as-sahafah",
+      "nameAr": "Y97 Specialty Coffee",
+      "nameEn": "Y97 Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-sahafah",
+      "neighborhoodAr": "الصحافة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Y97+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee500353c8e81:0xb2f5e1092e400825",
+      "example": false
+    },
+    {
+      "id": "hakwah-speciality-coffee-as-sahafah",
+      "nameAr": "حكوة",
+      "nameEn": "Hakwah Speciality Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-sahafah",
+      "neighborhoodAr": "الصحافة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Hakwah+Speciality+Coffee/data=!4m2!3m1!1s0x3e2ee3d8c2ad7a89:0xae112ca2628db3de",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

@@ -1017,6 +1017,66 @@
       "example": false
     },
     {
+      "id": "origin-jax-diriyah",
+      "nameAr": "أوريجن",
+      "nameEn": "ORIGIN – JAX",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/ORIGIN+-+JAX/data=!4m2!3m1!1s0x3e2ee1001f4d413f:0x388b7e94c9f443ca",
+      "example": false
+    },
+    {
+      "id": "archi-al-bujairi-diriyah",
+      "nameAr": "ارتشي",
+      "nameEn": "Archi",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2ee1256ea46553:0x57b2b39e05a4ac4f",
+      "example": false
+    },
+    {
+      "id": "archi-and-jax-diriyah",
+      "nameAr": "ارتشي",
+      "nameEn": "ARCHI & JAX",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/ARCHI+%26+JAX/data=!4m2!3m1!1s0x3e2ee100743c5551:0xdf27415c2e1069da",
+      "example": false
+    },
+    {
+      "id": "kmr-diriyah",
+      "nameAr": "كُمر",
+      "nameEn": "KMR",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/KMR/data=!4m2!3m1!1s0x3e2ee1a489ee2713:0x7031e79c39746478",
+      "example": false
+    },
+    {
+      "id": "malfa-coffee-house-diriyah",
+      "nameAr": "ملفى",
+      "nameEn": "Malfa coffee house",
+      "city": "riyadh",
+      "neighborhood": "diriyah",
+      "neighborhoodAr": "الدرعية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Malfa+coffee+house/data=!4m2!3m1!1s0x3e2ee10007ec4249:0xa70fcce76743d75b",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

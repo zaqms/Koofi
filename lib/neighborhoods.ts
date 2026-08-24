@@ -138,6 +138,20 @@ export const NEIGHBORHOODS: Record<
     en: "KAFD",
     aliases: ["كافد", "kafd", "king abdullah financial district"],
   },
+  diriyah: {
+    id: "diriyah",
+    ar: "الدرعية",
+    en: "Diriyah",
+    aliases: [
+      "الدرعية",
+      "درعية",
+      "diriyah",
+      "al diriyah",
+      "ad diriyah",
+      "al-diriyah",
+      "ad-diriyah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

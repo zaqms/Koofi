@@ -407,7 +407,7 @@ export function Chat({ landing }: ChatProps) {
             ? copy.mapsPlaceholder[landing]
             : copy.placeholder[landing]}
         </label>
-        <div className="flex items-end gap-2">
+        <div className="flex items-center gap-2">
           <textarea
             id="koofi-ask"
             value={draft}
@@ -425,12 +425,12 @@ export function Chat({ landing }: ChatProps) {
                 ? copy.mapsPlaceholder[landing]
                 : copy.placeholder[landing]
             }
-            className="min-h-11 flex-1 resize-none rounded-2xl border border-line bg-foam px-3 py-2 text-start text-sm outline-none focus:border-bean"
+            className="min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
           />
           <button
             type="submit"
             disabled={busy || !draft.trim()}
-            className="h-11 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+            className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
           >
             {copy.send[landing]}
           </button>

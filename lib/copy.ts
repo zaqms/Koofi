@@ -48,7 +48,7 @@ export const copy = {
   },
   placeholder: {
     ar: "حي، أو قعدة شغل، أو قهوة متأخرة…",
-    en: "A neighborhood, a work table, or a late qahwa…",
+    en: "Neighborhood, work table, or late qahwa…",
   },
   send: {
     ar: "أرسل",

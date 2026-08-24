@@ -1245,6 +1245,42 @@
       "example": false
     },
     {
+      "id": "aim-al-narjis",
+      "nameAr": "ايم",
+      "nameEn": "Aim",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50002642fbd:0x4d01af98d2d18710",
+      "example": false
+    },
+    {
+      "id": "archi-al-narjis",
+      "nameAr": "ارتشي",
+      "nameEn": "Archi",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2efdc48f297bc7:0x84b03cd311e03092",
+      "example": false
+    },
+    {
+      "id": "caf-lab-al-narjis",
+      "nameAr": "CAF LAB",
+      "nameEn": "CAF LAB",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/CAF+LAB/data=!4m2!3m1!1s0x3e2ee544d2d79851:0x65f6372bf5983410",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

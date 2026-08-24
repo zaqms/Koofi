@@ -16,12 +16,9 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
   const hours = shop.hours?.trim();
   const site = shop.officialSite?.trim();
   const primary = shopDisplayName(shop, language);
-  const other = language === "ar" ? shopDisplayName(shop, "en") : null;
   const dir = language === "ar" ? "rtl" : "ltr";
-  const areaPrimary =
+  const area =
     language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
-  const areaOther =
-    language === "ar" ? neighborhoodLabel(shop.neighborhood, "en") : null;
   const vibe = vibeLine(shop, language);
 
   return (
@@ -40,11 +37,6 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
           />
           <div className="min-w-0 flex-1" dir={dir}>
             <h1 className="text-2xl font-semibold leading-tight">{primary}</h1>
-            {other ? (
-              <p className="mt-1 text-base text-ink-soft" dir="ltr">
-                {other}
-              </p>
-            ) : null}
           </div>
         </div>
         {isExampleShop(shop) ? (
@@ -63,15 +55,7 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
       <dl className="mt-5 space-y-3 text-sm leading-6">
         <div>
           <dt className="text-xs text-ink-soft">{copy.neighborhood[language]}</dt>
-          <dd>
-            {areaPrimary}
-            {areaOther ? (
-              <span className="text-ink-soft" dir="ltr">
-                {" "}
-                · {areaOther}
-              </span>
-            ) : null}
-          </dd>
+          <dd>{area}</dd>
         </div>
         <div>
           <dt className="text-xs text-ink-soft">{copy.vibe[language]}</dt>

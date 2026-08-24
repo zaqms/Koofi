@@ -15,8 +15,6 @@ type DirectoryCardProps = {
 export function DirectoryCard({ shop, language }: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
   const area = language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
-  const other =
-    language === "ar" ? shopDisplayName(shop, "en") : null;
   const vibe = vibeLine(shop, language);
   const href = cardPath(shop.id, language);
 
@@ -38,9 +36,7 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
           dir={language === "ar" ? "rtl" : "ltr"}
         >
           <h3 className="text-lg font-semibold leading-tight">{name}</h3>
-          <p className="text-[11px] leading-4 text-ink-soft" dir="auto">
-            {other ? `${other} · ${area}` : area}
-          </p>
+          <p className="text-[11px] leading-4 text-ink-soft">{area}</p>
           {vibe ? (
             <p className="mt-1 truncate text-sm leading-5">{vibe}</p>
           ) : null}

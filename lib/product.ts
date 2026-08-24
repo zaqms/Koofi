@@ -61,7 +61,10 @@ export function shopDisplayName(
   shop: { nameAr: string; nameEn: string },
   language: Language,
 ): string {
-  return language === "ar" ? shop.nameAr : shop.nameEn;
+  const nameAr = shop.nameAr.trim();
+  const nameEn = shop.nameEn.trim();
+  if (language === "en") return nameEn;
+  return nameAr || nameEn;
 }
 
 export function isExampleShop(shop: { [EXAMPLE_FLAG]: boolean }): boolean {

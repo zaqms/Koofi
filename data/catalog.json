@@ -142,7 +142,7 @@
       "neighborhoodAr": "هيتين",
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/%25+ARABICA+Riyadh+Roastery/@24.7667629,46.6219462,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3a860ee67a7:0x757ee5e74a69274b!8m2!3d24.7667629!4d46.6219462",
+      "mapsShareUrl": "https://www.google.com/maps/place/%25+Arabica+Roastery/data=!4m2!3m1!1s0x3e2ee3a860ee67a7:0x757ee5e74a69274b",
       "pin": { "lat": 24.7667629, "lng": 46.6219462 },
       "example": false
     },

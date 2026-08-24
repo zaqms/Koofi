@@ -1197,6 +1197,42 @@
       "example": false
     },
     {
+      "id": "volume-coffee-roasters-al-narjis",
+      "nameAr": "Volume Coffee Roasters",
+      "nameEn": "Volume Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Volume+Coffee+Roasters/data=!4m2!3m1!1s0x3e2efbe2a3a41bd3:0xbeab0755de03239c",
+      "example": false
+    },
+    {
+      "id": "elixir-bunn-al-narjis",
+      "nameAr": "Elixir Bunn Coffee Roasters",
+      "nameEn": "Elixir Bunn Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Elixir+Bunn+Coffee+Roasters/data=!4m2!3m1!1s0x3e2ee5d142dbe7c1:0xe99747b377f9aae4",
+      "example": false
+    },
+    {
+      "id": "melex-specialty-coffee-al-narjis",
+      "nameAr": "Melex Specialty Coffee",
+      "nameEn": "Melex Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/Melex+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee5007a5d52ef:0xed4fcaac7e06d5ec",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

@@ -414,8 +414,8 @@
       "neighborhoodAr": "النخيل",
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps?q=24.741644,46.604339",
-      "pin": { "lat": 24.741644, "lng": 46.604339 },
+      "mapsShareUrl": "https://www.google.com/maps/place/Ash+Bloom+%E6%97%A0%E6%9E%81/@24.7416982,46.6041876,17z/data=!4m15!1m8!3m7!1s0x3e2ee3f36b1c08b3:0x8416738e9147aa47!2zQXNoIEJsb29tIOaXoOaegQ!8m2!3d24.7416078!4d46.6043473!10e5!16s%2Fg%2F11yx9j9j9m!3m5!1s0x3e2ee3f36b1c08b3:0x8416738e9147aa47!8m2!3d24.7416078!4d46.6043473!16s%2Fg%2F11yx9j9j9m?entry=ttu&g_ep=EgoyMDI2MDgxOS4wIKXMDSoASAFQAw%3D%3D",
+      "pin": { "lat": 24.7416078, "lng": 46.6043473 },
       "example": false
     },
     {

@@ -1185,6 +1185,18 @@
       "example": false
     },
     {
+      "id": "kail-roastery-and-cafe-al-narjis",
+      "nameAr": "محمصة ومقهى كيل",
+      "nameEn": "kail Roastery & cafe",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/kail+Roastery+%26+cafe/data=!4m2!3m1!1s0x3e2efbabdb0ace9b:0xfc531e6cbbc78c59",
+      "example": false
+    },
+    {
       "id": "example-roaster",
       "nameAr": "محمصة المثال",
       "nameEn": "Example Roaster",

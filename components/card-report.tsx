@@ -135,7 +135,7 @@ export function CardReport({
           </span>
         )}
         {failed ? (
-          <span className="text-xs text-ink-soft">{copy.error[language]}</span>
+          <span className="text-xs text-ink-soft">{copy.reportFail[language]}</span>
         ) : null}
       </div>
     </form>

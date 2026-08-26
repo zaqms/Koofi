@@ -143,6 +143,10 @@ export const copy = {
     ar: "اختر سبب أول.",
     en: "Pick a reason first.",
   },
+  reportFail: {
+    ar: "ما وصلت. جرّب مرة ثانية.",
+    en: "Didn't land. Try again.",
+  },
   reportReasons: {
     wrong_pin: {
       ar: "الموقع غلط",

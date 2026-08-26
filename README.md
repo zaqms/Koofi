@@ -75,6 +75,8 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 | `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |
 | `LEARNING_READ_TOKEN` | No | Optional Bearer token for the private `GET /api/learn` pile. If empty, that read is 404. Chat and Maps still work. Never commit a real token. |
+| `RESEND_API_KEY` | No | Server-only. Cafe-card listing reports email Ajzbot73@gmail.com via `POST https://api.resend.com/emails`. If empty or Resend errors, `POST /api/report` is 503 and the card does not thank them. Never commit a real key. |
+| `BLOB_READ_WRITE_TOKEN` | No | Optional secondary durable copy of listing reports (Vercel Blob). Token-gated `GET /api/report` lists these rows. Email stays the primary read path. |
 
 Do not commit secrets.
 
@@ -104,16 +106,18 @@ Ajz reads the pile:
 
 Quiet private note on the cafe card only (`/c/[id]` and `/en/c/[id]`). Not reviews, not a comments wall, not shown on the card after submit.
 
-- `POST /api/report` `{ shopId, nameEn, neighborhood, locale, path, reason, note? }` — server re-checks `shopId` with `getShop`. Unknown ids are rejected. Phone and email are ignored.
-- Each accepted report is a Vercel log line: `koofi_report` + JSON. `/tmp` and memory are instance-local.
-- Same shop + reason is rate-limited for two minutes. A well-formed request still thanks them if the log misses.
+- `POST /api/report` `{ shopId, nameEn, neighborhood, locale, path, reason, note? }` — server re-checks `shopId` with `getShop`. Unknown ids are rejected. Phone and email are ignored. A typed note with no reason is stored as `other`.
+- Thanks only after a durable write. `{ ok: true }` means email and/or Blob persisted. If both miss, the API returns **503** and the form stays open.
+- Primary durable copy: email **Ajzbot73@gmail.com** via Resend (`RESEND_API_KEY`). From: `Koofi Reports <onboarding@resend.dev>` until a verified domain exists. Never `amjad.puliyali@gmail.com` or `@cali.sa`.
+- Secondary durable copy: Vercel Blob when `BLOB_READ_WRITE_TOKEN` is set. `/tmp` is not a destination.
+- `console.log("koofi_report")` is an extra, never the only copy.
 
 Ajz reads reports:
 
-1. Vercel project logs — filter `koofi_report` (survives deploys).
-2. Private read, not linked in the UI: `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/report`
+1. Inbox: **Ajzbot73@gmail.com** — subject `Koofi listing report: {shopId} / {reason}`.
+2. If Blob is configured, private read (not linked in the UI): `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/report`
 
-No mail. There is no mail env on this app.
+Set `RESEND_API_KEY` on the koofi-agent Vercel project for **Preview and Production**. Mail does not work until that key is set.
 
 ## Shop suggestions
 
@@ -152,7 +156,7 @@ app/en/page.tsx                 English landing
 app/c/[id]/page.tsx             shareable cafe card
 app/api/chat/route.ts           web picker + Maps-link suggestions
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
-app/api/report/route.ts         private listing-error pile (cafe card only)
+app/api/report/route.ts         listing-error email + optional Blob (cafe card only)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
 app/api/whatsapp/route.ts       WhatsApp door

@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   if (!canReadLearn(request)) {
     return new Response("not found", { status: 404 });
   }
-  return Response.json(listReports());
+  return Response.json(await listReports());
 }
 
 export async function POST(request: Request) {
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       reason?: unknown;
       note?: unknown;
     };
-    const result = recordReport({
+    const result = await recordReport({
       shopId: body.shopId,
       nameEn: body.nameEn,
       neighborhood: body.neighborhood,
@@ -31,9 +31,10 @@ export async function POST(request: Request) {
       note: body.note,
     });
     if (!result.ok) {
-      return Response.json({ error: result.error }, { status: 400 });
+      const status = result.error === "persist_failed" ? 503 : 400;
+      return Response.json({ error: result.error }, { status });
     }
-    return Response.json({ ok: true });
+    return Response.json({ ok: true, stored: result.stored });
   } catch {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }

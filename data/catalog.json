@@ -730,7 +730,7 @@
       "neighborhoodAr": "السليمانية",
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Urth+Caff%C3%A9+Tahlia/@24.6937175,46.6775955,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03673c0048e9:0x1b7d59048a9775f0!8m2!3d24.6937175!4d46.6775955",
+      "mapsShareUrl": "https://www.google.com/maps/place/Urth+Caff%C3%A9+Tahlia/data=!4m2!3m1!1s0x3e2f032fc5c206a7:0xcb8c06ef088e6811",
       "pin": { "lat": 24.6937175, "lng": 46.6775955 },
       "example": false
     },
@@ -771,19 +771,6 @@
       "example": false
     },
     {
-      "id": "draft-cafe-sulimaniyah",
-      "nameAr": "Draft Café",
-      "nameEn": "Draft Café",
-      "city": "riyadh",
-      "neighborhood": "sulimaniyah",
-      "neighborhoodAr": "السليمانية",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Draft+Caf%C3%A9/@24.700589,46.7021,17z",
-      "pin": { "lat": 24.700589, "lng": 46.7021 },
-      "example": false
-    },
-    {
       "id": "dear-you-sulimaniyah",
       "nameAr": "دير يو",
       "nameEn": "Dear You",
@@ -804,20 +791,20 @@
       "neighborhoodAr": "السليمانية",
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.7136,46.6837",
+      "mapsShareUrl": "https://www.google.com/maps/place/Sand+Clock/data=!4m2!3m1!1s0x3e2ee364e66ca44d:0xf72c965ec8ab1103",
       "pin": { "lat": 24.7136, "lng": 46.6837 },
       "example": false
     },
     {
       "id": "sulalat-coffee-ar-rabwah",
       "nameAr": "سلالات القهوة",
-      "nameEn": "Varietal",
+      "nameEn": "Sulalat",
       "city": "riyadh",
       "neighborhood": "al-rabwah",
       "neighborhoodAr": "الربوة",
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.705488%2C46.748309",
+      "mapsShareUrl": "https://www.google.com/maps/place/Sulalat+Coffee/data=!4m2!3m1!1s0x3e2f053ded08e019:0x47baea5401db03e8",
       "pin": { "lat": 24.705488, "lng": 46.748309 },
       "example": false
     },

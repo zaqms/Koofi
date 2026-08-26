@@ -498,19 +498,6 @@
       "example": false
     },
     {
-      "id": "karma-al-yasmin",
-      "nameAr": "Karma",
-      "nameEn": "Karma Specialty Coffee",
-      "city": "riyadh",
-      "neighborhood": "al-yasmin",
-      "neighborhoodAr": "الياسمين",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Karma+specialty+coffee/@24.8206102,46.6483294,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5b80831fc97:0x961550ff53b12ef5!8m2!3d24.8206102!4d46.6483294!16s%2Fg%2F11sy77hnrv",
-      "pin": { "lat": 24.820631, "lng": 46.648307 },
-      "example": false
-    },
-    {
       "id": "shovel-al-yasmin",
       "nameAr": "محمصة شفل",
       "nameEn": "Shovel Roastery",

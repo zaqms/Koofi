@@ -585,18 +585,6 @@
       "example": false
     },
     {
-      "id": "amber-olaya",
-      "nameAr": "Amber",
-      "nameEn": "Amber Speciality Coffee & Roastery",
-      "city": "riyadh",
-      "neighborhood": "olaya",
-      "neighborhoodAr": "العليا",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f037f5f4c17cd:0x6e850bf566d2fccc",
-      "example": false
-    },
-    {
       "id": "boss-co-olaya",
       "nameAr": "BOSS.CO",
       "nameEn": "BOSS.CO Roastery",

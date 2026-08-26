@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
+import { MapsLink } from "@/components/maps-link";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { postLearnMaps } from "@/lib/learn-session";
@@ -75,7 +76,7 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
             </div>
             <p className="mt-2 truncate text-sm leading-5">{pick.why}</p>
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <a
+              <MapsLink
                 href={pick.mapsHref}
                 className="rounded-full bg-bean px-3 py-1 text-xs text-foam hover:bg-bean-deep"
                 onClick={() => {
@@ -83,7 +84,7 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                 }}
               >
                 {copy.maps[language]}
-              </a>
+              </MapsLink>
               <Link
                 href={pick.cardPath}
                 className="text-xs text-ink-soft underline-offset-2 hover:underline"

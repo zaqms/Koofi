@@ -2,7 +2,8 @@ import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
 import { DocumentLocale } from "@/components/document-locale";
 import { copy } from "@/lib/copy";
-import { PRODUCT_NAME } from "@/lib/product";
+import { BrandHomeLink } from "@/components/brand-home-link";
+import { homePath } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
 type CafeCardPageViewProps = {
@@ -11,7 +12,7 @@ type CafeCardPageViewProps = {
 };
 
 export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
-  const home = language === "en" ? "/en" : "/";
+  const home = homePath(language);
 
   return (
     <main
@@ -21,7 +22,7 @@ export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
     >
       <DocumentLocale language={language} />
       <p className="text-xs text-ink-soft">
-        {PRODUCT_NAME} · {copy.shareHint[language]}
+        <BrandHomeLink language={language} /> · {copy.shareHint[language]}
       </p>
       <CafeCard shop={shop} language={language} />
       <p className="mt-6">

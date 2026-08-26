@@ -1,4 +1,5 @@
 import { CardBeen } from "@/components/card-been";
+import { MapsLink } from "@/components/maps-link";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
@@ -68,12 +69,12 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
       </dl>
 
       <div className="mt-5 flex flex-col gap-2">
-        <a
+        <MapsLink
           href={shopMapsHref(shop)}
           className="rounded-2xl bg-bean px-4 py-3 text-center text-sm text-foam hover:bg-bean-deep"
         >
           {copy.maps[language]}
-        </a>
+        </MapsLink>
         {site ? (
           <a
             href={site}

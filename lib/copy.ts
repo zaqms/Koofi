@@ -131,6 +131,14 @@ export const copy = {
     ar: "الحي",
     en: "Neighborhood",
   },
+  newThisWeek: {
+    ar: "جديد هالأسبوع",
+    en: "New this week",
+  },
+  newThisWeekHint: {
+    ar: "انضافت للقائمة هالأسبوع.",
+    en: "Added to the list this week.",
+  },
   directory: {
     ar: "القائمة",
     en: "The list",

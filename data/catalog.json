@@ -407,19 +407,6 @@
       "example": false
     },
     {
-      "id": "pass-cafe-al-nakheel",
-      "nameAr": "Pass Cafe",
-      "nameEn": "Pass Cafe",
-      "city": "riyadh",
-      "neighborhood": "al-nakheel",
-      "neighborhoodAr": "النخيل",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps?q=24.734589,46.611108",
-      "pin": { "lat": 24.734589, "lng": 46.611108 },
-      "example": false
-    },
-    {
       "id": "idmi-al-yasmin",
       "nameAr": "IDMI",
       "nameEn": "IDMI Coffee Roasters",
@@ -480,7 +467,7 @@
       "neighborhoodAr": "الياسمين",
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.824953,46.636723",
+      "mapsShareUrl": "https://www.google.com/maps/place/Eva+Roasters+And+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee50002ff95ad:0x834e6832c5a1f009",
       "pin": { "lat": 24.824953, "lng": 46.636723 },
       "example": false
     },

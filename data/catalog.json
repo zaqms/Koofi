@@ -735,18 +735,6 @@
       "example": false
     },
     {
-      "id": "alchemy-coffee-roasters-sulimaniyah",
-      "nameAr": "Alchemy",
-      "nameEn": "Alchemy Coffee Roasters",
-      "city": "riyadh",
-      "neighborhood": "sulimaniyah",
-      "neighborhoodAr": "السليمانية",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Alchemy%20Coffee%20Roasters%2C%20Prince%20Abdul%20Aziz%20Bin%20Musaid%20Bin%20Jalawi%20Street%2C%20Al%20Sulaimaniyah%2C%20Riyadh",
-      "example": false
-    },
-    {
       "id": "sombrero-sulimaniyah",
       "nameAr": "سومبريرو",
       "nameEn": "Sombrero",

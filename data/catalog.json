@@ -485,19 +485,6 @@
       "example": false
     },
     {
-      "id": "coffeeholics-al-yasmin",
-      "nameAr": "Coffeeholics",
-      "nameEn": "The Coffeeholics Roastery and Cafe",
-      "city": "riyadh",
-      "neighborhood": "al-yasmin",
-      "neighborhoodAr": "الياسمين",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/The+Coffeeholics+Roastery+and+Cafe+-+Alyasmin+%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D8%B0%D8%A7+%D9%83%D9%88%D9%81%D9%8A+%D9%87%D9%88%D9%84%D9%8A%D9%83%D8%B3+%D9%81%D8%B1%D8%B9+%D8%A7%D9%84%D9%8A%D8%A7%D8%B3%D9%85%D9%8A%D9%86%E2%80%AD/@24.8186315,46.6412496,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5e13d8f5131:0x1803b53586abbfc8!8m2!3d24.8186315!4d46.6412496!16s%2Fg%2F11sk2jwglm",
-      "pin": { "lat": 24.818632, "lng": 46.641250 },
-      "example": false
-    },
-    {
       "id": "qirat-al-yasmin",
       "nameAr": "قيراط",
       "nameEn": "Qirat – Specialty Coffee",
@@ -508,19 +495,6 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.807407,46.658768",
       "pin": { "lat": 24.807407, "lng": 46.658768 },
-      "example": false
-    },
-    {
-      "id": "karma-al-yasmin",
-      "nameAr": "Karma",
-      "nameEn": "Karma Specialty Coffee",
-      "city": "riyadh",
-      "neighborhood": "al-yasmin",
-      "neighborhoodAr": "الياسمين",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Karma+specialty+coffee/@24.8206102,46.6483294,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5b80831fc97:0x961550ff53b12ef5!8m2!3d24.8206102!4d46.6483294!16s%2Fg%2F11sy77hnrv",
-      "pin": { "lat": 24.820631, "lng": 46.648307 },
       "example": false
     },
     {
@@ -557,18 +531,6 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Volume+Coffee+Roasters/@24.8277968,46.6397765,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee50170f71919:0xfa36e7a5ab0613d4!8m2!3d24.8277968!4d46.6397765!16s%2Fg%2F11t77tzlqt",
-      "example": false
-    },
-    {
-      "id": "tree15-al-yasmin",
-      "nameAr": "Tree15",
-      "nameEn": "Tree15 Coffee Roastery",
-      "city": "riyadh",
-      "neighborhood": "al-yasmin",
-      "neighborhoodAr": "الياسمين",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Tree15+Coffee+Roastery/@24.8284117,46.6602606,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee56b48b4dac5:0x954b64a0a77eedcd!8m2!3d24.8284117!4d46.6602606!16s%2Fg%2F11r4x1kpj5",
       "example": false
     },
     {

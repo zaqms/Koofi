@@ -33,6 +33,7 @@ type ChatResponse = {
   reply: string;
   thinCatalog: boolean;
   picks: ChatPick[];
+  awaitingMaps?: boolean;
 };
 
 type PendingResult =
@@ -126,7 +127,9 @@ export function Chat({ landing }: ChatProps) {
       setPendingId(null);
 
       if (result.ok) {
+        const waitForMaps = Boolean(result.data.awaitingMaps);
         setComposerLanguage(result.data.language);
+        setAwaitingMaps(waitForMaps);
         setMessages((current) => {
           const next: Message[] = [
             ...current,
@@ -142,7 +145,7 @@ export function Chat({ landing }: ChatProps) {
           threads[landing] = {
             messages: next,
             composerLanguage: result.data.language,
-            awaitingMaps: false,
+            awaitingMaps: waitForMaps,
           };
           return next;
         });

@@ -1,4 +1,8 @@
+import { isAddShopIntent } from "./add-shop-intent";
+import { copy } from "./copy";
 import { ENV_KEYS, readEnv } from "./env";
+import { detectLanguage } from "./language";
+import { isOffTopicAsk } from "./off-topic-intent";
 import { extractMapsUrl, looksLikeHttpUrl } from "./maps-url";
 import {
   formatWhatsAppReply,
@@ -7,7 +11,6 @@ import {
 } from "./picker";
 import { recordSuggestion } from "./suggest";
 import { speakForPicks } from "./voice";
-import { copy } from "./copy";
 
 type WhatsAppTextMessage = {
   from?: string;
@@ -62,6 +65,15 @@ export async function replyForWhatsApp(text: string): Promise<{
 
   if (looksLikeHttpUrl(text)) {
     return { body: copy.suggestBad.ar, locations: [] };
+  }
+
+  if (isAddShopIntent(text)) {
+    return { body: copy.askMaps.ar, locations: [] };
+  }
+
+  if (isOffTopicAsk(text)) {
+    const language = detectLanguage(text);
+    return { body: copy.offTopic[language], locations: [] };
   }
 
   const result = pickCafes({ text });

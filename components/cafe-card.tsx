@@ -1,9 +1,10 @@
 import { CardBeen } from "@/components/card-been";
+import { CardReport } from "@/components/card-report";
 import { MapsLink } from "@/components/maps-link";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
-import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
+import { cardPath, exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
 import type { Language, Shop } from "@/lib/types";
 import { vibeLine } from "@/lib/vibe-labels";
@@ -85,6 +86,13 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
           </a>
         ) : null}
         <CardBeen shopId={shop.id} language={language} />
+        <CardReport
+          shopId={shop.id}
+          nameEn={shop.nameEn}
+          neighborhood={shop.neighborhood}
+          path={cardPath(shop.id, language)}
+          language={language}
+        />
       </div>
     </article>
   );

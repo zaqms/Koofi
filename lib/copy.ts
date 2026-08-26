@@ -131,6 +131,47 @@ export const copy = {
     ar: "الحي",
     en: "Neighborhood",
   },
+  reportPrompt: {
+    ar: "في شي غلط؟",
+    en: "Something wrong?",
+  },
+  reportThanks: {
+    ar: "وصلت. بنشيك عليها.",
+    en: "Thanks, we’ll look at it.",
+  },
+  reportNeedReason: {
+    ar: "اختر سبب أول.",
+    en: "Pick a reason first.",
+  },
+  reportFail: {
+    ar: "ما وصلت. جرّب مرة ثانية.",
+    en: "Didn't land. Try again.",
+  },
+  reportReasons: {
+    wrong_pin: {
+      ar: "الموقع غلط",
+      en: "Wrong pin",
+    },
+    closed: {
+      ar: "مقفل نهائي",
+      en: "Permanently closed",
+    },
+    wrong_name: {
+      ar: "الاسم غلط",
+      en: "Wrong name",
+    },
+    missing: {
+      ar: "ناقص تفاصيل",
+      en: "Missing details",
+    },
+    other: {
+      ar: "شي ثاني",
+      en: "Other",
+    },
+  } satisfies Record<
+    "wrong_pin" | "closed" | "wrong_name" | "missing" | "other",
+    Record<Language, string>
+  >,
   newThisWeek: {
     ar: "جديد هالأسبوع",
     en: "New this week",

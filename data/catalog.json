@@ -534,19 +534,6 @@
       "example": false
     },
     {
-      "id": "boss-co-olaya",
-      "nameAr": "BOSS.CO",
-      "nameEn": "BOSS.CO Roastery",
-      "city": "riyadh",
-      "neighborhood": "olaya",
-      "neighborhoodAr": "العليا",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03d0a33345ed:0xedb519677804ff02",
-      "pin": { "lat": 24.6952, "lng": 46.6847 },
-      "example": false
-    },
-    {
       "id": "qaf-olaya",
       "nameAr": "قاف",
       "nameEn": "Qaf Coffee Roasters",

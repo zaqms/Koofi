@@ -139,6 +139,10 @@ export const copy = {
     ar: "وصلت. بنشيك عليها.",
     en: "Thanks, we’ll look at it.",
   },
+  reportNeedReason: {
+    ar: "اختر سبب أول.",
+    en: "Pick a reason first.",
+  },
   reportReasons: {
     wrong_pin: {
       ar: "الموقع غلط",

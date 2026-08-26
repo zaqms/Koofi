@@ -125,8 +125,13 @@ export function recordReport(input: ReportInput): ReportResult {
     const shop = shopId ? getShop(shopId) : undefined;
     if (!shop) return { ok: false, error: "unknown_shop" };
 
-    const reason = input.reason;
-    if (!isReportReason(reason)) return { ok: false, error: "invalid_reason" };
+    const note = trimNote(input.note);
+    const reason = isReportReason(input.reason)
+      ? input.reason
+      : note
+        ? "other"
+        : null;
+    if (!reason) return { ok: false, error: "invalid_reason" };
 
     const locale = reportLocale(input.locale);
     if (!locale) return { ok: false, error: "invalid_locale" };
@@ -150,7 +155,6 @@ export function recordReport(input: ReportInput): ReportResult {
       path: reportPath(input.path, shop.id, locale),
       reason,
     };
-    const note = trimNote(input.note);
     if (note) event.note = note;
 
     append(event);

@@ -100,6 +100,21 @@ Ajz reads the pile:
 1. Vercel project logs — filter `koofi_learn` (survives deploys).
 2. Private read, not linked in the UI: `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/learn`
 
+## Listing reports
+
+Quiet private note on the cafe card only (`/c/[id]` and `/en/c/[id]`). Not reviews, not a comments wall, not shown on the card after submit.
+
+- `POST /api/report` `{ shopId, nameEn, neighborhood, locale, path, reason, note? }` — server re-checks `shopId` with `getShop`. Unknown ids are rejected. Phone and email are ignored.
+- Each accepted report is a Vercel log line: `koofi_report` + JSON. `/tmp` and memory are instance-local.
+- Same shop + reason is rate-limited for two minutes. A well-formed request still thanks them if the log misses.
+
+Ajz reads reports:
+
+1. Vercel project logs — filter `koofi_report` (survives deploys).
+2. Private read, not linked in the UI: `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/report`
+
+No mail. There is no mail env on this app.
+
 ## Shop suggestions
 
 Crowdsource-with-curation. Suggestions are **not** the live catalog.
@@ -137,6 +152,7 @@ app/en/page.tsx                 English landing
 app/c/[id]/page.tsx             shareable cafe card
 app/api/chat/route.ts           web picker + Maps-link suggestions
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
+app/api/report/route.ts         private listing-error pile (cafe card only)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
 app/api/whatsapp/route.ts       WhatsApp door
@@ -147,6 +163,7 @@ lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names
 lib/learn.ts                    first-party ask + Maps tap log
+lib/report.ts                   first-party listing-error log
 lib/picker.ts                   shared three-pick logic
 lib/voice.ts                    optional spoken line via xAI (fallback heading)
 lib/places.ts                   live Place Details (rating row; not pick order)

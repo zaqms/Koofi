@@ -94,7 +94,7 @@
       "neighborhoodAr": "السليمانية",
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Coyard+Coffee+Roasters,+King+Saud+Rd,+As+Sulimaniyah,+Riyadh+12621",
+      "mapsShareUrl": "https://www.google.com/maps/place/COYARD/data=!4m2!3m1!1s0x3e2f02e2994397ef:0xb7de5888a1b2facf",
       "example": false
     },
     {
@@ -732,18 +732,6 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Urth+Caff%C3%A9+Tahlia/data=!4m2!3m1!1s0x3e2f032fc5c206a7:0xcb8c06ef088e6811",
       "pin": { "lat": 24.6937175, "lng": 46.6775955 },
-      "example": false
-    },
-    {
-      "id": "alchemy-coffee-roasters-sulimaniyah",
-      "nameAr": "Alchemy",
-      "nameEn": "Alchemy Coffee Roasters",
-      "city": "riyadh",
-      "neighborhood": "sulimaniyah",
-      "neighborhoodAr": "السليمانية",
-      "vibeTags": ["محمصة", "قهوة"],
-      "momentTags": ["roaster", "qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Alchemy%20Coffee%20Roasters%2C%20Prince%20Abdul%20Aziz%20Bin%20Musaid%20Bin%20Jalawi%20Street%2C%20Al%20Sulaimaniyah%2C%20Riyadh",
       "example": false
     },
     {

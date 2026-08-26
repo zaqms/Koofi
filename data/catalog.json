@@ -771,19 +771,6 @@
       "example": false
     },
     {
-      "id": "draft-cafe-sulimaniyah",
-      "nameAr": "Draft Café",
-      "nameEn": "Draft Café",
-      "city": "riyadh",
-      "neighborhood": "sulimaniyah",
-      "neighborhoodAr": "السليمانية",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/Draft+Caf%C3%A9/@24.700589,46.7021,17z",
-      "pin": { "lat": 24.700589, "lng": 46.7021 },
-      "example": false
-    },
-    {
       "id": "dear-you-sulimaniyah",
       "nameAr": "دير يو",
       "nameEn": "Dear You",

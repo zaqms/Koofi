@@ -38,7 +38,7 @@ export function CardActionRow({ mapsHref, language = "ar" }: CardActionRowProps)
   const panelId = useId();
 
   return (
-    <div className="mt-6">
+    <footer className="relative mt-6 overflow-visible">
       <div className="flex w-auto flex-wrap items-center gap-2">
         <MapsLink
           href={mapsHref}
@@ -56,7 +56,7 @@ export function CardActionRow({ mapsHref, language = "ar" }: CardActionRowProps)
         </span>
         <button
           type="button"
-          className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-ink-soft/70 hover:bg-paper-deep hover:text-ink-soft"
+          className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-full text-ink-soft/70 hover:bg-paper-deep hover:text-ink-soft"
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => {
@@ -114,6 +114,6 @@ export function CardActionRow({ mapsHref, language = "ar" }: CardActionRowProps)
           )}
         </div>
       ) : null}
-    </div>
+    </footer>
   );
 }

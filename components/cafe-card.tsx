@@ -25,22 +25,23 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
 
   return (
     <article
-      className="relative mt-4 rounded-[28px] border border-line bg-foam p-6 shadow-[0_12px_40px_rgba(28,20,16,0.06)]"
+      className="mt-4 h-auto overflow-visible rounded-[28px] border border-line bg-foam p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-[0_12px_40px_rgba(28,20,16,0.06)]"
       dir={dir}
       lang={language}
     >
-      {isExampleShop(shop) ? (
-        <span className="absolute top-5 end-5 rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">
-          {exampleBadge(language)}
-        </span>
-      ) : null}
-
-      <ShopVisual
-        nameAr={shop.nameAr}
-        nameEn={shop.nameEn}
-        photoUrl={shop.photoUrl}
-        logoUrl={shop.logoUrl}
-      />
+      <div className="flex items-start justify-between gap-3">
+        <ShopVisual
+          nameAr={shop.nameAr}
+          nameEn={shop.nameEn}
+          photoUrl={shop.photoUrl}
+          logoUrl={shop.logoUrl}
+        />
+        {isExampleShop(shop) ? (
+          <span className="rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">
+            {exampleBadge(language)}
+          </span>
+        ) : null}
+      </div>
 
       <h1 className="mt-5 break-words text-4xl font-bold leading-[1.05] tracking-tight text-pretty sm:text-[2.75rem]">
         {primary}

@@ -135,10 +135,6 @@ export const copy = {
     ar: "فاضي",
     en: "Empty",
   },
-  thumbsLater: {
-    ar: "يعجبني",
-    en: "Thumbs up",
-  },
   thumbsLaterHint: {
     ar: "بعدين. ما نشتري فيه ترتيب، وما فيه عدّاد زوار.",
     en: "Later. Cannot buy rank. Not a visitor counter.",
@@ -147,9 +143,17 @@ export const copy = {
     ar: "تقييمات",
     en: "Reviews",
   },
-  reviewsLaterHint: {
-    ar: "بعدين: من واتساب موثّق، مو جدار تعليقات.",
-    en: "Later: WhatsApp-verified notes. Not a public comments wall.",
+  loginToReview: {
+    ar: "سجّل برقمك عشان تقيّم",
+    en: "Login to review",
+  },
+  reviewLater: {
+    ar: "بعدين",
+    en: "Later",
+  },
+  closeReviewLogin: {
+    ar: "إغلاق",
+    en: "Close",
   },
   reviews: {
     ar: "تقييم",

@@ -1,7 +1,7 @@
+import { CardActionRow } from "@/components/card-action-row";
 import { CardBeen } from "@/components/card-been";
 import { CardClaim } from "@/components/card-claim";
 import { CardShare } from "@/components/card-share";
-import { MapsLink } from "@/components/maps-link";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
@@ -16,24 +16,6 @@ type CafeCardProps = {
 };
 
 const OWNER_SLOTS = ["instagram", "tiktok", "phone"] as const;
-
-function LaterMark({
-  label,
-  hint,
-}: {
-  label: string;
-  hint: string;
-}) {
-  return (
-    <span
-      className="inline-flex cursor-not-allowed items-center gap-1.5 text-xs text-ink-soft/55"
-      aria-disabled="true"
-      title={hint}
-    >
-      {label}
-    </span>
-  );
-}
 
 export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
   const hours = shop.hours?.trim();
@@ -107,29 +89,11 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         </p>
       </section>
 
-      <div className="mt-6">
-        <MapsLink
-          href={shopMapsHref(shop)}
-          className="block rounded-2xl bg-bean px-4 py-3.5 text-center text-sm text-foam hover:bg-bean-deep"
-        >
-          {copy.goThere[language]}
-        </MapsLink>
-      </div>
+      <CardActionRow mapsHref={shopMapsHref(shop)} language={language} />
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
         <CardShare shopId={shop.id} name={primary} language={language} />
         <CardBeen shopId={shop.id} language={language} />
-      </div>
-
-      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1">
-        <LaterMark
-          label={copy.thumbsLater[language]}
-          hint={copy.thumbsLaterHint[language]}
-        />
-        <LaterMark
-          label={copy.reviewsLater[language]}
-          hint={copy.reviewsLaterHint[language]}
-        />
       </div>
     </article>
   );

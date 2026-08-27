@@ -131,6 +131,10 @@ export const copy = {
     ar: "الحي",
     en: "Neighborhood",
   },
+  ownerPill: {
+    ar: "المالك",
+    en: "OWNER",
+  },
   newThisWeek: {
     ar: "جديد هالأسبوع",
     en: "New this week",

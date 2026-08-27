@@ -116,8 +116,8 @@ export const copy = {
     en: "Link copied",
   },
   ownerLater: {
-    ar: "بعدين للمالك. فاضي الحين.",
-    en: "Later, for the owner. Empty for now.",
+    ar: "هذي لك بس. ما نحفظها.",
+    en: "Only you see this. Not saved.",
   },
   instagram: {
     ar: "إنستا",

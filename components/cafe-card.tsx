@@ -15,8 +15,6 @@ type CafeCardProps = {
   language?: Language;
 };
 
-const OWNER_SLOTS = ["instagram", "tiktok", "phone"] as const;
-
 export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
   const hours = shop.hours?.trim();
   const primary = shopDisplayName(shop, language);
@@ -70,24 +68,7 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         <p>{hours || copy.noHours[language]}</p>
       </div>
 
-      <section className="mt-4 rounded-2xl border border-dashed border-line bg-paper/50 px-4 py-3.5">
-        <p className="text-xs leading-5 text-ink-soft">{copy.ownerLater[language]}</p>
-        <dl className="mt-3 space-y-2.5">
-          {OWNER_SLOTS.map((slot) => (
-            <div key={slot} className="grid grid-cols-[4.75rem_1fr] items-center gap-3">
-              <dt className="text-xs text-ink-soft">{copy[slot][language]}</dt>
-              <dd>
-                <span className="block min-h-9 rounded-xl border border-dashed border-line bg-foam/80">
-                  <span className="sr-only">{copy.emptyHandle[language]}</span>
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-3">
-          <CardClaim language={language} />
-        </p>
-      </section>
+      <CardClaim language={language} />
 
       <CardActionRow mapsHref={shopMapsHref(shop)} language={language} />
 

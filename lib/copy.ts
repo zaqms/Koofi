@@ -131,10 +131,6 @@ export const copy = {
     ar: "الجوال",
     en: "Phone",
   },
-  emptyHandle: {
-    ar: "فاضي",
-    en: "Empty",
-  },
   thumbsLaterHint: {
     ar: "بعدين. ما نشتري فيه ترتيب، وما فيه عدّاد زوار.",
     en: "Later. Cannot buy rank. Not a visitor counter.",

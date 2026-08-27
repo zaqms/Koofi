@@ -95,6 +95,62 @@ export const copy = {
     ar: "الخريطة",
     en: "Maps",
   },
+  goThere: {
+    ar: "روح لها",
+    en: "Go there",
+  },
+  claimThis: {
+    ar: "هذي قهوتي",
+    en: "Claim this",
+  },
+  claimNoted: {
+    ar: "ما سجّلنا ملكية. بعدين.",
+    en: "Not saving ownership yet.",
+  },
+  shareCard: {
+    ar: "شارك البطاقة",
+    en: "Share the card",
+  },
+  shareCopied: {
+    ar: "انسخنا الرابط",
+    en: "Link copied",
+  },
+  ownerLater: {
+    ar: "بعدين للمالك. فاضي الحين.",
+    en: "Later, for the owner. Empty for now.",
+  },
+  instagram: {
+    ar: "إنستا",
+    en: "IG",
+  },
+  tiktok: {
+    ar: "تيك توك",
+    en: "TikTok",
+  },
+  phone: {
+    ar: "الجوال",
+    en: "Phone",
+  },
+  emptyHandle: {
+    ar: "فاضي",
+    en: "Empty",
+  },
+  thumbsLater: {
+    ar: "يعجبني",
+    en: "Thumbs up",
+  },
+  thumbsLaterHint: {
+    ar: "بعدين. ما نشتري فيه ترتيب، وما فيه عدّاد زوار.",
+    en: "Later. Cannot buy rank. Not a visitor counter.",
+  },
+  reviewsLater: {
+    ar: "تقييمات",
+    en: "Reviews",
+  },
+  reviewsLaterHint: {
+    ar: "بعدين: من واتساب موثّق، مو جدار تعليقات.",
+    en: "Later: WhatsApp-verified notes. Not a public comments wall.",
+  },
   reviews: {
     ar: "تقييم",
     en: "reviews",

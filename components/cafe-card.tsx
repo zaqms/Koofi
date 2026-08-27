@@ -1,4 +1,6 @@
 import { CardBeen } from "@/components/card-been";
+import { CardClaim } from "@/components/card-claim";
+import { CardShare } from "@/components/card-share";
 import { MapsLink } from "@/components/maps-link";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
@@ -13,9 +15,28 @@ type CafeCardProps = {
   language?: Language;
 };
 
+const OWNER_SLOTS = ["instagram", "tiktok", "phone"] as const;
+
+function LaterMark({
+  label,
+  hint,
+}: {
+  label: string;
+  hint: string;
+}) {
+  return (
+    <span
+      className="inline-flex cursor-not-allowed items-center gap-1.5 text-xs text-ink-soft/55"
+      aria-disabled="true"
+      title={hint}
+    >
+      {label}
+    </span>
+  );
+}
+
 export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
   const hours = shop.hours?.trim();
-  const site = shop.officialSite?.trim();
   const primary = shopDisplayName(shop, language);
   const dir = language === "ar" ? "rtl" : "ltr";
   const area =
@@ -30,7 +51,9 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
     >
       <div className="absolute top-5 end-5 flex flex-col items-end gap-1.5">
         <span
-          className="pointer-events-none select-none rounded-full border border-line bg-foam px-2.5 py-0.5 text-[10px] font-medium tracking-[0.14em] text-ink-soft"
+          className={`pointer-events-none select-none rounded-full border border-line bg-foam px-2.5 py-0.5 text-[10px] font-medium text-ink-soft ${
+            language === "en" ? "tracking-[0.14em]" : ""
+          }`}
           aria-hidden="true"
         >
           {copy.ownerPill[language]}
@@ -75,29 +98,48 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         <p>{hours || copy.noHours[language]}</p>
       </div>
 
+      <section className="mt-4 rounded-2xl border border-dashed border-line bg-paper/50 px-4 py-3.5">
+        <p className="text-xs leading-5 text-ink-soft">{copy.ownerLater[language]}</p>
+        <dl className="mt-3 space-y-2.5">
+          {OWNER_SLOTS.map((slot) => (
+            <div key={slot} className="grid grid-cols-[4.75rem_1fr] items-center gap-3">
+              <dt className="text-xs text-ink-soft">{copy[slot][language]}</dt>
+              <dd>
+                <span className="block min-h-9 rounded-xl border border-dashed border-line bg-foam/80">
+                  <span className="sr-only">{copy.emptyHandle[language]}</span>
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-3">
+          <CardClaim language={language} />
+        </p>
+      </section>
+
       <div className="mt-6">
         <MapsLink
           href={shopMapsHref(shop)}
           className="block rounded-2xl bg-bean px-4 py-3.5 text-center text-sm text-foam hover:bg-bean-deep"
         >
-          {copy.maps[language]}
+          {copy.goThere[language]}
         </MapsLink>
       </div>
 
-      {site ? (
-        <p className="mt-3 text-center">
-          <a
-            href={site}
-            className="text-xs text-ink-soft underline-offset-2 hover:underline"
-            rel="noreferrer"
-          >
-            {copy.site[language]}
-          </a>
-        </p>
-      ) : null}
-
-      <div className="mt-3">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <CardShare shopId={shop.id} name={primary} language={language} />
         <CardBeen shopId={shop.id} language={language} />
+      </div>
+
+      <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1">
+        <LaterMark
+          label={copy.thumbsLater[language]}
+          hint={copy.thumbsLaterHint[language]}
+        />
+        <LaterMark
+          label={copy.reviewsLater[language]}
+          hint={copy.reviewsLaterHint[language]}
+        />
       </div>
     </article>
   );

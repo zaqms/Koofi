@@ -49,21 +49,11 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
       dir={dir}
       lang={language}
     >
-      <div className="absolute top-5 end-5 flex flex-col items-end gap-1.5">
-        <span
-          className={`pointer-events-none select-none rounded-full border border-line bg-foam px-2.5 py-0.5 text-[10px] font-medium text-ink-soft ${
-            language === "en" ? "tracking-[0.14em]" : ""
-          }`}
-          aria-hidden="true"
-        >
-          {copy.ownerPill[language]}
+      {isExampleShop(shop) ? (
+        <span className="absolute top-5 end-5 rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">
+          {exampleBadge(language)}
         </span>
-        {isExampleShop(shop) ? (
-          <span className="rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">
-            {exampleBadge(language)}
-          </span>
-        ) : null}
-      </div>
+      ) : null}
 
       <ShopVisual
         nameAr={shop.nameAr}

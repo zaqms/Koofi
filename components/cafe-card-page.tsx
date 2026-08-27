@@ -16,7 +16,7 @@ export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
 
   return (
     <main
-      className="mx-auto min-h-dvh w-full max-w-md px-4 py-6"
+      className="mx-auto min-h-dvh w-full max-w-md overflow-visible px-4 pt-6 pb-[max(2.5rem,calc(env(safe-area-inset-bottom)+1.5rem))]"
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
     >

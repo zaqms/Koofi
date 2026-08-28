@@ -1,7 +1,15 @@
 import type { Language, MomentTag } from "./types";
 
-/** People-facing name. The npm package stays `koofi`. */
-export const PRODUCT_NAME = "Koofi";
+/** People-facing English name. The npm package stays `koofi`. */
+export const PRODUCT_NAME = "Wain";
+
+/** People-facing Arabic name in sentences and the footer. Wordmark stays Latin. */
+export const PRODUCT_NAME_AR = "وين";
+
+/** Public host visitors see. Lowercase. */
+export const PUBLIC_SITE_HOST = "wain.lol";
+
+export const PUBLIC_SITE_URL = `https://${PUBLIC_SITE_HOST}`;
 
 /** Locked until Amjad picks a GenZ line. */
 export const LOCKED_OPENER = "اي قهوة ناوي تروح؟";
@@ -64,8 +72,8 @@ export function aboutPath(language: Language = "ar"): string {
 /** Locked About copy. Spoken Riyadh/Najdi on AR. Do not polish or expand. */
 export const LOCKED_ABOUT = {
   lead: {
-    ar: "كوفي مسويه واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد. الموقع كله مسويه الذكاء الاصطناعي، ما فيه أحد قعد يبرمج بيده.",
-    en: "Koofi is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
+    ar: "وين مسويه واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد. الموقع كله مسويه الذكاء الاصطناعي، ما فيه أحد قعد يبرمج بيده.",
+    en: "Wain is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
   },
   note: {
     ar: "إذا عندك ملاحظة، ارسل aj@cali.sa. البوت يقراها أول، وبعدين توصل لشخص إذا احتجنا.",

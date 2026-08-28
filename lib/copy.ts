@@ -169,7 +169,7 @@ export const copy = {
     en: "Back to chat",
   },
   about: {
-    ar: "عن كوفي",
+    ar: "عن وين",
     en: "About",
   },
   aboutLead: LOCKED_ABOUT.lead,

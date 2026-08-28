@@ -9,6 +9,21 @@ import { LOCKED_OPENER_EN, PRODUCT_NAME } from "@/lib/product";
 export const metadata = {
   title: PRODUCT_NAME,
   description: LOCKED_OPENER_EN,
+  applicationName: PRODUCT_NAME,
+  appleWebApp: { title: PRODUCT_NAME },
+  openGraph: {
+    title: PRODUCT_NAME,
+    description: LOCKED_OPENER_EN,
+    siteName: PRODUCT_NAME,
+    locale: "en_US",
+    type: "website",
+    url: "/en",
+  },
+  twitter: {
+    card: "summary",
+    title: PRODUCT_NAME,
+    description: LOCKED_OPENER_EN,
+  },
 };
 
 export default function EnglishHome() {

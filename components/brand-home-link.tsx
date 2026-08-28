@@ -15,12 +15,12 @@ export function BrandHomeLink({ language, className }: BrandHomeLinkProps) {
       href={homePath(language)}
       className={
         className
-          ? `inline-flex items-center ${className}`
-          : "inline-flex items-center"
+          ? `inline-flex shrink-0 items-center ${className}`
+          : "inline-flex shrink-0 items-center"
       }
       dir="ltr"
     >
-      <BrandWordmark priority />
+      <BrandWordmark size="nav" />
     </Link>
   );
 }

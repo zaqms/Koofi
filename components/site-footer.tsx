@@ -23,7 +23,7 @@ export function SiteFooter({ language, padded = true }: SiteFooterProps) {
       lang={language}
     >
       <p className="text-xs" dir="ltr">
-        <BrandWordmark />
+        <BrandWordmark size="footer" />
       </p>
       <Link
         href={aboutPath(language)}

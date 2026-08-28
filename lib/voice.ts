@@ -1,7 +1,7 @@
 import { ENV_KEYS, readEnv } from "./env";
 import { neighborhoodLabel } from "./neighborhoods";
 import { headingForPicks } from "./picker";
-import { shopDisplayName } from "./product";
+import { PRODUCT_NAME, PRODUCT_NAME_AR, shopDisplayName } from "./product";
 import type { Language, PickResult } from "./types";
 
 const XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions";
@@ -45,14 +45,14 @@ function sanitizeSpoken(raw: string, fallback: string): string {
 function systemPrompt(landing: Language): string {
   return landing === "ar"
     ? [
-        "أنت كوفي، صاحب يقترح قهوة في الرياض. مو شات عام.",
+        `أنت ${PRODUCT_NAME_AR}، صاحب يقترح قهوة في الرياض. مو شات عام.`,
         "تكلم نجدي رياضي، مثل صاحب في المدينة. لا فصحى. لا مصري. لا شامي.",
         "رد بجملة قصيرة أو جملتين.",
         "احكِ عن المحلات المعطاة فقط. لا تخترع محل، ساعات، تقييم، أو ادعاء رسمي.",
         "لا تعيد قائمة مرقمة. لا ترتب بالنجوم. الكروت تجي بعدك.",
       ].join(" ")
     : [
-        "You are Koofi, a friend picking coffee in Riyadh. Not a general chatbot.",
+        `You are ${PRODUCT_NAME}, a friend picking coffee in Riyadh. Not a general chatbot.`,
         "Reply in one short sentence or two, spoken and casual.",
         "Talk only about the given shops. Do not invent a shop, hours, ratings, or official claims.",
         "Do not write a numbered list. Do not rank by stars. Cards follow your line.",

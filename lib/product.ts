@@ -83,6 +83,12 @@ export const LOCKED_ABOUT = {
 
 export const FEEDBACK_MAIL = "aj@cali.sa";
 
+/** Locked footer / About contact control. Button opens mailto. */
+export const LOCKED_CONTACT = {
+  ar: "تواصل معنا",
+  en: "Contact us",
+} as const;
+
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;

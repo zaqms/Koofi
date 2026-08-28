@@ -1,6 +1,7 @@
 import {
   EXAMPLE_BADGE,
   LOCKED_ABOUT,
+  LOCKED_CONTACT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
   VIBE_CHIPS,
@@ -10,6 +11,7 @@ import type { Language } from "./types";
 export {
   FEEDBACK_MAIL,
   LOCKED_ABOUT,
+  LOCKED_CONTACT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
   PRODUCT_NAME,
@@ -174,6 +176,7 @@ export const copy = {
   },
   aboutLead: LOCKED_ABOUT.lead,
   aboutNote: LOCKED_ABOUT.note,
+  contactUs: LOCKED_CONTACT,
   shareHint: {
     ar: "رابط، مو تطبيق.",
     en: "A link, not an app.",

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { aboutPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
@@ -8,7 +9,7 @@ type SiteFooterProps = {
   padded?: boolean;
 };
 
-/** Quiet About link. Home: after the directory. Cards: under back-to-chat. */
+/** About link plus Contact us. Home: after the directory. Cards: under back-to-chat. */
 export function SiteFooter({ language, padded = true }: SiteFooterProps) {
   return (
     <footer
@@ -26,6 +27,9 @@ export function SiteFooter({ language, padded = true }: SiteFooterProps) {
       >
         {copy.about[language]}
       </Link>
+      <div className="mt-3">
+        <ContactUs language={language} />
+      </div>
     </footer>
   );
 }

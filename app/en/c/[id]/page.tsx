@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { CafeCardPageView } from "@/components/cafe-card-page";
-import { getShop, listShops } from "@/lib/catalog";
+import { getShop, listRealShops } from "@/lib/catalog";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { PRODUCT_NAME } from "@/lib/product";
 
@@ -9,7 +9,7 @@ type CardPageProps = {
 };
 
 export function generateStaticParams() {
-  return listShops().map((shop) => ({ id: shop.id }));
+  return listRealShops().map((shop) => ({ id: shop.id }));
 }
 
 export async function generateMetadata({ params }: CardPageProps) {

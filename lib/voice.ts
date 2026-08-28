@@ -1,7 +1,7 @@
 import { ENV_KEYS, readEnv } from "./env";
 import { neighborhoodLabel } from "./neighborhoods";
 import { headingForPicks } from "./picker";
-import { isExampleShop, shopDisplayName } from "./product";
+import { shopDisplayName } from "./product";
 import type { Language, PickResult } from "./types";
 
 const XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions";
@@ -21,8 +21,7 @@ function pickLines(result: PickResult): string {
     .map((pick, index) => {
       const name = shopDisplayName(pick.shop, result.language);
       const place = neighborhoodLabel(pick.shop.neighborhood, result.language);
-      const example = isExampleShop(pick.shop) ? " example" : "";
-      return `${index + 1}. ${name} — ${place}${example}`;
+      return `${index + 1}. ${name} — ${place}`;
     })
     .join("\n");
 }

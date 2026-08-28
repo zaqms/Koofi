@@ -14,7 +14,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. A short spoken line sits above the cards (xAI chat completions, `grok-4.6`). The share unit is still the cards: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary. If `XAI_API_KEY` is missing or the model call fails, the spoken line falls back to today’s heading copy. Cards still send.
 - Riyadh only. Neighborhoods: Hittin (هيتين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود), Al Rabwah (الربوة), Al Rabi (الربيع), Al Masif (المصيف), Al Rahmaniyyah (الرحمانية).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
-- Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. Example/مثال shops never show a rating. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
+- Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
 - Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, hours only if we have them from a legal source, vibe tags. Do not ask people to share the Koofi URL.
 - Each pick card has a small 44px letter mark from the shop name (IK, WO, …). A `photoUrl` is shown only if Amjad sets one. Do not scrape Maps photos.
@@ -34,14 +34,9 @@ The locked openers and chip list live in [`lib/product.ts`](lib/product.ts) (`LO
 
 **Real shops come from Amjad as Maps pins.** This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Do not write ratings into `catalog.json`. Hours and official claims stay empty until there is a legal source. Do not invent coordinates for a real shop when `mapsShareUrl` is present.
 
-v1 ships:
+v1 ships the real shops Amjad sent (`example: false`), each with his exact Maps share link. Do not add fictional example/مثال shops to fill a neighborhood, a vibe chip, or a three-pick reply. Picks and the public list are real shops only.
 
-- the **first real shops** Amjad sent (`example: false`), each with his exact Maps short link
-- **fictional example shops** (`example: true`, names like Example Roaster / مثال) so other neighborhoods and vibe chips can still demo a three-pick reply
-- example shops are labeled **مثال / Example** in the UI
-- example pins are fictional demo points so Maps links work; they are not a real venue
-
-When Amjad adds more shops he likes (target 30–40), append them with `"example": false` and his Maps share URL. Do not invent names to fill the gap.
+When Amjad adds more shops he likes, append them with `"example": false` and his Maps share URL. Do not invent names to fill the gap.
 
 Discovery filters the catalog (Riyadh, not been, neighborhood/moment fit) and picks three with a light editorial hand. If the catalog is too small, Koofi says so in Arabic and still returns what it can. It never invents a real shop.
 
@@ -52,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Open the printed local URL. No login. Ask something like `هيتين شغل` or `quiet work in Al Malqa`. You should get up to three example picks and a card link each.
+Open the printed local URL. No login. Ask something like `هيتين شغل` or `quiet work in Al Malqa`. You should get up to three real-shop picks and a card link each.
 
 ```bash
 npm run build
@@ -115,7 +110,7 @@ Crowdsource-with-curation. Suggestions are **not** the live catalog.
 Same picker as the web chat. Webhook:
 
 - `GET /api/whatsapp` — Meta verification (`hub.mode`, `hub.verify_token`, `hub.challenge`)
-- `POST /api/whatsapp` — inbound text messages. A Maps URL is a shop suggestion (thank-you, no picks). Anything else is the same three-pick reply. Real shops use Amjad’s `maps.app.goo.gl` short links; example shops still use a pin or name search. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
+- `POST /api/whatsapp` — inbound text messages. A Maps URL is a shop suggestion (thank-you, no picks). Anything else is the same three-pick reply. Real shops use Amjad’s Maps share links. If a shop has lat/lng and WhatsApp is configured, a location message is also sent. Web chat does not need Meta credentials.
 
 The webhook is stubbed so the web app runs without Meta credentials. If tokens are missing, inbound POSTs still run the picker and return `200`; they just skip sending.
 

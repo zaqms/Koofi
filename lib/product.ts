@@ -92,8 +92,6 @@ export const LOCKED_CONTACT = {
 /** Click-to-chat only. Do not use web.whatsapp.com or api.whatsapp.com. */
 export const CONTACT_WHATSAPP_HREF = "https://wa.me/966570064331";
 
-export const CONTACT_WHATSAPP_NUMBER = "+966 57 006 4331";
-
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;

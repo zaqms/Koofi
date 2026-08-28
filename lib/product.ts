@@ -57,6 +57,24 @@ export function homePath(language: Language = "ar"): string {
   return language === "en" ? "/en" : "/";
 }
 
+export function aboutPath(language: Language = "ar"): string {
+  return language === "en" ? "/en/about" : "/about";
+}
+
+/** Locked About copy. Spoken Riyadh/Najdi on AR. Do not polish or expand. */
+export const LOCKED_ABOUT = {
+  lead: {
+    ar: "كوفي مسويه واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد. الموقع كله مسويه الذكاء الاصطناعي، ما فيه أحد قعد يبرمج بيده.",
+    en: "Koofi is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
+  },
+  note: {
+    ar: "إذا عندك ملاحظة، ارسل aj@cali.sa. البوت يقراها أول، وبعدين توصل لشخص إذا احتجنا.",
+    en: "If something’s off, email aj@cali.sa. A bot reads it first, then a person if it needs one.",
+  },
+} as const;
+
+export const FEEDBACK_MAIL = "aj@cali.sa";
+
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;

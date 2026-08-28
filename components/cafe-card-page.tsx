@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
 import { DocumentLocale } from "@/components/document-locale";
+import { SiteFooter } from "@/components/site-footer";
 import { copy } from "@/lib/copy";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { homePath } from "@/lib/product";
@@ -30,6 +31,7 @@ export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
           {copy.backToChat[language]}
         </Link>
       </p>
+      <SiteFooter language={language} padded={false} />
     </main>
   );
 }

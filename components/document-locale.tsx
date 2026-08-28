@@ -7,7 +7,7 @@ type DocumentLocaleProps = {
   language: Language;
 };
 
-/** Keep html lang/dir on cafe-card pages after Chat unmounts. */
+/** Keep html lang/dir on inner pages after Chat unmounts. */
 export function DocumentLocale({ language }: DocumentLocaleProps) {
   useEffect(() => {
     const html = document.documentElement;

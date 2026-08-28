@@ -1,7 +1,20 @@
-import { EXAMPLE_BADGE, LOCKED_OPENER, LOCKED_OPENER_EN, VIBE_CHIPS } from "./product";
+import {
+  EXAMPLE_BADGE,
+  LOCKED_ABOUT,
+  LOCKED_OPENER,
+  LOCKED_OPENER_EN,
+  VIBE_CHIPS,
+} from "./product";
 import type { Language } from "./types";
 
-export { LOCKED_OPENER, LOCKED_OPENER_EN, PRODUCT_NAME, VIBE_CHIPS } from "./product";
+export {
+  FEEDBACK_MAIL,
+  LOCKED_ABOUT,
+  LOCKED_OPENER,
+  LOCKED_OPENER_EN,
+  PRODUCT_NAME,
+  VIBE_CHIPS,
+} from "./product";
 
 export function t<T extends Record<Language, string>>(
   language: Language,
@@ -155,6 +168,12 @@ export const copy = {
     ar: "ارجع للشات",
     en: "Back to chat",
   },
+  about: {
+    ar: "عن كوفي",
+    en: "About",
+  },
+  aboutLead: LOCKED_ABOUT.lead,
+  aboutNote: LOCKED_ABOUT.note,
   shareHint: {
     ar: "رابط، مو تطبيق.",
     en: "A link, not an app.",

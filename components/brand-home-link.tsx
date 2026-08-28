@@ -20,7 +20,7 @@ export function BrandHomeLink({ language, className }: BrandHomeLinkProps) {
       }
       dir="ltr"
     >
-      <BrandWordmark />
+      <BrandWordmark priority />
     </Link>
   );
 }

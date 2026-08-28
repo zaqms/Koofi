@@ -10,13 +10,14 @@ export const LATIN_WORDMARK = {
 
 type BrandWordmarkProps = {
   className?: string;
+  priority?: boolean;
 };
 
 /**
  * Locked heavier black `wain.lol` PNG. Height follows `1em` so it sits with
  * the current text wordmark, not a banner. No stretch, no recolor.
  */
-export function BrandWordmark({ className }: BrandWordmarkProps) {
+export function BrandWordmark({ className, priority = false }: BrandWordmarkProps) {
   return (
     <span
       className={
@@ -34,6 +35,7 @@ export function BrandWordmark({ className }: BrandWordmarkProps) {
         width={LATIN_WORDMARK.width}
         height={LATIN_WORDMARK.height}
         unoptimized
+        priority={priority}
         className="h-full w-full object-contain object-left"
         style={{ objectFit: "contain" }}
       />

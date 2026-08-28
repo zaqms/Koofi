@@ -1,5 +1,5 @@
 {
-  "note": "Real shops come from Amjad as Google Maps share links. Do not invent real Riyadh cafe names, hours, ratings, or official claims, and do not reconstruct lat/lng for a real shop when mapsShareUrl is present. Example shops stay fictional so other neighborhoods and chips can still demo. Example pins are fictional demo points, not a real venue.",
+  "note": "Real shops come from Amjad as Google Maps share links. Do not invent real Riyadh cafe names, hours, ratings, or official claims, and do not reconstruct lat/lng for a real shop when mapsShareUrl is present. The catalog is real shops only. Do not add fictional example/مثال shops to fill neighborhoods, chips, or a three-pick reply.",
   "shops": [
     {
       "id": "ik-coffee-downtown",
@@ -1178,78 +1178,6 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/CAF+LAB/data=!4m2!3m1!1s0x3e2ee544d2d79851:0x65f6372bf5983410",
       "example": false
-    },
-    {
-      "id": "example-roaster",
-      "nameAr": "محمصة المثال",
-      "nameEn": "Example Roaster",
-      "city": "riyadh",
-      "neighborhood": "hittin",
-      "neighborhoodAr": "هيتين",
-      "vibeTags": ["محمصة", "فلتر", "كاونتر"],
-      "momentTags": ["roaster", "qahwa", "work", "popular"],
-      "pin": { "lat": 24.7582, "lng": 46.6279 },
-      "example": true
-    },
-    {
-      "id": "example-quiet-corner",
-      "nameAr": "ركن المثال الهادئ",
-      "nameEn": "Example Quiet Corner",
-      "city": "riyadh",
-      "neighborhood": "al-malqa",
-      "neighborhoodAr": "الملقا",
-      "vibeTags": ["هادئ", "طاولات", "لابتوب"],
-      "momentTags": ["quiet", "work", "study"],
-      "pin": { "lat": 24.8011, "lng": 46.6124 },
-      "example": true
-    },
-    {
-      "id": "example-late-qahwa",
-      "nameAr": "قهوة المثال المسائية",
-      "nameEn": "Example Late Qahwa",
-      "city": "riyadh",
-      "neighborhood": "olaya",
-      "neighborhoodAr": "العليا",
-      "vibeTags": ["قعدة", "متأخر", "أصحاب"],
-      "momentTags": ["late", "friend", "qahwa", "date"],
-      "pin": { "lat": 24.6874, "lng": 46.6858 },
-      "example": true
-    },
-    {
-      "id": "example-pastry",
-      "nameAr": "معجنات المثال",
-      "nameEn": "Example Pastry",
-      "city": "riyadh",
-      "neighborhood": "al-nakheel",
-      "neighborhoodAr": "النخيل",
-      "vibeTags": ["معجنات", "كرواسون", "فنجان"],
-      "momentTags": ["pastry", "popular", "qahwa"],
-      "pin": { "lat": 24.7694, "lng": 46.6518 },
-      "example": true
-    },
-    {
-      "id": "example-outdoor",
-      "nameAr": "جلسة المثال برا",
-      "nameEn": "Example Outdoor",
-      "city": "riyadh",
-      "neighborhood": "al-yasmin",
-      "neighborhoodAr": "الياسمين",
-      "vibeTags": ["برا", "جلسة", "هواء"],
-      "momentTags": ["outdoor", "date", "friend"],
-      "pin": { "lat": 24.8196, "lng": 46.6432 },
-      "example": true
-    },
-    {
-      "id": "example-study",
-      "nameAr": "ركن المثال للدراسة",
-      "nameEn": "Example Study Nook",
-      "city": "riyadh",
-      "neighborhood": "hittin",
-      "neighborhoodAr": "هيتين",
-      "vibeTags": ["دراسة", "هادئ", "طاولات"],
-      "momentTags": ["study", "quiet", "work"],
-      "pin": { "lat": 24.7608, "lng": 46.6331 },
-      "example": true
     }
   ]
 }

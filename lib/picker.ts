@@ -1,4 +1,4 @@
-import { listShops } from "./catalog";
+import { listRealShops } from "./catalog";
 import { copy } from "./copy";
 import { neighborhoodLabel } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
@@ -173,14 +173,11 @@ export function pickCafes(input: {
   const language = input.language ?? intent.language;
   const been = new Set((input.beenIds ?? []).filter(Boolean));
   const avoided = new Set(intent.avoidedNeighborhoods);
-  const available = listShops().filter(
+  const available = listRealShops().filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
   );
-  const realAvailable = available.filter((shop) => !isExampleShop(shop));
-  const source =
-    realAvailable.length >= TARGET_PICKS ? realAvailable : available;
 
-  const neighborhoodMatches = source.filter(
+  const neighborhoodMatches = available.filter(
     (shop) =>
       intent.neighborhoods.length === 0 ||
       intent.neighborhoods.includes(shop.neighborhood),
@@ -194,7 +191,6 @@ export function pickCafes(input: {
 
   let pool = momentMatches;
   if (pool.length < TARGET_PICKS) pool = neighborhoodMatches;
-  if (pool.length < TARGET_PICKS) pool = source;
   if (pool.length < TARGET_PICKS) pool = available;
 
   const ranked = diversify(

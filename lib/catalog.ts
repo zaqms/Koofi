@@ -14,7 +14,7 @@ export function listShops(): Shop[] {
 }
 
 export function getShop(id: string): Shop | undefined {
-  return listShops().find((shop) => shop.id === id);
+  return listRealShops().find((shop) => shop.id === id);
 }
 
 export function listRealShops(): Shop[] {

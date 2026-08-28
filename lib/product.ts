@@ -43,7 +43,7 @@ export function vibeChipLabel(
   return language === "ar" ? chip.ar : chip.en;
 }
 
-/** Catalog / API / UI field for fictional demo shops. */
+/** Catalog flag. Live shops are `false`. Do not use `true` to fill chips or picks. */
 export const EXAMPLE_FLAG = "example" as const;
 
 export const EXAMPLE_BADGE = {

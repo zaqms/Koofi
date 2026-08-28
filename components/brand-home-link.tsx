@@ -10,7 +10,7 @@ type BrandHomeLinkProps = {
 /** Wordmark back to the locale homepage. */
 export function BrandHomeLink({ language, className }: BrandHomeLinkProps) {
   return (
-    <Link href={homePath(language)} className={className}>
+    <Link href={homePath(language)} className={className} dir="ltr">
       {PRODUCT_NAME}
     </Link>
   );

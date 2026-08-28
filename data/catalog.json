@@ -11,6 +11,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0385060a46a1:0x8aa4df79417558b1",
+      "logoUrl": "/logos/ik-coffee-downtown.jpg",
       "example": false
     },
     {
@@ -23,6 +24,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03581602b92d:0x60ea07cc3fa5339d",
+      "logoUrl": "/logos/woods-olaya.jpg",
       "example": false
     },
     {
@@ -35,6 +37,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f030012e74b21:0xe549be8c61b6d940",
+      "logoUrl": "/logos/cafu-olaya.jpg",
       "example": false
     },
     {
@@ -47,6 +50,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/ONE+GRAM/data=!4m2!3m1!1s0x3e2f0300779b6af3:0x8cfcba3b84b71d7f",
+      "logoUrl": "/logos/one-gram-sulimaniyah.jpg",
       "example": false
     },
     {
@@ -59,6 +63,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Joe+Barrel+Coffee/@38.9979465,-105.550863,6z/data=!3m1!4b1!4m6!3m5!1s0x3e2f034f1e2720db:0x20aaab526ce8309c!8m2!3d24.7194802!4d46.6725255!16s%2Fg%2F11yl0pqp7h",
+      "logoUrl": "/logos/joe-barrel-al-wurud.jpg",
       "example": false
     },
     {
@@ -71,6 +76,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0319fd90bc5f:0xce4b6a7bec9f8917",
+      "logoUrl": "/logos/btw-olaya.jpg",
       "example": false
     },
     {
@@ -83,6 +89,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d006ddda0d5:0x2b6b02e347847955",
+      "logoUrl": "/logos/breehant-al-yasmin.jpg",
       "example": false
     },
     {
@@ -95,6 +102,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/COYARD/data=!4m2!3m1!1s0x3e2f02e2994397ef:0xb7de5888a1b2facf",
+      "logoUrl": "/logos/coyard-sulimaniyah.jpg",
       "example": false
     },
     {
@@ -107,6 +115,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Piccolo+Roasters/@24.7968428,46.6759907,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd7baeee3ff5:0x713420c80aa4054e!8m2!3d24.7968428!4d46.6759907!16s%2Fg%2F11pz4l0l38!18m1!1e1",
+      "logoUrl": "/logos/piccolo-al-rabi.jpg",
       "example": false
     },
     {
@@ -119,6 +128,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D8%A8%D9%8A%D8%AA+%D8%A7%D9%84%D8%AA%D8%AD%D9%85%D9%8A%D8%B5+%D8%A7%D9%84%D9%85%D8%B5%D9%8A%D9%81+%7C+Roasting+House+Al+Massif%E2%80%AD/@24.7597911,46.6738626,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd4bbbe29009:0xd1c0a54f636cabec!8m2!3d24.7597911!4d46.6738626!16s%2Fg%2F1q6jhjxhk!18m1!1e1",
+      "logoUrl": "/logos/roasting-house.png",
       "example": false
     },
     {
@@ -131,6 +141,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Camel+Step/@24.7104911,46.6676492,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f1d792944b807:0x65409f512448f2d9!8m2!3d24.7104911!4d46.6676492!16s%2Fg%2F11jly8v3yz!18m1!1e1",
+      "logoUrl": "/logos/camel-step-hittin.jpg",
       "example": false
     },
     {
@@ -144,6 +155,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%25+Arabica+Roastery/data=!4m2!3m1!1s0x3e2ee3a860ee67a7:0x757ee5e74a69274b",
       "pin": { "lat": 24.7667629, "lng": 46.6219462 },
+      "logoUrl": "/logos/percent-arabica-hittin.jpg",
       "example": false
     },
     {
@@ -157,6 +169,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/ORIGIN+(The+Lab)/@24.7751806,46.6092722,17z/data=!4m6!3m5!1s0x3e2ee3c7caae0757:0x69e6689099a92d3d!8m2!3d24.7751806!4d46.6092722!16s%2Fg%2F11rd2__lz1?entry=ttu&g_ep=EgoyMDI2MDgxOS4wIKXMDSoASAFQAw%3D%3D",
       "pin": { "lat": 24.7751806, "lng": 46.6092722 },
+      "logoUrl": "/logos/origin-the-lab-hittin.png",
       "example": false
     },
     {
@@ -169,6 +182,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1ecdfee53e7:0xebf6cfb83f2aeccb",
+      "logoUrl": "/logos/origin-coffee-roasters-hittin.png",
       "example": false
     },
     {
@@ -181,6 +195,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1d1cc8feb73:0x6c9224dc03a32ac",
+      "logoUrl": "/logos/camel-step-hittin.jpg",
       "example": false
     },
     {
@@ -193,6 +208,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee38cbd47141d:0x719342b19862ee7c",
+      "logoUrl": "/logos/tobys-estate-hittin.png",
       "example": false
     },
     {
@@ -205,6 +221,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1f0d2c345e9:0x105cee1586581d98",
+      "logoUrl": "/logos/noc-caffe-hittin.png",
       "example": false
     },
     {
@@ -217,6 +234,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee300348a7f69:0x39a736d75ecbd514",
+      "logoUrl": "/logos/just-another-hittin.jpg",
       "example": false
     },
     {
@@ -229,6 +247,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3007c7615f5:0xaa56b4ed3fd786e7",
+      "logoUrl": "/logos/qamaria-hittin.webp",
       "example": false
     },
     {
@@ -242,6 +261,7 @@
       "momentTags": ["pastry", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/SORS/data=!4m2!3m1!1s0x3e2ee377e1365957:0x34063b0c74e80980",
       "pin": { "lat": 24.7665625, "lng": 46.6220625 },
+      "logoUrl": "/logos/sors-hittin.png",
       "example": false
     },
     {
@@ -254,6 +274,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/JORN+COFFEE+ROASTERS/data=!4m2!3m1!1s0x3e2ee355735a0c5d:0x3feea6303720eb92",
+      "logoUrl": "/logos/jorn-al-malqa.png",
       "example": false
     },
     {
@@ -266,6 +287,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Kicksters/data=!4m2!3m1!1s0x3e2ee525876fcf0d:0xa9ca40408c85c63e",
+      "logoUrl": "/logos/kicksters-al-malqa.jpg",
       "example": false
     },
     {
@@ -278,6 +300,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa", "friend"],
       "mapsShareUrl": "https://www.google.com/maps/place/Sohba+Coffee/data=!4m2!3m1!1s0x3e2ee5de02c85f05:0x7d8603e279654247",
+      "logoUrl": "/logos/sohba-al-malqa.jpg",
       "example": false
     },
     {
@@ -290,6 +313,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Aim+%7C+Al+Malqa/@24.794855,46.625109,17z/data=!4m6!3m5!1s0x3e2ee321de3c683b:0x11458806c86fdb91!8m2!3d24.794855!4d46.625109!16s%2Fg%2F11sjvsrx89",
+      "logoUrl": "/logos/aim-coffee-bar-al-malqa.jpg",
       "example": false
     },
     {
@@ -302,6 +326,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D9%82%D9%87%D9%88%D8%A9+%D8%B3%D9%84%D8%A7%D9%85/data=!4m2!3m1!1s0x3e2ee50075e4d3bb:0xb3c2663532ae597f",
+      "logoUrl": "/logos/salam-cafe-al-malqa.jpg",
       "example": false
     },
     {
@@ -314,6 +339,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/NASJ/data=!4m2!3m1!1s0x3e2ee7894faf7929:0x86f2dfb782b91dea",
+      "logoUrl": "/logos/nasj-al-malqa.jpg",
       "example": false
     },
     {
@@ -326,6 +352,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Namq+cafe/data=!4m2!3m1!1s0x3e2ee52e9c6656bb:0x649539b72bb6761b",
+      "logoUrl": "/logos/namq-al-malqa.jpg",
       "example": false
     },
     {
@@ -339,6 +366,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Elixir+Bunn+Coffee+Roasters/@24.7342147,46.6112765,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee2131661e9b9:0x9aedfdb188c6f6fa!8m2!3d24.7342147!4d46.6112765!16s%2Fg%2F11b7q7j_tn",
       "pin": { "lat": 24.734215, "lng": 46.611277 },
+      "logoUrl": "/logos/elixir-bunn-al-nakheel.png",
       "example": false
     },
     {
@@ -352,6 +380,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/PEAKS+DC/@24.742045,46.6348092,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee380585f0151:0xab784cd32a1e3d85!8m2!3d24.742045!4d46.6348092!16s%2Fg%2F11s0qh89n0",
       "pin": { "lat": 24.741538, "lng": 46.633922 },
+      "logoUrl": "/logos/peaks-digital-city-al-nakheel.jpg",
       "example": false
     },
     {
@@ -365,6 +394,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Just+A+Space/@24.7537907,46.6391066,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee37ebbba0adb:0x6244de085a0cf625!8m2!3d24.7537907!4d46.6391066!16s%2Fg%2F11k453rlpd",
       "pin": { "lat": 24.753790, "lng": 46.639107 },
+      "logoUrl": "/logos/just-a-space-al-nakheel.jpg",
       "example": false
     },
     {
@@ -378,6 +408,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Wee/@24.7369923,46.6093314,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3f2f0e5570f:0xc8d596dab96ff698!8m2!3d24.7369923!4d46.6093314!16s%2Fg%2F11qbt6zxsp",
       "pin": { "lat": 24.736995, "lng": 46.609180 },
+      "logoUrl": "/logos/wee-al-nakheel.jpg",
       "example": false
     },
     {
@@ -391,6 +422,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/INFUSE/@24.73743,46.6090483,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3248ee7a86b:0x7603c7c44335bf43!8m2!3d24.73743!4d46.6090483!16s%2Fg%2F11s61bt19d",
       "pin": { "lat": 24.737431, "lng": 46.609048 },
+      "logoUrl": "/logos/infuse-al-nakheel.jpg",
       "example": false
     },
     {
@@ -404,6 +436,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Ash+Bloom+%E6%97%A0%E6%9E%81/@24.7416982,46.6041876,17z/data=!4m15!1m8!3m7!1s0x3e2ee3f36b1c08b3:0x8416738e9147aa47!2zQXNoIEJsb29tIOaXoOaegQ!8m2!3d24.7416078!4d46.6043473!10e5!16s%2Fg%2F11yx9j9j9m!3m5!1s0x3e2ee3f36b1c08b3:0x8416738e9147aa47!8m2!3d24.7416078!4d46.6043473!16s%2Fg%2F11yx9j9j9m?entry=ttu&g_ep=EgoyMDI2MDgxOS4wIKXMDSoASAFQAw%3D%3D",
       "pin": { "lat": 24.7416078, "lng": 46.6043473 },
+      "logoUrl": "/logos/ash-bloom-al-nakheel.jpg",
       "example": false
     },
     {
@@ -417,6 +450,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/IDMI+Coffee+Roasters/@24.8193394,46.6219308,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5b3d64a45c7:0xd4ab808029cbd444!8m2!3d24.8193394!4d46.6219308!16s%2Fg%2F11t7k555zp",
       "pin": { "lat": 24.819523, "lng": 46.622059 },
+      "logoUrl": "/logos/idmi-al-yasmin.jpg",
       "example": false
     },
     {
@@ -430,6 +464,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Breehant+coffee+roastery./@24.8128222,46.6254867,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee532b3bd624d:0x88639977890550e5!8m2!3d24.8128222!4d46.6254867!16s%2Fg%2F11rq41wt72",
       "pin": { "lat": 24.812867, "lng": 46.625503 },
+      "logoUrl": "/logos/breehant-al-yasmin.jpg",
       "example": false
     },
     {
@@ -443,6 +478,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D9%85%D9%82%D9%87%D9%89+%D9%88%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%88%D9%88%D8%AF%D8%B2+(%D8%A7%D9%84%D9%8A%D8%A7%D8%B3%D9%85%D9%8A%D9%86)+%7C+(WOODS+Cafe+and+Roastery+(Al+Yasmin%E2%80%AD/@24.8176608,46.6223224,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee53f6feae2cb:0x755e92b7d3623139!8m2!3d24.8176608!4d46.6223224!16s%2Fg%2F11v40f2cyw",
       "pin": { "lat": 24.817704, "lng": 46.622117 },
+      "logoUrl": "/logos/woods-al-yasmin.png",
       "example": false
     },
     {
@@ -456,6 +492,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D8%A8%D9%8A%D8%AA+%D8%A7%D9%84%D8%AA%D8%AD%D9%85%D9%8A%D8%B5+%D8%A7%D9%84%D9%8A%D8%A7%D8%B3%D9%85%D9%8A%D9%86+%7C+Roasting+House+Alyasmin%E2%80%AD/@24.8194594,46.6426374,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee545899f0433:0x5ff57b13ddaa089f!8m2!3d24.8194594!4d46.6426374!16s%2Fg%2F11vkhhlzx2",
       "pin": { "lat": 24.819916, "lng": 46.642403 },
+      "logoUrl": "/logos/roasting-house.png",
       "example": false
     },
     {
@@ -469,6 +506,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Eva+Roasters+And+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee50002ff95ad:0x834e6832c5a1f009",
       "pin": { "lat": 24.824953, "lng": 46.636723 },
+      "logoUrl": "/logos/eva-al-yasmin.jpg",
       "example": false
     },
     {
@@ -494,6 +532,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Shovel+Roastery/@24.8230966,46.6200885,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5481d9d6db7:0x9ef3cb3b62ed91c5!8m2!3d24.8230966!4d46.6200885!16s%2Fg%2F11lsz9c1m7",
+      "logoUrl": "/logos/shovel-al-yasmin.jpg",
       "example": false
     },
     {
@@ -518,6 +557,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Volume+Coffee+Roasters/@24.8277968,46.6397765,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee50170f71919:0xfa36e7a5ab0613d4!8m2!3d24.8277968!4d46.6397765!16s%2Fg%2F11t77tzlqt",
+      "logoUrl": "/logos/volume-al-yasmin.jpg",
       "example": false
     },
     {
@@ -531,6 +571,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f038bdd0b37ab:0x8fe843e6aa004af8",
       "pin": { "lat": 24.6942, "lng": 46.6834 },
+      "logoUrl": "/logos/idmi-al-yasmin.jpg",
       "example": false
     },
     {
@@ -544,6 +585,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3cd432e129b:0x9bf70dd72b164daa",
       "pin": { "lat": 24.6867, "lng": 46.6889 },
+      "logoUrl": "/logos/qaf-olaya.jpg",
       "example": false
     },
     {
@@ -556,6 +598,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03fcd238f7e5:0x42c413083e9df746",
+      "logoUrl": "/logos/good-neighbor-olaya.jpg",
       "example": false
     },
     {
@@ -569,6 +612,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0381c62eab31:0xb08b00189ec117e",
       "pin": { "lat": 24.6815, "lng": 46.6917 },
+      "logoUrl": "/logos/first-series-olaya.png",
       "example": false
     },
     {
@@ -582,6 +626,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f037e720ece5b:0x59f110b0efd484fe",
       "pin": { "lat": 24.7025, "lng": 46.6809 },
+      "logoUrl": "/logos/drip-olaya.jpg",
       "example": false
     },
     {
@@ -594,6 +639,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0331d73570cd:0x6f70e79c9f600acb",
+      "logoUrl": "/logos/tobys-estate-hittin.png",
       "example": false
     },
     {
@@ -606,6 +652,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%87%D8%AC%D9%8A%D9%86+%D8%A7%D9%84%D9%85%D8%B5%D9%86%D8%B9+%7C+Hjeen+Roaster+Factory%E2%80%AD/@24.8268768,46.6608931,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee583069ca879:0xed45bc40d859ef5c!8m2!3d24.8268768!4d46.6608931!16s%2Fg%2F11kgs41z_d",
+      "logoUrl": "/logos/hjeen-roaster-factory-al-yasmin.jpg",
       "example": false
     },
     {
@@ -618,6 +665,7 @@
       "vibeTags": ["محمصة", "قهوة"],
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/RoR+Coffee+Roasters+-+%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%88+%D9%85%D9%82%D9%87%D9%89+%D8%A7%D8%B1+%D8%A7%D9%88+%D8%A7%D8%B1%E2%80%AD/@24.8158858,46.6567797,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f070ca15a37d5:0xefef9f69ce376154!8m2!3d24.8158858!4d46.6567797!16s%2Fg%2F11qg9f3y63",
+      "logoUrl": "/logos/ror-coffee-roasters-al-yasmin.jpg",
       "example": false
     },
     {
@@ -631,6 +679,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Yamm+Coffee+Roasters%2C+Al+Takhasousi+Street%2C+Al+Olaya%2C+Riyadh",
       "pin": { "lat": 24.7073712, "lng": 46.6644448 },
+      "logoUrl": "/logos/yamm-olaya.jpg",
       "example": false
     },
     {
@@ -643,6 +692,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Brew+Crew/data=!4m2!3m1!1s0x3e2f0340848c41d9:0xf58cf405a1393ce",
+      "logoUrl": "/logos/brew-crew-sulimaniyah.jpg",
       "example": false
     },
     {
@@ -656,6 +706,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Urth+Caff%C3%A9+Tahlia/data=!4m2!3m1!1s0x3e2f032fc5c206a7:0xcb8c06ef088e6811",
       "pin": { "lat": 24.6937175, "lng": 46.6775955 },
+      "logoUrl": "/logos/urth-caffe-tahlia-sulimaniyah.jpg",
       "example": false
     },
     {
@@ -692,6 +743,7 @@
       "vibeTags": ["هادئ", "قهوة"],
       "momentTags": ["quiet", "work", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Dear+You/data=!4m2!3m1!1s0x3e2f03ad6c2186a3:0xf67ff641e1f9ebcb",
+      "logoUrl": "/logos/dear-you-sulimaniyah.jpg",
       "example": false
     },
     {
@@ -705,6 +757,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Sand+Clock/data=!4m2!3m1!1s0x3e2ee364e66ca44d:0xf72c965ec8ab1103",
       "pin": { "lat": 24.7136, "lng": 46.6837 },
+      "logoUrl": "/logos/sand-clock-sulimaniyah.jpg",
       "example": false
     },
     {
@@ -718,6 +771,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Sulalat+Coffee/data=!4m2!3m1!1s0x3e2f053ded08e019:0x47baea5401db03e8",
       "pin": { "lat": 24.705488, "lng": 46.748309 },
+      "logoUrl": "/logos/sulalat-coffee-ar-rabwah.jpg",
       "example": false
     },
     {
@@ -731,6 +785,7 @@
       "momentTags": ["roaster", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%83%D9%8A%D8%B1%D9%81+%D9%84%D9%84%D9%82%D9%87%D9%88%D8%A9+%D8%A7%D9%84%D9%85%D8%AE%D8%AA%D8%B5%D8%A9%E2%80%AD/@24.6975992,46.7612447,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f07a917c27cb5:0x58b15923e696e7e0!8m2!3d24.6975992!4d46.7612447!16s%2Fg%2F11hycz9_j2",
       "pin": { "lat": 24.697666, "lng": 46.761297 },
+      "logoUrl": "/logos/carve-roastery-ar-rabwah.jpg",
       "example": false
     },
     {
@@ -744,6 +799,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/YLY+Specialty+Coffee+%7C+%D9%8A%D9%84%D9%8A+%D9%82%D9%87%D9%88%D8%A9+%D9%85%D8%AE%D8%AA%D8%B5%D8%A9%E2%80%AD/@24.6835891,46.7669008,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f078e9a82a139:0xf9e5899fbcb1805a!8m2!3d24.6835891!4d46.7669008!16s%2Fg%2F11vd88y4vs",
       "pin": { "lat": 24.683589, "lng": 46.766892 },
+      "logoUrl": "/logos/yly-specialty-coffee-ar-rabwah.jpg",
       "example": false
     },
     {
@@ -781,6 +837,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/EYA+Specialty+Coffee/@40.1723711,-105.0976375,8z/data=!3m1!4b1!4m6!3m5!1s0x3e2f039614f0eaf7:0xf5e98e2b356e7370!8m2!3d24.7321395!4d46.6776488!16s%2Fg%2F11vb7lsy36",
+      "logoUrl": "/logos/eya-specialty-coffee-al-wurud.jpg",
       "example": false
     },
     {
@@ -793,6 +850,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f031b182d9dd3:0x2ec4611ae42e7f3b",
+      "logoUrl": "/logos/the-gate-specialty-coffee-al-wurud.jpg",
       "example": false
     },
     {
@@ -805,6 +863,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Taim+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee5f0cbad29b3:0xc801bd35db3ed4b5",
+      "logoUrl": "/logos/taim-specialty-coffee-as-sahafah.jpg",
       "example": false
     },
     {
@@ -817,6 +876,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Y97+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee500353c8e81:0xb2f5e1092e400825",
+      "logoUrl": "/logos/y97-specialty-coffee-as-sahafah.jpg",
       "example": false
     },
     {
@@ -829,6 +889,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Hakwah+Speciality+Coffee/data=!4m2!3m1!1s0x3e2ee3d8c2ad7a89:0xae112ca2628db3de",
+      "logoUrl": "/logos/hakwah-speciality-coffee-as-sahafah.jpg",
       "example": false
     },
     {
@@ -841,6 +902,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Toby's+Estate+(KAFD)/data=!4m2!3m1!1s0x3e2ee355251989ad:0xe68f0d137e1e9c7",
+      "logoUrl": "/logos/tobys-estate-hittin.png",
       "example": false
     },
     {
@@ -853,6 +915,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/12+Cups+Roastery+and+Cafe/data=!4m2!3m1!1s0x3e2ee3ce66b24005:0x82573149d61d1832",
+      "logoUrl": "/logos/12-cups-roastery-and-cafe-kafd.jpg",
       "example": false
     },
     {
@@ -865,6 +928,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Coffee+Planet/data=!4m2!3m1!1s0x3e2ee3007e876afd:0xfd4f98f457e53389",
+      "logoUrl": "/logos/coffee-planet-kafd.jpg",
       "example": false
     },
     {
@@ -877,6 +941,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Hal+Alkeif/data=!4m2!3m1!1s0x3e2ee300598b78ab:0x806e79583cbba59f",
+      "logoUrl": "/logos/hal-alkeif-kafd.jpg",
       "example": false
     },
     {
@@ -889,6 +954,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/DRAFT+Caf%C3%A9/data=!4m2!3m1!1s0x3e2ee3204b94171f:0x8550e51fc5b4d08",
+      "logoUrl": "/logos/draft-cafe-kafd.jpg",
       "example": false
     },
     {
@@ -901,6 +967,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Cafe+Tale/data=!4m2!3m1!1s0x3e2ee37074025e67:0xd6ceae96ec77c68d",
+      "logoUrl": "/logos/cafe-tale-kafd.jpg",
       "example": false
     },
     {
@@ -913,6 +980,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Trieste/data=!4m2!3m1!1s0x3e2ee360b6e04165:0x1b9d810b6e90b565",
+      "logoUrl": "/logos/trieste-kafd.jpg",
       "example": false
     },
     {
@@ -925,6 +993,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/ORIGIN+-+JAX/data=!4m2!3m1!1s0x3e2ee1001f4d413f:0x388b7e94c9f443ca",
+      "logoUrl": "/logos/origin-the-lab-hittin.png",
       "example": false
     },
     {
@@ -937,6 +1006,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2ee1256ea46553:0x57b2b39e05a4ac4f",
+      "logoUrl": "/logos/archi-diriyah.jpg",
       "example": false
     },
     {
@@ -949,6 +1019,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/ARCHI+%26+JAX/data=!4m2!3m1!1s0x3e2ee100743c5551:0xdf27415c2e1069da",
+      "logoUrl": "/logos/archi-diriyah.jpg",
       "example": false
     },
     {
@@ -961,6 +1032,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/KMR/data=!4m2!3m1!1s0x3e2ee1a489ee2713:0x7031e79c39746478",
+      "logoUrl": "/logos/kmr-diriyah.jpg",
       "example": false
     },
     {
@@ -973,6 +1045,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Malfa+coffee+house/data=!4m2!3m1!1s0x3e2ee10007ec4249:0xa70fcce76743d75b",
+      "logoUrl": "/logos/malfa-coffee-house-diriyah.jpg",
       "example": false
     },
     {
@@ -985,6 +1058,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/OFFBRiEF+Cafe/data=!4m2!3m1!1s0x3e2ee1bb7da3ee8b:0xb6c5b0f2c13f289b",
+      "logoUrl": "/logos/offbrief-cafe-diriyah.jpg",
       "example": false
     },
     {
@@ -997,6 +1071,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Cosefan/data=!4m2!3m1!1s0x3e2ee184c8ccfa3d:0x42abf840875a9e01",
+      "logoUrl": "/logos/cosefan-diriyah.jpg",
       "example": false
     },
     {
@@ -1009,6 +1084,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/%D8%AE%D9%8E%D8%B5%D9%8A%D8%A8+%D8%A7%D9%84%D8%A8%D9%8F%D9%86/data=!4m2!3m1!1s0x3e2ee13c877e69e5:0xdcd304f6eb96d32b",
+      "logoUrl": "/logos/khasib-al-bun-diriyah.jpg",
       "example": false
     },
     {
@@ -1021,6 +1097,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/dips+plus/data=!4m2!3m1!1s0x3e2ee10b745b7cdb:0x32ebe08917cff51",
+      "logoUrl": "/logos/dips-plus-diriyah.jpg",
       "example": false
     },
     {
@@ -1045,6 +1122,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Jazel+speciality+cafe/data=!4m2!3m1!1s0x3e2ee1051fe26dff:0x55d50d6241f1053",
+      "logoUrl": "/logos/jazel-speciality-cafe-diriyah.jpg",
       "example": false
     },
     {
@@ -1057,6 +1135,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Repository+Coffee+Roasters/data=!4m2!3m1!1s0x3e2efb18e02bf623:0x799fea70c9d223bb",
+      "logoUrl": "/logos/repository-coffee-roasters-al-narjis.jpg",
       "example": false
     },
     {
@@ -1069,6 +1148,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/CORE+COFFEE+%26+ROASTERY/data=!4m2!3m1!1s0x3e2efda09e7919d1:0x736112019aced374",
+      "logoUrl": "/logos/core-coffee-and-roastery-al-narjis.jpg",
       "example": false
     },
     {
@@ -1081,6 +1161,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Hjeen+Roaster/data=!4m2!3m1!1s0x3e2efb18622e5d79:0xf39b2674733ce028",
+      "logoUrl": "/logos/hjeen-roaster-al-narjis.jpg",
       "example": false
     },
     {
@@ -1093,6 +1174,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/kail+Roastery+%26+cafe/data=!4m2!3m1!1s0x3e2efbabdb0ace9b:0xfc531e6cbbc78c59",
+      "logoUrl": "/logos/kail-roastery-and-cafe-al-narjis.jpg",
       "example": false
     },
     {
@@ -1105,6 +1187,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Volume+Coffee+Roasters/data=!4m2!3m1!1s0x3e2efbe2a3a41bd3:0xbeab0755de03239c",
+      "logoUrl": "/logos/volume-coffee-roasters-al-narjis.jpg",
       "example": false
     },
     {
@@ -1117,6 +1200,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Elixir+Bunn+Coffee+Roasters/data=!4m2!3m1!1s0x3e2ee5d142dbe7c1:0xe99747b377f9aae4",
+      "logoUrl": "/logos/elixir-bunn-al-narjis.jpg",
       "example": false
     },
     {
@@ -1129,6 +1213,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Melex+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee5007a5d52ef:0xed4fcaac7e06d5ec",
+      "logoUrl": "/logos/melex-specialty-coffee-al-narjis.jpg",
       "example": false
     },
     {
@@ -1141,6 +1226,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/NOSOUND/data=!4m2!3m1!1s0x3e2fabff69afccd5:0x47f58a1dd2433bd1",
+      "logoUrl": "/logos/nosound-al-narjis.jpg",
       "example": false
     },
     {
@@ -1153,6 +1239,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50002642fbd:0x4d01af98d2d18710",
+      "logoUrl": "/logos/aim-al-narjis.jpg",
       "example": false
     },
     {
@@ -1165,6 +1252,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2efdc48f297bc7:0x84b03cd311e03092",
+      "logoUrl": "/logos/archi-al-narjis.jpg",
       "example": false
     },
     {
@@ -1177,6 +1265,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/CAF+LAB/data=!4m2!3m1!1s0x3e2ee544d2d79851:0x65f6372bf5983410",
+      "logoUrl": "/logos/caf-lab-al-narjis.jpg",
       "example": false
     }
   ]

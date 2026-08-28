@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
+import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { FEEDBACK_MAIL, aboutPath, homePath } from "@/lib/product";
 import type { Language } from "@/lib/types";
@@ -57,6 +58,10 @@ export function AboutPageView({ language }: AboutPageViewProps) {
           <AboutNote language={language} />
         </p>
       </article>
+
+      <div className="mt-8 border-t border-line pt-4">
+        <ContactUs language={language} />
+      </div>
 
       <p className="mt-6">
         <Link

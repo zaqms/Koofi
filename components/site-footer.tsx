@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
-import { aboutPath } from "@/lib/product";
+import { PRODUCT_NAME, aboutPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type SiteFooterProps = {
@@ -9,7 +9,7 @@ type SiteFooterProps = {
   padded?: boolean;
 };
 
-/** About link plus Contact us. Home: after the directory. Cards: under back-to-chat. */
+/** Latin brand, About link, Contact us. Home: after the directory. Cards: under back-to-chat. */
 export function SiteFooter({ language, padded = true }: SiteFooterProps) {
   return (
     <footer
@@ -21,9 +21,12 @@ export function SiteFooter({ language, padded = true }: SiteFooterProps) {
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
     >
+      <p className="text-xs font-semibold" dir="ltr">
+        {PRODUCT_NAME}
+      </p>
       <Link
         href={aboutPath(language)}
-        className="text-xs text-ink-soft underline-offset-2 hover:text-ink hover:underline"
+        className="mt-2 inline-block text-xs text-ink-soft underline-offset-2 hover:text-ink hover:underline"
       >
         {copy.about[language]}
       </Link>

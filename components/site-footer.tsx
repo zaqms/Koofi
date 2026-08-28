@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
-import { PRODUCT_NAME, aboutPath } from "@/lib/product";
+import { BrandWordmark } from "@/components/brand-wordmark";
+import { aboutPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type SiteFooterProps = {
@@ -21,8 +22,8 @@ export function SiteFooter({ language, padded = true }: SiteFooterProps) {
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
     >
-      <p className="text-xs font-semibold" dir="ltr">
-        {PRODUCT_NAME}
+      <p className="text-xs" dir="ltr">
+        <BrandWordmark />
       </p>
       <Link
         href={aboutPath(language)}

@@ -166,6 +166,18 @@ export const NEIGHBORHOODS: Record<
       "an-narjis",
     ],
   },
+  "al-mughrizat": {
+    id: "al-mughrizat",
+    ar: "المغرزات",
+    en: "Al Mughrizat",
+    aliases: [
+      "المغرزات",
+      "مغرزات",
+      "mughrizat",
+      "al mughrizat",
+      "al-mughrizat",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

@@ -1326,6 +1326,19 @@
       "pin": { "lat": 24.8622127, "lng": 46.6526141 },
       "logoUrl": "/logos/caf-lab-al-narjis.jpg",
       "example": false
+    },
+    {
+      "id": "cred-al-mughrizat",
+      "nameAr": "كريد",
+      "nameEn": "CRED",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/%D9%83%D8%B1%D9%8A%D8%AF+%7C+CRED%E2%80%AD/@24.7644855,46.7252164,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd07254e8881:0x6b7134bf4d97b997!8m2!3d24.7644855!4d46.7252164!16s%2Fg%2F11ntfkzb32",
+      "pin": { "lat": 24.7644855, "lng": 46.7252164 },
+      "example": false
     }
   ]
 }

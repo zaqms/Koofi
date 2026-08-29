@@ -54,6 +54,13 @@ export function officialShopCoords(
   return null;
 }
 
+/** Official `/maps/place/` shop with no usable !3d/!4d or official-place pin. */
+export function needsOfficialPlacePin(
+  shop: Pick<Shop, "pin" | "mapsShareUrl">,
+): boolean {
+  return isOfficialMapsPlaceUrl(shop.mapsShareUrl) && !officialShopCoords(shop);
+}
+
 export function officialCoordsCoverage(
   shops: Pick<Shop, "pin" | "mapsShareUrl">[],
 ): { withCoords: number; skipped: number } {

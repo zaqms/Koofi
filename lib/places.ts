@@ -5,8 +5,9 @@ import {
   parseHttpUrl,
 } from "./maps-url";
 import { neighborhoodLabel } from "./neighborhoods";
+import { isOfficialMapsPlaceUrl } from "./place-coords";
 import { isExampleShop } from "./product";
-import type { ChatPick, Language, Shop } from "./types";
+import type { ChatPick, Language, Pin, Shop } from "./types";
 
 const TTL_MS = 20 * 60 * 1000;
 
@@ -168,13 +169,26 @@ type DetailsJson = {
     user_ratings_total?: number;
     reviews?: { text?: string; language?: string }[];
     photos?: { photo_reference?: string }[];
+    geometry?: { location?: { lat?: number; lng?: number } };
   };
   status?: string;
 };
 
+const SOCIAL_FIELDS = "rating,user_ratings_total,reviews,photo";
+
+/** CID or place_id already on an official `/maps/place/` URL. No name search. */
+export function officialPlaceRefFromUrl(url: string | undefined): string | null {
+  if (!isOfficialMapsPlaceUrl(url) || !url) return null;
+  const hints = extractPlaceHints(url);
+  if (hints.placeId) return hints.placeId;
+  if (hints.cid) return `cid:${hints.cid}`;
+  return null;
+}
+
 async function placeDetails(
   placeRef: string,
   language: Language,
+  fields = SOCIAL_FIELDS,
 ): Promise<DetailsJson | undefined> {
   const key = placesKey();
   if (!key) return undefined;
@@ -187,7 +201,7 @@ async function placeDetails(
   } else {
     url.searchParams.set("place_id", placeRef);
   }
-  url.searchParams.set("fields", "rating,user_ratings_total,reviews,photo");
+  url.searchParams.set("fields", fields);
   url.searchParams.set("language", language);
   url.searchParams.set("key", key);
 
@@ -198,6 +212,30 @@ async function placeDetails(
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Official Places geometry for a CID / place id already on the shop's
+ * `/maps/place/` URL. Does not search by name or follow unofficial links.
+ */
+export async function fetchOfficialPlaceGeometry(
+  shop: Pick<Shop, "mapsShareUrl">,
+): Promise<Pin | null> {
+  const placeRef = officialPlaceRefFromUrl(shop.mapsShareUrl);
+  if (!placeRef) return null;
+
+  const details = await placeDetails(placeRef, "en", "geometry");
+  const location = details?.result?.geometry?.location;
+  if (typeof location?.lat !== "number" || typeof location?.lng !== "number") {
+    return null;
+  }
+  if (!Number.isFinite(location.lat) || !Number.isFinite(location.lng)) {
+    return null;
+  }
+  if (Math.abs(location.lat) > 90 || Math.abs(location.lng) > 180) {
+    return null;
+  }
+  return { lat: location.lat, lng: location.lng };
 }
 
 export async function fetchPlaceSocial(

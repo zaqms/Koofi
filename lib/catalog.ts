@@ -1,4 +1,5 @@
 import catalogFile from "../data/catalog.json";
+import { officialShopCoords } from "./place-coords";
 import { isExampleShop } from "./product";
 import { shopMapsHref } from "./public-url";
 import { NEIGHBORHOOD_IDS, type CatalogFile, type NeighborhoodId, type Shop } from "./types";
@@ -38,16 +39,20 @@ export function listDirectoryShops(): DirectoryShop[] {
       if (area !== 0) return area;
       return a.nameEn.localeCompare(b.nameEn);
     })
-    .map((shop) => ({
-      id: shop.id,
-      nameAr: shop.nameAr,
-      nameEn: shop.nameEn,
-      neighborhood: shop.neighborhood,
-      neighborhoodAr: shop.neighborhoodAr,
-      vibeTags: shop.vibeTags,
-      momentTags: shop.momentTags,
-      mapsHref: shopMapsHref(shop),
-      photoUrl: shop.photoUrl,
-      logoUrl: shop.logoUrl,
-    }));
+    .map((shop) => {
+      const coords = officialShopCoords(shop);
+      return {
+        id: shop.id,
+        nameAr: shop.nameAr,
+        nameEn: shop.nameEn,
+        neighborhood: shop.neighborhood,
+        neighborhoodAr: shop.neighborhoodAr,
+        vibeTags: shop.vibeTags,
+        momentTags: shop.momentTags,
+        mapsHref: shopMapsHref(shop),
+        photoUrl: shop.photoUrl,
+        logoUrl: shop.logoUrl,
+        ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
+      };
+    });
 }

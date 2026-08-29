@@ -11,6 +11,8 @@ export type DirectoryShop = {
   mapsHref: string;
   photoUrl?: string;
   logoUrl?: string;
+  lat?: number;
+  lng?: number;
 };
 
 export function directoryNeighborhoods(

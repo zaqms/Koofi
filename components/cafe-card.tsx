@@ -1,8 +1,10 @@
 import { CardBeen } from "@/components/card-been";
 import { MapsLink } from "@/components/maps-link";
+import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
+import { officialShopCoords } from "@/lib/place-coords";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
 import type { Language, Shop } from "@/lib/types";
@@ -21,6 +23,7 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
   const area =
     language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
   const vibe = vibeLine(shop, language);
+  const coords = officialShopCoords(shop);
 
   return (
     <article
@@ -56,7 +59,10 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
       <dl className="mt-5 space-y-3 text-sm leading-6">
         <div>
           <dt className="text-xs text-ink-soft">{copy.neighborhood[language]}</dt>
-          <dd>{area}</dd>
+          <dd>
+            {area}
+            <ShopDistance coords={coords} language={language} />
+          </dd>
         </div>
         <div>
           <dt className="text-xs text-ink-soft">{copy.vibe[language]}</dt>

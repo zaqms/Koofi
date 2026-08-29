@@ -74,6 +74,8 @@ export type ChatPick = {
   rating?: number;
   reviewCount?: number;
   reviewSnippet?: string;
+  lat?: number;
+  lng?: number;
 };
 
 export type ShopSuggestion = {

@@ -1,16 +1,16 @@
 import type { Pin, Shop } from "./types";
 
 /**
- * Official Google Maps *place* geometry only.
+ * Official Google Maps *place* geometry only, in this order:
+ * 1. `!3dLAT!4dLNG` on a real `/maps/place/` URL
+ * 2. catalog `pin` only when `mapsShareUrl` is that official place
+ *    (including CID-only `/maps/place/data=!4m2…1s0x…`)
  *
- * Allowed: `!3dLAT!4dLNG` on a real `/maps/place/` link (the same
- * official place the Maps button opens).
- *
- * Not a pin, not allowed:
+ * Not allowed:
  * - `/maps/search/` text or `query=lat,lng` / `q=lat,lng` coord-search
- * - `@lat,lng` viewport (even inside Riyadh)
- * - catalog `pin` when the Maps URL is not an official place
- * - CID-only `/place/data=!4m2…` with no place geometry
+ * - `@lat,lng` viewport
+ * - catalog `pin` when the Maps URL is not an official `/maps/place/` link
+ * - invented / geocoded / neighborhood-center coords
  */
 
 function asPin(lat: number, lng: number): Pin | null {
@@ -19,7 +19,8 @@ function asPin(lat: number, lng: number): Pin | null {
   return { lat, lng };
 }
 
-function isOfficialPlacePath(url: string): boolean {
+export function isOfficialMapsPlaceUrl(url: string | undefined): boolean {
+  if (!url) return false;
   try {
     const parsed = new URL(url);
     const path = decodeURIComponent(parsed.pathname);
@@ -32,7 +33,7 @@ function isOfficialPlacePath(url: string): boolean {
 
 /** `!3dLAT!4dLNG` on an official `/maps/place/` URL only. */
 export function coordsFromMapsShareUrl(url: string | undefined): Pin | null {
-  if (!url || !isOfficialPlacePath(url)) return null;
+  if (!isOfficialMapsPlaceUrl(url) || !url) return null;
 
   const place = url.match(/!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/);
   if (place?.[1] && place[2]) {
@@ -45,7 +46,12 @@ export function coordsFromMapsShareUrl(url: string | undefined): Pin | null {
 export function officialShopCoords(
   shop: Pick<Shop, "pin" | "mapsShareUrl">,
 ): Pin | null {
-  return coordsFromMapsShareUrl(shop.mapsShareUrl);
+  const fromPlaceUrl = coordsFromMapsShareUrl(shop.mapsShareUrl);
+  if (fromPlaceUrl) return fromPlaceUrl;
+  if (isOfficialMapsPlaceUrl(shop.mapsShareUrl) && shop.pin) {
+    return asPin(shop.pin.lat, shop.pin.lng);
+  }
+  return null;
 }
 
 export function officialCoordsCoverage(

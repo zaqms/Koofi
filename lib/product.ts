@@ -44,6 +44,16 @@ export const VIBE_CHIPS = [
 
 export type VibeChipId = (typeof VIBE_CHIPS)[number]["id"];
 
+/**
+ * Extra chip after the locked vibe row. Not a moment tag — Nearby
+ * sorts client-side by official-place haversine only.
+ */
+export const NEARBY_CHIP = {
+  id: "nearby",
+  ar: "قريب",
+  en: "Nearby",
+} as const;
+
 export function vibeChipLabel(
   chip: Pick<VibeChip, "ar" | "en">,
   language: Language,

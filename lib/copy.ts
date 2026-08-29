@@ -93,6 +93,10 @@ export const copy = {
     ar: `أنا هنا للقهوة في الرياض. ${LOCKED_OPENER}`,
     en: `We're here for coffee in Riyadh. ${LOCKED_OPENER_EN}`,
   },
+  nearbyNeedsLocation: {
+    ar: `قريب يحتاج موقعك. ${LOCKED_OPENER}`,
+    en: `Nearby needs your location. ${LOCKED_OPENER_EN}`,
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",

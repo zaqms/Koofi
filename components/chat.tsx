@@ -4,11 +4,17 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { PickList, type ChatPick } from "@/components/pick-list";
-import { VibeChips } from "@/components/vibe-chips";
+import { VibeChips, type ChipPick } from "@/components/vibe-chips";
+import { BrandHomeLink } from "@/components/brand-home-link";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
 import { readLearnSession } from "@/lib/learn-session";
-import { BrandHomeLink } from "@/components/brand-home-link";
+import { nearbyChatPicks } from "@/lib/nearby";
+import { NEARBY_CHIP } from "@/lib/product";
+import {
+  requestVisitorLocation,
+  useVisitorLocation,
+} from "@/lib/visitor-location";
 import type { Language } from "@/lib/types";
 
 type AssistantMessage = {
@@ -88,6 +94,7 @@ export function Chat({ landing }: ChatProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(Boolean(pendingSends[landing]));
+  useVisitorLocation();
 
   useEffect(() => {
     const html = document.documentElement;
@@ -278,8 +285,82 @@ export function Chat({ landing }: ChatProps) {
     ]);
   }
 
-  function sendChip(label: string) {
-    send(label, { suggesting: false, via: "chip" });
+  function applyAssistant(message: AssistantMessage) {
+    setMessages((current) => {
+      const next: Message[] = [...current, message];
+      threads[landing] = {
+        messages: next,
+        composerLanguage,
+        awaitingMaps: false,
+      };
+      return next;
+    });
+  }
+
+  async function sendNearby(label: string) {
+    if (inFlightRef.current) return;
+
+    const userMessage: UserMessage = {
+      id: crypto.randomUUID(),
+      role: "user",
+      text: label,
+    };
+
+    inFlightRef.current = true;
+    setAwaitingMaps(false);
+    setBusy(true);
+    setMessages((current) => {
+      const next = [...current, userMessage];
+      threads[landing] = {
+        messages: next,
+        composerLanguage,
+        awaitingMaps: false,
+      };
+      return next;
+    });
+
+    const visitor = await requestVisitorLocation({ retry: true });
+    inFlightRef.current = false;
+    setBusy(false);
+
+    if (visitor.status !== "ready") {
+      applyAssistant({
+        id: crypto.randomUUID(),
+        role: "assistant",
+        language: landing,
+        text: copy.nearbyNeedsLocation[landing],
+      });
+      return;
+    }
+
+    const picks = nearbyChatPicks({
+      origin: { lat: visitor.lat, lng: visitor.lng },
+      beenIds: been.ids,
+      language: landing,
+    });
+
+    const text =
+      picks.length === 0
+        ? copy.emptyCatalog[landing]
+        : picks.length === 3
+          ? copy.threePicks[landing]
+          : copy.fewerPicks[landing];
+
+    applyAssistant({
+      id: crypto.randomUUID(),
+      role: "assistant",
+      language: landing,
+      text,
+      picks,
+    });
+  }
+
+  function sendChip(chip: ChipPick) {
+    if (chip.id === NEARBY_CHIP.id) {
+      void sendNearby(chip.label);
+      return;
+    }
+    send(chip.label, { suggesting: false, via: "chip" });
   }
 
   const hasThread =

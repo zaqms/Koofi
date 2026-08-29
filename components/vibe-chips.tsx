@@ -1,12 +1,19 @@
 import { copy } from "@/lib/copy";
-import { VIBE_CHIPS, vibeChipLabel } from "@/lib/product";
+import { NEARBY_CHIP, VIBE_CHIPS, vibeChipLabel } from "@/lib/product";
 import type { Language } from "@/lib/types";
+
+export type ChipPick = {
+  id: string;
+  label: string;
+};
 
 type VibeChipsProps = {
   language: Language;
   disabled?: boolean;
-  onPick: (label: string) => void;
+  onPick: (chip: ChipPick) => void;
 };
+
+const CHIPS = [...VIBE_CHIPS, NEARBY_CHIP];
 
 export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
   return (
@@ -17,7 +24,7 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
       aria-label={copy.pickVibe[language]}
       dir={language === "ar" ? "rtl" : "ltr"}
     >
-      {VIBE_CHIPS.map((chip) => {
+      {CHIPS.map((chip) => {
         const label = vibeChipLabel(chip, language);
         return (
           <button
@@ -31,7 +38,7 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
             onClick={(event) => {
               if (disabled) return;
               event.currentTarget.blur();
-              onPick(label);
+              onPick({ id: chip.id, label });
             }}
             className="rounded-full border border-line bg-foam px-2.5 py-1 text-[11px] leading-5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
           >

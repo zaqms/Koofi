@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
 import { MapsLink } from "@/components/maps-link";
+import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { postLearnMaps } from "@/lib/learn-session";
@@ -49,6 +50,14 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                   <h3 className="text-lg font-semibold leading-tight">{name}</h3>
                   <p className="text-[11px] leading-4 text-ink-soft" dir="auto">
                     {other} · {pick.neighborhoodLabel}
+                    <ShopDistance
+                      coords={
+                        pick.lat != null && pick.lng != null
+                          ? { lat: pick.lat, lng: pick.lng }
+                          : null
+                      }
+                      language={language}
+                    />
                   </p>
                   {!pick.example && pick.rating != null ? (
                     <p className="mt-1 text-xs leading-5 text-ink-soft">

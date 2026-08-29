@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MapsLink } from "@/components/maps-link";
+import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
@@ -37,7 +38,17 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
           dir={language === "ar" ? "rtl" : "ltr"}
         >
           <h3 className="text-lg font-semibold leading-tight">{name}</h3>
-          <p className="text-[11px] leading-4 text-ink-soft">{area}</p>
+          <p className="text-[11px] leading-4 text-ink-soft">
+            {area}
+            <ShopDistance
+              coords={
+                shop.lat != null && shop.lng != null
+                  ? { lat: shop.lat, lng: shop.lng }
+                  : null
+              }
+              language={language}
+            />
+          </p>
           {vibe ? (
             <p className="mt-1 truncate text-sm leading-5">{vibe}</p>
           ) : null}

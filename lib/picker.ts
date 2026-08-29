@@ -1,9 +1,9 @@
 import { listRealShops } from "./catalog";
+import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
 import { neighborhoodLabel } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
 import {
-  cardPath,
   exampleBadge,
   isExampleShop,
   shopDisplayName,
@@ -270,21 +270,9 @@ export function whatsAppLocations(result: PickResult) {
 }
 
 export function toChatPicks(result: PickResult): ChatPick[] {
-  return result.picks.map((pick) => ({
-    id: pick.shop.id,
-    nameAr: pick.shop.nameAr,
-    nameEn: pick.shop.nameEn,
-    neighborhoodLabel: neighborhoodLabel(
-      pick.shop.neighborhood,
-      result.language,
-    ),
-    example: isExampleShop(pick.shop),
-    why: pick.why,
-    mapsHref: shopMapsHref(pick.shop),
-    cardPath: cardPath(pick.shop.id, result.language),
-    photoUrl: pick.shop.photoUrl,
-    logoUrl: pick.shop.logoUrl,
-  }));
+  return result.picks.map((pick) =>
+    shopToChatPick(pick.shop, result.language, pick.why),
+  );
 }
 
 export async function toChatPicksWithPlaces(

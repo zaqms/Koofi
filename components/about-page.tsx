@@ -3,33 +3,12 @@ import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
-import { FEEDBACK_MAIL, aboutPath, homePath } from "@/lib/product";
+import { aboutPath, homePath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type AboutPageViewProps = {
   language: Language;
 };
-
-function AboutNote({ language }: { language: Language }) {
-  const text = copy.aboutNote[language];
-  const at = text.indexOf(FEEDBACK_MAIL);
-  if (at === -1) {
-    return text;
-  }
-
-  return (
-    <>
-      {text.slice(0, at)}
-      <a
-        href={`mailto:${FEEDBACK_MAIL}`}
-        className="text-bean underline-offset-2 hover:text-bean-deep hover:underline"
-      >
-        {FEEDBACK_MAIL}
-      </a>
-      {text.slice(at + FEEDBACK_MAIL.length)}
-    </>
-  );
-}
 
 export function AboutPageView({ language }: AboutPageViewProps) {
   const other: Language = language === "ar" ? "en" : "ar";
@@ -54,9 +33,7 @@ export function AboutPageView({ language }: AboutPageViewProps) {
       <article className="mt-8 rounded-2xl border border-line bg-foam px-4 py-5">
         <h1 className="text-base font-semibold">{copy.about[language]}</h1>
         <p className="mt-3 text-sm leading-7">{copy.aboutLead[language]}</p>
-        <p className="mt-3 text-sm leading-7">
-          <AboutNote language={language} />
-        </p>
+        <p className="mt-3 text-sm leading-7">{copy.aboutNote[language]}</p>
       </article>
 
       <div className="mt-8 border-t border-line pt-4">

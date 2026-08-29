@@ -16,7 +16,6 @@ type CafeCardProps = {
 };
 
 export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
-  const hours = shop.hours?.trim();
   const site = shop.officialSite?.trim();
   const primary = shopDisplayName(shop, language);
   const dir = language === "ar" ? "rtl" : "ltr";
@@ -67,10 +66,6 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         <div>
           <dt className="text-xs text-ink-soft">{copy.vibe[language]}</dt>
           <dd>{vibe}</dd>
-        </div>
-        <div>
-          <dt className="text-xs text-ink-soft">{copy.hours[language]}</dt>
-          <dd>{hours || copy.noHours[language]}</dd>
         </div>
       </dl>
 

@@ -9,7 +9,6 @@ import {
 import type { Language } from "./types";
 
 export {
-  FEEDBACK_MAIL,
   LOCKED_ABOUT,
   LOCKED_CONTACT,
   LOCKED_OPENER,

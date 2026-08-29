@@ -86,12 +86,10 @@ export const LOCKED_ABOUT = {
     en: "wain.lol is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
   },
   note: {
-    ar: "إذا عندك ملاحظة، ارسل aj@cali.sa. البوت يقراها أول، وبعدين توصل لشخص إذا احتجنا.",
-    en: "If something’s off, email aj@cali.sa. A bot reads it first, then a person if it needs one.",
+    ar: "إذا فيه شيء مو زابط، تواصل معنا تحت.",
+    en: "If something’s off, please contact us below!",
   },
 } as const;
-
-export const FEEDBACK_MAIL = "aj@cali.sa";
 
 /** Locked footer / About contact control. Button opens WhatsApp via wa.me. */
 export const LOCKED_CONTACT = {

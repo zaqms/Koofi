@@ -18,7 +18,7 @@ const CHIPS = [...VIBE_CHIPS, NEARBY_CHIP];
 export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
   return (
     <div
-      className="flex flex-wrap justify-start gap-1.5"
+      className="-mx-1 flex flex-nowrap gap-2.5 overflow-x-auto px-1 [scrollbar-width:none] [-ms-overflow-style:none] [overscroll-behavior-x:contain] [&::-webkit-scrollbar]:hidden"
       role="group"
       aria-busy={disabled || undefined}
       aria-label={copy.pickVibe[language]}
@@ -40,7 +40,7 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
               event.currentTarget.blur();
               onPick({ id: chip.id, label });
             }}
-            className="rounded-full border border-line bg-foam px-2.5 py-1 text-[11px] leading-5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            className="min-h-10 shrink-0 whitespace-nowrap rounded-full border border-line bg-foam px-3.5 py-2 text-sm leading-5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
           >
             {label}
           </button>

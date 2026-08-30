@@ -21,7 +21,7 @@ type PickListProps = {
 
 export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
   return (
-    <ol className="grid gap-2">
+    <ol className="grid gap-1.5">
       {picks.map((pick, index) => {
         const name = shopDisplayName(pick, language);
         const other = shopDisplayName(
@@ -32,10 +32,10 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
         return (
           <li
             key={pick.id}
-            className="rounded-2xl border border-line bg-foam px-3 py-3"
+            className="rounded-2xl border border-line bg-foam px-2.5 py-2"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 items-start gap-3" dir="ltr">
+            <div className="flex items-start gap-2.5">
+              <div className="flex min-w-0 flex-1 items-start gap-2.5" dir="ltr">
                 <ShopVisual
                   nameAr={pick.nameAr}
                   nameEn={pick.nameEn}
@@ -46,9 +46,20 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                   className="min-w-0 flex-1"
                   dir={language === "ar" ? "rtl" : "ltr"}
                 >
-                  <p className="text-[11px] text-ink-soft">{index + 1}</p>
-                  <h3 className="text-lg font-semibold leading-tight">{name}</h3>
-                  <p className="text-[11px] leading-4 text-ink-soft" dir="auto">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="truncate text-base font-semibold leading-5">
+                      {name}
+                    </h3>
+                    {isExampleShop(pick) ? (
+                      <span className="shrink-0 text-[11px] text-ink-soft">
+                        {exampleBadge(language)}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p
+                    className="truncate text-[11px] leading-4 text-ink-soft"
+                    dir="auto"
+                  >
                     {other} · {pick.neighborhoodLabel}
                     <ShopDistance
                       coords={
@@ -58,36 +69,26 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
                       }
                       language={language}
                     />
-                  </p>
-                  {!pick.example && pick.rating != null ? (
-                    <p className="mt-1 text-xs leading-5 text-ink-soft">
+                    {!pick.example && pick.rating != null ? (
                       <span dir="ltr">
+                        {" · "}
                         {pick.rating.toFixed(1)}
                         {pick.reviewCount != null
                           ? ` · ${pick.reviewCount} ${copy.reviews[language]}`
                           : null}
                       </span>
-                      {pick.reviewSnippet ? (
-                        <span dir="auto">
-                          {" "}
-                          · “{pick.reviewSnippet}”
-                        </span>
-                      ) : null}
-                    </p>
-                  ) : null}
+                    ) : null}
+                  </p>
+                  <p className="mt-0.5 truncate text-xs leading-4 text-ink">
+                    {pick.why}
+                  </p>
                 </div>
               </div>
-              {isExampleShop(pick) ? (
-                <span className="shrink-0 text-[11px] text-ink-soft">
-                  {exampleBadge(language)}
-                </span>
-              ) : null}
             </div>
-            <p className="mt-2 truncate text-sm leading-5">{pick.why}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
               <MapsLink
                 href={pick.mapsHref}
-                className="rounded-full bg-bean px-3 py-1 text-xs text-foam hover:bg-bean-deep"
+                className="rounded-full bg-bean px-3 py-1.5 text-xs text-foam hover:bg-bean-deep"
                 onClick={() => {
                   postLearnMaps({ shopId: pick.id, pickIndex: index });
                 }}

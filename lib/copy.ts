@@ -178,6 +178,7 @@ export const copy = {
     en: "About",
   },
   aboutLead: LOCKED_ABOUT.lead,
+  aboutBody: LOCKED_ABOUT.body,
   aboutNote: LOCKED_ABOUT.note,
   contactUs: LOCKED_CONTACT,
   shareHint: {

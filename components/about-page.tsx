@@ -33,6 +33,9 @@ export function AboutPageView({ language }: AboutPageViewProps) {
       <article className="mt-8 rounded-2xl border border-line bg-foam px-4 py-5">
         <h1 className="text-base font-semibold">{copy.about[language]}</h1>
         <p className="mt-3 text-sm leading-7">{copy.aboutLead[language]}</p>
+        {language === "ar" ? (
+          <p className="mt-3 text-sm leading-7">{copy.aboutBody.ar}</p>
+        ) : null}
         <p className="mt-3 text-sm leading-7">{copy.aboutNote[language]}</p>
       </article>
 

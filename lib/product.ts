@@ -82,11 +82,15 @@ export function aboutPath(language: Language = "ar"): string {
 /** Locked About copy. Spoken Riyadh/Najdi on AR. Do not polish or expand. */
 export const LOCKED_ABOUT = {
   lead: {
-    ar: "وين مسويه واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد. الموقع كله مسويه الذكاء الاصطناعي، ما فيه أحد قعد يبرمج بيده.",
+    ar: "وين سوّاها واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد.",
     en: "wain.lol is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
   },
+  /** Second AR paragraph only. EN lead stays one block — Amjad did not send EN. */
+  body: {
+    ar: "الموقع كله سوّاه الذكاء الاصطناعي، محد برمجه بيده.",
+  },
   note: {
-    ar: "إذا فيه شيء مو زابط، تواصل معنا تحت.",
+    ar: "إذا فيه شيء مو ضابط، تواصل معنا تحت.",
     en: "If something’s off, please contact us below!",
   },
 } as const;

@@ -70,6 +70,7 @@ export type ChatPick = {
   why: string;
   mapsHref: string;
   cardPath: string;
+  matchedTags: string[];
   photoUrl?: string;
   logoUrl?: string;
   rating?: number;

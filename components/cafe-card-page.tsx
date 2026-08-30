@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
 import { DocumentLocale } from "@/components/document-locale";
+import { ShareLanding } from "@/components/share-landing";
 import { SiteFooter } from "@/components/site-footer";
 import { copy } from "@/lib/copy";
 import { BrandHomeLink } from "@/components/brand-home-link";
@@ -25,6 +27,9 @@ export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
       <p className="text-xs text-ink-soft">
         <BrandHomeLink language={language} /> · {copy.shareHint[language]}
       </p>
+      <Suspense fallback={null}>
+        <ShareLanding cafeId={shop.id} />
+      </Suspense>
       <CafeCard shop={shop} language={language} />
       <p className="mt-6">
         <Link href={home} className="text-sm text-bean hover:text-bean-deep">

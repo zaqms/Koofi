@@ -271,7 +271,12 @@ export function whatsAppLocations(result: PickResult) {
 
 export function toChatPicks(result: PickResult): ChatPick[] {
   return result.picks.map((pick) =>
-    shopToChatPick(pick.shop, result.language, pick.why),
+    shopToChatPick(
+      pick.shop,
+      result.language,
+      pick.why,
+      result.askedMoments,
+    ),
   );
 }
 

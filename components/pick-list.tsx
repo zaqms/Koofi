@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
 import { MapsLink } from "@/components/maps-link";
+import { ShareSpot } from "@/components/share-spot";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
@@ -94,6 +95,13 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
               >
                 {copy.maps[language]}
               </MapsLink>
+              <ShareSpot
+                cafeId={pick.id}
+                language={language}
+                name={name}
+                matchedTags={pick.matchedTags ?? []}
+                variant="row"
+              />
               <Link
                 href={pick.cardPath}
                 className="text-xs text-ink-soft underline-offset-2 hover:underline"

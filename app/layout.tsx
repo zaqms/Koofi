@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import Script from "next/script";
 import { PRODUCT_NAME, PUBLIC_SITE_URL } from "@/lib/product";
@@ -60,6 +61,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         {children}
+        <Analytics />
       </body>
       <Script
         src="https://datafa.st/js/script.js"

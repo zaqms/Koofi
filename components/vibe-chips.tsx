@@ -1,6 +1,9 @@
+"use client";
+
 import type { ReactNode } from "react";
 import { copy } from "@/lib/copy";
 import { NEARBY_CHIP, VIBE_CHIPS, vibeChipLabel } from "@/lib/product";
+import { trackEvent } from "@/lib/track";
 import type { Language } from "@/lib/types";
 
 export type ChipPick = {
@@ -157,6 +160,7 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
             onClick={(event) => {
               if (disabled) return;
               event.currentTarget.blur();
+              trackEvent("chip_tap", { chip_id: chip.id, locale: language });
               onPick({ id: chip.id, label });
             }}
             className="flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-0.5 py-1.5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"

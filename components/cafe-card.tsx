@@ -72,6 +72,9 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
       <div className="mt-5 flex flex-col gap-2">
         <MapsLink
           href={shopMapsHref(shop)}
+          shopId={shop.id}
+          locale={language}
+          source="card"
           className="rounded-2xl bg-bean px-4 py-3 text-center text-sm text-foam hover:bg-bean-deep"
         >
           {copy.maps[language]}

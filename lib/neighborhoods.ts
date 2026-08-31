@@ -6,9 +6,9 @@ export const NEIGHBORHOODS: Record<
 > = {
   hittin: {
     id: "hittin",
-    ar: "هيتين",
+    ar: "حطين",
     en: "Hittin",
-    aliases: ["هيتين", "حطين", "هتين", "hittin", "hitteen", "hateen"],
+    aliases: ["حطين", "هيتين", "هتين", "hittin", "hitteen", "hateen"],
   },
   "al-malqa": {
     id: "al-malqa",

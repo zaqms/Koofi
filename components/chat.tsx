@@ -363,6 +363,23 @@ export function Chat({ landing }: ChatProps) {
     send(chip.label, { suggesting: false, via: "chip" });
   }
 
+  function startOver() {
+    delete pendingSends[landing];
+    inFlightRef.current = false;
+    const openerOnly = [openerMessage(landing)];
+    threads[landing] = {
+      messages: openerOnly,
+      composerLanguage: landing,
+      awaitingMaps: false,
+    };
+    setMessages(openerOnly);
+    setDraft("");
+    setBusy(false);
+    setPendingId(null);
+    setComposerLanguage(landing);
+    setAwaitingMaps(false);
+  }
+
   const hasThread =
     busy ||
     messages.some(
@@ -386,6 +403,7 @@ export function Chat({ landing }: ChatProps) {
           <BrandHomeLink
             language={landing}
             className="text-lg font-semibold"
+            onClick={startOver}
           />
           <Link
             href={landing === "ar" ? "/en" : "/"}
@@ -478,11 +496,6 @@ export function Chat({ landing }: ChatProps) {
           send(draft);
         }}
       >
-        {hasThread ? (
-          <div className="mb-2">
-            <VibeChips language={landing} disabled={busy} onPick={sendChip} />
-          </div>
-        ) : null}
         <label className="sr-only" htmlFor="koofi-ask">
           {awaitingMaps
             ? copy.mapsPlaceholder[landing]

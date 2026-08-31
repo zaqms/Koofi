@@ -88,6 +88,9 @@ export function PickList({ picks, language, beenIds, onBeen }: PickListProps) {
             <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
               <MapsLink
                 href={pick.mapsHref}
+                shopId={pick.id}
+                locale={language}
+                source="chat"
                 className="rounded-full bg-bean px-3 py-1.5 text-xs text-foam hover:bg-bean-deep"
                 onClick={() => {
                   postLearnMaps({ shopId: pick.id, pickIndex: index });

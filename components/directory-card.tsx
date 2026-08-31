@@ -60,6 +60,9 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
       <div className="mt-3">
         <MapsLink
           href={shop.mapsHref}
+          shopId={shop.id}
+          locale={language}
+          source="list"
           className="inline-flex min-h-11 items-center rounded-full bg-bean px-4 text-sm text-foam hover:bg-bean-deep"
         >
           {copy.maps[language]}

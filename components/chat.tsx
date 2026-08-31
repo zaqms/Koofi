@@ -15,6 +15,7 @@ import {
   requestVisitorLocation,
   useVisitorLocation,
 } from "@/lib/visitor-location";
+import { trackEvent } from "@/lib/track";
 import type { Language } from "@/lib/types";
 
 type AssistantMessage = {
@@ -216,6 +217,12 @@ export function Chat({ landing }: ChatProps) {
     if (!trimmed || inFlightRef.current) return;
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
+    if (via === "typed") {
+      trackEvent("ask_sent", {
+        locale: landing,
+        text_length: trimmed.length,
+      });
+    }
 
     const userMessage: UserMessage = {
       id: crypto.randomUUID(),

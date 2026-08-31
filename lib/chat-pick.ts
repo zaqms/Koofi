@@ -2,12 +2,14 @@ import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import { cardPath, isExampleShop } from "./product";
 import { shopMapsHref } from "./public-url";
-import type { ChatPick, Language, Shop } from "./types";
+import { matchedChipLabels } from "./share";
+import type { ChatPick, Language, MomentTag, Shop } from "./types";
 
 export function shopToChatPick(
   shop: Shop,
   language: Language,
   why: string,
+  askedMoments: readonly MomentTag[] = [],
 ): ChatPick {
   const coords = officialShopCoords(shop);
   return {
@@ -19,6 +21,7 @@ export function shopToChatPick(
     why,
     mapsHref: shopMapsHref(shop),
     cardPath: cardPath(shop.id, language),
+    matchedTags: matchedChipLabels(shop.momentTags, askedMoments, language),
     photoUrl: shop.photoUrl,
     logoUrl: shop.logoUrl,
     ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),

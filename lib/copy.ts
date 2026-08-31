@@ -113,6 +113,10 @@ export const copy = {
     ar: "الخريطة",
     en: "Maps",
   },
+  sendThisSpot: {
+    ar: "أرسل هالمكان",
+    en: "Send this spot",
+  },
   reviews: {
     ar: "تقييم",
     en: "reviews",

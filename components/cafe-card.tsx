@@ -1,5 +1,6 @@
 import { CardBeen } from "@/components/card-been";
 import { MapsLink } from "@/components/maps-link";
+import { ShareSpot } from "@/components/share-spot";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
@@ -76,6 +77,12 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         >
           {copy.maps[language]}
         </MapsLink>
+        <ShareSpot
+          cafeId={shop.id}
+          language={language}
+          name={primary}
+          variant="block"
+        />
         {site ? (
           <a
             href={site}

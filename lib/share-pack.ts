@@ -34,37 +34,45 @@ export function packetTextForPicks(input: {
   };
 }
 
-/** Share-to-a-friend. No phone number — they pick the chat. Not Contact us. */
+/** Last-resort only. No phone number — they pick the chat. Not Contact us. */
 export function whatsAppShareHref(text: string): string {
   return `https://wa.me/?text=${encodeURIComponent(text)}`;
 }
 
-function silentCopy(text: string): void {
+export type SharePackResult = "shared" | "copied" | "whatsapp" | "cancelled" | "failed";
+
+async function copyPacket(text: string): Promise<boolean> {
   try {
-    void navigator.clipboard?.writeText(text);
+    if (!navigator.clipboard?.writeText) return false;
+    await navigator.clipboard.writeText(text);
+    return true;
   } catch {
-    // Silent fallback only. Do not toast.
+    return false;
   }
 }
 
 /**
- * Open the user's WhatsApp with the packet prefilled.
- * Native scheme first so we do not land on WhatsApp Web / QR.
- * wa.me/?text= (no number) is the public share URL.
- * Clipboard only if WhatsApp does not take over.
+ * Phones: system share sheet (they pick WhatsApp, Snap, IG, Messages, …).
+ * Packet already includes the restore URL — do not pass `url` or it duplicates.
+ * Desktop / blocked in-app browsers: clipboard, then wa.me/?text= last.
  */
-export function openWhatsAppPacket(text: string): void {
-  const encoded = encodeURIComponent(text);
-  const native = `whatsapp://send?text=${encoded}`;
-  const waMe = whatsAppShareHref(text);
+export async function sharePackPacket(text: string): Promise<SharePackResult> {
+  const shareData = { text };
+  if (typeof navigator.share === "function") {
+    try {
+      if (navigator.canShare?.(shareData) !== false) {
+        await navigator.share(shareData);
+        return "shared";
+      }
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return "cancelled";
+      }
+    }
+  }
 
-  window.location.href = native;
+  if (await copyPacket(text)) return "copied";
 
-  window.setTimeout(() => {
-    if (document.hidden) return;
-    window.location.href = waMe;
-    window.setTimeout(() => {
-      if (!document.hidden) silentCopy(text);
-    }, 900);
-  }, 500);
+  window.location.href = whatsAppShareHref(text);
+  return "whatsapp";
 }

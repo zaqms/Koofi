@@ -2,7 +2,7 @@ type ShareIconProps = {
   className?: string;
 };
 
-/** Quiet share glyph next to شارك في واتساب. */
+/** Quiet share glyph next to شارك / Share. */
 export function ShareIcon({ className }: ShareIconProps) {
   return (
     <svg

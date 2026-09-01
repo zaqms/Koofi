@@ -1,18 +1,13 @@
 import { listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { haversineKm } from "./distance";
-import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
+import { dedupeSameBrand } from "./shop-brand";
 import type { ChatPick, Language, Pin, Shop } from "./types";
+import { uniqueWhyLines } from "./why-line";
 
 const TARGET_PICKS = 3;
 
-function nearbyWhy(shop: Shop, language: Language): string {
-  const neighborhood = neighborhoodLabel(shop.neighborhood, language);
-  return language === "ar"
-    ? `قريب منك في ${neighborhood}.`
-    : `Near you in ${neighborhood}.`;
-}
 
 /** Three nearest official-place shops. Display sort for the Nearby chip only. */
 export function pickNearestShops(
@@ -32,7 +27,7 @@ export function pickNearestShops(
   }
 
   ranked.sort((a, b) => a.km - b.km);
-  return ranked.slice(0, limit).map((row) => row.shop);
+  return dedupeSameBrand(ranked.map((row) => row.shop)).slice(0, limit);
 }
 
 export function nearbyChatPicks(input: {
@@ -45,7 +40,8 @@ export function nearbyChatPicks(input: {
     input.origin,
     input.beenIds ?? [],
   );
-  return shops.map((shop) =>
-    shopToChatPick(shop, input.language, nearbyWhy(shop, input.language)),
+  const whys = uniqueWhyLines(shops, input.language);
+  return shops.map((shop, index) =>
+    shopToChatPick(shop, input.language, whys[index] ?? ""),
   );
 }

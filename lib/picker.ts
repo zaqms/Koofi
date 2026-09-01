@@ -1,6 +1,7 @@
 import { listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
+import { neighborhoodTightShops } from "./neighborhood-tight";
 import { neighborhoodLabel } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
 import {
@@ -10,6 +11,7 @@ import {
 } from "./product";
 import { decorateChatPicks } from "./places";
 import { shopLocation, shopMapsHref } from "./public-url";
+import { dedupeSameBrand } from "./shop-brand";
 import type {
   ChatPick,
   Language,
@@ -19,67 +21,11 @@ import type {
   PickResult,
   Shop,
 } from "./types";
+import { shopsWithUniqueWhy } from "./why-line";
 
 /** Always aim for three cards. Never collapse to a single pick when three shops exist. */
 const TARGET_PICKS = 3;
 
-function editorialWhy(shop: Shop, moments: MomentTag[], language: Language): string {
-  const hit = moments.find((moment) => shop.momentTags.includes(moment));
-  const neighborhood = neighborhoodLabel(shop.neighborhood, language);
-
-  const reasons: Record<MomentTag, Record<Language, string>> = {
-    work: {
-      ar: `لقعدة شغل في ${neighborhood} — طاولة وهدوء، مو زحمة.`,
-      en: `For work in ${neighborhood} — a table and quiet over buzz.`,
-    },
-    friend: {
-      ar: `قعدة مع أحد في ${neighborhood}، مو عشان قائمة أفضل قهوة.`,
-      en: `A hangout in ${neighborhood}, not a "best of Riyadh" list.`,
-    },
-    qahwa: {
-      ar: `فنجان في ${neighborhood} بهالوقت، على مزاج القهوة مو التقييم.`,
-      en: `A cup in ${neighborhood} right now — reason over rating.`,
-    },
-    roaster: {
-      ar: `محمصة في ${neighborhood} لو تبي فلتر وتتكلم قهوة.`,
-      en: `A roaster in ${neighborhood} if you want filter and coffee talk.`,
-    },
-    quiet: {
-      ar: `أهدى وحدة عندي في ${neighborhood} لهالحين.`,
-      en: `The quieter fit I have in ${neighborhood} right now.`,
-    },
-    late: {
-      ar: `لقعدة متأخرة في ${neighborhood}.`,
-      en: `For a late sit in ${neighborhood}.`,
-    },
-    popular: {
-      ar: `من اللي عليها طلب عندي في ${neighborhood} بهالحين.`,
-      en: `Among the more asked-for fits I have in ${neighborhood} right now.`,
-    },
-    pastry: {
-      ar: `لو تبي معجنات مع القهوة في ${neighborhood}.`,
-      en: `If you want pastry with the coffee in ${neighborhood}.`,
-    },
-    study: {
-      ar: `لقعدة مذاكرة في ${neighborhood} — أهدى من الزحمة.`,
-      en: `For studying in ${neighborhood} — quieter than the rush.`,
-    },
-    outdoor: {
-      ar: `جلسة برا في ${neighborhood}.`,
-      en: `Outdoor seating in ${neighborhood}.`,
-    },
-    date: {
-      ar: `لموعد هادي في ${neighborhood}.`,
-      en: `For a date in ${neighborhood}.`,
-    },
-  };
-
-  if (hit) return reasons[hit][language];
-
-  return language === "ar"
-    ? `تمشي مع ${neighborhood} بهالجو: ${shop.vibeTags.slice(0, 2).join("، ")}.`
-    : `Fits ${neighborhood} for this moment.`;
-}
 
 function scoreShop(
   shop: Shop,
@@ -173,9 +119,13 @@ export function pickCafes(input: {
   const language = input.language ?? intent.language;
   const been = new Set((input.beenIds ?? []).filter(Boolean));
   const avoided = new Set(intent.avoidedNeighborhoods);
-  const available = listRealShops().filter(
+  const citywide = listRealShops().filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
   );
+  const available =
+    intent.neighborhoods.length > 0
+      ? neighborhoodTightShops(citywide, intent.neighborhoods)
+      : citywide;
 
   const neighborhoodMatches = available.filter(
     (shop) =>
@@ -191,17 +141,21 @@ export function pickCafes(input: {
 
   let pool = momentMatches;
   if (pool.length < TARGET_PICKS) pool = neighborhoodMatches;
+  if (pool.length < TARGET_PICKS && intent.neighborhoods.length === 0) {
+    pool = available;
+  }
   if (pool.length < TARGET_PICKS) pool = available;
 
   const ranked = diversify(
-    rankShops(pool, intent.neighborhoods, intent.moments),
+    dedupeSameBrand(rankShops(pool, intent.neighborhoods, intent.moments)),
     intent.moments,
   );
 
-  const picks: PickReason[] = ranked.map((shop) => ({
-    shop,
-    why: editorialWhy(shop, intent.moments, language),
-  }));
+  const picks: PickReason[] = shopsWithUniqueWhy(
+    ranked,
+    language,
+    intent.moments,
+  );
 
   const thinCatalog =
     available.length < TARGET_PICKS ||

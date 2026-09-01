@@ -3,17 +3,22 @@ import type { ReactNode } from "react";
 type IconTileProps = {
   size?: number;
   label?: string;
+  voted?: boolean;
   children: ReactNode;
 };
 
 /** Dark charcoal squircle. Thin outline glyphs sit inside — not filled blobs. */
-export function IconTile({ size = 40, label, children }: IconTileProps) {
+export function IconTile({ size = 40, label, voted, children }: IconTileProps) {
   return (
     <span
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
-      className="inline-flex shrink-0 items-center justify-center rounded-[28%] bg-charcoal shadow-[0_2px_8px_rgba(28,20,16,0.2)]"
+      className={
+        voted
+          ? "inline-flex shrink-0 items-center justify-center rounded-[28%] bg-charcoal shadow-[0_0_10px_rgba(168,213,160,0.55)]"
+          : "inline-flex shrink-0 items-center justify-center rounded-[28%] bg-charcoal shadow-[0_2px_8px_rgba(28,20,16,0.2)]"
+      }
       style={{ width: size, height: size }}
     >
       {children}
@@ -120,7 +125,7 @@ export function ThumbsUpTile({
   label?: string;
 }) {
   return (
-    <IconTile size={size} label={label}>
+    <IconTile size={size} label={label} voted={voted}>
       <ThumbsUpGlyph size={Math.round(size * 0.5)} voted={voted} />
     </IconTile>
   );

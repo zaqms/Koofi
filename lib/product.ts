@@ -71,8 +71,19 @@ export const EXAMPLE_BADGE = {
 
 export const CARD_PATH_PREFIX = "/c";
 
+/** Three-pack restore. Public, no login. Not a cafe-card `/c/` URL. */
+export const PACK_PATH_PREFIX = "/p";
+
 export function homePath(language: Language = "ar"): string {
   return language === "en" ? "/en" : "/";
+}
+
+export function packPath(id: string): string {
+  return `${PACK_PATH_PREFIX}/${encodeURIComponent(id)}`;
+}
+
+export function packSharePath(id: string): string {
+  return `${packPath(id)}?from=wa`;
 }
 
 export function aboutPath(language: Language = "ar"): string {
@@ -107,6 +118,10 @@ export const CONTACT_WHATSAPP_HREF = "https://wa.me/966570064331";
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;
+}
+
+export function cardSharePath(id: string, language: Language = "ar"): string {
+  return `${cardPath(id, language)}?from=wa`;
 }
 
 export function shopDisplayName(

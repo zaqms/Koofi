@@ -17,6 +17,13 @@ import {
 } from "@/lib/visitor-location";
 import type { Language } from "@/lib/types";
 
+export type ChatRestore = {
+  packId: string;
+  ask: string;
+  picks: ChatPick[];
+  language: Language;
+};
+
 type AssistantMessage = {
   id: string;
   role: "assistant";
@@ -60,10 +67,11 @@ type LiveThread = {
 
 type ChatProps = {
   landing: Language;
+  restore?: ChatRestore;
 };
 
-const threads: Partial<Record<Language, LiveThread>> = {};
-const pendingSends: Partial<Record<Language, PendingSend>> = {};
+const threads: Partial<Record<string, LiveThread>> = {};
+const pendingSends: Partial<Record<string, PendingSend>> = {};
 
 function openerMessage(landing: Language): AssistantMessage {
   return {
@@ -74,26 +82,56 @@ function openerMessage(landing: Language): AssistantMessage {
   };
 }
 
-export function Chat({ landing }: ChatProps) {
+function restoreMessages(restore: ChatRestore, landing: Language): Message[] {
+  const messages: Message[] = [openerMessage(landing)];
+  if (restore.ask.trim()) {
+    messages.push({
+      id: `pack-ask-${restore.packId}`,
+      role: "user",
+      text: restore.ask,
+    });
+  }
+  messages.push({
+    id: `pack-picks-${restore.packId}`,
+    role: "assistant",
+    language: restore.language,
+    text: copy.threePicks[restore.language],
+    picks: restore.picks,
+  });
+  return messages;
+}
+
+function askBeforePicks(messages: Message[], index: number): string {
+  for (let i = index - 1; i >= 0; i -= 1) {
+    const message = messages[i];
+    if (message?.role === "user") return message.text;
+  }
+  return "";
+}
+
+export function Chat({ landing, restore }: ChatProps) {
+  const threadKey = restore ? `pack:${restore.packId}` : landing;
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [messages, setMessages] = useState<Message[]>(
-    () => threads[landing]?.messages ?? [openerMessage(landing)],
+    () =>
+      threads[threadKey]?.messages ??
+      (restore ? restoreMessages(restore, landing) : [openerMessage(landing)]),
   );
   const [draft, setDraft] = useState("");
   const [pendingId, setPendingId] = useState(
-    () => pendingSends[landing]?.id ?? null,
+    () => pendingSends[threadKey]?.id ?? null,
   );
-  const [busy, setBusy] = useState(() => Boolean(pendingSends[landing]));
+  const [busy, setBusy] = useState(() => Boolean(pendingSends[threadKey]));
   const been = useBeenIds();
   const [composerLanguage, setComposerLanguage] = useState<Language>(
-    () => threads[landing]?.composerLanguage ?? landing,
+    () => threads[threadKey]?.composerLanguage ?? landing,
   );
   const [awaitingMaps, setAwaitingMaps] = useState(
-    () => threads[landing]?.awaitingMaps ?? false,
+    () => threads[threadKey]?.awaitingMaps ?? false,
   );
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
-  const inFlightRef = useRef(Boolean(pendingSends[landing]));
+  const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
   useVisitorLocation();
 
   useEffect(() => {
@@ -109,15 +147,15 @@ export function Chat({ landing }: ChatProps) {
   }, [landing]);
 
   useEffect(() => {
-    threads[landing] = {
+    threads[threadKey] = {
       messages,
       composerLanguage,
       awaitingMaps,
     };
-  }, [landing, messages, composerLanguage, awaitingMaps]);
+  }, [threadKey, messages, composerLanguage, awaitingMaps]);
 
   useEffect(() => {
-    const pending = pendingSends[landing];
+    const pending = pendingSends[threadKey];
     if (!pending) return;
 
     inFlightRef.current = true;
@@ -126,8 +164,8 @@ export function Chat({ landing }: ChatProps) {
     void pending.promise.then((result) => {
       if (cancelled || pending.applied) return;
       pending.applied = true;
-      if (pendingSends[landing] === pending) {
-        delete pendingSends[landing];
+      if (pendingSends[threadKey] === pending) {
+        delete pendingSends[threadKey];
       }
       inFlightRef.current = false;
       setBusy(false);
@@ -149,7 +187,7 @@ export function Chat({ landing }: ChatProps) {
               thinCatalog: result.data.thinCatalog,
             },
           ];
-          threads[landing] = {
+          threads[threadKey] = {
             messages: next,
             composerLanguage: result.data.language,
             awaitingMaps: waitForMaps,
@@ -169,7 +207,7 @@ export function Chat({ landing }: ChatProps) {
             text: copy.error[result.language],
           },
         ];
-        threads[landing] = {
+        threads[threadKey] = {
           messages: next,
           composerLanguage: result.language,
           awaitingMaps: false,
@@ -181,7 +219,7 @@ export function Chat({ landing }: ChatProps) {
     return () => {
       cancelled = true;
     };
-  }, [landing, pendingId]);
+  }, [threadKey, pendingId]);
 
   useEffect(() => {
     const list = listRef.current;
@@ -229,7 +267,7 @@ export function Chat({ landing }: ChatProps) {
     setBusy(true);
     setMessages((current) => {
       const next = [...current, userMessage];
-      threads[landing] = {
+      threads[threadKey] = {
         messages: next,
         composerLanguage,
         awaitingMaps: false,
@@ -267,7 +305,7 @@ export function Chat({ landing }: ChatProps) {
       })(),
     };
 
-    pendingSends[landing] = pending;
+    pendingSends[threadKey] = pending;
     setPendingId(pending.id);
   }
 
@@ -288,7 +326,7 @@ export function Chat({ landing }: ChatProps) {
   function applyAssistant(message: AssistantMessage) {
     setMessages((current) => {
       const next: Message[] = [...current, message];
-      threads[landing] = {
+      threads[threadKey] = {
         messages: next,
         composerLanguage,
         awaitingMaps: false,
@@ -311,7 +349,7 @@ export function Chat({ landing }: ChatProps) {
     setBusy(true);
     setMessages((current) => {
       const next = [...current, userMessage];
-      threads[landing] = {
+      threads[threadKey] = {
         messages: next,
         composerLanguage,
         awaitingMaps: false,
@@ -364,10 +402,10 @@ export function Chat({ landing }: ChatProps) {
   }
 
   function startOver() {
-    delete pendingSends[landing];
+    delete pendingSends[threadKey];
     inFlightRef.current = false;
     const openerOnly = [openerMessage(landing)];
-    threads[landing] = {
+    threads[threadKey] = {
       messages: openerOnly,
       composerLanguage: landing,
       awaitingMaps: false,
@@ -405,12 +443,14 @@ export function Chat({ landing }: ChatProps) {
             className="text-lg font-semibold"
             onClick={startOver}
           />
-          <Link
-            href={landing === "ar" ? "/en" : "/"}
-            className="text-xs text-ink-soft underline-offset-2 hover:underline"
-          >
-            {copy.switchLanguage[landing]}
-          </Link>
+          {restore ? null : (
+            <Link
+              href={landing === "ar" ? "/en" : "/"}
+              className="text-xs text-ink-soft underline-offset-2 hover:underline"
+            >
+              {copy.switchLanguage[landing]}
+            </Link>
+          )}
         </div>
         <p className="text-xs text-ink-soft">{copy.cityOnly[landing]}</p>
       </header>
@@ -424,7 +464,7 @@ export function Chat({ landing }: ChatProps) {
         }
         aria-live="polite"
       >
-        {messages.map((message) =>
+        {messages.map((message, index) =>
           message.role === "user" ? (
             <div key={message.id} className="flex justify-end">
               <p
@@ -462,8 +502,20 @@ export function Chat({ landing }: ChatProps) {
                 <PickList
                   picks={message.picks}
                   language={message.language}
+                  uiLanguage={landing}
                   beenIds={been.ids}
                   onBeen={been.mark}
+                  ask={
+                    restore && message.id === `pack-picks-${restore.packId}`
+                      ? restore.ask
+                      : askBeforePicks(messages, index)
+                  }
+                  packId={
+                    restore && message.id === `pack-picks-${restore.packId}`
+                      ? restore.packId
+                      : undefined
+                  }
+                  mapsSource="pack"
                 />
               ) : null}
               {message.thinCatalog ? (

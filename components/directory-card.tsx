@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
+import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
@@ -57,13 +59,19 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
           </p>
         </div>
       </Link>
-      <div className="mt-3">
+      <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
         <MapsLink
           href={shop.mapsHref}
-          className="inline-flex min-h-11 items-center rounded-full bg-bean px-4 text-sm text-foam hover:bg-bean-deep"
+          shopId={shop.id}
+          locale={language}
+          source="list"
+          className="inline-flex size-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+          aria-label={copy.maps[language]}
+          title={copy.maps[language]}
         >
-          {copy.maps[language]}
+          <MapPinIcon />
         </MapsLink>
+        <ShareListingButton shop={shop} language={language} source="list" />
       </div>
     </li>
   );

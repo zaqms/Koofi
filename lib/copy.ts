@@ -185,6 +185,14 @@ export const copy = {
     ar: "رابط، مو تطبيق.",
     en: "A link, not an app.",
   },
+  sharePack: {
+    ar: "شارك",
+    en: "Share",
+  },
+  packetCopied: {
+    ar: "تم النسخ",
+    en: "Copied",
+  },
   error: {
     ar: "صار خلل بسيط. جرّب مرة ثانية.",
     en: "Something slipped. Try again.",

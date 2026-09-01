@@ -1,6 +1,6 @@
 import { AboutPageView } from "@/components/about-page";
 import { copy } from "@/lib/copy";
-import { LOCKED_ABOUT, PRODUCT_NAME } from "@/lib/product";
+import { LOCKED_ABOUT, PRODUCT_NAME, SOCIAL_SHARE_IMAGE } from "@/lib/product";
 
 export const metadata = {
   title: copy.about.ar,
@@ -14,11 +14,13 @@ export const metadata = {
     locale: "ar_SA",
     type: "website",
     url: "/about",
+    images: [SOCIAL_SHARE_IMAGE],
   },
   twitter: {
     card: "summary",
     title: copy.about.ar,
     description: `${LOCKED_ABOUT.lead.ar} ${LOCKED_ABOUT.body.ar}`,
+    images: [SOCIAL_SHARE_IMAGE],
   },
 };
 

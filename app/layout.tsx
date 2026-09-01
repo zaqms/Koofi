@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import Script from "next/script";
-import { PRODUCT_NAME, PUBLIC_SITE_URL } from "@/lib/product";
+import { PRODUCT_NAME, PUBLIC_SITE_URL, SOCIAL_SHARE_IMAGE } from "@/lib/product";
 import "./globals.css";
 
 const GTM_ID = "GTM-W3TM4552";
@@ -29,11 +29,13 @@ export const metadata: Metadata = {
     locale: "ar_SA",
     type: "website",
     url: "/",
+    images: [SOCIAL_SHARE_IMAGE],
   },
   twitter: {
     card: "summary",
     title: PRODUCT_NAME,
     description,
+    images: [SOCIAL_SHARE_IMAGE],
   },
 };
 

@@ -4,7 +4,7 @@ import { Chat } from "@/components/chat";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
 import { packToChatPicks, resolvePack } from "@/lib/pack";
-import { PRODUCT_NAME, shopDisplayName } from "@/lib/product";
+import { PRODUCT_NAME, SOCIAL_SHARE_IMAGE, shopDisplayName } from "@/lib/product";
 
 type PackPageProps = {
   params: Promise<{ id: string }>;
@@ -40,11 +40,13 @@ export async function generateMetadata({ params }: PackPageProps) {
       locale: pack.locale === "en" ? "en_US" : "ar_SA",
       siteName: PRODUCT_NAME,
       type: "website",
+      images: [SOCIAL_SHARE_IMAGE],
     },
     twitter: {
       card: "summary",
       title: `${names} · ${area}`,
       description,
+      images: [SOCIAL_SHARE_IMAGE],
     },
   };
 }

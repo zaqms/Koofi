@@ -8,6 +8,19 @@ export const PUBLIC_SITE_URL = `https://${PUBLIC_SITE_HOST}`;
 /** People-facing Latin brand. Exactly `wain.lol`. The npm package stays `koofi`. */
 export const PRODUCT_NAME = PUBLIC_SITE_HOST;
 
+/**
+ * Square wordmark Next already serves at /icon.png (`app/icon.png`, 192×192).
+ * X summary cards ignore rel=icon — they need og:image / twitter:image.
+ * Absolute on purpose so live HTML is https://wain.lol/icon.png, not a relative path.
+ */
+export const SOCIAL_SHARE_IMAGE = {
+  url: `${PUBLIC_SITE_URL}/icon.png`,
+  width: 192,
+  height: 192,
+  alt: PRODUCT_NAME,
+  type: "image/png",
+} as const;
+
 /** People-facing Arabic name in sentences. Wordmark stays Latin `wain.lol`. */
 export const PRODUCT_NAME_AR = "وين";
 

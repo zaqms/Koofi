@@ -110,8 +110,18 @@ export function uniqueWhyLines(
   asked: readonly MomentTag[] = [],
 ): string[] {
   const used = new Set<string>();
+  const usedMoments = new Set<WhyMoment>();
   return shops.map((shop) => {
     const moments = shopWhyMoments(shop, asked);
+    for (const moment of moments) {
+      if (usedMoments.has(moment)) continue;
+      for (const line of WHY_LINES[moment][language]) {
+        if (used.has(line)) continue;
+        used.add(line);
+        usedMoments.add(moment);
+        return line;
+      }
+    }
     for (const moment of moments) {
       for (const line of WHY_LINES[moment][language]) {
         if (used.has(line)) continue;

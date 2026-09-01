@@ -29,6 +29,21 @@ export function formatSharePacket(input: {
   return text;
 }
 
+export function formatListingPacket(input: {
+  name: string;
+  why: string;
+  cardUrl: string;
+}): string {
+  const text = `${input.name} — ${input.why}\n\n${input.cardUrl}`;
+  if (MAPS_HOST.test(text)) {
+    return text
+      .split("\n")
+      .filter((line) => !MAPS_HOST.test(line))
+      .join("\n");
+  }
+  return text;
+}
+
 export function packetHasMapsUrl(text: string): boolean {
   return MAPS_HOST.test(text);
 }

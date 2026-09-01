@@ -1,6 +1,8 @@
-import { formatSharePacket } from "./packet";
+import { formatListingPacket, formatSharePacket } from "./packet";
 import { encodePackId, packSharePath } from "./pack";
-import type { ChatPick, Language } from "./types";
+import { cardSharePath, shopDisplayName } from "./product";
+import type { ChatPick, Language, Shop } from "./types";
+import { shopWhyLine } from "./why-line";
 
 export function packIdForPicks(input: {
   picks: ChatPick[];
@@ -30,6 +32,22 @@ export function packetTextForPicks(input: {
       picks: input.picks,
       language: input.language,
       restoreUrl,
+    }),
+  };
+}
+
+export function listingPacketForShop(input: {
+  shop: Pick<Shop, "id" | "nameAr" | "nameEn" | "neighborhood" | "momentTags" | "vibeTags">;
+  language: Language;
+  origin: string;
+}): { text: string; cardUrl: string } {
+  const cardUrl = `${input.origin.replace(/\/$/, "")}${cardSharePath(input.shop.id, input.language)}`;
+  return {
+    cardUrl,
+    text: formatListingPacket({
+      name: shopDisplayName(input.shop, input.language),
+      why: shopWhyLine(input.shop, input.language),
+      cardUrl,
     }),
   };
 }

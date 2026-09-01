@@ -515,11 +515,7 @@ export function Chat({ landing, restore }: ChatProps) {
                       ? restore.packId
                       : undefined
                   }
-                  mapsSource={
-                    restore && message.id === `pack-picks-${restore.packId}`
-                      ? "pack"
-                      : "home"
-                  }
+                  mapsSource="pack"
                 />
               ) : null}
               {message.thinCatalog ? (

@@ -120,6 +120,10 @@ export function cardPath(id: string, language: Language = "ar"): string {
   return language === "en" ? `/en${slug}` : slug;
 }
 
+export function cardSharePath(id: string, language: Language = "ar"): string {
+  return `${cardPath(id, language)}?from=wa`;
+}
+
 export function shopDisplayName(
   shop: { nameAr: string; nameEn: string },
   language: Language,

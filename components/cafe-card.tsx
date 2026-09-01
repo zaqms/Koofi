@@ -1,5 +1,7 @@
 import { CardBeen } from "@/components/card-been";
+import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
+import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
@@ -70,15 +72,20 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
       </dl>
 
       <div className="mt-5 flex flex-col gap-2">
-        <MapsLink
-          href={shopMapsHref(shop)}
-          shopId={shop.id}
-          locale={language}
-          source="card"
-          className="rounded-2xl bg-bean px-4 py-3 text-center text-sm text-foam hover:bg-bean-deep"
-        >
-          {copy.maps[language]}
-        </MapsLink>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <MapsLink
+            href={shopMapsHref(shop)}
+            shopId={shop.id}
+            locale={language}
+            source="card"
+            className="inline-flex size-10 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+            aria-label={copy.maps[language]}
+            title={copy.maps[language]}
+          >
+            <MapPinIcon />
+          </MapsLink>
+          <ShareListingButton shop={shop} language={language} source="card" />
+        </div>
         {site ? (
           <a
             href={site}

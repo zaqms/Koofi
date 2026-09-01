@@ -1,7 +1,9 @@
 import { pickCafes } from "../lib/picker";
 import { shopBrandKey } from "../lib/shop-brand";
 import { encodePackId, resolvePack } from "../lib/pack";
-import { formatSharePacket, packetHasMapsUrl } from "../lib/packet";
+import { formatListingPacket, formatSharePacket, packetHasMapsUrl } from "../lib/packet";
+import { listingPacketForShop } from "../lib/share-pack";
+import { shopWhyLine } from "../lib/why-line";
 import { toChatPicks } from "../lib/picker";
 import { packSharePath } from "../lib/product";
 import { whatsAppShareHref } from "../lib/share-pack";
@@ -70,6 +72,17 @@ assert(packet.includes("asked: حطين"), "packet must quote the ask");
 assert(packet.includes("wain.lol/p/"), "packet must use /p/ restore URL");
 assert(!packet.includes("/c/"), "packet must not use /c/ cafe cards");
 assert(packet.includes("?from=wa"), "packet URL must carry from=wa");
+
+const listing = listingPacketForShop({
+  shop: hittin.picks[0]!.shop,
+  language: "ar",
+  origin: "https://wain.lol",
+});
+assert(!packetHasMapsUrl(listing.text), `listing packet leaked Maps:\n${listing.text}`);
+assert(listing.text.includes("/c/"), "listing packet must use /c/");
+assert(listing.text.includes("?from=wa"), "listing packet must carry from=wa");
+assert(!listing.text.includes("/p/"), "listing packet must not use /p/");
+assert(listing.text.includes(shopWhyLine(hittin.picks[0]!.shop, "ar")), "listing packet needs why-line");
 
 const wa = whatsAppShareHref(packet);
 assert(

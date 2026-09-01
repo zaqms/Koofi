@@ -104,6 +104,14 @@ function neighborhoodWhy(
  * when `unique` cannot be satisfied — this helper still returns a last-resort
  * neighborhood line rather than inventing hours.
  */
+export function shopWhyLine(
+  shop: Pick<Shop, "neighborhood" | "momentTags" | "vibeTags">,
+  language: Language,
+  asked: readonly MomentTag[] = [],
+): string {
+  return uniqueWhyLines([shop], language, asked)[0] ?? neighborhoodWhy(shop, language);
+}
+
 export function uniqueWhyLines(
   shops: Pick<Shop, "neighborhood" | "momentTags" | "vibeTags">[],
   language: Language,

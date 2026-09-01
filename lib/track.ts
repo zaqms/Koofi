@@ -2,11 +2,15 @@ import type { Language } from "./types";
 
 export type AnalyticsEventName =
   | "three_pick_shown"
+  | "share_pack"
   | "share_packet_copy"
+  | "share_listing"
   | "share_inbound"
   | "maps_click";
 
-export type MapsClickSource = "pack" | "home" | "card";
+export type MapsClickSource = "pack" | "list" | "card";
+export type ShareInboundKind = "pack" | "listing";
+export type ListingShareSource = "list" | "card";
 
 export type AnalyticsParams = {
   locale?: Language;
@@ -14,7 +18,8 @@ export type AnalyticsParams = {
   shop_id?: string;
   pack_id?: string;
   from?: string;
-  source?: MapsClickSource;
+  kind?: ShareInboundKind;
+  source?: MapsClickSource | ListingShareSource;
   text_length?: number;
 };
 

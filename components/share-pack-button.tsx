@@ -35,10 +35,12 @@ export function SharePackButton({
       ask,
       origin,
     });
+    const id = packId ?? packet.packId;
+    trackEvent("share_pack", { locale: language, pack_id: id }, { dedupeKey: `share_pack:${id}` });
     trackEvent(
       "share_packet_copy",
-      { locale: language, pack_id: packId ?? packet.packId },
-      { dedupeKey: `share_packet_copy:${packet.packId}` },
+      { locale: language, pack_id: id },
+      { dedupeKey: `share_packet_copy:${id}` },
     );
     const result = await sharePackPacket(packet.text);
     setCopied(result === "copied");

@@ -1,23 +1,35 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackEvent } from "@/lib/track";
+import { trackEvent, type ShareInboundKind } from "@/lib/track";
 
 type TrackShareInboundProps = {
-  packId: string;
+  kind: ShareInboundKind;
   from?: string;
+  packId?: string;
+  shopId?: string;
 };
 
 /** Fires share_inbound when a restore URL arrives with from=wa. */
-export function TrackShareInbound({ packId, from }: TrackShareInboundProps) {
+export function TrackShareInbound({
+  kind,
+  from,
+  packId,
+  shopId,
+}: TrackShareInboundProps) {
   useEffect(() => {
-    if (from !== "wa" || !packId) return;
+    if (from !== "wa") return;
     trackEvent(
       "share_inbound",
-      { pack_id: packId, from },
-      { dedupeKey: `share_inbound:${packId}:${from}` },
+      {
+        kind,
+        from,
+        ...(packId ? { pack_id: packId } : {}),
+        ...(shopId ? { shop_id: shopId } : {}),
+      },
+      { dedupeKey: `share_inbound:${kind}:${packId ?? shopId ?? ""}:${from}` },
     );
-  }, [packId, from]);
+  }, [kind, from, packId, shopId]);
 
   return null;
 }

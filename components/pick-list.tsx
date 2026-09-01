@@ -36,7 +36,7 @@ export function PickList({
   onBeen,
   ask = "",
   packId,
-  mapsSource = "home",
+  mapsSource = "pack",
 }: PickListProps) {
   const resolvedPackId =
     packId ??

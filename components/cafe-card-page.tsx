@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
 import { DocumentLocale } from "@/components/document-locale";
 import { SiteFooter } from "@/components/site-footer";
+import { TrackShareInbound } from "@/components/track-share-inbound";
 import { copy } from "@/lib/copy";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { homePath } from "@/lib/product";
@@ -10,9 +11,14 @@ import type { Language, Shop } from "@/lib/types";
 type CafeCardPageViewProps = {
   shop: Shop;
   language: Language;
+  inboundFrom?: string;
 };
 
-export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
+export function CafeCardPageView({
+  shop,
+  language,
+  inboundFrom,
+}: CafeCardPageViewProps) {
   const home = homePath(language);
 
   return (
@@ -22,6 +28,11 @@ export function CafeCardPageView({ shop, language }: CafeCardPageViewProps) {
       lang={language}
     >
       <DocumentLocale language={language} />
+      <TrackShareInbound
+        kind="listing"
+        shopId={shop.id}
+        from={inboundFrom}
+      />
       <p className="text-xs text-ink-soft">
         <BrandHomeLink language={language} /> · {copy.shareHint[language]}
       </p>

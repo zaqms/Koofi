@@ -59,7 +59,7 @@ export default async function PackPage({ params, searchParams }: PackPageProps) 
 
   return (
     <main className="min-h-dvh">
-      <TrackShareInbound packId={pack.id} from={from} />
+      <TrackShareInbound kind="pack" packId={pack.id} from={from} />
       <Chat
         landing={pack.locale}
         restore={{

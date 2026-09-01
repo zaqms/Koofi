@@ -70,6 +70,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 | `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |
 | `LEARNING_READ_TOKEN` | No | Optional Bearer token for the private `GET /api/learn` pile. If empty, that read is 404. Chat and Maps still work. Never commit a real token. |
+| `DATABASE_URL` | No | Neon / Vercel Postgres for `/feedback`. If empty on Vercel, the board still renders empty and add/vote return 503. Chat is unchanged. Never commit a real URL. |
 
 Do not commit secrets.
 
@@ -94,6 +95,42 @@ Ajz reads the pile:
 
 1. Vercel project logs — filter `koofi_learn` (survives deploys).
 2. Private read, not linked in the UI: `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/learn`
+
+## Feedback board
+
+Public Arabic-first ideas board at **`/feedback`** (`/en/feedback` for English). No login. No email. No Canny.
+
+People add one short line and upvote. Rank is votes, then oldest. Map / pin mistakes stay on WhatsApp (`wa.me/966570064331`, same Contact us control — number is not shown). They are not written into the ideas table.
+
+The board starts empty. Do not seed the mock rows.
+
+### Database (Amjad)
+
+Preview and production need Neon on Vercel project **`koofi-agent`** (Hobby team `amjad-5107s-projects`).
+
+1. Vercel Dashboard → `koofi-agent` → Storage → Create Database → **Neon Postgres**.
+2. Connect it to **Production** and **Preview** so both get `DATABASE_URL`.
+3. Redeploy the preview (or wait for the next push).
+4. Tables `ideas` and `vote_receipts` are created on first successful request. If you want to create them by hand, run [`sql/feedback.sql`](sql/feedback.sql) in the Neon SQL editor.
+
+Do not invent credentials. Do not put `DATABASE_URL` in the repo.
+
+Local `next dev` without `DATABASE_URL` keeps ideas in process memory so the page can be tried. That memory is not used on Vercel.
+
+### Events
+
+Optional GTM `dataLayer` events. No idea text, no cookie, no IP:
+
+| Event | When |
+| --- | --- |
+| `feedback_add` | An idea was stored |
+| `feedback_vote` | This browser recorded an upvote |
+
+Both send `locale` only (`ar` / `en`).
+
+### Empty state
+
+Arabic: **ما فيه أفكار للحين. اكتب وحدة تحت.**
 
 ## Shop suggestions
 
@@ -129,15 +166,21 @@ People forward the Maps pin, not a Koofi URL.
 ```
 app/page.tsx                    Arabic landing
 app/en/page.tsx                 English landing
+app/feedback/page.tsx           public ideas board (Arabic)
+app/en/feedback/page.tsx        public ideas board (English)
 app/c/[id]/page.tsx             shareable cafe card
 app/api/chat/route.ts           web picker + Maps-link suggestions
+app/api/feedback/route.ts       list + add ideas
+app/api/feedback/vote/route.ts  upvote
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
 app/api/whatsapp/route.ts       WhatsApp door
 data/catalog.json               editorial catalog (shop names / ids)
 data/pending.json               suggestion file shape (not the live catalog)
+sql/feedback.sql                ideas + vote_receipts (created on first use)
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
+lib/feedback.ts                 Neon (or local memory) ideas board
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names

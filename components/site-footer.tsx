@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { BrandWordmark } from "@/components/brand-wordmark";
-import { aboutPath } from "@/lib/product";
+import { aboutPath, feedbackPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type SiteFooterProps = {
@@ -10,7 +10,7 @@ type SiteFooterProps = {
   padded?: boolean;
 };
 
-/** Latin brand, About link, Contact us. Home: after the directory. Cards: under back-to-chat. */
+/** Latin brand, About + Ideas links, Contact us. Home: after the directory. Cards: under back-to-chat. */
 export function SiteFooter({ language, padded = true }: SiteFooterProps) {
   return (
     <footer
@@ -25,12 +25,20 @@ export function SiteFooter({ language, padded = true }: SiteFooterProps) {
       <p className="text-xs" dir="ltr">
         <BrandWordmark size="footer" />
       </p>
-      <Link
-        href={aboutPath(language)}
-        className="mt-2 inline-block text-xs text-ink-soft underline-offset-2 hover:text-ink hover:underline"
-      >
-        {copy.about[language]}
-      </Link>
+      <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Link
+          href={aboutPath(language)}
+          className="text-xs text-ink-soft underline-offset-2 hover:text-ink hover:underline"
+        >
+          {copy.about[language]}
+        </Link>
+        <Link
+          href={feedbackPath(language)}
+          className="text-xs text-ink-soft underline-offset-2 hover:text-ink hover:underline"
+        >
+          {copy.feedbackLink[language]}
+        </Link>
+      </p>
       <div className="mt-3">
         <ContactUs language={language} />
       </div>

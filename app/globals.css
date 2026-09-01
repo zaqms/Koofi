@@ -9,6 +9,8 @@
   --bean: #6f2f22;
   --bean-deep: #4e1f17;
   --line: #d9cfc0;
+  --charcoal: #1b1814;
+  --vote: #9be38a;
 }
 
 @theme inline {
@@ -20,6 +22,8 @@
   --color-bean: var(--bean);
   --color-bean-deep: var(--bean-deep);
   --color-line: var(--line);
+  --color-charcoal: var(--charcoal);
+  --color-vote: var(--vote);
   --font-sans: var(--font-koofi);
 }
 

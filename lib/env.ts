@@ -1,6 +1,7 @@
 /**
  * Env key contract. README, .env.example, and webhook code must use these
- * exact names. None are required for the three pick cards.
+ * exact names. None are required for the three pick cards. DATABASE_URL is
+ * only for the public /feedback board.
  */
 export const ENV_KEYS = {
   KOOFI_PUBLIC_URL: "KOOFI_PUBLIC_URL",
@@ -11,6 +12,7 @@ export const ENV_KEYS = {
   GITHUB_TOKEN: "GITHUB_TOKEN",
   XAI_API_KEY: "XAI_API_KEY",
   LEARNING_READ_TOKEN: "LEARNING_READ_TOKEN",
+  DATABASE_URL: "DATABASE_URL",
 } as const;
 
 export type EnvKey = (typeof ENV_KEYS)[keyof typeof ENV_KEYS];

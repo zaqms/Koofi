@@ -6,7 +6,9 @@ export type AnalyticsEventName =
   | "share_packet_copy"
   | "share_listing"
   | "share_inbound"
-  | "maps_click";
+  | "maps_click"
+  | "feedback_add"
+  | "feedback_vote";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing";

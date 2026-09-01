@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { ShareIcon } from "@/components/share-icon";
 import { copy } from "@/lib/copy";
-import { copySharePacket, packetTextForPicks } from "@/lib/share-pack";
+import { openWhatsAppPacket, packetTextForPicks } from "@/lib/share-pack";
 import { trackEvent } from "@/lib/track";
 import type { ChatPick, Language } from "@/lib/types";
 
 type SharePackButtonProps = {
   picks: ChatPick[];
   language: Language;
+  uiLanguage: Language;
   ask: string;
   packId?: string;
 };
@@ -17,16 +17,13 @@ type SharePackButtonProps = {
 export function SharePackButton({
   picks,
   language,
+  uiLanguage,
   ask,
   packId,
 }: SharePackButtonProps) {
-  const [status, setStatus] = useState<"idle" | "copied" | "shared" | "failed">(
-    "idle",
-  );
-
   if (picks.length === 0) return null;
 
-  async function onShare() {
+  function onShare() {
     const origin =
       typeof window !== "undefined" ? window.location.origin : "";
     const packet = packetTextForPicks({
@@ -40,30 +37,21 @@ export function SharePackButton({
       { locale: language, pack_id: packId ?? packet.packId },
       { dedupeKey: `share_packet_copy:${packet.packId}` },
     );
-    const next = await copySharePacket(packet.text);
-    setStatus(next);
+    openWhatsAppPacket(packet.text);
   }
 
   return (
     <div className="mt-2 flex flex-col items-center gap-1">
       <button
         type="button"
-        onClick={() => {
-          void onShare();
-        }}
-        className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-ink-soft hover:text-ink"
+        onClick={onShare}
+        className="notranslate inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-ink-soft hover:text-ink"
+        lang={uiLanguage}
+        translate="no"
       >
         <ShareIcon />
-        <span>{copy.sendThree[language]}</span>
+        <span>{copy.shareWhatsApp[uiLanguage]}</span>
       </button>
-      {status === "copied" || status === "shared" ? (
-        <p className="text-[11px] text-ink-soft">{copy.packetCopied[language]}</p>
-      ) : null}
-      {status === "failed" ? (
-        <p className="text-[11px] text-ink-soft">
-          {copy.packetCopyFailed[language]}
-        </p>
-      ) : null}
     </div>
   );
 }

@@ -502,6 +502,7 @@ export function Chat({ landing, restore }: ChatProps) {
                 <PickList
                   picks={message.picks}
                   language={message.language}
+                  uiLanguage={landing}
                   beenIds={been.ids}
                   onBeen={been.mark}
                   ask={

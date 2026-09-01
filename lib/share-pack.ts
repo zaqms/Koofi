@@ -34,27 +34,37 @@ export function packetTextForPicks(input: {
   };
 }
 
-export async function copySharePacket(text: string): Promise<"copied" | "shared" | "failed"> {
+/** Share-to-a-friend. No phone number — they pick the chat. Not Contact us. */
+export function whatsAppShareHref(text: string): string {
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
+function silentCopy(text: string): void {
   try {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return "copied";
-    }
+    void navigator.clipboard?.writeText(text);
   } catch {
-    // Clipboard can fail in some in-app browsers; Web Share is the fallback.
+    // Silent fallback only. Do not toast.
   }
+}
 
-  const shareData = { text };
-  try {
-    if (navigator.share && navigator.canShare?.(shareData) !== false) {
-      await navigator.share(shareData);
-      return "shared";
-    }
-  } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") {
-      return "failed";
-    }
-  }
+/**
+ * Open the user's WhatsApp with the packet prefilled.
+ * Native scheme first so we do not land on WhatsApp Web / QR.
+ * wa.me/?text= (no number) is the public share URL.
+ * Clipboard only if WhatsApp does not take over.
+ */
+export function openWhatsAppPacket(text: string): void {
+  const encoded = encodeURIComponent(text);
+  const native = `whatsapp://send?text=${encoded}`;
+  const waMe = whatsAppShareHref(text);
 
-  return "failed";
+  window.location.href = native;
+
+  window.setTimeout(() => {
+    if (document.hidden) return;
+    window.location.href = waMe;
+    window.setTimeout(() => {
+      if (!document.hidden) silentCopy(text);
+    }, 900);
+  }, 500);
 }

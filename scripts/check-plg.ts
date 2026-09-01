@@ -4,6 +4,7 @@ import { encodePackId, resolvePack } from "../lib/pack";
 import { formatSharePacket, packetHasMapsUrl } from "../lib/packet";
 import { toChatPicks } from "../lib/picker";
 import { packSharePath } from "../lib/product";
+import { whatsAppShareHref } from "../lib/share-pack";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -69,6 +70,14 @@ assert(packet.includes("asked: حطين"), "packet must quote the ask");
 assert(packet.includes("wain.lol/p/"), "packet must use /p/ restore URL");
 assert(!packet.includes("/c/"), "packet must not use /c/ cafe cards");
 assert(packet.includes("?from=wa"), "packet URL must carry from=wa");
+
+const wa = whatsAppShareHref(packet);
+assert(
+  wa.startsWith("https://wa.me/?text="),
+  `wa.me must have no phone number: ${wa.slice(0, 80)}`,
+);
+assert(!wa.includes("966570064331"), "share must not use the Contact us number");
+assert(!wa.includes("web.whatsapp.com"), "share must not use WhatsApp Web");
 
 console.log("ok");
 console.log(

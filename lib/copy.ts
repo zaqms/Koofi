@@ -185,17 +185,9 @@ export const copy = {
     ar: "رابط، مو تطبيق.",
     en: "A link, not an app.",
   },
-  sendThree: {
-    ar: "أرسل الثلاثة",
-    en: "Send the three",
-  },
-  packetCopied: {
-    ar: "تم النسخ",
-    en: "Copied",
-  },
-  packetCopyFailed: {
-    ar: "ما قدرنا ننسخ. انسخ يدوي.",
-    en: "Couldn't copy. Copy it yourself.",
+  shareWhatsApp: {
+    ar: "شارك في واتساب",
+    en: "Share this on WhatsApp",
   },
   error: {
     ar: "صار خلل بسيط. جرّب مرة ثانية.",

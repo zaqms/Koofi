@@ -20,6 +20,7 @@ export type { ChatPick };
 type PickListProps = {
   picks: ChatPick[];
   language: Language;
+  uiLanguage: Language;
   beenIds: string[];
   onBeen: (id: string) => void;
   ask?: string;
@@ -30,6 +31,7 @@ type PickListProps = {
 export function PickList({
   picks,
   language,
+  uiLanguage,
   beenIds,
   onBeen,
   ask = "",
@@ -158,6 +160,7 @@ export function PickList({
         <SharePackButton
           picks={picks}
           language={language}
+          uiLanguage={uiLanguage}
           ask={ask}
           packId={resolvedPackId}
         />

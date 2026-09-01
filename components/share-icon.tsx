@@ -2,7 +2,7 @@ type ShareIconProps = {
   className?: string;
 };
 
-/** Quiet iOS-style share glyph next to أرسل الثلاثة. */
+/** Quiet share glyph next to شارك في واتساب. */
 export function ShareIcon({ className }: ShareIconProps) {
   return (
     <svg

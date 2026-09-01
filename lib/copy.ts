@@ -2,6 +2,7 @@ import {
   EXAMPLE_BADGE,
   LOCKED_ABOUT,
   LOCKED_CONTACT,
+  LOCKED_FEEDBACK,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
   VIBE_CHIPS,
@@ -11,6 +12,7 @@ import type { Language } from "./types";
 export {
   LOCKED_ABOUT,
   LOCKED_CONTACT,
+  LOCKED_FEEDBACK,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
   PRODUCT_NAME,
@@ -196,5 +198,36 @@ export const copy = {
   error: {
     ar: "صار خلل بسيط. جرّب مرة ثانية.",
     en: "Something slipped. Try again.",
+  },
+  feedbackTitle: LOCKED_FEEDBACK.title,
+  feedbackSubtitle: LOCKED_FEEDBACK.subtitle,
+  feedbackPlaceholder: LOCKED_FEEDBACK.placeholder,
+  feedbackAdd: LOCKED_FEEDBACK.add,
+  feedbackEmpty: LOCKED_FEEDBACK.empty,
+  feedbackMapFooter: LOCKED_FEEDBACK.mapFooter,
+  feedbackLink: LOCKED_FEEDBACK.link,
+  feedbackVote: {
+    ar: "صوّت",
+    en: "Upvote",
+  },
+  feedbackVoted: {
+    ar: "صوّت عليها",
+    en: "Voted",
+  },
+  feedbackTooLong: {
+    ar: "قصّرها شوي — سطر واحد يكفي.",
+    en: "Keep it to one short line.",
+  },
+  feedbackEmptyInput: {
+    ar: "اكتب الفكرة أولاً.",
+    en: "Write the idea first.",
+  },
+  feedbackRateLimited: {
+    ar: "مهلك. جرّب بعد شوي.",
+    en: "Easy — try again in a bit.",
+  },
+  feedbackNoStorage: {
+    ar: "البورد بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
+    en: "The board is not connected yet. Try again later.",
   },
 } as const;

@@ -90,6 +90,42 @@ export function aboutPath(language: Language = "ar"): string {
   return language === "en" ? "/en/about" : "/about";
 }
 
+export function feedbackPath(language: Language = "ar"): string {
+  return language === "en" ? "/en/feedback" : "/feedback";
+}
+
+/** Locked public feedback board. Spoken Riyadh/Najdi on AR. Do not seed mock rows. */
+export const LOCKED_FEEDBACK = {
+  title: {
+    ar: "أفكاركم",
+    en: "Your ideas",
+  },
+  subtitle: {
+    ar: "صوت على فكرة، أو أضف وحدة.",
+    en: "Vote on an idea, or add one.",
+  },
+  placeholder: {
+    ar: "...اكتب فكرتك",
+    en: "Write your idea...",
+  },
+  add: {
+    ar: "أضف فكرة",
+    en: "Add idea",
+  },
+  empty: {
+    ar: "ما فيه أفكار للحين. اكتب وحدة تحت.",
+    en: "No ideas yet. Write one below.",
+  },
+  mapFooter: {
+    ar: "للغلط في الخريطة تواصل معنا",
+    en: "Map pin wrong? Contact us",
+  },
+  link: {
+    ar: "أفكاركم",
+    en: "Ideas",
+  },
+} as const;
+
 /** Locked About copy. Spoken Riyadh/Najdi on AR. Do not polish or expand. */
 export const LOCKED_ABOUT = {
   lead: {

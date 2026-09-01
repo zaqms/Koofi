@@ -3,7 +3,7 @@ import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
-import { aboutPath, homePath } from "@/lib/product";
+import { aboutPath, feedbackPath, homePath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type AboutPageViewProps = {
@@ -37,6 +37,14 @@ export function AboutPageView({ language }: AboutPageViewProps) {
           <p className="mt-3 text-sm leading-7">{copy.aboutBody.ar}</p>
         ) : null}
         <p className="mt-3 text-sm leading-7">{copy.aboutNote[language]}</p>
+        <p className="mt-4">
+          <Link
+            href={feedbackPath(language)}
+            className="text-sm text-ink-soft underline-offset-2 hover:text-ink hover:underline"
+          >
+            {copy.feedbackLink[language]}
+          </Link>
+        </p>
       </article>
 
       <div className="mt-8 border-t border-line pt-4">

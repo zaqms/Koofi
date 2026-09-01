@@ -3,6 +3,7 @@ import { listRealShops } from "@/lib/catalog";
 import {
   aboutPath,
   cardPath,
+  feedbackPath,
   homePath,
   PUBLIC_SITE_URL,
 } from "@/lib/product";
@@ -37,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...localeUrls(homePath("ar"), homePath("en"), "weekly"),
     ...localeUrls(aboutPath("ar"), aboutPath("en"), "weekly"),
+    ...localeUrls(feedbackPath("ar"), feedbackPath("en"), "weekly"),
     ...listRealShops().flatMap((shop) =>
       localeUrls(cardPath(shop.id, "ar"), cardPath(shop.id, "en"), "monthly"),
     ),

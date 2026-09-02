@@ -8,7 +8,8 @@ import {
   type DirectoryShop,
 } from "@/lib/directory";
 import { copy } from "@/lib/copy";
-import { neighborhoodLabel } from "@/lib/neighborhoods";
+import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
+import { trackEvent } from "@/lib/track";
 import type { Language, NeighborhoodId } from "@/lib/types";
 
 type ShopDirectoryProps = {
@@ -55,7 +56,22 @@ export function ShopDirectory({ language, shops }: ShopDirectoryProps) {
               key={id}
               type="button"
               aria-pressed={selected}
-              onClick={() => setDistrict(selected ? null : id)}
+              onClick={() => {
+                if (!selected) {
+                  const hood = NEIGHBORHOODS[id];
+                  trackEvent(
+                    "district_select",
+                    {
+                      district_id: hood.id,
+                      district_ar: hood.ar,
+                      district_en: hood.en,
+                      locale: language,
+                    },
+                    { dedupeKey: `district_select:${hood.id}` },
+                  );
+                }
+                setDistrict(selected ? null : id);
+              }}
               className={chipClass(selected)}
             >
               {neighborhoodLabel(id, language)}

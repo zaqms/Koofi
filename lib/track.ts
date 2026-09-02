@@ -8,7 +8,9 @@ export type AnalyticsEventName =
   | "share_inbound"
   | "maps_click"
   | "feedback_add"
-  | "feedback_vote";
+  | "feedback_vote"
+  | "chip_tap"
+  | "district_select";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing";
@@ -23,6 +25,11 @@ export type AnalyticsParams = {
   kind?: ShareInboundKind;
   source?: MapsClickSource | ListingShareSource;
   text_length?: number;
+  chip_id?: string;
+  chip_label?: string;
+  district_id?: string;
+  district_ar?: string;
+  district_en?: string;
 };
 
 const DEDUPE_MS = 400;

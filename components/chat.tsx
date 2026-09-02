@@ -11,6 +11,7 @@ import { copy } from "@/lib/copy";
 import { readLearnSession } from "@/lib/learn-session";
 import { nearbyChatPicks } from "@/lib/nearby";
 import { NEARBY_CHIP } from "@/lib/product";
+import { trackEvent } from "@/lib/track";
 import {
   requestVisitorLocation,
   useVisitorLocation,
@@ -394,6 +395,11 @@ export function Chat({ landing, restore }: ChatProps) {
   }
 
   function sendChip(chip: ChipPick) {
+    trackEvent(
+      "chip_tap",
+      { chip_id: chip.id, chip_label: chip.label, locale: landing },
+      { dedupeKey: `chip_tap:${chip.id}` },
+    );
     if (chip.id === NEARBY_CHIP.id) {
       void sendNearby(chip.label);
       return;

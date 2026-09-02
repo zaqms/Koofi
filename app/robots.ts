@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
-import { PUBLIC_SITE_HOST, PUBLIC_SITE_URL } from "@/lib/product";
+import { sitemapPublicUrls } from "@/lib/sitemap-xml";
 
-/** Public pages only. API routes stay out of the crawl. */
+/** Public pages only. API routes stay out of the crawl. No Host: (Yandex-only). */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -9,7 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/api/",
     },
-    sitemap: `${PUBLIC_SITE_URL}/sitemap.xml`,
-    host: PUBLIC_SITE_HOST,
+    sitemap: sitemapPublicUrls(),
   };
 }

@@ -3,13 +3,12 @@ import type { DirectoryShop } from "./directory";
 
 /**
  * v1 allowlist — catalog shops have no addedAt/createdAt.
- * These ids were added this week (Al Sahafah, 2026-08-24).
  * Skip any id that is missing or example.
  */
 export const NEW_THIS_WEEK_IDS = [
-  "taim-specialty-coffee-as-sahafah",
-  "y97-specialty-coffee-as-sahafah",
-  "hakwah-speciality-coffee-as-sahafah",
+  "just-another-hittin",
+  "namq-al-malqa",
+  "cred-al-mughrizat",
 ] as const;
 
 export function listNewThisWeekShops(): DirectoryShop[] {

@@ -11,7 +11,7 @@ import { copy } from "@/lib/copy";
 import { readLearnSession } from "@/lib/learn-session";
 import { nearbyChatPicks } from "@/lib/nearby";
 import { NEARBY_CHIP } from "@/lib/product";
-import { trackEvent } from "@/lib/track";
+import { trackChatQuery, trackEvent } from "@/lib/track";
 import {
   requestVisitorLocation,
   useVisitorLocation,
@@ -255,6 +255,7 @@ export function Chat({ landing, restore }: ChatProps) {
     if (!trimmed || inFlightRef.current) return;
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
+    trackChatQuery({ text: trimmed, locale: landing, via });
 
     const userMessage: UserMessage = {
       id: crypto.randomUUID(),

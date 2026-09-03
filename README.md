@@ -96,6 +96,37 @@ Ajz reads the pile:
 1. Vercel project logs — filter `koofi_learn` (survives deploys).
 2. Private read, not linked in the UI: `curl -H "Authorization: Bearer $LEARNING_READ_TOKEN" https://<host>/api/learn`
 
+## Analytics (GTM / GA4)
+
+Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.ts). Container **`GTM-W3TM4552`**, GA4 stream **`G-EFZZET02TT`**. No cookie, no IP, no session id, no assistant reply text.
+
+| Event | When | Parameters |
+| --- | --- | --- |
+| `chat_query` | A user ask is submitted through the composer (`send`) | `query_text` (exact typed / submitted text), `locale`, `via` (`typed` / `chip`), `text_length` |
+| `chip_tap` | A vibe or Nearby chip is tapped | `chip_id`, `chip_label`, `locale` |
+| `district_select` | A list حي filter is chosen | `district_id`, `district_ar`, `district_en`, `locale` |
+| `three_pick_shown` | Three pick cards render | `locale`, `shop_ids`, optional `pack_id` |
+| `maps_click` | Maps pin is opened | `shop_id`, `locale`, `source` |
+| `share_pack` / `share_packet_copy` | Share the three | `locale`, `pack_id` |
+| `share_listing` | Share one shop | `shop_id`, `locale`, `source` |
+| `share_inbound` | Restore URL with `from=wa` | `kind`, `from`, optional `pack_id` / `shop_id` |
+| `feedback_add` / `feedback_vote` | Ideas board | `locale` only |
+
+`chat_query` is the search event. Cafe and neighborhood text is intended — that is the product question. It fires once per `send()` (composer submit or a chip label that is actually posted to `/api/chat`). It does **not** fire for the locked opener, for chip UI that is only displayed, or for Nearby (Nearby never hits `/api/chat`). A 400ms dedupe key `chat_query:{via}:{text}` covers retries and remounts.
+
+Repo code cannot create GTM tags. In container **GTM-W3TM4552**:
+
+1. **Variables** → New → Data Layer Variable → name `DL - query_text` → Data Layer Variable Name `query_text`. Repeat for `locale` and `via` if those variables are not already in the container (`DL - locale`, `DL - via`).
+2. **Triggers** → New → Custom Event → name `CE - chat_query` → Event name `chat_query` → All Custom Events.
+3. **Tags** → New → **Google Analytics: GA4 Event** → name `GA4 - chat_query`.
+   - Measurement ID `G-EFZZET02TT`, or the existing GA4 Configuration tag for that stream.
+   - Event Name: `chat_query`.
+   - Event Parameters: `query_text` = `{{DL - query_text}}`, `locale` = `{{DL - locale}}`, `via` = `{{DL - via}}`.
+   - Trigger: `CE - chat_query`.
+4. Preview, type an Arabic ask on `/` and an English ask on `/en`, confirm the tag fires with the exact `query_text`. Publish the container.
+
+In GA4 (**G-EFZZET02TT**) register `query_text` (and `via` if you want typed vs chip) as event-scoped custom dimensions so Explorations can read them. GA4 truncates event parameter values at 100 characters; the dataLayer still gets the full ask.
+
 ## Feedback board
 
 Public Arabic-first ideas board at **`/feedback`** (`/en/feedback` for English). No login. No email. No Canny.
@@ -119,14 +150,7 @@ Local `next dev` without `DATABASE_URL` keeps ideas in process memory so the pag
 
 ### Events
 
-Optional GTM `dataLayer` events. No idea text, no cookie, no IP:
-
-| Event | When |
-| --- | --- |
-| `feedback_add` | An idea was stored |
-| `feedback_vote` | This browser recorded an upvote |
-
-Both send `locale` only (`ar` / `en`).
+`feedback_add` and `feedback_vote` still send `locale` only (`ar` / `en`). No idea text, no cookie, no IP. See [Analytics (GTM / GA4)](#analytics-gtm--ga4) for the full event list and GTM wiring.
 
 ### Empty state
 
@@ -180,6 +204,7 @@ data/catalog.json               editorial catalog (shop names / ids)
 data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
+lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions

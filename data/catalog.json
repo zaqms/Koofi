@@ -1364,6 +1364,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd82bc3dfa81:0xe2d11f39f26b7f5",
+      "logoUrl": "/logos/mkth-ghirnatah.jpg",
       "example": false
     },
     {
@@ -1425,6 +1426,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effcc20be29f5:0xd0883a18ee9a503",
+      "logoUrl": "/logos/moff-ghirnatah.jpg",
       "example": false
     },
     {
@@ -1437,6 +1439,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b",
+      "logoUrl": "/logos/semi-specialty-cafe-ghirnatah.jpg",
       "example": false
     },
     {
@@ -1462,6 +1465,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd006f393f47:0x1825e4297e5756ee",
+      "logoUrl": "/logos/archi-ghirnatah.jpg",
       "example": false
     }
   ]

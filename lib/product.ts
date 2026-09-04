@@ -1,4 +1,4 @@
-import type { Language, MomentTag } from "./types";
+import type { Language, MomentTag, NeighborhoodId } from "./types";
 
 /** Public host visitors see. Also the Latin brand. Lowercase with the dot. */
 export const PUBLIC_SITE_HOST = "wain.lol";
@@ -84,6 +84,9 @@ export const EXAMPLE_BADGE = {
 
 export const CARD_PATH_PREFIX = "/c";
 
+/** District directory. Same NeighborhoodId kebab as `lib/neighborhoods.ts`. */
+export const DISTRICT_PATH_PREFIX = "/n";
+
 /** Three-pack restore. Public, no login. Not a cafe-card `/c/` URL. */
 export const PACK_PATH_PREFIX = "/p";
 
@@ -166,6 +169,14 @@ export const CONTACT_WHATSAPP_HREF = "https://wa.me/966570064331";
 
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
+  return language === "en" ? `/en${slug}` : slug;
+}
+
+export function districtPath(
+  id: NeighborhoodId,
+  language: Language = "ar",
+): string {
+  const slug = `${DISTRICT_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;
 }
 

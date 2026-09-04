@@ -1,7 +1,9 @@
-import { listRealShops } from "./catalog";
+import { listDirectoryShops, listRealShops } from "./catalog";
+import { directoryNeighborhoods } from "./directory";
 import {
   aboutPath,
   cardPath,
+  districtPath,
   feedbackPath,
   homePath,
   PUBLIC_SITE_URL,
@@ -45,6 +47,10 @@ function sitemapPaths(): string[] {
   for (const shop of listRealShops()) {
     if (!shop.id) continue;
     paths.push(cardPath(shop.id, "ar"), cardPath(shop.id, "en"));
+  }
+
+  for (const id of directoryNeighborhoods(listDirectoryShops())) {
+    paths.push(districtPath(id, "ar"), districtPath(id, "en"));
   }
 
   return paths;

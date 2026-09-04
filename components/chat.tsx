@@ -69,6 +69,7 @@ type LiveThread = {
 type ChatProps = {
   landing: Language;
   restore?: ChatRestore;
+  localeHref?: string;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
@@ -110,7 +111,7 @@ function askBeforePicks(messages: Message[], index: number): string {
   return "";
 }
 
-export function Chat({ landing, restore }: ChatProps) {
+export function Chat({ landing, restore, localeHref }: ChatProps) {
   const threadKey = restore ? `pack:${restore.packId}` : landing;
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [messages, setMessages] = useState<Message[]>(
@@ -452,7 +453,7 @@ export function Chat({ landing, restore }: ChatProps) {
           />
           {restore ? null : (
             <Link
-              href={landing === "ar" ? "/en" : "/"}
+              href={localeHref ?? (landing === "ar" ? "/en" : "/")}
               className="text-xs text-ink-soft underline-offset-2 hover:underline"
             >
               {copy.switchLanguage[landing]}

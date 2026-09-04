@@ -171,6 +171,14 @@ export const copy = {
     ar: "كل الأحياء",
     en: "All areas",
   },
+  districtMissing: {
+    ar: "هالحي مو موجود",
+    en: "This area isn’t on the list",
+  },
+  districtMissingHint: {
+    ar: "يمكن الرابط غلط، أو الحي بعد ما انضاف للقائمة.",
+    en: "The link may be wrong, or this neighborhood isn’t on the list yet.",
+  },
   backToChat: {
     ar: "ارجع للشات",
     en: "Back to chat",

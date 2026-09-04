@@ -33,8 +33,8 @@ export function CafeCardPageView({
         shopId={shop.id}
         from={inboundFrom}
       />
-      <p className="text-xs text-ink-soft">
-        <BrandHomeLink language={language} /> · {copy.shareHint[language]}
+      <p>
+        <BrandHomeLink language={language} />
       </p>
       <CafeCard shop={shop} language={language} />
       <p className="mt-6">

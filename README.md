@@ -52,9 +52,10 @@ Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh cof
 | `/coffee-shops/{slug}` and `/en/coffee-shops/{slug}` | `ItemList` JSON-LD of shops in that district |
 | `/about` + `/en/about` | Visible FAQ (Najdi AR / plain EN) + matching `FAQPage` JSON-LD |
 | `/coffee-shops/{slug}` district FAQ | 1–2 short visible lines + matching `FAQPage` JSON-LD |
-| `/llms.txt` | Short agent note pointing at `/api/shops` |
+| `/llms.txt` | Short agent note pointing at `/api/shops` and the MCP URL |
+| `POST/GET /api/mcp` (also `/mcp`) | Public read-only MCP server. Same catalog as `GET /api/shops`. Streamable HTTP, no login |
 
-`robots.txt` allows `/api/shops` and `/llms.txt`; other `/api/` routes stay disallowed. The sitemap still lists district + card URLs and adds `/llms.txt`.
+`robots.txt` allows `/api/shops`, `/api/mcp`, `/mcp`, and `/llms.txt`; other `/api/` routes stay disallowed. The sitemap still lists district + card URLs and adds `/llms.txt`.
 
 ### Shop object (API)
 
@@ -74,7 +75,21 @@ Not in the public payload: hours, ratings, phone, price, reviews, images, upvote
 
 Page JSON-LD uses schema.org `name` / `alternateName` / `address` for the page language instead of the API’s `nameAr`/`nameEn` pair. Same field whitelist.
 
-An MCP server wrapping this same `/api/shops` catalog is Phase 2 — not hosted in this PR.
+### MCP (same catalog)
+
+Public Streamable HTTP MCP at **`https://wain.lol/api/mcp`** (alias **`https://wain.lol/mcp`**). No auth. CORS open. Tools and resources read `listPublicShops()` / `publicShopPayload()` — the same objects as `GET /api/shops`.
+
+| Tool | What it returns |
+| --- | --- |
+| `search` | ChatGPT-compatible `{ results: [{ id, title, url }] }` in directory order |
+| `fetch` | One shop as `{ id, title, text, url, metadata }` (`text` is the `/api/shops/{id}` JSON) |
+| `list_shops` | Full schema.org `ItemList` (identical to `GET /api/shops`) |
+| `get_shop` | One `CafeOrCoffeeShop` (identical to `GET /api/shops/{id}`) |
+| `list_shops_by_district` | Same records, filtered to a neighborhood slug |
+
+Resources: `https://wain.lol/api/shops`, `https://wain.lol/api/shops/{id}`, `wain://districts`, `wain://districts/{slug}`.
+
+Connect ChatGPT / Claude / Gemini / Perplexity / Cursor with Streamable HTTP to `https://wain.lol/api/mcp`. Cite `https://wain.lol`.
 
 ```bash
 npx tsx scripts/check-structured-data.ts
@@ -244,7 +259,9 @@ app/en/page.tsx                 English landing
 app/feedback/page.tsx           public ideas board (Arabic)
 app/en/feedback/page.tsx        public ideas board (English)
 app/c/[id]/page.tsx             shareable cafe card (+ CafeOrCoffeeShop JSON-LD)
-app/llms.txt/route.ts           agent pointer to /api/shops
+app/llms.txt/route.ts           agent pointer to /api/shops + MCP
+app/mcp/route.ts                public MCP alias (/mcp)
+app/api/mcp/route.ts            public MCP (same catalog as /api/shops)
 app/api/shops/route.ts          public curated catalog (CORS GET)
 app/api/shops/[id]/route.ts     one public shop
 app/api/chat/route.ts           web picker + Maps-link suggestions
@@ -261,6 +278,8 @@ data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
 sql/shop-upvotes.sql            shop_upvotes + shop_vote_receipts (list social proof)
 lib/structured-data.ts          public shop JSON-LD + /api/shops schema
+lib/mcp-catalog.ts              MCP tools + resources over the same catalog
+lib/public-mcp.ts               Streamable HTTP MCP handler + CORS
 lib/faq.ts                      visible About/district FAQ + FAQPage JSON-LD
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
 lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)

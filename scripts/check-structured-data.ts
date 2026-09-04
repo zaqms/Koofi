@@ -20,13 +20,24 @@ import {
   districtItemListJsonLd,
   jsonHasForbiddenPublicFields,
   listPublicShops,
+  PUBLIC_MCP_ALIAS_PATH,
+  PUBLIC_MCP_PATH,
   PUBLIC_SHOPS_API_PATH,
+  publicMcpUrl,
   publicShopPayload,
   publicShopRecord,
+  publicShopsApiUrl,
   publicShopsInDistrict,
   publicShopsItemList,
   shopJsonLd,
 } from "../lib/structured-data";
+import {
+  fetchShopDocument,
+  listPublicDistrictSummaries,
+  publicDistrictCatalog,
+  searchPublicShops,
+  searchShopResults,
+} from "../lib/mcp-catalog";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -124,9 +135,14 @@ if (noGeoShop) {
 
 const llms = buildLlmsTxt();
 assert(llms.includes("https://wain.lol/api/shops"), "llms.txt points at /api/shops");
+assert(llms.includes("https://wain.lol/api/mcp"), "llms.txt points at MCP");
 assert(llms.includes("/c/{id}"), "llms.txt mentions cafe cards");
 assert(!/Koofi/i.test(llms), "llms.txt must not say Koofi");
 assert(llms.includes("Not included: hours"), "llms.txt states omitted fields");
+assert(
+  !llms.includes("not hosted yet"),
+  "llms.txt must not say MCP is unhosted",
+);
 
 const sitemap = buildSitemapXml("2026-09-04");
 assert(sitemap.includes("https://wain.lol/llms.txt<"), "sitemap lists /llms.txt");
@@ -143,6 +159,8 @@ assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
 
 const robots = readRepo("app/robots.ts");
 assert(robots.includes('"/api/shops"'), "robots allows /api/shops");
+assert(robots.includes('"/api/mcp"'), "robots allows /api/mcp");
+assert(robots.includes('"/mcp"'), "robots allows /mcp");
 assert(robots.includes('disallow: "/api/"'), "robots still disallows other /api/");
 
 const cafeCard = readRepo("components/cafe-card.tsx");
@@ -177,6 +195,79 @@ assert(
 assert(
   PUBLIC_SHOPS_API_PATH === "/api/shops",
   "public API path stays /api/shops",
+);
+assert(PUBLIC_MCP_PATH === "/api/mcp", "MCP path is /api/mcp");
+assert(PUBLIC_MCP_ALIAS_PATH === "/mcp", "MCP alias is /mcp");
+assert(publicMcpUrl() === "https://wain.lol/api/mcp", "canonical MCP URL");
+
+const malqaSearch = searchPublicShops("الملقا");
+assert(malqaSearch.length === malqaShops.length, "search الملقا matches district list");
+assert(
+  malqaSearch.every((shop) => shop.neighborhood === "al-malqa"),
+  "search الملقا is al-malqa only",
+);
+assert(
+  malqaSearch.map((shop) => shop.id).join(",") ===
+    malqaShops.map((shop) => shop.id).join(","),
+  "search keeps directory order",
+);
+
+const nameSearch = searchShopResults("IK coffee Downtown");
+assert(nameSearch.results.some((row) => row.id === sample.id), "search finds shop name");
+assert(
+  nameSearch.results[0] && nameSearch.results.every((row) => row.url.startsWith("https://wain.lol/c/")),
+  "search urls are wain.lol cards",
+);
+assert(searchPublicShops("").length === shops.length, "empty search is the full catalog");
+assert(
+  searchPublicShops("")[0]?.id === shops[0]?.id,
+  "empty search keeps directory order",
+);
+
+const fetched = fetchShopDocument(sample.id);
+assert(fetched, "fetch returns a document");
+assert(fetched.id === sample.id, "fetch id");
+assert(fetched.url === `https://wain.lol/c/${sample.id}`, "fetch cites card URL");
+assert(
+  fetched.text === JSON.stringify(publicShopPayload(sample.id)),
+  "fetch text is GET /api/shops/{id}",
+);
+assert(fetchShopDocument("not-a-shop") === null, "fetch unknown id is null");
+
+const districtList = publicDistrictCatalog("al-malqa");
+assert(districtList.numberOfItems === malqaShops.length, "district catalog count");
+assert(
+  districtList.itemListElement.every((row) => row.item["@type"] === "CafeOrCoffeeShop"),
+  "district catalog items are CafeOrCoffeeShop",
+);
+assert(
+  JSON.stringify(districtList.itemListElement[0]?.item) ===
+    JSON.stringify(publicShopRecord(malqaShops[0], { includeContext: false })),
+  "district catalog uses the same shop records as /api/shops",
+);
+
+const summaries = listPublicDistrictSummaries();
+assert(summaries.some((row) => row.id === "al-malqa"), "district summaries include al-malqa");
+assert(
+  summaries.find((row) => row.id === "al-malqa")?.numberOfItems === malqaShops.length,
+  "district summary count",
+);
+
+for (const payload of [nameSearch, fetched, districtList, { districts: summaries }]) {
+  const forbidden = jsonHasForbiddenPublicFields(payload);
+  assert(forbidden.length === 0, `MCP forbidden fields: ${forbidden.join(", ")}`);
+  const text = JSON.stringify(payload);
+  assert(!/Koofi/i.test(text), "MCP payload must not say Koofi");
+}
+
+assert(
+  readRepo("app/api/mcp/route.ts").includes("handlePublicMcp"),
+  "MCP is mounted at /api/mcp",
+);
+assert(readRepo("app/mcp/route.ts").includes("handlePublicMcp"), "MCP alias at /mcp");
+assert(
+  publicShopsApiUrl() === "https://wain.lol/api/shops",
+  "MCP resources point at the public shops API",
 );
 
 const aboutAr = aboutFaqs("ar");
@@ -302,6 +393,7 @@ assert(
   llms.includes("/about"),
   "llms.txt mentions About",
 );
+assert(llms.includes("search"), "llms.txt names MCP search");
 
 console.log(
   `check-structured-data: ok (${shops.length} shops, sample ${sample.id}, ${aboutAr.length} about FAQs)`,

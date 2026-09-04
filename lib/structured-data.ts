@@ -14,6 +14,8 @@ import type { Language, NeighborhoodId, Shop } from "./types";
 export const SCHEMA_CONTEXT = "https://schema.org" as const;
 
 export const PUBLIC_SHOPS_API_PATH = "/api/shops";
+export const PUBLIC_MCP_PATH = "/api/mcp";
+export const PUBLIC_MCP_ALIAS_PATH = "/mcp";
 export const LLMS_TXT_PATH = "/llms.txt";
 
 export const PUBLIC_SHOPS_CACHE_CONTROL =
@@ -139,6 +141,10 @@ export function districtCanonicalUrl(
 export function publicShopsApiUrl(id?: string): string {
   if (!id) return `${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}`;
   return `${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}/${encodeURIComponent(id)}`;
+}
+
+export function publicMcpUrl(path: typeof PUBLIC_MCP_PATH | typeof PUBLIC_MCP_ALIAS_PATH = PUBLIC_MCP_PATH): string {
+  return `${PUBLIC_SITE_URL}${path}`;
 }
 
 function mapsUrls(shop: Shop): string[] {
@@ -288,6 +294,18 @@ export function publicShopHeaders(): HeadersInit {
   };
 }
 
+/** CORS for the public MCP endpoint. No auth. Protocol requests are not cached. */
+export function publicMcpHeaders(): HeadersInit {
+  return {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, HEAD, POST, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers":
+      "Content-Type, Accept, Authorization, MCP-Protocol-Version, MCP-Session-Id, Last-Event-ID",
+    "Access-Control-Expose-Headers": "MCP-Protocol-Version, MCP-Session-Id",
+    "Access-Control-Max-Age": "86400",
+  };
+}
+
 export function jsonHasForbiddenPublicFields(value: unknown): string[] {
   const found = new Set<string>();
 
@@ -322,11 +340,15 @@ export function buildLlmsTxt(): string {
     "",
     `- GET ${publicShopsApiUrl()} — full curated catalog (schema.org ItemList of CafeOrCoffeeShop)`,
     `- GET ${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}/{id} — one shop`,
+    `- MCP (Streamable HTTP, public, no auth): ${publicMcpUrl()} (also ${publicMcpUrl(PUBLIC_MCP_ALIAS_PATH)})`,
     `- Cafe cards embed schema.org CafeOrCoffeeShop JSON-LD: ${PUBLIC_SITE_URL}/c/{id} and ${PUBLIC_SITE_URL}/en/c/{id}`,
     `- District pages embed schema.org ItemList JSON-LD: ${PUBLIC_SITE_URL}/coffee-shops/{slug} and ${PUBLIC_SITE_URL}/en/coffee-shops/{slug}`,
     `- About FAQ (visible + FAQPage JSON-LD): ${PUBLIC_SITE_URL}/about and ${PUBLIC_SITE_URL}/en/about`,
     "",
-    "CORS is open for GET. No auth. Cacheable. No secrets.",
+    "CORS is open. No auth. Cacheable REST. No secrets.",
+    "",
+    "MCP tools (same catalog as GET /api/shops): search, fetch, list_shops, get_shop, list_shops_by_district.",
+    "MCP resources: https://wain.lol/api/shops , https://wain.lol/api/shops/{id} , wain://districts , wain://districts/{slug}.",
     "",
     "## Fields",
     "",
@@ -343,7 +365,7 @@ export function buildLlmsTxt(): string {
     `- url: ${PUBLIC_SITE_URL}/c/{id}`,
     `- urlEn: ${PUBLIC_SITE_URL}/en/c/{id}`,
     "",
-    "An MCP server wrapping the same /api/shops catalog is not hosted yet.",
+    "Connect ChatGPT, Claude, Gemini, Perplexity, or Cursor to the MCP URL above (Streamable HTTP). Cite wain.lol.",
     "",
   ].join("\n");
 }

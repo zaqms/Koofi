@@ -111,6 +111,7 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `share_listing` | Share one shop | `shop_id`, `locale`, `source` |
 | `share_inbound` | Restore URL with `from=wa` | `kind`, `from`, optional `pack_id` / `shop_id` |
 | `feedback_add` / `feedback_vote` | Ideas board | `locale` only |
+| `cafe_upvote` | Directory-list ▲ on a shop | `shop_id`, `locale` |
 
 `chat_query` is the search event. Cafe and neighborhood text is intended — that is the product question. It fires once per `send()` (composer submit or a chip label that is actually posted to `/api/chat`). It does **not** fire for the locked opener, for chip UI that is only displayed, or for Nearby (Nearby never hits `/api/chat`). A 400ms dedupe key `chat_query:{via}:{text}` covers retries and remounts.
 
@@ -142,7 +143,7 @@ Preview and production need Neon on Vercel project **`koofi-agent`** (Hobby team
 1. Vercel Dashboard → `koofi-agent` → Storage → Create Database → **Neon Postgres**.
 2. Connect it to **Production** and **Preview** so both get `DATABASE_URL`.
 3. Redeploy the preview (or wait for the next push).
-4. Tables `ideas` and `vote_receipts` are created on first successful request. If you want to create them by hand, run [`sql/feedback.sql`](sql/feedback.sql) in the Neon SQL editor.
+4. Tables `ideas` and `vote_receipts` are created on first successful request. If you want to create them by hand, run [`sql/feedback.sql`](sql/feedback.sql) in the Neon SQL editor. Directory-list upvotes add `shop_upvotes` and `shop_vote_receipts` the same way ([`sql/shop-upvotes.sql`](sql/shop-upvotes.sql)).
 
 Do not invent credentials. Do not put `DATABASE_URL` in the repo.
 
@@ -155,6 +156,16 @@ Local `next dev` without `DATABASE_URL` keeps ideas in process memory so the pag
 ### Empty state
 
 Arabic: **ما فيه أفكار للحين. اكتب وحدة تحت.**
+
+## Directory upvotes
+
+Product Hunt–style ▲ + count on **directory list rows only** (home list, district pages, and New this week because those rows are `DirectoryCard`). Cafe cards (`/c/[id]`, `/en/c/[id]`) stay untouched.
+
+Social proof only. Counts do **not** reorder chat three-picks, the directory, New this week, or district filters. Owners cannot buy rank. No downvotes, stars, or comments. Been here stays a separate localStorage mark on cafe cards.
+
+Vote model: one-way upvote. Cookie voter `wain_vid` (same as /feedback). One vote per shop per voter. Re-tap is idempotent — count stays put. Same Neon `DATABASE_URL`. On Vercel without it, vote returns `503` / `no_storage`. Local `next dev` may use memory.
+
+Visitor copy is short: ▲ + count, `أعجبني` / `Upvote`. Optional `cafe_upvote` dataLayer event sends `shop_id` + `locale` only.
 
 ## Shop suggestions
 
@@ -196,6 +207,8 @@ app/c/[id]/page.tsx             shareable cafe card
 app/api/chat/route.ts           web picker + Maps-link suggestions
 app/api/feedback/route.ts       list + add ideas
 app/api/feedback/vote/route.ts  upvote
+app/api/upvotes/route.ts        directory-list vote snapshot
+app/api/upvotes/vote/route.ts   directory-list shop upvote
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
@@ -203,9 +216,11 @@ app/api/whatsapp/route.ts       WhatsApp door
 data/catalog.json               editorial catalog (shop names / ids)
 data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
+sql/shop-upvotes.sql            shop_upvotes + shop_vote_receipts (list social proof)
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
 lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board
+lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names

@@ -9,6 +9,7 @@ export type AnalyticsEventName =
   | "maps_click"
   | "feedback_add"
   | "feedback_vote"
+  | "cafe_upvote"
   | "chip_tap"
   | "district_select"
   | "chat_query";

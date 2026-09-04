@@ -1,6 +1,7 @@
 import { Chat } from "@/components/chat";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
+import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { listDirectoryShops } from "@/lib/catalog";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
@@ -24,12 +25,14 @@ export function HomeLanding({
         landing={language}
         localeHref={district ? districtPath(district, other) : undefined}
       />
-      <NewThisWeek language={language} shops={listNewThisWeekShops()} />
-      <ShopDirectory
-        language={language}
-        shops={listDirectoryShops()}
-        district={district}
-      />
+      <ShopUpvoteProvider>
+        <NewThisWeek language={language} shops={listNewThisWeekShops()} />
+        <ShopDirectory
+          language={language}
+          shops={listDirectoryShops()}
+          district={district}
+        />
+      </ShopUpvoteProvider>
       <SiteFooter language={language} />
     </main>
   );

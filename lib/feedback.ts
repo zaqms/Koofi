@@ -111,7 +111,7 @@ export function allowVote(ip: string): boolean {
   return allowRate(`vote:${ip}`, VOTE_LIMIT, VOTE_WINDOW_MS);
 }
 
-function hashVoter(voterId: string): string {
+export function hashVoter(voterId: string): string {
   return createHash("sha256").update(voterId).digest("hex");
 }
 

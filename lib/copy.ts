@@ -214,6 +214,14 @@ export const copy = {
   feedbackEmpty: LOCKED_FEEDBACK.empty,
   feedbackMapFooter: LOCKED_FEEDBACK.mapFooter,
   feedbackLink: LOCKED_FEEDBACK.link,
+  shopUpvote: {
+    ar: "أعجبني",
+    en: "Upvote",
+  },
+  shopUpvoteNoStorage: {
+    ar: "التصويت بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
+    en: "Voting is not connected yet. Try again later.",
+  },
   feedbackVote: {
     ar: "صوّت",
     en: "Upvote",

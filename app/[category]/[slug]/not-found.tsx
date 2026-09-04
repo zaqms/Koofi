@@ -1,5 +1,5 @@
 import { DistrictNotFound } from "@/components/district-not-found";
 
-export default function ArabicDistrictNotFound() {
+export default function ArabicCategoryDistrictNotFound() {
   return <DistrictNotFound language="ar" />;
 }

@@ -8,6 +8,10 @@ import {
   type DirectoryShop,
 } from "@/lib/directory";
 import { copy } from "@/lib/copy";
+import {
+  COFFEE_SHOPS_CATEGORY,
+  categoryDistrictHeading,
+} from "@/lib/directory-category";
 import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
 import { districtPath, homePath } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
@@ -27,7 +31,7 @@ export function ShopDirectory({
   const areas = directoryNeighborhoods(shops);
   const visible = filterDirectoryShops(shops, district);
   const heading = district
-    ? neighborhoodLabel(district, language)
+    ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
     : copy.directory[language];
   const headingId = district ? "koofi-district" : "koofi-directory";
 

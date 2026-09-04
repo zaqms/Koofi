@@ -12,6 +12,20 @@ const nextConfig: NextConfig = {
       { source: "/sitemap/sitemap.xml", headers: sitemapHeaders },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/n/:slug",
+        destination: "/coffee-shops/:slug",
+        statusCode: 301,
+      },
+      {
+        source: "/en/n/:slug",
+        destination: "/en/coffee-shops/:slug",
+        statusCode: 301,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

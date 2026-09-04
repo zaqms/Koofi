@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
 import {
   directoryNeighborhoods,
@@ -8,30 +8,49 @@ import {
   type DirectoryShop,
 } from "@/lib/directory";
 import { copy } from "@/lib/copy";
+import {
+  COFFEE_SHOPS_CATEGORY,
+  categoryDistrictHeading,
+} from "@/lib/directory-category";
 import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
+import { districtPath, homePath } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
 import type { Language, NeighborhoodId } from "@/lib/types";
 
 type ShopDirectoryProps = {
   language: Language;
   shops: DirectoryShop[];
+  district?: NeighborhoodId | null;
 };
 
-export function ShopDirectory({ language, shops }: ShopDirectoryProps) {
-  const [district, setDistrict] = useState<NeighborhoodId | null>(null);
+export function ShopDirectory({
+  language,
+  shops,
+  district = null,
+}: ShopDirectoryProps) {
   const areas = directoryNeighborhoods(shops);
   const visible = filterDirectoryShops(shops, district);
+  const heading = district
+    ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
+    : copy.directory[language];
+  const headingId = district ? "koofi-district" : "koofi-directory";
 
   return (
     <section
       className="mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-10"
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
-      aria-labelledby="koofi-directory"
+      aria-labelledby={headingId}
     >
-      <h2 id="koofi-directory" className="text-base font-semibold">
-        {copy.directory[language]}
-      </h2>
+      {district ? (
+        <h1 id={headingId} className="text-base font-semibold">
+          {heading}
+        </h1>
+      ) : (
+        <h2 id={headingId} className="text-base font-semibold">
+          {heading}
+        </h2>
+      )}
       <p className="mt-1 text-xs leading-5 text-ink-soft">
         {copy.directoryHint[language]}
       </p>
@@ -41,21 +60,22 @@ export function ShopDirectory({ language, shops }: ShopDirectoryProps) {
         role="group"
         aria-label={copy.neighborhood[language]}
       >
-        <button
-          type="button"
-          aria-pressed={district === null}
-          onClick={() => setDistrict(null)}
+        <Link
+          href={homePath(language)}
+          scroll={false}
+          aria-current={district === null ? "page" : undefined}
           className={chipClass(district === null)}
         >
           {copy.allDistricts[language]}
-        </button>
+        </Link>
         {areas.map((id) => {
           const selected = district === id;
           return (
-            <button
+            <Link
               key={id}
-              type="button"
-              aria-pressed={selected}
+              href={selected ? homePath(language) : districtPath(id, language)}
+              scroll={false}
+              aria-current={selected ? "page" : undefined}
               onClick={() => {
                 if (!selected) {
                   const hood = NEIGHBORHOODS[id];
@@ -70,12 +90,11 @@ export function ShopDirectory({ language, shops }: ShopDirectoryProps) {
                     { dedupeKey: `district_select:${hood.id}` },
                   );
                 }
-                setDistrict(selected ? null : id);
               }}
               className={chipClass(selected)}
             >
               {neighborhoodLabel(id, language)}
-            </button>
+            </Link>
           );
         })}
       </div>

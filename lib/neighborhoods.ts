@@ -218,3 +218,7 @@ export function neighborhoodLabel(
 ): string {
   return language === "ar" ? NEIGHBORHOODS[id].ar : NEIGHBORHOODS[id].en;
 }
+
+export function isNeighborhoodId(value: string): value is NeighborhoodId {
+  return Object.prototype.hasOwnProperty.call(NEIGHBORHOODS, value);
+}

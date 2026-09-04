@@ -1,4 +1,8 @@
-import type { Language, MomentTag } from "./types";
+import {
+  COFFEE_SHOPS_CATEGORY,
+  type DirectoryCategoryId,
+} from "./directory-category";
+import type { Language, MomentTag, NeighborhoodId } from "./types";
 
 /** Public host visitors see. Also the Latin brand. Lowercase with the dot. */
 export const PUBLIC_SITE_HOST = "wain.lol";
@@ -84,6 +88,9 @@ export const EXAMPLE_BADGE = {
 
 export const CARD_PATH_PREFIX = "/c";
 
+/** Retired district prefix. Permanent-redirects to `/{category}/{slug}`. */
+export const LEGACY_DISTRICT_PATH_PREFIX = "/n";
+
 /** Three-pack restore. Public, no login. Not a cafe-card `/c/` URL. */
 export const PACK_PATH_PREFIX = "/p";
 
@@ -166,6 +173,31 @@ export const CONTACT_WHATSAPP_HREF = "https://wa.me/966570064331";
 
 export function cardPath(id: string, language: Language = "ar"): string {
   const slug = `${CARD_PATH_PREFIX}/${encodeURIComponent(id)}`;
+  return language === "en" ? `/en${slug}` : slug;
+}
+
+export function categoryDistrictPath(
+  category: DirectoryCategoryId,
+  id: NeighborhoodId,
+  language: Language = "ar",
+): string {
+  const path = `/${category}/${encodeURIComponent(id)}`;
+  return language === "en" ? `/en${path}` : path;
+}
+
+/** Coffee-shops directory for a neighborhood. */
+export function districtPath(
+  id: NeighborhoodId,
+  language: Language = "ar",
+): string {
+  return categoryDistrictPath(COFFEE_SHOPS_CATEGORY, id, language);
+}
+
+export function legacyDistrictPath(
+  id: NeighborhoodId,
+  language: Language = "ar",
+): string {
+  const slug = `${LEGACY_DISTRICT_PATH_PREFIX}/${encodeURIComponent(id)}`;
   return language === "en" ? `/en${slug}` : slug;
 }
 

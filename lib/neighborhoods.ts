@@ -178,6 +178,38 @@ export const NEIGHBORHOODS: Record<
       "al-mughrizat",
     ],
   },
+  ghirnatah: {
+    id: "ghirnatah",
+    ar: "غرناطة",
+    en: "Ghirnatah",
+    aliases: [
+      "غرناطة",
+      "غرناطه",
+      "ghirnatah",
+      "granada",
+      "gharnata",
+      "ghernata",
+      "al ghirnatah",
+      "al-ghirnatah",
+    ],
+  },
+  "al-shohda": {
+    id: "al-shohda",
+    ar: "الشهداء",
+    en: "Al Shohda",
+    aliases: [
+      "الشهداء",
+      "شهداء",
+      "shohda",
+      "shuhada",
+      "al shohda",
+      "al-shohda",
+      "al shuhada",
+      "al-shuhada",
+      "ash shohda",
+      "ash-shohda",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

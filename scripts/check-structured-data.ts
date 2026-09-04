@@ -6,6 +6,13 @@ import {
   listDirectoryShops,
   listRealShops,
 } from "../lib/catalog";
+import {
+  aboutFaqJsonLd,
+  aboutFaqs,
+  districtFaqJsonLd,
+  districtFaqs,
+  faqPageJsonLd,
+} from "../lib/faq";
 import { districtPath } from "../lib/product";
 import { buildSitemapXml } from "../lib/sitemap-xml";
 import {
@@ -172,6 +179,130 @@ assert(
   "public API path stays /api/shops",
 );
 
+const aboutAr = aboutFaqs("ar");
+const aboutEn = aboutFaqs("en");
+assert(aboutAr.length >= 4 && aboutAr.length <= 6, "About AR has 4–6 FAQs");
+assert(aboutEn.length === aboutAr.length, "About EN matches AR count");
+assert(
+  aboutAr.some((item) => item.q.includes("wain.lol")),
+  "About AR names wain.lol",
+);
+assert(
+  aboutEn.some((item) => item.q.includes("wain.lol")),
+  "About EN names wain.lol",
+);
+assert(
+  aboutAr.some((item) => item.a.includes("ثلاث") && item.a.includes("خريطة")),
+  "About AR covers three picks + Maps",
+);
+assert(
+  aboutEn.some((item) => /three/i.test(item.a) && /Maps/i.test(item.a)),
+  "About EN covers three picks + Maps",
+);
+assert(
+  aboutAr.some((item) => item.a.includes("الرياض بس")),
+  "About AR says Riyadh only",
+);
+assert(
+  aboutAr.some((item) => item.a.includes("قوقل ماب")),
+  "About AR covers Maps add-shop",
+);
+assert(
+  aboutAr.some((item) => item.a.includes("مو توصيل") && item.a.includes("مو سوق")),
+  "About AR says no delivery/marketplace",
+);
+
+const aboutLdAr = aboutFaqJsonLd("ar");
+assert(aboutLdAr["@type"] === "FAQPage", "About JSON-LD is FAQPage");
+assert(aboutLdAr.url === "https://wain.lol/about", "About AR FAQ url");
+assert(
+  aboutLdAr.mainEntity.length === aboutAr.length,
+  "FAQPage count matches visible About AR",
+);
+for (const [index, item] of aboutAr.entries()) {
+  const entity = aboutLdAr.mainEntity[index];
+  assert(entity?.name === item.q, `About AR JSON-LD Q${index} matches visible`);
+  assert(
+    entity?.acceptedAnswer.text === item.a,
+    `About AR JSON-LD A${index} matches visible`,
+  );
+}
+
+const aboutLdEn = aboutFaqJsonLd("en");
+assert(aboutLdEn.url === "https://wain.lol/en/about", "About EN FAQ url");
+for (const [index, item] of aboutEn.entries()) {
+  const entity = aboutLdEn.mainEntity[index];
+  assert(entity?.name === item.q, `About EN JSON-LD Q${index} matches visible`);
+  assert(
+    entity?.acceptedAnswer.text === item.a,
+    `About EN JSON-LD A${index} matches visible`,
+  );
+}
+
+const malqaFaqAr = districtFaqs("al-malqa", "ar");
+const malqaFaqEn = districtFaqs("al-malqa", "en");
+assert(malqaFaqAr.length >= 1 && malqaFaqAr.length <= 2, "district FAQ is 1–2");
+assert(malqaFaqAr[0]?.q === "قهوة في الملقا؟", "district AR Q names الملقا");
+assert(
+  malqaFaqAr[0]?.a.includes("هذي القائمة"),
+  "district AR A points at this list",
+);
+assert(malqaFaqEn[0]?.q === "Coffee in Al Malqa?", "district EN Q names Al Malqa");
+assert(
+  malqaFaqEn[0]?.a.includes("curated list"),
+  "district EN A points at this list",
+);
+
+const districtFaqLd = districtFaqJsonLd("al-malqa", "ar");
+assert(districtFaqLd["@type"] === "FAQPage", "district FAQ JSON-LD is FAQPage");
+assert(
+  districtFaqLd.mainEntity[0]?.name === malqaFaqAr[0]?.q,
+  "district FAQ JSON-LD matches visible Q",
+);
+assert(
+  districtFaqLd.mainEntity[0]?.acceptedAnswer.text === malqaFaqAr[0]?.a,
+  "district FAQ JSON-LD matches visible A",
+);
+
+const rebuilt = faqPageJsonLd(aboutAr, "https://wain.lol/about");
+assert(
+  JSON.stringify(rebuilt) === JSON.stringify(aboutLdAr),
+  "aboutFaqJsonLd is faqPageJsonLd(aboutFaqs)",
+);
+
+for (const payload of [aboutLdAr, aboutLdEn, districtFaqLd]) {
+  const forbidden = jsonHasForbiddenPublicFields(payload);
+  assert(forbidden.length === 0, `FAQ forbidden fields: ${forbidden.join(", ")}`);
+  const text = JSON.stringify(payload);
+  assert(!/Koofi/i.test(text), "FAQ must not say Koofi");
+  assert(!/best of|أفضل قهاوي/i.test(text), "FAQ must not claim best-of");
+  assert(!/ساعات|hours|تقييم|rating/i.test(text), "FAQ must not invent hours/ratings");
+}
+
+const aboutView = readRepo("components/about-page.tsx");
+assert(aboutView.includes("aboutFaqs("), "About page renders visible FAQs");
+assert(aboutView.includes("FaqList"), "About page uses FaqList");
+assert(
+  readRepo("app/about/page.tsx").includes("aboutFaqJsonLd"),
+  "AR About injects FAQPage JSON-LD",
+);
+assert(
+  readRepo("app/en/about/page.tsx").includes("aboutFaqJsonLd"),
+  "EN About injects FAQPage JSON-LD",
+);
+assert(
+  readRepo("components/shop-directory.tsx").includes("districtFaqs("),
+  "district page shows visible district FAQs",
+);
+assert(
+  readRepo("app/[category]/[slug]/page.tsx").includes("districtFaqJsonLd"),
+  "AR district page injects FAQPage JSON-LD",
+);
+assert(
+  llms.includes("/about"),
+  "llms.txt mentions About",
+);
+
 console.log(
-  `check-structured-data: ok (${shops.length} shops, sample ${sample.id})`,
+  `check-structured-data: ok (${shops.length} shops, sample ${sample.id}, ${aboutAr.length} about FAQs)`,
 );

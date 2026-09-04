@@ -1,5 +1,7 @@
 import { AboutPageView } from "@/components/about-page";
+import { JsonLd } from "@/components/json-ld";
 import { copy } from "@/lib/copy";
+import { aboutFaqJsonLd } from "@/lib/faq";
 import { LOCKED_ABOUT, PRODUCT_NAME, SOCIAL_SHARE_IMAGE } from "@/lib/product";
 
 export const metadata = {
@@ -25,5 +27,10 @@ export const metadata = {
 };
 
 export default function EnglishAboutPage() {
-  return <AboutPageView language="en" />;
+  return (
+    <>
+      <JsonLd data={aboutFaqJsonLd("en")} />
+      <AboutPageView language="en" />
+    </>
+  );
 }

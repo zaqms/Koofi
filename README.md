@@ -50,6 +50,8 @@ Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh cof
 | `GET /api/shops/[id]` | One shop. 404 `{ "error": "not_found" }` if missing |
 | `/c/[id]` and `/en/c/[id]` | `CafeOrCoffeeShop` JSON-LD in `<script type="application/ld+json">`. Metadata only — cafe-card layout is unchanged |
 | `/coffee-shops/{slug}` and `/en/coffee-shops/{slug}` | `ItemList` JSON-LD of shops in that district |
+| `/about` + `/en/about` | Visible FAQ (Najdi AR / plain EN) + matching `FAQPage` JSON-LD |
+| `/coffee-shops/{slug}` district FAQ | 1–2 short visible lines + matching `FAQPage` JSON-LD |
 | `/llms.txt` | Short agent note pointing at `/api/shops` |
 
 `robots.txt` allows `/api/shops` and `/llms.txt`; other `/api/` routes stay disallowed. The sitemap still lists district + card URLs and adds `/llms.txt`.
@@ -259,6 +261,7 @@ data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
 sql/shop-upvotes.sql            shop_upvotes + shop_vote_receipts (list social proof)
 lib/structured-data.ts          public shop JSON-LD + /api/shops schema
+lib/faq.ts                      visible About/district FAQ + FAQPage JSON-LD
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
 lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board

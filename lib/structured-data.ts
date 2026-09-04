@@ -324,6 +324,7 @@ export function buildLlmsTxt(): string {
     `- GET ${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}/{id} — one shop`,
     `- Cafe cards embed schema.org CafeOrCoffeeShop JSON-LD: ${PUBLIC_SITE_URL}/c/{id} and ${PUBLIC_SITE_URL}/en/c/{id}`,
     `- District pages embed schema.org ItemList JSON-LD: ${PUBLIC_SITE_URL}/coffee-shops/{slug} and ${PUBLIC_SITE_URL}/en/coffee-shops/{slug}`,
+    `- About FAQ (visible + FAQPage JSON-LD): ${PUBLIC_SITE_URL}/about and ${PUBLIC_SITE_URL}/en/about`,
     "",
     "CORS is open for GET. No auth. Cacheable. No secrets.",
     "",

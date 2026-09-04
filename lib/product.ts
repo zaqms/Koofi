@@ -13,17 +13,20 @@ export const PUBLIC_SITE_URL = `https://${PUBLIC_SITE_HOST}`;
 export const PRODUCT_NAME = PUBLIC_SITE_HOST;
 
 /**
- * Square wordmark Next already serves at /icon.png (`app/icon.png`, 192×192).
- * X summary cards ignore rel=icon — they need og:image / twitter:image.
- * Absolute on purpose so live HTML is https://wain.lol/icon.png, not a relative path.
+ * Site-wide X / Open Graph share image. Static `public/og.png` (1200×630).
+ * Not the 192×192 favicon at `/icon.png` — X large cards need this canvas.
+ * Absolute on purpose so live HTML is https://wain.lol/og.png, not a relative path.
  */
 export const SOCIAL_SHARE_IMAGE = {
-  url: `${PUBLIC_SITE_URL}/icon.png`,
-  width: 192,
-  height: 192,
-  alt: PRODUCT_NAME,
+  url: `${PUBLIC_SITE_URL}/og.png`,
+  width: 1200,
+  height: 630,
+  alt: `${PRODUCT_NAME} — وين القهوة الحين`,
   type: "image/png",
 } as const;
+
+/** Large link card. Pair with SOCIAL_SHARE_IMAGE — not `summary` + /icon.png. */
+export const SOCIAL_TWITTER_CARD = "summary_large_image" as const;
 
 /** People-facing Arabic name in sentences. Wordmark stays Latin `wain.lol`. */
 export const PRODUCT_NAME_AR = "وين";

@@ -4,7 +4,7 @@ import { Chat } from "@/components/chat";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
 import { packToChatPicks, resolvePack } from "@/lib/pack";
-import { PRODUCT_NAME, shopDisplayName } from "@/lib/product";
+import { PRODUCT_NAME, SOCIAL_TWITTER_CARD, shopDisplayName } from "@/lib/product";
 
 type PackPageProps = {
   params: Promise<{ id: string }>;
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: PackPageProps) {
       type: "website",
     },
     twitter: {
-      card: "summary",
+      card: SOCIAL_TWITTER_CARD,
       title: `${names} · ${area}`,
       description,
     },

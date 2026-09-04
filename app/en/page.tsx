@@ -1,5 +1,12 @@
 import { HomeLanding } from "@/components/home-landing";
-import { LOCKED_OPENER_EN, PRODUCT_NAME, SOCIAL_SHARE_IMAGE } from "@/lib/product";
+import { JsonLd } from "@/components/json-ld";
+import {
+  LOCKED_OPENER_EN,
+  PRODUCT_NAME,
+  SOCIAL_SHARE_IMAGE,
+  SOCIAL_TWITTER_CARD,
+} from "@/lib/product";
+import { websiteJsonLd } from "@/lib/structured-data";
 
 export const metadata = {
   title: PRODUCT_NAME,
@@ -16,7 +23,7 @@ export const metadata = {
     images: [SOCIAL_SHARE_IMAGE],
   },
   twitter: {
-    card: "summary",
+    card: SOCIAL_TWITTER_CARD,
     title: PRODUCT_NAME,
     description: LOCKED_OPENER_EN,
     images: [SOCIAL_SHARE_IMAGE],
@@ -24,5 +31,10 @@ export const metadata = {
 };
 
 export default function EnglishHome() {
-  return <HomeLanding language="en" />;
+  return (
+    <>
+      <JsonLd data={websiteJsonLd("en")} />
+      <HomeLanding language="en" />
+    </>
+  );
 }

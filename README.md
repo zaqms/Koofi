@@ -40,6 +40,44 @@ When Amjad adds more shops he likes, append them with `"example": false` and his
 
 Discovery filters the catalog (Riyadh, not been, neighborhood/moment fit) and picks three with a light editorial hand. If the catalog is too small, Koofi says so in Arabic and still returns what it can. It never invents a real shop.
 
+## Public structured data
+
+Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh coffee. Visitor-facing copy never says Koofi.
+
+| Surface | What it is |
+| --- | --- |
+| `GET /api/shops` | Full curated catalog. schema.org `ItemList` of `CafeOrCoffeeShop`. CORS open for GET. `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400` |
+| `GET /api/shops/[id]` | One shop. 404 `{ "error": "not_found" }` if missing |
+| `/c/[id]` and `/en/c/[id]` | `CafeOrCoffeeShop` JSON-LD in `<script type="application/ld+json">`. Metadata only — cafe-card layout is unchanged |
+| `/coffee-shops/{slug}` and `/en/coffee-shops/{slug}` | `ItemList` JSON-LD of shops in that district |
+| `/llms.txt` | Short agent note pointing at `/api/shops` |
+
+`robots.txt` allows `/api/shops` and `/llms.txt`; other `/api/` routes stay disallowed. The sitemap still lists district + card URLs and adds `/llms.txt`.
+
+### Shop object (API)
+
+`@context` is `https://schema.org`. `@type` is `CafeOrCoffeeShop`. Fields come from the editorial catalog only:
+
+| Field | Meaning |
+| --- | --- |
+| `identifier` | Stable catalog `id` |
+| `nameAr` / `nameEn` | Names from the catalog |
+| `neighborhood` / `neighborhoodAr` | District slug + Arabic label |
+| `url` | Canonical card on wain.lol (`/c/{id}`) |
+| `urlEn` | English card (`/en/c/{id}`) |
+| `sameAs` / `hasMap` | Maps share URL (and `officialSite` if present) |
+| `geo` | `{ @type: GeoCoordinates, latitude, longitude }` only when official place coords exist |
+
+Not in the public payload: hours, ratings, phone, price, reviews, images, upvote counts, or any secret.
+
+Page JSON-LD uses schema.org `name` / `alternateName` / `address` for the page language instead of the API’s `nameAr`/`nameEn` pair. Same field whitelist.
+
+An MCP server wrapping this same `/api/shops` catalog is Phase 2 — not hosted in this PR.
+
+```bash
+npx tsx scripts/check-structured-data.ts
+```
+
 ## How to run
 
 ```bash
@@ -203,7 +241,10 @@ app/page.tsx                    Arabic landing
 app/en/page.tsx                 English landing
 app/feedback/page.tsx           public ideas board (Arabic)
 app/en/feedback/page.tsx        public ideas board (English)
-app/c/[id]/page.tsx             shareable cafe card
+app/c/[id]/page.tsx             shareable cafe card (+ CafeOrCoffeeShop JSON-LD)
+app/llms.txt/route.ts           agent pointer to /api/shops
+app/api/shops/route.ts          public curated catalog (CORS GET)
+app/api/shops/[id]/route.ts     one public shop
 app/api/chat/route.ts           web picker + Maps-link suggestions
 app/api/feedback/route.ts       list + add ideas
 app/api/feedback/vote/route.ts  upvote
@@ -217,6 +258,7 @@ data/catalog.json               editorial catalog (shop names / ids)
 data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
 sql/shop-upvotes.sql            shop_upvotes + shop_vote_receipts (list social proof)
+lib/structured-data.ts          public shop JSON-LD + /api/shops schema
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
 lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board

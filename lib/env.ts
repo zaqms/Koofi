@@ -1,7 +1,7 @@
 /**
  * Env key contract. README, .env.example, and webhook code must use these
  * exact names. None are required for the three pick cards. DATABASE_URL is
- * only for the public /feedback board.
+ * only for the public /feedback board and directory-list upvotes.
  */
 export const ENV_KEYS = {
   KOOFI_PUBLIC_URL: "KOOFI_PUBLIC_URL",

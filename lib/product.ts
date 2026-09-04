@@ -13,16 +13,18 @@ export const PUBLIC_SITE_URL = `https://${PUBLIC_SITE_HOST}`;
 export const PRODUCT_NAME = PUBLIC_SITE_HOST;
 
 /**
- * Site-wide X / Open Graph share image. Static `public/og.png` (1200×630).
+ * Site-wide X / Open Graph share image. Static `public/og-v2.jpg` (1200×630 JPEG).
+ * New path on purpose so X can recache after the prior `/og.png` scrape.
+ * `public/og.png` stays on disk; primary meta must point at v2.
  * Not the 192×192 favicon at `/icon.png` — X large cards need this canvas.
- * Absolute on purpose so live HTML is https://wain.lol/og.png, not a relative path.
+ * Absolute on purpose so live HTML is https://wain.lol/og-v2.jpg, not a relative path.
  */
 export const SOCIAL_SHARE_IMAGE = {
-  url: `${PUBLIC_SITE_URL}/og.png`,
+  url: `${PUBLIC_SITE_URL}/og-v2.jpg`,
   width: 1200,
   height: 630,
   alt: `${PRODUCT_NAME} — وين القهوة الحين`,
-  type: "image/png",
+  type: "image/jpeg",
 } as const;
 
 /** Large link card. Pair with SOCIAL_SHARE_IMAGE — not `summary` + /icon.png. */

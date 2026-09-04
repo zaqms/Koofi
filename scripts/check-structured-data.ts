@@ -30,6 +30,7 @@ import {
   publicShopsInDistrict,
   publicShopsItemList,
   shopJsonLd,
+  websiteJsonLd,
 } from "../lib/structured-data";
 import {
   fetchShopDocument,
@@ -394,6 +395,41 @@ assert(
   "llms.txt mentions About",
 );
 assert(llms.includes("search"), "llms.txt names MCP search");
+
+const siteAr = websiteJsonLd("ar");
+assert(siteAr["@type"] === "WebSite", "home JSON-LD is WebSite");
+assert(siteAr.name === "wain.lol", "WebSite name is wain.lol");
+assert(siteAr.url === "https://wain.lol", "WebSite url is https://wain.lol");
+assert(siteAr.inLanguage === "ar-SA", "AR home inLanguage is ar-SA");
+assert(siteAr.publisher["@type"] === "Organization", "publisher is Organization");
+assert(siteAr.publisher.name === "wain.lol", "Organization name is wain.lol");
+assert(siteAr.publisher.url === "https://wain.lol", "Organization url is https://wain.lol");
+assert(
+  siteAr.publisher.logo === "https://wain.lol/icon.png",
+  "Organization logo is /icon.png",
+);
+assert(!("sameAs" in siteAr.publisher), "Organization sameAs is omitted");
+assert(!("potentialAction" in siteAr), "no invented SearchAction");
+assert(!/Koofi/i.test(JSON.stringify(siteAr)), "WebSite must not say Koofi");
+
+const siteEn = websiteJsonLd("en");
+assert(siteEn.inLanguage === "en", "EN home inLanguage is en");
+assert(siteEn.url === "https://wain.lol", "EN WebSite url stays https://wain.lol");
+assert(!("sameAs" in siteEn.publisher), "EN Organization sameAs is omitted");
+assert(!("potentialAction" in siteEn), "EN has no invented SearchAction");
+
+assert(
+  readRepo("app/page.tsx").includes("websiteJsonLd"),
+  "AR home injects WebSite JSON-LD",
+);
+assert(
+  readRepo("app/en/page.tsx").includes("websiteJsonLd"),
+  "EN home injects WebSite JSON-LD",
+);
+assert(
+  llms.includes("WebSite"),
+  "llms.txt mentions home WebSite JSON-LD",
+);
 
 console.log(
   `check-structured-data: ok (${shops.length} shops, sample ${sample.id}, ${aboutAr.length} about FAQs)`,

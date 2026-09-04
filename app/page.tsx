@@ -1,5 +1,12 @@
 import { HomeLanding } from "@/components/home-landing";
+import { JsonLd } from "@/components/json-ld";
+import { websiteJsonLd } from "@/lib/structured-data";
 
 export default function Home() {
-  return <HomeLanding language="ar" />;
+  return (
+    <>
+      <JsonLd data={websiteJsonLd("ar")} />
+      <HomeLanding language="ar" />
+    </>
+  );
 }

@@ -1,10 +1,12 @@
 import { HomeLanding } from "@/components/home-landing";
+import { JsonLd } from "@/components/json-ld";
 import {
   LOCKED_OPENER_EN,
   PRODUCT_NAME,
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "@/lib/product";
+import { websiteJsonLd } from "@/lib/structured-data";
 
 export const metadata = {
   title: PRODUCT_NAME,
@@ -29,5 +31,10 @@ export const metadata = {
 };
 
 export default function EnglishHome() {
-  return <HomeLanding language="en" />;
+  return (
+    <>
+      <JsonLd data={websiteJsonLd("en")} />
+      <HomeLanding language="en" />
+    </>
+  );
 }

@@ -111,6 +111,54 @@ export type ItemListJsonLd = {
   }[];
 };
 
+export type OrganizationJsonLd = {
+  "@context"?: typeof SCHEMA_CONTEXT;
+  "@type": "Organization";
+  name: string;
+  url: string;
+  logo: string;
+};
+
+export type WebSiteJsonLd = {
+  "@context": typeof SCHEMA_CONTEXT;
+  "@type": "WebSite";
+  name: string;
+  url: string;
+  inLanguage: "ar-SA" | "en";
+  publisher: OrganizationJsonLd;
+};
+
+/**
+ * Site entity for AI / Knowledge Graph. sameAs is omitted on purpose —
+ * no @smarketer, no Platformance/Cali, no invented socials until dedicated
+ * wain.lol profiles exist.
+ */
+export function organizationJsonLd(
+  options?: { includeContext?: boolean },
+): OrganizationJsonLd {
+  return {
+    ...(options?.includeContext === false
+      ? {}
+      : { "@context": SCHEMA_CONTEXT }),
+    "@type": "Organization",
+    name: PRODUCT_NAME,
+    url: PUBLIC_SITE_URL,
+    logo: `${PUBLIC_SITE_URL}/icon.png`,
+  };
+}
+
+/** Home only (`/` and `/en`). No SearchAction — there is no public search URL. */
+export function websiteJsonLd(language: Language): WebSiteJsonLd {
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@type": "WebSite",
+    name: PRODUCT_NAME,
+    url: PUBLIC_SITE_URL,
+    inLanguage: language === "en" ? "en" : "ar-SA",
+    publisher: organizationJsonLd({ includeContext: false }),
+  };
+}
+
 function shopById(): Map<string, Shop> {
   return new Map(listRealShops().map((shop) => [shop.id, shop]));
 }
@@ -344,6 +392,7 @@ export function buildLlmsTxt(): string {
     `- Cafe cards embed schema.org CafeOrCoffeeShop JSON-LD: ${PUBLIC_SITE_URL}/c/{id} and ${PUBLIC_SITE_URL}/en/c/{id}`,
     `- District pages embed schema.org ItemList JSON-LD: ${PUBLIC_SITE_URL}/coffee-shops/{slug} and ${PUBLIC_SITE_URL}/en/coffee-shops/{slug}`,
     `- About FAQ (visible + FAQPage JSON-LD): ${PUBLIC_SITE_URL}/about and ${PUBLIC_SITE_URL}/en/about`,
+    `- Home embeds schema.org WebSite + Organization JSON-LD: ${PUBLIC_SITE_URL} and ${PUBLIC_SITE_URL}/en`,
     "",
     "CORS is open. No auth. Cacheable REST. No secrets.",
     "",
@@ -359,7 +408,7 @@ export function buildLlmsTxt(): string {
     "## Schema",
     "",
     `- @context: ${SCHEMA_CONTEXT}`,
-    "- @type: CafeOrCoffeeShop (shop) or ItemList (catalog / district)",
+    "- @type: CafeOrCoffeeShop (shop), ItemList (catalog / district), WebSite + Organization (home)",
     `- identifier: stable catalog id (API)`,
     `- nameAr / nameEn, neighborhood, neighborhoodAr`,
     `- url: ${PUBLIC_SITE_URL}/c/{id}`,

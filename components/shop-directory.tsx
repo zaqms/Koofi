@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
+import { FaqList } from "@/components/faq-list";
 import {
   directoryNeighborhoods,
   filterDirectoryShops,
   type DirectoryShop,
 } from "@/lib/directory";
 import { copy } from "@/lib/copy";
+import { districtFaqs } from "@/lib/faq";
 import {
   COFFEE_SHOPS_CATEGORY,
   categoryDistrictHeading,
@@ -54,6 +56,13 @@ export function ShopDirectory({
       <p className="mt-1 text-xs leading-5 text-ink-soft">
         {copy.directoryHint[language]}
       </p>
+      {district ? (
+        <FaqList
+          items={districtFaqs(district, language)}
+          language={language}
+          compact
+        />
+      ) : null}
 
       <div
         className="mt-3 flex flex-wrap gap-1.5"

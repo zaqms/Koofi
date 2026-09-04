@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { CafeCardPageView } from "@/components/cafe-card-page";
+import { JsonLd } from "@/components/json-ld";
 import { getShop, listRealShops } from "@/lib/catalog";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { PRODUCT_NAME } from "@/lib/product";
+import { shopJsonLd } from "@/lib/structured-data";
 
 type CardPageProps = {
   params: Promise<{ id: string }>;
@@ -40,10 +42,13 @@ export default async function EnglishCafeCardPage({
   if (!shop) notFound();
 
   return (
-    <CafeCardPageView
-      shop={shop}
-      language="en"
-      inboundFrom={inboundFrom((await searchParams).from)}
-    />
+    <>
+      <JsonLd data={shopJsonLd(shop, "en")} />
+      <CafeCardPageView
+        shop={shop}
+        language="en"
+        inboundFrom={inboundFrom((await searchParams).from)}
+      />
+    </>
   );
 }

@@ -1,12 +1,15 @@
 import { notFound } from "next/navigation";
 import { HomeLanding } from "@/components/home-landing";
+import { JsonLd } from "@/components/json-ld";
 import {
   categoryDistrictStaticParams,
   districtMetadata,
   resolveDistrictSlug,
 } from "@/lib/district";
 import { isDirectoryCategory } from "@/lib/directory-category";
+import { districtFaqJsonLd } from "@/lib/faq";
 import { PRODUCT_NAME } from "@/lib/product";
+import { districtItemListJsonLd } from "@/lib/structured-data";
 
 type CategoryDistrictPageProps = {
   params: Promise<{ category: string; slug: string }>;
@@ -36,5 +39,11 @@ export default async function EnglishCategoryDistrictPage({
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();
 
-  return <HomeLanding language="en" district={district} />;
+  return (
+    <>
+      <JsonLd data={districtItemListJsonLd(district, "en")} />
+      <JsonLd data={districtFaqJsonLd(district, "en")} />
+      <HomeLanding language="en" district={district} />
+    </>
+  );
 }

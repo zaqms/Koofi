@@ -2,7 +2,9 @@ import Link from "next/link";
 import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { ContactUs } from "@/components/contact-us";
+import { FaqList } from "@/components/faq-list";
 import { copy } from "@/lib/copy";
+import { aboutFaqs, faqHeading } from "@/lib/faq";
 import { aboutPath, feedbackPath, homePath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
@@ -46,6 +48,12 @@ export function AboutPageView({ language }: AboutPageViewProps) {
           </Link>
         </p>
       </article>
+
+      <FaqList
+        items={aboutFaqs(language)}
+        language={language}
+        heading={faqHeading(language)}
+      />
 
       <div className="mt-8 border-t border-line pt-4">
         <ContactUs language={language} />

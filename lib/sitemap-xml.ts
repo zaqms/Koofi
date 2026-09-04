@@ -42,6 +42,7 @@ function sitemapPaths(): string[] {
     aboutPath("en"),
     feedbackPath("ar"),
     feedbackPath("en"),
+    "/llms.txt",
   ];
 
   for (const shop of listRealShops()) {

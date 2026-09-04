@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Fragment, useEffect, type ReactNode } from "react";
 import Link from "next/link";
 import { BeenButton } from "@/components/been-button";
 import { MapPinIcon } from "@/components/map-pin-icon";
@@ -13,7 +13,7 @@ import { postLearnMaps } from "@/lib/learn-session";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { packIdForPicks } from "@/lib/share-pack";
 import { trackEvent, type MapsClickSource } from "@/lib/track";
-import type { ChatPick, Language } from "@/lib/types";
+import type { ChatPick, Language, Pin } from "@/lib/types";
 
 export type { ChatPick };
 
@@ -96,29 +96,24 @@ export function PickList({
                         </span>
                       ) : null}
                     </div>
-                    <p
-                      className="truncate text-[11px] leading-4 text-ink-soft"
-                      dir="auto"
-                    >
-                      {other} · {pick.neighborhoodLabel}
-                      <ShopDistance
-                        coords={
-                          pick.lat != null && pick.lng != null
-                            ? { lat: pick.lat, lng: pick.lng }
-                            : null
-                        }
-                        language={language}
-                      />
-                      {!pick.example && pick.rating != null ? (
-                        <span dir="ltr">
-                          {" · "}
-                          {pick.rating.toFixed(1)}
-                          {pick.reviewCount != null
-                            ? ` · ${pick.reviewCount} ${copy.reviews[language]}`
-                            : null}
-                        </span>
-                      ) : null}
-                    </p>
+                    <PickMetaLine
+                      other={other}
+                      neighborhood={pick.neighborhoodLabel}
+                      language={language}
+                      rating={
+                        !pick.example && pick.rating != null
+                          ? pick.rating
+                          : undefined
+                      }
+                      reviewCount={
+                        !pick.example ? pick.reviewCount : undefined
+                      }
+                      coords={
+                        pick.lat != null && pick.lng != null
+                          ? { lat: pick.lat, lng: pick.lng }
+                          : null
+                      }
+                    />
                     <p className="mt-0.5 truncate text-xs leading-4 text-ink">
                       {pick.why}
                     </p>
@@ -166,5 +161,55 @@ export function PickList({
         />
       ) : null}
     </div>
+  );
+}
+
+function PickMetaLine({
+  other,
+  neighborhood,
+  language,
+  rating,
+  reviewCount,
+  coords,
+}: {
+  other: string;
+  neighborhood: string;
+  language: Language;
+  rating?: number;
+  reviewCount?: number;
+  coords: Pin | null;
+}) {
+  const ratingText =
+    rating != null
+      ? reviewCount != null
+        ? `${rating.toFixed(1)} · ${reviewCount} ${copy.reviews[language]}`
+        : rating.toFixed(1)
+      : null;
+
+  const ratingNode = ratingText ? <span dir="ltr">{ratingText}</span> : null;
+  const otherNode = <span dir="auto">{other}</span>;
+  const areaNode = (
+    <>
+      <span dir="auto">{neighborhood}</span>
+      <ShopDistance coords={coords} language={language} />
+    </>
+  );
+
+  // EN keeps the live visual (rating · reviews · area · other name).
+  // AR keeps other · area · rating. dir=ltr so bidi cannot glue reviews to the area.
+  const parts: ReactNode[] =
+    language === "en"
+      ? [ratingNode, areaNode, otherNode]
+      : [otherNode, areaNode, ratingNode];
+
+  return (
+    <p className="truncate text-[11px] leading-4 text-ink-soft" dir="ltr">
+      {parts.filter(Boolean).map((part, index) => (
+        <Fragment key={index}>
+          {index > 0 ? " · " : null}
+          {part}
+        </Fragment>
+      ))}
+    </p>
   );
 }

@@ -13,6 +13,7 @@ import {
   categoryDistrictPath,
   PRODUCT_NAME,
   SOCIAL_SHARE_IMAGE,
+  SOCIAL_TWITTER_CARD,
 } from "./product";
 import type { Language, NeighborhoodId } from "./types";
 
@@ -75,7 +76,7 @@ export function districtMetadata(
       images: [SOCIAL_SHARE_IMAGE],
     },
     twitter: {
-      card: "summary",
+      card: SOCIAL_TWITTER_CARD,
       title,
       description,
       images: [SOCIAL_SHARE_IMAGE],

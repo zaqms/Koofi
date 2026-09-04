@@ -164,8 +164,8 @@ export const copy = {
     en: "The list",
   },
   directoryHint: {
-    ar: "من الكتالوج. الخريطة آخر ضغطة.",
-    en: "From the catalog. Maps is the last click.",
+    ar: "قهوة نحبها في الرياض.",
+    en: "Cafes we like in Riyadh.",
   },
   allDistricts: {
     ar: "كل الأحياء",

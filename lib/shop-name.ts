@@ -135,6 +135,11 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "one-gram-sulimaniyah": ["one gram"],
 };
 
+/** One-off brand typos only. Not a general fuzzy ranker. */
+const BRAND_TYPO_ALIASES: Record<string, readonly string[]> = {
+  breehant: ["breeahant"],
+};
+
 function addAlias(into: Set<string>, raw: string): void {
   const alias = normalize(raw);
   if (!alias || isBlockedAlias(alias)) return;
@@ -166,6 +171,9 @@ export function shopNameAliases(
   if (arabic.length) addAlias(aliases, arabic.join(" "));
 
   for (const extra of EXTRA_ALIASES[shop.id] ?? []) addAlias(aliases, extra);
+  for (const extra of BRAND_TYPO_ALIASES[shopBrandKey(shop)] ?? []) {
+    addAlias(aliases, extra);
+  }
 
   return [...aliases];
 }

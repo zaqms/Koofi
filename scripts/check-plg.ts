@@ -124,6 +124,19 @@ assertNamedFirst("drip", "en", (id) => id === "drip-olaya");
 assertNamedFirst("نسج", "ar", (id) => id === "nasj-al-malqa");
 assertNamedFirst("خطوة جمل", "ar", (id) => id.startsWith("camel-step"));
 assertNamedFirst("nasj", "en", (id) => id === "nasj-al-malqa");
+assertNamedFirst("breehant", "en", (id) => id.startsWith("breehant-"));
+assertNamedFirst("breeahant", "en", (id) => id.startsWith("breehant-"));
+
+const breehantPack = pickCafes({ text: "breehant", language: "en" });
+assert(
+  breehantPack.picks.filter((pick) => shopBrandKey(pick.shop) === "breehant")
+    .length === 1,
+  `breehant pack must brand-dedupe: ${breehantPack.picks.map((pick) => pick.shop.id).join(", ")}`,
+);
+assert(
+  breehantPack.picks.every((pick) => catalogIds.has(pick.shop.id)),
+  "breehant companions must stay catalog shops",
+);
 
 assert(
   matchCatalogShops("drops", catalog).length === 0,
@@ -182,6 +195,8 @@ for (const place of Object.values(NEIGHBORHOODS)) {
 
 assert(!isOffTopicAsk("woods"), "a catalog name is on-topic");
 assert(!isOffTopicAsk("نسج"), "an Arabic catalog name is on-topic");
+assert(!isOffTopicAsk("breehant"), "breehant is on-topic");
+assert(!isOffTopicAsk("breeahant"), "breeahant typo is on-topic");
 
 console.log("ok");
 console.log(

@@ -32,6 +32,7 @@ const DARK_LOGO_PATHS = new Set([
   "/logos/trieste-kafd.jpg",
   "/logos/dips-plus-diriyah.jpg",
   "/logos/malfa-coffee-house-diriyah.jpg",
+  "/logos/blumen-al-safa.jpg",
 ]);
 
 export function ShopVisual({

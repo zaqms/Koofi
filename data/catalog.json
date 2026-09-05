@@ -1479,6 +1479,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07007140839d:0xbbb6a718fc72c7d1",
       "pin": { "lat": 24.6705282, "lng": 46.7810145 },
+      "logoUrl": "/logos/blumen-al-safa.jpg",
       "example": false
     }
   ]

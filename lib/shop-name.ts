@@ -1,4 +1,5 @@
 import { NEIGHBORHOODS } from "./neighborhoods";
+import { VIBE_CHIPS } from "./product";
 import { shopBrandKey } from "./shop-brand";
 import type { Shop } from "./types";
 
@@ -99,6 +100,12 @@ const NEIGHBORHOOD_ALIASES = new Set(
   Object.values(NEIGHBORHOODS)
     .flatMap((place) => [place.id, place.en, place.ar, ...place.aliases])
     .map((alias) => normalize(alias))
+    .filter(Boolean),
+);
+
+const CHIP_ASKS = new Set(
+  VIBE_CHIPS.flatMap((chip) => [chip.en, chip.ar])
+    .map((label) => normalize(label))
     .filter(Boolean),
 );
 
@@ -209,6 +216,9 @@ export function matchCatalogShops<T extends Shop>(
 ): T[] {
   const haystack = normalize(raw);
   if (!haystack) return [];
+  // Whole-ask حي / chip labels stay vibe+area, even if a shop token sits inside
+  // ("ash" from Ash Bloom must not steal "ash shohda").
+  if (NEIGHBORHOOD_ALIASES.has(haystack) || CHIP_ASKS.has(haystack)) return [];
 
   const hits: { shop: T; score: number }[] = [];
 

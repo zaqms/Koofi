@@ -1,12 +1,17 @@
+import { listRealShops } from "../lib/catalog";
+import { isNearAskedNeighborhood } from "../lib/neighborhood-tight";
 import { pickCafes } from "../lib/picker";
 import { shopBrandKey } from "../lib/shop-brand";
 import { encodePackId, resolvePack } from "../lib/pack";
 import { formatListingPacket, formatSharePacket, packetHasMapsUrl } from "../lib/packet";
 import { listingPacketForShop } from "../lib/share-pack";
 import { shopWhyLine } from "../lib/why-line";
-import { toChatPicks } from "../lib/picker";
-import { packSharePath } from "../lib/product";
+import { toChatPicks, headingForPicks } from "../lib/picker";
+import { packSharePath, VIBE_CHIPS } from "../lib/product";
+import { NEIGHBORHOODS } from "../lib/neighborhoods";
+import { matchCatalogShops } from "../lib/shop-name";
 import { whatsAppShareHref } from "../lib/share-pack";
+import { isOffTopicAsk } from "../lib/off-topic-intent";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -91,6 +96,134 @@ assert(
 );
 assert(!wa.includes("966570064331"), "share must not use the Contact us number");
 assert(!wa.includes("web.whatsapp.com"), "share must not use WhatsApp Web");
+
+const catalog = listRealShops();
+const catalogIds = new Set(catalog.map((shop) => shop.id));
+
+function assertNamedFirst(ask: string, language: "ar" | "en", pred: (id: string) => boolean) {
+  const result = pickCafes({ text: ask, language });
+  assert(result.picks.length === 3, `${ask} should return 3, got ${result.picks.length}`);
+  assert(
+    result.picks.every((pick) => catalogIds.has(pick.shop.id)),
+    `${ask} invented a shop: ${result.picks.map((pick) => pick.shop.id).join(", ")}`,
+  );
+  assert(
+    pred(result.picks[0]!.shop.id),
+    `${ask} first pick was ${result.picks[0]?.shop.id} (${result.picks[0]?.shop.nameEn})`,
+  );
+  assert(
+    headingForPicks(result) === "Three cafes that suit your choice:" ||
+      headingForPicks(result) === "ثلاث قهاوي تناسب اختيارك",
+    `locked heading changed for ${ask}: ${headingForPicks(result)}`,
+  );
+}
+
+assertNamedFirst("woods", "en", (id) => id.startsWith("woods-"));
+assertNamedFirst("وودز", "ar", (id) => id.startsWith("woods-"));
+assertNamedFirst("drip", "en", (id) => id === "drip-olaya");
+assertNamedFirst("نسج", "ar", (id) => id === "nasj-al-malqa");
+assertNamedFirst("خطوة جمل", "ar", (id) => id.startsWith("camel-step"));
+assertNamedFirst("nasj", "en", (id) => id === "nasj-al-malqa");
+assertNamedFirst("breehant", "en", (id) => id.startsWith("breehant-"));
+assertNamedFirst("breeahant", "en", (id) => id.startsWith("breehant-"));
+assertNamedFirst("بريهانت", "ar", (id) => id.startsWith("breehant-"));
+assertNamedFirst("بريهنت", "ar", (id) => id.startsWith("breehant-"));
+assertNamedFirst("blumen", "en", (id) => id === "blumen-al-safa");
+assertNamedFirst("بلومن", "ar", (id) => id === "blumen-al-safa");
+assertNamedFirst("jazwa", "en", (id) => id.startsWith("jazwa-"));
+assertNamedFirst("جزوة", "ar", (id) => id.startsWith("jazwa-"));
+assertNamedFirst("nosound", "en", (id) => id.startsWith("nosound-"));
+assertNamedFirst("نوساوند", "ar", (id) => id.startsWith("nosound-"));
+assertNamedFirst("percent", "en", (id) => id === "percent-arabica-hittin");
+
+const breehantPack = pickCafes({ text: "breehant", language: "en" });
+assert(
+  breehantPack.picks.filter((pick) => shopBrandKey(pick.shop) === "breehant")
+    .length === 1,
+  `breehant pack must brand-dedupe: ${breehantPack.picks.map((pick) => pick.shop.id).join(", ")}`,
+);
+assert(
+  breehantPack.picks.every((pick) => catalogIds.has(pick.shop.id)),
+  "breehant companions must stay catalog shops",
+);
+
+const breehantArHits = matchCatalogShops("بريهانت", catalog);
+assert(
+  breehantArHits.some((shop) => shop.id === "breehant-olaya") &&
+    breehantArHits.some((shop) => shop.id === "breehant-al-yasmin"),
+  "brand-key EXTRA_ALIASES must attach بريهانت to both Breehant rows",
+);
+
+const ARABIC_SCRIPT = /[\u0600-\u06FF]/;
+for (const shop of catalog) {
+  if (!ARABIC_SCRIPT.test(shop.nameAr)) continue;
+  const hits = matchCatalogShops(shop.nameAr, catalog);
+  assert(
+    hits.some((hit) => hit.id === shop.id),
+    `Arabic nameAr "${shop.nameAr}" missed ${shop.id}; hits ${hits.map((hit) => hit.id).join(", ") || "(none)"}`,
+  );
+}
+
+assert(
+  matchCatalogShops("drops", catalog).length === 0,
+  "drops is not a catalog shop — do not invent Drops or alias it onto Drip",
+);
+assert(
+  matchCatalogShops("Drops", catalog).length === 0,
+  "Drops is not a catalog shop",
+);
+
+const dropsPick = pickCafes({ text: "drops", language: "en" });
+assert(dropsPick.picks.length === 3, "drops vibe fallback should still return 3");
+assert(
+  dropsPick.picks.every((pick) => catalogIds.has(pick.shop.id)),
+  "drops fallback invented a shop",
+);
+assert(
+  !dropsPick.picks.some((pick) => /drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`)),
+  "do not invent a Drops listing",
+);
+
+const quietHittin = pickCafes({ text: "quiet in Hittin", language: "en" });
+assert(quietHittin.picks.length === 3, "quiet in Hittin should return 3");
+assert(quietHittin.askedNeighborhoods.includes("hittin"), "quiet in Hittin must keep حي parse");
+assert(quietHittin.askedMoments.includes("quiet"), "quiet in Hittin must keep vibe parse");
+assert(
+  quietHittin.picks.every((pick) =>
+    isNearAskedNeighborhood(pick.shop, ["hittin"], catalog),
+  ),
+  `quiet in Hittin left the area: ${quietHittin.picks.map((pick) => pick.shop.id).join(", ")}`,
+);
+assert(
+  quietHittin.picks.every((pick) => pick.shop.neighborhoodAr !== "هيتين"),
+  "Hittin Arabic must stay حطين on vibe asks too",
+);
+
+for (const chip of VIBE_CHIPS) {
+  assert(
+    matchCatalogShops(chip.en, catalog).length === 0,
+    `chip "${chip.en}" must not name-match a shop`,
+  );
+  assert(
+    matchCatalogShops(chip.ar, catalog).length === 0,
+    `chip "${chip.ar}" must not name-match a shop`,
+  );
+}
+
+for (const place of Object.values(NEIGHBORHOODS)) {
+  for (const alias of [place.en, place.ar, ...place.aliases]) {
+    assert(
+      matchCatalogShops(alias, catalog).length === 0,
+      `حي alias "${alias}" must not name-match a shop`,
+    );
+  }
+}
+
+assert(!isOffTopicAsk("woods"), "a catalog name is on-topic");
+assert(!isOffTopicAsk("نسج"), "an Arabic catalog name is on-topic");
+assert(!isOffTopicAsk("breehant"), "breehant is on-topic");
+assert(!isOffTopicAsk("breeahant"), "breeahant typo is on-topic");
+assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 console.log("ok");
 console.log(

@@ -1,8 +1,10 @@
 import { listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
+import { haversineKm } from "./distance";
 import { neighborhoodTightShops } from "./neighborhood-tight";
 import { neighborhoodLabel } from "./neighborhoods";
+import { officialShopCoords } from "./place-coords";
 import { parseIntent } from "./parse-intent";
 import {
   exampleBadge,
@@ -12,6 +14,7 @@ import {
 import { decorateChatPicks } from "./places";
 import { shopLocation, shopMapsHref } from "./public-url";
 import { dedupeSameBrand } from "./shop-brand";
+import { matchCatalogShops } from "./shop-name";
 import type {
   ChatPick,
   Language,
@@ -110,6 +113,71 @@ function diversify(shops: Shop[], moments: MomentTag[]): Shop[] {
   return chosen.slice(0, TARGET_PICKS);
 }
 
+function preferAskedNeighborhood(
+  shops: Shop[],
+  neighborhoods: NeighborhoodId[],
+): Shop[] {
+  if (neighborhoods.length === 0) return shops;
+  const inArea = shops.filter((shop) => neighborhoods.includes(shop.neighborhood));
+  const rest = shops.filter((shop) => !neighborhoods.includes(shop.neighborhood));
+  return [...inArea, ...rest];
+}
+
+/** Nearby / similar catalog shops around a named hit. No invented listings. */
+function companionsForNamed(
+  named: Shop,
+  pool: Shop[],
+  moments: MomentTag[],
+): Shop[] {
+  const origin = officialShopCoords(named);
+  const buckets = new Map<number, Shop[]>();
+
+  for (const shop of pool) {
+    if (shop.id === named.id) continue;
+    let score = isExampleShop(shop) ? 0 : 8;
+    if (shop.neighborhood === named.neighborhood) score += 10;
+    const coords = officialShopCoords(shop);
+    if (origin && coords) {
+      const km = haversineKm(origin, coords);
+      if (km <= 2) score += 8;
+      else if (km <= 5) score += 5;
+      else if (km <= 10) score += 2;
+    }
+    for (const moment of moments) {
+      if (shop.momentTags.includes(moment)) score += 3;
+    }
+    const shared = shop.momentTags.filter((tag) =>
+      named.momentTags.includes(tag),
+    ).length;
+    score += Math.min(shared, 4);
+
+    const bucket = buckets.get(score);
+    if (bucket) bucket.push(shop);
+    else buckets.set(score, [shop]);
+  }
+
+  return [...buckets.keys()]
+    .sort((a, b) => b - a)
+    .flatMap((score) => shuffle(buckets.get(score) ?? []));
+}
+
+function pickAroundNamedShops(
+  named: Shop[],
+  fillPool: Shop[],
+  moments: MomentTag[],
+): Shop[] {
+  const pinned = named.slice(0, TARGET_PICKS);
+  const companions = pinned[0]
+    ? companionsForNamed(pinned[0], fillPool, moments)
+    : fillPool;
+  // Same-حي Scout rows often share one qahwa why-line; diversify so the
+  // named lead still gets two nearby alternatives instead of collapsing.
+  return diversify(
+    dedupeSameBrand([...pinned, ...companions]),
+    moments,
+  );
+}
+
 export function pickCafes(input: {
   text: string;
   beenIds?: string[];
@@ -119,9 +187,49 @@ export function pickCafes(input: {
   const language = input.language ?? intent.language;
   const been = new Set((input.beenIds ?? []).filter(Boolean));
   const avoided = new Set(intent.avoidedNeighborhoods);
-  const citywide = listRealShops().filter(
+  const catalog = listRealShops();
+  const named = preferAskedNeighborhood(
+    matchCatalogShops(input.text, catalog),
+    intent.neighborhoods,
+  );
+  const citywide = catalog.filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
   );
+
+  if (named.length > 0) {
+    const pinned = named.filter((shop) => !avoided.has(shop.neighborhood));
+    const lead = pinned.length > 0 ? pinned : named;
+    const fillPool = citywide.filter(
+      (shop) => !lead.some((hit) => hit.id === shop.id),
+    );
+    const nearbyFill =
+      intent.neighborhoods.length > 0
+        ? neighborhoodTightShops(fillPool, intent.neighborhoods)
+        : fillPool;
+    const ranked = pickAroundNamedShops(
+      lead,
+      nearbyFill.length >= TARGET_PICKS - 1 ? nearbyFill : fillPool,
+      intent.moments,
+    );
+    const picks: PickReason[] = shopsWithUniqueWhy(
+      ranked,
+      language,
+      intent.moments,
+    );
+    const availableForThin = citywide.length > 0 ? citywide : catalog;
+    const thinCatalog =
+      availableForThin.length < TARGET_PICKS || picks.length < TARGET_PICKS;
+
+    return {
+      language,
+      picks,
+      thinCatalog,
+      askedNeighborhoods: intent.neighborhoods,
+      avoidedNeighborhoods: intent.avoidedNeighborhoods,
+      askedMoments: intent.moments,
+    };
+  }
+
   const available =
     intent.neighborhoods.length > 0
       ? neighborhoodTightShops(citywide, intent.neighborhoods)

@@ -1,5 +1,7 @@
+import { listRealShops } from "./catalog";
 import { parseIntent } from "./parse-intent";
 import { VIBE_CHIPS } from "./product";
+import { matchCatalogShops } from "./shop-name";
 
 /**
  * Conservative off-topic gate. Cafe / vibe / neighborhood / avoid
@@ -50,6 +52,7 @@ function hasCafeSignal(text: string): boolean {
   ) {
     return true;
   }
+  if (matchCatalogShops(text, listRealShops()).length > 0) return true;
   const haystack = ` ${normalize(text)} `;
   return CAFE_WORDS.some((word) => {
     if (!word) return false;

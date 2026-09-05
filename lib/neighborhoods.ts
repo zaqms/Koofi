@@ -222,6 +222,23 @@ export const NEIGHBORHOODS: Record<
       "al-safa",
     ],
   },
+  "al-rawdah": {
+    id: "al-rawdah",
+    ar: "الروضة",
+    en: "Al Rawdah",
+    aliases: [
+      "الروضة",
+      "روضة",
+      "الروضه",
+      "روضه",
+      "rawdah",
+      "rawda",
+      "al rawdah",
+      "al-rawdah",
+      "ar rawdah",
+      "ar-rawdah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

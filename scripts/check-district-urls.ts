@@ -32,6 +32,7 @@ assert(resolveDistrictSlug("ghirnatah") === "ghirnatah", "ghirnatah resolves");
 assert(resolveDistrictSlug("al-shohda") === "al-shohda", "al-shohda resolves");
 assert(resolveDistrictSlug("al-safa") === "al-safa", "al-safa resolves");
 assert(resolveDistrictSlug("al-rawdah") === "al-rawdah", "al-rawdah resolves");
+assert(resolveDistrictSlug("qurtubah") === "qurtubah", "qurtubah resolves");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
 assert(resolveDistrictSlug("غرناطة") === null, "Arabic label is not a slug");
 
@@ -65,8 +66,9 @@ assert(areas.includes("ghirnatah"), "directory includes ghirnatah");
 assert(areas.includes("al-shohda"), "directory includes al-shohda");
 assert(areas.includes("al-safa"), "directory includes al-safa");
 assert(areas.includes("al-rawdah"), "directory includes al-rawdah");
-assert(areas.length === 20, `expected 20 districts, got ${areas.length}`);
-assert(listRealShops().length === 119, `catalog 108→119, got ${listRealShops().length}`);
+assert(areas.includes("qurtubah"), "directory includes qurtubah");
+assert(areas.length === 21, `expected 21 districts, got ${areas.length}`);
+assert(listRealShops().length === 131, `catalog 119→131, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -220,10 +222,68 @@ assert(
   "parseIntent(الربوة) must not hit al-rawdah",
 );
 
+const qurtubah = filterDirectoryShops(shops, "qurtubah");
+assert(qurtubah.length === 12, `qurtubah has 12 shops, got ${qurtubah.length}`);
+assert(
+  qurtubah.every((shop) => shop.neighborhood === "qurtubah"),
+  "qurtubah filter stays in district",
+);
+for (const id of [
+  "coffeehood-qurtubah",
+  "obo-qurtubah",
+  "lattio-lounge-qurtubah",
+  "n5-caffe-qurtubah",
+  "cacti-roastery-qurtubah",
+  "najd-roastery-qurtubah",
+  "najd-alathiah-qurtubah",
+  "klatch-qurtubah",
+  "nosound-qurtubah",
+  "vanilla-coffee-qurtubah",
+  "mill-coffee-qurtubah",
+  "cofen-qurtubah",
+]) {
+  assert(
+    qurtubah.some((shop) => shop.id === id),
+    `qurtubah includes ${id}`,
+  );
+}
+assert(
+  neighborhoodLabel("qurtubah", "ar") === "قرطبة",
+  "qurtubah Arabic label",
+);
+assert(
+  neighborhoodLabel("qurtubah", "en") === "Qurtubah",
+  "qurtubah English label",
+);
+assert(
+  districtPath("qurtubah", "ar") === "/coffee-shops/qurtubah",
+  "AR qurtubah coffee-shops path",
+);
+assert(
+  districtPath("qurtubah", "en") === "/en/coffee-shops/qurtubah",
+  "EN qurtubah coffee-shops path",
+);
+
+const qurtubahIntentAsks = [
+  "قرطبة",
+  "قرطبه",
+  "qurtubah",
+  "qurtoba",
+  "al qurtubah",
+  "al-qurtubah",
+];
+for (const ask of qurtubahIntentAsks) {
+  const intent = parseIntent(ask);
+  assert(
+    intent.neighborhoods.includes("qurtubah"),
+    `parseIntent(${ask}) should hit qurtubah`,
+  );
+}
+
 const scoutPack: {
   id: string;
   hex: string;
-  neighborhood: "al-safa" | "al-rabwah" | "al-rawdah";
+  neighborhood: "al-safa" | "al-rabwah" | "al-rawdah" | "qurtubah";
   vibe: string[];
   moments: string[];
 }[] = [
@@ -303,6 +363,90 @@ const scoutPack: {
     neighborhood: "al-rawdah",
     vibe: ["محمصة", "قهوة"],
     moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "coffeehood-qurtubah",
+    hex: "0x3e2efd4e25de6571:0x7cbe1e16720788e",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "obo-qurtubah",
+    hex: "0x3e2efd0011e0f765:0x7017733f9730a468",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "lattio-lounge-qurtubah",
+    hex: "0x3e2efda30ba6b329:0x6fbe069618b289cf",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["friend", "qahwa"],
+  },
+  {
+    id: "n5-caffe-qurtubah",
+    hex: "0x3e2eff5b8b2fe293:0x8add6fb3fc1cb262",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "cacti-roastery-qurtubah",
+    hex: "0x3e2efde0d2059f1d:0xfca400b51ca140cc",
+    neighborhood: "qurtubah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "najd-roastery-qurtubah",
+    hex: "0x3e2efd7e48611c89:0x9f325ee903e4115c",
+    neighborhood: "qurtubah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "najd-alathiah-qurtubah",
+    hex: "0x3e2eff55ad144173:0x710215b462af3206",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "klatch-qurtubah",
+    hex: "0x3e2efd00234d31f9:0xd88d0f80e8a1b945",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "nosound-qurtubah",
+    hex: "0x3e2efd1bf2459957:0x981f344c0bf6e54f",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "vanilla-coffee-qurtubah",
+    hex: "0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "mill-coffee-qurtubah",
+    hex: "0x3e2efdd75f5d246f:0xbefc1aa83961fc4b",
+    neighborhood: "qurtubah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "cofen-qurtubah",
+    hex: "0x3e2efdc31f8a623b:0xa28eba5077113625",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
   },
 ];
 

@@ -239,6 +239,19 @@ export const NEIGHBORHOODS: Record<
       "ar-rawdah",
     ],
   },
+  qurtubah: {
+    id: "qurtubah",
+    ar: "قرطبة",
+    en: "Qurtubah",
+    aliases: [
+      "قرطبة",
+      "قرطبه",
+      "qurtubah",
+      "qurtoba",
+      "al qurtubah",
+      "al-qurtubah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

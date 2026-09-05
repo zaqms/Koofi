@@ -210,6 +210,18 @@ export const NEIGHBORHOODS: Record<
       "ash-shohda",
     ],
   },
+  "al-safa": {
+    id: "al-safa",
+    ar: "الصفا",
+    en: "Al Safa",
+    aliases: [
+      "الصفا",
+      "صفا",
+      "safa",
+      "al safa",
+      "al-safa",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

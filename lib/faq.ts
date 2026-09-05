@@ -81,7 +81,7 @@ export function aboutFaqs(language: Language): FaqItem[] {
   ];
 }
 
-/** 1–2 short visible lines on a district page. Points at the curated list on that page. */
+/** 1–2 short lines kept for later copy. Not rendered on district pages. */
 export function districtFaqs(
   district: NeighborhoodId,
   language: Language,

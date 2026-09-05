@@ -382,13 +382,26 @@ assert(
   readRepo("app/en/about/page.tsx").includes("aboutFaqJsonLd"),
   "EN About injects FAQPage JSON-LD",
 );
+const shopDirectory = readRepo("components/shop-directory.tsx");
 assert(
-  readRepo("components/shop-directory.tsx").includes("districtFaqs("),
-  "district page shows visible district FAQs",
+  shopDirectory.includes("directoryHint"),
+  "district page keeps directoryHint",
 );
 assert(
-  readRepo("app/[category]/[slug]/page.tsx").includes("districtFaqJsonLd"),
-  "AR district page injects FAQPage JSON-LD",
+  !shopDirectory.includes("districtFaqs("),
+  "district page does not render district FAQs",
+);
+assert(
+  !shopDirectory.includes("FaqList"),
+  "district page does not render FaqList",
+);
+assert(
+  !readRepo("app/[category]/[slug]/page.tsx").includes("districtFaqJsonLd"),
+  "AR district page does not inject FAQPage JSON-LD",
+);
+assert(
+  !readRepo("app/en/[category]/[slug]/page.tsx").includes("districtFaqJsonLd"),
+  "EN district page does not inject FAQPage JSON-LD",
 );
 assert(
   llms.includes("/about"),

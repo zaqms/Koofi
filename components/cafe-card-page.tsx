@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
 import { copy } from "@/lib/copy";
 import { BrandHomeLink } from "@/components/brand-home-link";
-import { homePath } from "@/lib/product";
+import { cardPath, homePath } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
 type CafeCardPageViewProps = {
@@ -20,6 +20,10 @@ export function CafeCardPageView({
   inboundFrom,
 }: CafeCardPageViewProps) {
   const home = homePath(language);
+  const other: Language = language === "ar" ? "en" : "ar";
+  const localeHref = inboundFrom
+    ? `${cardPath(shop.id, other)}?from=${encodeURIComponent(inboundFrom)}`
+    : cardPath(shop.id, other);
 
   return (
     <main
@@ -33,9 +37,17 @@ export function CafeCardPageView({
         shopId={shop.id}
         from={inboundFrom}
       />
-      <p className="text-xs text-ink-soft">
-        <BrandHomeLink language={language} /> · {copy.shareHint[language]}
-      </p>
+      <header className="flex items-center justify-between gap-3">
+        <p className="text-xs text-ink-soft">
+          <BrandHomeLink language={language} /> · {copy.shareHint[language]}
+        </p>
+        <Link
+          href={localeHref}
+          className="text-xs text-ink-soft underline-offset-2 hover:underline"
+        >
+          {copy.switchLanguage[language]}
+        </Link>
+      </header>
       <CafeCard shop={shop} language={language} />
       <p className="mt-6">
         <Link href={home} className="text-sm text-bean hover:text-bean-deep">

@@ -3,7 +3,7 @@
   "shops": [
     {
       "id": "ik-coffee-downtown",
-      "nameAr": "IK coffee Downtown",
+      "nameAr": "أي كي",
       "nameEn": "IK coffee Downtown",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -45,7 +45,7 @@
     },
     {
       "id": "one-gram-sulimaniyah",
-      "nameAr": "ONE GRAM",
+      "nameAr": "ون جرام",
       "nameEn": "ONE GRAM",
       "city": "riyadh",
       "neighborhood": "sulimaniyah",
@@ -59,7 +59,7 @@
     },
     {
       "id": "joe-barrel-al-wurud",
-      "nameAr": "Joe Barrel Coffee",
+      "nameAr": "جو بارل",
       "nameEn": "Joe Barrel Coffee",
       "city": "riyadh",
       "neighborhood": "al-wurud",
@@ -72,7 +72,7 @@
     },
     {
       "id": "btw-olaya",
-      "nameAr": "By The Way",
+      "nameAr": "باي ذا واي",
       "nameEn": "By The Way",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -86,7 +86,7 @@
     },
     {
       "id": "breehant-olaya",
-      "nameAr": "Breehant",
+      "nameAr": "بريهانت",
       "nameEn": "Breehant",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -114,7 +114,7 @@
     },
     {
       "id": "piccolo-al-rabi",
-      "nameAr": "Piccolo Roasters",
+      "nameAr": "محامص بيكولو",
       "nameEn": "Piccolo Roasters",
       "city": "riyadh",
       "neighborhood": "al-rabi",
@@ -167,7 +167,7 @@
     },
     {
       "id": "origin-the-lab-hittin",
-      "nameAr": "ORIGIN (The Lab)",
+      "nameAr": "أوريجن",
       "nameEn": "ORIGIN (The Lab)",
       "city": "riyadh",
       "neighborhood": "hittin",
@@ -181,7 +181,7 @@
     },
     {
       "id": "origin-coffee-roasters-hittin",
-      "nameAr": "ORIGIN COFFEE ROASTERS",
+      "nameAr": "محمصة أوريجن",
       "nameEn": "ORIGIN COFFEE ROASTERS",
       "city": "riyadh",
       "neighborhood": "hittin",
@@ -390,7 +390,7 @@
     },
     {
       "id": "peaks-digital-city-al-nakheel",
-      "nameAr": "Peaks – Digital City",
+      "nameAr": "بيكس",
       "nameEn": "Peaks – Digital City",
       "city": "riyadh",
       "neighborhood": "al-nakheel",
@@ -404,7 +404,7 @@
     },
     {
       "id": "just-a-space-al-nakheel",
-      "nameAr": "Just A Space",
+      "nameAr": "جست ا سبيس",
       "nameEn": "Just A Space",
       "city": "riyadh",
       "neighborhood": "al-nakheel",
@@ -418,7 +418,7 @@
     },
     {
       "id": "wee-al-nakheel",
-      "nameAr": "Wee",
+      "nameAr": "ووي",
       "nameEn": "Wee",
       "city": "riyadh",
       "neighborhood": "al-nakheel",
@@ -432,7 +432,7 @@
     },
     {
       "id": "infuse-al-nakheel",
-      "nameAr": "Infuse",
+      "nameAr": "انفيوز",
       "nameEn": "Infuse",
       "city": "riyadh",
       "neighborhood": "al-nakheel",
@@ -446,7 +446,7 @@
     },
     {
       "id": "ash-bloom-al-nakheel",
-      "nameAr": "Ash Bloom",
+      "nameAr": "آش بلوم",
       "nameEn": "Ash Bloom",
       "city": "riyadh",
       "neighborhood": "al-nakheel",
@@ -460,7 +460,7 @@
     },
     {
       "id": "idmi-al-yasmin",
-      "nameAr": "IDMI",
+      "nameAr": "محمصة ادمي",
       "nameEn": "IDMI Coffee Roasters",
       "city": "riyadh",
       "neighborhood": "al-yasmin",
@@ -474,7 +474,7 @@
     },
     {
       "id": "breehant-al-yasmin",
-      "nameAr": "Breehant",
+      "nameAr": "بريهانت",
       "nameEn": "Breehant Coffee Roastery",
       "city": "riyadh",
       "neighborhood": "al-yasmin",
@@ -516,7 +516,7 @@
     },
     {
       "id": "eva-al-yasmin",
-      "nameAr": "Eva",
+      "nameAr": "ايڤا محمصة ومقهى قهوة مختصة",
       "nameEn": "Eva Specialty Coffee Roasters",
       "city": "riyadh",
       "neighborhood": "al-yasmin",
@@ -556,7 +556,7 @@
     },
     {
       "id": "basementers-al-yasmin",
-      "nameAr": "Basementers",
+      "nameAr": "بيسمنترز محمصة وقهوة مختصة",
       "nameEn": "Basementers Roastery and Specialty Coffee",
       "city": "riyadh",
       "neighborhood": "al-yasmin",
@@ -569,7 +569,7 @@
     },
     {
       "id": "volume-al-yasmin",
-      "nameAr": "Volume",
+      "nameAr": "فوليوم محمصة وقهوة",
       "nameEn": "Volume Coffee Roasters – Al Yasmin",
       "city": "riyadh",
       "neighborhood": "al-yasmin",
@@ -582,7 +582,7 @@
     },
     {
       "id": "idmi-olaya",
-      "nameAr": "IDMI",
+      "nameAr": "محمصة ادمي",
       "nameEn": "IDMI Coffee Roasters (Al Olaya)",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -610,7 +610,7 @@
     },
     {
       "id": "good-neighbor-olaya",
-      "nameAr": "Good Neighbor",
+      "nameAr": "قهوة قود نيبر",
       "nameEn": "Good Neighbor",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -624,7 +624,7 @@
     },
     {
       "id": "first-series-olaya",
-      "nameAr": "First Series",
+      "nameAr": "مقهى السلسلة الاولى",
       "nameEn": "First Series Coffee",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -638,7 +638,7 @@
     },
     {
       "id": "drip-olaya",
-      "nameAr": "Drip",
+      "nameAr": "دريب كوفي",
       "nameEn": "Drip Coffee – Al Olaya",
       "city": "riyadh",
       "neighborhood": "olaya",
@@ -706,7 +706,7 @@
     },
     {
       "id": "brew-crew-sulimaniyah",
-      "nameAr": "Brew Crew",
+      "nameAr": "برو كرو",
       "nameEn": "Brew Crew – As Sulimaniyah",
       "city": "riyadh",
       "neighborhood": "sulimaniyah",
@@ -720,7 +720,7 @@
     },
     {
       "id": "urth-caffe-tahlia-sulimaniyah",
-      "nameAr": "Urth Caffé",
+      "nameAr": "إيرث كافيه",
       "nameEn": "Urth Caffé Tahlia",
       "city": "riyadh",
       "neighborhood": "sulimaniyah",
@@ -747,7 +747,7 @@
     },
     {
       "id": "seven-beans-sulimaniyah",
-      "nameAr": "Seven Beans",
+      "nameAr": "سفن بينز",
       "nameEn": "Seven Beans",
       "city": "riyadh",
       "neighborhood": "sulimaniyah",
@@ -868,7 +868,7 @@
     },
     {
       "id": "the-gate-specialty-coffee-al-wurud",
-      "nameAr": "The Gate",
+      "nameAr": "The Gate Specialty Coffee",
       "nameEn": "The Gate Specialty Coffee",
       "city": "riyadh",
       "neighborhood": "al-wurud",
@@ -896,7 +896,7 @@
     },
     {
       "id": "y97-specialty-coffee-as-sahafah",
-      "nameAr": "Y97 Specialty Coffee",
+      "nameAr": "Y97",
       "nameEn": "Y97 Specialty Coffee",
       "city": "riyadh",
       "neighborhood": "as-sahafah",
@@ -938,7 +938,7 @@
     },
     {
       "id": "12-cups-roastery-and-cafe-kafd",
-      "nameAr": "12 Cups Roastery and Cafe",
+      "nameAr": "١٢ كوب",
       "nameEn": "12 Cups Roastery and Cafe",
       "city": "riyadh",
       "neighborhood": "kafd",
@@ -1092,7 +1092,7 @@
     },
     {
       "id": "offbrief-cafe-diriyah",
-      "nameAr": "OFFBRiEF Cafe",
+      "nameAr": "مقهى أوف بريف",
       "nameEn": "OFFBRiEF Cafe",
       "city": "riyadh",
       "neighborhood": "diriyah",
@@ -1175,7 +1175,7 @@
     },
     {
       "id": "repository-coffee-roasters-al-narjis",
-      "nameAr": "Repository Coffee Roasters",
+      "nameAr": "محمصة ريبوستري",
       "nameEn": "Repository Coffee Roasters",
       "city": "riyadh",
       "neighborhood": "al-narjis",
@@ -1189,7 +1189,7 @@
     },
     {
       "id": "core-coffee-and-roastery-al-narjis",
-      "nameAr": "CORE COFFEE & ROASTERY",
+      "nameAr": "كور قهوة ومحمصة",
       "nameEn": "CORE COFFEE & ROASTERY",
       "city": "riyadh",
       "neighborhood": "al-narjis",
@@ -1203,7 +1203,7 @@
     },
     {
       "id": "hjeen-roaster-al-narjis",
-      "nameAr": "Hjeen Roaster",
+      "nameAr": "هجين",
       "nameEn": "Hjeen Roaster",
       "city": "riyadh",
       "neighborhood": "al-narjis",
@@ -1231,7 +1231,7 @@
     },
     {
       "id": "volume-coffee-roasters-al-narjis",
-      "nameAr": "Volume Coffee Roasters",
+      "nameAr": "فوليوم محمصة وقهوة",
       "nameEn": "Volume Coffee Roasters",
       "city": "riyadh",
       "neighborhood": "al-narjis",
@@ -1245,7 +1245,7 @@
     },
     {
       "id": "elixir-bunn-al-narjis",
-      "nameAr": "Elixir Bunn Coffee Roasters",
+      "nameAr": "إكسير البُن",
       "nameEn": "Elixir Bunn Coffee Roasters",
       "city": "riyadh",
       "neighborhood": "al-narjis",
@@ -1259,7 +1259,7 @@
     },
     {
       "id": "melex-specialty-coffee-al-narjis",
-      "nameAr": "Melex Specialty Coffee",
+      "nameAr": "ميليكس قهوة مختصه",
       "nameEn": "Melex Specialty Coffee",
       "city": "riyadh",
       "neighborhood": "al-narjis",
@@ -1315,7 +1315,7 @@
     },
     {
       "id": "caf-lab-al-narjis",
-      "nameAr": "CAF LAB",
+      "nameAr": "كاف لاب",
       "nameEn": "CAF LAB",
       "city": "riyadh",
       "neighborhood": "al-narjis",

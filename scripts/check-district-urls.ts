@@ -1,4 +1,4 @@
-import { listDirectoryShops } from "../lib/catalog";
+import { getShop, listDirectoryShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import {
   districtDescription,
@@ -14,6 +14,7 @@ import {
   filterDirectoryShops,
 } from "../lib/directory";
 import { neighborhoodLabel } from "../lib/neighborhoods";
+import { parseIntent } from "../lib/parse-intent";
 import {
   categoryDistrictPath,
   districtPath,
@@ -29,6 +30,7 @@ function assert(cond: unknown, message: string): asserts cond {
 
 assert(resolveDistrictSlug("ghirnatah") === "ghirnatah", "ghirnatah resolves");
 assert(resolveDistrictSlug("al-shohda") === "al-shohda", "al-shohda resolves");
+assert(resolveDistrictSlug("al-safa") === "al-safa", "al-safa resolves");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
 assert(resolveDistrictSlug("غرناطة") === null, "Arabic label is not a slug");
 
@@ -60,7 +62,8 @@ const shops = listDirectoryShops();
 const areas = directoryNeighborhoods(shops);
 assert(areas.includes("ghirnatah"), "directory includes ghirnatah");
 assert(areas.includes("al-shohda"), "directory includes al-shohda");
-assert(areas.length === 18, `expected 18 districts, got ${areas.length}`);
+assert(areas.includes("al-safa"), "directory includes al-safa");
+assert(areas.length === 19, `expected 19 districts, got ${areas.length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -75,6 +78,51 @@ assert(
   shohda.every((shop) => shop.neighborhood === "al-shohda"),
   "al-shohda filter stays in district",
 );
+
+const safa = filterDirectoryShops(shops, "al-safa");
+assert(safa.length > 0, "al-safa has shops");
+assert(
+  safa.every((shop) => shop.neighborhood === "al-safa"),
+  "al-safa filter stays in district",
+);
+assert(
+  safa.some((shop) => shop.id === "blumen-al-safa"),
+  "al-safa includes blumen-al-safa",
+);
+assert(
+  neighborhoodLabel("al-safa", "ar") === "الصفا",
+  "al-safa Arabic label",
+);
+assert(
+  neighborhoodLabel("al-safa", "en") === "Al Safa",
+  "al-safa English label",
+);
+assert(
+  districtPath("al-safa", "ar") === "/coffee-shops/al-safa",
+  "AR al-safa coffee-shops path",
+);
+
+const blumen = shops.find((shop) => shop.id === "blumen-al-safa");
+assert(blumen, "blumen-al-safa is in the directory");
+assert(
+  blumen.mapsHref ===
+    "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07007140839d:0xbbb6a718fc72c7d1",
+  "blumen maps href is official place id form",
+);
+assert(blumen.lat === 24.6705282 && blumen.lng === 46.7810145, "blumen official pin");
+
+const blumenCatalog = getShop("blumen-al-safa");
+assert(blumenCatalog, "blumen-al-safa is a real catalog shop");
+assert(!("hours" in blumenCatalog), "blumen catalog has no hours field");
+assert(blumenCatalog.example === false, "blumen is not an example shop");
+
+for (const ask of ["الصفا", "صفا", "safa", "al safa", "al-safa"]) {
+  const intent = parseIntent(ask);
+  assert(
+    intent.neighborhoods.includes("al-safa"),
+    `parseIntent(${ask}) should hit al-safa`,
+  );
+}
 
 const malqaAr = neighborhoodLabel("al-malqa", "ar");
 const ghirEn = neighborhoodLabel("ghirnatah", "en");

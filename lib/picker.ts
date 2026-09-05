@@ -170,7 +170,12 @@ function pickAroundNamedShops(
   const companions = pinned[0]
     ? companionsForNamed(pinned[0], fillPool, moments)
     : fillPool;
-  return dedupeSameBrand([...pinned, ...companions]).slice(0, TARGET_PICKS);
+  // Same-حي Scout rows often share one qahwa why-line; diversify so the
+  // named lead still gets two nearby alternatives instead of collapsing.
+  return diversify(
+    dedupeSameBrand([...pinned, ...companions]),
+    moments,
+  );
 }
 
 export function pickCafes(input: {

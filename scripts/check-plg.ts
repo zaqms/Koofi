@@ -126,6 +126,15 @@ assertNamedFirst("خطوة جمل", "ar", (id) => id.startsWith("camel-step"));
 assertNamedFirst("nasj", "en", (id) => id === "nasj-al-malqa");
 assertNamedFirst("breehant", "en", (id) => id.startsWith("breehant-"));
 assertNamedFirst("breeahant", "en", (id) => id.startsWith("breehant-"));
+assertNamedFirst("بريهانت", "ar", (id) => id.startsWith("breehant-"));
+assertNamedFirst("بريهنت", "ar", (id) => id.startsWith("breehant-"));
+assertNamedFirst("blumen", "en", (id) => id === "blumen-al-safa");
+assertNamedFirst("بلومن", "ar", (id) => id === "blumen-al-safa");
+assertNamedFirst("jazwa", "en", (id) => id.startsWith("jazwa-"));
+assertNamedFirst("جزوة", "ar", (id) => id.startsWith("jazwa-"));
+assertNamedFirst("nosound", "en", (id) => id.startsWith("nosound-"));
+assertNamedFirst("نوساوند", "ar", (id) => id.startsWith("nosound-"));
+assertNamedFirst("percent", "en", (id) => id === "percent-arabica-hittin");
 
 const breehantPack = pickCafes({ text: "breehant", language: "en" });
 assert(
@@ -137,6 +146,23 @@ assert(
   breehantPack.picks.every((pick) => catalogIds.has(pick.shop.id)),
   "breehant companions must stay catalog shops",
 );
+
+const breehantArHits = matchCatalogShops("بريهانت", catalog);
+assert(
+  breehantArHits.some((shop) => shop.id === "breehant-olaya") &&
+    breehantArHits.some((shop) => shop.id === "breehant-al-yasmin"),
+  "brand-key EXTRA_ALIASES must attach بريهانت to both Breehant rows",
+);
+
+const ARABIC_SCRIPT = /[\u0600-\u06FF]/;
+for (const shop of catalog) {
+  if (!ARABIC_SCRIPT.test(shop.nameAr)) continue;
+  const hits = matchCatalogShops(shop.nameAr, catalog);
+  assert(
+    hits.some((hit) => hit.id === shop.id),
+    `Arabic nameAr "${shop.nameAr}" missed ${shop.id}; hits ${hits.map((hit) => hit.id).join(", ") || "(none)"}`,
+  );
+}
 
 assert(
   matchCatalogShops("drops", catalog).length === 0,
@@ -197,6 +223,7 @@ assert(!isOffTopicAsk("woods"), "a catalog name is on-topic");
 assert(!isOffTopicAsk("نسج"), "an Arabic catalog name is on-topic");
 assert(!isOffTopicAsk("breehant"), "breehant is on-topic");
 assert(!isOffTopicAsk("breeahant"), "breeahant typo is on-topic");
+assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 console.log("ok");
 console.log(

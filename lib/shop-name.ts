@@ -135,16 +135,17 @@ function possessiveBases(name: string): string[] {
   );
 }
 
-/** Extra short names that the generator cannot see from the listing row. */
+/**
+ * Extra aliases the listing row does not generate.
+ * Looked up by shop.id and by shopBrandKey so every branch of a brand
+ * gets the same extras (Breehant Olaya + Yasmin both get بريهانت).
+ * Known misspellings / Arabic-script names only. Not a fuzzy ranker.
+ */
 const EXTRA_ALIASES: Record<string, readonly string[]> = {
-  "percent-arabica-hittin": ["percent", "arabica", "%", "ارابيكا"],
+  breehant: ["بريهانت", "بريهنت", "breeahant"],
+  "percent-arabica": ["percent", "arabica", "%", "ارابيكا"],
   "btw-olaya": ["btw"],
   "one-gram-sulimaniyah": ["one gram"],
-};
-
-/** One-off brand typos only. Not a general fuzzy ranker. */
-const BRAND_TYPO_ALIASES: Record<string, readonly string[]> = {
-  breehant: ["breeahant"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -178,7 +179,7 @@ export function shopNameAliases(
   if (arabic.length) addAlias(aliases, arabic.join(" "));
 
   for (const extra of EXTRA_ALIASES[shop.id] ?? []) addAlias(aliases, extra);
-  for (const extra of BRAND_TYPO_ALIASES[shopBrandKey(shop)] ?? []) {
+  for (const extra of EXTRA_ALIASES[shopBrandKey(shop)] ?? []) {
     addAlias(aliases, extra);
   }
 

@@ -1481,6 +1481,138 @@
       "pin": { "lat": 24.6705282, "lng": 46.7810145 },
       "logoUrl": "/logos/blumen-al-safa.jpg",
       "example": false
+    },
+    {
+      "id": "hawaf-al-safa",
+      "nameAr": "حواف",
+      "nameEn": "Hawaf",
+      "city": "riyadh",
+      "neighborhood": "al-safa",
+      "neighborhoodAr": "الصفا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07006df6335f:0x3936438b95be1845",
+      "example": false
+    },
+    {
+      "id": "recaf-al-safa",
+      "nameAr": "ريكاف",
+      "nameEn": "Recaf",
+      "city": "riyadh",
+      "neighborhood": "al-safa",
+      "neighborhoodAr": "الصفا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07002fb65bb5:0x1a082f7cedaa95ea",
+      "example": false
+    },
+    {
+      "id": "raslania-al-safa",
+      "nameAr": "رسلانية",
+      "nameEn": "RASLANIA",
+      "city": "riyadh",
+      "neighborhood": "al-safa",
+      "neighborhoodAr": "الصفا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070018d65cb9:0x38816e21404c5020",
+      "example": false
+    },
+    {
+      "id": "dyar-bakery-al-safa",
+      "nameAr": "ديار بيكري",
+      "nameEn": "DYAR bakery",
+      "city": "riyadh",
+      "neighborhood": "al-safa",
+      "neighborhoodAr": "الصفا",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070007651d33:0xad1d729591d9f1d5",
+      "example": false
+    },
+    {
+      "id": "jazwa-specialty-coffee-ar-rabwah",
+      "nameAr": "جزوة قهوة مختصة",
+      "nameEn": "Jazwa Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0402f4f629ff:0xd1e8b1467fc0cb1e",
+      "example": false
+    },
+    {
+      "id": "makhsousa-coffee-ar-rabwah",
+      "nameAr": "مخصوصة للقهوة فرع الربوة",
+      "nameEn": "Makhsousa Coffee — Rabwah",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07a81f6a3c47:0x7f418c32999d69fa",
+      "example": false
+    },
+    {
+      "id": "blog-coffee-ar-rabwah",
+      "nameAr": "بلوق كوفي",
+      "nameEn": "BLOG coffee",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0707e1c83ec9:0xfcb4b9ffcf765bad",
+      "example": false
+    },
+    {
+      "id": "enzo-coffee-ar-rabwah",
+      "nameAr": "إنزو كوفي",
+      "nameEn": "Enzo Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070043130767:0x38b2858e8499a030",
+      "example": false
+    },
+    {
+      "id": "window-coffee-ar-rabwah",
+      "nameAr": "ويندو كوفي",
+      "nameEn": "window coffee",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0796e16c8739:0x39d609ba67e96ce7",
+      "example": false
+    },
+    {
+      "id": "b-cafe-ar-rabwah",
+      "nameAr": "بي كافيه",
+      "nameEn": "B Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070a205cfc67:0x6d57fb46f96a1623",
+      "example": false
+    },
+    {
+      "id": "hai-coffee-roasters-al-rawdah",
+      "nameAr": "مقهى ومحمصة حي",
+      "nameEn": "HAI Coffee & Roasters",
+      "city": "riyadh",
+      "neighborhood": "al-rawdah",
+      "neighborhoodAr": "الروضة",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01a96357c13d:0x63baca80617c33cb",
+      "example": false
     }
   ]
 }

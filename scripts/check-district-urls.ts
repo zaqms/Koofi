@@ -317,7 +317,14 @@ for (const row of scoutPack) {
     `${row.id} maps href is official place id form`,
   );
   assert(!("hours" in shop), `${row.id} catalog has no hours field`);
-  assert(!("logoUrl" in shop), `${row.id} catalog has no logoUrl (letter tile)`);
+  if (row.id === "jazwa-specialty-coffee-ar-rabwah") {
+    assert(
+      shop.logoUrl === "/logos/jazwa-specialty-coffee-ar-rabwah.jpg",
+      "jazwa uses Instagram @Jazwah.sa mark",
+    );
+  } else {
+    assert(!("logoUrl" in shop), `${row.id} catalog has no logoUrl (letter tile)`);
+  }
   assert(!("pin" in shop), `${row.id} catalog has no invented pin`);
   assert(
     shop.vibeTags.join(",") === row.vibe.join(","),

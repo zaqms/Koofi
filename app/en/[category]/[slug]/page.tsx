@@ -7,7 +7,6 @@ import {
   resolveDistrictSlug,
 } from "@/lib/district";
 import { isDirectoryCategory } from "@/lib/directory-category";
-import { districtFaqJsonLd } from "@/lib/faq";
 import { PRODUCT_NAME } from "@/lib/product";
 import { districtItemListJsonLd } from "@/lib/structured-data";
 
@@ -42,7 +41,6 @@ export default async function EnglishCategoryDistrictPage({
   return (
     <>
       <JsonLd data={districtItemListJsonLd(district, "en")} />
-      <JsonLd data={districtFaqJsonLd(district, "en")} />
       <HomeLanding language="en" district={district} />
     </>
   );

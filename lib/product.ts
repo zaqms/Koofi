@@ -200,6 +200,35 @@ export function districtPath(
   return categoryDistrictPath(COFFEE_SHOPS_CATEGORY, id, language);
 }
 
+/** Latin slug for the Most Popular directory. Same shape as district slugs. */
+export const MOST_POPULAR_SLUG = "most-popular";
+
+/** SEO alias. 308 to the EN coffee-shops path — not a second canonical. */
+export const MOST_POPULAR_EN_ALIAS_PATH = "/en/most-popular-cafes-in-riyadh";
+
+/**
+ * Locked thin directory H1. District tone is `مقاهي في {حي}` /
+ * `Coffee shops in {district}` — citywide popular stays one short line.
+ */
+export const MOST_POPULAR_HEADING = {
+  ar: "أشهر القهاوي في الرياض",
+  en: "Most popular coffee shops in Riyadh",
+} as const;
+
+export function isMostPopularSlug(slug: string): boolean {
+  return slug === MOST_POPULAR_SLUG;
+}
+
+/** Most Popular directory. AR keeps the Latin slug, same as districts. */
+export function mostPopularPath(language: Language = "ar"): string {
+  const path = `/${COFFEE_SHOPS_CATEGORY}/${MOST_POPULAR_SLUG}`;
+  return language === "en" ? `/en${path}` : path;
+}
+
+export function mostPopularHeading(language: Language): string {
+  return MOST_POPULAR_HEADING[language];
+}
+
 export function legacyDistrictPath(
   id: NeighborhoodId,
   language: Language = "ar",

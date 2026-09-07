@@ -1,10 +1,13 @@
 import { getShop, listDirectoryShops, listRealShops } from "./catalog";
 import { coffeeShopsInDistrict } from "./directory-category";
+import { listPopularPublicShops } from "./most-popular";
 import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import {
   cardPath,
   districtPath,
+  mostPopularHeading,
+  mostPopularPath,
   PRODUCT_NAME,
   PUBLIC_SITE_URL,
   shopDisplayName,
@@ -186,6 +189,10 @@ export function districtCanonicalUrl(
   return `${PUBLIC_SITE_URL}${districtPath(district, language)}`;
 }
 
+export function mostPopularCanonicalUrl(language: Language): string {
+  return `${PUBLIC_SITE_URL}${mostPopularPath(language)}`;
+}
+
 export function publicShopsApiUrl(id?: string): string {
   if (!id) return `${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}`;
   return `${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}/${encodeURIComponent(id)}`;
@@ -300,6 +307,24 @@ export function districtItemListJsonLd(
     "@type": "ItemList",
     name,
     url: districtCanonicalUrl(district, language),
+    numberOfItems: shops.length,
+    itemListElement: shops.map((shop, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: shopCanonicalUrl(shop.id, language),
+      item: shopJsonLd(shop, language, { includeContext: false }),
+    })),
+  };
+}
+
+export function mostPopularItemListJsonLd(language: Language): ItemListJsonLd {
+  const shops = listPopularPublicShops();
+
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@type": "ItemList",
+    name: mostPopularHeading(language),
+    url: mostPopularCanonicalUrl(language),
     numberOfItems: shops.length,
     itemListElement: shops.map((shop, index) => ({
       "@type": "ListItem",

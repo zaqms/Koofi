@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
         destination: "/en/coffee-shops/:slug",
         statusCode: 301,
       },
+      {
+        source: "/en/most-popular-cafes-in-riyadh",
+        destination: "/en/coffee-shops/most-popular",
+        statusCode: 308,
+      },
     ];
   },
 };

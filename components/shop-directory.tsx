@@ -13,27 +13,49 @@ import {
   categoryDistrictHeading,
 } from "@/lib/directory-category";
 import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
-import { districtPath, homePath } from "@/lib/product";
+import {
+  districtPath,
+  homePath,
+  mostPopularHeading,
+  mostPopularPath,
+  VIBE_CHIPS,
+  vibeChipLabel,
+} from "@/lib/product";
 import { trackEvent } from "@/lib/track";
 import type { Language, NeighborhoodId } from "@/lib/types";
+
+const POPULAR_CHIP = VIBE_CHIPS.find((chip) => chip.id === "popular") ?? {
+  id: "popular",
+  ar: "اللي عليها طلب",
+  en: "Most Popular",
+};
 
 type ShopDirectoryProps = {
   language: Language;
   shops: DirectoryShop[];
   district?: NeighborhoodId | null;
+  listing?: "popular" | null;
 };
 
 export function ShopDirectory({
   language,
   shops,
   district = null,
+  listing = null,
 }: ShopDirectoryProps) {
+  const popular = listing === "popular";
   const areas = directoryNeighborhoods(shops);
-  const visible = filterDirectoryShops(shops, district);
-  const heading = district
-    ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
-    : copy.directory[language];
-  const headingId = district ? "koofi-district" : "koofi-directory";
+  const visible = popular ? shops : filterDirectoryShops(shops, district);
+  const heading = popular
+    ? mostPopularHeading(language)
+    : district
+      ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
+      : copy.directory[language];
+  const headingId = popular
+    ? "most-popular"
+    : district
+      ? "koofi-district"
+      : "koofi-directory";
 
   return (
     <section
@@ -42,7 +64,7 @@ export function ShopDirectory({
       lang={language}
       aria-labelledby={headingId}
     >
-      {district ? (
+      {district || popular ? (
         <h1 id={headingId} className="text-base font-semibold">
           {heading}
         </h1>
@@ -63,10 +85,18 @@ export function ShopDirectory({
         <Link
           href={homePath(language)}
           scroll={false}
-          aria-current={district === null ? "page" : undefined}
-          className={chipClass(district === null)}
+          aria-current={district === null && !popular ? "page" : undefined}
+          className={chipClass(district === null && !popular)}
         >
           {copy.allDistricts[language]}
+        </Link>
+        <Link
+          href={popular ? homePath(language) : mostPopularPath(language)}
+          scroll={false}
+          aria-current={popular ? "page" : undefined}
+          className={chipClass(popular)}
+        >
+          {vibeChipLabel(POPULAR_CHIP, language)}
         </Link>
         {areas.map((id) => {
           const selected = district === id;

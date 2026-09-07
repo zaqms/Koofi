@@ -33,6 +33,12 @@ const DARK_LOGO_PATHS = new Set([
   "/logos/dips-plus-diriyah.jpg",
   "/logos/malfa-coffee-house-diriyah.jpg",
   "/logos/blumen-al-safa.jpg",
+  "/logos/november-coffee-an-nazhah.png",
+  "/logos/elite-cup-roasters-an-nazhah.png",
+  "/logos/ghandoura-an-nazhah.png",
+  "/logos/wathba-an-nazhah.jpg",
+  "/logos/kraz-an-nazhah.jpg",
+  "/logos/cross-coffee-an-nazhah.jpg",
 ]);
 
 export function ShopVisual({

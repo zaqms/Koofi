@@ -1,4 +1,5 @@
 import { getShop, listDirectoryShops, listRealShops } from "../lib/catalog";
+import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
 import { copy } from "../lib/copy";
 import {
   districtDescription,
@@ -33,6 +34,7 @@ assert(resolveDistrictSlug("al-shohda") === "al-shohda", "al-shohda resolves");
 assert(resolveDistrictSlug("al-safa") === "al-safa", "al-safa resolves");
 assert(resolveDistrictSlug("al-rawdah") === "al-rawdah", "al-rawdah resolves");
 assert(resolveDistrictSlug("qurtubah") === "qurtubah", "qurtubah resolves");
+assert(resolveDistrictSlug("an-nazhah") === "an-nazhah", "an-nazhah resolves");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
 assert(resolveDistrictSlug("غرناطة") === null, "Arabic label is not a slug");
 
@@ -67,8 +69,9 @@ assert(areas.includes("al-shohda"), "directory includes al-shohda");
 assert(areas.includes("al-safa"), "directory includes al-safa");
 assert(areas.includes("al-rawdah"), "directory includes al-rawdah");
 assert(areas.includes("qurtubah"), "directory includes qurtubah");
-assert(areas.length === 21, `expected 21 districts, got ${areas.length}`);
-assert(listRealShops().length === 131, `catalog 119→131, got ${listRealShops().length}`);
+assert(areas.includes("an-nazhah"), "directory includes an-nazhah");
+assert(areas.length === 22, `expected 22 districts, got ${areas.length}`);
+assert(listRealShops().length === 141, `catalog 131→141, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -280,12 +283,93 @@ for (const ask of qurtubahIntentAsks) {
   );
 }
 
+const nuzhah = filterDirectoryShops(shops, "an-nazhah");
+assert(nuzhah.length === 10, `an-nazhah has 10 shops, got ${nuzhah.length}`);
+assert(
+  nuzhah.every((shop) => shop.neighborhood === "an-nazhah"),
+  "an-nazhah filter stays in district",
+);
+for (const id of [
+  "mud-speciality-coffee-an-nazhah",
+  "wathba-an-nazhah",
+  "moraq-cafe-an-nazhah",
+  "november-coffee-an-nazhah",
+  "elite-cup-roasters-an-nazhah",
+  "belong-an-nazhah",
+  "desired-coffee-an-nazhah",
+  "cross-coffee-an-nazhah",
+  "kraz-an-nazhah",
+  "ghandoura-an-nazhah",
+]) {
+  assert(
+    nuzhah.some((shop) => shop.id === id),
+    `an-nazhah includes ${id}`,
+  );
+}
+assert(
+  neighborhoodLabel("an-nazhah", "ar") === "النزهة",
+  "an-nazhah Arabic label",
+);
+assert(
+  neighborhoodLabel("an-nazhah", "en") === "An Nuzhah",
+  "an-nazhah English label",
+);
+assert(
+  districtPath("an-nazhah", "ar") === "/coffee-shops/an-nazhah",
+  "AR an-nazhah coffee-shops path",
+);
+assert(
+  districtPath("an-nazhah", "en") === "/en/coffee-shops/an-nazhah",
+  "EN an-nazhah coffee-shops path",
+);
+
+const nuzhahIntentAsks = [
+  "النزهة",
+  "نزهة",
+  "nuzhah",
+  "an nuzhah",
+  "an-nazhah",
+];
+for (const ask of nuzhahIntentAsks) {
+  const intent = parseIntent(ask);
+  assert(
+    intent.neighborhoods.includes("an-nazhah"),
+    `parseIntent(${ask}) should hit an-nazhah`,
+  );
+}
+
+const ghandoura = shops.find((shop) => shop.id === "ghandoura-an-nazhah");
+assert(ghandoura, "ghandoura-an-nazhah is in the directory");
+assert(
+  ghandoura.mapsHref ===
+    "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03424178439d:0x9d0a63b8efe7b615",
+  "ghandoura maps href is Amjad corrected place id",
+);
+
+assert(
+  NEW_THIS_WEEK_IDS.join(",") ===
+    "november-coffee-an-nazhah,belong-an-nazhah,elite-cup-roasters-an-nazhah",
+  "New this week allowlist is the An Nuzhah trio",
+);
+assert(
+  listNewThisWeekShops()
+    .map((shop) => shop.id)
+    .join(",") === NEW_THIS_WEEK_IDS.join(","),
+  "New this week strip keeps allowlist order",
+);
+assert(
+  copy.newThisWeek.ar === "جديد هالأسبوع" &&
+    copy.newThisWeekHint.ar === "انضافت للقائمة هالأسبوع.",
+  "New this week Arabic copy stays locked",
+);
+
 const scoutPack: {
   id: string;
   hex: string;
-  neighborhood: "al-safa" | "al-rabwah" | "al-rawdah" | "qurtubah";
+  neighborhood: "al-safa" | "al-rabwah" | "al-rawdah" | "qurtubah" | "an-nazhah";
   vibe: string[];
   moments: string[];
+  logoUrl?: string;
 }[] = [
   {
     id: "hawaf-al-safa",
@@ -448,6 +532,85 @@ const scoutPack: {
     vibe: ["قهوة"],
     moments: ["qahwa"],
   },
+  {
+    id: "mud-speciality-coffee-an-nazhah",
+    hex: "0x3e2f03001edf482d:0x452cfdab603f11",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "wathba-an-nazhah",
+    hex: "0x3e2f030008ff9c71:0xd3396682f440e17d",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/wathba-an-nazhah.jpg",
+  },
+  {
+    id: "moraq-cafe-an-nazhah",
+    hex: "0x3e2f033f0365e563:0xfaac19beb89d288c",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/moraq-cafe-an-nazhah.jpg",
+  },
+  {
+    id: "november-coffee-an-nazhah",
+    hex: "0x3e2f0281cc40f547:0x58e3f0912f2540a8",
+    neighborhood: "an-nazhah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/november-coffee-an-nazhah.png",
+  },
+  {
+    id: "elite-cup-roasters-an-nazhah",
+    hex: "0x3e2f03a7d5bcbd33:0x9c823b52f06a5685",
+    neighborhood: "an-nazhah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/elite-cup-roasters-an-nazhah.png",
+  },
+  {
+    id: "belong-an-nazhah",
+    hex: "0x3e2f03cdfb4cd1f1:0x94568f00fa650960",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/belong-an-nazhah.jpg",
+  },
+  {
+    id: "desired-coffee-an-nazhah",
+    hex: "0x3e2f03f28492750f:0x1197315cc9e08e93",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/desired-coffee-an-nazhah.jpg",
+  },
+  {
+    id: "cross-coffee-an-nazhah",
+    hex: "0x3e2f03eb18dbbea5:0xf8b637cafb780f46",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/cross-coffee-an-nazhah.jpg",
+  },
+  {
+    id: "kraz-an-nazhah",
+    hex: "0x3e2f0300edb717c3:0x1265bf3bb80d0ae3",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/kraz-an-nazhah.jpg",
+  },
+  {
+    id: "ghandoura-an-nazhah",
+    hex: "0x3e2f03424178439d:0x9d0a63b8efe7b615",
+    neighborhood: "an-nazhah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ghandoura-an-nazhah.png",
+  },
 ];
 
 for (const row of scoutPack) {
@@ -461,7 +624,9 @@ for (const row of scoutPack) {
     `${row.id} maps href is official place id form`,
   );
   assert(!("hours" in shop), `${row.id} catalog has no hours field`);
-  if (row.id === "jazwa-specialty-coffee-ar-rabwah") {
+  if (row.logoUrl) {
+    assert(shop.logoUrl === row.logoUrl, `${row.id} uses Scout official logo`);
+  } else if (row.id === "jazwa-specialty-coffee-ar-rabwah") {
     assert(
       shop.logoUrl === "/logos/jazwa-specialty-coffee-ar-rabwah.jpg",
       "jazwa uses Instagram @Jazwah.sa mark",

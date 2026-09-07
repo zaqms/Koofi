@@ -252,6 +252,23 @@ export const NEIGHBORHOODS: Record<
       "al-qurtubah",
     ],
   },
+  "an-nazhah": {
+    id: "an-nazhah",
+    ar: "النزهة",
+    en: "An Nuzhah",
+    aliases: [
+      "النزهة",
+      "النزهه",
+      "نزهة",
+      "نزهه",
+      "nuzhah",
+      "nazhah",
+      "an nuzhah",
+      "an-nuzhah",
+      "an nazhah",
+      "an-nazhah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

@@ -24,11 +24,42 @@ import type {
   PickResult,
   Shop,
 } from "./types";
-import { shopsWithUniqueWhy } from "./why-line";
+import { shopsWithUniqueWhy, uniqueWhyLines } from "./why-line";
 
 /** Always aim for three cards. Never collapse to a single pick when three shops exist. */
 const TARGET_PICKS = 3;
 
+function isPopularAsk(moments: readonly MomentTag[]): boolean {
+  return moments.includes("popular");
+}
+
+function popularityScore(shop: Shop): number {
+  return shop.popularityIndex ?? Number.NEGATIVE_INFINITY;
+}
+
+/** Most Popular lock: popularityIndex DESC, id ASC. Never shuffle equal scores. */
+function rankByPopularity(shops: Shop[]): Shop[] {
+  return [...shops]
+    .filter((shop) => shop.popularityIndex != null)
+    .sort((a, b) => {
+      const delta = popularityScore(b) - popularityScore(a);
+      if (delta !== 0) return delta;
+      return a.id.localeCompare(b.id);
+    });
+}
+
+function pickReasonsForPopular(
+  shops: Shop[],
+  language: Language,
+  moments: MomentTag[],
+): PickReason[] {
+  const ranked = dedupeSameBrand(rankByPopularity(shops)).slice(0, TARGET_PICKS);
+  const whys = uniqueWhyLines(ranked, language, moments);
+  return ranked.map((shop, index) => ({
+    shop,
+    why: whys[index] ?? shop.neighborhoodAr,
+  }));
+}
 
 function scoreShop(
   shop: Shop,
@@ -241,11 +272,15 @@ export function pickCafes(input: {
       intent.neighborhoods.includes(shop.neighborhood),
   );
 
-  const momentMatches = neighborhoodMatches.filter(
-    (shop) =>
-      intent.moments.length === 0 ||
-      shop.momentTags.some((tag) => intent.moments.includes(tag)),
-  );
+  const popularAsk = isPopularAsk(intent.moments);
+  // Popular is a citywide rank, not a momentTag. Zero shops carry "popular".
+  const momentMatches = popularAsk
+    ? neighborhoodMatches
+    : neighborhoodMatches.filter(
+        (shop) =>
+          intent.moments.length === 0 ||
+          shop.momentTags.some((tag) => intent.moments.includes(tag)),
+      );
 
   let pool = momentMatches;
   if (pool.length < TARGET_PICKS) pool = neighborhoodMatches;
@@ -254,16 +289,16 @@ export function pickCafes(input: {
   }
   if (pool.length < TARGET_PICKS) pool = available;
 
-  const ranked = diversify(
-    dedupeSameBrand(rankShops(pool, intent.neighborhoods, intent.moments)),
-    intent.moments,
-  );
-
-  const picks: PickReason[] = shopsWithUniqueWhy(
-    ranked,
-    language,
-    intent.moments,
-  );
+  const picks: PickReason[] = popularAsk
+    ? pickReasonsForPopular(pool, language, intent.moments)
+    : shopsWithUniqueWhy(
+        diversify(
+          dedupeSameBrand(rankShops(pool, intent.neighborhoods, intent.moments)),
+          intent.moments,
+        ),
+        language,
+        intent.moments,
+      );
 
   const thinCatalog =
     available.length < TARGET_PICKS ||

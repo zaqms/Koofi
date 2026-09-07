@@ -1,5 +1,7 @@
+import popularityIndexFile from "../data/popularity-index.json";
 import { listRealShops } from "../lib/catalog";
 import { isNearAskedNeighborhood } from "../lib/neighborhood-tight";
+import { parseIntent } from "../lib/parse-intent";
 import { pickCafes } from "../lib/picker";
 import { shopBrandKey } from "../lib/shop-brand";
 import { encodePackId, resolvePack } from "../lib/pack";
@@ -224,6 +226,70 @@ assert(!isOffTopicAsk("نسج"), "an Arabic catalog name is on-topic");
 assert(!isOffTopicAsk("breehant"), "breehant is on-topic");
 assert(!isOffTopicAsk("breeahant"), "breeahant typo is on-topic");
 assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
+
+const popularityIndex = popularityIndexFile as Record<string, number>;
+assert(
+  Object.keys(popularityIndex).length === 141,
+  `popularity map should have 141 ids, got ${Object.keys(popularityIndex).length}`,
+);
+assert(
+  catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
+  "every live shop must carry the baked popularityIndex",
+);
+assert(
+  catalog.every((shop) => !shop.momentTags.includes("popular")),
+  "popular chip must not require a popular momentTag",
+);
+
+assert(
+  parseIntent("Most Popular").moments.join(",") === "popular",
+  "Most Popular chip must resolve to popular",
+);
+assert(
+  parseIntent("اللي عليها طلب").moments.join(",") === "popular",
+  "اللي عليها طلب chip must resolve to popular",
+);
+assert(
+  parseIntent("Best Coffee").moments.join(",") === "qahwa",
+  "Best Coffee chip must stay qahwa",
+);
+assert(
+  parseIntent("أفضل قهوة").moments.join(",") === "qahwa",
+  "أفضل قهوة chip must stay qahwa",
+);
+
+const LOCKED_POPULAR = [
+  "namq-al-malqa",
+  "urth-caffe-tahlia-sulimaniyah",
+  "breehant-al-yasmin",
+];
+
+function assertPopularLock(ask: string, language: "ar" | "en") {
+  const first = pickCafes({ text: ask, language });
+  const second = pickCafes({ text: ask, language });
+  const ids = first.picks.map((pick) => pick.shop.id);
+  assert(first.askedMoments.join(",") === "popular", `${ask} must be popular`);
+  assert(ids.join(",") === LOCKED_POPULAR.join(","), `${ask} lock was ${ids.join(",")}`);
+  assert(
+    second.picks.map((pick) => pick.shop.id).join(",") === ids.join(","),
+    `${ask} must not shuffle`,
+  );
+  assert(
+    first.picks.every((pick) => catalogIds.has(pick.shop.id)),
+    `${ask} invented a shop`,
+  );
+}
+
+assertPopularLock("Most Popular", "en");
+assertPopularLock("اللي عليها طلب", "ar");
+assertPopularLock("popular", "en");
+
+const bestCoffee = pickCafes({ text: "Best Coffee", language: "en" });
+assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee stays qahwa");
+assert(
+  bestCoffee.picks.every((pick) => pick.shop.momentTags.includes("qahwa")),
+  "Best Coffee still ranks qahwa-tagged shops",
+);
 
 console.log("ok");
 console.log(

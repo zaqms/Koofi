@@ -49,6 +49,8 @@ export type VibeChip = {
 /**
  * Locked vibe chips under the opener. Arabic is the default label.
  * The coffee chip maps onto `qahwa` so picker scoring stays consistent.
+ * The popular chip (`اللي عليها طلب` / Most Popular) ranks the full catalog
+ * by baked `popularityIndex` DESC — it does not require a `popular` momentTag.
  */
 export const VIBE_CHIPS = [
   { id: "popular", ar: "اللي عليها طلب", en: "Most Popular", momentTag: "popular" },

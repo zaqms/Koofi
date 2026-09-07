@@ -577,7 +577,7 @@ const scoutPack: {
     neighborhood: "an-nazhah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/belong-an-nazhah.jpg",
+    logoUrl: "/logos/belong-an-nazhah.png",
   },
   {
     id: "desired-coffee-an-nazhah",

@@ -70,6 +70,7 @@ type ChatProps = {
   landing: Language;
   restore?: ChatRestore;
   localeHref?: string;
+  selectedChipId?: string | null;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
@@ -111,7 +112,12 @@ function askBeforePicks(messages: Message[], index: number): string {
   return "";
 }
 
-export function Chat({ landing, restore, localeHref }: ChatProps) {
+export function Chat({
+  landing,
+  restore,
+  localeHref,
+  selectedChipId = null,
+}: ChatProps) {
   const threadKey = restore ? `pack:${restore.packId}` : landing;
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [messages, setMessages] = useState<Message[]>(
@@ -131,6 +137,7 @@ export function Chat({ landing, restore, localeHref }: ChatProps) {
   const [awaitingMaps, setAwaitingMaps] = useState(
     () => threads[threadKey]?.awaitingMaps ?? false,
   );
+  const [pickedChipId, setPickedChipId] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
@@ -397,6 +404,7 @@ export function Chat({ landing, restore, localeHref }: ChatProps) {
   }
 
   function sendChip(chip: ChipPick) {
+    setPickedChipId(chip.id);
     trackEvent(
       "chip_tap",
       { chip_id: chip.id, chip_label: chip.label, locale: landing },
@@ -427,6 +435,7 @@ export function Chat({ landing, restore, localeHref }: ChatProps) {
     setPendingId(null);
     setComposerLanguage(landing);
     setAwaitingMaps(false);
+    setPickedChipId(null);
   }
 
   const hasThread =
@@ -506,6 +515,7 @@ export function Chat({ landing, restore, localeHref }: ChatProps) {
                 <VibeChips
                   language={landing}
                   disabled={busy}
+                  selectedId={selectedChipId ?? pickedChipId}
                   onPick={sendChip}
                 />
               ) : null}

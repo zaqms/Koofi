@@ -27,6 +27,7 @@ import {
 import {
   categoryDistrictPath,
   districtPath,
+  filterPutsDirectoryFirst,
   homePath,
   legacyDistrictPath,
   MOST_POPULAR_EN_ALIAS_PATH,
@@ -831,6 +832,49 @@ assert(
     'if (chip.id === "popular")',
   ),
   "chat must not post Most Popular to /api/chat",
+);
+assert(
+  vibeChips.includes("selectedId"),
+  "vibe chips take a selectedId",
+);
+assert(
+  vibeChips.includes("border-bean bg-bean") && vibeChips.includes("text-foam"),
+  "selected vibe chip reuses directory bean fill",
+);
+assert(
+  vibeChips.includes('aria-current={selected ? "page" : undefined}'),
+  "selected popular vibe chip marks the current page",
+);
+
+const homeLanding = readFileSync(
+  join(process.cwd(), "components/home-landing.tsx"),
+  "utf8",
+);
+assert(
+  homeLanding.includes('selectedChipId={popular ? "popular" : undefined}'),
+  "most-popular landing selects the popular vibe chip",
+);
+assert(
+  filterPutsDirectoryFirst("popular", null),
+  "Most Popular puts the ranked list above New this week",
+);
+assert(
+  filterPutsDirectoryFirst(null, "hittin"),
+  "district filter puts the directory above New this week",
+);
+assert(
+  !filterPutsDirectoryFirst(null, null),
+  "unfiltered home keeps New this week above the directory",
+);
+
+const chatSource = readFileSync(
+  join(process.cwd(), "components/chat.tsx"),
+  "utf8",
+);
+assert(
+  chatSource.includes("selectedChipId") &&
+    chatSource.includes("selectedId={selectedChipId ?? pickedChipId}"),
+  "chat forwards selectedChipId to vibe chips",
 );
 
 console.log(`check-district-urls: ok (${areas.length} districts)`);

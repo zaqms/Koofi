@@ -229,6 +229,14 @@ export function mostPopularHeading(language: Language): string {
   return MOST_POPULAR_HEADING[language];
 }
 
+/** Filtered directory (Most Popular or a district) sits above New this week. */
+export function filterPutsDirectoryFirst(
+  listing: "popular" | null | undefined,
+  district: NeighborhoodId | null | undefined,
+): boolean {
+  return listing === "popular" || Boolean(district);
+}
+
 export function legacyDistrictPath(
   id: NeighborhoodId,
   language: Language = "ar",

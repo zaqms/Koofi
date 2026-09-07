@@ -1,4 +1,5 @@
 import catalogFile from "../data/catalog.json";
+import popularityIndexFile from "../data/popularity-index.json";
 import { officialShopCoords } from "./place-coords";
 import { isExampleShop } from "./product";
 import { shopMapsHref } from "./public-url";
@@ -9,9 +10,18 @@ export type { DirectoryShop } from "./directory";
 export { directoryNeighborhoods, filterDirectoryShops } from "./directory";
 
 const catalog = catalogFile as CatalogFile;
+const POPULARITY_INDEX = popularityIndexFile as Record<string, number>;
+
+function withBakedPopularity(shop: Shop): Shop {
+  const popularityIndex = POPULARITY_INDEX[shop.id];
+  if (popularityIndex == null) return shop;
+  return { ...shop, popularityIndex };
+}
 
 export function listShops(): Shop[] {
-  return catalog.shops.filter((shop) => shop.city === "riyadh");
+  return catalog.shops
+    .filter((shop) => shop.city === "riyadh")
+    .map(withBakedPopularity);
 }
 
 export function getShop(id: string): Shop | undefined {

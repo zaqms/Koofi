@@ -64,6 +64,8 @@ export type Shop = {
   mapsShareUrl?: string;
   photoUrl?: string;
   logoUrl?: string;
+  /** Baked Maps+IG popularity. Used only by the Most Popular / popular moment lock. */
+  popularityIndex?: number;
   example: boolean;
 };
 

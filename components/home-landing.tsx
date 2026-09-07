@@ -6,7 +6,11 @@ import { SiteFooter } from "@/components/site-footer";
 import { listDirectoryShops } from "@/lib/catalog";
 import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
-import { districtPath, mostPopularPath } from "@/lib/product";
+import {
+  districtPath,
+  filterPutsDirectoryFirst,
+  mostPopularPath,
+} from "@/lib/product";
 import type { Language, NeighborhoodId } from "@/lib/types";
 
 type HomeLandingProps = {
@@ -27,18 +31,37 @@ export function HomeLanding({
     : district
       ? districtPath(district, other)
       : undefined;
+  const week = (
+    <NewThisWeek language={language} shops={listNewThisWeekShops()} />
+  );
+  const directory = (
+    <ShopDirectory
+      language={language}
+      shops={popular ? listPopularDirectoryShops() : listDirectoryShops()}
+      district={district}
+      listing={listing}
+    />
+  );
 
   return (
     <main className="min-h-dvh">
-      <Chat landing={language} localeHref={localeHref} />
+      <Chat
+        landing={language}
+        localeHref={localeHref}
+        selectedChipId={popular ? "popular" : undefined}
+      />
       <ShopUpvoteProvider>
-        <NewThisWeek language={language} shops={listNewThisWeekShops()} />
-        <ShopDirectory
-          language={language}
-          shops={popular ? listPopularDirectoryShops() : listDirectoryShops()}
-          district={district}
-          listing={listing}
-        />
+        {filterPutsDirectoryFirst(listing, district) ? (
+          <>
+            {directory}
+            {week}
+          </>
+        ) : (
+          <>
+            {week}
+            {directory}
+          </>
+        )}
       </ShopUpvoteProvider>
       <SiteFooter language={language} />
     </main>

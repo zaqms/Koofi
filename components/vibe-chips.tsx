@@ -17,6 +17,8 @@ export type ChipPick = {
 type VibeChipsProps = {
   language: Language;
   disabled?: boolean;
+  /** Active vibe chip (Most Popular URL, or the last tapped chip). */
+  selectedId?: string | null;
   onPick: (chip: ChipPick) => void;
 };
 
@@ -32,7 +34,7 @@ function Icon({ children }: { children: ReactNode }) {
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-5 shrink-0 text-ink"
+      className="size-5 shrink-0"
     >
       {children}
     </svg>
@@ -140,7 +142,19 @@ function ChipIcon({ id }: { id: string }) {
   }
 }
 
-export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
+function vibeChipClass(selected: boolean): string {
+  // Same bean fill as directory neighborhood chips in shop-directory.
+  return selected
+    ? "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border border-bean bg-bean px-0.5 py-1.5 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+    : "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-0.5 py-1.5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+}
+
+export function VibeChips({
+  language,
+  disabled,
+  selectedId = null,
+  onPick,
+}: VibeChipsProps) {
   return (
     <div
       className="grid grid-cols-6 gap-1.5"
@@ -151,8 +165,8 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
     >
       {CHIPS.map((chip) => {
         const label = vibeChipLabel(chip, language);
-        const className =
-          "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-0.5 py-1.5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+        const selected = selectedId === chip.id;
+        const className = vibeChipClass(selected);
         const onChipClick = (
           event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
         ) => {
@@ -174,6 +188,7 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
               // opener — it looks like the thread reset. Keep the control
               // focusable and ignore the click instead.
               aria-disabled={disabled || undefined}
+              aria-current={selected ? "page" : undefined}
               onClick={onChipClick}
               className={className}
             >
@@ -190,6 +205,7 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
             key={chip.id}
             type="button"
             aria-disabled={disabled || undefined}
+            aria-pressed={selected || undefined}
             onClick={onChipClick}
             className={className}
           >

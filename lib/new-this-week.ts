@@ -6,9 +6,9 @@ import type { DirectoryShop } from "./directory";
  * Skip any id that is missing or example.
  */
 export const NEW_THIS_WEEK_IDS = [
-  "just-another-hittin",
-  "namq-al-malqa",
-  "cred-al-mughrizat",
+  "november-coffee-an-nazhah",
+  "belong-an-nazhah",
+  "elite-cup-roasters-an-nazhah",
 ] as const;
 
 export function listNewThisWeekShops(): DirectoryShop[] {

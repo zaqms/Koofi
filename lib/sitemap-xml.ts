@@ -6,6 +6,7 @@ import {
   districtPath,
   feedbackPath,
   homePath,
+  mostPopularPath,
   PUBLIC_SITE_URL,
 } from "./product";
 
@@ -53,6 +54,8 @@ function sitemapPaths(): string[] {
   for (const id of directoryNeighborhoods(listDirectoryShops())) {
     paths.push(districtPath(id, "ar"), districtPath(id, "en"));
   }
+
+  paths.push(mostPopularPath("ar"), mostPopularPath("en"));
 
   return paths;
 }

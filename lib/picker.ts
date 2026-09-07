@@ -38,7 +38,7 @@ function popularityScore(shop: Shop): number {
 }
 
 /** Most Popular lock: popularityIndex DESC, id ASC. Never shuffle equal scores. */
-function rankByPopularity(shops: Shop[]): Shop[] {
+export function rankByPopularity(shops: Shop[]): Shop[] {
   return [...shops]
     .filter((shop) => shop.popularityIndex != null)
     .sort((a, b) => {

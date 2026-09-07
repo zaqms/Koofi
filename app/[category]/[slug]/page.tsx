@@ -1,27 +1,33 @@
 import { notFound } from "next/navigation";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
-import {
-  categoryDistrictStaticParams,
-  districtMetadata,
-  resolveDistrictSlug,
-} from "@/lib/district";
+import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
 import { isDirectoryCategory } from "@/lib/directory-category";
-import { PRODUCT_NAME } from "@/lib/product";
-import { districtItemListJsonLd } from "@/lib/structured-data";
+import {
+  categoryListingStaticParams,
+  mostPopularMetadata,
+} from "@/lib/most-popular";
+import { isMostPopularSlug, PRODUCT_NAME } from "@/lib/product";
+import {
+  districtItemListJsonLd,
+  mostPopularItemListJsonLd,
+} from "@/lib/structured-data";
 
 type CategoryDistrictPageProps = {
   params: Promise<{ category: string; slug: string }>;
 };
 
 export function generateStaticParams() {
-  return categoryDistrictStaticParams();
+  return categoryListingStaticParams();
 }
 
 export async function generateMetadata({ params }: CategoryDistrictPageProps) {
   const { category, slug } = await params;
   if (!isDirectoryCategory(category)) {
     return { title: PRODUCT_NAME };
+  }
+  if (isMostPopularSlug(slug)) {
+    return mostPopularMetadata("ar");
   }
   const district = resolveDistrictSlug(slug);
   if (!district) {
@@ -35,6 +41,14 @@ export default async function CategoryDistrictPage({
 }: CategoryDistrictPageProps) {
   const { category, slug } = await params;
   if (!isDirectoryCategory(category)) notFound();
+  if (isMostPopularSlug(slug)) {
+    return (
+      <>
+        <JsonLd data={mostPopularItemListJsonLd("ar")} />
+        <HomeLanding language="ar" listing="popular" />
+      </>
+    );
+  }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();
 

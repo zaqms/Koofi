@@ -402,6 +402,9 @@ export function Chat({ landing, restore, localeHref }: ChatProps) {
       { chip_id: chip.id, chip_label: chip.label, locale: landing },
       { dedupeKey: `chip_tap:${chip.id}` },
     );
+    if (chip.id === "popular") {
+      return;
+    }
     if (chip.id === NEARBY_CHIP.id) {
       void sendNearby(chip.label);
       return;

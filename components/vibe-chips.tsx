@@ -1,6 +1,12 @@
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
+import Link from "next/link";
 import { copy } from "@/lib/copy";
-import { NEARBY_CHIP, VIBE_CHIPS, vibeChipLabel } from "@/lib/product";
+import {
+  mostPopularPath,
+  NEARBY_CHIP,
+  VIBE_CHIPS,
+  vibeChipLabel,
+} from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 export type ChipPick = {
@@ -145,21 +151,47 @@ export function VibeChips({ language, disabled, onPick }: VibeChipsProps) {
     >
       {CHIPS.map((chip) => {
         const label = vibeChipLabel(chip, language);
+        const className =
+          "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-0.5 py-1.5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+        const onChipClick = (
+          event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+        ) => {
+          if (disabled) {
+            event.preventDefault();
+            return;
+          }
+          event.currentTarget.blur();
+          onPick({ id: chip.id, label });
+        };
+
+        if (chip.id === "popular") {
+          return (
+            <Link
+              key={chip.id}
+              href={mostPopularPath(language)}
+              // Native `disabled` on the chip that just received the tap moves
+              // focus (often to <body>) and some browsers scroll back to the
+              // opener — it looks like the thread reset. Keep the control
+              // focusable and ignore the click instead.
+              aria-disabled={disabled || undefined}
+              onClick={onChipClick}
+              className={className}
+            >
+              <ChipIcon id={chip.id} />
+              <span className="line-clamp-2 text-center text-[11px] leading-tight">
+                {label}
+              </span>
+            </Link>
+          );
+        }
+
         return (
           <button
             key={chip.id}
             type="button"
-            // Native `disabled` on the chip that just received the tap moves
-            // focus (often to <body>) and some browsers scroll back to the
-            // opener — it looks like the thread reset. Keep the control
-            // focusable and ignore the click instead.
             aria-disabled={disabled || undefined}
-            onClick={(event) => {
-              if (disabled) return;
-              event.currentTarget.blur();
-              onPick({ id: chip.id, label });
-            }}
-            className="flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-0.5 py-1.5 text-ink hover:border-bean hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            onClick={onChipClick}
+            className={className}
           >
             <ChipIcon id={chip.id} />
             <span className="line-clamp-2 text-center text-[11px] leading-tight">

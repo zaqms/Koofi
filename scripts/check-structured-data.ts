@@ -13,11 +13,12 @@ import {
   districtFaqs,
   faqPageJsonLd,
 } from "../lib/faq";
-import { districtPath } from "../lib/product";
+import { districtPath, mostPopularPath } from "../lib/product";
 import { buildSitemapXml } from "../lib/sitemap-xml";
 import {
   buildLlmsTxt,
   districtItemListJsonLd,
+  mostPopularItemListJsonLd,
   jsonHasForbiddenPublicFields,
   listPublicShops,
   PUBLIC_MCP_ALIAS_PATH,
@@ -155,6 +156,18 @@ assert(
   sitemap.includes("https://wain.lol/coffee-shops/al-malqa<"),
   "sitemap still lists district URLs",
 );
+assert(
+  sitemap.includes("https://wain.lol/coffee-shops/most-popular<"),
+  "sitemap lists AR most-popular",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/coffee-shops/most-popular<"),
+  "sitemap lists EN most-popular",
+);
+assert(
+  !sitemap.includes("most-popular-cafes-in-riyadh"),
+  "sitemap must not list the EN popular alias",
+);
 assert(!sitemap.includes("/n/"), "sitemap must not revive /n/");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
 
@@ -188,6 +201,45 @@ assert(
   readRepo("app/en/[category]/[slug]/page.tsx").includes("districtItemListJsonLd"),
   "EN district page injects ItemList",
 );
+assert(
+  readRepo("app/[category]/[slug]/page.tsx").includes("mostPopularItemListJsonLd"),
+  "AR most-popular page injects ItemList",
+);
+assert(
+  readRepo("app/en/[category]/[slug]/page.tsx").includes("mostPopularItemListJsonLd"),
+  "EN most-popular page injects ItemList",
+);
+
+const popularAr = mostPopularItemListJsonLd("ar");
+assert(popularAr["@type"] === "ItemList", "popular JSON-LD is ItemList");
+assert(
+  popularAr.url === `https://wain.lol${mostPopularPath("ar")}`,
+  "popular AR url",
+);
+assert(
+  popularAr.itemListElement[0]?.item &&
+    "url" in popularAr.itemListElement[0],
+  "popular list items have urls",
+);
+assert(
+  popularAr.itemListElement[0] &&
+    "item" in popularAr.itemListElement[0] &&
+    popularAr.itemListElement[0].item["@type"] === "CafeOrCoffeeShop",
+  "popular items are CafeOrCoffeeShop",
+);
+const popularEn = mostPopularItemListJsonLd("en");
+assert(
+  popularEn.url === "https://wain.lol/en/coffee-shops/most-popular",
+  "popular EN url",
+);
+for (const payload of [popularAr, popularEn]) {
+  const forbidden = jsonHasForbiddenPublicFields(payload);
+  assert(
+    forbidden.length === 0,
+    `popular forbidden public fields: ${forbidden.join(", ")}`,
+  );
+  assert(!/Koofi/i.test(JSON.stringify(payload)), "popular JSON-LD must not say Koofi");
+}
 assert(
   readRepo("app/api/shops/route.ts").includes("Access-Control-Allow-Origin") ||
     readRepo("lib/structured-data.ts").includes("Access-Control-Allow-Origin"),

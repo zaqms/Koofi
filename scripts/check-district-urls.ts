@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { getShop, listDirectoryShops, listRealShops } from "../lib/catalog";
 import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
 import { copy } from "../lib/copy";
@@ -17,12 +19,24 @@ import {
 import { neighborhoodLabel } from "../lib/neighborhoods";
 import { parseIntent } from "../lib/parse-intent";
 import {
+  listPopularDirectoryShops,
+  mostPopularDescription,
+  mostPopularMetadata,
+  mostPopularTitle,
+} from "../lib/most-popular";
+import {
   categoryDistrictPath,
   districtPath,
   homePath,
   legacyDistrictPath,
+  MOST_POPULAR_EN_ALIAS_PATH,
+  MOST_POPULAR_HEADING,
+  MOST_POPULAR_SLUG,
+  mostPopularHeading,
+  mostPopularPath,
   PRODUCT_NAME,
 } from "../lib/product";
+import { rankByPopularity } from "../lib/picker";
 import { buildSitemapXml } from "../lib/sitemap-xml";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -685,5 +699,138 @@ for (const id of areas) {
 assert(!sitemap.includes("/n/"), "sitemap must drop retired /n/ paths");
 assert(!sitemap.includes("/en/n/"), "sitemap must drop retired /en/n/ paths");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
+
+assert(MOST_POPULAR_SLUG === "most-popular", "popular slug stays Latin most-popular");
+assert(
+  mostPopularPath("ar") === "/coffee-shops/most-popular",
+  "AR most-popular path",
+);
+assert(
+  mostPopularPath("en") === "/en/coffee-shops/most-popular",
+  "EN most-popular path",
+);
+assert(
+  MOST_POPULAR_EN_ALIAS_PATH === "/en/most-popular-cafes-in-riyadh",
+  "EN popular alias path",
+);
+assert(
+  resolveDistrictSlug("most-popular") === null,
+  "most-popular is not a district slug",
+);
+assert(
+  mostPopularHeading("ar") === "أشهر القهاوي في الرياض",
+  "AR popular H1 stays thin directory tone",
+);
+assert(
+  mostPopularHeading("en") === "Most popular coffee shops in Riyadh",
+  "EN popular H1 stays thin directory tone",
+);
+assert(
+  mostPopularTitle("ar") === `${MOST_POPULAR_HEADING.ar} · ${PRODUCT_NAME}`,
+  "AR popular title matches district · wain.lol tone",
+);
+assert(
+  mostPopularTitle("en") === `${MOST_POPULAR_HEADING.en} · ${PRODUCT_NAME}`,
+  "EN popular title matches district · wain.lol tone",
+);
+assert(
+  mostPopularDescription("ar") ===
+    `${MOST_POPULAR_HEADING.ar} · ${copy.directoryHint.ar}`,
+  "AR popular description stays heading + directoryHint",
+);
+assert(
+  mostPopularDescription("en") ===
+    `${MOST_POPULAR_HEADING.en} · ${copy.directoryHint.en}`,
+  "EN popular description stays heading + directoryHint",
+);
+
+const popularMeta = mostPopularMetadata("en");
+assert(
+  popularMeta.alternates?.canonical === "/en/coffee-shops/most-popular",
+  "EN popular canonical",
+);
+assert(
+  popularMeta.alternates?.languages?.["ar-SA"] === "/coffee-shops/most-popular",
+  "popular hreflang ar-SA",
+);
+assert(
+  popularMeta.alternates?.languages?.en === "/en/coffee-shops/most-popular",
+  "popular hreflang en",
+);
+
+const popularShops = listPopularDirectoryShops();
+const rankedCatalog = rankByPopularity(listRealShops());
+assert(
+  popularShops.length === listRealShops().length,
+  "popular directory lists the full catalog",
+);
+assert(
+  popularShops.map((shop) => shop.id).join(",") ===
+    rankedCatalog.map((shop) => shop.id).join(","),
+  "popular directory follows popularityIndex DESC",
+);
+assert(
+  popularShops[0]?.id === "namq-al-malqa",
+  "popular directory lead is namq-al-malqa",
+);
+assert(
+  popularShops.slice(0, 3).map((shop) => shop.id).join(",") ===
+    "namq-al-malqa,urth-caffe-tahlia-sulimaniyah,breehant-al-yasmin",
+  "popular directory top 3 matches PR #97 lock",
+);
+for (let i = 1; i < popularShops.length; i += 1) {
+  const prev = rankedCatalog[i - 1];
+  const next = rankedCatalog[i];
+  assert(prev && next, "popular rank rows exist");
+  const prevScore = prev.popularityIndex ?? Number.NEGATIVE_INFINITY;
+  const nextScore = next.popularityIndex ?? Number.NEGATIVE_INFINITY;
+  assert(
+    prevScore > nextScore ||
+      (prevScore === nextScore && prev.id.localeCompare(next.id) <= 0),
+    `popular sort broke at ${prev.id} -> ${next.id}`,
+  );
+}
+
+assert(
+  sitemap.includes("https://wain.lol/coffee-shops/most-popular<"),
+  "sitemap missing AR most-popular",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/coffee-shops/most-popular<"),
+  "sitemap missing EN most-popular",
+);
+assert(
+  !sitemap.includes("most-popular-cafes-in-riyadh"),
+  "sitemap must not list the EN alias",
+);
+
+const nextConfig = readFileSync(
+  join(process.cwd(), "next.config.ts"),
+  "utf8",
+);
+assert(
+  nextConfig.includes('source: "/en/most-popular-cafes-in-riyadh"'),
+  "next.config has EN popular alias",
+);
+assert(
+  nextConfig.includes('destination: "/en/coffee-shops/most-popular"'),
+  "alias points at EN most-popular",
+);
+assert(nextConfig.includes("statusCode: 308"), "alias is 308");
+
+const vibeChips = readFileSync(
+  join(process.cwd(), "components/vibe-chips.tsx"),
+  "utf8",
+);
+assert(
+  vibeChips.includes("mostPopularPath(language)"),
+  "Most Popular chip is a shareable Link",
+);
+assert(
+  readFileSync(join(process.cwd(), "components/chat.tsx"), "utf8").includes(
+    'if (chip.id === "popular")',
+  ),
+  "chat must not post Most Popular to /api/chat",
+);
 
 console.log(`check-district-urls: ok (${areas.length} districts)`);

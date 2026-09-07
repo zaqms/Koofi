@@ -873,7 +873,7 @@ const chatSource = readFileSync(
 );
 assert(
   chatSource.includes("selectedChipId") &&
-    chatSource.includes("selectedId={selectedChipId}"),
+    chatSource.includes("selectedId={selectedChipId ?? pickedChipId}"),
   "chat forwards selectedChipId to vibe chips",
 );
 

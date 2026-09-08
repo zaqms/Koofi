@@ -167,6 +167,7 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `share_inbound` | Restore URL with `from=wa` | `kind`, `from`, optional `pack_id` / `shop_id` |
 | `feedback_add` / `feedback_vote` | Ideas board | `locale` only |
 | `cafe_upvote` | Directory-list ▲ on a shop | `shop_id`, `locale` |
+| `cafe_unvote` | Directory-list ▲ undo on a shop | `shop_id`, `locale` |
 
 `chat_query` is the search event. Cafe and neighborhood text is intended — that is the product question. It fires once per `send()` (composer submit or a chip label that is actually posted to `/api/chat`). It does **not** fire for the locked opener, for chip UI that is only displayed, or for Nearby (Nearby never hits `/api/chat`). A 400ms dedupe key `chat_query:{via}:{text}` covers retries and remounts.
 
@@ -218,9 +219,9 @@ Product Hunt–style ▲ + count on **directory list rows only** (home list, dis
 
 Social proof only. Counts do **not** reorder chat three-picks, the directory, New this week, or district filters. Owners cannot buy rank. No downvotes, stars, or comments. Been here stays a separate localStorage mark on cafe cards.
 
-Vote model: one-way upvote. Cookie voter `wain_vid` (same as /feedback). One vote per shop per voter. Re-tap is idempotent — count stays put. Same Neon `DATABASE_URL`. On Vercel without it, vote returns `503` / `no_storage`. Local `next dev` may use memory.
+Vote model: toggle upvote. Cookie voter `wain_vid` (same as /feedback). First tap adds a receipt and +1. Second tap deletes that receipt and −1 (never below 0). Same action twice is idempotent — count does not double. Same Neon `DATABASE_URL` (`shop_upvotes` + `shop_vote_receipts`). On Vercel without it, vote returns `503` / `no_storage`. Local `next dev` may use memory.
 
-Visitor copy is short: ▲ + count, `أعجبني` / `Upvote`. Optional `cafe_upvote` dataLayer event sends `shop_id` + `locale` only.
+Visitor copy is short: ▲ + count, `أعجبني` / `Upvote`. Optional `cafe_upvote` / `cafe_unvote` dataLayer events send `shop_id` + `locale` only.
 
 ## Shop suggestions
 
@@ -268,7 +269,7 @@ app/api/chat/route.ts           web picker + Maps-link suggestions
 app/api/feedback/route.ts       list + add ideas
 app/api/feedback/vote/route.ts  upvote
 app/api/upvotes/route.ts        directory-list vote snapshot
-app/api/upvotes/vote/route.ts   directory-list shop upvote
+app/api/upvotes/vote/route.ts   directory-list shop upvote / unvote
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)

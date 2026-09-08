@@ -12,14 +12,20 @@ import {
   parseShopIdShape,
   type ShopUpvoteError,
   type ShopUpvoteSnapshot,
+  type ShopVoteAction,
 } from "./upvotes-types";
 
 export {
   emptyShopUpvoteSnapshot,
   parseShopIdShape,
+  parseVoteAction,
   SHOP_ID_PATTERN,
 } from "./upvotes-types";
-export type { ShopUpvoteError, ShopUpvoteSnapshot } from "./upvotes-types";
+export type {
+  ShopUpvoteError,
+  ShopUpvoteSnapshot,
+  ShopVoteAction,
+} from "./upvotes-types";
 
 const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS shop_upvotes (
@@ -121,11 +127,26 @@ export async function loadShopUpvoteSnapshot(): Promise<ShopUpvoteSnapshot> {
     : snapshotFromNeon(hash);
 }
 
-export async function voteShop(
+type ShopVoteOk = {
+  ok: true;
+  already: boolean;
+  voted: boolean;
+  shopId: string;
+  votes: number;
+  snapshot: ShopUpvoteSnapshot;
+};
+
+type ShopVoteFail = {
+  ok: false;
+  error: ShopUpvoteError;
+  snapshot?: ShopUpvoteSnapshot;
+};
+
+async function readyVoter(
   rawId: unknown,
 ): Promise<
-  | { ok: true; already: boolean; shopId: string; votes: number; snapshot: ShopUpvoteSnapshot }
-  | { ok: false; error: ShopUpvoteError; snapshot?: ShopUpvoteSnapshot }
+  | { ok: true; shopId: string; hash: string }
+  | ShopVoteFail
 > {
   const shopId = resolveCatalogShopId(rawId);
   if (!shopId) return { ok: false, error: "not_found" };
@@ -134,7 +155,13 @@ export async function voteShop(
   if (storage === "missing") return { ok: false, error: "no_storage" };
 
   const voterId = await ensureVoterId();
-  const hash = hashVoter(voterId);
+  return { ok: true, shopId, hash: hashVoter(voterId) };
+}
+
+export async function voteShop(rawId: unknown): Promise<ShopVoteOk | ShopVoteFail> {
+  const ready = await readyVoter(rawId);
+  if (!ready.ok) return ready;
+  const { shopId, hash } = ready;
 
   if (feedbackStorageKind() === "memory") {
     const key = receiptKey(shopId, hash);
@@ -143,6 +170,7 @@ export async function voteShop(
       return {
         ok: true,
         already: true,
+        voted: true,
         shopId,
         votes: current,
         snapshot: snapshotFromMemory(hash),
@@ -154,6 +182,7 @@ export async function voteShop(
     return {
       ok: true,
       already: false,
+      voted: true,
       shopId,
       votes,
       snapshot: snapshotFromMemory(hash),
@@ -187,6 +216,7 @@ export async function voteShop(
     return {
       ok: true,
       already: false,
+      voted: true,
       shopId,
       votes: Number(updated[0]!.votes),
       snapshot,
@@ -196,8 +226,84 @@ export async function voteShop(
   return {
     ok: true,
     already: true,
+    voted: true,
     shopId,
     votes: snapshot.counts[shopId] ?? 0,
     snapshot,
   };
+}
+
+export async function unvoteShop(rawId: unknown): Promise<ShopVoteOk | ShopVoteFail> {
+  const ready = await readyVoter(rawId);
+  if (!ready.ok) return ready;
+  const { shopId, hash } = ready;
+
+  if (feedbackStorageKind() === "memory") {
+    const key = receiptKey(shopId, hash);
+    const current = memoryCounts.get(shopId) ?? 0;
+    if (!memoryReceipts.has(key)) {
+      return {
+        ok: true,
+        already: true,
+        voted: false,
+        shopId,
+        votes: current,
+        snapshot: snapshotFromMemory(hash),
+      };
+    }
+    memoryReceipts.delete(key);
+    const votes = Math.max(0, current - 1);
+    memoryCounts.set(shopId, votes);
+    return {
+      ok: true,
+      already: false,
+      voted: false,
+      shopId,
+      votes,
+      snapshot: snapshotFromMemory(hash),
+    };
+  }
+
+  const sql = getSql();
+  if (!sql) return { ok: false, error: "no_storage" };
+
+  const updated = (await sql`
+    WITH del AS (
+      DELETE FROM shop_vote_receipts
+      WHERE shop_id = ${shopId} AND voter_hash = ${hash}
+      RETURNING shop_id
+    )
+    UPDATE shop_upvotes
+    SET votes = GREATEST(votes - 1, 0)
+    WHERE shop_id IN (SELECT shop_id FROM del)
+    RETURNING shop_id, votes
+  `) as { shop_id: string; votes: number }[];
+
+  const snapshot = await snapshotFromNeon(hash);
+  if (updated.length > 0) {
+    return {
+      ok: true,
+      already: false,
+      voted: false,
+      shopId,
+      votes: Number(updated[0]!.votes),
+      snapshot,
+    };
+  }
+
+  return {
+    ok: true,
+    already: true,
+    voted: false,
+    shopId,
+    votes: snapshot.counts[shopId] ?? 0,
+    snapshot,
+  };
+}
+
+export async function applyShopVote(
+  rawId: unknown,
+  action: ShopVoteAction,
+): Promise<ShopVoteOk | ShopVoteFail> {
+  return action === "unvote" ? unvoteShop(rawId) : voteShop(rawId);
 }

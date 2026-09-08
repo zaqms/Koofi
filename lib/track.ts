@@ -10,6 +10,7 @@ export type AnalyticsEventName =
   | "feedback_add"
   | "feedback_vote"
   | "cafe_upvote"
+  | "cafe_unvote"
   | "chip_tap"
   | "district_select"
   | "chat_query";

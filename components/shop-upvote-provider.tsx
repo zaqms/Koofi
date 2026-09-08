@@ -18,7 +18,7 @@ import {
   type ShopUpvoteSnapshot,
 } from "@/lib/upvotes-types";
 
-type VoteOutcome = "ok" | "already" | ShopUpvoteError | "error";
+type VoteOutcome = "ok" | "already" | "removed" | ShopUpvoteError | "error";
 
 type ShopUpvoteContextValue = {
   countFor: (shopId: string) => number;
@@ -31,6 +31,7 @@ type ShopUpvoteContextValue = {
 type ApiPayload = {
   ok?: boolean;
   already?: boolean;
+  voted?: boolean;
   error?: ShopUpvoteError;
   counts?: Record<string, number>;
   votedIds?: string[];
@@ -88,11 +89,12 @@ export function ShopUpvoteProvider({ children }: { children: ReactNode }) {
     inflight.current = true;
     setVotingId(shopId);
     setErrorShop(null);
+    const action = snapshot.votedIds.includes(shopId) ? "unvote" : "upvote";
     try {
       const response = await fetch("/api/upvotes/vote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: shopId }),
+        body: JSON.stringify({ id: shopId, action }),
       });
       const payload = (await response.json()) as ApiPayload;
       if (!payload.ok) {
@@ -105,13 +107,15 @@ export function ShopUpvoteProvider({ children }: { children: ReactNode }) {
       }
       setSnapshot((current) => applySnapshot(current, payload));
       if (!payload.already) {
+        const event = payload.voted === false ? "cafe_unvote" : "cafe_upvote";
         trackEvent(
-          "cafe_upvote",
+          event,
           { shop_id: shopId, locale: language },
-          { dedupeKey: `cafe_upvote:${shopId}` },
+          { dedupeKey: `${event}:${shopId}` },
         );
       }
-      return payload.already ? "already" : "ok";
+      if (payload.already) return "already";
+      return payload.voted === false ? "removed" : "ok";
     } catch {
       setErrorShop({ shopId, error: "error" });
       return "error";
@@ -119,7 +123,7 @@ export function ShopUpvoteProvider({ children }: { children: ReactNode }) {
       inflight.current = false;
       setVotingId(null);
     }
-  }, []);
+  }, [snapshot]);
 
   const value = useMemo<ShopUpvoteContextValue>(
     () => ({

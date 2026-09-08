@@ -1,5 +1,6 @@
 -- Directory-list social proof. No PII. Does not change list order.
 -- Same Neon DATABASE_URL as the /feedback board. Cookie voter is wain_vid.
+-- Unvote deletes the (shop_id, voter_hash) receipt and decrements votes (never below 0).
 -- Amjad: run in the Neon SQL editor if the app has not created tables yet.
 
 CREATE TABLE IF NOT EXISTS shop_upvotes (

@@ -93,13 +93,12 @@ export function tonightHeroForShop(
     const safe = safeTonightPhotoPath(src);
     if (safe) return safe;
   }
-  const catalog =
-    safeTonightPhotoPath(shop.photoUrl) ?? safeTonightPhotoPath(shop.logoUrl);
-  if (catalog) return catalog;
   if (allowPassportPreview() && isPassportPreviewShop(shop.id)) {
     return WOODS_PASSPORT_HERO_PHOTOS[0];
   }
-  return null;
+  return (
+    safeTonightPhotoPath(shop.photoUrl) ?? safeTonightPhotoPath(shop.logoUrl)
+  );
 }
 
 export function tonightDistrict(
@@ -193,4 +192,12 @@ export function recordTonightMint(
 export function tonightFilename(shopId: string): string {
   const slug = shopId.replace(/[^a-z0-9-]+/gi, "-").replace(/-+/g, "-");
   return `wain-tonight-${slug}.png`;
+}
+
+/**
+ * ImageResponse / Satori paints runs LTR. Reverse Arabic tokens so
+ * مقهى ومحمصة وودز reads in source order on the minted card.
+ */
+export function satoriArabicLine(text: string): string {
+  return text.trim().split(/\s+/).reverse().join(" ");
 }

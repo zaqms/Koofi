@@ -4,6 +4,7 @@ import { PRODUCT_NAME } from "@/lib/product";
 import {
   sanitizeTonightLine,
   safeTonightPhotoPath,
+  satoriArabicLine,
   tonightDistrict,
   tonightHeroForShop,
   TONIGHT_IMAGE_SIZE,
@@ -126,6 +127,7 @@ export async function GET(request: Request, context: ImageContext) {
             flex: 1,
             padding: "56px 64px 52px",
             background: "#1b1814",
+            alignItems: language === "ar" ? "flex-end" : "flex-start",
           }}
         >
           <div
@@ -133,11 +135,11 @@ export async function GET(request: Request, context: ImageContext) {
               display: "flex",
               color: "#b0894a",
               fontSize: 28,
-              letterSpacing: 6,
+              letterSpacing: language === "ar" ? 0 : 6,
               textTransform: "uppercase",
             }}
           >
-            {eyebrow}
+            {language === "ar" ? satoriArabicLine(eyebrow) : eyebrow}
           </div>
           <div
             style={{
@@ -160,7 +162,7 @@ export async function GET(request: Request, context: ImageContext) {
               color: "#f3ead8",
             }}
           >
-            {shop.nameAr}
+            {satoriArabicLine(shop.nameAr)}
           </div>
           <div
             style={{
@@ -173,7 +175,7 @@ export async function GET(request: Request, context: ImageContext) {
               fontSize: 26,
             }}
           >
-            {district}
+            {language === "ar" ? satoriArabicLine(district) : district}
           </div>
           {line ? (
             <div
@@ -185,7 +187,7 @@ export async function GET(request: Request, context: ImageContext) {
                 color: "#fffaf3",
               }}
             >
-              {line}
+              {/[\u0600-\u06FF]/.test(line) ? satoriArabicLine(line) : line}
             </div>
           ) : null}
           <div

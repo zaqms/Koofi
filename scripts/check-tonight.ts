@@ -6,6 +6,7 @@ import {
   canMintTonight,
   inviteShareText,
   isViralShareChannel,
+  satoriArabicLine,
   recordTonightMint,
   sanitizeTonightLine,
   TONIGHT_LINE_MAX,
@@ -131,9 +132,27 @@ assert(tonightText.includes("/c/woods-olaya?from=tonight"), "tonight deep-links 
 assert(tonightCardPath("cafu-olaya", "ar") === "/c/cafu-olaya?from=tonight", "thin card deep link");
 assert(publicCardUrl("cafu-olaya", "ar") === "https://wain.lol/c/cafu-olaya", "public card URL unchanged");
 
+assert(
+  satoriArabicLine(woods.nameAr) === "وودز ومحمصة مقهى",
+  "Arabic name is token-reversed for Satori",
+);
+assert(satoriArabicLine("العليا") === "العليا", "single Arabic word stays");
 assert(tonightDistrict(woods, "ar") === "العليا", "AR district");
 assert(tonightDistrict(woods, "en") === "Olaya", "EN district");
 assert(tonightHeroForShop(cafu) === "/logos/cafu-olaya.jpg", "thin Cafu uses logo");
+const prevEnv = process.env.VERCEL_ENV;
+process.env.VERCEL_ENV = "preview";
+assert(
+  tonightHeroForShop(woods) === "/passport/woods-olaya-1.jpg",
+  "preview Woods mint uses Passport hero",
+);
+process.env.VERCEL_ENV = "production";
+assert(
+  tonightHeroForShop(woods) === "/logos/woods-olaya.jpg",
+  "production Woods mint uses catalog logo",
+);
+if (prevEnv === undefined) delete process.env.VERCEL_ENV;
+else process.env.VERCEL_ENV = prevEnv;
 assert(tonightFilename("woods-olaya") === "wain-tonight-woods-olaya.png", "wain filename");
 assert(!tonightFilename("woods-olaya").includes("koofi"), "filename is not Koofi");
 

@@ -34,6 +34,10 @@ function errorCopy(language: Language, error: ClaimError | undefined): string {
       return copy.ownerBadOtp[language];
     case "otp_send_failed":
       return copy.ownerOtpSendFailed[language];
+    case "otp_template_not_ready":
+      return copy.ownerOtpTemplateNotReady[language];
+    case "otp_account_not_ready":
+      return copy.ownerOtpAccountNotReady[language];
     case "already_claimed":
       return copy.ownerAlreadyPending[language];
     case "no_storage":

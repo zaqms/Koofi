@@ -12,6 +12,8 @@ export type ClaimError =
   | "bad_otp"
   | "otp_not_configured"
   | "otp_send_failed"
+  | "otp_template_not_ready"
+  | "otp_account_not_ready"
   | "already_claimed"
   | "bad_proof";
 

@@ -15,7 +15,16 @@ import {
 import { ENV_KEYS, readEnv } from "./env";
 import { feedbackStorageKind } from "./feedback";
 import type { Language } from "./types";
-import { isWhatsAppConfigured, sendWhatsAppClaimOtp } from "./whatsapp";
+import {
+  isWhatsAppConfigured,
+  mapGraphClaimOtpError,
+  sendWhatsAppClaimOtp,
+} from "./whatsapp";
+
+function claimOtpDevStub(): boolean {
+  const raw = readEnv(ENV_KEYS.CLAIM_OTP_DEV_STUB)?.toLowerCase();
+  return raw === "1" || raw === "true";
+}
 
 export {
   emptyPassport,
@@ -171,7 +180,9 @@ export async function requestClaimOtp(input: {
         | "bad_phone"
         | "no_storage"
         | "already_claimed"
-        | "otp_send_failed";
+        | "otp_send_failed"
+        | "otp_template_not_ready"
+        | "otp_account_not_ready";
     }
 > {
   const shopId = resolveCatalogShopId(input.shopId);
@@ -189,14 +200,14 @@ export async function requestClaimOtp(input: {
   }
 
   const configured = isWhatsAppConfigured();
-  const stub = !configured;
+  const stub = !configured || claimOtpDevStub();
   const code = stub ? STUB_OTP_CODE : sixDigitCode();
   const language = claimOtpLanguage(input.language);
 
   if (!stub) {
     try {
       const sent = await sendWhatsAppClaimOtp(whatsAppTo(phone), code, language);
-      if (!sent.ok) return { ok: false, error: "otp_send_failed" };
+      if (!sent.ok) return { ok: false, error: mapGraphClaimOtpError(sent) };
     } catch (error) {
       console.error("wain_whatsapp_graph_error", {
         thrown: true,

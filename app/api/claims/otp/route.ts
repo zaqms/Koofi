@@ -37,7 +37,9 @@ export async function POST(request: Request) {
     const status =
       result.error === "no_storage"
         ? 503
-        : result.error === "otp_send_failed"
+        : result.error === "otp_send_failed" ||
+            result.error === "otp_template_not_ready" ||
+            result.error === "otp_account_not_ready"
           ? 502
           : result.error === "not_found"
             ? 404

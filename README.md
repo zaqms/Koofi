@@ -123,6 +123,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `WHATSAPP_ACCESS_TOKEN` | No | Cloud API token used only if you want the webhook to send a reply or a claim OTP. |
 | `WHATSAPP_PHONE_NUMBER_ID` | No | Phone number ID for outbound WhatsApp messages. |
 | `WHATSAPP_OTP_TEMPLATE` | No | Optional Authentication template name for owner-claim OTP. Default `wain_claim_otp`. |
+| `CLAIM_OTP_DEV_STUB` | No | Optional. If `1`/`true`, owner-claim OTP stays on stub `000000` even when WhatsApp tokens exist. Default off. |
 | `GOOGLE_PLACES_API_KEY` | No | Optional live Place Details for a real shop (rating, review count, one snippet, optional photo). If empty, cards hide the rating row and keep the letter mark. No scrape fallback. Not used to rank picks. |
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 | `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |
@@ -234,7 +235,7 @@ Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.l
 `/owner` (Arabic) and `/en/owner` (English):
 
 1. Pick a catalog shop from the list. A cafe-card `?shop=` deep-link skips the list and shows the confirmed name + district. No Maps-link paste.
-2. WhatsApp Cloud API OTP via an approved **Authentication** template (`wain_claim_otp`, overridable with `WHATSAPP_OTP_TEMPLATE`). **Never WhatsApp Web / QR.** Freeform text is not used — Meta blocks it outside the customer-care window. If Graph returns a non-2xx or an error JSON, the API returns `otp_send_failed`, does **not** store the OTP, and the owner UI stays on the phone step. If `WHATSAPP_ACCESS_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` are missing, the step is stub mode (`000000`) and still lets a pending claim through in memory / local preview.
+2. WhatsApp Cloud API OTP via an approved **Authentication** template (`wain_claim_otp`, overridable with `WHATSAPP_OTP_TEMPLATE`). **Never WhatsApp Web / QR.** Freeform text is not used — Meta blocks it outside the customer-care window. If Graph returns a non-2xx or an error JSON, the API returns `otp_send_failed` (or a mapped `otp_template_not_ready` / `otp_account_not_ready`), does **not** store the OTP, and the owner UI stays on the phone step. If `WHATSAPP_ACCESS_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` are missing, the step is stub mode (`000000`) and still lets a pending claim through in memory / local preview.
 3. Proof: commercial-registration (CR) photo only — no storefront fallback. File is stored as a path stub, not a public card write. After OTP + proof: status `pending`, owner copy is **Under review / We’ll verify your claim** (AR spoken Najdi). Submit logs `wain_claim` for Ajz and emails `aj@cali.sa` when Resend is configured.
 
 Claims are **per `shop_id`**. Passport owner fields (`photos[]`, brewing/note, hours, thin offer, optional phone/IG) are scaffolded empty on the row. They are not editable from the public card until verified.

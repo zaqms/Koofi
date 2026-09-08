@@ -346,6 +346,14 @@ export const copy = {
     ar: "ما قدرنا نرسل الرمز على واتساب. جرّب بعد شوي.",
     en: "We couldn’t send the WhatsApp code. Try again in a bit.",
   },
+  ownerOtpTemplateNotReady: {
+    ar: "قالب التحقق بعد ما جاهز.",
+    en: "The OTP template is not ready yet.",
+  },
+  ownerOtpAccountNotReady: {
+    ar: "حساب واتساب بعد ما يقدر يرسل تحقق.",
+    en: "This WhatsApp account can’t send verification yet.",
+  },
   ownerNoStorage: {
     ar: "الطلب بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
     en: "Claims are not connected yet. Try again later.",

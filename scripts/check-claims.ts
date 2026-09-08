@@ -13,6 +13,7 @@ import {
   claimOtpTemplateComponents,
   claimOtpTemplateName,
   DEFAULT_WHATSAPP_OTP_TEMPLATE,
+  mapGraphClaimOtpError,
 } from "../lib/whatsapp";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -133,11 +134,43 @@ assert(
   (components[1] as { sub_type?: string } | undefined)?.sub_type === "url",
   "button is URL / copy-code OTP",
 );
+assert(
+  mapGraphClaimOtpError({ ok: false, skipped: false, graphCode: 132001 }) ===
+    "otp_template_not_ready",
+  "132001 is template-not-ready",
+);
+assert(
+  mapGraphClaimOtpError({ ok: false, skipped: false, graphCode: 132000 }) ===
+    "otp_template_not_ready",
+  "132000 is template-not-ready",
+);
+assert(
+  mapGraphClaimOtpError({
+    ok: false,
+    skipped: false,
+    graphCode: 10,
+    graphMessage: "This WhatsApp business account does not have permission to create message template.",
+  }) === "otp_account_not_ready",
+  "permission Graph body is account-not-ready",
+);
+assert(
+  mapGraphClaimOtpError({
+    ok: false,
+    skipped: false,
+    graphCode: 190,
+    graphMessage: "Invalid OAuth access token",
+  }) === "otp_send_failed",
+  "invalid token stays generic send-failed",
+);
 
 const envKeys = readFileSync("lib/env.ts", "utf8");
 assert(envKeys.includes("WHATSAPP_OTP_TEMPLATE"), "env contract includes template name");
+assert(envKeys.includes("CLAIM_OTP_DEV_STUB"), "env contract includes optional stub hatch");
 const envExample = readFileSync(".env.example", "utf8");
 assert(envExample.includes("WHATSAPP_OTP_TEMPLATE"), ".env.example lists template name");
+assert(envExample.includes("CLAIM_OTP_DEV_STUB"), ".env.example lists optional stub hatch");
+assert(claims.includes("CLAIM_OTP_DEV_STUB"), "dev stub is an explicit env path");
+assert(claims.includes("mapGraphClaimOtpError"), "Graph codes map to owner errors");
 
 const sql = readFileSync("sql/shop-claims.sql", "utf8");
 assert(sql.includes("shop_id TEXT PRIMARY KEY"), "claims are per shop_id");
@@ -153,6 +186,8 @@ const ownerUi = readFileSync("components/owner-claim.tsx", "utf8");
 assert(ownerUi.includes("ownerUnderReview"), "owner sees under review");
 assert(ownerUi.includes("/api/claims/otp"), "OTP step exists");
 assert(ownerUi.includes("otp_send_failed"), "UI surfaces Graph send failure");
+assert(ownerUi.includes("otp_template_not_ready"), "UI surfaces missing template");
+assert(ownerUi.includes("otp_account_not_ready"), "UI surfaces WABA permission");
 assert(
   ownerUi.includes("{ shopId, phone, language }"),
   "OTP request sends owner UI language",
@@ -166,6 +201,14 @@ assert(copy.ownerOtpSendFailed.ar.includes("واتساب"), "AR send-fail copy")
 assert(
   copy.ownerOtpSendFailed.en.includes("WhatsApp"),
   "EN send-fail copy",
+);
+assert(
+  copy.ownerOtpTemplateNotReady.en.includes("template"),
+  "EN template-not-ready copy",
+);
+assert(
+  copy.ownerOtpAccountNotReady.en.includes("verification"),
+  "EN account-not-ready copy",
 );
 assert(!/koofi/i.test(copy.ownerOtpSendFailed.ar), "AR send-fail has no Koofi");
 assert(!/koofi/i.test(copy.ownerOtpSendFailed.en), "EN send-fail has no Koofi");

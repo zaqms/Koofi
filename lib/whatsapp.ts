@@ -33,7 +33,25 @@ type WhatsAppPayload = {
   entry?: { changes?: WhatsAppChange[] }[];
 };
 
-type SendResult = { ok: boolean; skipped: boolean; status?: number };
+export type WhatsAppSendResult = {
+  ok: boolean;
+  skipped: boolean;
+  status?: number;
+  graphCode?: number;
+  graphMessage?: string;
+};
+
+type SendResult = WhatsAppSendResult;
+
+export type ClaimOtpSendError =
+  | "otp_send_failed"
+  | "otp_template_not_ready"
+  | "otp_account_not_ready";
+
+const TEMPLATE_NOT_READY_CODES = new Set([132000, 132001, 132015, 132016]);
+const ACCOUNT_NOT_READY_CODES = new Set([3, 10, 200]);
+const ACCOUNT_NOT_READY_MESSAGE =
+  /permission to create message template|does not have permission|not authorized|cannot create message template|account does not have/i;
 
 const SECRET_KEY = /token|authorization|secret|password|bearer|access_token/i;
 
@@ -66,6 +84,35 @@ export function claimOtpTemplateName(): string {
 
 export function claimOtpLanguageCode(language: Language | undefined): "ar" | "en" {
   return language === "en" ? "en" : "ar";
+}
+
+export function mapGraphClaimOtpError(result: SendResult): ClaimOtpSendError {
+  const code = result.graphCode;
+  const message = result.graphMessage ?? "";
+  if (code != null && TEMPLATE_NOT_READY_CODES.has(code)) {
+    return "otp_template_not_ready";
+  }
+  if (
+    (code != null && ACCOUNT_NOT_READY_CODES.has(code)) ||
+    ACCOUNT_NOT_READY_MESSAGE.test(message)
+  ) {
+    return "otp_account_not_ready";
+  }
+  return "otp_send_failed";
+}
+
+function graphErrorFields(json: unknown): {
+  graphCode?: number;
+  graphMessage?: string;
+} {
+  if (!json || typeof json !== "object" || !("error" in json)) return {};
+  const error = (json as { error?: unknown }).error;
+  if (!error || typeof error !== "object") return {};
+  const record = error as { code?: unknown; message?: unknown };
+  return {
+    graphCode: typeof record.code === "number" ? record.code : undefined,
+    graphMessage: typeof record.message === "string" ? record.message : undefined,
+  };
 }
 
 export function claimOtpTemplateComponents(code: string): Record<string, unknown>[] {
@@ -180,11 +227,17 @@ async function graphMessage(
   }
 
   if (!response.ok || graphJsonHasError(json)) {
+    const fields = graphErrorFields(json);
     console.error("wain_whatsapp_graph_error", {
       status: response.status,
       body: graphErrorBodyForLog(json, text),
     });
-    return { ok: false, skipped: false, status: response.status };
+    return {
+      ok: false,
+      skipped: false,
+      status: response.status,
+      ...fields,
+    };
   }
 
   return { ok: true, skipped: false, status: response.status };

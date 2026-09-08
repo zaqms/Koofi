@@ -432,8 +432,32 @@ export const copy = {
     en: "Locked — wain.lol keeps this",
   },
   ownerEditPhotosHint: {
-    ar: "رابط لكل صورة. http أو مسار من الموقع.",
-    en: "One URL per photo. http(s) or a site path.",
+    ar: "أضف روابط، أو ارفع من الجوال. كلها تظهر في كاروسيل الباسبور.",
+    en: "Add URLs, or upload from your phone. They all show in the Passport carousel.",
+  },
+  ownerEditAddUrl: {
+    ar: "أضف رابط",
+    en: "Add another URL",
+  },
+  ownerEditUpload: {
+    ar: "ارفع من الجوال",
+    en: "Upload from phone",
+  },
+  ownerEditUploading: {
+    ar: "يرفع…",
+    en: "Uploading…",
+  },
+  ownerEditNoBlob: {
+    ar: "الرفع بعد ما يتضبط على السيرفر. تقدر تحط روابط.",
+    en: "Upload is not connected yet. You can still add photo URLs.",
+  },
+  ownerEditBadPhoto: {
+    ar: "حط صور JPG أو PNG أو WebP، مو أكبر من ١٠ ميجا.",
+    en: "Use JPG, PNG, or WebP photos under 10 MB.",
+  },
+  ownerEditPhotosFull: {
+    ar: "ما نزيد أكثر من ١٢ صورة.",
+    en: "Up to 12 photos.",
   },
   ownerEditHours: {
     ar: "الدوام",
@@ -495,6 +519,22 @@ export const copy = {
     ar: "انحفظ.",
     en: "Saved.",
   },
+  ownerEditUploadDone: {
+    ar: "انرفع",
+    en: "Uploaded",
+  },
+  ownerEditUploadFailed: {
+    ar: "فشل الرفع",
+    en: "Upload failed",
+  },
+  ownerEditBlobAccess: {
+    ar: "مخزن الصور خاص. نعرض صور الكرت من رابط عام بدون كوكيز.",
+    en: "The photo store is private. Card photos are served from a public page URL — no signed cookies.",
+  },
+  ownerEditBlobError: {
+    ar: "السيرفر ما قدر يحفظ الصورة. جرّب صورة ثانية أو حط رابط.",
+    en: "The server could not store that photo. Try another image or add a URL.",
+  },
   ownerEditViewCard: {
     ar: "شوف الكرت",
     en: "View card",
@@ -539,4 +579,37 @@ export function ownerEditErrorCopy(
   if (error === "not_verified") return copy.ownerEditNotVerified[language];
   if (error === "no_storage") return copy.ownerNoStorage[language];
   return copy.ownerEditInvalid[language];
+}
+
+export function ownerEditUploadProgressCopy(
+  done: number,
+  total: number,
+  language: Language,
+): string {
+  return language === "ar"
+    ? `يرفع ${done} من ${total}`
+    : `Uploading ${done} of ${total}`;
+}
+
+export function ownerEditSavedCountCopy(
+  count: number,
+  language: Language,
+): string {
+  if (count <= 0) return copy.ownerEditSaved[language];
+  return language === "ar"
+    ? `انحفظ · ${count} صور`
+    : `Saved · ${count} photos`;
+}
+
+export function ownerPhotoErrorCopy(error: string, language: Language): string {
+  if (error === "no_blob") return copy.ownerEditNoBlob[language];
+  if (error === "bad_photo") return copy.ownerEditBadPhoto[language];
+  if (error === "photos_full") return copy.ownerEditPhotosFull[language];
+  if (error === "blob_access") return copy.ownerEditBlobAccess[language];
+  if (error === "blob_error") return copy.ownerEditBlobError[language];
+  if (error === "rate_limited") return copy.feedbackRateLimited[language];
+  return ownerEditErrorCopy(
+    error as OwnerTokenError,
+    language,
+  );
 }

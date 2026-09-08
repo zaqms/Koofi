@@ -6,14 +6,40 @@ import {
   readApproveToken,
 } from "../lib/claim-ops";
 import {
+  appendVerifiedPassportPhotos,
   grantVerifiedClaim,
   updateVerifiedPassport,
 } from "../lib/claims";
 import {
   emptyPassport,
+  coalescePassportPhotos,
+  mergePassportPhotos,
+  parsePhotoList,
+  parsePassport,
+  passportHeroPhotos,
   sanitizeOwnerPassport,
 } from "../lib/claims-types";
-import { copy, ownerEditErrorCopy } from "../lib/copy";
+import {
+  copy,
+  ownerEditErrorCopy,
+  ownerEditSavedCountCopy,
+  ownerEditUploadProgressCopy,
+  ownerPhotoErrorCopy,
+} from "../lib/copy";
+import {
+  blobWriteConfigured,
+  checkOwnerPhotoFile,
+  collectOwnerPhotoFiles,
+  isPrivateStoreAccessError,
+  OWNER_PHOTO_MAX,
+  OWNER_PHOTO_MAX_BYTES,
+  ownerPhotoPathname,
+} from "../lib/owner-photos";
+import {
+  ownerPhotoDisplaySrc,
+  ownerPhotoPublicHref,
+  ownerPhotoProxyPathname,
+} from "../lib/owner-photo-urls";
 import { feedbackStorageKind } from "../lib/feedback";
 import {
   hashOwnerToken,
@@ -74,6 +100,33 @@ assert(
   "AR missing copy",
 );
 assert(!/koofi/i.test(copy.ownerEditLead.ar + copy.ownerEditLead.en), "lead not Koofi");
+assert(copy.ownerEditAddUrl.en.includes("URL"), "EN add-URL copy");
+assert(copy.ownerEditUpload.en.toLowerCase().includes("phone"), "EN phone upload");
+assert(copy.ownerEditUpload.ar.includes("الجوال"), "AR phone upload");
+assert(
+  copy.ownerEditPhotosHint.en.toLowerCase().includes("carousel"),
+  "hint says carousel",
+);
+assert(
+  ownerPhotoErrorCopy("no_blob", "en").toLowerCase().includes("url"),
+  "no-blob still allows URLs",
+);
+assert(
+  ownerPhotoErrorCopy("blob_access", "en").toLowerCase().includes("private"),
+  "EN names the private store",
+);
+assert(
+  ownerPhotoErrorCopy("blob_access", "ar").includes("خاص"),
+  "AR names the private store",
+);
+assert(
+  ownerPhotoErrorCopy("blob_error", "en").toLowerCase().includes("server"),
+  "EN blob error is explicit",
+);
+assert(
+  ownerPhotoErrorCopy("bad_photo", "en").toLowerCase().includes("jpg"),
+  "bad photo copy",
+);
 assert(
   !copy.ownerEditHoursHint.en.toLowerCase().includes("invent") ||
     copy.ownerEditHoursHint.en.includes("will not invent"),
@@ -93,6 +146,76 @@ const dirty = sanitizeOwnerPassport({
 assert(dirty.brewingNote === "V60", "writable brewing kept");
 assert(dirty.hours === "till 23:00", "owner hours trimmed, not invented");
 assert(dirty.photos.length === 2, "unsafe photo dropped");
+const blobLike =
+  "https://abc.public.blob.vercel-storage.com/owner/cafu-olaya/" +
+  `${"photo".repeat(70)}.jpg`;
+assert(blobLike.length > 300, "sample Blob URL is longer than the old 300 clip");
+assert(
+  sanitizeOwnerPassport({ photos: [blobLike] }).photos[0] === blobLike,
+  "Blob-length photo URL is kept",
+);
+assert(OWNER_PHOTO_MAX === 12, "same 12-photo cap as passport sanitize");
+assert(
+  parsePhotoList("https://cdn.example/last.jpg").length === 1,
+  "string photo is not dropped",
+);
+assert(
+  parsePhotoList(["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"])
+    .length === 2,
+  "array photos kept",
+);
+assert(
+  mergePassportPhotos(
+    ["https://cdn.example/a.jpg"],
+    ["https://cdn.example/b.jpg", "https://cdn.example/a.jpg"],
+  ).length === 2,
+  "append keeps both unique URLs",
+);
+assert(
+  coalescePassportPhotos(
+    ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg", "https://cdn.example/c.jpg"],
+    ["https://cdn.example/c.jpg"],
+  ).length === 3,
+  "save last-URL does not collapse a longer array",
+);
+assert(
+  coalescePassportPhotos(
+    ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg", "https://cdn.example/c.jpg"],
+    ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"],
+  ).length === 2,
+  "owner can still remove extras with a 2+ list",
+);
+assert(
+  parsePassport(
+    JSON.stringify({ photos: ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"] }),
+  ).photos.length === 2,
+  "stringified passport JSON still lists both photos",
+);
+assert(
+  passportHeroPhotos(
+    { ...emptyPassport(), photos: ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"] },
+    { logoUrl: "/logos/cafu-olaya.jpg" },
+  ).length === 2,
+  "hero uses full owner array, not logo-only",
+);
+assert(
+  passportHeroPhotos(
+    {
+      ...emptyPassport(),
+      photos: [
+        "https://abc.blob.vercel-storage.com/owner/cafu-olaya/a.jpg",
+        "https://abc.blob.vercel-storage.com/owner/cafu-olaya/b.jpg",
+      ],
+    },
+    { logoUrl: "/logos/cafu-olaya.jpg" },
+  )[0] === "/api/passport-photo/owner/cafu-olaya/a.jpg",
+  "hero <img> uses the public proxy for private Blob URLs",
+);
+assert(
+  passportHeroPhotos(emptyPassport(), { logoUrl: "/logos/cafu-olaya.jpg" })[0] ===
+    "/logos/cafu-olaya.jpg",
+  "logo is fallback only when owner photos are empty",
+);
 assert(!("name" in dirty), "name is not a passport field");
 assert(!("district" in dirty), "district is not a passport field");
 assert(!("pin" in dirty), "pin is not a passport field");
@@ -104,6 +227,8 @@ const files = [
   "app/owner/edit/page.tsx",
   "app/en/owner/edit/page.tsx",
   "lib/owner-tokens.ts",
+  "lib/owner-photos.ts",
+  "lib/owner-photo-urls.ts",
   "lib/copy.ts",
 ];
 for (const file of files) {
@@ -139,9 +264,162 @@ assert(edit.includes("shop.nameEn"), "name is catalog");
 assert(edit.includes("neighborhood"), "district is catalog");
 assert(edit.includes("ownerEditPin"), "pin is locked Maps link");
 assert(edit.includes("ownerEditHoursHint"), "hours are owner-supplied");
+assert(edit.includes('type="file"'), "phone file picker");
+assert(edit.includes("multiple"), "multi-file picker");
+assert(edit.includes('accept="image/*"'), "image picker");
+assert(edit.includes("/api/owner/photos"), "upload hits Blob route");
+assert(edit.includes("ownerEditAddUrl"), "URL add is a list, not one field");
+assert(edit.includes("commitPhotos"), "upload writes the full saved photos[]");
+assert(edit.includes("asPhotoList"), "edit hydrates the full photos array");
+assert(edit.includes("UploadRow"), "per-file upload status");
+assert(edit.includes("ownerEditUploadProgressCopy"), "upload shows 1 of n");
+assert(edit.includes("ownerEditSavedCountCopy"), "save shows photo count");
+assert(
+  ownerEditUploadProgressCopy(1, 3, "en").includes("1 of 3"),
+  "EN upload progress",
+);
+assert(
+  ownerEditSavedCountCopy(3, "en").includes("3"),
+  "EN saved count names the photos",
+);
+assert(
+  ownerEditSavedCountCopy(3, "ar").includes("3"),
+  "AR saved count names the photos",
+);
 assert(!edit.includes("shop.hours"), "catalog hours are not written");
 assert(!edit.includes("DirectoryUpvote"), "no buy-rank upvote on edit");
 assert(!edit.includes("GoogleRating"), "no invented Google rating");
+
+assert(existsSync("app/api/owner/photos/route.ts"), "photo upload route");
+const photosApi = readFileSync("app/api/owner/photos/route.ts", "utf8");
+assert(photosApi.includes("validateOwnerToken"), "upload is token-gated");
+assert(photosApi.includes("putOwnerPhotos"), "upload uses Blob helper");
+assert(
+  photosApi.includes("appendVerifiedPassportPhotos"),
+  "upload appends onto Neon photos[]",
+);
+assert(
+  readFileSync("lib/claims.ts", "utf8").includes("coalescePassportPhotos"),
+  "save coalesces photos so last URL cannot wipe the array",
+);
+assert(!photosApi.includes("sendWhatsAppText"), "upload does not send WhatsApp");
+
+const photoLib = readFileSync("lib/owner-photos.ts", "utf8");
+assert(photoLib.includes("@vercel/blob"), "Vercel Blob is the upload store");
+assert(photoLib.includes('access: "private"'), "private store fallback");
+assert(photoLib.includes("ownerPhotoPublicHref"), "private puts become public proxy URLs");
+assert(!/s3|cloudinary|supabase|r2|s3bucket/i.test(photoLib), "no third storage");
+assert(
+  existsSync("app/api/passport-photo/[...path]/route.ts"),
+  "public proxy serves private Blob photos",
+);
+assert(
+  ownerPhotoPublicHref("owner/cafu-olaya/1-shot.jpg") ===
+    "/api/passport-photo/owner/cafu-olaya/1-shot.jpg",
+  "public href is same-origin",
+);
+assert(
+  ownerPhotoProxyPathname(["owner", "cafu-olaya", "1-shot.jpg"]) ===
+    "owner/cafu-olaya/1-shot.jpg",
+  "proxy pathname stays under owner/",
+);
+assert(
+  ownerPhotoProxyPathname(["..", "secret", "x.jpg"]) === null,
+  "proxy rejects non-owner paths",
+);
+assert(
+  ownerPhotoDisplaySrc(
+    "https://abc.blob.vercel-storage.com/owner/cafu-olaya/1-shot.jpg",
+  ) === "/api/passport-photo/owner/cafu-olaya/1-shot.jpg",
+  "private Blob URL becomes a public <img> src",
+);
+assert(
+  ownerPhotoDisplaySrc("/logos/cafu-olaya.jpg") === "/logos/cafu-olaya.jpg",
+  "catalog paths stay as-is",
+);
+assert(
+  isPrivateStoreAccessError(
+    new Error(
+      "Vercel Blob: Cannot use public access on a private store. The store is configured with private access.",
+    ),
+  ),
+  "private-store error is recognized",
+);
+assert(
+  readFileSync("components/owner-edit.tsx", "utf8").includes("ownerPhotoErrorCopy"),
+  "edit surfaces the real upload error",
+);
+assert(
+  ownerPhotoPathname("cafu-olaya", "../../evil.png") ===
+    "owner/cafu-olaya/photo-evil.png",
+  "pathname stays under owner/shop",
+);
+assert(
+  ownerPhotoPathname("cafu-olaya", "image.jpg", "111-0") !==
+    ownerPhotoPathname("cafu-olaya", "image.jpg", "111-1"),
+  "same iPhone filename gets a unique path",
+);
+const twoFiles = new FormData();
+twoFiles.set("shop", "cafu-olaya");
+twoFiles.set("token", "tok");
+twoFiles.append(
+  "files",
+  new File([new Uint8Array([1, 2, 3])], "a.jpg", { type: "image/jpeg" }),
+);
+twoFiles.append(
+  "files",
+  new File([new Uint8Array([4, 5, 6])], "b.jpg", { type: "image/jpeg" }),
+);
+assert(
+  collectOwnerPhotoFiles(twoFiles).length === 2,
+  "FormData keeps both files, not last-wins",
+);
+assert(
+  ownerPhotoPathname("cafu-olaya", "café shot!.JPG").startsWith(
+    "owner/cafu-olaya/",
+  ),
+  "pathname uses shop from token",
+);
+assert(
+  checkOwnerPhotoFile({
+    type: "image/jpeg",
+    size: 1200,
+    name: "a.jpg",
+  }).ok,
+  "jpeg ok",
+);
+assert(
+  !checkOwnerPhotoFile({
+    type: "application/pdf",
+    size: 1200,
+    name: "a.pdf",
+  }).ok,
+  "pdf rejected",
+);
+assert(
+  !checkOwnerPhotoFile({
+    type: "image/jpeg",
+    size: OWNER_PHOTO_MAX_BYTES + 1,
+    name: "a.jpg",
+  }).ok,
+  "oversize rejected",
+);
+assert(typeof blobWriteConfigured() === "boolean", "blob helper is callable");
+
+const envExample = readFileSync(".env.example", "utf8");
+assert(envExample.includes("BLOB_READ_WRITE_TOKEN"), "example documents Blob");
+assert(
+  readFileSync("lib/env.ts", "utf8").includes("BLOB_READ_WRITE_TOKEN"),
+  "env contract names Blob",
+);
+assert(
+  readFileSync("README.md", "utf8").includes("BLOB_READ_WRITE_TOKEN"),
+  "README documents Blob Preview env",
+);
+assert(
+  !readFileSync("README.md", "utf8").includes("CLAIM_APPROVE_TOKEN="),
+  "README does not paste a Production token",
+);
 
 const footer = readFileSync("components/cafe-claim-footer.tsx", "utf8");
 assert(footer.includes("shopClaimWhatsAppHref"), "wa.me path stays");
@@ -223,13 +501,42 @@ async function checkMemoryTokens(): Promise<void> {
     passport: {
       brewingTitle: "Test bean",
       hours: "till 22:00",
-      photos: ["https://cdn.example/p.jpg"],
+      photos: [
+        "https://cdn.example/p.jpg",
+        "https://cdn.example/q.jpg",
+      ],
       name: "should drop",
     },
   });
   assert(saved.ok && saved.passport.brewingTitle === "Test bean", "save brewing");
   assert(saved.ok && saved.passport.hours === "till 22:00", "save owner hours");
+  assert(saved.ok && saved.passport.photos.length === 2, "multi URL photos saved");
   assert(saved.ok && !("name" in saved.passport), "name not saved");
+
+  const appended = await appendVerifiedPassportPhotos({
+    shopId: shopA,
+    urls: ["https://cdn.example/r.jpg"],
+  });
+  assert(
+    appended.ok && appended.passport.photos.length === 3,
+    "upload append does not collapse to last URL",
+  );
+  assert(
+    appended.ok && appended.passport.brewingTitle === "Test bean",
+    "append keeps other passport fields",
+  );
+
+  const lastWinsSave = await updateVerifiedPassport({
+    shopId: shopA,
+    passport: {
+      brewingTitle: "Test bean",
+      photos: ["https://cdn.example/r.jpg"],
+    },
+  });
+  assert(
+    lastWinsSave.ok && lastWinsSave.passport.photos.length === 3,
+    "save last URL does not overwrite the full Neon array",
+  );
 
   const again = await validateOwnerToken({
     shopId: shopA,
@@ -238,6 +545,10 @@ async function checkMemoryTokens(): Promise<void> {
   assert(
     again.ok && again.passport.brewingTitle === "Test bean",
     "reload sees saved passport",
+  );
+  assert(
+    again.ok && again.passport.photos.length === 3,
+    "reload lists the full photos array",
   );
 
   const expired = await mintOwnerToken(shopA, -1000);

@@ -131,7 +131,8 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `DATABASE_URL` | No | Neon / Vercel Postgres for `/feedback`, directory upvotes, and owner claims. If empty on Vercel, those writes return 503. Chat is unchanged. Never commit a real URL. |
 | `CLAIM_ALERT_TO` | No | Optional inbox for pending owner-claim alerts. Defaults to `aj@cali.sa` if empty. Sending needs `RESEND_API_KEY`. |
 | `RESEND_API_KEY` | No | Optional. If set, claim submit emails `CLAIM_ALERT_TO` via Resend. If empty, email is stubbed and the server logs `wain_claim`. |
-| `CLAIM_APPROVE_TOKEN` | No | Optional shared secret for `/ops/claims`. Mint / revoke owner edit links for verified shops. If empty, ops 404s. Never commit a real token. Do not auto-send WhatsApp. |
+| `CLAIM_APPROVE_TOKEN` | No | Optional shared secret for `/ops/claims`. Mint / revoke owner edit links for verified shops. If empty, ops 404s. Never commit a real token. Do not auto-send WhatsApp. Preview try-path only — do not set this on Production from this work. |
+| `BLOB_READ_WRITE_TOKEN` | No | Vercel Blob token for owner Passport photo upload (`POST /api/owner/photos`). Auto-injected when a Blob store is linked to the Vercel project. Preview needs a linked Blob store (or this token) for phone upload. URL fields still work if empty. Never commit a real token. |
 
 Do not commit secrets.
 
@@ -259,17 +260,22 @@ After a claim is **verified**, ops mints a single-shop link. The later WhatsApp 
 - Token is random, hashed at rest, scoped to one `shop_id`, expires in 7 days, revocable
 - Valid only when `shop_claims.status = 'verified'` for that shop. Pending / unclaimed fail closed
 - Owner may write Passport fields only: photos, brewing / Now pouring, owner-supplied hours, thin offer, optional phone / IG
+- Photos: a list of URL fields (**Add another URL**) and a multi-file phone picker (**Upload from phone**). Upload **appends** onto Neon `passport.photos[]` (one request per file). Save never collapses a longer array to the last URL. The edit list and Passport hero carousel both show the full array (`1/n`). The picker shows per-file spinning / done / error and a saved count.
+- Phone upload uses **Vercel Blob** (`@vercel/blob` + `BLOB_READ_WRITE_TOKEN`). No third storage. If Blob is unset, URL fields still work. A **private** store cannot use `access: "public"` — upload retries as private and the Passport hero loads `/api/passport-photo/owner/…` so visitors need no signed cookies. A public store still stores the CDN URL.
 - Locked (read-only): name, district, Maps pin
 - No buy-rank, no Soft Places badge, no invented hours defaults
 - Visitor brand stays Wain / wain.lol. Interim **Own this cafe?** → `wa.me` on unclaimed cards stays
 
 ### How to mint a try token
 
-1. Set `CLAIM_APPROVE_TOKEN` (and `DATABASE_URL` on Vercel).
-2. Open `/ops/claims`, enter that token.
-3. **grant** a catalog `shop_id` that is not Woods on shared Neon (Woods fixture overlay dies if you write a verified Woods row), or **verify** a pending row.
-4. **mint** — copy the `/owner/edit?shop=&token=` URL once. **revoke** kills active links for that shop.
-5. Do not send WhatsApp from ops.
+Prefer **`cafu-olaya`** — not Woods on shared Neon (the Woods fixture overlay dies if you write a verified Woods row).
+
+1. On **Preview**, set `CLAIM_APPROVE_TOKEN` (and `DATABASE_URL`). Do not set Production `CLAIM_APPROVE_TOKEN` from this work.
+2. Link a Vercel Blob store to the project so Preview gets `BLOB_READ_WRITE_TOKEN` (or set that token on Preview). Phone upload needs it; URL add does not.
+3. Open `/ops/claims`, enter that token.
+4. **grant** `cafu-olaya` (or **verify** a pending row that is not Woods).
+5. **mint** — copy the `/owner/edit?shop=&token=` URL once. **revoke** kills active links for that shop.
+6. Do not send WhatsApp from ops.
 
 ```bash
 npx tsx scripts/check-owner-edit.ts
@@ -331,6 +337,7 @@ app/api/claims/route.ts         public claim status + pending submit
 app/api/claims/otp/route.ts     WhatsApp OTP or stub (parked)
 app/api/claims/ops/route.ts     ops mint / revoke / grant
 app/api/owner/passport/route.ts token-gated Passport read/write
+app/api/owner/photos/route.ts   token-gated multi-file upload → Vercel Blob
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
@@ -351,6 +358,7 @@ lib/feedback.ts                 Neon (or local memory) ideas board
 lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
 lib/claims.ts                   Neon (or local memory) owner claims
 lib/owner-tokens.ts             mint / validate / revoke owner edit links
+lib/owner-photos.ts             Vercel Blob upload helpers (same photos[])
 lib/claim-ops.ts                /ops/claims token gate
 lib/passport-preview.ts         Woods Passport fixture (preview/local only)
 lib/shop-mark.ts                letter marks on pick cards

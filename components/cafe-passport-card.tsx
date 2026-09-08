@@ -9,6 +9,7 @@ import { TargetIcon } from "@/components/target-icon";
 import { VerifiedBadge } from "@/components/verified-badge";
 import {
   passportHasBrewing,
+  passportHeroPhotos,
   type PassportOwnerFields,
 } from "@/lib/claims-types";
 import { copy } from "@/lib/copy";
@@ -48,7 +49,7 @@ export function CafePassportCard({
   const area =
     language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
   const tags = passportVibeTags(shop, language);
-  const photos = heroPhotos(shop, passport);
+  const photos = passportHeroPhotos(passport, shop);
   const brewing = passportHasBrewing(passport);
   const hours = passport.hours;
   const offer = passport.thinOffer;
@@ -383,13 +384,6 @@ function TabButton({
       {children}
     </button>
   );
-}
-
-function heroPhotos(shop: Shop, passport: PassportOwnerFields): string[] {
-  if (passport.photos.length > 0) return passport.photos;
-  if (shop.photoUrl) return [shop.photoUrl];
-  if (shop.logoUrl) return [shop.logoUrl];
-  return [];
 }
 
 function passportVibeTags(shop: Shop, language: Language): string[] {

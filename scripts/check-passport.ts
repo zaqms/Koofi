@@ -5,6 +5,7 @@ import {
   ownerPhoneHref,
   parsePassport,
   passportHasBrewing,
+  passportHeroPhotos,
   preferPassportUi,
   publicPassport,
   safePassportPhoto,
@@ -64,6 +65,10 @@ assert(en.hours === "", "EN fixture never invents hours");
 assert(ar.phone === "" && en.phone === "", "fixture has no invented phone");
 assert(ar.instagram === "" && en.instagram === "", "fixture has no invented IG");
 assert(ar.photos.length === 3 && en.photos.length === 3, "fixture has 3 hero frames");
+assert(
+  passportHeroPhotos(ar, { logoUrl: "/logos/woods-olaya.jpg" }).length === 3,
+  "Woods fixture carousel is 1/3, not logo-only",
+);
 assert(
   ar.photos.every((src) => src.startsWith("/passport/woods-olaya-")),
   "fixture heroes are local preview assets",
@@ -180,9 +185,14 @@ const owner = readFileSync("components/owner-claim.tsx", "utf8");
 assert(owner.includes("claimWhatsAppHref"), "owner WhatsApp path intact");
 assert(!owner.includes("/api/claims"), "visitors still not routed through OTP");
 assert(existsSync("app/owner/edit/page.tsx"), "owner edit page exists");
+const ownerEdit = readFileSync("components/owner-edit.tsx", "utf8");
+assert(ownerEdit.includes("ownerEditLocked"), "edit UI locks name/district/pin");
+assert(ownerEdit.includes("/api/owner/photos"), "edit can upload photos");
 assert(
-  readFileSync("components/owner-edit.tsx", "utf8").includes("ownerEditLocked"),
-  "edit UI locks name/district/pin",
+  passportCard.includes("passportHeroPhotos"),
+  "Passport carousel reads full photos[]",
 );
+assert(passportCard.includes("photoIndex + 1"), "carousel is 1/n");
+assert(!passportCard.includes("photos[0]"), "hero is not first-photo-only");
 
 console.log("check-passport: ok");

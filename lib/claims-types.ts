@@ -1,3 +1,5 @@
+import { ownerPhotoDisplaySrc } from "./owner-photo-urls";
+
 export const CLAIM_STATUSES = ["none", "pending", "verified"] as const;
 export type ClaimStatus = (typeof CLAIM_STATUSES)[number];
 
@@ -118,14 +120,90 @@ function parseBrewingExtra(raw: unknown): PassportBrewingExtra[] {
   return extras;
 }
 
+/** Accept an array, a last-wins string URL, or a JSON array string. */
+export function parsePhotoList(raw: unknown): string[] {
+  if (Array.isArray(raw)) {
+    return raw.filter((item): item is string => typeof item === "string");
+  }
+  if (raw && typeof raw === "object") {
+    const values = Object.values(raw);
+    if (
+      values.length > 0 &&
+      values.every((item): item is string => typeof item === "string")
+    ) {
+      return values;
+    }
+    return [];
+  }
+  if (typeof raw !== "string") return [];
+  const trimmed = raw.trim();
+  if (!trimmed) return [];
+  if (trimmed.startsWith("[")) {
+    try {
+      const parsed = JSON.parse(trimmed) as unknown;
+      if (Array.isArray(parsed)) {
+        return parsed.filter((item): item is string => typeof item === "string");
+      }
+    } catch {
+      /* not a JSON array */
+    }
+  }
+  return [trimmed];
+}
+
+/**
+ * Persist the full owner list. A one-URL save must not collapse a longer
+ * Neon array (last-file-wins after upload). Two-or-more URLs replace, so
+ * the owner can still remove extras.
+ */
+export function coalescePassportPhotos(
+  existing: string[],
+  incoming: string[],
+): string[] {
+  const saved = mergePassportPhotos(existing, []);
+  const next = mergePassportPhotos(incoming, []);
+  if (next.length >= 2) return next;
+  if (next.length === 0) return next;
+  if (saved.length > 1 && saved.includes(next[0])) return saved;
+  if (saved.length > 1) return mergePassportPhotos(saved, next);
+  return next;
+}
+
+export function mergePassportPhotos(
+  existing: string[],
+  incoming: string[],
+  max = 12,
+): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const raw of [...existing, ...incoming]) {
+    const photo = safePassportPhoto(raw);
+    if (!photo || seen.has(photo)) continue;
+    seen.add(photo);
+    out.push(photo);
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
 export function parsePassport(raw: unknown): PassportOwnerFields {
   const empty = emptyPassport();
-  if (!raw || typeof raw !== "object") return empty;
-  const value = raw as Record<string, unknown>;
+  let value: Record<string, unknown> | null = null;
+  if (typeof raw === "string") {
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        value = parsed as Record<string, unknown>;
+      }
+    } catch {
+      return empty;
+    }
+  } else if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    value = raw as Record<string, unknown>;
+  }
+  if (!value) return empty;
   return {
-    photos: Array.isArray(value.photos)
-      ? value.photos.filter((item): item is string => typeof item === "string")
-      : [],
+    photos: parsePhotoList(value.photos),
     brewingNote: typeof value.brewingNote === "string" ? value.brewingNote : "",
     brewingTitle: typeof value.brewingTitle === "string" ? value.brewingTitle : "",
     brewingDetail:
@@ -191,6 +269,21 @@ export function preferPassportUi(status: ClaimStatus): boolean {
   return status === "verified";
 }
 
+/**
+ * Owner photos win as a full carousel. Catalog logo/photo is only the
+ * fallback when passport.photos[] is empty — never a single-frame stand-in
+ * that hides extra owner images.
+ */
+export function passportHeroPhotos(
+  passport: PassportOwnerFields,
+  shop?: { photoUrl?: string; logoUrl?: string },
+): string[] {
+  const owner = mergePassportPhotos(passport.photos, []).map(ownerPhotoDisplaySrc);
+  if (owner.length > 0) return owner;
+  const fallback = shop?.photoUrl || shop?.logoUrl;
+  return fallback ? [fallback] : [];
+}
+
 export function instagramHref(raw: string): string | null {
   const value = raw.trim();
   if (!value) return null;
@@ -226,7 +319,7 @@ const OWNER_WRITE_LIMITS = {
   thinOffer: 160,
   phone: 32,
   instagram: 80,
-  photo: 300,
+  photo: 2048,
   note: 40,
   extraTitle: 80,
   extraDetail: 80,
@@ -243,9 +336,9 @@ function clip(value: string, max: number): string {
 export function sanitizeOwnerPassport(raw: unknown): PassportOwnerFields {
   const parsed = publicPassport(parsePassport(raw));
   return {
-    photos: parsed.photos
-      .slice(0, 12)
-      .map((photo) => clip(photo, OWNER_WRITE_LIMITS.photo)),
+    photos: mergePassportPhotos(parsed.photos, []).map((photo) =>
+      clip(photo, OWNER_WRITE_LIMITS.photo),
+    ),
     brewingNote: clip(parsed.brewingNote, OWNER_WRITE_LIMITS.brewingNote),
     brewingTitle: clip(parsed.brewingTitle, OWNER_WRITE_LIMITS.brewingTitle),
     brewingDetail: clip(parsed.brewingDetail, OWNER_WRITE_LIMITS.brewingDetail),

@@ -126,4 +126,11 @@ assert(
 assert(copy.ownerConfirmed.ar === "هالمقهى", "Najdi confirmed label");
 assert(copy.ownerConfirmed.en === "This cafe", "EN confirmed label");
 
+const ownerAr = readFileSync("app/owner/page.tsx", "utf8");
+const ownerEn = readFileSync("app/en/owner/page.tsx", "utf8");
+assert(ownerAr.includes("generateMetadata"), "AR owner title follows ?shop=");
+assert(ownerEn.includes("generateMetadata"), "EN owner title follows ?shop=");
+assert(ownerAr.includes("shopDisplayName"), "AR metadata uses cafe name");
+assert(ownerEn.includes("shopDisplayName"), "EN metadata uses cafe name");
+
 console.log("check-claims: ok");

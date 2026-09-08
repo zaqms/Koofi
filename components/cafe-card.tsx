@@ -1,3 +1,4 @@
+import { CafeClaimFooter } from "@/components/cafe-claim-footer";
 import { CardBeen } from "@/components/card-been";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
@@ -97,6 +98,7 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         ) : null}
         <CardBeen shopId={shop.id} language={language} />
       </div>
+      <CafeClaimFooter shopId={shop.id} language={language} />
     </article>
   );
 }

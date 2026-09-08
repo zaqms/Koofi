@@ -121,6 +121,17 @@ export function feedbackPath(language: Language = "ar"): string {
   return language === "en" ? "/en/feedback" : "/feedback";
 }
 
+export function ownerPath(language: Language = "ar"): string {
+  return language === "en" ? "/en/owner" : "/owner";
+}
+
+export function ownerClaimPath(
+  shopId: string,
+  language: Language = "ar",
+): string {
+  return `${ownerPath(language)}?shop=${encodeURIComponent(shopId)}`;
+}
+
 /** Locked public feedback board. Spoken Riyadh/Najdi on AR. Do not seed mock rows. */
 export const LOCKED_FEEDBACK = {
   title: {

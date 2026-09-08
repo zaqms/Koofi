@@ -246,4 +246,112 @@ export const copy = {
     ar: "البورد بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
     en: "The board is not connected yet. Try again later.",
   },
+  listedOn: {
+    ar: "معروض على wain.lol",
+    en: "Listed on wain.lol",
+  },
+  ownThisCafe: {
+    ar: "تملك المقهى؟",
+    en: "Own this cafe?",
+  },
+  ownerTitle: {
+    ar: "هالمقهى لك؟",
+    en: "Own this cafe?",
+  },
+  ownerLead: {
+    ar: "اختار المقهى من القائمة.",
+    en: "Pick the cafe from the list.",
+  },
+  ownerConfirmed: {
+    ar: "هالمقهى",
+    en: "This cafe",
+  },
+  ownerStepCafe: {
+    ar: "المقهى",
+    en: "The cafe",
+  },
+  ownerStepWhatsapp: {
+    ar: "واتساب",
+    en: "WhatsApp",
+  },
+  ownerStepProof: {
+    ar: "إثبات",
+    en: "Proof",
+  },
+  ownerSearch: {
+    ar: "دور على المقهى…",
+    en: "Search the list…",
+  },
+  ownerContinue: {
+    ar: "كمّل",
+    en: "Continue",
+  },
+  ownerPhone: {
+    ar: "رقم الواتساب",
+    en: "WhatsApp number",
+  },
+  ownerPhonePlaceholder: {
+    ar: "05xxxxxxxx",
+    en: "05xxxxxxxx",
+  },
+  ownerSendCode: {
+    ar: "أرسل الرمز",
+    en: "Send the code",
+  },
+  ownerOtp: {
+    ar: "الرمز اللي وصلك",
+    en: "The code you got",
+  },
+  ownerOtpStub: {
+    ar: "واتساب بعد ما تضبط. هذي تجربة — استخدم الرمز التجريبي.",
+    en: "WhatsApp is not configured. Stub mode — use the preview code.",
+  },
+  ownerStubCodeHint: {
+    ar: "الرمز التجريبي: 000000",
+    en: "Preview code: 000000",
+  },
+  ownerProofCr: {
+    ar: "صورة السجل التجاري",
+    en: "Commercial registration photo",
+  },
+  ownerProofHint: {
+    ar: "ارفع صورة السجل التجاري.",
+    en: "Upload a commercial registration (CR) photo.",
+  },
+  ownerProofFile: {
+    ar: "صورة السجل التجاري",
+    en: "CR photo",
+  },
+  ownerSubmit: {
+    ar: "أرسل الطلب",
+    en: "Submit the claim",
+  },
+  ownerUnderReview: {
+    ar: "طلبك تحت المراجعة. بنتحقق إن المقهى لك.",
+    en: "Under review. We’ll verify your claim.",
+  },
+  ownerAlreadyPending: {
+    ar: "هالمقهى تحت المراجعة.",
+    en: "This cafe is already under review.",
+  },
+  ownerAlreadyVerified: {
+    ar: "هالمقهى مُتحقق.",
+    en: "This cafe is already verified.",
+  },
+  ownerBadPhone: {
+    ar: "حط رقم واتساب صحيح.",
+    en: "Use a valid WhatsApp number.",
+  },
+  ownerBadOtp: {
+    ar: "الرمز غلط أو انتهى. اطلب واحد جديد.",
+    en: "That code is wrong or expired. Request a new one.",
+  },
+  ownerNoStorage: {
+    ar: "الطلب بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
+    en: "Claims are not connected yet. Try again later.",
+  },
+  ownerBadProof: {
+    ar: "ارفع صورة السجل التجاري.",
+    en: "Upload a CR photo.",
+  },
 } as const;

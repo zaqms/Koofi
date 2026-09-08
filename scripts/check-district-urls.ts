@@ -24,6 +24,7 @@ import {
   mostPopularMetadata,
   mostPopularTitle,
 } from "../lib/most-popular";
+import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "../lib/landing-experiment";
 import {
   categoryDistrictPath,
   districtPath,
@@ -818,6 +819,27 @@ assert(
   "alias points at EN most-popular",
 );
 assert(nextConfig.includes("statusCode: 308"), "alias is 308");
+
+assert(
+  TEMPORARY_DEFAULT_LANDING_MOST_POPULAR === true,
+  "TEMPORARY experiment flag defaults Most Popular landing on",
+);
+assert(
+  /source:\s*"\/"\s*,\s*\n\s*destination:\s*"\/coffee-shops\/most-popular"/.test(
+    nextConfig,
+  ),
+  "TEMPORARY: `/` 308s to AR most-popular",
+);
+assert(
+  /source:\s*"\/en"\s*,\s*\n\s*destination:\s*"\/en\/coffee-shops\/most-popular"/.test(
+    nextConfig,
+  ),
+  "TEMPORARY: `/en` 308s to EN most-popular",
+);
+assert(
+  nextConfig.includes("TEMPORARY_DEFAULT_LANDING_MOST_POPULAR"),
+  "TEMPORARY landing redirects stay behind the revert flag",
+);
 
 const vibeChips = readFileSync(
   join(process.cwd(), "components/vibe-chips.tsx"),

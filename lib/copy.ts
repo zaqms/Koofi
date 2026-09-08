@@ -342,6 +342,10 @@ export const copy = {
     ar: "الرمز غلط أو انتهى. اطلب واحد جديد.",
     en: "That code is wrong or expired. Request a new one.",
   },
+  ownerOtpSendFailed: {
+    ar: "ما قدرنا نرسل الرمز على واتساب. جرّب بعد شوي.",
+    en: "We couldn’t send the WhatsApp code. Try again in a bit.",
+  },
   ownerNoStorage: {
     ar: "الطلب بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
     en: "Claims are not connected yet. Try again later.",

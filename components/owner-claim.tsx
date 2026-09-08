@@ -32,6 +32,8 @@ function errorCopy(language: Language, error: ClaimError | undefined): string {
       return copy.ownerBadPhone[language];
     case "bad_otp":
       return copy.ownerBadOtp[language];
+    case "otp_send_failed":
+      return copy.ownerOtpSendFailed[language];
     case "already_claimed":
       return copy.ownerAlreadyPending[language];
     case "no_storage":
@@ -99,7 +101,7 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
       const response = await fetch("/api/claims/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ shopId, phone }),
+        body: JSON.stringify({ shopId, phone, language }),
       });
       const payload = (await response.json()) as {
         ok?: boolean;

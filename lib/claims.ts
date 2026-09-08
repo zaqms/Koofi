@@ -14,7 +14,8 @@ import {
 } from "./claims-types";
 import { ENV_KEYS, readEnv } from "./env";
 import { feedbackStorageKind } from "./feedback";
-import { isWhatsAppConfigured, sendWhatsAppText } from "./whatsapp";
+import type { Language } from "./types";
+import { isWhatsAppConfigured, sendWhatsAppClaimOtp } from "./whatsapp";
 
 export {
   emptyPassport,
@@ -146,9 +147,14 @@ function sixDigitCode(): string {
   return String(randomInt(0, 1_000_000)).padStart(6, "0");
 }
 
+function claimOtpLanguage(raw: unknown): Language {
+  return raw === "en" ? "en" : "ar";
+}
+
 export async function requestClaimOtp(input: {
   shopId: unknown;
   phone: unknown;
+  language?: unknown;
 }): Promise<
   | {
       ok: true;
@@ -158,7 +164,15 @@ export async function requestClaimOtp(input: {
       stub: boolean;
       stubCode?: string;
     }
-  | { ok: false; error: "not_found" | "bad_phone" | "no_storage" | "already_claimed" }
+  | {
+      ok: false;
+      error:
+        | "not_found"
+        | "bad_phone"
+        | "no_storage"
+        | "already_claimed"
+        | "otp_send_failed";
+    }
 > {
   const shopId = resolveCatalogShopId(input.shopId);
   if (!shopId) return { ok: false, error: "not_found" };
@@ -177,6 +191,21 @@ export async function requestClaimOtp(input: {
   const configured = isWhatsAppConfigured();
   const stub = !configured;
   const code = stub ? STUB_OTP_CODE : sixDigitCode();
+  const language = claimOtpLanguage(input.language);
+
+  if (!stub) {
+    try {
+      const sent = await sendWhatsAppClaimOtp(whatsAppTo(phone), code, language);
+      if (!sent.ok) return { ok: false, error: "otp_send_failed" };
+    } catch (error) {
+      console.error("wain_whatsapp_graph_error", {
+        thrown: true,
+        name: error instanceof Error ? error.name : "error",
+      });
+      return { ok: false, error: "otp_send_failed" };
+    }
+  }
+
   const codeHash = hashOtp(shopId, phone, code);
   const expiresAt = new Date(Date.now() + OTP_TTL_MS);
 
@@ -198,11 +227,6 @@ export async function requestClaimOtp(input: {
         stub = EXCLUDED.stub,
         created_at = NOW()
     `;
-  }
-
-  if (!stub) {
-    const body = `رمز wain.lol: ${code}`;
-    await sendWhatsAppText(whatsAppTo(phone), body);
   }
 
   return {

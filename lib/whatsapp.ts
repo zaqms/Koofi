@@ -10,7 +10,10 @@ import {
   whatsAppLocations,
 } from "./picker";
 import { recordSuggestion } from "./suggest";
+import type { Language } from "./types";
 import { speakForPicks } from "./voice";
+
+export const DEFAULT_WHATSAPP_OTP_TEMPLATE = "wain_claim_otp";
 
 type WhatsAppTextMessage = {
   from?: string;
@@ -31,6 +34,52 @@ type WhatsAppPayload = {
 };
 
 type SendResult = { ok: boolean; skipped: boolean; status?: number };
+
+const SECRET_KEY = /token|authorization|secret|password|bearer|access_token/i;
+
+function graphErrorBodyForLog(json: unknown, fallback: string): unknown {
+  if (json && typeof json === "object") {
+    try {
+      const redacted = JSON.parse(JSON.stringify(json), (key, value) =>
+        SECRET_KEY.test(key) ? "[redacted]" : value,
+      ) as unknown;
+      return redacted;
+    } catch {
+      return { parse_failed: true };
+    }
+  }
+  return fallback.slice(0, 2000);
+}
+
+function graphJsonHasError(json: unknown): boolean {
+  return Boolean(
+    json &&
+      typeof json === "object" &&
+      "error" in json &&
+      (json as { error?: unknown }).error,
+  );
+}
+
+export function claimOtpTemplateName(): string {
+  return readEnv(ENV_KEYS.WHATSAPP_OTP_TEMPLATE) ?? DEFAULT_WHATSAPP_OTP_TEMPLATE;
+}
+
+export function claimOtpLanguageCode(language: Language | undefined): "ar" | "en" {
+  return language === "en" ? "en" : "ar";
+}
+
+export function claimOtpTemplateComponents(code: string): Record<string, unknown>[] {
+  const otp = { type: "text", text: code };
+  return [
+    { type: "body", parameters: [otp] },
+    {
+      type: "button",
+      sub_type: "url",
+      index: "0",
+      parameters: [otp],
+    },
+  ];
+}
 
 export function extractInboundTexts(payload: WhatsAppPayload): {
   from: string;
@@ -120,7 +169,42 @@ async function graphMessage(
     },
   );
 
-  return { ok: response.ok, skipped: false, status: response.status };
+  const text = await response.text();
+  let json: unknown;
+  if (text) {
+    try {
+      json = JSON.parse(text) as unknown;
+    } catch {
+      json = undefined;
+    }
+  }
+
+  if (!response.ok || graphJsonHasError(json)) {
+    console.error("wain_whatsapp_graph_error", {
+      status: response.status,
+      body: graphErrorBodyForLog(json, text),
+    });
+    return { ok: false, skipped: false, status: response.status };
+  }
+
+  return { ok: true, skipped: false, status: response.status };
+}
+
+export async function sendWhatsAppClaimOtp(
+  to: string,
+  code: string,
+  language?: Language,
+): Promise<SendResult> {
+  return graphMessage({
+    to,
+    type: "template",
+    recipient_type: "individual",
+    template: {
+      name: claimOtpTemplateName(),
+      language: { code: claimOtpLanguageCode(language) },
+      components: claimOtpTemplateComponents(code),
+    },
+  });
 }
 
 export async function sendWhatsAppText(

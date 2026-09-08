@@ -1,6 +1,5 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { parseOwnerPhone, whatsAppTo } from "../lib/claim-phone";
-import { matchCatalogShopFromMapsUrl } from "../lib/claim-resolve";
 import {
   emptyPassport,
   parsePassport,
@@ -55,15 +54,6 @@ assert(passport.hours === "", "empty hours");
 assert(passport.thinOffer === "", "empty thin offer");
 assert(parsePassport({ photos: ["x"], brewingNote: "y" }).photos[0] === "x", "passport parse");
 
-const woodsUrl =
-  "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03581602b92d:0x60ea07cc3fa5339d";
-const woods = matchCatalogShopFromMapsUrl(woodsUrl);
-assert(woods?.id === "woods-olaya", `woods hex should resolve, got ${woods?.id}`);
-assert(
-  !matchCatalogShopFromMapsUrl("https://www.google.com/maps/place/NotAListedCafe"),
-  "unknown place is not invented",
-);
-
 const ownerFiles = [
   "components/owner-claim.tsx",
   "components/cafe-claim-footer.tsx",
@@ -116,9 +106,22 @@ assert(ownerUi.includes("ownerUnderReview"), "owner sees under review");
 assert(ownerUi.includes("/api/claims/otp"), "OTP step exists");
 assert(ownerUi.includes("storefront_photo"), "storefront fallback in UI");
 assert(!ownerUi.includes("voice"), "no voice-note proof");
-assert(ownerUi.includes("fromCard"), "deep-link skips pick/paste");
+assert(ownerUi.includes("fromCard"), "deep-link skips catalog pick");
 assert(ownerUi.includes("ownerConfirmed"), "deep-link shows confirmed cafe");
-assert(ownerUi.includes("ownerLead"), "bare /owner still has pick/paste lead");
+assert(ownerUi.includes("ownerLead"), "bare /owner still has pick-from-list lead");
+assert(!ownerUi.includes("mapsUrl"), "no Maps paste state");
+assert(!ownerUi.includes("/api/claims/resolve"), "no Maps resolve API");
+assert(!/Google Maps|قوقل ماب|paste/i.test(ownerUi), "owner UI has no paste/Maps-link copy");
+assert(!copy.ownerLead.en.toLowerCase().includes("paste"), "EN lead is pick-only");
+assert(!copy.ownerLead.ar.includes("ماب"), "AR lead is pick-only");
+assert(copy.ownerLead.en === "Pick the cafe from the list.", "EN pick-only lead");
+assert(copy.ownerLead.ar === "اختار المقهى من القائمة.", "AR pick-only lead");
+assert(
+  !("ownerMapsPlaceholder" in copy) &&
+    !("ownerResolve" in copy) &&
+    !("ownerNeedPick" in copy),
+  "Maps paste copy keys removed",
+);
 assert(
   ownerUi.includes("ownerClaimPath(selected.id, other)"),
   "locale switch keeps shop query",
@@ -132,5 +135,7 @@ assert(ownerAr.includes("generateMetadata"), "AR owner title follows ?shop=");
 assert(ownerEn.includes("generateMetadata"), "EN owner title follows ?shop=");
 assert(ownerAr.includes("shopDisplayName"), "AR metadata uses cafe name");
 assert(ownerEn.includes("shopDisplayName"), "EN metadata uses cafe name");
+assert(!existsSync("app/api/claims/resolve/route.ts"), "Maps resolve route removed");
+assert(!existsSync("lib/claim-resolve.ts"), "Maps claim-resolve helper removed");
 
 console.log("check-claims: ok");

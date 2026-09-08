@@ -32,10 +32,6 @@ function errorCopy(language: Language, error: ClaimError | undefined): string {
       return copy.ownerBadPhone[language];
     case "bad_otp":
       return copy.ownerBadOtp[language];
-    case "need_pick":
-      return copy.ownerNeedPick[language];
-    case "bad_url":
-      return copy.suggestBad[language];
     case "already_claimed":
       return copy.ownerAlreadyPending[language];
     case "no_storage":
@@ -56,7 +52,6 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
   const [step, setStep] = useState<Step>(preselected ? 2 : 1);
   const [shopId, setShopId] = useState(preselected?.id ?? "");
   const [query, setQuery] = useState("");
-  const [mapsUrl, setMapsUrl] = useState("");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [otpStub, setOtpStub] = useState(false);
@@ -89,35 +84,6 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
       })
       .slice(0, 16);
   }, [query, shops]);
-
-  async function resolveMaps(event: FormEvent) {
-    event.preventDefault();
-    if (busy) return;
-    setBusy(true);
-    setMessage(null);
-    try {
-      const response = await fetch("/api/claims/resolve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mapsUrl }),
-      });
-      const payload = (await response.json()) as {
-        ok?: boolean;
-        error?: ClaimError;
-        shopId?: string;
-      };
-      if (!payload.ok || !payload.shopId) {
-        setMessage(errorCopy(language, payload.error));
-        return;
-      }
-      setShopId(payload.shopId);
-      setStep(2);
-    } catch {
-      setMessage(copy.error[language]);
-    } finally {
-      setBusy(false);
-    }
-  }
 
   function pickShop(id: string) {
     setShopId(id);
@@ -253,29 +219,6 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
 
       {step === 1 ? (
         <div className="mt-8 space-y-6">
-          <form onSubmit={resolveMaps} className="space-y-2">
-            <label className="text-xs text-ink-soft" htmlFor="owner-maps">
-              {copy.ownerMapsPlaceholder[language]}
-            </label>
-            <div className="flex items-stretch gap-2">
-              <input
-                id="owner-maps"
-                value={mapsUrl}
-                onChange={(event) => setMapsUrl(event.target.value)}
-                placeholder={copy.ownerMapsPlaceholder[language]}
-                className="min-h-12 min-w-0 flex-1 rounded-2xl border border-line bg-foam px-4 text-sm outline-none placeholder:text-ink-soft/70 focus:border-ink-soft"
-                autoComplete="off"
-              />
-              <button
-                type="submit"
-                disabled={busy}
-                className="inline-flex min-h-12 shrink-0 items-center rounded-2xl bg-bean px-4 text-sm text-foam hover:bg-bean-deep disabled:opacity-70"
-              >
-                {copy.ownerResolve[language]}
-              </button>
-            </div>
-          </form>
-
           <div>
             <label className="text-xs text-ink-soft" htmlFor="owner-search">
               {copy.ownerSearch[language]}

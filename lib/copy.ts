@@ -259,8 +259,8 @@ export const copy = {
     en: "Own this cafe?",
   },
   ownerLead: {
-    ar: "اختار المقهى من القائمة، أو الصق رابط قوقل ماب.",
-    en: "Pick the cafe from the list, or paste a Google Maps link.",
+    ar: "اختار المقهى من القائمة.",
+    en: "Pick the cafe from the list.",
   },
   ownerConfirmed: {
     ar: "هالمقهى",
@@ -277,18 +277,6 @@ export const copy = {
   ownerStepProof: {
     ar: "إثبات",
     en: "Proof",
-  },
-  ownerMapsPlaceholder: {
-    ar: "رابط قوقل ماب…",
-    en: "A Google Maps link…",
-  },
-  ownerResolve: {
-    ar: "هذا المقهى؟",
-    en: "This cafe?",
-  },
-  ownerNeedPick: {
-    ar: "ما لقيناه في القائمة. اختاره من تحت.",
-    en: "That link isn’t on the list. Pick the cafe below.",
   },
   ownerSearch: {
     ar: "دور على المقهى…",

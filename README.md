@@ -232,7 +232,7 @@ Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.l
 
 `/owner` (Arabic) and `/en/owner` (English):
 
-1. Pick a catalog shop, or paste a Google Maps share / place URL (matched by the existing pin/hex helpers). Unknown links ask them to pick from the list.
+1. Pick a catalog shop from the list. A cafe-card `?shop=` deep-link skips the list and shows the confirmed name + district. No Maps-link paste.
 2. WhatsApp Cloud API OTP. **Never WhatsApp Web / QR.** If `WHATSAPP_ACCESS_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` are missing, the step is stub mode (`000000`) and still lets a pending claim through in memory / local preview.
 3. Proof: commercial-registration photo by default, storefront photo as fallback. File is stored as a path stub, not a public card write. After OTP + proof: status `pending`, owner copy is **Under review / We’ll verify your claim** (AR spoken Najdi). Submit logs `wain_claim` for Ajz and emails `aj@cali.sa` when Resend is configured.
 
@@ -297,7 +297,6 @@ app/api/upvotes/route.ts        directory-list vote snapshot
 app/api/upvotes/vote/route.ts   directory-list shop upvote / unvote
 app/api/claims/route.ts         public claim status + pending submit
 app/api/claims/otp/route.ts     WhatsApp OTP or stub
-app/api/claims/resolve/route.ts Maps URL → catalog shop
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)

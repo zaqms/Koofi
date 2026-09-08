@@ -12,8 +12,6 @@ export type ClaimError =
   | "bad_otp"
   | "otp_not_configured"
   | "already_claimed"
-  | "need_pick"
-  | "bad_url"
   | "bad_proof";
 
 /** Empty Passport owner fields. Not public-writable until verified (later PRs). */

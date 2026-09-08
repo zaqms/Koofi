@@ -1,13 +1,31 @@
 import { existsSync, readFileSync } from "node:fs";
+import {
+  canApproveClaims,
+  CLAIM_APPROVE_COOKIE,
+  CLAIM_APPROVE_HEADER,
+  readApproveToken,
+  tokenEquals,
+} from "../lib/claim-ops";
 import { parseOwnerPhone, whatsAppTo } from "../lib/claim-phone";
 import {
   emptyPassport,
+  parseClaimReviewAction,
   parsePassport,
   parseProofType,
   STUB_OTP_CODE,
 } from "../lib/claims-types";
 import { copy } from "../lib/copy";
-import { ownerClaimPath, ownerPath, PRODUCT_NAME } from "../lib/product";
+import { ENV_KEYS } from "../lib/env";
+import { feedbackStorageKind } from "../lib/feedback";
+import { listDirectoryShops } from "../lib/catalog";
+import {
+  listPendingClaims,
+  publicClaimStatus,
+  requestClaimOtp,
+  reviewShopClaim,
+  submitShopClaim,
+} from "../lib/claims";
+import { OPS_CLAIMS_PATH, ownerClaimPath, ownerPath, PRODUCT_NAME } from "../lib/product";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -154,4 +172,147 @@ assert(ownerEn.includes("shopDisplayName"), "EN metadata uses cafe name");
 assert(!existsSync("app/api/claims/resolve/route.ts"), "Maps resolve route removed");
 assert(!existsSync("lib/claim-resolve.ts"), "Maps claim-resolve helper removed");
 
-console.log("check-claims: ok");
+assert(OPS_CLAIMS_PATH === "/ops/claims", "ops path");
+assert(ENV_KEYS.CLAIM_APPROVE_TOKEN === "CLAIM_APPROVE_TOKEN", "approve env key");
+assert(parseClaimReviewAction("verify") === "verify", "verify action");
+assert(parseClaimReviewAction("reject") === "reject", "reject action");
+assert(parseClaimReviewAction("approved") === undefined, "no approved alias");
+assert(CLAIM_APPROVE_COOKIE === "wain_claim_ops", "ops cookie name");
+assert(CLAIM_APPROVE_HEADER === "x-claim-approve-token", "approve header");
+
+const envExample = readFileSync(".env.example", "utf8");
+assert(envExample.includes("CLAIM_APPROVE_TOKEN="), ".env.example documents token");
+
+const readme = readFileSync("README.md", "utf8");
+assert(readme.includes("CLAIM_APPROVE_TOKEN"), "README documents token");
+assert(readme.includes("/ops/claims"), "README documents ops page");
+assert(readme.includes('action":"verify"'), "README documents verify curl");
+assert(readme.includes('action":"reject"'), "README documents reject curl");
+
+assert(existsSync("app/api/claims/approve/route.ts"), "approve API exists");
+assert(existsSync("app/api/claims/approve/session/route.ts"), "ops session exists");
+assert(existsSync("app/ops/claims/page.tsx"), "ops page exists");
+assert(existsSync("lib/claim-ops.ts"), "claim-ops helper exists");
+
+const approveApi = readFileSync("app/api/claims/approve/route.ts", "utf8");
+assert(approveApi.includes("canApproveClaims"), "approve API is token-gated");
+assert(approveApi.includes("reviewShopClaim"), "approve API flips status");
+assert(approveApi.includes("listPendingClaims"), "approve API lists pending");
+
+const opsPage = readFileSync("app/ops/claims/page.tsx", "utf8");
+assert(opsPage.includes("robots"), "ops page noindex");
+assert(opsPage.includes("verify"), "ops page can verify");
+assert(opsPage.includes("reject"), "ops page can reject");
+assert(!/koofi/i.test(opsPage), "ops page must not say Koofi");
+assert(!/Amjad|Ajz/i.test(opsPage), "ops page must not name people");
+assert(
+  !/Maps is the last click/i.test(opsPage),
+  "ops page must not use parked Maps line",
+);
+
+const claimOps = readFileSync("lib/claim-ops.ts", "utf8");
+assert(claimOps.includes("timingSafeEqual"), "token compare is timing-safe");
+assert(claims.includes("listPendingClaims"), "store can list pending");
+assert(claims.includes("reviewShopClaim"), "store can verify/reject");
+assert(claims.includes("status = 'verified'"), "verify writes verified");
+
+const noOpsLink = [
+  "components/owner-claim.tsx",
+  "components/cafe-claim-footer.tsx",
+  "components/cafe-card.tsx",
+  "components/site-footer.tsx",
+  "app/owner/page.tsx",
+  "app/en/owner/page.tsx",
+];
+for (const file of noOpsLink) {
+  const source = readFileSync(file, "utf8");
+  assert(!source.includes("/ops"), `${file} must not link ops`);
+  assert(!source.includes("CLAIM_APPROVE"), `${file} must not mention approve token`);
+}
+
+const previous = process.env.CLAIM_APPROVE_TOKEN;
+process.env.CLAIM_APPROVE_TOKEN = "check-claims-secret";
+assert(tokenEquals("check-claims-secret"), "matching token");
+assert(!tokenEquals("wrong-token-value"), "wrong token rejected");
+assert(!tokenEquals(""), "empty token rejected");
+const bearer = new Request("http://local/api/claims/approve", {
+  headers: { Authorization: "Bearer check-claims-secret" },
+});
+assert(canApproveClaims(bearer), "Bearer authorize");
+assert(readApproveToken(bearer) === "check-claims-secret", "Bearer parse");
+const headerReq = new Request("http://local/api/claims/approve", {
+  headers: { [CLAIM_APPROVE_HEADER]: "check-claims-secret" },
+});
+assert(canApproveClaims(headerReq), "header authorize");
+const cookieReq = new Request("http://local/api/claims/approve", {
+  headers: { cookie: `${CLAIM_APPROVE_COOKIE}=check-claims-secret` },
+});
+assert(canApproveClaims(cookieReq), "cookie authorize");
+const missing = new Request("http://local/api/claims/approve");
+assert(!canApproveClaims(missing), "missing token denied");
+if (previous === undefined) delete process.env.CLAIM_APPROVE_TOKEN;
+else process.env.CLAIM_APPROVE_TOKEN = previous;
+
+async function checkMemoryReview(): Promise<void> {
+  if (feedbackStorageKind() !== "memory") return;
+  const shops = listDirectoryShops();
+  const first = shops[0]?.id;
+  const second = shops[1]?.id;
+  assert(first && second && first !== second, "need two catalog shops");
+
+  const phoneA = "0551234567";
+  const phoneB = "0557654321";
+  const otpA = await requestClaimOtp({ shopId: first, phone: phoneA });
+  assert(otpA.ok, "otp A");
+  const submitA = await submitShopClaim({
+    shopId: first,
+    phone: phoneA,
+    code: STUB_OTP_CODE,
+    proofType: "cr",
+    proofName: "cr-a.jpg",
+  });
+  assert(submitA.ok && submitA.status === "pending", "submit A pending");
+
+  const otpB = await requestClaimOtp({ shopId: second, phone: phoneB });
+  assert(otpB.ok, "otp B");
+  const submitB = await submitShopClaim({
+    shopId: second,
+    phone: phoneB,
+    code: STUB_OTP_CODE,
+    proofType: "cr",
+    proofName: "cr-b.jpg",
+  });
+  assert(submitB.ok && submitB.status === "pending", "submit B pending");
+
+  const listed = await listPendingClaims();
+  assert(listed.ok, "list pending ok");
+  assert(
+    listed.claims.some((row) => row.shopId === first && row.ownerPhoneE164 === "+966551234567"),
+    "list includes A phone",
+  );
+  assert(
+    listed.claims.some((row) => row.shopId === second && row.proofAssetUrl?.includes("cr-b")),
+    "list includes B proof",
+  );
+
+  const verified = await reviewShopClaim({ shopId: first, action: "verify" });
+  assert(verified.ok && verified.status === "verified", "A verified");
+  const pubA = await publicClaimStatus(first);
+  assert(pubA.ok && pubA.status === "verified", "public A verified");
+  const again = await reviewShopClaim({ shopId: first, action: "verify" });
+  assert(!again.ok && again.error === "not_pending", "verified is not pending");
+
+  const rejected = await reviewShopClaim({ shopId: second, action: "reject" });
+  assert(rejected.ok && rejected.status === "none", "B rejected to none");
+  const pubB = await publicClaimStatus(second);
+  assert(pubB.ok && pubB.status === "none", "public B none");
+}
+
+void checkMemoryReview()
+  .then(() => {
+    console.log("check-claims: ok");
+  })
+  .catch((error: unknown) => {
+    console.error(error);
+    process.exitCode = 1;
+  });

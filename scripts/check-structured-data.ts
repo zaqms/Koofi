@@ -170,12 +170,14 @@ assert(
 );
 assert(!sitemap.includes("/n/"), "sitemap must not revive /n/");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
+assert(!sitemap.includes("/ops"), "sitemap must not list ops claims");
 
 const robots = readRepo("app/robots.ts");
 assert(robots.includes('"/api/shops"'), "robots allows /api/shops");
 assert(robots.includes('"/api/mcp"'), "robots allows /api/mcp");
 assert(robots.includes('"/mcp"'), "robots allows /mcp");
-assert(robots.includes('disallow: "/api/"'), "robots still disallows other /api/");
+assert(robots.includes('"/api/"'), "robots still disallows other /api/");
+assert(robots.includes('"/ops/"'), "robots disallows /ops/");
 
 const cafeCard = readRepo("components/cafe-card.tsx");
 assert(

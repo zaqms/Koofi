@@ -129,6 +129,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `DATABASE_URL` | No | Neon / Vercel Postgres for `/feedback`, directory upvotes, and owner claims. If empty on Vercel, those writes return 503. Chat is unchanged. Never commit a real URL. |
 | `CLAIM_ALERT_TO` | No | Optional inbox for pending owner-claim alerts. Defaults to `aj@cali.sa` if empty. Sending needs `RESEND_API_KEY`. |
 | `RESEND_API_KEY` | No | Optional. If set, claim submit emails `CLAIM_ALERT_TO` via Resend. If empty, email is stubbed and the server logs `wain_claim`. |
+| `CLAIM_APPROVE_TOKEN` | No | Optional. Bearer / cookie token that flips a claim `pending` → `verified` (or reject → no row). If empty, `/api/claims/approve` and `/ops/claims` stay closed (404). Never commit a real token. |
 
 Do not commit secrets.
 
@@ -244,7 +245,43 @@ Real Cloud API OTP later needs:
 - `WHATSAPP_PHONE_NUMBER_ID`
 - A Meta-approved authentication / OTP template (plain text only works inside the 24h customer-care window; this PR does not add a template name)
 
-Approve / verified badge / paid claim stay out of this PR.
+Approve is PR2 (`CLAIM_APPROVE_TOKEN` + `/ops/claims`). Verified badge / Passport card UI stay later.
+
+## Owner claim approve (PR2)
+
+Ajz queues proof on `/owner`. Amjad flips status. The product never messages Amjad. Submit still emails `aj@cali.sa` when Resend is set.
+
+Set `CLAIM_APPROVE_TOKEN` on Vercel **Preview + Production** (same Neon `DATABASE_URL` as PR1). If it is empty, approve stays closed.
+
+Verified is stored on `shop_claims.status`. The cafe-card **Own this cafe?** footer already hides when status is `pending` or `verified`. Passport card UI and the Verified badge stay out of this PR.
+
+### Thin ops page
+
+`/ops/claims` — ugly, noindex, not linked from visitor or `/owner` UI. Enter the token; cookie `wain_claim_ops` (httpOnly, 12h). Lists pending rows: `shop_id`, phone, proof path, `created_at`. **verify** writes `verified`. **reject** deletes the row (status back to `none` so they can claim again). Does not name anyone.
+
+### curl / API
+
+Same token as Bearer, `x-claim-approve-token`, or the ops cookie. Wrong or missing token → `404`.
+
+```bash
+# list pending
+curl -sS -H "Authorization: Bearer $CLAIM_APPROVE_TOKEN" \
+  https://<host>/api/claims/approve
+
+# pending → verified
+curl -sS -X POST -H "Authorization: Bearer $CLAIM_APPROVE_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"shopId":"woods-olaya","action":"verify"}' \
+  https://<host>/api/claims/approve
+
+# pending → none (delete the row)
+curl -sS -X POST -H "Authorization: Bearer $CLAIM_APPROVE_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"shopId":"woods-olaya","action":"reject"}' \
+  https://<host>/api/claims/approve
+```
+
+Local preview without Neon uses process memory (same as PR1). Vercel needs `DATABASE_URL`.
 
 ## Shop suggestions
 
@@ -284,6 +321,7 @@ app/feedback/page.tsx           public ideas board (Arabic)
 app/en/feedback/page.tsx        public ideas board (English)
 app/owner/page.tsx              owner claim door (Arabic)
 app/en/owner/page.tsx           owner claim door (English)
+app/ops/claims/page.tsx         token-gated pending list + verify/reject
 app/c/[id]/page.tsx             shareable cafe card (+ CafeOrCoffeeShop JSON-LD)
 app/llms.txt/route.ts           agent pointer to /api/shops + MCP
 app/mcp/route.ts                public MCP alias (/mcp)
@@ -297,6 +335,8 @@ app/api/upvotes/route.ts        directory-list vote snapshot
 app/api/upvotes/vote/route.ts   directory-list shop upvote / unvote
 app/api/claims/route.ts         public claim status + pending submit
 app/api/claims/otp/route.ts     WhatsApp OTP or stub
+app/api/claims/approve          token-gated pending list + verify/reject
+app/api/claims/approve/session  ops cookie login / leave
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
@@ -315,6 +355,7 @@ lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board
 lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
 lib/claims.ts                   Neon (or local memory) owner claims
+lib/claim-ops.ts                CLAIM_APPROVE_TOKEN compare + ops cookie
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names

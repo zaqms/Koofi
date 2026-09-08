@@ -5,10 +5,12 @@ import { parseOwnerPhone, whatsAppTo } from "./claim-phone";
 import { getShop, listDirectoryShops } from "./catalog";
 import {
   emptyPassport,
+  parseClaimReviewAction,
   parseProofType,
   STUB_OTP_CODE,
+  type ClaimReviewAction,
   type PassportOwnerFields,
-  type ProofType,
+  type PendingClaim,
   type PublicClaimStatus,
   type ShopClaim,
 } from "./claims-types";
@@ -18,13 +20,16 @@ import { isWhatsAppConfigured, sendWhatsAppText } from "./whatsapp";
 
 export {
   emptyPassport,
+  parseClaimReviewAction,
   parseProofType,
   STUB_OTP_CODE,
 } from "./claims-types";
 export type {
   ClaimError,
+  ClaimReviewAction,
   ClaimStatus,
   PassportOwnerFields,
+  PendingClaim,
   ProofType,
   PublicClaimStatus,
   ShopClaim,
@@ -62,8 +67,26 @@ type MemoryOtp = {
   stub: boolean;
 };
 
-const memoryClaims = new Map<string, MemoryClaim>();
-const memoryOtps = new Map<string, MemoryOtp>();
+type ClaimsMemory = {
+  claims: Map<string, MemoryClaim>;
+  otps: Map<string, MemoryOtp>;
+};
+
+const claimsMemory: ClaimsMemory = (() => {
+  const globalStore = globalThis as typeof globalThis & {
+    __wainClaimsMemory?: ClaimsMemory;
+  };
+  if (!globalStore.__wainClaimsMemory) {
+    globalStore.__wainClaimsMemory = {
+      claims: new Map<string, MemoryClaim>(),
+      otps: new Map<string, MemoryOtp>(),
+    };
+  }
+  return globalStore.__wainClaimsMemory;
+})();
+
+const memoryClaims = claimsMemory.claims;
+const memoryOtps = claimsMemory.otps;
 
 let sqlClient: NeonQueryFunction<false, false> | null = null;
 let schemaReady = false;
@@ -365,4 +388,121 @@ export function ownerCatalogOptions(): {
     neighborhoodAr: shop.neighborhoodAr,
     neighborhood: shop.neighborhood,
   }));
+}
+
+function pendingFromMemory(): PendingClaim[] {
+  return [...memoryClaims.values()]
+    .filter((row) => row.status === "pending")
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    .map((row) => ({
+      shopId: row.shopId,
+      ownerPhoneE164: row.ownerPhoneE164,
+      proofAssetUrl: row.proofAssetUrl,
+      createdAt: row.createdAt,
+    }));
+}
+
+export async function listPendingClaims(): Promise<
+  | { ok: true; claims: PendingClaim[] }
+  | { ok: false; error: "no_storage" }
+> {
+  const storage = await ensureSchema();
+  if (storage === "missing") return { ok: false, error: "no_storage" };
+
+  if (feedbackStorageKind() === "memory") {
+    return { ok: true, claims: pendingFromMemory() };
+  }
+
+  const sql = getSql();
+  if (!sql) return { ok: false, error: "no_storage" };
+  const rows = (await sql`
+    SELECT shop_id, owner_phone_e164, proof_asset_url, created_at
+    FROM shop_claims
+    WHERE status = 'pending'
+    ORDER BY created_at ASC
+  `) as {
+    shop_id: string;
+    owner_phone_e164: string;
+    proof_asset_url: string | null;
+    created_at: string;
+  }[];
+
+  return {
+    ok: true,
+    claims: rows.map((row) => ({
+      shopId: row.shop_id,
+      ownerPhoneE164: row.owner_phone_e164,
+      proofAssetUrl: row.proof_asset_url,
+      createdAt:
+        typeof row.created_at === "string"
+          ? row.created_at
+          : new Date(row.created_at).toISOString(),
+    })),
+  };
+}
+
+async function loadClaimStatus(
+  shopId: string,
+): Promise<"pending" | "verified" | undefined> {
+  if (feedbackStorageKind() === "memory") {
+    return memoryClaims.get(shopId)?.status;
+  }
+  const sql = getSql();
+  if (!sql) return undefined;
+  const rows = (await sql`
+    SELECT status FROM shop_claims WHERE shop_id = ${shopId}
+  `) as { status: "pending" | "verified" }[];
+  return rows[0]?.status;
+}
+
+export async function reviewShopClaim(input: {
+  shopId: unknown;
+  action: unknown;
+}): Promise<
+  | { ok: true; shopId: string; status: "verified" | "none"; action: ClaimReviewAction }
+  | { ok: false; error: "not_found" | "not_pending" | "no_storage" | "bad_action" }
+> {
+  const action = parseClaimReviewAction(input.action);
+  if (!action) return { ok: false, error: "bad_action" };
+  const shopId =
+    typeof input.shopId === "string" ? input.shopId.trim() : "";
+  if (!shopId) return { ok: false, error: "not_found" };
+
+  const storage = await ensureSchema();
+  if (storage === "missing") return { ok: false, error: "no_storage" };
+
+  const current = await loadClaimStatus(shopId);
+  if (!current) return { ok: false, error: "not_found" };
+  if (current !== "pending") return { ok: false, error: "not_pending" };
+
+  const now = new Date().toISOString();
+
+  if (feedbackStorageKind() === "memory") {
+    if (action === "reject") {
+      memoryClaims.delete(shopId);
+      return { ok: true, shopId, status: "none", action };
+    }
+    const row = memoryClaims.get(shopId);
+    if (!row) return { ok: false, error: "not_found" };
+    memoryClaims.set(shopId, { ...row, status: "verified", updatedAt: now });
+    return { ok: true, shopId, status: "verified", action };
+  }
+
+  const sql = getSql();
+  if (!sql) return { ok: false, error: "no_storage" };
+
+  if (action === "reject") {
+    await sql`
+      DELETE FROM shop_claims
+      WHERE shop_id = ${shopId} AND status = 'pending'
+    `;
+    return { ok: true, shopId, status: "none", action };
+  }
+
+  await sql`
+    UPDATE shop_claims
+    SET status = 'verified', updated_at = ${now}
+    WHERE shop_id = ${shopId} AND status = 'pending'
+  `;
+  return { ok: true, shopId, status: "verified", action };
 }

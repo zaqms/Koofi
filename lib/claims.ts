@@ -83,8 +83,27 @@ type MemoryOtp = {
   stub: boolean;
 };
 
-const memoryClaims = new Map<string, MemoryClaim>();
-const memoryOtps = new Map<string, MemoryOtp>();
+type ClaimsMemory = {
+  claims: Map<string, MemoryClaim>;
+  otps: Map<string, MemoryOtp>;
+};
+
+/** Local next dev can load claims.ts in more than one isolate. */
+const claimsMemory = (() => {
+  const globalStore = globalThis as typeof globalThis & {
+    __wainClaimsMemory?: ClaimsMemory;
+  };
+  if (!globalStore.__wainClaimsMemory) {
+    globalStore.__wainClaimsMemory = {
+      claims: new Map<string, MemoryClaim>(),
+      otps: new Map<string, MemoryOtp>(),
+    };
+  }
+  return globalStore.__wainClaimsMemory;
+})();
+
+const memoryClaims = claimsMemory.claims;
+const memoryOtps = claimsMemory.otps;
 
 let sqlClient: NeonQueryFunction<false, false> | null = null;
 let schemaReady = false;

@@ -120,7 +120,12 @@ const tokens = readFileSync("lib/owner-tokens.ts", "utf8");
 assert(tokens.includes("mintOwnerToken"), "mint");
 assert(tokens.includes("validateOwnerToken"), "validate");
 assert(tokens.includes("revokeOwnerTokens"), "revoke");
+assert(tokens.includes("__wainOwnerTokensMemory"), "tokens share memory across isolates");
 assert(!tokens.includes("sendWhatsAppText"), "mint does not send WhatsApp");
+assert(
+  readFileSync("lib/claims.ts", "utf8").includes("__wainClaimsMemory"),
+  "claims share memory across isolates",
+);
 
 const opsApi = readFileSync("app/api/claims/ops/route.ts", "utf8");
 assert(opsApi.includes("mintOwnerToken"), "ops can mint");

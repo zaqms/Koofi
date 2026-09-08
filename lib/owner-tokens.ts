@@ -19,7 +19,16 @@ type MemoryToken = {
   createdAt: number;
 };
 
-const memoryTokens = new Map<string, MemoryToken>();
+/** Local next dev can load this module in more than one isolate. */
+const memoryTokens = (() => {
+  const globalStore = globalThis as typeof globalThis & {
+    __wainOwnerTokensMemory?: Map<string, MemoryToken>;
+  };
+  if (!globalStore.__wainOwnerTokensMemory) {
+    globalStore.__wainOwnerTokensMemory = new Map<string, MemoryToken>();
+  }
+  return globalStore.__wainOwnerTokensMemory;
+})();
 
 export function hashOwnerToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");

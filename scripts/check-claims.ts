@@ -116,5 +116,14 @@ assert(ownerUi.includes("ownerUnderReview"), "owner sees under review");
 assert(ownerUi.includes("/api/claims/otp"), "OTP step exists");
 assert(ownerUi.includes("storefront_photo"), "storefront fallback in UI");
 assert(!ownerUi.includes("voice"), "no voice-note proof");
+assert(ownerUi.includes("fromCard"), "deep-link skips pick/paste");
+assert(ownerUi.includes("ownerConfirmed"), "deep-link shows confirmed cafe");
+assert(ownerUi.includes("ownerLead"), "bare /owner still has pick/paste lead");
+assert(
+  ownerUi.includes("ownerClaimPath(selected.id, other)"),
+  "locale switch keeps shop query",
+);
+assert(copy.ownerConfirmed.ar === "هالمقهى", "Najdi confirmed label");
+assert(copy.ownerConfirmed.en === "This cafe", "EN confirmed label");
 
 console.log("check-claims: ok");

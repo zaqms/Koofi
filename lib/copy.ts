@@ -262,6 +262,10 @@ export const copy = {
     ar: "اختار المقهى من القائمة، أو الصق رابط قوقل ماب.",
     en: "Pick the cafe from the list, or paste a Google Maps link.",
   },
+  ownerConfirmed: {
+    ar: "هالمقهى",
+    en: "This cafe",
+  },
   ownerStepCafe: {
     ar: "المقهى",
     en: "The cafe",

@@ -6,7 +6,7 @@ import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
-import { homePath, ownerPath, shopDisplayName } from "@/lib/product";
+import { homePath, ownerClaimPath, ownerPath, shopDisplayName } from "@/lib/product";
 import { STUB_OTP_CODE, type ClaimError, type ProofType } from "@/lib/claims-types";
 import type { Language, NeighborhoodId } from "@/lib/types";
 
@@ -69,6 +69,15 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
   const selectedLabel = selected
     ? shopDisplayName(selected, language)
     : "";
+  const selectedArea = selected
+    ? language === "ar"
+      ? selected.neighborhoodAr
+      : neighborhoodLabel(selected.neighborhood as NeighborhoodId, "en")
+    : "";
+  const fromCard = Boolean(preselected);
+  const localeHref = selected
+    ? ownerClaimPath(selected.id, other)
+    : ownerPath(other);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -198,7 +207,7 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
       <header className="flex items-center justify-between gap-3">
         <BrandHomeLink language={language} className="text-lg font-semibold" />
         <Link
-          href={ownerPath(other)}
+          href={localeHref}
           className="text-xs text-ink-soft underline-offset-2 hover:underline"
         >
           {copy.switchLanguage[language]}
@@ -209,12 +218,28 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
         <p className="text-xs text-ink-soft" dir="ltr">
           1 · {copy.ownerStepCafe.en} / {copy.ownerStepCafe.ar}
         </p>
-        <h1 className="mt-3 text-[2rem] font-bold leading-none tracking-tight">
-          {copy.ownerTitle[language]}
-        </h1>
-        <p className="mt-3 text-sm leading-7 text-ink-soft">
-          {copy.ownerLead[language]}
-        </p>
+        {fromCard && selected ? (
+          <>
+            <p className="mt-2 text-xs text-ink-soft">
+              {copy.ownerConfirmed[language]}
+            </p>
+            <h1 className="mt-2 text-[2rem] font-bold leading-none tracking-tight">
+              {selectedLabel}
+            </h1>
+            {selectedArea ? (
+              <p className="mt-3 text-sm leading-7 text-ink-soft">{selectedArea}</p>
+            ) : null}
+          </>
+        ) : (
+          <>
+            <h1 className="mt-3 text-[2rem] font-bold leading-none tracking-tight">
+              {copy.ownerTitle[language]}
+            </h1>
+            <p className="mt-3 text-sm leading-7 text-ink-soft">
+              {copy.ownerLead[language]}
+            </p>
+          </>
+        )}
       </section>
 
       {step === "done" ? (
@@ -294,7 +319,7 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
       {step === 2 ? (
         <form className="mt-8 space-y-4" onSubmit={sendOtp}>
           <p className="text-xs text-ink-soft">2 · {copy.ownerStepWhatsapp[language]}</p>
-          {selectedLabel ? (
+          {!fromCard && selectedLabel ? (
             <p className="text-sm font-medium">{selectedLabel}</p>
           ) : null}
           <div>

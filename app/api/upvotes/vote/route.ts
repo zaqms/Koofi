@@ -1,5 +1,9 @@
 import { allowVote, clientIp } from "@/lib/feedback";
-import { loadShopUpvoteSnapshot, voteShop } from "@/lib/upvotes";
+import {
+  applyShopVote,
+  loadShopUpvoteSnapshot,
+  parseVoteAction,
+} from "@/lib/upvotes";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,14 +17,19 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { id?: unknown };
+  let body: { id?: unknown; action?: unknown };
   try {
-    body = (await request.json()) as { id?: unknown };
+    body = (await request.json()) as { id?: unknown; action?: unknown };
   } catch {
     return Response.json({ ok: false, error: "not_found" }, { status: 400 });
   }
 
-  const result = await voteShop(body.id);
+  const action = parseVoteAction(body.action);
+  if (!action) {
+    return Response.json({ ok: false, error: "not_found" }, { status: 400 });
+  }
+
+  const result = await applyShopVote(body.id, action);
   if (!result.ok) {
     const status =
       result.error === "no_storage"
@@ -37,6 +46,7 @@ export async function POST(request: Request) {
   return Response.json({
     ok: true,
     already: result.already,
+    voted: result.voted,
     shopId: result.shopId,
     votes: result.votes,
     ...result.snapshot,

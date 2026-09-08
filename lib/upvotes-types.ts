@@ -1,5 +1,7 @@
 export type ShopUpvoteError = "rate_limited" | "no_storage" | "not_found";
 
+export type ShopVoteAction = "upvote" | "unvote";
+
 export type ShopUpvoteSnapshot = {
   counts: Record<string, number>;
   votedIds: string[];
@@ -20,4 +22,11 @@ export function parseShopIdShape(raw: unknown): string | undefined {
   const id = raw.trim();
   if (!SHOP_ID_PATTERN.test(id)) return undefined;
   return id;
+}
+
+/** Missing action is upvote so older clients stay one-way. */
+export function parseVoteAction(raw: unknown): ShopVoteAction | undefined {
+  if (raw === undefined || raw === "upvote") return "upvote";
+  if (raw === "unvote") return "unvote";
+  return undefined;
 }

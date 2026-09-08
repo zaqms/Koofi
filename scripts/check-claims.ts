@@ -8,6 +8,13 @@ import {
 } from "../lib/claims-types";
 import { copy } from "../lib/copy";
 import { ownerClaimPath, ownerPath, PRODUCT_NAME } from "../lib/product";
+import {
+  claimOtpLanguageCode,
+  claimOtpTemplateComponents,
+  claimOtpTemplateName,
+  DEFAULT_WHATSAPP_OTP_TEMPLATE,
+  mapGraphClaimOtpError,
+} from "../lib/whatsapp";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -88,9 +95,82 @@ assert(claims.includes("CREATE TABLE IF NOT EXISTS shop_claims"), "ensure-on-fir
 assert(claims.includes("emptyPassport"), "Passport scaffold on claim");
 assert(claims.includes("pending"), "pending status");
 assert(claims.includes("STUB_OTP_CODE"), "stub OTP when WA missing");
-assert(claims.includes("sendWhatsAppText"), "Cloud API send, not WA Web");
+assert(claims.includes("sendWhatsAppClaimOtp"), "Cloud API auth template, not WA Web");
+assert(!claims.includes("sendWhatsAppText"), "claim OTP is not freeform text");
+assert(!claims.includes("رمز wain.lol"), "no freeform OTP body");
+assert(claims.includes("otp_send_failed"), "Graph send failure is an error");
 assert(claims.includes("alertClaimSubmitted"), "ops alert on submit");
 assert(!claims.includes("web.whatsapp.com"), "no WhatsApp Web");
+
+const requestFn = claims.slice(claims.indexOf("export async function requestClaimOtp"));
+const sendIdx = requestFn.indexOf("sendWhatsAppClaimOtp");
+const insertIdx = requestFn.indexOf("INSERT INTO shop_claim_otp");
+const memoryIdx = requestFn.indexOf("memoryOtps.set");
+assert(
+  sendIdx >= 0 && sendIdx < insertIdx && sendIdx < memoryIdx,
+  "store OTP only after template send succeeds",
+);
+
+const wa = readFileSync("lib/whatsapp.ts", "utf8");
+assert(wa.includes("wain_claim_otp"), "default auth template name");
+assert(wa.includes("WHATSAPP_OTP_TEMPLATE"), "template name is overridable");
+assert(wa.includes("graph.facebook.com/v21.0"), "Graph v21");
+assert(wa.includes("sub_type"), "copy-code / URL OTP button component");
+assert(wa.includes("wain_whatsapp_graph_error"), "Graph errors are logged");
+assert(!wa.includes("web.whatsapp.com"), "no WhatsApp Web in Cloud API helper");
+
+assert(DEFAULT_WHATSAPP_OTP_TEMPLATE === "wain_claim_otp", "default template name");
+assert(claimOtpTemplateName() === "wain_claim_otp", "env default is wain_claim_otp");
+assert(claimOtpLanguageCode("ar") === "ar", "AR owner flow uses ar");
+assert(claimOtpLanguageCode("en") === "en", "EN owner flow uses en");
+assert(claimOtpLanguageCode(undefined) === "ar", "missing language defaults to ar");
+const components = claimOtpTemplateComponents("123456");
+assert(components[0]?.type === "body", "body parameter is the code");
+assert(
+  JSON.stringify(components).includes("123456"),
+  "body and copy-code button get the same code",
+);
+assert(
+  (components[1] as { sub_type?: string } | undefined)?.sub_type === "url",
+  "button is URL / copy-code OTP",
+);
+assert(
+  mapGraphClaimOtpError({ ok: false, skipped: false, graphCode: 132001 }) ===
+    "otp_template_not_ready",
+  "132001 is template-not-ready",
+);
+assert(
+  mapGraphClaimOtpError({ ok: false, skipped: false, graphCode: 132000 }) ===
+    "otp_template_not_ready",
+  "132000 is template-not-ready",
+);
+assert(
+  mapGraphClaimOtpError({
+    ok: false,
+    skipped: false,
+    graphCode: 10,
+    graphMessage: "This WhatsApp business account does not have permission to create message template.",
+  }) === "otp_account_not_ready",
+  "permission Graph body is account-not-ready",
+);
+assert(
+  mapGraphClaimOtpError({
+    ok: false,
+    skipped: false,
+    graphCode: 190,
+    graphMessage: "Invalid OAuth access token",
+  }) === "otp_send_failed",
+  "invalid token stays generic send-failed",
+);
+
+const envKeys = readFileSync("lib/env.ts", "utf8");
+assert(envKeys.includes("WHATSAPP_OTP_TEMPLATE"), "env contract includes template name");
+assert(envKeys.includes("CLAIM_OTP_DEV_STUB"), "env contract includes optional stub hatch");
+const envExample = readFileSync(".env.example", "utf8");
+assert(envExample.includes("WHATSAPP_OTP_TEMPLATE"), ".env.example lists template name");
+assert(envExample.includes("CLAIM_OTP_DEV_STUB"), ".env.example lists optional stub hatch");
+assert(claims.includes("CLAIM_OTP_DEV_STUB"), "dev stub is an explicit env path");
+assert(claims.includes("mapGraphClaimOtpError"), "Graph codes map to owner errors");
 
 const sql = readFileSync("sql/shop-claims.sql", "utf8");
 assert(sql.includes("shop_id TEXT PRIMARY KEY"), "claims are per shop_id");
@@ -105,6 +185,37 @@ assert(!picker.includes("claim"), "Soft Places parked — picker untouched");
 const ownerUi = readFileSync("components/owner-claim.tsx", "utf8");
 assert(ownerUi.includes("ownerUnderReview"), "owner sees under review");
 assert(ownerUi.includes("/api/claims/otp"), "OTP step exists");
+assert(ownerUi.includes("otp_send_failed"), "UI surfaces Graph send failure");
+assert(ownerUi.includes("otp_template_not_ready"), "UI surfaces missing template");
+assert(ownerUi.includes("otp_account_not_ready"), "UI surfaces WABA permission");
+assert(
+  ownerUi.includes("{ shopId, phone, language }"),
+  "OTP request sends owner UI language",
+);
+
+const otpRoute = readFileSync("app/api/claims/otp/route.ts", "utf8");
+assert(otpRoute.includes("otp_send_failed"), "OTP route returns Graph send failure");
+assert(otpRoute.includes("502"), "OTP send failure is 502");
+assert(otpRoute.includes("language"), "OTP route accepts owner language");
+assert(copy.ownerOtpSendFailed.ar.includes("واتساب"), "AR send-fail copy");
+assert(
+  copy.ownerOtpSendFailed.en.includes("WhatsApp"),
+  "EN send-fail copy",
+);
+assert(
+  copy.ownerOtpTemplateNotReady.en.includes("template"),
+  "EN template-not-ready copy",
+);
+assert(
+  copy.ownerOtpAccountNotReady.en.includes("verification"),
+  "EN account-not-ready copy",
+);
+assert(copy.ownerOtpStub.en.includes("stub"), "EN stub banner is explicit preview/stub");
+assert(copy.ownerOtpStub.ar.includes("تجربة"), "AR stub banner is explicit preview");
+assert(!/Amjad|Ajz/i.test(copy.ownerOtpStub.en), "stub banner does not name ops");
+assert(!/Amjad|Ajz/i.test(copy.ownerOtpStub.ar), "AR stub banner does not name ops");
+assert(!/koofi/i.test(copy.ownerOtpSendFailed.ar), "AR send-fail has no Koofi");
+assert(!/koofi/i.test(copy.ownerOtpSendFailed.en), "EN send-fail has no Koofi");
 assert(!ownerUi.includes("storefront_photo"), "no storefront fallback in UI");
 assert(!ownerUi.includes("ownerProofStorefront"), "no storefront radio copy");
 assert(ownerUi.includes("ownerProofHint"), "CR proof hint");

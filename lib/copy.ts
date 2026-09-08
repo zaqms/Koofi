@@ -299,8 +299,8 @@ export const copy = {
     en: "The code you got",
   },
   ownerOtpStub: {
-    ar: "واتساب بعد ما تضبط. هذي تجربة — استخدم الرمز التجريبي.",
-    en: "WhatsApp is not configured. Stub mode — use the preview code.",
+    ar: "هذي تجربة / stub — استخدم الرمز التجريبي. مو تحقق واتساب حقيقي.",
+    en: "Preview / stub mode — use the preview code. Not a real WhatsApp verification.",
   },
   ownerStubCodeHint: {
     ar: "الرمز التجريبي: 000000",
@@ -341,6 +341,18 @@ export const copy = {
   ownerBadOtp: {
     ar: "الرمز غلط أو انتهى. اطلب واحد جديد.",
     en: "That code is wrong or expired. Request a new one.",
+  },
+  ownerOtpSendFailed: {
+    ar: "ما قدرنا نرسل الرمز على واتساب. جرّب بعد شوي.",
+    en: "We couldn’t send the WhatsApp code. Try again in a bit.",
+  },
+  ownerOtpTemplateNotReady: {
+    ar: "قالب التحقق بعد ما جاهز.",
+    en: "The OTP template is not ready yet.",
+  },
+  ownerOtpAccountNotReady: {
+    ar: "حساب واتساب بعد ما يقدر يرسل تحقق.",
+    en: "This WhatsApp account can’t send verification yet.",
   },
   ownerNoStorage: {
     ar: "الطلب بعد ما اشتغل على السيرفر. جرّب بعد شوي.",

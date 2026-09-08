@@ -1,12 +1,26 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { CafeClaimFooter } from "@/components/cafe-claim-footer";
+import {
+  CafePassportCard,
+  type PassportSocial,
+} from "@/components/cafe-passport-card";
 import { CardBeen } from "@/components/card-been";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
 import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
+import {
+  emptyPassport,
+  preferPassportUi,
+  type ClaimStatus,
+  type PassportOwnerFields,
+} from "@/lib/claims-types";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
+import { woodsPassportFixture } from "@/lib/passport-preview";
 import { officialShopCoords } from "@/lib/place-coords";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
@@ -16,9 +30,101 @@ import { vibeLine } from "@/lib/vibe-labels";
 type CafeCardProps = {
   shop: Shop;
   language?: Language;
+  previewPassport?: boolean;
+  cardNumber?: string;
+  backHref?: string;
+  localeHref?: string;
+  social?: PassportSocial | null;
 };
 
-export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
+type ClaimPayload = {
+  ok?: boolean;
+  status?: ClaimStatus;
+  passport?: PassportOwnerFields;
+  preview?: boolean;
+};
+
+export function CafeCard({
+  shop,
+  language = "ar",
+  previewPassport = false,
+  cardNumber = "00",
+  backHref = "/",
+  localeHref,
+  social = null,
+}: CafeCardProps) {
+  const [status, setStatus] = useState<ClaimStatus>(
+    previewPassport ? "verified" : "none",
+  );
+  const [passport, setPassport] = useState<PassportOwnerFields>(() =>
+    previewPassport ? woodsPassportFixture(language) : emptyPassport(),
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/claims?shopId=${encodeURIComponent(shop.id)}`)
+      .then((response) => response.json() as Promise<ClaimPayload>)
+      .then((payload) => {
+        if (cancelled || !payload.ok) return;
+        if (payload.status === "verified") {
+          setStatus("verified");
+          setPassport(
+            payload.preview
+              ? woodsPassportFixture(language)
+              : (payload.passport ?? emptyPassport()),
+          );
+          return;
+        }
+        if (payload.status === "pending") {
+          setStatus("pending");
+          return;
+        }
+        if (previewPassport) {
+          setStatus("verified");
+          setPassport(woodsPassportFixture(language));
+          return;
+        }
+        setStatus("none");
+      })
+      .catch(() => {
+        if (previewPassport) {
+          setStatus("verified");
+          setPassport(woodsPassportFixture(language));
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [language, previewPassport, shop.id]);
+
+  if (preferPassportUi(status)) {
+    return (
+      <CafePassportCard
+        shop={shop}
+        language={language}
+        passport={passport}
+        cardNumber={cardNumber}
+        backHref={backHref}
+        localeHref={localeHref ?? (language === "ar" ? `/en/c/${shop.id}` : `/c/${shop.id}`)}
+        social={social}
+      />
+    );
+  }
+
+  return (
+    <ThinCafeCard shop={shop} language={language} status={status} />
+  );
+}
+
+function ThinCafeCard({
+  shop,
+  language,
+  status,
+}: {
+  shop: Shop;
+  language: Language;
+  status: ClaimStatus;
+}) {
   const site = shop.officialSite?.trim();
   const primary = shopDisplayName(shop, language);
   const dir = language === "ar" ? "rtl" : "ltr";
@@ -98,7 +204,7 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         ) : null}
         <CardBeen shopId={shop.id} language={language} />
       </div>
-      <CafeClaimFooter shop={shop} language={language} />
+      <CafeClaimFooter shop={shop} language={language} status={status} />
     </article>
   );
 }

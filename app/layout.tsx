@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import {
   PRODUCT_NAME,
@@ -16,6 +16,13 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-koofi",
+  display: "swap",
+});
+
+const passportSerif = Source_Serif_4({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-passport",
   display: "swap",
 });
 
@@ -46,7 +53,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ar" dir="rtl" className={plexArabic.variable}>
+    <html
+      lang="ar"
+      dir="rtl"
+      className={`${plexArabic.variable} ${passportSerif.variable}`}
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{

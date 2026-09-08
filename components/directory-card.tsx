@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { DirectoryUpvote } from "@/components/directory-upvote";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
 import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopDistance } from "@/components/shop-distance";
+import { useShopClaim } from "@/components/shop-claim-provider";
 import { ShopVisual } from "@/components/shop-visual";
+import { VerifiedBadge } from "@/components/verified-badge";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
@@ -22,6 +26,7 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
   const area = language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
   const vibe = vibeLine(shop, language);
   const href = cardPath(shop.id, language);
+  const verified = useShopClaim().isVerified(shop.id);
 
   return (
     <li className="rounded-2xl border border-line bg-foam px-3 py-3">
@@ -41,7 +46,10 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
             className="min-w-0 flex-1 py-0.5"
             dir={language === "ar" ? "rtl" : "ltr"}
           >
-            <h3 className="text-lg font-semibold leading-tight">{name}</h3>
+            <h3 className="flex flex-wrap items-center gap-1.5 text-lg font-semibold leading-tight">
+              <span>{name}</span>
+              {verified ? <VerifiedBadge language={language} size="list" /> : null}
+            </h3>
             <p className="text-[11px] leading-4 text-ink-soft">
               {area}
               <ShopDistance

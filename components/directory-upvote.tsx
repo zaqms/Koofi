@@ -7,9 +7,14 @@ import { useShopUpvote } from "@/components/shop-upvote-provider";
 type DirectoryUpvoteProps = {
   shopId: string;
   language: Language;
+  variant?: "list" | "passport";
 };
 
-export function DirectoryUpvote({ shopId, language }: DirectoryUpvoteProps) {
+export function DirectoryUpvote({
+  shopId,
+  language,
+  variant = "list",
+}: DirectoryUpvoteProps) {
   const { countFor, hasVoted, votingId, vote, errorFor } = useShopUpvote();
   const voted = hasVoted(shopId);
   const busy = votingId === shopId;
@@ -32,9 +37,13 @@ export function DirectoryUpvote({ shopId, language }: DirectoryUpvoteProps) {
       title={label}
       dir="ltr"
       className={
-        voted
-          ? "inline-flex min-w-10 shrink-0 flex-col items-center rounded-xl bg-paper-deep px-2 py-1.5 text-bean"
-          : "inline-flex min-w-10 shrink-0 flex-col items-center rounded-xl px-2 py-1.5 text-ink-soft hover:bg-paper-deep hover:text-ink"
+        variant === "passport"
+          ? voted
+            ? "inline-flex size-11 shrink-0 flex-col items-center justify-center rounded-lg border border-gold bg-passport-wash text-gold"
+            : "inline-flex size-11 shrink-0 flex-col items-center justify-center rounded-lg border border-gold text-gold hover:bg-passport-wash"
+          : voted
+            ? "inline-flex min-w-10 shrink-0 flex-col items-center rounded-xl bg-paper-deep px-2 py-1.5 text-bean"
+            : "inline-flex min-w-10 shrink-0 flex-col items-center rounded-xl px-2 py-1.5 text-ink-soft hover:bg-paper-deep hover:text-ink"
       }
     >
       <span className="text-[10px] leading-none" aria-hidden>

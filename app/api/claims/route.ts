@@ -1,5 +1,9 @@
 import { allowRate, clientIp } from "@/lib/feedback";
-import { publicClaimStatus, submitShopClaim } from "@/lib/claims";
+import {
+  listPublicVerifiedIds,
+  publicClaimStatus,
+  submitShopClaim,
+} from "@/lib/claims";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -7,6 +11,10 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const shopId = url.searchParams.get("shopId");
+  if (!shopId) {
+    const list = await listPublicVerifiedIds();
+    return Response.json(list);
+  }
   const result = await publicClaimStatus(shopId);
   if (!result.ok) {
     return Response.json({ ok: false, error: result.error }, { status: 404 });

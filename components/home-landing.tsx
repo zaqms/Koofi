@@ -1,6 +1,7 @@
 import { Chat } from "@/components/chat";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
+import { ShopClaimProvider } from "@/components/shop-claim-provider";
 import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { listDirectoryShops } from "@/lib/catalog";
@@ -51,17 +52,19 @@ export function HomeLanding({
         selectedChipId={popular ? "popular" : undefined}
       />
       <ShopUpvoteProvider>
-        {filterPutsDirectoryFirst(listing, district) ? (
-          <>
-            {directory}
-            {week}
-          </>
-        ) : (
-          <>
-            {week}
-            {directory}
-          </>
-        )}
+        <ShopClaimProvider>
+          {filterPutsDirectoryFirst(listing, district) ? (
+            <>
+              {directory}
+              {week}
+            </>
+          ) : (
+            <>
+              {week}
+              {directory}
+            </>
+          )}
+        </ShopClaimProvider>
       </ShopUpvoteProvider>
       <SiteFooter language={language} />
     </main>

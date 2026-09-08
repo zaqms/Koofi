@@ -9,6 +9,7 @@ import type { Language, Shop } from "@/lib/types";
 type CafeClaimFooterProps = {
   shop: Pick<Shop, "id" | "nameAr" | "nameEn">;
   language: Language;
+  status?: ClaimStatus;
 };
 
 type StatusPayload = {
@@ -21,17 +22,22 @@ type StatusPayload = {
  * Hides the CTA after we learn the shop is pending or verified.
  * CTA is wa.me with a prefilled claim — phone digits are not shown.
  */
-export function CafeClaimFooter({ shop, language }: CafeClaimFooterProps) {
-  const [status, setStatus] = useState<ClaimStatus>("none");
+export function CafeClaimFooter({
+  shop,
+  language,
+  status: statusProp,
+}: CafeClaimFooterProps) {
+  const [fetched, setFetched] = useState<ClaimStatus>("none");
 
   useEffect(() => {
+    if (statusProp !== undefined) return;
     let cancelled = false;
     fetch(`/api/claims?shopId=${encodeURIComponent(shop.id)}`)
       .then((response) => response.json() as Promise<StatusPayload>)
       .then((payload) => {
         if (cancelled || !payload.ok) return;
         if (payload.status === "pending" || payload.status === "verified") {
-          setStatus(payload.status);
+          setFetched(payload.status);
         }
       })
       .catch(() => {
@@ -40,8 +46,9 @@ export function CafeClaimFooter({ shop, language }: CafeClaimFooterProps) {
     return () => {
       cancelled = true;
     };
-  }, [shop.id]);
+  }, [shop.id, statusProp]);
 
+  const status = statusProp ?? fetched;
   const showCta = status === "none";
 
   return (

@@ -210,6 +210,10 @@ assert(
   copy.ownerOtpAccountNotReady.en.includes("verification"),
   "EN account-not-ready copy",
 );
+assert(copy.ownerOtpStub.en.includes("stub"), "EN stub banner is explicit preview/stub");
+assert(copy.ownerOtpStub.ar.includes("تجربة"), "AR stub banner is explicit preview");
+assert(!/Amjad|Ajz/i.test(copy.ownerOtpStub.en), "stub banner does not name ops");
+assert(!/Amjad|Ajz/i.test(copy.ownerOtpStub.ar), "AR stub banner does not name ops");
 assert(!/koofi/i.test(copy.ownerOtpSendFailed.ar), "AR send-fail has no Koofi");
 assert(!/koofi/i.test(copy.ownerOtpSendFailed.en), "EN send-fail has no Koofi");
 assert(!ownerUi.includes("storefront_photo"), "no storefront fallback in UI");

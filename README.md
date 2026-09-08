@@ -123,7 +123,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `WHATSAPP_ACCESS_TOKEN` | No | Cloud API token used only if you want the webhook to send a reply or a claim OTP. |
 | `WHATSAPP_PHONE_NUMBER_ID` | No | Phone number ID for outbound WhatsApp messages. |
 | `WHATSAPP_OTP_TEMPLATE` | No | Optional Authentication template name for owner-claim OTP. Default `wain_claim_otp`. |
-| `CLAIM_OTP_DEV_STUB` | No | Optional. If `1`/`true`, owner-claim OTP stays on stub `000000` even when WhatsApp tokens exist. Default off. |
+| `CLAIM_OTP_DEV_STUB` | No | Optional Amjad-only hatch. If `1`/`true`, owner-claim OTP stays on stub `000000` even when WhatsApp tokens exist. Default off. Never leave on for real cafe owners. |
 | `GOOGLE_PLACES_API_KEY` | No | Optional live Place Details for a real shop (rating, review count, one snippet, optional photo). If empty, cards hide the rating row and keep the letter mark. No scrape fallback. Not used to rank picks. |
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 | `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |

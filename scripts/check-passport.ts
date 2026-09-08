@@ -180,9 +180,10 @@ const owner = readFileSync("components/owner-claim.tsx", "utf8");
 assert(owner.includes("claimWhatsAppHref"), "owner WhatsApp path intact");
 assert(!owner.includes("/api/claims"), "visitors still not routed through OTP");
 assert(existsSync("app/owner/edit/page.tsx"), "owner edit page exists");
-assert(
-  readFileSync("components/owner-edit.tsx", "utf8").includes("ownerEditLocked"),
-  "edit UI locks name/district/pin",
-);
+const ownerEdit = readFileSync("components/owner-edit.tsx", "utf8");
+assert(ownerEdit.includes("ownerEditLocked"), "edit UI locks name/district/pin");
+assert(ownerEdit.includes("/api/owner/photos"), "edit can upload photos");
+assert(passportCard.includes("heroPhotos"), "Passport carousel reads photos[]");
+assert(passportCard.includes("photoIndex + 1"), "carousel is 1/n");
 
 console.log("check-passport: ok");

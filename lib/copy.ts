@@ -432,8 +432,32 @@ export const copy = {
     en: "Locked — wain.lol keeps this",
   },
   ownerEditPhotosHint: {
-    ar: "رابط لكل صورة. http أو مسار من الموقع.",
-    en: "One URL per photo. http(s) or a site path.",
+    ar: "أضف روابط، أو ارفع من الجوال. كلها تظهر في كاروسيل الباسبور.",
+    en: "Add URLs, or upload from your phone. They all show in the Passport carousel.",
+  },
+  ownerEditAddUrl: {
+    ar: "أضف رابط",
+    en: "Add another URL",
+  },
+  ownerEditUpload: {
+    ar: "ارفع من الجوال",
+    en: "Upload from phone",
+  },
+  ownerEditUploading: {
+    ar: "يرفع…",
+    en: "Uploading…",
+  },
+  ownerEditNoBlob: {
+    ar: "الرفع بعد ما يتضبط على السيرفر. تقدر تحط روابط.",
+    en: "Upload is not connected yet. You can still add photo URLs.",
+  },
+  ownerEditBadPhoto: {
+    ar: "حط صور JPG أو PNG أو WebP، مو أكبر من ١٠ ميجا.",
+    en: "Use JPG, PNG, or WebP photos under 10 MB.",
+  },
+  ownerEditPhotosFull: {
+    ar: "ما نزيد أكثر من ١٢ صورة.",
+    en: "Up to 12 photos.",
   },
   ownerEditHours: {
     ar: "الدوام",
@@ -539,4 +563,15 @@ export function ownerEditErrorCopy(
   if (error === "not_verified") return copy.ownerEditNotVerified[language];
   if (error === "no_storage") return copy.ownerNoStorage[language];
   return copy.ownerEditInvalid[language];
+}
+
+export function ownerPhotoErrorCopy(error: string, language: Language): string {
+  if (error === "no_blob") return copy.ownerEditNoBlob[language];
+  if (error === "bad_photo") return copy.ownerEditBadPhoto[language];
+  if (error === "photos_full") return copy.ownerEditPhotosFull[language];
+  if (error === "rate_limited") return copy.feedbackRateLimited[language];
+  return ownerEditErrorCopy(
+    error as OwnerTokenError,
+    language,
+  );
 }

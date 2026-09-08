@@ -226,7 +226,7 @@ const OWNER_WRITE_LIMITS = {
   thinOffer: 160,
   phone: 32,
   instagram: 80,
-  photo: 300,
+  photo: 512,
   note: 40,
   extraTitle: 80,
   extraDetail: 80,

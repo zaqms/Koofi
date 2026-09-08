@@ -1,0 +1,77 @@
+import { put } from "@vercel/blob";
+import { ENV_KEYS, readEnv } from "./env";
+
+/** Same cap as sanitizeOwnerPassport photos[]. */
+export const OWNER_PHOTO_MAX = 12;
+export const OWNER_PHOTO_MAX_FILES = 8;
+export const OWNER_PHOTO_MAX_BYTES = 10 * 1024 * 1024;
+
+export const OWNER_PHOTO_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+] as const;
+
+const OWNER_PHOTO_TYPE_SET = new Set<string>(OWNER_PHOTO_TYPES);
+
+export type OwnerPhotoError = "no_blob" | "bad_photo" | "photos_full";
+
+export function blobWriteConfigured(): boolean {
+  return Boolean(readEnv(ENV_KEYS.BLOB_READ_WRITE_TOKEN));
+}
+
+export function checkOwnerPhotoFile(file: {
+  type: string;
+  size: number;
+  name: string;
+}): { ok: true } | { ok: false; error: "bad_photo" } {
+  if (file.size <= 0 || file.size > OWNER_PHOTO_MAX_BYTES) {
+    return { ok: false, error: "bad_photo" };
+  }
+  if (!OWNER_PHOTO_TYPE_SET.has(file.type)) {
+    return { ok: false, error: "bad_photo" };
+  }
+  return { ok: true };
+}
+
+/** Blob pathname. Shop id comes from a validated token — never the raw filename. */
+export function ownerPhotoPathname(shopId: string, filename: string): string {
+  const safeShop = shopId.replace(/[^a-z0-9-]/gi, "").slice(0, 80) || "shop";
+  const base = filename.split(/[/\\]/).pop() ?? "photo";
+  const trimmed = base.replace(/[^a-zA-Z0-9._-]/g, "-").replace(/-+/g, "-");
+  const safe = trimmed.slice(0, 80).replace(/^[.-]+|[.-]+$/g, "") || "photo";
+  const named = /\.(jpe?g|png|webp|gif)$/i.test(safe) ? safe : `${safe}.jpg`;
+  return `owner/${safeShop}/${named}`;
+}
+
+export function collectOwnerPhotoFiles(form: FormData): File[] {
+  const files: File[] = [];
+  for (const value of form.values()) {
+    if (value instanceof File && value.size > 0) files.push(value);
+  }
+  return files;
+}
+
+export async function putOwnerPhotos(
+  shopId: string,
+  files: File[],
+): Promise<
+  { ok: true; urls: string[] } | { ok: false; error: OwnerPhotoError }
+> {
+  if (!blobWriteConfigured()) return { ok: false, error: "no_blob" };
+  if (files.length === 0) return { ok: false, error: "bad_photo" };
+
+  const urls: string[] = [];
+  for (const file of files.slice(0, OWNER_PHOTO_MAX_FILES)) {
+    const check = checkOwnerPhotoFile(file);
+    if (!check.ok) return check;
+    const blob = await put(ownerPhotoPathname(shopId, file.name), file, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType: file.type,
+    });
+    urls.push(blob.url);
+  }
+  return { ok: true, urls };
+}

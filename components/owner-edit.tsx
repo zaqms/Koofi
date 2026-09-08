@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { DocumentLocale } from "@/components/document-locale";
 import { MapsLink } from "@/components/maps-link";
 import type { PassportBrewingExtra, PassportOwnerFields } from "@/lib/claims-types";
-import { copy, ownerEditErrorCopy } from "@/lib/copy";
+import { copy, ownerEditErrorCopy, ownerPhotoErrorCopy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, ownerEditPath, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
@@ -28,7 +28,9 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
   const [draft, setDraft] = useState<PassportOwnerFields>(passport);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const filledPhotos = draft.photos.map((item) => item.trim()).filter(Boolean);
 
   const lockedName = shopDisplayName(shop, language);
   const mapsHref = shopMapsHref(shop);
@@ -98,6 +100,47 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
     }
   }
 
+  async function onPickFiles(event: ChangeEvent<HTMLInputElement>) {
+    const picked = event.target.files;
+    if (!picked || picked.length === 0) return;
+    setUploading(true);
+    setSaved(false);
+    setError(null);
+    try {
+      const form = new FormData();
+      form.set("shop", shop.id);
+      form.set("token", token);
+      for (const file of Array.from(picked)) {
+        form.append("files", file);
+      }
+      const res = await fetch("/api/owner/photos", {
+        method: "POST",
+        body: form,
+      });
+      const json = (await res.json()) as {
+        ok?: boolean;
+        error?: string;
+        urls?: string[];
+      };
+      if (!res.ok || !json.ok || !json.urls) {
+        setError(ownerPhotoErrorCopy(json.error ?? "invalid", language));
+        return;
+      }
+      setDraft((current) => ({
+        ...current,
+        photos: [
+          ...current.photos.map((item) => item.trim()).filter(Boolean),
+          ...json.urls,
+        ],
+      }));
+    } catch {
+      setError(copy.ownerEditNoBlob[language]);
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
+  }
+
   return (
     <main
       className="mx-auto min-h-dvh w-full max-w-md bg-charcoal px-3 py-4"
@@ -162,6 +205,25 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
           <p className="mt-1 text-[11px] leading-5 text-ink-soft">
             {copy.ownerEditPhotosHint[language]}
           </p>
+          {filledPhotos.length > 0 ? (
+            <div className="mt-3">
+              <div className="flex items-center justify-between text-[11px] text-gold-deep">
+                <span>{copy.photosTab[language]}</span>
+                <span dir="ltr">1 / {filledPhotos.length}</span>
+              </div>
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {filledPhotos.map((src, index) => (
+                  <div
+                    key={`${src}-${index}`}
+                    className="overflow-hidden rounded-xl bg-paper-deep"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt="" className="aspect-square w-full object-cover" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
           <div className="mt-2 space-y-2">
             {(draft.photos.length > 0 ? draft.photos : [""]).map((photo, index) => (
               <div key={`photo-${index}`} className="flex gap-2">
@@ -193,8 +255,21 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
               setDraft((current) => ({ ...current, photos: [...current.photos, ""] }))
             }
           >
-            {copy.ownerEditAdd[language]}
+            {copy.ownerEditAddUrl[language]}
           </AddButton>
+          <label className="mt-3 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-lg border border-gold/50 bg-foam px-3 text-sm text-gold-deep hover:bg-passport-wash">
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={uploading}
+              onChange={onPickFiles}
+              className="sr-only"
+            />
+            {uploading
+              ? copy.ownerEditUploading[language]
+              : copy.ownerEditUpload[language]}
+          </label>
 
           <div className="mt-6 rounded-2xl border border-gold/40 bg-passport-wash px-4 py-4">
             <p className="text-[11px] tracking-[0.14em] text-gold uppercase">

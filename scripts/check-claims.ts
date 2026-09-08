@@ -7,7 +7,16 @@ import {
   STUB_OTP_CODE,
 } from "../lib/claims-types";
 import { copy } from "../lib/copy";
-import { ownerClaimPath, ownerPath, PRODUCT_NAME } from "../lib/product";
+import {
+  CONTACT_WHATSAPP_HREF,
+  claimWhatsAppHref,
+  claimWhatsAppText,
+  ownerClaimPath,
+  ownerPath,
+  PRODUCT_NAME,
+  publicCardUrl,
+  shopClaimWhatsAppHref,
+} from "../lib/product";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -18,12 +27,16 @@ assert(copy.listedOn.en === "Listed on wain.lol", "EN listed line");
 assert(copy.listedOn.ar === "معروض على wain.lol", "AR listed line keeps Latin brand");
 assert(copy.ownThisCafe.ar === "تملك المقهى؟", "Najdi own-this CTA");
 assert(copy.ownThisCafe.en === "Own this cafe?", "EN own-this CTA");
+assert(copy.ownerChatWhatsApp.en === "Chat on WhatsApp", "EN WhatsApp CTA");
+assert(copy.ownerChatWhatsApp.ar === "كلّمنا على واتساب", "AR WhatsApp CTA");
 assert(
-  copy.ownerUnderReview.en === "Under review. We’ll verify your claim.",
-  "EN under-review lock",
+  copy.ownerLead.en === "Continue the claim on WhatsApp.",
+  "EN lead is WhatsApp chat",
 );
-assert(copy.ownerUnderReview.ar.includes("تحت المراجعة"), "AR under-review spoken");
-assert(copy.ownerUnderReview.ar.includes("بنتحقق"), "AR uses بنتحقق not MSA");
+assert(
+  copy.ownerLead.ar === "كمّل المطالبة على واتساب.",
+  "AR lead is WhatsApp chat",
+);
 assert(ownerPath("ar") === "/owner", "AR owner path");
 assert(ownerPath("en") === "/en/owner", "EN owner path");
 assert(
@@ -33,6 +46,57 @@ assert(
 assert(
   ownerClaimPath("woods-olaya", "en") === "/en/owner?shop=woods-olaya",
   "EN card deep-link",
+);
+
+assert(CONTACT_WHATSAPP_HREF === "https://wa.me/966570064331", "reuse Contact us wa.me");
+assert(
+  publicCardUrl("woods-olaya", "ar") === "https://wain.lol/c/woods-olaya",
+  "AR public card URL",
+);
+assert(
+  publicCardUrl("woods-olaya", "en") === "https://wain.lol/en/c/woods-olaya",
+  "EN public card URL",
+);
+
+const woodsAr = claimWhatsAppText({
+  language: "ar",
+  shopName: "مقهى ومحمصة وودز",
+  cardUrl: publicCardUrl("woods-olaya", "ar"),
+});
+const woodsEn = claimWhatsAppText({
+  language: "en",
+  shopName: "WOODS Cafe and Roastery",
+  cardUrl: publicCardUrl("woods-olaya", "en"),
+});
+assert(
+  woodsAr ===
+    "أبي أطالب بمقهى مقهى ومحمصة وودز على wain.lol — https://wain.lol/c/woods-olaya",
+  "AR shop prefill",
+);
+assert(
+  woodsEn ===
+    "I want to claim WOODS Cafe and Roastery on wain.lol — https://wain.lol/en/c/woods-olaya",
+  "EN shop prefill",
+);
+assert(
+  claimWhatsAppText({ language: "ar" }) === "أبي أطالب بمقهى على wain.lol",
+  "AR generic prefill",
+);
+assert(
+  claimWhatsAppText({ language: "en" }) === "I want to claim a cafe on wain.lol",
+  "EN generic prefill",
+);
+
+const woodsHref = shopClaimWhatsAppHref(
+  { id: "woods-olaya", nameAr: "مقهى ومحمصة وودز", nameEn: "WOODS Cafe and Roastery" },
+  "ar",
+);
+assert(woodsHref.startsWith(`${CONTACT_WHATSAPP_HREF}?text=`), "claim wa.me uses Contact number");
+assert(woodsHref.includes(encodeURIComponent(woodsAr)), "AR prefill is encoded");
+assert(!woodsHref.includes("web.whatsapp.com"), "no WhatsApp Web");
+assert(
+  claimWhatsAppHref({ language: "en" }).startsWith(`${CONTACT_WHATSAPP_HREF}?text=`),
+  "generic claim still uses Contact number",
 );
 
 assert(parseOwnerPhone("0551234567") === "+966551234567", "05 local → E.164");
@@ -80,8 +144,10 @@ assert(!cafeCard.includes("DirectoryUpvote"), "cafe card still has no upvote");
 const footer = readFileSync("components/cafe-claim-footer.tsx", "utf8");
 assert(footer.includes("listedOn"), "footer has Listed on wain.lol");
 assert(footer.includes("ownThisCafe"), "footer has Own this cafe?");
-assert(footer.includes("ownerClaimPath"), "footer deep-links shop id");
+assert(footer.includes("shopClaimWhatsAppHref"), "footer is wa.me with shop prefill");
+assert(!footer.includes("ownerClaimPath"), "footer no longer routes through /owner");
 assert(footer.includes('status === "none"'), "CTA hidden when not none");
+assert(!footer.includes("966570064331"), "footer source does not hardcode digits");
 
 const claims = readFileSync("lib/claims.ts", "utf8");
 assert(claims.includes("CREATE TABLE IF NOT EXISTS shop_claims"), "ensure-on-first-use");
@@ -103,23 +169,23 @@ const picker = readFileSync("lib/picker.ts", "utf8");
 assert(!picker.includes("claim"), "Soft Places parked — picker untouched");
 
 const ownerUi = readFileSync("components/owner-claim.tsx", "utf8");
-assert(ownerUi.includes("ownerUnderReview"), "owner sees under review");
-assert(ownerUi.includes("/api/claims/otp"), "OTP step exists");
+assert(ownerUi.includes("ownerChatWhatsApp"), "owner sees Chat on WhatsApp");
+assert(ownerUi.includes("claimWhatsAppHref"), "bare /owner uses generic wa.me");
+assert(ownerUi.includes("shopClaimWhatsAppHref"), "known shop uses shop prefill");
+assert(!ownerUi.includes("/api/claims"), "visitors are not routed through claim APIs");
+assert(!ownerUi.includes("otp"), "no OTP step in visitor UI");
+assert(!ownerUi.includes("proof"), "no CR upload in visitor UI");
 assert(!ownerUi.includes("storefront_photo"), "no storefront fallback in UI");
 assert(!ownerUi.includes("ownerProofStorefront"), "no storefront radio copy");
-assert(ownerUi.includes("ownerProofHint"), "CR proof hint");
-assert(ownerUi.includes('proofType: "cr"'), "submit always sends CR");
 assert(!ownerUi.includes("voice"), "no voice-note proof");
-assert(ownerUi.includes("fromCard"), "deep-link skips catalog pick");
-assert(ownerUi.includes("ownerConfirmed"), "deep-link shows confirmed cafe");
-assert(ownerUi.includes("ownerLead"), "bare /owner still has pick-from-list lead");
+assert(!/Verified badge/i.test(ownerUi), "no Verified badge in visitor UI");
+assert(!/Passport/i.test(ownerUi), "no Passport card UI");
+assert(!/Verified badge/i.test(footer), "footer has no Verified badge");
 assert(!ownerUi.includes("mapsUrl"), "no Maps paste state");
 assert(!ownerUi.includes("/api/claims/resolve"), "no Maps resolve API");
 assert(!/Google Maps|قوقل ماب|paste/i.test(ownerUi), "owner UI has no paste/Maps-link copy");
-assert(!copy.ownerLead.en.toLowerCase().includes("paste"), "EN lead is pick-only");
-assert(!copy.ownerLead.ar.includes("ماب"), "AR lead is pick-only");
-assert(copy.ownerLead.en === "Pick the cafe from the list.", "EN pick-only lead");
-assert(copy.ownerLead.ar === "اختار المقهى من القائمة.", "AR pick-only lead");
+assert(!copy.ownerLead.en.toLowerCase().includes("paste"), "EN lead is not paste");
+assert(!copy.ownerLead.ar.includes("ماب"), "AR lead is not Maps");
 assert(
   !("ownerMapsPlaceholder" in copy) &&
     !("ownerResolve" in copy) &&
@@ -127,21 +193,18 @@ assert(
   "Maps paste copy keys removed",
 );
 assert(
-  ownerUi.includes("ownerClaimPath(selected.id, other)"),
+  ownerUi.includes("ownerClaimPath(shop.id, other)"),
   "locale switch keeps shop query",
 );
 assert(copy.ownerConfirmed.ar === "هالمقهى", "Najdi confirmed label");
 assert(copy.ownerConfirmed.en === "This cafe", "EN confirmed label");
 assert(!("ownerProofStorefront" in copy), "storefront copy key removed");
-assert(
-  copy.ownerProofHint.en === "Upload a commercial registration (CR) photo.",
-  "EN CR-only proof hint",
-);
-assert(copy.ownerProofHint.ar === "ارفع صورة السجل التجاري.", "AR CR-only proof hint");
-assert(!/storefront|الواجهة|إذا ما تقدر|If you can/i.test(copy.ownerProofHint.en), "EN hint has no fallback");
-assert(!copy.ownerProofHint.ar.includes("الواجهة"), "AR hint has no storefront");
-assert(copy.ownerBadProof.en === "Upload a CR photo.", "EN bad proof is CR-only");
-assert(copy.ownerBadProof.ar === "ارفع صورة السجل التجاري.", "AR bad proof is CR-only");
+assert(!copy.ownerChatWhatsApp.en.includes("966"), "EN CTA has no digits");
+assert(!copy.ownerChatWhatsApp.ar.includes("966"), "AR CTA has no digits");
+assert(!copy.ownerLead.en.includes("966"), "EN lead has no digits");
+assert(!copy.ownerLead.ar.includes("966"), "AR lead has no digits");
+assert(!copy.ownThisCafe.en.includes("966"), "EN footer CTA has no digits");
+assert(!copy.ownThisCafe.ar.includes("966"), "AR footer CTA has no digits");
 assert(!claims.includes("storefront_photo"), "claims store has no storefront type");
 assert(!claims.includes("storefront"), "claims store has no storefront path");
 
@@ -151,7 +214,12 @@ assert(ownerAr.includes("generateMetadata"), "AR owner title follows ?shop=");
 assert(ownerEn.includes("generateMetadata"), "EN owner title follows ?shop=");
 assert(ownerAr.includes("shopDisplayName"), "AR metadata uses cafe name");
 assert(ownerEn.includes("shopDisplayName"), "EN metadata uses cafe name");
+assert(!ownerAr.includes("ownerCatalogOptions"), "AR owner is not the catalog picker");
+assert(!ownerEn.includes("ownerCatalogOptions"), "EN owner is not the catalog picker");
 assert(!existsSync("app/api/claims/resolve/route.ts"), "Maps resolve route removed");
 assert(!existsSync("lib/claim-resolve.ts"), "Maps claim-resolve helper removed");
+assert(existsSync("app/api/claims/route.ts"), "claim status API stays parked");
+assert(existsSync("app/api/claims/otp/route.ts"), "OTP API stays parked");
+assert(existsSync("sql/shop-claims.sql"), "claim SQL stays parked");
 
 console.log("check-claims: ok");

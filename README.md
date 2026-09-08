@@ -226,25 +226,13 @@ Vote model: toggle upvote. Cookie voter `wain_vid` (same as /feedback). First ta
 
 Visitor copy is short: ▲ + count, `أعجبني` / `Upvote`. Optional `cafe_upvote` / `cafe_unvote` dataLayer events send `shop_id` + `locale` only.
 
-## Owner claim (PR1)
+## Owner claim (interim WhatsApp chat)
 
-Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.lol**. Unclaimed shops show **Own this cafe?** / **تملك المقهى؟** → `/owner?shop=` or `/en/owner?shop=`. Pending or verified shops hide that CTA. No owner names on the public card. Full Passport card UI is a later PR.
+Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.lol**. Unclaimed shops show **Own this cafe?** / **تملك المقهى؟**. That link is `wa.me` to the same Contact us number, with a prefilled claim (locale shop name + public `/c/[id]` or `/en/c/[id]` URL). Phone digits are not shown. Pending or verified shops hide that CTA. No owner names on the public card.
 
-`/owner` (Arabic) and `/en/owner` (English):
+`/owner` and `/en/owner` are a short **Chat on WhatsApp** screen. `?shop=` uses the same shop prefill. No shop still opens `wa.me` with a generic claim prefill. **Never WhatsApp Web / QR.** No OTP and no CR upload on this door.
 
-1. Pick a catalog shop from the list. A cafe-card `?shop=` deep-link skips the list and shows the confirmed name + district. No Maps-link paste.
-2. WhatsApp Cloud API OTP. **Never WhatsApp Web / QR.** If `WHATSAPP_ACCESS_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` are missing, the step is stub mode (`000000`) and still lets a pending claim through in memory / local preview.
-3. Proof: commercial-registration (CR) photo only — no storefront fallback. File is stored as a path stub, not a public card write. After OTP + proof: status `pending`, owner copy is **Under review / We’ll verify your claim** (AR spoken Najdi). Submit logs `wain_claim` for Ajz and emails `aj@cali.sa` when Resend is configured.
-
-Claims are **per `shop_id`**. Passport owner fields (`photos[]`, brewing/note, hours, thin offer, optional phone/IG) are scaffolded empty on the row. They are not editable from the public card until verified.
-
-Real Cloud API OTP later needs:
-
-- `WHATSAPP_ACCESS_TOKEN`
-- `WHATSAPP_PHONE_NUMBER_ID`
-- A Meta-approved authentication / OTP template (plain text only works inside the 24h customer-care window; this PR does not add a template name)
-
-Approve / verified badge / paid claim stay out of this PR.
+Cloud API OTP (`/api/claims`, `/api/claims/otp`, Neon `shop_claims`) stays parked — visitors are not routed through it. Soft Places, buy-rank, marketplace, Passport card UI, and Verified badge stay out.
 
 ## Shop suggestions
 

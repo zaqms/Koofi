@@ -98,7 +98,7 @@ export function CafeCard({ shop, language = "ar" }: CafeCardProps) {
         ) : null}
         <CardBeen shopId={shop.id} language={language} />
       </div>
-      <CafeClaimFooter shopId={shop.id} language={language} />
+      <CafeClaimFooter shop={shop} language={language} />
     </article>
   );
 }

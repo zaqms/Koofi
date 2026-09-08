@@ -1,6 +1,5 @@
 import { OwnerClaim } from "@/components/owner-claim";
 import { getShop } from "@/lib/catalog";
-import { ownerCatalogOptions } from "@/lib/claims";
 import { copy } from "@/lib/copy";
 import {
   PRODUCT_NAME,
@@ -50,9 +49,6 @@ export async function generateMetadata({ searchParams }: OwnerPageProps) {
 }
 
 export default async function OwnerPage({ searchParams }: OwnerPageProps) {
-  const shops = ownerCatalogOptions();
-  const initialShopId = shopQuery((await searchParams).shop);
-  return (
-    <OwnerClaim language="ar" shops={shops} initialShopId={initialShopId} />
-  );
+  const shop = getShop(shopQuery((await searchParams).shop) ?? "");
+  return <OwnerClaim language="ar" shop={shop} />;
 }

@@ -255,8 +255,12 @@ export const copy = {
     en: "Own this cafe?",
   },
   ownerLead: {
-    ar: "اختار المقهى من القائمة.",
-    en: "Pick the cafe from the list.",
+    ar: "كمّل المطالبة على واتساب.",
+    en: "Continue the claim on WhatsApp.",
+  },
+  ownerChatWhatsApp: {
+    ar: "كلّمنا على واتساب",
+    en: "Chat on WhatsApp",
   },
   ownerConfirmed: {
     ar: "هالمقهى",

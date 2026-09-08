@@ -191,10 +191,6 @@ export const copy = {
   aboutBody: LOCKED_ABOUT.body,
   aboutNote: LOCKED_ABOUT.note,
   contactUs: LOCKED_CONTACT,
-  shareHint: {
-    ar: "رابط، مو تطبيق.",
-    en: "A link, not an app.",
-  },
   sharePack: {
     ar: "شارك",
     en: "Share",

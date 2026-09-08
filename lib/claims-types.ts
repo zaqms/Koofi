@@ -14,6 +14,28 @@ export type ClaimError =
   | "already_claimed"
   | "bad_proof";
 
+export type OwnerTokenError =
+  | "missing"
+  | "invalid"
+  | "expired"
+  | "revoked"
+  | "wrong_shop"
+  | "not_verified"
+  | "no_storage"
+  | "not_found";
+
+export type PendingClaim = {
+  shopId: string;
+  ownerPhoneE164: string;
+  proofAssetUrl: string | null;
+  createdAt: string;
+};
+
+export type VerifiedClaimRow = {
+  shopId: string;
+  updatedAt: string;
+};
+
 export type PassportBrewingExtra = {
   title: string;
   detail: string;
@@ -194,4 +216,49 @@ export function ownerPhoneHref(raw: string): string | null {
   const digits = raw.replace(/[^\d+]/g, "");
   if (!/^\+?[0-9]{8,15}$/.test(digits)) return null;
   return `tel:${digits}`;
+}
+
+const OWNER_WRITE_LIMITS = {
+  brewingNote: 280,
+  brewingTitle: 120,
+  brewingDetail: 200,
+  hours: 120,
+  thinOffer: 160,
+  phone: 32,
+  instagram: 80,
+  photo: 300,
+  note: 40,
+  extraTitle: 80,
+  extraDetail: 80,
+} as const;
+
+function clip(value: string, max: number): string {
+  return value.slice(0, max);
+}
+
+/**
+ * Owner-writable Passport only. Drops name / district / pin / status.
+ * Hours stay empty unless the owner typed them — never invent defaults.
+ */
+export function sanitizeOwnerPassport(raw: unknown): PassportOwnerFields {
+  const parsed = publicPassport(parsePassport(raw));
+  return {
+    photos: parsed.photos
+      .slice(0, 12)
+      .map((photo) => clip(photo, OWNER_WRITE_LIMITS.photo)),
+    brewingNote: clip(parsed.brewingNote, OWNER_WRITE_LIMITS.brewingNote),
+    brewingTitle: clip(parsed.brewingTitle, OWNER_WRITE_LIMITS.brewingTitle),
+    brewingDetail: clip(parsed.brewingDetail, OWNER_WRITE_LIMITS.brewingDetail),
+    brewingNotes: parsed.brewingNotes
+      .slice(0, 12)
+      .map((note) => clip(note, OWNER_WRITE_LIMITS.note)),
+    brewingExtra: parsed.brewingExtra.slice(0, 8).map((item) => ({
+      title: clip(item.title, OWNER_WRITE_LIMITS.extraTitle),
+      detail: clip(item.detail, OWNER_WRITE_LIMITS.extraDetail),
+    })),
+    hours: clip(parsed.hours, OWNER_WRITE_LIMITS.hours),
+    thinOffer: clip(parsed.thinOffer, OWNER_WRITE_LIMITS.thinOffer),
+    phone: clip(parsed.phone, OWNER_WRITE_LIMITS.phone),
+    instagram: clip(parsed.instagram, OWNER_WRITE_LIMITS.instagram),
+  };
 }

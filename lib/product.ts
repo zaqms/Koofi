@@ -132,6 +132,18 @@ export function ownerClaimPath(
   return `${ownerPath(language)}?shop=${encodeURIComponent(shopId)}`;
 }
 
+export function ownerEditPath(
+  shopId: string,
+  token: string,
+  language: Language = "ar",
+): string {
+  const path = language === "en" ? "/en/owner/edit" : "/owner/edit";
+  return `${path}?shop=${encodeURIComponent(shopId)}&token=${encodeURIComponent(token)}`;
+}
+
+/** Token-gated ops only. Not linked from visitor or owner UI. */
+export const OPS_CLAIMS_PATH = "/ops/claims";
+
 /** Locked public feedback board. Spoken Riyadh/Najdi on AR. Do not seed mock rows. */
 export const LOCKED_FEEDBACK = {
   title: {

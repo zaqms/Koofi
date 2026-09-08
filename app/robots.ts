@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: ["/", "/api/shops", "/api/shops/", "/api/mcp", "/mcp", "/llms.txt"],
-      disallow: "/api/",
+      disallow: ["/api/", "/ops/", "/owner/edit", "/en/owner/edit"],
     },
     sitemap: sitemapPublicUrls(),
   };

@@ -222,5 +222,7 @@ assert(!existsSync("lib/claim-resolve.ts"), "Maps claim-resolve helper removed")
 assert(existsSync("app/api/claims/route.ts"), "claim status API stays parked");
 assert(existsSync("app/api/claims/otp/route.ts"), "OTP API stays parked");
 assert(existsSync("sql/shop-claims.sql"), "claim SQL stays parked");
+assert(existsSync("app/owner/page.tsx"), "interim WhatsApp owner door stays");
+assert(!existsSync("app/api/claims/approve/route.ts"), "parked #105 approve API not revived");
 
 console.log("check-claims: ok");

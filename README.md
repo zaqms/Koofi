@@ -94,6 +94,7 @@ Connect ChatGPT / Claude / Gemini / Perplexity / Cursor with Streamable HTTP to 
 ```bash
 npx tsx scripts/check-structured-data.ts
 npx tsx scripts/check-claims.ts
+npx tsx scripts/check-owner-edit.ts
 npx tsx scripts/check-passport.ts
 ```
 
@@ -130,6 +131,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `DATABASE_URL` | No | Neon / Vercel Postgres for `/feedback`, directory upvotes, and owner claims. If empty on Vercel, those writes return 503. Chat is unchanged. Never commit a real URL. |
 | `CLAIM_ALERT_TO` | No | Optional inbox for pending owner-claim alerts. Defaults to `aj@cali.sa` if empty. Sending needs `RESEND_API_KEY`. |
 | `RESEND_API_KEY` | No | Optional. If set, claim submit emails `CLAIM_ALERT_TO` via Resend. If empty, email is stubbed and the server logs `wain_claim`. |
+| `CLAIM_APPROVE_TOKEN` | No | Optional shared secret for `/ops/claims`. Mint / revoke owner edit links for verified shops. If empty, ops 404s. Never commit a real token. Do not auto-send WhatsApp. |
 
 Do not commit secrets.
 
@@ -249,6 +251,30 @@ Production never overlays a fixture. If Woods has no verified Neon row, Preview 
 
 Google stars/count appear only when Places already returns a cached rating. Soft Places (“ON TONIGHT'S THREE”) stays parked.
 
+## Owner manage (magic link)
+
+After a claim is **verified**, ops mints a single-shop link. The later WhatsApp reply is out of this PR — mint and show the URL only.
+
+- `/owner/edit?shop=…&token=…` and `/en/owner/edit?shop=…&token=…`
+- Token is random, hashed at rest, scoped to one `shop_id`, expires in 7 days, revocable
+- Valid only when `shop_claims.status = 'verified'` for that shop. Pending / unclaimed fail closed
+- Owner may write Passport fields only: photos, brewing / Now pouring, owner-supplied hours, thin offer, optional phone / IG
+- Locked (read-only): name, district, Maps pin
+- No buy-rank, no Soft Places badge, no invented hours defaults
+- Visitor brand stays Wain / wain.lol. Interim **Own this cafe?** → `wa.me` on unclaimed cards stays
+
+### How to mint a try token
+
+1. Set `CLAIM_APPROVE_TOKEN` (and `DATABASE_URL` on Vercel).
+2. Open `/ops/claims`, enter that token.
+3. **grant** a catalog `shop_id` that is not Woods on shared Neon (Woods fixture overlay dies if you write a verified Woods row), or **verify** a pending row.
+4. **mint** — copy the `/owner/edit?shop=&token=` URL once. **revoke** kills active links for that shop.
+5. Do not send WhatsApp from ops.
+
+```bash
+npx tsx scripts/check-owner-edit.ts
+```
+
 ## Shop suggestions
 
 Crowdsource-with-curation. Suggestions are **not** the live catalog.
@@ -287,6 +313,9 @@ app/feedback/page.tsx           public ideas board (Arabic)
 app/en/feedback/page.tsx        public ideas board (English)
 app/owner/page.tsx              owner claim door (Arabic)
 app/en/owner/page.tsx           owner claim door (English)
+app/owner/edit/page.tsx         owner Passport edit (magic link)
+app/en/owner/edit/page.tsx       English owner Passport edit
+app/ops/claims/page.tsx         token-gated mint / revoke (not public)
 app/c/[id]/page.tsx             shareable cafe card (+ CafeOrCoffeeShop JSON-LD)
 app/llms.txt/route.ts           agent pointer to /api/shops + MCP
 app/mcp/route.ts                public MCP alias (/mcp)
@@ -299,7 +328,9 @@ app/api/feedback/vote/route.ts  upvote
 app/api/upvotes/route.ts        directory-list vote snapshot
 app/api/upvotes/vote/route.ts   directory-list shop upvote / unvote
 app/api/claims/route.ts         public claim status + pending submit
-app/api/claims/otp/route.ts     WhatsApp OTP or stub
+app/api/claims/otp/route.ts     WhatsApp OTP or stub (parked)
+app/api/claims/ops/route.ts     ops mint / revoke / grant
+app/api/owner/passport/route.ts token-gated Passport read/write
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
@@ -308,7 +339,8 @@ data/catalog.json               editorial catalog (shop names / ids)
 data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
 sql/shop-upvotes.sql            shop_upvotes + shop_vote_receipts (list social proof)
-sql/shop-claims.sql             shop_claims + shop_claim_otp (owner claim)
+sql/shop-claims.sql             shop_claims + shop_claim_otp + shop_owner_tokens
+sql/shop-owner-tokens.sql       magic-link hashes (same Neon)
 lib/structured-data.ts          public shop JSON-LD + /api/shops schema
 lib/mcp-catalog.ts              MCP tools + resources over the same catalog
 lib/public-mcp.ts               Streamable HTTP MCP handler + CORS
@@ -318,6 +350,8 @@ lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board
 lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
 lib/claims.ts                   Neon (or local memory) owner claims
+lib/owner-tokens.ts             mint / validate / revoke owner edit links
+lib/claim-ops.ts                /ops/claims token gate
 lib/passport-preview.ts         Woods Passport fixture (preview/local only)
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions

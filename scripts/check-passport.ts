@@ -179,5 +179,10 @@ assert(existsSync("components/owner-claim.tsx"), "interim WhatsApp owner door st
 const owner = readFileSync("components/owner-claim.tsx", "utf8");
 assert(owner.includes("claimWhatsAppHref"), "owner WhatsApp path intact");
 assert(!owner.includes("/api/claims"), "visitors still not routed through OTP");
+assert(existsSync("app/owner/edit/page.tsx"), "owner edit page exists");
+assert(
+  readFileSync("components/owner-edit.tsx", "utf8").includes("ownerEditLocked"),
+  "edit UI locks name/district/pin",
+);
 
 console.log("check-passport: ok");

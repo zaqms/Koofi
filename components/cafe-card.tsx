@@ -12,6 +12,7 @@ import { MapsLink } from "@/components/maps-link";
 import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
+import { ViralShareActions } from "@/components/viral-share";
 import {
   emptyPassport,
   preferPassportUi,
@@ -193,6 +194,12 @@ function ThinCafeCard({
           </MapsLink>
           <ShareListingButton shop={shop} language={language} source="card" />
         </div>
+        <ViralShareActions
+          shop={shop}
+          language={language}
+          photo={shop.photoUrl ?? shop.logoUrl ?? null}
+          variant="thin"
+        />
         {site ? (
           <a
             href={site}

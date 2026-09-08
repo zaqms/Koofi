@@ -7,6 +7,7 @@ import { MapsLink } from "@/components/maps-link";
 import { ShareListingButton } from "@/components/share-listing-button";
 import { TargetIcon } from "@/components/target-icon";
 import { VerifiedBadge } from "@/components/verified-badge";
+import { ViralShareActions } from "@/components/viral-share";
 import {
   passportHasBrewing,
   passportHeroPhotos,
@@ -249,6 +250,15 @@ export function CafePassportCard({
             )}
           </div>
         ) : null}
+      </div>
+
+      <div className="px-5 pb-3">
+        <ViralShareActions
+          shop={shop}
+          language={language}
+          photo={photo ?? null}
+          variant="passport"
+        />
       </div>
 
       <div

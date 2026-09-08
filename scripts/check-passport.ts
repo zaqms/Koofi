@@ -127,6 +127,8 @@ const files = [
   "components/target-icon.tsx",
   "lib/passport-preview.ts",
   "lib/copy.ts",
+  "lib/tonight.ts",
+  "components/viral-share.tsx",
 ];
 for (const file of files) {
   const source = readFileSync(file, "utf8");
@@ -150,6 +152,7 @@ assert(footer.includes('status === "none"'), "CTA hidden when not none");
 
 const passportCard = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passportCard.includes("DirectoryUpvote"), "Passport reuses shared ▲");
+assert(passportCard.includes("ViralShareActions"), "Passport has Tonight / Invite");
 assert(passportCard.includes("takeMeThere"), "Passport Maps CTA");
 assert(passportCard.includes("VerifiedBadge"), "Passport has Verified");
 assert(passportCard.includes("reviewsTab"), "Passport has Reviews tab");

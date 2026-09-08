@@ -1,4 +1,7 @@
+import type { ViralShareChannel } from "./tonight";
 import type { Language } from "./types";
+
+export type { ViralShareChannel } from "./tonight";
 
 export type AnalyticsEventName =
   | "three_pick_shown"
@@ -13,7 +16,12 @@ export type AnalyticsEventName =
   | "cafe_unvote"
   | "chip_tap"
   | "district_select"
-  | "chat_query";
+  | "chat_query"
+  | "tonight_card_open"
+  | "tonight_card_mint"
+  | "tonight_card_share"
+  | "invite_open"
+  | "invite_share";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing";
@@ -36,6 +44,7 @@ export type AnalyticsParams = {
   district_en?: string;
   query_text?: string;
   via?: ChatQueryVia;
+  channel?: ViralShareChannel;
 };
 
 const DEDUPE_MS = 400;

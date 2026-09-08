@@ -123,6 +123,16 @@ export function parsePhotoList(raw: unknown): string[] {
   if (Array.isArray(raw)) {
     return raw.filter((item): item is string => typeof item === "string");
   }
+  if (raw && typeof raw === "object") {
+    const values = Object.values(raw);
+    if (
+      values.length > 0 &&
+      values.every((item): item is string => typeof item === "string")
+    ) {
+      return values;
+    }
+    return [];
+  }
   if (typeof raw !== "string") return [];
   const trimmed = raw.trim();
   if (!trimmed) return [];
@@ -137,6 +147,24 @@ export function parsePhotoList(raw: unknown): string[] {
     }
   }
   return [trimmed];
+}
+
+/**
+ * Persist the full owner list. A one-URL save must not collapse a longer
+ * Neon array (last-file-wins after upload). Two-or-more URLs replace, so
+ * the owner can still remove extras.
+ */
+export function coalescePassportPhotos(
+  existing: string[],
+  incoming: string[],
+): string[] {
+  const saved = mergePassportPhotos(existing, []);
+  const next = mergePassportPhotos(incoming, []);
+  if (next.length >= 2) return next;
+  if (next.length === 0) return next;
+  if (saved.length > 1 && saved.includes(next[0])) return saved;
+  if (saved.length > 1) return mergePassportPhotos(saved, next);
+  return next;
 }
 
 export function mergePassportPhotos(
@@ -158,8 +186,20 @@ export function mergePassportPhotos(
 
 export function parsePassport(raw: unknown): PassportOwnerFields {
   const empty = emptyPassport();
-  if (!raw || typeof raw !== "object") return empty;
-  const value = raw as Record<string, unknown>;
+  let value: Record<string, unknown> | null = null;
+  if (typeof raw === "string") {
+    try {
+      const parsed = JSON.parse(raw) as unknown;
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        value = parsed as Record<string, unknown>;
+      }
+    } catch {
+      return empty;
+    }
+  } else if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    value = raw as Record<string, unknown>;
+  }
+  if (!value) return empty;
   return {
     photos: parsePhotoList(value.photos),
     brewingNote: typeof value.brewingNote === "string" ? value.brewingNote : "",

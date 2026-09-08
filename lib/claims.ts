@@ -4,6 +4,7 @@ import { alertClaimSubmitted } from "./claim-alert";
 import { parseOwnerPhone, whatsAppTo } from "./claim-phone";
 import { getShop, listDirectoryShops } from "./catalog";
 import {
+  coalescePassportPhotos,
   emptyPassport,
   mergePassportPhotos,
   parsePassport,
@@ -744,7 +745,11 @@ export async function updateVerifiedPassport(input: {
   if (!current) return { ok: false, error: "not_verified" };
   if (current.status !== "verified") return { ok: false, error: "not_verified" };
 
-  const passport = sanitizeOwnerPassport(input.passport);
+  const incoming = sanitizeOwnerPassport(input.passport);
+  const passport = {
+    ...incoming,
+    photos: coalescePassportPhotos(current.passport.photos, incoming.photos),
+  };
   const now = new Date().toISOString();
 
   if (feedbackStorageKind() === "memory") {
@@ -759,7 +764,8 @@ export async function updateVerifiedPassport(input: {
     SET passport = ${JSON.stringify(passport)}::jsonb, updated_at = ${now}
     WHERE shop_id = ${shopId} AND status = 'verified'
   `;
-  return { ok: true, shopId, passport };
+  const written = await loadShopClaim(shopId);
+  return { ok: true, shopId, passport: written?.passport ?? passport };
 }
 
 /** Append URLs onto the saved photos[] — never replace the array with the last file. */

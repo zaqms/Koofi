@@ -519,6 +519,14 @@ export const copy = {
     ar: "انحفظ.",
     en: "Saved.",
   },
+  ownerEditUploadDone: {
+    ar: "انرفع",
+    en: "Uploaded",
+  },
+  ownerEditUploadFailed: {
+    ar: "فشل الرفع",
+    en: "Upload failed",
+  },
   ownerEditViewCard: {
     ar: "شوف الكرت",
     en: "View card",
@@ -563,6 +571,26 @@ export function ownerEditErrorCopy(
   if (error === "not_verified") return copy.ownerEditNotVerified[language];
   if (error === "no_storage") return copy.ownerNoStorage[language];
   return copy.ownerEditInvalid[language];
+}
+
+export function ownerEditUploadProgressCopy(
+  done: number,
+  total: number,
+  language: Language,
+): string {
+  return language === "ar"
+    ? `يرفع ${done} من ${total}`
+    : `Uploading ${done} of ${total}`;
+}
+
+export function ownerEditSavedCountCopy(
+  count: number,
+  language: Language,
+): string {
+  if (count <= 0) return copy.ownerEditSaved[language];
+  return language === "ar"
+    ? `انحفظ · ${count} صور`
+    : `Saved · ${count} photos`;
 }
 
 export function ownerPhotoErrorCopy(error: string, language: Language): string {

@@ -12,12 +12,20 @@ import {
 } from "../lib/claims";
 import {
   emptyPassport,
+  coalescePassportPhotos,
   mergePassportPhotos,
   parsePhotoList,
+  parsePassport,
   passportHeroPhotos,
   sanitizeOwnerPassport,
 } from "../lib/claims-types";
-import { copy, ownerEditErrorCopy, ownerPhotoErrorCopy } from "../lib/copy";
+import {
+  copy,
+  ownerEditErrorCopy,
+  ownerEditSavedCountCopy,
+  ownerEditUploadProgressCopy,
+  ownerPhotoErrorCopy,
+} from "../lib/copy";
 import {
   blobWriteConfigured,
   checkOwnerPhotoFile,
@@ -146,6 +154,26 @@ assert(
   "append keeps both unique URLs",
 );
 assert(
+  coalescePassportPhotos(
+    ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg", "https://cdn.example/c.jpg"],
+    ["https://cdn.example/c.jpg"],
+  ).length === 3,
+  "save last-URL does not collapse a longer array",
+);
+assert(
+  coalescePassportPhotos(
+    ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg", "https://cdn.example/c.jpg"],
+    ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"],
+  ).length === 2,
+  "owner can still remove extras with a 2+ list",
+);
+assert(
+  parsePassport(
+    JSON.stringify({ photos: ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"] }),
+  ).photos.length === 2,
+  "stringified passport JSON still lists both photos",
+);
+assert(
   passportHeroPhotos(
     { ...emptyPassport(), photos: ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"] },
     { logoUrl: "/logos/cafu-olaya.jpg" },
@@ -209,7 +237,23 @@ assert(edit.includes("multiple"), "multi-file picker");
 assert(edit.includes('accept="image/*"'), "image picker");
 assert(edit.includes("/api/owner/photos"), "upload hits Blob route");
 assert(edit.includes("ownerEditAddUrl"), "URL add is a list, not one field");
-assert(edit.includes("savedPhotos"), "upload reloads the full saved photos[]");
+assert(edit.includes("commitPhotos"), "upload writes the full saved photos[]");
+assert(edit.includes("asPhotoList"), "edit hydrates the full photos array");
+assert(edit.includes("UploadRow"), "per-file upload status");
+assert(edit.includes("ownerEditUploadProgressCopy"), "upload shows 1 of n");
+assert(edit.includes("ownerEditSavedCountCopy"), "save shows photo count");
+assert(
+  ownerEditUploadProgressCopy(1, 3, "en").includes("1 of 3"),
+  "EN upload progress",
+);
+assert(
+  ownerEditSavedCountCopy(3, "en").includes("3"),
+  "EN saved count names the photos",
+);
+assert(
+  ownerEditSavedCountCopy(3, "ar").includes("3"),
+  "AR saved count names the photos",
+);
 assert(!edit.includes("shop.hours"), "catalog hours are not written");
 assert(!edit.includes("DirectoryUpvote"), "no buy-rank upvote on edit");
 assert(!edit.includes("GoogleRating"), "no invented Google rating");
@@ -221,6 +265,10 @@ assert(photosApi.includes("putOwnerPhotos"), "upload uses Blob helper");
 assert(
   photosApi.includes("appendVerifiedPassportPhotos"),
   "upload appends onto Neon photos[]",
+);
+assert(
+  readFileSync("lib/claims.ts", "utf8").includes("coalescePassportPhotos"),
+  "save coalesces photos so last URL cannot wipe the array",
 );
 assert(!photosApi.includes("sendWhatsAppText"), "upload does not send WhatsApp");
 
@@ -402,6 +450,18 @@ async function checkMemoryTokens(): Promise<void> {
   assert(
     appended.ok && appended.passport.brewingTitle === "Test bean",
     "append keeps other passport fields",
+  );
+
+  const lastWinsSave = await updateVerifiedPassport({
+    shopId: shopA,
+    passport: {
+      brewingTitle: "Test bean",
+      photos: ["https://cdn.example/r.jpg"],
+    },
+  });
+  assert(
+    lastWinsSave.ok && lastWinsSave.passport.photos.length === 3,
+    "save last URL does not overwrite the full Neon array",
   );
 
   const again = await validateOwnerToken({

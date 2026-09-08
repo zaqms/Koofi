@@ -260,7 +260,7 @@ After a claim is **verified**, ops mints a single-shop link. The later WhatsApp 
 - Token is random, hashed at rest, scoped to one `shop_id`, expires in 7 days, revocable
 - Valid only when `shop_claims.status = 'verified'` for that shop. Pending / unclaimed fail closed
 - Owner may write Passport fields only: photos, brewing / Now pouring, owner-supplied hours, thin offer, optional phone / IG
-- Photos: a list of URL fields (**Add another URL**) and a multi-file phone picker (**Upload from phone**). Both append to the same `passport.photos[]` and show in the Passport hero carousel (`1/n`)
+- Photos: a list of URL fields (**Add another URL**) and a multi-file phone picker (**Upload from phone**). Upload **appends** onto Neon `passport.photos[]` (one request per file). Save never collapses a longer array to the last URL. The edit list and Passport hero carousel both show the full array (`1/n`). The picker shows per-file spinning / done / error and a saved count.
 - Phone upload uses **Vercel Blob** (`@vercel/blob` + `BLOB_READ_WRITE_TOKEN`). No third storage. If Blob is unset, URL fields still work
 - Locked (read-only): name, district, Maps pin
 - No buy-rank, no Soft Places badge, no invented hours defaults

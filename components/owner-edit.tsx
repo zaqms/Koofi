@@ -1,11 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { DocumentLocale } from "@/components/document-locale";
 import { MapsLink } from "@/components/maps-link";
 import type { PassportBrewingExtra, PassportOwnerFields } from "@/lib/claims-types";
-import { copy, ownerEditErrorCopy, ownerPhotoErrorCopy } from "@/lib/copy";
+import {
+  copy,
+  ownerEditErrorCopy,
+  ownerEditSavedCountCopy,
+  ownerEditUploadProgressCopy,
+  ownerPhotoErrorCopy,
+} from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, ownerEditPath, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
@@ -25,12 +38,46 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
     language === "ar"
       ? shop.neighborhoodAr
       : neighborhoodLabel(shop.neighborhood, "en");
-  const [draft, setDraft] = useState<PassportOwnerFields>(passport);
+  const [draft, setDraft] = useState<PassportOwnerFields>(() => ({
+    ...passport,
+    photos: asPhotoList(passport.photos),
+  }));
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [savedCount, setSavedCount] = useState<number | null>(null);
+  const [uploads, setUploads] = useState<UploadRow[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const filledPhotos = draft.photos.map((item) => item.trim()).filter(Boolean);
+  const photosRef = useRef(asPhotoList(passport.photos));
+  const uploadsRef = useRef<UploadRow[]>([]);
+  const filledPhotos = asPhotoList(draft.photos);
+  const pendingUploads = uploads.filter((row) => row.status !== "done");
+  const uploading = uploads.some(
+    (row) => row.status === "queued" || row.status === "uploading",
+  );
+  const uploadStep = uploads.filter(
+    (row) => row.status === "done" || row.status === "uploading",
+  ).length;
+
+  useEffect(() => {
+    uploadsRef.current = uploads;
+  }, [uploads]);
+
+  useEffect(() => {
+    return () => {
+      for (const row of uploadsRef.current) {
+        URL.revokeObjectURL(row.preview);
+      }
+    };
+  }, []);
+
+  function commitPhotos(photos: string[]) {
+    const next = asPhotoList(photos);
+    photosRef.current = next;
+    setDraft((current) => ({ ...current, photos: next }));
+  }
+
+  useEffect(() => {
+    photosRef.current = asPhotoList(draft.photos);
+  }, [draft.photos]);
 
   const lockedName = shopDisplayName(shop, language);
   const mapsHref = shopMapsHref(shop);
@@ -43,9 +90,12 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
-    setSaved(false);
+    setSavedCount(null);
     setError(null);
     try {
+      const fromDraft = asPhotoList(draft.photos);
+      const fromRef = asPhotoList(photosRef.current);
+      const photos = fromDraft.length >= fromRef.length ? fromDraft : fromRef;
       const res = await fetch("/api/owner/passport", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -54,7 +104,7 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
           token,
           passport: {
             ...draft,
-            photos: draft.photos.map((item) => item.trim()).filter(Boolean),
+            photos,
             brewingNotes: draft.brewingNotes
               .map((item) => item.trim())
               .filter(Boolean),
@@ -91,8 +141,17 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
         );
         return;
       }
-      setDraft(json.passport ?? draft);
-      setSaved(true);
+      const savedPhotos = asPhotoList(json.passport?.photos);
+      const nextPhotos = savedPhotos.length > 0 ? savedPhotos : photos;
+      commitPhotos(nextPhotos);
+      if (json.passport) {
+        setDraft((current) => ({
+          ...current,
+          ...json.passport,
+          photos: nextPhotos,
+        }));
+      }
+      setSavedCount(nextPhotos.length);
     } catch {
       setError(copy.ownerNoStorage[language]);
     } finally {
@@ -101,51 +160,83 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
   }
 
   async function onPickFiles(event: ChangeEvent<HTMLInputElement>) {
-    const picked = event.target.files;
-    if (!picked || picked.length === 0) return;
-    setUploading(true);
-    setSaved(false);
+    const picked = Array.from(event.target.files ?? []);
+    event.target.value = "";
+    if (picked.length === 0) return;
+    setSavedCount(null);
     setError(null);
-    try {
-      const form = new FormData();
-      form.set("shop", shop.id);
-      form.set("token", token);
-      for (const file of Array.from(picked)) {
+    const rows: UploadRow[] = picked.map((file, index) => ({
+      id: `${Date.now()}-${index}-${file.name}`,
+      name: file.name,
+      preview: URL.createObjectURL(file),
+      status: "queued",
+    }));
+    setUploads((current) => {
+      for (const row of current) {
+        if (row.status !== "done") URL.revokeObjectURL(row.preview);
+      }
+      return rows;
+    });
+
+    let landedAny = false;
+    for (const [index, file] of picked.entries()) {
+      const rowId = rows[index].id;
+      setUploads((current) =>
+        current.map((row) =>
+          row.id === rowId ? { ...row, status: "uploading" } : row,
+        ),
+      );
+      try {
+        const form = new FormData();
+        form.set("shop", shop.id);
+        form.set("token", token);
         form.append("files", file);
-      }
-      const res = await fetch("/api/owner/photos", {
-        method: "POST",
-        body: form,
-      });
-      const json = (await res.json()) as {
-        ok?: boolean;
-        error?: string;
-        urls?: string[];
-        passport?: PassportOwnerFields;
-      };
-      const savedPhotos = json.passport?.photos;
-      const urls = json.urls;
-      if (!res.ok || !json.ok || !urls) {
-        setError(ownerPhotoErrorCopy(json.error ?? "invalid", language));
-        return;
-      }
-      setDraft((current) => ({
-        ...current,
-        ...(json.passport ?? {}),
-        photos:
-          savedPhotos && savedPhotos.length > 0
+        form.append(`files-${index}`, file);
+        const res = await fetch("/api/owner/photos", {
+          method: "POST",
+          body: form,
+        });
+        const json = (await res.json()) as {
+          ok?: boolean;
+          error?: string;
+          urls?: string[];
+          passport?: PassportOwnerFields;
+        };
+        const savedPhotos = asPhotoList(json.passport?.photos);
+        const urls = asPhotoList(json.urls);
+        if (!res.ok || !json.ok || (savedPhotos.length === 0 && urls.length === 0)) {
+          setUploads((current) =>
+            current.map((row) =>
+              row.id === rowId ? { ...row, status: "error" } : row,
+            ),
+          );
+          setError(ownerPhotoErrorCopy(json.error ?? "invalid", language));
+          continue;
+        }
+        landedAny = true;
+        commitPhotos(
+          savedPhotos.length > 0
             ? savedPhotos
-            : [
-                ...current.photos.map((item) => item.trim()).filter(Boolean),
-                ...urls,
-              ],
-      }));
-    } catch {
-      setError(copy.ownerEditNoBlob[language]);
-    } finally {
-      setUploading(false);
-      event.target.value = "";
+            : [...photosRef.current, ...urls],
+        );
+        setUploads((current) => {
+          const next = current.map((row) =>
+            row.id === rowId ? { ...row, status: "done" as const } : row,
+          );
+          const done = next.find((row) => row.id === rowId);
+          if (done) URL.revokeObjectURL(done.preview);
+          return next;
+        });
+      } catch {
+        setUploads((current) =>
+          current.map((row) =>
+            row.id === rowId ? { ...row, status: "error" } : row,
+          ),
+        );
+        setError(copy.ownerEditNoBlob[language]);
+      }
     }
+    if (landedAny) setSavedCount(asPhotoList(photosRef.current).length);
   }
 
   return (
@@ -212,21 +303,34 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
           <p className="mt-1 text-[11px] leading-5 text-ink-soft">
             {copy.ownerEditPhotosHint[language]}
           </p>
-          {filledPhotos.length > 0 ? (
+          {filledPhotos.length > 0 || pendingUploads.length > 0 ? (
             <div className="mt-3">
               <div className="flex items-center justify-between text-[11px] text-gold-deep">
                 <span>{copy.photosTab[language]}</span>
-                <span dir="ltr">1 / {filledPhotos.length}</span>
+                <span dir="ltr">
+                  1 / {filledPhotos.length + pendingUploads.length}
+                </span>
               </div>
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {filledPhotos.map((src, index) => (
-                  <div
+                  <PhotoTile
                     key={`${src}-${index}`}
-                    className="overflow-hidden rounded-xl bg-paper-deep"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={src} alt="" className="aspect-square w-full object-cover" />
-                  </div>
+                    src={src}
+                    status="done"
+                    label={copy.ownerEditUploadDone[language]}
+                  />
+                ))}
+                {pendingUploads.map((row) => (
+                  <PhotoTile
+                    key={row.id}
+                    src={row.preview}
+                    status={row.status}
+                    label={
+                      row.status === "error"
+                        ? copy.ownerEditUploadFailed[language]
+                        : copy.ownerEditUploading[language]
+                    }
+                  />
                 ))}
               </div>
             </div>
@@ -276,7 +380,11 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
               className="sr-only"
             />
             {uploading
-              ? copy.ownerEditUploading[language]
+              ? ownerEditUploadProgressCopy(
+                  Math.max(uploadStep, 1),
+                  uploads.length,
+                  language,
+                )
               : copy.ownerEditUpload[language]}
           </label>
         </div>
@@ -471,9 +579,9 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
           {error ? (
             <p className="mt-4 text-sm leading-6 text-bean">{error}</p>
           ) : null}
-          {saved ? (
+          {savedCount !== null ? (
             <p className="mt-4 text-sm leading-6 text-gold-deep">
-              {copy.ownerEditSaved[language]}
+              {ownerEditSavedCountCopy(savedCount, language)}
             </p>
           ) : null}
 
@@ -487,6 +595,53 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
         </form>
       </article>
     </main>
+  );
+}
+
+type UploadRow = {
+  id: string;
+  name: string;
+  preview: string;
+  status: "queued" | "uploading" | "done" | "error";
+};
+
+function asPhotoList(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function PhotoTile({
+  src,
+  status,
+  label,
+}: {
+  src: string;
+  status: "queued" | "uploading" | "done" | "error";
+  label: string;
+}) {
+  return (
+    <div className="relative overflow-hidden rounded-xl bg-paper-deep">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" className="aspect-square w-full object-cover" />
+      {status !== "done" ? (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-charcoal/50 px-1 text-center">
+          {status === "error" ? (
+            <span className="text-[11px] leading-4 text-foam">{label}</span>
+          ) : (
+            <>
+              <span
+                className="size-5 animate-spin rounded-full border-2 border-foam/30 border-t-foam"
+                aria-hidden
+              />
+              <span className="mt-1 text-[10px] leading-4 text-foam">{label}</span>
+            </>
+          )}
+        </div>
+      ) : null}
+    </div>
   );
 }
 

@@ -122,7 +122,8 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
         error?: string;
         urls?: string[];
       };
-      if (!res.ok || !json.ok || !json.urls) {
+      const urls = json.urls;
+      if (!res.ok || !json.ok || !urls) {
         setError(ownerPhotoErrorCopy(json.error ?? "invalid", language));
         return;
       }
@@ -130,7 +131,7 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
         ...current,
         photos: [
           ...current.photos.map((item) => item.trim()).filter(Boolean),
-          ...json.urls,
+          ...urls,
         ],
       }));
     } catch {

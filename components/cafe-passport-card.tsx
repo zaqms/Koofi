@@ -252,7 +252,10 @@ export function CafePassportCard({
           </a>
         ) : null}
 
-        <div className="sticky bottom-0 -mx-5 mt-5 flex items-center gap-2 border-t border-line bg-foam px-5 py-3">
+        <div
+          className="sticky bottom-0 -mx-5 mt-5 flex items-center gap-2 border-t border-line bg-foam px-5 py-3"
+          dir="ltr"
+        >
           <DirectoryUpvote shopId={shop.id} language={language} />
           <ShareListingButton shop={shop} language={language} source="card" compact />
           <MapsLink

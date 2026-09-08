@@ -16,7 +16,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
-- Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, hours only if we have them from a legal source, vibe tags. Do not ask people to share the Koofi URL.
+- Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, vibe tags. Unclaimed shops stay a thin card. Verified shops unlock the richer Passport card (owner photos, brewing/note, owner-supplied hours only, thin offer, optional phone/IG, share, shared ▲ upvote, Maps CTA). Do not invent hours. Do not ask people to share the Koofi URL.
 - Each pick card has a small 44px letter mark from the shop name (IK, WO, …). A `photoUrl` is shown only if Amjad sets one. Do not scrape Maps photos.
 - **أضف قهوة / Add a shop** sits under the composer, not in the chip row. Drop a Google Maps link. Koofi thanks them and stores a suggestion for Amjad — it does not go into `catalog.json`.
 
@@ -94,6 +94,7 @@ Connect ChatGPT / Claude / Gemini / Perplexity / Cursor with Streamable HTTP to 
 ```bash
 npx tsx scripts/check-structured-data.ts
 npx tsx scripts/check-claims.ts
+npx tsx scripts/check-passport.ts
 ```
 
 ## How to run
@@ -218,7 +219,7 @@ Arabic: **ما فيه أفكار للحين. اكتب وحدة تحت.**
 
 ## Directory upvotes
 
-Product Hunt–style ▲ + count on **directory list rows only** (home list, district pages, and New this week because those rows are `DirectoryCard`). Cafe cards (`/c/[id]`, `/en/c/[id]`) stay untouched.
+Product Hunt–style ▲ + count on directory list rows (home list, district pages, and New this week because those rows are `DirectoryCard`) and on the **verified Passport cafe card**. Same Neon `shop_upvotes` + `wain_vid` — one count. Unclaimed thin cards stay without ▲.
 
 Social proof only. Counts do **not** reorder chat three-picks, the directory, New this week, or district filters. Owners cannot buy rank. No downvotes, stars, or comments. Been here stays a separate localStorage mark on cafe cards.
 
@@ -232,7 +233,19 @@ Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.l
 
 `/owner` and `/en/owner` are a short **Chat on WhatsApp** screen. `?shop=` uses the same shop prefill. No shop still opens `wa.me` with a generic claim prefill. **Never WhatsApp Web / QR.** No OTP and no CR upload on this door.
 
-Cloud API OTP (`/api/claims`, `/api/claims/otp`, Neon `shop_claims`) stays parked — visitors are not routed through it. Soft Places, buy-rank, marketplace, Passport card UI, and Verified badge stay out.
+Cloud API OTP (`/api/claims/otp` submit) stays parked — visitors claim over WhatsApp. `GET /api/claims` is public claim status for the card/list. Soft Places, buy-rank, and marketplace stay out.
+
+## Passport cafe card (verified only)
+
+`status === 'verified'` unlocks the richer Passport UI on `/c/[id]` and `/en/c/[id]`. Pending stays thin (no Own this cafe?). Unclaimed stays thin + WhatsApp footer.
+
+Owner fields come from `shop_claims.passport` when present: photos, brewing/note, hours (owner-supplied only — **never invent hours**), thin offer, optional phone/IG. Platform still owns name, district, and the Maps pin. Claim does not reorder picks or the directory.
+
+Verified / معتمد is a small pill on the Passport card and on directory rows (one `GET /api/claims` list of verified ids). Shared ▲ upvote on the Passport footer reuses `ShopUpvoteProvider`.
+
+### Preview fixture (not production)
+
+Production never overlays a fixture. If Woods has no verified Neon row, Preview and local `next dev` (`VERCEL_ENV !== production`) show an in-code Woods Passport on `/c/woods-olaya` and `/en/c/woods-olaya` so the UI can be tried. Hours in that fixture stay empty. Do not write a verified Woods row into the shared Neon database.
 
 ## Shop suggestions
 
@@ -303,6 +316,7 @@ lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board
 lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
 lib/claims.ts                   Neon (or local memory) owner claims
+lib/passport-preview.ts         Woods Passport fixture (preview/local only)
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names

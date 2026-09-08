@@ -354,4 +354,36 @@ export const copy = {
     ar: "ارفع صورة السجل التجاري.",
     en: "Upload a CR photo.",
   },
+  verified: {
+    ar: "معتمد",
+    en: "Verified",
+  },
+  takeMeThere: {
+    ar: "ودّني هناك",
+    en: "Take me there",
+  },
+  nowPouring: {
+    ar: "يصبّون الحين",
+    en: "Now pouring",
+  },
+  brewingTab: {
+    ar: "وش يصبّون",
+    en: "What's brewing",
+  },
+  photosTab: {
+    ar: "صور",
+    en: "Photos",
+  },
+  thinOffer: {
+    ar: "عرض",
+    en: "Offer",
+  },
+  instagram: {
+    ar: "إنستغرام",
+    en: "Instagram",
+  },
+  callShop: {
+    ar: "اتصل",
+    en: "Call",
+  },
 } as const;

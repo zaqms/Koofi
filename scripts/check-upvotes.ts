@@ -51,13 +51,13 @@ assert(
   "New this week keep allowlist order",
 );
 
-const cafeCard = readFileSync("components/cafe-card.tsx", "utf8");
 const cafePage = readFileSync("components/cafe-card-page.tsx", "utf8");
+const cafePassport = readFileSync("components/cafe-passport-card.tsx", "utf8");
 const cafeRoute = readFileSync("app/c/[id]/page.tsx", "utf8");
 const cafeRouteEn = readFileSync("app/en/c/[id]/page.tsx", "utf8");
+assert(cafePage.includes("ShopUpvoteProvider"), "card page shares upvote provider");
+assert(cafePassport.includes("DirectoryUpvote"), "Passport footer reuses directory ▲");
 for (const [name, source] of [
-  ["cafe-card", cafeCard],
-  ["cafe-card-page", cafePage],
   ["c/[id]", cafeRoute],
   ["en/c/[id]", cafeRouteEn],
 ] as const) {

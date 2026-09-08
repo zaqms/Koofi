@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
 import { DocumentLocale } from "@/components/document-locale";
+import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
 import { copy } from "@/lib/copy";
 import { BrandHomeLink } from "@/components/brand-home-link";
+import {
+  allowPassportPreview,
+  isPassportPreviewShop,
+} from "@/lib/passport-preview";
 import { cardPath, homePath } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
@@ -48,7 +53,15 @@ export function CafeCardPageView({
           {copy.switchLanguage[language]}
         </Link>
       </header>
-      <CafeCard shop={shop} language={language} />
+      <ShopUpvoteProvider>
+        <CafeCard
+          shop={shop}
+          language={language}
+          previewPassport={
+            allowPassportPreview() && isPassportPreviewShop(shop.id)
+          }
+        />
+      </ShopUpvoteProvider>
       <p className="mt-6">
         <Link href={home} className="text-sm text-bean hover:text-bean-deep">
           {copy.backToChat[language]}

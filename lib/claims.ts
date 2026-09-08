@@ -5,20 +5,28 @@ import { parseOwnerPhone, whatsAppTo } from "./claim-phone";
 import { getShop, listDirectoryShops } from "./catalog";
 import {
   emptyPassport,
+  parsePassport,
   parseProofType,
+  publicPassport,
   STUB_OTP_CODE,
   type PassportOwnerFields,
-  type ProofType,
   type PublicClaimStatus,
+  type PublicVerifiedList,
   type ShopClaim,
 } from "./claims-types";
 import { ENV_KEYS, readEnv } from "./env";
 import { feedbackStorageKind } from "./feedback";
+import {
+  shouldApplyPassportPreview,
+  woodsPassportFixture,
+} from "./passport-preview";
 import { isWhatsAppConfigured, sendWhatsAppText } from "./whatsapp";
 
 export {
   emptyPassport,
+  parsePassport,
   parseProofType,
+  publicPassport,
   STUB_OTP_CODE,
 } from "./claims-types";
 export type {
@@ -27,6 +35,7 @@ export type {
   PassportOwnerFields,
   ProofType,
   PublicClaimStatus,
+  PublicVerifiedList,
   ShopClaim,
 } from "./claims-types";
 
@@ -110,6 +119,32 @@ export function resolveCatalogShopId(raw: unknown): string | undefined {
   return id;
 }
 
+function withPreviewPassport(
+  shopId: string,
+  status: PublicClaimStatus["status"],
+  storage: PublicClaimStatus["storage"],
+  passport?: PassportOwnerFields,
+): PublicClaimStatus {
+  if (status === "verified") {
+    return {
+      shopId,
+      status,
+      storage,
+      passport: publicPassport(passport ?? emptyPassport()),
+    };
+  }
+  if (shouldApplyPassportPreview(shopId, status)) {
+    return {
+      shopId,
+      status: "verified",
+      storage,
+      passport: publicPassport(woodsPassportFixture("ar")),
+      preview: true,
+    };
+  }
+  return { shopId, status, storage };
+}
+
 export async function publicClaimStatus(
   rawId: unknown,
 ): Promise<
@@ -121,24 +156,72 @@ export async function publicClaimStatus(
 
   const storage = await ensureSchema();
   if (storage === "missing") {
-    return { ok: true, shopId, status: "none", storage: "missing" };
+    return { ok: true, ...withPreviewPassport(shopId, "none", "missing") };
   }
 
   if (feedbackStorageKind() === "memory") {
     const row = memoryClaims.get(shopId);
-    return { ok: true, shopId, status: row?.status ?? "none", storage: "ready" };
+    return {
+      ok: true,
+      ...withPreviewPassport(
+        shopId,
+        row?.status ?? "none",
+        "ready",
+        row?.passport,
+      ),
+    };
   }
 
   const sql = getSql();
-  if (!sql) return { ok: true, shopId, status: "none", storage: "missing" };
+  if (!sql) {
+    return { ok: true, ...withPreviewPassport(shopId, "none", "missing") };
+  }
   const rows = (await sql`
-    SELECT status FROM shop_claims WHERE shop_id = ${shopId}
-  `) as { status: "pending" | "verified" }[];
+    SELECT status, passport FROM shop_claims WHERE shop_id = ${shopId}
+  `) as { status: "pending" | "verified"; passport: unknown }[];
+  const row = rows[0];
   return {
     ok: true,
-    shopId,
-    status: rows[0]?.status ?? "none",
-    storage: "ready",
+    ...withPreviewPassport(
+      shopId,
+      row?.status ?? "none",
+      "ready",
+      row ? parsePassport(row.passport) : undefined,
+    ),
+  };
+}
+
+export async function listPublicVerifiedIds(): Promise<
+  { ok: true } & PublicVerifiedList
+> {
+  const storage = await ensureSchema();
+  const ids = new Set<string>();
+
+  if (storage !== "missing") {
+    if (feedbackStorageKind() === "memory") {
+      for (const row of memoryClaims.values()) {
+        if (row.status === "verified") ids.add(row.shopId);
+      }
+    } else {
+      const sql = getSql();
+      if (sql) {
+        const rows = (await sql`
+          SELECT shop_id FROM shop_claims WHERE status = 'verified'
+        `) as { shop_id: string }[];
+        for (const row of rows) ids.add(row.shop_id);
+      }
+    }
+  }
+
+  const resolvedStorage =
+    storage === "missing" ? "missing" : ("ready" as const);
+  const woods = await publicClaimStatus("woods-olaya");
+  if (woods.ok && woods.status === "verified") ids.add(woods.shopId);
+
+  return {
+    ok: true,
+    verifiedIds: [...ids],
+    storage: resolvedStorage,
   };
 }
 

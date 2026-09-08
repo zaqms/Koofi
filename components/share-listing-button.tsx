@@ -11,12 +11,14 @@ type ShareListingButtonProps = {
   shop: Pick<Shop, "id" | "nameAr" | "nameEn" | "neighborhood" | "momentTags" | "vibeTags">;
   language: Language;
   source: ListingShareSource;
+  compact?: boolean;
 };
 
 export function ShareListingButton({
   shop,
   language,
   source,
+  compact = false,
 }: ShareListingButtonProps) {
   const [copied, setCopied] = useState(false);
 
@@ -40,12 +42,17 @@ export function ShareListingButton({
         onClick={() => {
           void onShare();
         }}
-        className="notranslate inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-ink-soft hover:text-ink"
+        className={
+          compact
+            ? "notranslate inline-flex size-11 items-center justify-center rounded-xl text-ink-soft hover:bg-paper-deep hover:text-ink"
+            : "notranslate inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-ink-soft hover:text-ink"
+        }
         lang={language}
         translate="no"
+        aria-label={copy.sharePack[language]}
       >
         <ShareIcon />
-        <span>{copy.sharePack[language]}</span>
+        {compact ? null : <span>{copy.sharePack[language]}</span>}
       </button>
       {copied ? (
         <p className="text-[11px] text-ink-soft">{copy.packetCopied[language]}</p>

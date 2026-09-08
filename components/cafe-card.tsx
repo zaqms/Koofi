@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { CafeClaimFooter } from "@/components/cafe-claim-footer";
-import { CafePassportCard } from "@/components/cafe-passport-card";
+import {
+  CafePassportCard,
+  type PassportSocial,
+} from "@/components/cafe-passport-card";
 import { CardBeen } from "@/components/card-been";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
@@ -28,6 +31,10 @@ type CafeCardProps = {
   shop: Shop;
   language?: Language;
   previewPassport?: boolean;
+  cardNumber?: string;
+  backHref?: string;
+  localeHref?: string;
+  social?: PassportSocial | null;
 };
 
 type ClaimPayload = {
@@ -41,6 +48,10 @@ export function CafeCard({
   shop,
   language = "ar",
   previewPassport = false,
+  cardNumber = "00",
+  backHref = "/",
+  localeHref,
+  social = null,
 }: CafeCardProps) {
   const [status, setStatus] = useState<ClaimStatus>(
     previewPassport ? "verified" : "none",
@@ -88,7 +99,15 @@ export function CafeCard({
 
   if (preferPassportUi(status)) {
     return (
-      <CafePassportCard shop={shop} language={language} passport={passport} />
+      <CafePassportCard
+        shop={shop}
+        language={language}
+        passport={passport}
+        cardNumber={cardNumber}
+        backHref={backHref}
+        localeHref={localeHref ?? (language === "ar" ? `/en/c/${shop.id}` : `/c/${shop.id}`)}
+        social={social}
+      />
     );
   }
 

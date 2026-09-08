@@ -183,6 +183,38 @@ export const copy = {
     ar: "ارجع للشات",
     en: "Back to chat",
   },
+  passportBack: {
+    ar: "رجوع للشات",
+    en: "Back to chat",
+  },
+  cardNo: {
+    ar: "CARD N°",
+    en: "CARD N°",
+  },
+  reviewsTab: {
+    ar: "تقييمات",
+    en: "Reviews",
+  },
+  reviewsEmpty: {
+    ar: "ما فيه تقييمات على wain.lol للحين.",
+    en: "No reviews on wain.lol yet.",
+  },
+  googleOn: {
+    ar: "في Google",
+    en: "on Google",
+  },
+  photosEmpty: {
+    ar: "ما فيه صور من المالك للحين.",
+    en: "No owner photos yet.",
+  },
+  brewingEmpty: {
+    ar: "ما حدّثوا وش يصبّون للحين.",
+    en: "Nothing pouring listed yet.",
+  },
+  quietWood: {
+    ar: "خشب هادي",
+    en: "Quiet wood",
+  },
   about: {
     ar: "عن وين",
     en: "About",

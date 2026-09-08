@@ -245,7 +245,9 @@ Verified / معتمد is a small pill on the Passport card and on directory rows
 
 ### Preview fixture (not production)
 
-Production never overlays a fixture. If Woods has no verified Neon row, Preview and local `next dev` (`VERCEL_ENV !== production`) show an in-code Woods Passport on `/c/woods-olaya` and `/en/c/woods-olaya` so the UI can be tried. Hours in that fixture stay empty. Do not write a verified Woods row into the shared Neon database.
+Production never overlays a fixture. If Woods has no verified Neon row, Preview and local `next dev` (`VERCEL_ENV !== production`) show an in-code Woods Passport on `/c/woods-olaya` and `/en/c/woods-olaya` so the UI can be tried. Hours in that fixture stay empty. Hero frames live under `public/passport/` and are preview-only — not catalog photos. Do not write a verified Woods row into the shared Neon database.
+
+Google stars/count appear only when Places already returns a cached rating. Soft Places (“ON TONIGHT'S THREE”) stays parked.
 
 ## Shop suggestions
 

@@ -12,7 +12,8 @@
   --charcoal: #1b1814;
   --vote: #9be38a;
   --gold: #b0894a;
-  --passport-wash: #f4e6d4;
+  --gold-deep: #8d6b38;
+  --passport-wash: #f3ead8;
 }
 
 @theme inline {
@@ -27,8 +28,10 @@
   --color-charcoal: var(--charcoal);
   --color-vote: var(--vote);
   --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
   --color-passport-wash: var(--passport-wash);
   --font-sans: var(--font-koofi);
+  --font-serif: var(--font-passport), "Times New Roman", serif;
 }
 
 html,

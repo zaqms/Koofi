@@ -12,6 +12,7 @@ type ShareListingButtonProps = {
   language: Language;
   source: ListingShareSource;
   compact?: boolean;
+  variant?: "default" | "passport" | "ghost";
 };
 
 export function ShareListingButton({
@@ -19,6 +20,7 @@ export function ShareListingButton({
   language,
   source,
   compact = false,
+  variant = "default",
 }: ShareListingButtonProps) {
   const [copied, setCopied] = useState(false);
 
@@ -43,9 +45,13 @@ export function ShareListingButton({
           void onShare();
         }}
         className={
-          compact
-            ? "notranslate inline-flex size-11 items-center justify-center rounded-xl text-ink-soft hover:bg-paper-deep hover:text-ink"
-            : "notranslate inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-ink-soft hover:text-ink"
+          variant === "ghost"
+            ? "notranslate inline-flex size-8 items-center justify-center rounded-md text-foam hover:bg-foam/15"
+            : variant === "passport"
+            ? "notranslate inline-flex size-11 items-center justify-center rounded-lg border border-gold text-gold hover:bg-passport-wash"
+            : compact
+              ? "notranslate inline-flex size-11 items-center justify-center rounded-xl text-ink-soft hover:bg-paper-deep hover:text-ink"
+              : "notranslate inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-ink-soft hover:text-ink"
         }
         lang={language}
         translate="no"

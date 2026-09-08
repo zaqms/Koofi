@@ -63,7 +63,14 @@ assert(ar.hours === "", "AR fixture never invents hours");
 assert(en.hours === "", "EN fixture never invents hours");
 assert(ar.phone === "" && en.phone === "", "fixture has no invented phone");
 assert(ar.instagram === "" && en.instagram === "", "fixture has no invented IG");
-assert(ar.photos.length === 0 && en.photos.length === 0, "fixture has no invented photos");
+assert(ar.photos.length === 3 && en.photos.length === 3, "fixture has 3 hero frames");
+assert(
+  ar.photos.every((src) => src.startsWith("/passport/woods-olaya-")),
+  "fixture heroes are local preview assets",
+);
+assert(existsSync("public/passport/woods-olaya-1.jpg"), "hero 1 on disk");
+assert(existsSync("public/passport/woods-olaya-2.jpg"), "hero 2 on disk");
+assert(existsSync("public/passport/woods-olaya-3.jpg"), "hero 3 on disk");
 assert(passportHasBrewing(ar) && passportHasBrewing(en), "fixture has brewing");
 assert(ar.brewingTitle.includes("يرقاجيفي"), "AR fixture coffee title");
 assert(en.brewingTitle.includes("Yirgacheffe"), "EN fixture coffee title");
@@ -98,6 +105,10 @@ assert(copy.verified.ar === "معتمد", "AR verified badge");
 assert(copy.verified.en === "Verified", "EN verified badge");
 assert(copy.takeMeThere.ar === "ودّني هناك", "AR Maps CTA");
 assert(copy.takeMeThere.en === "Take me there", "EN Maps CTA");
+assert(copy.passportBack.ar === "رجوع للشات", "AR hero back matches mock");
+assert(copy.reviewsTab.ar === "تقييمات", "AR reviews tab");
+assert(copy.reviewsTab.en === "Reviews", "EN reviews tab");
+assert(copy.brewingTab.ar === "وش يصبّون", "AR brewing tab");
 assert(!/Maps is the last click/i.test(copy.takeMeThere.en), "no parked Maps line");
 assert(!/koofi/i.test(copy.verified.ar + copy.verified.en), "badge is not Koofi");
 assert(!/koofi/i.test(copy.takeMeThere.ar + copy.takeMeThere.en), "CTA is not Koofi");
@@ -108,6 +119,7 @@ const files = [
   "components/cafe-card-page.tsx",
   "components/verified-badge.tsx",
   "components/shop-claim-provider.tsx",
+  "components/target-icon.tsx",
   "lib/passport-preview.ts",
   "lib/copy.ts",
 ];
@@ -135,9 +147,14 @@ const passportCard = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passportCard.includes("DirectoryUpvote"), "Passport reuses shared ▲");
 assert(passportCard.includes("takeMeThere"), "Passport Maps CTA");
 assert(passportCard.includes("VerifiedBadge"), "Passport has Verified");
+assert(passportCard.includes("reviewsTab"), "Passport has Reviews tab");
+assert(passportCard.includes("cardNo"), "Passport has CARD N° chrome");
+assert(passportCard.includes("photoIndex + 1"), "hero shows n/m");
 assert(passportCard.includes("passport.hours"), "hours only from passport");
 assert(!passportCard.includes("shop.hours"), "catalog hours are not shown");
 assert(!passportCard.includes("ownThisCafe"), "verified has no claim CTA");
+assert(!/ON TONIGHT/i.test(passportCard), "Soft Places badge parked");
+assert(!/من الثلاث اللي الليلة/.test(passportCard), "AR Soft Places badge parked");
 
 const list = readFileSync("components/directory-card.tsx", "utf8");
 assert(list.includes("VerifiedBadge"), "list can show معتمد");

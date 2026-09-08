@@ -28,6 +28,13 @@ export function getShop(id: string): Shop | undefined {
   return listRealShops().find((shop) => shop.id === id);
 }
 
+/** Stable CARD N° from catalog order. Padded, 1-based. */
+export function shopCardNumber(id: string): string {
+  const index = listRealShops().findIndex((shop) => shop.id === id);
+  if (index < 0) return "00";
+  return String(index + 1).padStart(2, "0");
+}
+
 export function listRealShops(): Shop[] {
   return listShops().filter((shop) => !isExampleShop(shop));
 }

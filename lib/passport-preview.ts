@@ -7,6 +7,13 @@ import type { Language } from "./types";
 /** Woods Olaya — the locked SSO preview shop for Passport. */
 export const PASSPORT_PREVIEW_SHOP_ID = "woods-olaya";
 
+/** Preview-only hero frames. Not catalog photos. Not used in production. */
+export const WOODS_PASSPORT_HERO_PHOTOS = [
+  "/passport/woods-olaya-1.jpg",
+  "/passport/woods-olaya-2.jpg",
+  "/passport/woods-olaya-3.jpg",
+] as const;
+
 /**
  * Preview / local only. Production (`VERCEL_ENV=production`) never overlays
  * a fixture — Woods stays a thin unclaimed card until a real verified row.
@@ -30,6 +37,7 @@ export function woodsPassportFixture(
   if (language === "en") {
     return {
       ...empty,
+      photos: [...WOODS_PASSPORT_HERO_PHOTOS],
       brewingTitle: "Yirgacheffe · Kochere",
       brewingDetail: "Washed · 1,900 m · roasted 6 days ago",
       brewingNotes: ["jasmine", "bergamot", "honey"],
@@ -42,6 +50,7 @@ export function woodsPassportFixture(
   }
   return {
     ...empty,
+    photos: [...WOODS_PASSPORT_HERO_PHOTOS],
     brewingTitle: "يرقاجيفي · كوتشيري",
     brewingDetail: "مغسول · ١٩٠٠ م · محمّص من ٦ أيام",
     brewingNotes: ["ياسمين", "برغموت", "عسل"],

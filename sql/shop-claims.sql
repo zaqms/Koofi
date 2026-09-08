@@ -24,3 +24,15 @@ CREATE TABLE IF NOT EXISTS shop_claim_otp (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   PRIMARY KEY (shop_id, phone_e164)
 );
+
+-- Magic-link owner edit. Hash only. Single-shop, ~7 days, revocable.
+CREATE TABLE IF NOT EXISTS shop_owner_tokens (
+  token_hash TEXT PRIMARY KEY,
+  shop_id TEXT NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  revoked_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS shop_owner_tokens_shop_idx
+  ON shop_owner_tokens (shop_id);

@@ -175,7 +175,9 @@ const robots = readRepo("app/robots.ts");
 assert(robots.includes('"/api/shops"'), "robots allows /api/shops");
 assert(robots.includes('"/api/mcp"'), "robots allows /api/mcp");
 assert(robots.includes('"/mcp"'), "robots allows /mcp");
-assert(robots.includes('disallow: "/api/"'), "robots still disallows other /api/");
+assert(robots.includes('"/api/"'), "robots still disallows other /api/");
+assert(robots.includes('"/ops/"'), "robots disallows /ops/");
+assert(robots.includes('"/owner/edit"'), "robots disallows owner edit");
 
 const cafeCard = readRepo("components/cafe-card.tsx");
 assert(

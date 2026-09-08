@@ -1,3 +1,4 @@
+import type { OwnerTokenError } from "./claims-types";
 import {
   EXAMPLE_BADGE,
   LOCKED_ABOUT,
@@ -418,4 +419,124 @@ export const copy = {
     ar: "اتصل",
     en: "Call",
   },
+  ownerEditTitle: {
+    ar: "عدّل الباسبور",
+    en: "Edit Passport",
+  },
+  ownerEditLead: {
+    ar: "هذي الخانات لك. الاسم والحي والدبوس ثابتة.",
+    en: "These fields are yours. Name, district, and the pin stay locked.",
+  },
+  ownerEditLocked: {
+    ar: "ثابت — وين يمسكه",
+    en: "Locked — wain.lol keeps this",
+  },
+  ownerEditPhotosHint: {
+    ar: "رابط لكل صورة. http أو مسار من الموقع.",
+    en: "One URL per photo. http(s) or a site path.",
+  },
+  ownerEditHours: {
+    ar: "الدوام",
+    en: "Hours",
+  },
+  ownerEditHoursHint: {
+    ar: "اختياري. ما نخترع دوام.",
+    en: "Optional. We will not invent hours.",
+  },
+  ownerEditHoursPlaceholder: {
+    ar: "مثال: فاتح الحين — لين ٢٣:٠٠",
+    en: "Example: Open now — till 23:00",
+  },
+  ownerEditOffer: {
+    ar: "عرض خفيف",
+    en: "Thin offer",
+  },
+  ownerEditPhone: {
+    ar: "جوال (اختياري)",
+    en: "Phone (optional)",
+  },
+  ownerEditIg: {
+    ar: "إنستغرام (اختياري)",
+    en: "Instagram (optional)",
+  },
+  ownerEditBrewingTitle: {
+    ar: "يصبّون الحين",
+    en: "Now pouring",
+  },
+  ownerEditBrewingDetail: {
+    ar: "التفاصيل",
+    en: "Detail",
+  },
+  ownerEditBrewingNotes: {
+    ar: "نكهات",
+    en: "Notes",
+  },
+  ownerEditBrewingNote: {
+    ar: "ملاحظة المالك",
+    en: "Owner note",
+  },
+  ownerEditBrewingExtra: {
+    ar: "حبوب ثانية",
+    en: "More beans",
+  },
+  ownerEditAdd: {
+    ar: "أضف",
+    en: "Add",
+  },
+  ownerEditRemove: {
+    ar: "احذف",
+    en: "Remove",
+  },
+  ownerEditSave: {
+    ar: "احفظ",
+    en: "Save",
+  },
+  ownerEditSaved: {
+    ar: "انحفظ.",
+    en: "Saved.",
+  },
+  ownerEditViewCard: {
+    ar: "شوف الكرت",
+    en: "View card",
+  },
+  ownerEditPin: {
+    ar: "الدبوس",
+    en: "Maps pin",
+  },
+  ownerEditDenied: {
+    ar: "هالرابط ما يشتغل.",
+    en: "This link does not work.",
+  },
+  ownerEditMissing: {
+    ar: "الرابط ناقص. اطلب رابط جديد.",
+    en: "This link is missing. Ask for a new one.",
+  },
+  ownerEditInvalid: {
+    ar: "هالرابط غلط أو ملغي. اطلب واحد جديد.",
+    en: "This link is wrong or revoked. Ask for a new one.",
+  },
+  ownerEditExpired: {
+    ar: "هالرابط انتهى. اطلب واحد جديد.",
+    en: "This link has expired. Ask for a new one.",
+  },
+  ownerEditWrongShop: {
+    ar: "هالرابط مو لهالمقهى.",
+    en: "This link is not for this cafe.",
+  },
+  ownerEditNotVerified: {
+    ar: "هالمقهى بعد ما تحقق. التعديل مقفل.",
+    en: "This cafe is not verified yet. Editing is closed.",
+  },
 } as const;
+
+export function ownerEditErrorCopy(
+  error: OwnerTokenError,
+  language: Language,
+): string {
+  if (error === "missing") return copy.ownerEditMissing[language];
+  if (error === "expired") return copy.ownerEditExpired[language];
+  if (error === "wrong_shop") return copy.ownerEditWrongShop[language];
+  if (error === "not_verified") return copy.ownerEditNotVerified[language];
+  if (error === "no_storage") return copy.ownerNoStorage[language];
+  return copy.ownerEditInvalid[language];
+}

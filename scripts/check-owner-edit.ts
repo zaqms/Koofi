@@ -30,10 +30,16 @@ import {
   blobWriteConfigured,
   checkOwnerPhotoFile,
   collectOwnerPhotoFiles,
+  isPrivateStoreAccessError,
   OWNER_PHOTO_MAX,
   OWNER_PHOTO_MAX_BYTES,
   ownerPhotoPathname,
 } from "../lib/owner-photos";
+import {
+  ownerPhotoDisplaySrc,
+  ownerPhotoPublicHref,
+  ownerPhotoProxyPathname,
+} from "../lib/owner-photo-urls";
 import { feedbackStorageKind } from "../lib/feedback";
 import {
   hashOwnerToken,
@@ -104,6 +110,18 @@ assert(
 assert(
   ownerPhotoErrorCopy("no_blob", "en").toLowerCase().includes("url"),
   "no-blob still allows URLs",
+);
+assert(
+  ownerPhotoErrorCopy("blob_access", "en").toLowerCase().includes("private"),
+  "EN names the private store",
+);
+assert(
+  ownerPhotoErrorCopy("blob_access", "ar").includes("خاص"),
+  "AR names the private store",
+);
+assert(
+  ownerPhotoErrorCopy("blob_error", "en").toLowerCase().includes("server"),
+  "EN blob error is explicit",
 );
 assert(
   ownerPhotoErrorCopy("bad_photo", "en").toLowerCase().includes("jpg"),
@@ -181,6 +199,19 @@ assert(
   "hero uses full owner array, not logo-only",
 );
 assert(
+  passportHeroPhotos(
+    {
+      ...emptyPassport(),
+      photos: [
+        "https://abc.blob.vercel-storage.com/owner/cafu-olaya/a.jpg",
+        "https://abc.blob.vercel-storage.com/owner/cafu-olaya/b.jpg",
+      ],
+    },
+    { logoUrl: "/logos/cafu-olaya.jpg" },
+  )[0] === "/api/passport-photo/owner/cafu-olaya/a.jpg",
+  "hero <img> uses the public proxy for private Blob URLs",
+);
+assert(
   passportHeroPhotos(emptyPassport(), { logoUrl: "/logos/cafu-olaya.jpg" })[0] ===
     "/logos/cafu-olaya.jpg",
   "logo is fallback only when owner photos are empty",
@@ -197,6 +228,7 @@ const files = [
   "app/en/owner/edit/page.tsx",
   "lib/owner-tokens.ts",
   "lib/owner-photos.ts",
+  "lib/owner-photo-urls.ts",
   "lib/copy.ts",
 ];
 for (const file of files) {
@@ -274,7 +306,49 @@ assert(!photosApi.includes("sendWhatsAppText"), "upload does not send WhatsApp")
 
 const photoLib = readFileSync("lib/owner-photos.ts", "utf8");
 assert(photoLib.includes("@vercel/blob"), "Vercel Blob is the upload store");
+assert(photoLib.includes('access: "private"'), "private store fallback");
+assert(photoLib.includes("ownerPhotoPublicHref"), "private puts become public proxy URLs");
 assert(!/s3|cloudinary|supabase|r2|s3bucket/i.test(photoLib), "no third storage");
+assert(
+  existsSync("app/api/passport-photo/[...path]/route.ts"),
+  "public proxy serves private Blob photos",
+);
+assert(
+  ownerPhotoPublicHref("owner/cafu-olaya/1-shot.jpg") ===
+    "/api/passport-photo/owner/cafu-olaya/1-shot.jpg",
+  "public href is same-origin",
+);
+assert(
+  ownerPhotoProxyPathname(["owner", "cafu-olaya", "1-shot.jpg"]) ===
+    "owner/cafu-olaya/1-shot.jpg",
+  "proxy pathname stays under owner/",
+);
+assert(
+  ownerPhotoProxyPathname(["..", "secret", "x.jpg"]) === null,
+  "proxy rejects non-owner paths",
+);
+assert(
+  ownerPhotoDisplaySrc(
+    "https://abc.blob.vercel-storage.com/owner/cafu-olaya/1-shot.jpg",
+  ) === "/api/passport-photo/owner/cafu-olaya/1-shot.jpg",
+  "private Blob URL becomes a public <img> src",
+);
+assert(
+  ownerPhotoDisplaySrc("/logos/cafu-olaya.jpg") === "/logos/cafu-olaya.jpg",
+  "catalog paths stay as-is",
+);
+assert(
+  isPrivateStoreAccessError(
+    new Error(
+      "Vercel Blob: Cannot use public access on a private store. The store is configured with private access.",
+    ),
+  ),
+  "private-store error is recognized",
+);
+assert(
+  readFileSync("components/owner-edit.tsx", "utf8").includes("ownerPhotoErrorCopy"),
+  "edit surfaces the real upload error",
+);
 assert(
   ownerPhotoPathname("cafu-olaya", "../../evil.png") ===
     "owner/cafu-olaya/photo-evil.png",

@@ -1,3 +1,5 @@
+import { ownerPhotoDisplaySrc } from "./owner-photo-urls";
+
 export const CLAIM_STATUSES = ["none", "pending", "verified"] as const;
 export type ClaimStatus = (typeof CLAIM_STATUSES)[number];
 
@@ -276,7 +278,7 @@ export function passportHeroPhotos(
   passport: PassportOwnerFields,
   shop?: { photoUrl?: string; logoUrl?: string },
 ): string[] {
-  const owner = mergePassportPhotos(passport.photos, []);
+  const owner = mergePassportPhotos(passport.photos, []).map(ownerPhotoDisplaySrc);
   if (owner.length > 0) return owner;
   const fallback = shop?.photoUrl || shop?.logoUrl;
   return fallback ? [fallback] : [];

@@ -1,5 +1,13 @@
-import { put } from "@vercel/blob";
+import { BlobAccessError, put } from "@vercel/blob";
 import { ENV_KEYS, readEnv } from "./env";
+import { ownerPhotoPublicHref } from "./owner-photo-urls";
+
+export {
+  OWNER_PHOTO_PUBLIC_PREFIX,
+  ownerPhotoDisplaySrc,
+  ownerPhotoPublicHref,
+  ownerPhotoProxyPathname,
+} from "./owner-photo-urls";
 
 /** Same cap as sanitizeOwnerPassport photos[]. */
 export const OWNER_PHOTO_MAX = 12;
@@ -18,7 +26,12 @@ export const OWNER_PHOTO_TYPES = [
 
 const OWNER_PHOTO_TYPE_SET = new Set<string>(OWNER_PHOTO_TYPES);
 
-export type OwnerPhotoError = "no_blob" | "bad_photo" | "photos_full";
+export type OwnerPhotoError =
+  | "no_blob"
+  | "bad_photo"
+  | "photos_full"
+  | "blob_access"
+  | "blob_error";
 
 export function blobWriteConfigured(): boolean {
   return Boolean(readEnv(ENV_KEYS.BLOB_READ_WRITE_TOKEN));
@@ -68,6 +81,42 @@ export function ownerPhotoPathname(
   return `owner/${safeShop}/${prefix}-${named}`;
 }
 
+export function isPrivateStoreAccessError(error: unknown): boolean {
+  if (error instanceof BlobAccessError) return true;
+  const message = error instanceof Error ? error.message : String(error);
+  return /cannot use public access on a private store/i.test(message);
+}
+
+function classifyBlobError(error: unknown): OwnerPhotoError {
+  if (isPrivateStoreAccessError(error)) return "blob_access";
+  const message = error instanceof Error ? error.message : String(error);
+  if (/too large|content type|not allowed/i.test(message)) return "bad_photo";
+  return "blob_error";
+}
+
+async function putOwnerPhotoFile(
+  pathname: string,
+  file: File,
+): Promise<string> {
+  const contentType = file.type || "image/jpeg";
+  try {
+    const blob = await put(pathname, file, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType,
+    });
+    return blob.url;
+  } catch (error) {
+    if (!isPrivateStoreAccessError(error)) throw error;
+    const blob = await put(pathname, file, {
+      access: "private",
+      addRandomSuffix: true,
+      contentType,
+    });
+    return ownerPhotoPublicHref(blob.pathname);
+  }
+}
+
 /**
  * Collect every file in the form. Do not use form.get("files") — that is
  * last-wins for the same field name. Duck-type File (instanceof fails across
@@ -96,20 +145,24 @@ export async function putOwnerPhotos(
 
   const urls: string[] = [];
   const now = Date.now();
+  let lastError: OwnerPhotoError = "bad_photo";
   for (const [index, file] of files.slice(0, OWNER_PHOTO_MAX_FILES).entries()) {
     const check = checkOwnerPhotoFile(file);
-    if (!check.ok) continue;
-    const blob = await put(
-      ownerPhotoPathname(shopId, file.name, `${now}-${index}`),
-      file,
-      {
-        access: "public",
-        addRandomSuffix: true,
-        contentType: file.type || "image/jpeg",
-      },
-    );
-    urls.push(blob.url);
+    if (!check.ok) {
+      lastError = "bad_photo";
+      continue;
+    }
+    try {
+      urls.push(
+        await putOwnerPhotoFile(
+          ownerPhotoPathname(shopId, file.name, `${now}-${index}`),
+          file,
+        ),
+      );
+    } catch (error) {
+      lastError = classifyBlobError(error);
+    }
   }
-  if (urls.length === 0) return { ok: false, error: "bad_photo" };
+  if (urls.length === 0) return { ok: false, error: lastError };
   return { ok: true, urls };
 }

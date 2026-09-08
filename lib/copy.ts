@@ -527,6 +527,14 @@ export const copy = {
     ar: "فشل الرفع",
     en: "Upload failed",
   },
+  ownerEditBlobAccess: {
+    ar: "مخزن الصور خاص. نعرض صور الكرت من رابط عام بدون كوكيز.",
+    en: "The photo store is private. Card photos are served from a public page URL — no signed cookies.",
+  },
+  ownerEditBlobError: {
+    ar: "السيرفر ما قدر يحفظ الصورة. جرّب صورة ثانية أو حط رابط.",
+    en: "The server could not store that photo. Try another image or add a URL.",
+  },
   ownerEditViewCard: {
     ar: "شوف الكرت",
     en: "View card",
@@ -597,6 +605,8 @@ export function ownerPhotoErrorCopy(error: string, language: Language): string {
   if (error === "no_blob") return copy.ownerEditNoBlob[language];
   if (error === "bad_photo") return copy.ownerEditBadPhoto[language];
   if (error === "photos_full") return copy.ownerEditPhotosFull[language];
+  if (error === "blob_access") return copy.ownerEditBlobAccess[language];
+  if (error === "blob_error") return copy.ownerEditBlobError[language];
   if (error === "rate_limited") return copy.feedbackRateLimited[language];
   return ownerEditErrorCopy(
     error as OwnerTokenError,

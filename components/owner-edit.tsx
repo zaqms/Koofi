@@ -19,6 +19,7 @@ import {
   ownerEditUploadProgressCopy,
   ownerPhotoErrorCopy,
 } from "@/lib/copy";
+import { ownerPhotoDisplaySrc } from "@/lib/owner-photo-urls";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, ownerEditPath, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
@@ -205,12 +206,13 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
         const savedPhotos = asPhotoList(json.passport?.photos);
         const urls = asPhotoList(json.urls);
         if (!res.ok || !json.ok || (savedPhotos.length === 0 && urls.length === 0)) {
+          const reason = ownerPhotoErrorCopy(json.error ?? "blob_error", language);
           setUploads((current) =>
             current.map((row) =>
-              row.id === rowId ? { ...row, status: "error" } : row,
+              row.id === rowId ? { ...row, status: "error", error: reason } : row,
             ),
           );
-          setError(ownerPhotoErrorCopy(json.error ?? "invalid", language));
+          setError(reason);
           continue;
         }
         landedAny = true;
@@ -228,12 +230,13 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
           return next;
         });
       } catch {
+        const reason = copy.ownerEditBlobError[language];
         setUploads((current) =>
           current.map((row) =>
-            row.id === rowId ? { ...row, status: "error" } : row,
+            row.id === rowId ? { ...row, status: "error", error: reason } : row,
           ),
         );
-        setError(copy.ownerEditNoBlob[language]);
+        setError(reason);
       }
     }
     if (landedAny) setSavedCount(asPhotoList(photosRef.current).length);
@@ -315,7 +318,7 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
                 {filledPhotos.map((src, index) => (
                   <PhotoTile
                     key={`${src}-${index}`}
-                    src={src}
+                    src={ownerPhotoDisplaySrc(src)}
                     status="done"
                     label={copy.ownerEditUploadDone[language]}
                   />
@@ -327,7 +330,7 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
                     status={row.status}
                     label={
                       row.status === "error"
-                        ? copy.ownerEditUploadFailed[language]
+                        ? row.error || copy.ownerEditUploadFailed[language]
                         : copy.ownerEditUploading[language]
                     }
                   />
@@ -603,6 +606,7 @@ type UploadRow = {
   name: string;
   preview: string;
   status: "queued" | "uploading" | "done" | "error";
+  error?: string;
 };
 
 function asPhotoList(raw: unknown): string[] {

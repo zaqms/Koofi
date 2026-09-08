@@ -261,7 +261,7 @@ After a claim is **verified**, ops mints a single-shop link. The later WhatsApp 
 - Valid only when `shop_claims.status = 'verified'` for that shop. Pending / unclaimed fail closed
 - Owner may write Passport fields only: photos, brewing / Now pouring, owner-supplied hours, thin offer, optional phone / IG
 - Photos: a list of URL fields (**Add another URL**) and a multi-file phone picker (**Upload from phone**). Upload **appends** onto Neon `passport.photos[]` (one request per file). Save never collapses a longer array to the last URL. The edit list and Passport hero carousel both show the full array (`1/n`). The picker shows per-file spinning / done / error and a saved count.
-- Phone upload uses **Vercel Blob** (`@vercel/blob` + `BLOB_READ_WRITE_TOKEN`). No third storage. If Blob is unset, URL fields still work
+- Phone upload uses **Vercel Blob** (`@vercel/blob` + `BLOB_READ_WRITE_TOKEN`). No third storage. If Blob is unset, URL fields still work. A **private** store cannot use `access: "public"` — upload retries as private and the Passport hero loads `/api/passport-photo/owner/…` so visitors need no signed cookies. A public store still stores the CDN URL.
 - Locked (read-only): name, district, Maps pin
 - No buy-rank, no Soft Places badge, no invented hours defaults
 - Visitor brand stays Wain / wain.lol. Interim **Own this cafe?** → `wa.me` on unclaimed cards stays

@@ -14,6 +14,7 @@ const NO_STORE = { "Cache-Control": "no-store" } as const;
 
 function tokenStatus(error: string): number {
   if (error === "no_storage" || error === "no_blob") return 503;
+  if (error === "blob_access" || error === "blob_error") return 503;
   if (error === "not_verified") return 403;
   if (error === "expired" || error === "revoked" || error === "wrong_shop") {
     return 401;

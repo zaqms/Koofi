@@ -1,3 +1,4 @@
+import { appendVerifiedPassportPhotos } from "@/lib/claims";
 import { allowRate, clientIp } from "@/lib/feedback";
 import {
   collectOwnerPhotoFiles,
@@ -70,8 +71,24 @@ export async function POST(request: Request) {
     );
   }
 
+  const saved = await appendVerifiedPassportPhotos({
+    shopId: session.shopId,
+    urls: uploaded.urls,
+  });
+  if (!saved.ok) {
+    return Response.json(
+      { ok: false, error: saved.error },
+      { status: tokenStatus(saved.error), headers: NO_STORE },
+    );
+  }
+
   return Response.json(
-    { ok: true, shopId: session.shopId, urls: uploaded.urls },
+    {
+      ok: true,
+      shopId: saved.shopId,
+      urls: uploaded.urls,
+      passport: saved.passport,
+    },
     { headers: NO_STORE },
   );
 }

@@ -121,7 +121,9 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
         ok?: boolean;
         error?: string;
         urls?: string[];
+        passport?: PassportOwnerFields;
       };
+      const savedPhotos = json.passport?.photos;
       const urls = json.urls;
       if (!res.ok || !json.ok || !urls) {
         setError(ownerPhotoErrorCopy(json.error ?? "invalid", language));
@@ -129,10 +131,14 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
       }
       setDraft((current) => ({
         ...current,
-        photos: [
-          ...current.photos.map((item) => item.trim()).filter(Boolean),
-          ...urls,
-        ],
+        ...(json.passport ?? {}),
+        photos:
+          savedPhotos && savedPhotos.length > 0
+            ? savedPhotos
+            : [
+                ...current.photos.map((item) => item.trim()).filter(Boolean),
+                ...urls,
+              ],
       }));
     } catch {
       setError(copy.ownerEditNoBlob[language]);
@@ -258,7 +264,9 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
           >
             {copy.ownerEditAddUrl[language]}
           </AddButton>
-          <label className="mt-3 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-lg border border-gold/50 bg-foam px-3 text-sm text-gold-deep hover:bg-passport-wash">
+        </form>
+        <div className="px-5">
+          <label className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-lg border border-gold/50 bg-foam px-3 text-sm text-gold-deep hover:bg-passport-wash">
             <input
               type="file"
               accept="image/*"
@@ -271,6 +279,8 @@ export function OwnerEdit({ language, shop, token, passport }: OwnerEditProps) {
               ? copy.ownerEditUploading[language]
               : copy.ownerEditUpload[language]}
           </label>
+        </div>
+        <form onSubmit={onSubmit} className="px-5 pb-5">
 
           <div className="mt-6 rounded-2xl border border-gold/40 bg-passport-wash px-4 py-4">
             <p className="text-[11px] tracking-[0.14em] text-gold uppercase">

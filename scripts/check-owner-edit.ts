@@ -6,17 +6,22 @@ import {
   readApproveToken,
 } from "../lib/claim-ops";
 import {
+  appendVerifiedPassportPhotos,
   grantVerifiedClaim,
   updateVerifiedPassport,
 } from "../lib/claims";
 import {
   emptyPassport,
+  mergePassportPhotos,
+  parsePhotoList,
+  passportHeroPhotos,
   sanitizeOwnerPassport,
 } from "../lib/claims-types";
 import { copy, ownerEditErrorCopy, ownerPhotoErrorCopy } from "../lib/copy";
 import {
   blobWriteConfigured,
   checkOwnerPhotoFile,
+  collectOwnerPhotoFiles,
   OWNER_PHOTO_MAX,
   OWNER_PHOTO_MAX_BYTES,
   ownerPhotoPathname,
@@ -124,6 +129,34 @@ assert(
   "Blob-length photo URL is kept",
 );
 assert(OWNER_PHOTO_MAX === 12, "same 12-photo cap as passport sanitize");
+assert(
+  parsePhotoList("https://cdn.example/last.jpg").length === 1,
+  "string photo is not dropped",
+);
+assert(
+  parsePhotoList(["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"])
+    .length === 2,
+  "array photos kept",
+);
+assert(
+  mergePassportPhotos(
+    ["https://cdn.example/a.jpg"],
+    ["https://cdn.example/b.jpg", "https://cdn.example/a.jpg"],
+  ).length === 2,
+  "append keeps both unique URLs",
+);
+assert(
+  passportHeroPhotos(
+    { ...emptyPassport(), photos: ["https://cdn.example/a.jpg", "https://cdn.example/b.jpg"] },
+    { logoUrl: "/logos/cafu-olaya.jpg" },
+  ).length === 2,
+  "hero uses full owner array, not logo-only",
+);
+assert(
+  passportHeroPhotos(emptyPassport(), { logoUrl: "/logos/cafu-olaya.jpg" })[0] ===
+    "/logos/cafu-olaya.jpg",
+  "logo is fallback only when owner photos are empty",
+);
 assert(!("name" in dirty), "name is not a passport field");
 assert(!("district" in dirty), "district is not a passport field");
 assert(!("pin" in dirty), "pin is not a passport field");
@@ -176,6 +209,7 @@ assert(edit.includes("multiple"), "multi-file picker");
 assert(edit.includes('accept="image/*"'), "image picker");
 assert(edit.includes("/api/owner/photos"), "upload hits Blob route");
 assert(edit.includes("ownerEditAddUrl"), "URL add is a list, not one field");
+assert(edit.includes("savedPhotos"), "upload reloads the full saved photos[]");
 assert(!edit.includes("shop.hours"), "catalog hours are not written");
 assert(!edit.includes("DirectoryUpvote"), "no buy-rank upvote on edit");
 assert(!edit.includes("GoogleRating"), "no invented Google rating");
@@ -184,6 +218,10 @@ assert(existsSync("app/api/owner/photos/route.ts"), "photo upload route");
 const photosApi = readFileSync("app/api/owner/photos/route.ts", "utf8");
 assert(photosApi.includes("validateOwnerToken"), "upload is token-gated");
 assert(photosApi.includes("putOwnerPhotos"), "upload uses Blob helper");
+assert(
+  photosApi.includes("appendVerifiedPassportPhotos"),
+  "upload appends onto Neon photos[]",
+);
 assert(!photosApi.includes("sendWhatsAppText"), "upload does not send WhatsApp");
 
 const photoLib = readFileSync("lib/owner-photos.ts", "utf8");
@@ -191,8 +229,28 @@ assert(photoLib.includes("@vercel/blob"), "Vercel Blob is the upload store");
 assert(!/s3|cloudinary|supabase|r2|s3bucket/i.test(photoLib), "no third storage");
 assert(
   ownerPhotoPathname("cafu-olaya", "../../evil.png") ===
-    "owner/cafu-olaya/evil.png",
+    "owner/cafu-olaya/photo-evil.png",
   "pathname stays under owner/shop",
+);
+assert(
+  ownerPhotoPathname("cafu-olaya", "image.jpg", "111-0") !==
+    ownerPhotoPathname("cafu-olaya", "image.jpg", "111-1"),
+  "same iPhone filename gets a unique path",
+);
+const twoFiles = new FormData();
+twoFiles.set("shop", "cafu-olaya");
+twoFiles.set("token", "tok");
+twoFiles.append(
+  "files",
+  new File([new Uint8Array([1, 2, 3])], "a.jpg", { type: "image/jpeg" }),
+);
+twoFiles.append(
+  "files",
+  new File([new Uint8Array([4, 5, 6])], "b.jpg", { type: "image/jpeg" }),
+);
+assert(
+  collectOwnerPhotoFiles(twoFiles).length === 2,
+  "FormData keeps both files, not last-wins",
 );
 assert(
   ownerPhotoPathname("cafu-olaya", "café shot!.JPG").startsWith(
@@ -333,6 +391,19 @@ async function checkMemoryTokens(): Promise<void> {
   assert(saved.ok && saved.passport.photos.length === 2, "multi URL photos saved");
   assert(saved.ok && !("name" in saved.passport), "name not saved");
 
+  const appended = await appendVerifiedPassportPhotos({
+    shopId: shopA,
+    urls: ["https://cdn.example/r.jpg"],
+  });
+  assert(
+    appended.ok && appended.passport.photos.length === 3,
+    "upload append does not collapse to last URL",
+  );
+  assert(
+    appended.ok && appended.passport.brewingTitle === "Test bean",
+    "append keeps other passport fields",
+  );
+
   const again = await validateOwnerToken({
     shopId: shopA,
     token: minted.token,
@@ -340,6 +411,10 @@ async function checkMemoryTokens(): Promise<void> {
   assert(
     again.ok && again.passport.brewingTitle === "Test bean",
     "reload sees saved passport",
+  );
+  assert(
+    again.ok && again.passport.photos.length === 3,
+    "reload lists the full photos array",
   );
 
   const expired = await mintOwnerToken(shopA, -1000);

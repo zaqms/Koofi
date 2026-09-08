@@ -5,6 +5,7 @@ import { parseOwnerPhone, whatsAppTo } from "./claim-phone";
 import { getShop, listDirectoryShops } from "./catalog";
 import {
   emptyPassport,
+  mergePassportPhotos,
   parsePassport,
   parseProofType,
   publicPassport,
@@ -759,4 +760,24 @@ export async function updateVerifiedPassport(input: {
     WHERE shop_id = ${shopId} AND status = 'verified'
   `;
   return { ok: true, shopId, passport };
+}
+
+/** Append URLs onto the saved photos[] — never replace the array with the last file. */
+export async function appendVerifiedPassportPhotos(input: {
+  shopId: unknown;
+  urls: string[];
+}): Promise<
+  | { ok: true; shopId: string; passport: PassportOwnerFields }
+  | { ok: false; error: "not_found" | "not_verified" | "no_storage" }
+> {
+  const current = await loadShopClaim(input.shopId);
+  if (!current) return { ok: false, error: "not_verified" };
+  if (current.status !== "verified") return { ok: false, error: "not_verified" };
+  return updateVerifiedPassport({
+    shopId: current.shopId,
+    passport: {
+      ...current.passport,
+      photos: mergePassportPhotos(current.passport.photos, input.urls),
+    },
+  });
 }

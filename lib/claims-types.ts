@@ -1,7 +1,7 @@
 export const CLAIM_STATUSES = ["none", "pending", "verified"] as const;
 export type ClaimStatus = (typeof CLAIM_STATUSES)[number];
 
-export const PROOF_TYPES = ["cr", "storefront_photo"] as const;
+export const PROOF_TYPES = ["cr"] as const;
 export type ProofType = (typeof PROOF_TYPES)[number];
 
 export type ClaimError =
@@ -57,7 +57,7 @@ export type PublicClaimStatus = {
 export const STUB_OTP_CODE = "000000";
 
 export function parseProofType(raw: unknown): ProofType | undefined {
-  if (raw === "cr" || raw === "storefront_photo") return raw;
+  if (raw === "cr") return raw;
   return undefined;
 }
 

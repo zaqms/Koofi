@@ -7,7 +7,7 @@ import { BrandHomeLink } from "@/components/brand-home-link";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { homePath, ownerClaimPath, ownerPath, shopDisplayName } from "@/lib/product";
-import { STUB_OTP_CODE, type ClaimError, type ProofType } from "@/lib/claims-types";
+import { STUB_OTP_CODE, type ClaimError } from "@/lib/claims-types";
 import type { Language, NeighborhoodId } from "@/lib/types";
 
 export type OwnerCatalogOption = {
@@ -55,7 +55,6 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [otpStub, setOtpStub] = useState(false);
-  const [proofType, setProofType] = useState<ProofType>("cr");
   const [proofName, setProofName] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -133,6 +132,10 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
   async function submitClaim(event: FormEvent) {
     event.preventDefault();
     if (busy || !shopId) return;
+    if (!proofName) {
+      setMessage(copy.ownerBadProof[language]);
+      return;
+    }
     setBusy(true);
     setMessage(null);
     try {
@@ -143,8 +146,8 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
           shopId,
           phone,
           code,
-          proofType,
-          proofName: proofName || proofType,
+          proofType: "cr",
+          proofName,
         }),
       });
       const payload = (await response.json()) as {
@@ -311,37 +314,18 @@ export function OwnerClaim({ language, shops, initialShopId }: OwnerClaimProps) 
               className="mt-2 min-h-12 w-full rounded-2xl border border-line bg-foam px-4 text-sm outline-none focus:border-ink-soft"
             />
           </div>
-          <fieldset className="space-y-2">
-            <legend className="text-xs text-ink-soft">
-              {copy.ownerProofHint[language]}
-            </legend>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="radio"
-                name="proof"
-                checked={proofType === "cr"}
-                onChange={() => setProofType("cr")}
-              />
-              {copy.ownerProofCr[language]}
-            </label>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="radio"
-                name="proof"
-                checked={proofType === "storefront_photo"}
-                onChange={() => setProofType("storefront_photo")}
-              />
-              {copy.ownerProofStorefront[language]}
-            </label>
-          </fieldset>
           <div>
-            <label className="text-xs text-ink-soft" htmlFor="owner-proof">
+            <p className="text-sm leading-7 text-ink-soft">
+              {copy.ownerProofHint[language]}
+            </p>
+            <label className="mt-3 block text-xs text-ink-soft" htmlFor="owner-proof">
               {copy.ownerProofFile[language]}
             </label>
             <input
               id="owner-proof"
               type="file"
               accept="image/*,.pdf"
+              required
               onChange={(event) => {
                 const file = event.target.files?.[0];
                 setProofName(file?.name ?? "");

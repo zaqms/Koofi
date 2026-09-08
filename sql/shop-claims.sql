@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS shop_claims (
   shop_id TEXT PRIMARY KEY,
   status TEXT NOT NULL CHECK (status IN ('pending', 'verified')),
   owner_phone_e164 TEXT NOT NULL,
-  proof_type TEXT NOT NULL CHECK (proof_type IN ('cr', 'storefront_photo')),
+  proof_type TEXT NOT NULL CHECK (proof_type = 'cr'),
   proof_asset_url TEXT,
   passport JSONB NOT NULL DEFAULT '{}'::jsonb,
   otp_stub BOOLEAN NOT NULL DEFAULT FALSE,

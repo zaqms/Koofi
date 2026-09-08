@@ -314,17 +314,13 @@ export const copy = {
     ar: "صورة السجل التجاري",
     en: "Commercial registration photo",
   },
-  ownerProofStorefront: {
-    ar: "ما عندي سجل؟ صورة الواجهة",
-    en: "No CR? Storefront photo",
-  },
   ownerProofHint: {
-    ar: "ارفع صورة السجل. إذا ما تقدر، صورة الواجهة تكفي.",
-    en: "Upload a CR photo. If you can’t, a storefront photo is enough.",
+    ar: "ارفع صورة السجل التجاري.",
+    en: "Upload a commercial registration (CR) photo.",
   },
   ownerProofFile: {
-    ar: "ارفع الصورة",
-    en: "Upload the photo",
+    ar: "صورة السجل التجاري",
+    en: "CR photo",
   },
   ownerSubmit: {
     ar: "أرسل الطلب",
@@ -355,7 +351,7 @@ export const copy = {
     en: "Claims are not connected yet. Try again later.",
   },
   ownerBadProof: {
-    ar: "ارفع صورة السجل أو الواجهة.",
-    en: "Upload a CR or storefront photo.",
+    ar: "ارفع صورة السجل التجاري.",
+    en: "Upload a CR photo.",
   },
 } as const;

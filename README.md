@@ -234,7 +234,7 @@ Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.l
 
 1. Pick a catalog shop from the list. A cafe-card `?shop=` deep-link skips the list and shows the confirmed name + district. No Maps-link paste.
 2. WhatsApp Cloud API OTP. **Never WhatsApp Web / QR.** If `WHATSAPP_ACCESS_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` are missing, the step is stub mode (`000000`) and still lets a pending claim through in memory / local preview.
-3. Proof: commercial-registration photo by default, storefront photo as fallback. File is stored as a path stub, not a public card write. After OTP + proof: status `pending`, owner copy is **Under review / We’ll verify your claim** (AR spoken Najdi). Submit logs `wain_claim` for Ajz and emails `aj@cali.sa` when Resend is configured.
+3. Proof: commercial-registration (CR) photo only — no storefront fallback. File is stored as a path stub, not a public card write. After OTP + proof: status `pending`, owner copy is **Under review / We’ll verify your claim** (AR spoken Najdi). Submit logs `wain_claim` for Ajz and emails `aj@cali.sa` when Resend is configured.
 
 Claims are **per `shop_id`**. Passport owner fields (`photos[]`, brewing/note, hours, thin offer, optional phone/IG) are scaffolded empty on the row. They are not editable from the public card until verified.
 

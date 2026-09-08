@@ -43,7 +43,7 @@ assert(parseOwnerPhone("not-a-phone") === undefined, "junk phone rejected");
 assert(whatsAppTo("+966551234567") === "966551234567", "Cloud API to-field");
 
 assert(parseProofType("cr") === "cr", "CR proof");
-assert(parseProofType("storefront_photo") === "storefront_photo", "storefront fallback");
+assert(parseProofType("storefront_photo") === undefined, "storefront proof rejected");
 assert(parseProofType("voice") === undefined, "no voice notes");
 assert(STUB_OTP_CODE === "000000", "marked stub OTP");
 
@@ -70,6 +70,7 @@ for (const file of ownerFiles) {
     `${file} must not use parked Maps line`,
   );
   assert(!/web\.whatsapp\.com/i.test(source), `${file} must not use WhatsApp Web`);
+  assert(!/storefront/i.test(source), `${file} must not mention storefront`);
 }
 
 const cafeCard = readFileSync("components/cafe-card.tsx", "utf8");
@@ -95,8 +96,8 @@ const sql = readFileSync("sql/shop-claims.sql", "utf8");
 assert(sql.includes("shop_id TEXT PRIMARY KEY"), "claims are per shop_id");
 assert(sql.includes("pending"), "pending in SQL");
 assert(sql.includes("verified"), "verified in SQL");
-assert(sql.includes("cr"), "CR proof type");
-assert(sql.includes("storefront_photo"), "storefront fallback");
+assert(sql.includes("proof_type = 'cr'"), "CR-only proof type");
+assert(!sql.includes("storefront_photo"), "SQL has no storefront fallback");
 
 const picker = readFileSync("lib/picker.ts", "utf8");
 assert(!picker.includes("claim"), "Soft Places parked — picker untouched");
@@ -104,7 +105,10 @@ assert(!picker.includes("claim"), "Soft Places parked — picker untouched");
 const ownerUi = readFileSync("components/owner-claim.tsx", "utf8");
 assert(ownerUi.includes("ownerUnderReview"), "owner sees under review");
 assert(ownerUi.includes("/api/claims/otp"), "OTP step exists");
-assert(ownerUi.includes("storefront_photo"), "storefront fallback in UI");
+assert(!ownerUi.includes("storefront_photo"), "no storefront fallback in UI");
+assert(!ownerUi.includes("ownerProofStorefront"), "no storefront radio copy");
+assert(ownerUi.includes("ownerProofHint"), "CR proof hint");
+assert(ownerUi.includes('proofType: "cr"'), "submit always sends CR");
 assert(!ownerUi.includes("voice"), "no voice-note proof");
 assert(ownerUi.includes("fromCard"), "deep-link skips catalog pick");
 assert(ownerUi.includes("ownerConfirmed"), "deep-link shows confirmed cafe");
@@ -128,6 +132,18 @@ assert(
 );
 assert(copy.ownerConfirmed.ar === "هالمقهى", "Najdi confirmed label");
 assert(copy.ownerConfirmed.en === "This cafe", "EN confirmed label");
+assert(!("ownerProofStorefront" in copy), "storefront copy key removed");
+assert(
+  copy.ownerProofHint.en === "Upload a commercial registration (CR) photo.",
+  "EN CR-only proof hint",
+);
+assert(copy.ownerProofHint.ar === "ارفع صورة السجل التجاري.", "AR CR-only proof hint");
+assert(!/storefront|الواجهة|إذا ما تقدر|If you can/i.test(copy.ownerProofHint.en), "EN hint has no fallback");
+assert(!copy.ownerProofHint.ar.includes("الواجهة"), "AR hint has no storefront");
+assert(copy.ownerBadProof.en === "Upload a CR photo.", "EN bad proof is CR-only");
+assert(copy.ownerBadProof.ar === "ارفع صورة السجل التجاري.", "AR bad proof is CR-only");
+assert(!claims.includes("storefront_photo"), "claims store has no storefront type");
+assert(!claims.includes("storefront"), "claims store has no storefront path");
 
 const ownerAr = readFileSync("app/owner/page.tsx", "utf8");
 const ownerEn = readFileSync("app/en/owner/page.tsx", "utf8");

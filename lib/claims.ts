@@ -35,7 +35,7 @@ const SCHEMA = [
     shop_id TEXT PRIMARY KEY,
     status TEXT NOT NULL CHECK (status IN ('pending', 'verified')),
     owner_phone_e164 TEXT NOT NULL,
-    proof_type TEXT NOT NULL CHECK (proof_type IN ('cr', 'storefront_photo')),
+    proof_type TEXT NOT NULL CHECK (proof_type = 'cr'),
     proof_asset_url TEXT,
     passport JSONB NOT NULL DEFAULT '{}'::jsonb,
     otp_stub BOOLEAN NOT NULL DEFAULT FALSE,
@@ -243,14 +243,9 @@ async function otpMatches(
   return { ok: true, stub: Boolean(row.stub) };
 }
 
-function proofStubPath(shopId: string, proofType: ProofType, rawName: unknown): string {
-  const name =
-    typeof rawName === "string" && rawName.trim()
-      ? rawName.trim().replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 80)
-      : proofType === "cr"
-        ? "cr"
-        : "storefront";
-  return `owner-proof/${shopId}/${proofType}/${name}`;
+function proofStubPath(shopId: string, rawName: string): string {
+  const name = rawName.trim().replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 80) || "cr";
+  return `owner-proof/${shopId}/cr/${name}`;
 }
 
 export async function submitShopClaim(input: {
@@ -280,6 +275,9 @@ export async function submitShopClaim(input: {
   if (!phone) return { ok: false, error: "bad_phone" };
   const proofType = parseProofType(input.proofType);
   if (!proofType) return { ok: false, error: "bad_proof" };
+  const proofName =
+    typeof input.proofName === "string" ? input.proofName.trim() : "";
+  if (!proofName) return { ok: false, error: "bad_proof" };
   const code = typeof input.code === "string" ? input.code.trim() : "";
   if (!/^\d{6}$/.test(code)) return { ok: false, error: "bad_otp" };
 
@@ -296,7 +294,7 @@ export async function submitShopClaim(input: {
   if (!otp.ok) return { ok: false, error: "bad_otp" };
 
   const passport: PassportOwnerFields = emptyPassport();
-  const proofAssetUrl = proofStubPath(shopId, proofType, input.proofName);
+  const proofAssetUrl = proofStubPath(shopId, proofName);
   const now = new Date().toISOString();
 
   if (feedbackStorageKind() === "memory") {

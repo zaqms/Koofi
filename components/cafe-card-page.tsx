@@ -39,7 +39,7 @@ export function CafeCardPageView({
       />
       <header className="flex items-center justify-between gap-3">
         <p className="text-xs text-ink-soft">
-          <BrandHomeLink language={language} /> · {copy.shareHint[language]}
+          <BrandHomeLink language={language} />
         </p>
         <Link
           href={localeHref}

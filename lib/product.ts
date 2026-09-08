@@ -270,6 +270,47 @@ export function shopDisplayName(
   return nameAr || nameEn;
 }
 
+/** Absolute public cafe-card URL for claim prefill. */
+export function publicCardUrl(id: string, language: Language = "ar"): string {
+  return `${PUBLIC_SITE_URL}${cardPath(id, language)}`;
+}
+
+/** Visitor claim chat prefill. No phone digits in this text. */
+export function claimWhatsAppText(input: {
+  language: Language;
+  shopName?: string;
+  cardUrl?: string;
+}): string {
+  if (input.shopName && input.cardUrl) {
+    return input.language === "ar"
+      ? `أبي أطالب بمقهى ${input.shopName} على wain.lol — ${input.cardUrl}`
+      : `I want to claim ${input.shopName} on wain.lol — ${input.cardUrl}`;
+  }
+  return input.language === "ar"
+    ? "أبي أطالب بمقهى على wain.lol"
+    : "I want to claim a cafe on wain.lol";
+}
+
+/** Click-to-chat on the Contact us number. Never WhatsApp Web / QR. */
+export function claimWhatsAppHref(input: {
+  language: Language;
+  shopName?: string;
+  cardUrl?: string;
+}): string {
+  return `${CONTACT_WHATSAPP_HREF}?text=${encodeURIComponent(claimWhatsAppText(input))}`;
+}
+
+export function shopClaimWhatsAppHref(
+  shop: { id: string; nameAr: string; nameEn: string },
+  language: Language,
+): string {
+  return claimWhatsAppHref({
+    language,
+    shopName: shopDisplayName(shop, language),
+    cardUrl: publicCardUrl(shop.id, language),
+  });
+}
+
 export function isExampleShop(shop: { [EXAMPLE_FLAG]: boolean }): boolean {
   return shop[EXAMPLE_FLAG] === true;
 }

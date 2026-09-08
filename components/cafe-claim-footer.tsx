@@ -1,14 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { copy } from "@/lib/copy";
-import { ownerClaimPath } from "@/lib/product";
+import { shopClaimWhatsAppHref } from "@/lib/product";
 import type { ClaimStatus } from "@/lib/claims-types";
-import type { Language } from "@/lib/types";
+import type { Language, Shop } from "@/lib/types";
 
 type CafeClaimFooterProps = {
-  shopId: string;
+  shop: Pick<Shop, "id" | "nameAr" | "nameEn">;
   language: Language;
 };
 
@@ -20,13 +19,14 @@ type StatusPayload = {
 /**
  * Quiet card footer. Cold load shows the claim CTA (unclaimed default).
  * Hides the CTA after we learn the shop is pending or verified.
+ * CTA is wa.me with a prefilled claim — phone digits are not shown.
  */
-export function CafeClaimFooter({ shopId, language }: CafeClaimFooterProps) {
+export function CafeClaimFooter({ shop, language }: CafeClaimFooterProps) {
   const [status, setStatus] = useState<ClaimStatus>("none");
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`/api/claims?shopId=${encodeURIComponent(shopId)}`)
+    fetch(`/api/claims?shopId=${encodeURIComponent(shop.id)}`)
       .then((response) => response.json() as Promise<StatusPayload>)
       .then((payload) => {
         if (cancelled || !payload.ok) return;
@@ -40,7 +40,7 @@ export function CafeClaimFooter({ shopId, language }: CafeClaimFooterProps) {
     return () => {
       cancelled = true;
     };
-  }, [shopId]);
+  }, [shop.id]);
 
   const showCta = status === "none";
 
@@ -49,12 +49,12 @@ export function CafeClaimFooter({ shopId, language }: CafeClaimFooterProps) {
       <p dir="ltr">{copy.listedOn[language]}</p>
       {showCta ? (
         <p className="mt-1.5">
-          <Link
-            href={ownerClaimPath(shopId, language)}
+          <a
+            href={shopClaimWhatsAppHref(shop, language)}
             className="underline-offset-2 hover:text-ink hover:underline"
           >
             {copy.ownThisCafe[language]}
-          </Link>
+          </a>
         </p>
       ) : null}
     </footer>

@@ -93,6 +93,7 @@ Connect ChatGPT / Claude / Gemini / Perplexity / Cursor with Streamable HTTP to 
 
 ```bash
 npx tsx scripts/check-structured-data.ts
+npx tsx scripts/check-claims.ts
 ```
 
 ## How to run
@@ -125,7 +126,9 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `GITHUB_TOKEN` | No | Optional. If set, a Maps suggestion opens a GitHub issue on `zaqms/Koofi` titled `Shop suggestion: <name>`. Chat still thanks them if this is empty. |
 | `XAI_API_KEY` | No | Optional. Server-only key for a short spoken reply above the cards (`https://api.x.ai/v1/chat/completions`). If empty or the call fails (~8s timeout), Koofi uses `copy.threePicks` / `fewerPicks`. Cards still send. Never commit a real key. |
 | `LEARNING_READ_TOKEN` | No | Optional Bearer token for the private `GET /api/learn` pile. If empty, that read is 404. Chat and Maps still work. Never commit a real token. |
-| `DATABASE_URL` | No | Neon / Vercel Postgres for `/feedback`. If empty on Vercel, the board still renders empty and add/vote return 503. Chat is unchanged. Never commit a real URL. |
+| `DATABASE_URL` | No | Neon / Vercel Postgres for `/feedback`, directory upvotes, and owner claims. If empty on Vercel, those writes return 503. Chat is unchanged. Never commit a real URL. |
+| `CLAIM_ALERT_TO` | No | Optional inbox for pending owner-claim alerts. Defaults to `aj@cali.sa` if empty. Sending needs `RESEND_API_KEY`. |
+| `RESEND_API_KEY` | No | Optional. If set, claim submit emails `CLAIM_ALERT_TO` via Resend. If empty, email is stubbed and the server logs `wain_claim`. |
 
 Do not commit secrets.
 
@@ -199,7 +202,7 @@ Preview and production need Neon on Vercel project **`koofi-agent`** (Hobby team
 1. Vercel Dashboard → `koofi-agent` → Storage → Create Database → **Neon Postgres**.
 2. Connect it to **Production** and **Preview** so both get `DATABASE_URL`.
 3. Redeploy the preview (or wait for the next push).
-4. Tables `ideas` and `vote_receipts` are created on first successful request. If you want to create them by hand, run [`sql/feedback.sql`](sql/feedback.sql) in the Neon SQL editor. Directory-list upvotes add `shop_upvotes` and `shop_vote_receipts` the same way ([`sql/shop-upvotes.sql`](sql/shop-upvotes.sql)).
+4. Tables `ideas` and `vote_receipts` are created on first successful request. If you want to create them by hand, run [`sql/feedback.sql`](sql/feedback.sql) in the Neon SQL editor. Directory-list upvotes add `shop_upvotes` and `shop_vote_receipts` the same way ([`sql/shop-upvotes.sql`](sql/shop-upvotes.sql)). Owner claims add `shop_claims` + `shop_claim_otp` ([`sql/shop-claims.sql`](sql/shop-claims.sql)).
 
 Do not invent credentials. Do not put `DATABASE_URL` in the repo.
 
@@ -222,6 +225,26 @@ Social proof only. Counts do **not** reorder chat three-picks, the directory, Ne
 Vote model: toggle upvote. Cookie voter `wain_vid` (same as /feedback). First tap adds a receipt and +1. Second tap deletes that receipt and −1 (never below 0). Same action twice is idempotent — count does not double. Same Neon `DATABASE_URL` (`shop_upvotes` + `shop_vote_receipts`). On Vercel without it, vote returns `503` / `no_storage`. Local `next dev` may use memory.
 
 Visitor copy is short: ▲ + count, `أعجبني` / `Upvote`. Optional `cafe_upvote` / `cafe_unvote` dataLayer events send `shop_id` + `locale` only.
+
+## Owner claim (PR1)
+
+Quiet cafe-card footer under **Listed on wain.lol** / **معروض على wain.lol**. Unclaimed shops show **Own this cafe?** / **تملك المقهى؟** → `/owner?shop=` or `/en/owner?shop=`. Pending or verified shops hide that CTA. No owner names on the public card. Full Passport card UI is a later PR.
+
+`/owner` (Arabic) and `/en/owner` (English):
+
+1. Pick a catalog shop, or paste a Google Maps share / place URL (matched by the existing pin/hex helpers). Unknown links ask them to pick from the list.
+2. WhatsApp Cloud API OTP. **Never WhatsApp Web / QR.** If `WHATSAPP_ACCESS_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` are missing, the step is stub mode (`000000`) and still lets a pending claim through in memory / local preview.
+3. Proof: commercial-registration photo by default, storefront photo as fallback. File is stored as a path stub, not a public card write. After OTP + proof: status `pending`, owner copy is **Under review / We’ll verify your claim** (AR spoken Najdi). Submit logs `wain_claim` for Ajz and emails `aj@cali.sa` when Resend is configured.
+
+Claims are **per `shop_id`**. Passport owner fields (`photos[]`, brewing/note, hours, thin offer, optional phone/IG) are scaffolded empty on the row. They are not editable from the public card until verified.
+
+Real Cloud API OTP later needs:
+
+- `WHATSAPP_ACCESS_TOKEN`
+- `WHATSAPP_PHONE_NUMBER_ID`
+- A Meta-approved authentication / OTP template (plain text only works inside the 24h customer-care window; this PR does not add a template name)
+
+Approve / verified badge / paid claim stay out of this PR.
 
 ## Shop suggestions
 
@@ -259,6 +282,8 @@ app/page.tsx                    Arabic landing
 app/en/page.tsx                 English landing
 app/feedback/page.tsx           public ideas board (Arabic)
 app/en/feedback/page.tsx        public ideas board (English)
+app/owner/page.tsx              owner claim door (Arabic)
+app/en/owner/page.tsx           owner claim door (English)
 app/c/[id]/page.tsx             shareable cafe card (+ CafeOrCoffeeShop JSON-LD)
 app/llms.txt/route.ts           agent pointer to /api/shops + MCP
 app/mcp/route.ts                public MCP alias (/mcp)
@@ -270,6 +295,9 @@ app/api/feedback/route.ts       list + add ideas
 app/api/feedback/vote/route.ts  upvote
 app/api/upvotes/route.ts        directory-list vote snapshot
 app/api/upvotes/vote/route.ts   directory-list shop upvote / unvote
+app/api/claims/route.ts         public claim status + pending submit
+app/api/claims/otp/route.ts     WhatsApp OTP or stub
+app/api/claims/resolve/route.ts Maps URL → catalog shop
 app/api/learn/route.ts          private learning pile (asks + Maps taps)
 app/api/suggest/route.ts        pending suggestions
 app/api/place-photo/[id]        optional Places photo (no-op without key)
@@ -278,6 +306,7 @@ data/catalog.json               editorial catalog (shop names / ids)
 data/pending.json               suggestion file shape (not the live catalog)
 sql/feedback.sql                ideas + vote_receipts (created on first use)
 sql/shop-upvotes.sql            shop_upvotes + shop_vote_receipts (list social proof)
+sql/shop-claims.sql             shop_claims + shop_claim_otp (owner claim)
 lib/structured-data.ts          public shop JSON-LD + /api/shops schema
 lib/mcp-catalog.ts              MCP tools + resources over the same catalog
 lib/public-mcp.ts               Streamable HTTP MCP handler + CORS
@@ -286,6 +315,7 @@ lib/product.ts                  Koofi, opener, vibe chips, example flag, card pa
 lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
 lib/feedback.ts                 Neon (or local memory) ideas board
 lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
+lib/claims.ts                   Neon (or local memory) owner claims
 lib/shop-mark.ts                letter marks on pick cards
 lib/suggest.ts                  Maps-link suggestions
 lib/env.ts                      env key names

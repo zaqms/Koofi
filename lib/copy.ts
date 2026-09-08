@@ -246,4 +246,124 @@ export const copy = {
     ar: "البورد بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
     en: "The board is not connected yet. Try again later.",
   },
+  listedOn: {
+    ar: "معروض على wain.lol",
+    en: "Listed on wain.lol",
+  },
+  ownThisCafe: {
+    ar: "تملك المقهى؟",
+    en: "Own this cafe?",
+  },
+  ownerTitle: {
+    ar: "هالمقهى لك؟",
+    en: "Own this cafe?",
+  },
+  ownerLead: {
+    ar: "اختار المقهى من القائمة، أو الصق رابط قوقل ماب.",
+    en: "Pick the cafe from the list, or paste a Google Maps link.",
+  },
+  ownerStepCafe: {
+    ar: "المقهى",
+    en: "The cafe",
+  },
+  ownerStepWhatsapp: {
+    ar: "واتساب",
+    en: "WhatsApp",
+  },
+  ownerStepProof: {
+    ar: "إثبات",
+    en: "Proof",
+  },
+  ownerMapsPlaceholder: {
+    ar: "رابط قوقل ماب…",
+    en: "A Google Maps link…",
+  },
+  ownerResolve: {
+    ar: "هذا المقهى؟",
+    en: "This cafe?",
+  },
+  ownerNeedPick: {
+    ar: "ما لقيناه في القائمة. اختاره من تحت.",
+    en: "That link isn’t on the list. Pick the cafe below.",
+  },
+  ownerSearch: {
+    ar: "دور على المقهى…",
+    en: "Search the list…",
+  },
+  ownerContinue: {
+    ar: "كمّل",
+    en: "Continue",
+  },
+  ownerPhone: {
+    ar: "رقم الواتساب",
+    en: "WhatsApp number",
+  },
+  ownerPhonePlaceholder: {
+    ar: "05xxxxxxxx",
+    en: "05xxxxxxxx",
+  },
+  ownerSendCode: {
+    ar: "أرسل الرمز",
+    en: "Send the code",
+  },
+  ownerOtp: {
+    ar: "الرمز اللي وصلك",
+    en: "The code you got",
+  },
+  ownerOtpStub: {
+    ar: "واتساب بعد ما تضبط. هذي تجربة — استخدم الرمز التجريبي.",
+    en: "WhatsApp is not configured. Stub mode — use the preview code.",
+  },
+  ownerStubCodeHint: {
+    ar: "الرمز التجريبي: 000000",
+    en: "Preview code: 000000",
+  },
+  ownerProofCr: {
+    ar: "صورة السجل التجاري",
+    en: "Commercial registration photo",
+  },
+  ownerProofStorefront: {
+    ar: "ما عندي سجل؟ صورة الواجهة",
+    en: "No CR? Storefront photo",
+  },
+  ownerProofHint: {
+    ar: "ارفع صورة السجل. إذا ما تقدر، صورة الواجهة تكفي.",
+    en: "Upload a CR photo. If you can’t, a storefront photo is enough.",
+  },
+  ownerProofFile: {
+    ar: "ارفع الصورة",
+    en: "Upload the photo",
+  },
+  ownerSubmit: {
+    ar: "أرسل الطلب",
+    en: "Submit the claim",
+  },
+  ownerUnderReview: {
+    ar: "طلبك تحت المراجعة. بنتحقق إن المقهى لك.",
+    en: "Under review. We’ll verify your claim.",
+  },
+  ownerAlreadyPending: {
+    ar: "هالمقهى تحت المراجعة.",
+    en: "This cafe is already under review.",
+  },
+  ownerAlreadyVerified: {
+    ar: "هالمقهى مُتحقق.",
+    en: "This cafe is already verified.",
+  },
+  ownerBadPhone: {
+    ar: "حط رقم واتساب صحيح.",
+    en: "Use a valid WhatsApp number.",
+  },
+  ownerBadOtp: {
+    ar: "الرمز غلط أو انتهى. اطلب واحد جديد.",
+    en: "That code is wrong or expired. Request a new one.",
+  },
+  ownerNoStorage: {
+    ar: "الطلب بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
+    en: "Claims are not connected yet. Try again later.",
+  },
+  ownerBadProof: {
+    ar: "ارفع صورة السجل أو الواجهة.",
+    en: "Upload a CR or storefront photo.",
+  },
 } as const;

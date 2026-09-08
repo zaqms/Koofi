@@ -14,6 +14,7 @@ export const ENV_KEYS = {
   LEARNING_READ_TOKEN: "LEARNING_READ_TOKEN",
   DATABASE_URL: "DATABASE_URL",
   CLAIM_ALERT_TO: "CLAIM_ALERT_TO",
+  CLAIM_APPROVE_TOKEN: "CLAIM_APPROVE_TOKEN",
 } as const;
 
 export type EnvKey = (typeof ENV_KEYS)[keyof typeof ENV_KEYS];

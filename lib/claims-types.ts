@@ -12,7 +12,25 @@ export type ClaimError =
   | "bad_otp"
   | "otp_not_configured"
   | "already_claimed"
-  | "bad_proof";
+  | "bad_proof"
+  | "not_pending"
+  | "bad_action";
+
+export const CLAIM_REVIEW_ACTIONS = ["verify", "reject"] as const;
+export type ClaimReviewAction = (typeof CLAIM_REVIEW_ACTIONS)[number];
+
+export function parseClaimReviewAction(raw: unknown): ClaimReviewAction | undefined {
+  if (raw === "verify" || raw === "reject") return raw;
+  return undefined;
+}
+
+/** Ops list row. Phone + proof stay off the public card. */
+export type PendingClaim = {
+  shopId: string;
+  ownerPhoneE164: string;
+  proofAssetUrl: string | null;
+  createdAt: string;
+};
 
 /** Empty Passport owner fields. Not public-writable until verified (later PRs). */
 export type PassportOwnerFields = {

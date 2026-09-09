@@ -186,6 +186,13 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `tonight_card_share` | Tonight card share fired (parked) | `shop_id`, `locale`, `channel` (`system` / `x` / `ig` / `snap` / `download` / `copy`) |
 | `invite_open` | وين؟ / wain? sheet opened | `shop_id`, `locale` |
 | `invite_share` | وين؟ / wain? shared | `shop_id`, `locale`, `channel` |
+| `meet_halfway_open` | بيننا chip tapped / picker opened | `locale`, `chip_id`, `chip_label` |
+| `meet_halfway_pin` | A pin is set | `locale`, `which` (`a` / `b` / `self`), `method` (`geolocation` / `paste` / `maps_url`) |
+| `meet_halfway_invite_share` | اعزم خويك share fired | `locale`, `pack_id` (invite token) |
+| `meet_halfway_invite_open` | Guest opens `/h/{token}` | `locale`, `pack_id`, `source`=`invite` |
+| `meet_halfway_results` | ثلاث قهاوي بينكم (or leftover 1–2) shown | `locale`, `count`, `source` (`local` / `invite`) |
+| `meet_halfway_refresh` | غيرها tapped | `locale`, `page` (2 = first غيرها) |
+| `meet_halfway_empty` | ما في أكثر بهالمنطقة shown | `locale`, `source` (`local` / `invite`) |
 
 `chat_query` is the search event. Cafe and neighborhood text is intended — that is the product question. It fires once per `send()` (composer submit or a chip label that is actually posted to `/api/chat`). It does **not** fire for the locked opener, for chip UI that is only displayed, or for Nearby (Nearby never hits `/api/chat`). A 400ms dedupe key `chat_query:{via}:{text}` covers retries and remounts.
 
@@ -234,6 +241,19 @@ Tonight / Invite events reuse the same `dataLayer` helper as `cafe_upvote` and `
 4. Preview on `/c/woods-olaya` (Passport) and `/c/cafu-olaya` (thin). Confirm وين؟ open → share with `shop_id` + `locale` + `channel`. `tonight_*` can stay tagged but will not fire while parked. Publish the container.
 
 Do not send the one-liner, image bytes, or a session id. `channel` is only `system` | `x` | `ig` | `snap` | `download` | `copy`.
+
+### بيننا / Meet Halfway (GTM)
+
+Same `dataLayer` helper as `chip_tap` / `maps_click`. Do **not** send lat/lng. Result Maps taps reuse existing `maps_click` + `three_pick_shown` on the cards — do not add a second Maps event.
+
+In container **GTM-W3TM4552**:
+
+1. **Variables** → Data Layer Variable for any that are missing: `DL - which` (`which`), `DL - method` (`method`), `DL - count` (`count`), `DL - page` (`page`), `DL - source` (`source`), `DL - pack_id` (`pack_id`), `DL - locale` (`locale`).
+2. **Triggers** → Custom Event (All Custom Events) for each of `meet_halfway_open`, `meet_halfway_pin`, `meet_halfway_invite_share`, `meet_halfway_invite_open`, `meet_halfway_results`, `meet_halfway_refresh`, `meet_halfway_empty`.
+3. **Tags** → **Google Analytics: GA4 Event** per name (`GA4 - meet_halfway_open`, …) → Measurement ID `G-EFZZET02TT` → Event Name matches the dataLayer `event` → pass the params from the table above.
+4. Preview: tap **بيننا**, set pins (`موقعي` and a paste), **اعزم خويك**, open `/h/{id}?from=wa`, then **دور بينكم** / **غيرها** until **ما في أكثر بهالمنطقة**. Confirm `chip_tap` still fires on the chip, `maps_click` still fires on card Maps, and the seven `meet_halfway_*` events fire once each as listed. Publish the container.
+
+In GA4 register `which`, `method`, `count`, `page`, and `source` as event-scoped custom dimensions if Explorations need them.
 
 ## Feedback board
 

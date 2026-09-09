@@ -56,6 +56,20 @@ export function parseSharedPin(raw: string): Pin | null {
   return null;
 }
 
+/** How the visitor set a بيننا pin — never send lat/lng to analytics. */
+export function halfwayPinMethod(text: string): "paste" | "maps_url" {
+  const trimmed = text.trim();
+  if (!trimmed) return "paste";
+  if (extractMapsUrl(trimmed)) return "maps_url";
+  try {
+    const url = new URL(trimmed);
+    if (url.protocol === "http:" || url.protocol === "https:") return "maps_url";
+  } catch {
+    // lat,lng or @lat,lng
+  }
+  return "paste";
+}
+
 export function looksLikeSharedPin(raw: string): boolean {
   const text = raw.trim();
   if (!text) return false;

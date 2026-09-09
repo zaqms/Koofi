@@ -247,7 +247,17 @@ export function Chat({
   const halfwayShownRef = useRef<string[]>(
     shownHalfwayPickIds(threads[threadKey]?.messages ?? []),
   );
+  const halfwayPageRef = useRef(1);
   useVisitorLocation();
+
+  useEffect(() => {
+    if (!halfwayInvite) return;
+    trackEvent(
+      "meet_halfway_invite_open",
+      { locale: landing, pack_id: halfwayInvite.id, source: "invite" },
+      { dedupeKey: `meet_halfway_invite_open:${halfwayInvite.id}` },
+    );
+  }, [halfwayInvite, landing]);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -335,6 +345,30 @@ export function Chat({
             ...halfwayShownRef.current,
             ...result.data.picks.map((pick) => pick.id),
           ];
+        }
+        if (typeof result.data.halfwayMore === "boolean") {
+          const source = halfwayInvite ? "invite" : "local";
+          if (result.data.picks.length > 0) {
+            trackEvent(
+              "meet_halfway_results",
+              {
+                locale: result.data.language,
+                count: result.data.picks.length,
+                source,
+              },
+              {
+                dedupeKey: `meet_halfway_results:${source}:${result.data.picks
+                  .map((pick) => pick.id)
+                  .join(",")}`,
+              },
+            );
+          } else {
+            trackEvent(
+              "meet_halfway_empty",
+              { locale: result.data.language, source },
+              { dedupeKey: `meet_halfway_empty:${source}:${landing}` },
+            );
+          }
         }
         setMessages((current) => {
           const locations = halfway?.locations;
@@ -630,6 +664,11 @@ export function Chat({
     const origin = window.location.origin.replace(/\/$/, "");
     const url = `${origin}${halfwayInviteSharePath(id)}`;
     setHalfwayWaitingId(id);
+    trackEvent(
+      "meet_halfway_invite_share",
+      { locale: landing, pack_id: id },
+      { dedupeKey: `meet_halfway_invite_share:${id}` },
+    );
     void sharePackPacket(halfwayInviteShareText({ language: landing, url }));
   }
 
@@ -658,6 +697,14 @@ export function Chat({
     if (!more) {
       halfwayLocationsRef.current = locations;
       halfwayShownRef.current = [];
+      halfwayPageRef.current = 1;
+    } else {
+      halfwayPageRef.current += 1;
+      trackEvent(
+        "meet_halfway_refresh",
+        { locale: landing, page: halfwayPageRef.current },
+        { dedupeKey: `meet_halfway_refresh:${halfwayPageRef.current}` },
+      );
     }
 
     const ask = more
@@ -751,6 +798,15 @@ export function Chat({
     }
     if (chip.id === MEET_HALFWAY_CHIP.id) {
       setMeetHalfwayOpen(true);
+      trackEvent(
+        "meet_halfway_open",
+        {
+          locale: landing,
+          chip_id: chip.id,
+          chip_label: chip.label,
+        },
+        { dedupeKey: `meet_halfway_open:${landing}` },
+      );
       return;
     }
     setMeetHalfwayOpen(false);
@@ -879,6 +935,19 @@ export function Chat({
                         sendMeetHalfway(rows);
                       }}
                       onInvite={halfwayInvite ? undefined : inviteHalfwayFriend}
+                      onPin={(input) => {
+                        trackEvent(
+                          "meet_halfway_pin",
+                          {
+                            locale: landing,
+                            which: input.which,
+                            method: input.method,
+                          },
+                          {
+                            dedupeKey: `meet_halfway_pin:${input.which}:${input.method}`,
+                          },
+                        );
+                      }}
                     />
                   ) : null}
                 </>

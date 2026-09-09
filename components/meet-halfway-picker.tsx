@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { copy } from "@/lib/copy";
 import type { HalfwayPinInput } from "@/lib/meet-halfway";
-import { looksLikeSharedPin, parseSharedPin } from "@/lib/shared-pin";
+import { halfwayPinMethod, looksLikeSharedPin, parseSharedPin } from "@/lib/shared-pin";
+import type { MeetHalfwayPinMethod, MeetHalfwayPinWhich } from "@/lib/track";
 import { requestVisitorLocation } from "@/lib/visitor-location";
 import type { Language, Pin } from "@/lib/types";
 
@@ -21,6 +22,10 @@ type MeetHalfwayPickerProps = {
   waiting?: boolean;
   onSubmit: (locations: HalfwayPinInput[]) => void;
   onInvite?: (me: HalfwayPinInput) => void;
+  onPin?: (input: {
+    which: MeetHalfwayPinWhich;
+    method: MeetHalfwayPinMethod;
+  }) => void;
 };
 
 function asInput(draft: PinDraft): HalfwayPinInput {
@@ -34,7 +39,9 @@ function PinField({
   language,
   disabled,
   showMyPin,
+  which,
   onChange,
+  onPin,
 }: {
   id: string;
   label: string;
@@ -42,7 +49,12 @@ function PinField({
   language: Language;
   disabled?: boolean;
   showMyPin?: boolean;
+  which: MeetHalfwayPinWhich;
   onChange: (next: PinDraft) => void;
+  onPin?: (input: {
+    which: MeetHalfwayPinWhich;
+    method: MeetHalfwayPinMethod;
+  }) => void;
 }) {
   async function useMyPin() {
     const visitor = await requestVisitorLocation({ retry: true });
@@ -52,6 +64,7 @@ function PinField({
       text: `${pin.lat.toFixed(5)}, ${pin.lng.toFixed(5)}`,
       pin,
     });
+    onPin?.({ which, method: "geolocation" });
   }
 
   return (
@@ -71,10 +84,17 @@ function PinField({
           placeholder={copy.meetHalfwayPinPlaceholder[language]}
           onChange={(event) => {
             const text = event.target.value;
-            onChange({
-              text,
-              pin: parseSharedPin(text) ?? undefined,
-            });
+            const pin = parseSharedPin(text) ?? undefined;
+            const wasSet = Boolean(draft.pin);
+            const moved =
+              pin &&
+              (!draft.pin ||
+                draft.pin.lat !== pin.lat ||
+                draft.pin.lng !== pin.lng);
+            onChange({ text, pin });
+            if (pin && (!wasSet || moved)) {
+              onPin?.({ which, method: halfwayPinMethod(text) });
+            }
           }}
           className="min-h-12 min-w-0 flex-1 rounded-2xl border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-bean disabled:opacity-50"
         />
@@ -102,6 +122,7 @@ export function MeetHalfwayPicker({
   waiting = false,
   onSubmit,
   onInvite,
+  onPin,
 }: MeetHalfwayPickerProps) {
   const [me, setMe] = useState<PinDraft>({ text: "" });
   const [other, setOther] = useState<PinDraft>({ text: "" });
@@ -147,7 +168,9 @@ export function MeetHalfwayPicker({
           language={language}
           disabled={disabled || waiting}
           showMyPin
+          which={guest ? "self" : "a"}
           onChange={setMe}
+          onPin={onPin}
         />
         {guest ? null : (
           <PinField
@@ -156,7 +179,9 @@ export function MeetHalfwayPicker({
             draft={other}
             language={language}
             disabled={disabled || waiting}
+            which="b"
             onChange={setOther}
+            onPin={onPin}
           />
         )}
       </div>

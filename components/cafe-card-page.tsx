@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
+import { CafeEnBlurb } from "@/components/cafe-en-blurb";
 import { DocumentLocale } from "@/components/document-locale";
 import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
@@ -80,6 +81,9 @@ export async function CafeCardPageView({
           social={social}
         />
       </ShopUpvoteProvider>
+      {!passportPage ? (
+        <CafeEnBlurb shop={shop} language={language} />
+      ) : null}
       {passportPage ? null : (
         <p className="mt-6">
           <Link href={home} className="text-sm text-bean hover:text-bean-deep">
@@ -87,8 +91,8 @@ export async function CafeCardPageView({
           </Link>
         </p>
       )}
-      <div className={passportPage ? "px-2 text-foam/70" : undefined}>
-        <SiteFooter language={language} padded={false} />
+      <div className={passportPage ? "px-2" : undefined}>
+        <SiteFooter language={language} padded={false} onDark={passportPage} />
       </div>
     </main>
   );

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
+import { headers } from "next/headers";
 import Script from "next/script";
+import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
 import {
   PRODUCT_NAME,
   PUBLIC_SITE_URL,
@@ -51,11 +53,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const language = localeFromRequestHeaders(await headers());
   return (
     <html
-      lang="ar"
-      dir="rtl"
+      lang={htmlLang(language)}
+      dir={htmlDir(language)}
       className={`${plexArabic.variable} ${passportSerif.variable}`}
     >
       <head>

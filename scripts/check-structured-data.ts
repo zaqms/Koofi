@@ -67,6 +67,7 @@ assert(arLd.sameAs?.[0] === sample.mapsShareUrl, "sameAs is maps URL");
 assert(arLd.hasMap === sample.mapsShareUrl, "hasMap is maps URL");
 assert(arLd.geo?.latitude === sample.pin?.lat, "geo lat from official pin");
 assert(arLd.geo?.longitude === sample.pin?.lng, "geo lng from official pin");
+assert(arLd.dateModified === "2026-09-09", "JSON-LD dateModified");
 assert(!("hours" in arLd), "JSON-LD has no hours");
 assert(!("image" in arLd), "JSON-LD has no image");
 
@@ -83,6 +84,7 @@ assert(apiShop.nameEn === sample.nameEn, "API nameEn");
 assert(apiShop.neighborhood === "olaya", "API neighborhood slug");
 assert(apiShop.url === `https://wain.lol/c/${sample.id}`, "API canonical url");
 assert(apiShop.urlEn === `https://wain.lol/en/c/${sample.id}`, "API urlEn");
+assert(apiShop.dateModified === "2026-09-09", "API dateModified");
 assert(publicShopPayload("not-a-shop") === null, "unknown id is null");
 
 const list = publicShopsItemList();
@@ -107,6 +109,7 @@ assert(
   "district AR url",
 );
 assert(districtAr.numberOfItems === malqaShops.length, "district count");
+assert(districtAr.dateModified === "2026-09-09", "district dateModified");
 assert(
   districtAr.itemListElement.every((row) => row.item["@type"] === "CafeOrCoffeeShop"),
   "district items are CafeOrCoffeeShop",

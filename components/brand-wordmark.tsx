@@ -16,6 +16,8 @@ const FOOTER_HEIGHT_PX = 14;
 
 type BrandWordmarkProps = {
   size?: "nav" | "footer";
+  /** Invert the locked black PNG to cream on charcoal chrome. */
+  onDark?: boolean;
 };
 
 function markLooksPainted(el: HTMLImageElement): boolean {
@@ -27,7 +29,7 @@ function markLooksPainted(el: HTMLImageElement): boolean {
  * cannot collapse on mobile. Visible text `wain.lol` until the PNG is
  * confirmed painted — never an empty nav, never both stacked.
  */
-export function BrandWordmark({ size = "nav" }: BrandWordmarkProps) {
+export function BrandWordmark({ size = "nav", onDark = false }: BrandWordmarkProps) {
   const height = size === "nav" ? NAV_HEIGHT_PX : FOOTER_HEIGHT_PX;
   const width = Math.round(
     (LATIN_WORDMARK.width / LATIN_WORDMARK.height) * height,
@@ -35,10 +37,11 @@ export function BrandWordmark({ size = "nav" }: BrandWordmarkProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgOk, setImgOk] = useState(false);
   const [failed, setFailed] = useState(false);
+  const typeClass = onDark ? "text-foam" : "text-ink";
   const fallbackClass =
     size === "nav"
-      ? "text-[1.5rem] font-semibold leading-none text-ink"
-      : "text-xs font-semibold leading-none text-ink";
+      ? `text-[1.5rem] font-semibold leading-none ${typeClass}`
+      : `text-xs font-semibold leading-none ${typeClass}`;
 
   function acceptIfPainted(el: HTMLImageElement | null) {
     if (!el || failed) return;
@@ -54,7 +57,7 @@ export function BrandWordmark({ size = "nav" }: BrandWordmarkProps) {
 
   return (
     <span
-      className="relative inline-flex shrink-0 items-center overflow-visible text-ink"
+      className={`relative inline-flex shrink-0 items-center overflow-visible ${typeClass}`}
       dir="ltr"
       style={{ height, minHeight: height }}
     >
@@ -76,7 +79,11 @@ export function BrandWordmark({ size = "nav" }: BrandWordmarkProps) {
           alt={imgOk ? PRODUCT_NAME : ""}
           width={width}
           height={height}
-          className="block object-contain object-left"
+          className={
+            onDark
+              ? "block object-contain object-left brightness-0 invert"
+              : "block object-contain object-left"
+          }
           style={{
             height,
             width: "auto",

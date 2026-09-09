@@ -7,9 +7,7 @@ import {
   type PassportSocial,
 } from "@/components/cafe-passport-card";
 import { CardBeen } from "@/components/card-been";
-import { MapPinIcon } from "@/components/map-pin-icon";
-import { MapsLink } from "@/components/maps-link";
-import { ShareListingButton } from "@/components/share-listing-button";
+import { CafePresenceRow } from "@/components/cafe-presence-row";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import {
@@ -23,7 +21,6 @@ import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { woodsPassportFixture } from "@/lib/passport-preview";
 import { officialShopCoords } from "@/lib/place-coords";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
-import { shopMapsHref } from "@/lib/public-url";
 import type { Language, Shop } from "@/lib/types";
 import { vibeLine } from "@/lib/vibe-labels";
 
@@ -179,20 +176,12 @@ function ThinCafeCard({
       </dl>
 
       <div className="mt-5 flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <MapsLink
-            href={shopMapsHref(shop)}
-            shopId={shop.id}
-            locale={language}
-            source="card"
-            className="inline-flex size-10 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
-            aria-label={copy.maps[language]}
-            title={copy.maps[language]}
-          >
-            <MapPinIcon />
-          </MapsLink>
-          <ShareListingButton shop={shop} language={language} source="card" />
-        </div>
+        <CafePresenceRow
+          shop={shop}
+          language={language}
+          photo={shop.photoUrl ?? shop.logoUrl ?? null}
+          variant="thin"
+        />
         {site ? (
           <a
             href={site}

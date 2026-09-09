@@ -2220,6 +2220,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff001111c4b7:0x76241484f7a74634",
       "pin": { "lat": 24.8073428, "lng": 46.8013679 },
+      "logoUrl": "/logos/obo-speciality-al-yarmouk-ig.jpg",
       "popularityIndex": 45.6,
       "example": false
     },
@@ -2324,6 +2325,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effbb7712f5cd:0xf217d75463bb2527",
       "pin": { "lat": 24.8036476, "lng": 46.7823123 },
+      "logoUrl": "/logos/nus-talqimah-al-yarmouk-ig.jpg",
       "popularityIndex": 42.7,
       "example": false
     }

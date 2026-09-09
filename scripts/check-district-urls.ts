@@ -925,6 +925,7 @@ const scoutPack: {
     neighborhood: "al-yarmouk",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/obo-speciality-al-yarmouk-ig.jpg",
     pin: { lat: 24.8073428, lng: 46.8013679 },
   },
   {
@@ -987,6 +988,7 @@ const scoutPack: {
     neighborhood: "al-yarmouk",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/nus-talqimah-al-yarmouk-ig.jpg",
     pin: { lat: 24.8036476, lng: 46.7823123 },
   },
 ];

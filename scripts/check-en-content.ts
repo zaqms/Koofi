@@ -311,7 +311,8 @@ assert(
   "AR wurud contrasts office towers",
 );
 assert(
-  GOLD_MASTER_KAFD_AR.markdown !== GOLD_MASTER_AL_WURUD_AR.markdown,
+  String(GOLD_MASTER_KAFD_AR.markdown) !==
+    String(GOLD_MASTER_AL_WURUD_AR.markdown),
   "AR kafd and wurud are not clones",
 );
 

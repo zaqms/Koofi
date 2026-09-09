@@ -41,6 +41,18 @@ function popularityScore(shop: Shop): number {
   return shop.popularityIndex ?? Number.NEGATIVE_INFINITY;
 }
 
+/** Most Popular lock: popularityIndex DESC, id ASC. Never shuffle equal scores. */
+export function rankByPopularity(shops: readonly Shop[]): Shop[] {
+  return shops
+    .filter((shop) => shop.popularityIndex != null)
+    .slice()
+    .sort((a, b) => {
+      const delta = popularityScore(b) - popularityScore(a);
+      if (delta !== 0) return delta;
+      return a.id.localeCompare(b.id);
+    });
+}
+
 /**
  * In-district only. popularityIndex DESC, id ASC.
  * Does not shuffle. Does not pad neighboring أحياء.
@@ -49,17 +61,9 @@ export function rankInDistrict(
   shops: readonly Shop[],
   district: NeighborhoodId,
 ): Shop[] {
-  return shops
-    .filter(
-      (shop) =>
-        shop.neighborhood === district && shop.popularityIndex != null,
-    )
-    .slice()
-    .sort((a, b) => {
-      const delta = popularityScore(b) - popularityScore(a);
-      if (delta !== 0) return delta;
-      return a.id.localeCompare(b.id);
-    });
+  return rankByPopularity(
+    shops.filter((shop) => shop.neighborhood === district),
+  );
 }
 
 /** No catalog shop carries a durable IG follower count. */

@@ -1,6 +1,6 @@
 import { listRealShops } from "./catalog";
 import { parseIntent } from "./parse-intent";
-import { VIBE_CHIPS } from "./product";
+import { MEET_HALFWAY_CHIP, NEARBY_CHIP, VIBE_CHIPS } from "./product";
 import { matchCatalogShops } from "./shop-name";
 
 /**
@@ -22,6 +22,10 @@ function normalize(text: string): string {
 
 const CAFE_WORDS = [
   ...VIBE_CHIPS.flatMap((chip) => [chip.ar, chip.en]),
+  NEARBY_CHIP.ar,
+  NEARBY_CHIP.en,
+  MEET_HALFWAY_CHIP.ar,
+  MEET_HALFWAY_CHIP.en,
   "قهوه",
   "قهاوي",
   "فنجان",

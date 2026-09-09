@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
+import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
 import { PickList, type ChatPick } from "@/components/pick-list";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import { BrandHomeLink } from "@/components/brand-home-link";
@@ -13,8 +14,12 @@ import {
   categoryDistrictHeading,
 } from "@/lib/directory-category";
 import { readLearnSession } from "@/lib/learn-session";
+import {
+  meetHalfwayAskLabel,
+  type HalfwayPinInput,
+} from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
-import { NEARBY_CHIP, districtPath } from "@/lib/product";
+import { MEET_HALFWAY_CHIP, NEARBY_CHIP, districtPath } from "@/lib/product";
 import { trackChatQuery, trackDistrictMatch, trackEvent } from "@/lib/track";
 import {
   requestVisitorLocation,
@@ -144,6 +149,7 @@ export function Chat({
     () => threads[threadKey]?.awaitingMaps ?? false,
   );
   const [pickedChipId, setPickedChipId] = useState<string | null>(null);
+  const [meetHalfwayOpen, setMeetHalfwayOpen] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
@@ -413,6 +419,66 @@ export function Chat({
     });
   }
 
+  function sendMeetHalfway(locations: HalfwayPinInput[]) {
+    if (inFlightRef.current) return;
+
+    const ask = meetHalfwayAskLabel(landing);
+    trackChatQuery({ text: ask, locale: landing, via: "chip" });
+
+    const userMessage: UserMessage = {
+      id: crypto.randomUUID(),
+      role: "user",
+      text: ask,
+    };
+
+    inFlightRef.current = true;
+    setMeetHalfwayOpen(false);
+    setAwaitingMaps(false);
+    setBusy(true);
+    setMessages((current) => {
+      const next = [...current, userMessage];
+      threads[threadKey] = {
+        messages: next,
+        composerLanguage,
+        awaitingMaps: false,
+      };
+      return next;
+    });
+
+    const pending: PendingSend = {
+      id: crypto.randomUUID(),
+      applied: false,
+      promise: (async (): Promise<PendingResult> => {
+        try {
+          const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              text: ask,
+              halfway: { locations },
+              beenIds: been.ids,
+              landing,
+              via: "chip",
+              session: readLearnSession(),
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("chat_failed");
+          }
+
+          const data = (await response.json()) as ChatResponse;
+          return { ok: true, data };
+        } catch {
+          return { ok: false, language: composerLanguage };
+        }
+      })(),
+    };
+
+    pendingSends[threadKey] = pending;
+    setPendingId(pending.id);
+  }
+
   function sendChip(chip: ChipPick) {
     setPickedChipId(chip.id);
     trackEvent(
@@ -421,12 +487,19 @@ export function Chat({
       { dedupeKey: `chip_tap:${chip.id}` },
     );
     if (chip.id === "popular") {
+      setMeetHalfwayOpen(false);
       return;
     }
     if (chip.id === NEARBY_CHIP.id) {
+      setMeetHalfwayOpen(false);
       void sendNearby(chip.label);
       return;
     }
+    if (chip.id === MEET_HALFWAY_CHIP.id) {
+      setMeetHalfwayOpen(true);
+      return;
+    }
+    setMeetHalfwayOpen(false);
     send(chip.label, { suggesting: false, via: "chip" });
   }
 
@@ -446,6 +519,7 @@ export function Chat({
     setComposerLanguage(landing);
     setAwaitingMaps(false);
     setPickedChipId(null);
+    setMeetHalfwayOpen(false);
   }
 
   const hasThread =
@@ -522,12 +596,21 @@ export function Chat({
                 </div>
               )}
               {message.id === "opener" && !hasThread ? (
-                <VibeChips
-                  language={landing}
-                  disabled={busy}
-                  selectedId={selectedChipId ?? pickedChipId}
-                  onPick={sendChip}
-                />
+                <>
+                  <VibeChips
+                    language={landing}
+                    disabled={busy}
+                    selectedId={selectedChipId ?? pickedChipId}
+                    onPick={sendChip}
+                  />
+                  {meetHalfwayOpen ? (
+                    <MeetHalfwayPicker
+                      language={landing}
+                      disabled={busy}
+                      onSubmit={sendMeetHalfway}
+                    />
+                  ) : null}
+                </>
               ) : null}
               {message.picks?.length ? (
                 <PickList

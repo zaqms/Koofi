@@ -9,7 +9,12 @@ import { formatListingPacket, formatSharePacket, packetHasMapsUrl } from "../lib
 import { listingPacketForShop } from "../lib/share-pack";
 import { shopWhyLine } from "../lib/why-line";
 import { toChatPicks, headingForPicks } from "../lib/picker";
-import { packSharePath, VIBE_CHIPS } from "../lib/product";
+import {
+  MEET_HALFWAY_CHIP,
+  NEARBY_CHIP,
+  packSharePath,
+  VIBE_CHIPS,
+} from "../lib/product";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { matchCatalogShops } from "../lib/shop-name";
 import { whatsAppShareHref } from "../lib/share-pack";
@@ -201,7 +206,7 @@ assert(
   "Hittin Arabic must stay حطين on vibe asks too",
 );
 
-for (const chip of VIBE_CHIPS) {
+for (const chip of [...VIBE_CHIPS, NEARBY_CHIP, MEET_HALFWAY_CHIP]) {
   assert(
     matchCatalogShops(chip.en, catalog).length === 0,
     `chip "${chip.en}" must not name-match a shop`,

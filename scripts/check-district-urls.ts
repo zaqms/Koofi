@@ -1432,6 +1432,29 @@ assert(
   vibeChips.includes('aria-current={selected ? "page" : undefined}'),
   "selected popular vibe chip marks the current page",
 );
+assert(
+  vibeChips.includes("MEET_HALFWAY_CHIP") && vibeChips.includes("meet-halfway"),
+  "بيننا sits on the existing chip row",
+);
+assert(
+  !vibeChips.includes("ثلاث الليلة") && !vibeChips.includes("ON TONIGHT"),
+  "Soft Places chips stay parked",
+);
+
+const halfwayPicker = readFileSync(
+  join(process.cwd(), "components/meet-halfway-picker.tsx"),
+  "utf8",
+);
+assert(
+  halfwayPicker.includes("meetHalfwayMe") &&
+    halfwayPicker.includes("looksLikeSharedPin"),
+  "بيننا picker is pin-first",
+);
+assert(!halfwayPicker.includes("<select"), "بيننا v1 has no district dropdown");
+assert(
+  !halfwayPicker.includes("directoryNeighborhoods"),
+  "بيننا v1 does not lead with district pickers",
+);
 
 const homeLanding = readFileSync(
   join(process.cwd(), "components/home-landing.tsx"),

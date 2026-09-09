@@ -2,6 +2,7 @@ import type { MouseEvent, ReactNode } from "react";
 import Link from "next/link";
 import { copy } from "@/lib/copy";
 import {
+  MEET_HALFWAY_CHIP,
   mostPopularPath,
   NEARBY_CHIP,
   VIBE_CHIPS,
@@ -22,7 +23,7 @@ type VibeChipsProps = {
   onPick: (chip: ChipPick) => void;
 };
 
-const CHIPS = [...VIBE_CHIPS, NEARBY_CHIP];
+const CHIPS = [...VIBE_CHIPS, NEARBY_CHIP, MEET_HALFWAY_CHIP];
 
 function Icon({ children }: { children: ReactNode }) {
   return (
@@ -131,6 +132,15 @@ function ChipIcon({ id }: { id: string }) {
         <Icon>
           <path d="M12 21s6-5.4 6-10a6 6 0 1 0-12 0c0 4.6 6 10 6 10z" />
           <circle cx="12" cy="11" r="1.8" />
+        </Icon>
+      );
+    case "meet-halfway":
+      return (
+        <Icon>
+          <circle cx="6.5" cy="12" r="2.1" />
+          <circle cx="17.5" cy="12" r="2.1" />
+          <circle cx="12" cy="12" r="1.5" />
+          <path d="M8.6 12h1.8M13.6 12h1.8" />
         </Icon>
       );
     default:

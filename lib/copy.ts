@@ -99,6 +99,42 @@ export const copy = {
     ar: `قريب يحتاج موقعك. ${LOCKED_OPENER}`,
     en: `Nearby needs your location. ${LOCKED_OPENER_EN}`,
   },
+  meetHalfwayMe: {
+    ar: "أنت وين؟",
+    en: "Where are you?",
+  },
+  meetHalfwayOther: {
+    ar: "صاحبك وين؟",
+    en: "Where's your friend?",
+  },
+  meetHalfwayGo: {
+    ar: "دور بينكم",
+    en: "Find halfway",
+  },
+  meetHalfwayHint: {
+    ar: "ارمي دبوسين — رابط قوقل ماب أو موقعك.",
+    en: "Drop two pins — a Google Maps link or your location.",
+  },
+  meetHalfwayPinPlaceholder: {
+    ar: "رابط قوقل ماب أو إحداثيات…",
+    en: "A Google Maps link or lat,lng…",
+  },
+  meetHalfwayMyPin: {
+    ar: "موقعي",
+    en: "My pin",
+  },
+  meetHalfwayBadPin: {
+    ar: "ما قدرت أقرأ الدبوس. حط رابط قوقل ماب أو إحداثيات.",
+    en: "Couldn't read that pin. Use a Google Maps link or lat,lng.",
+  },
+  meetHalfwayThree: {
+    ar: "ثلاث قهاوي بينكم",
+    en: "Three cafes between you",
+  },
+  meetHalfwayEmpty: {
+    ar: "ما لقيت قهوة بينكم في القائمة الحين.",
+    en: "I don't have a cafe between you on the list yet.",
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",

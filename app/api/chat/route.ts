@@ -3,9 +3,16 @@ import { copy } from "@/lib/copy";
 import { isOffTopicAsk } from "@/lib/off-topic-intent";
 import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
+import {
+  isMeetHalfwayChipAsk,
+  parseHalfwayPinInputs,
+  pickHalfwayShops,
+  resolveHalfwayLocations,
+} from "@/lib/meet-halfway";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
-import type { DistrictMatch, Language } from "@/lib/types";
+import type { DistrictMatch, Language, PickResult } from "@/lib/types";
+import { uniqueWhyLines } from "@/lib/why-line";
 import { speakForPicks } from "@/lib/voice";
 
 export const runtime = "nodejs";
@@ -17,6 +24,7 @@ type ChatRequest = {
   landing?: Language;
   via?: "typed" | "chip";
   session?: string;
+  halfway?: unknown;
 };
 
 function landingLanguage(value: unknown): Language {
@@ -32,16 +40,64 @@ export async function POST(request: Request) {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }
 
+  const landing = landingLanguage(body.landing);
+  const halfwayRows = parseHalfwayPinInputs(body.halfway);
   const text = typeof body.text === "string" ? body.text.trim() : "";
-  if (!text) {
+  if (!text && !halfwayRows) {
     return Response.json({ error: "empty_text" }, { status: 400 });
   }
-
-  const landing = landingLanguage(body.landing);
 
   const beenIds = Array.isArray(body.beenIds)
     ? body.beenIds.filter((id): id is string => typeof id === "string")
     : [];
+
+  if (halfwayRows) {
+    const locations = await resolveHalfwayLocations(halfwayRows);
+    if (locations.length < 2) {
+      return Response.json({
+        language: landing,
+        reply: copy.meetHalfwayBadPin[landing],
+        thinCatalog: false,
+        picks: [],
+      });
+    }
+
+    const shops = pickHalfwayShops({ locations, beenIds });
+    const whys = uniqueWhyLines(shops, landing);
+    const result: PickResult = {
+      language: landing,
+      picks: shops.map((shop, index) => ({
+        shop,
+        why: whys[index] ?? "",
+      })),
+      thinCatalog: shops.length < 3,
+      askedNeighborhoods: [],
+      avoidedNeighborhoods: [],
+      askedMoments: [],
+    };
+    const picks = await toChatPicksWithPlaces(result);
+    const reply =
+      shops.length === 0
+        ? copy.meetHalfwayEmpty[landing]
+        : shops.length === 3
+          ? copy.meetHalfwayThree[landing]
+          : copy.fewerPicks[landing];
+
+    recordLearnAsk({
+      text: text || copy.meetHalfwayThree[landing],
+      landing,
+      via: body.via,
+      session: body.session,
+      shopIds: picks.map((pick) => pick.id),
+    });
+
+    return Response.json({
+      language: landing,
+      reply,
+      thinCatalog: result.thinCatalog,
+      picks,
+    });
+  }
 
   if (extractMapsUrl(text)) {
     const suggestion = await recordSuggestion(text, landing);
@@ -78,6 +134,15 @@ export async function POST(request: Request) {
     return Response.json({
       language: landing,
       reply: copy.offTopic[landing],
+      thinCatalog: false,
+      picks: [],
+    });
+  }
+
+  if (isMeetHalfwayChipAsk(text)) {
+    return Response.json({
+      language: landing,
+      reply: copy.meetHalfwayHint[landing],
       thinCatalog: false,
       picks: [],
     });

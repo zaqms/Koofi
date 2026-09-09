@@ -78,6 +78,16 @@ export const NEARBY_CHIP = {
   en: "Nearby",
 } as const;
 
+/**
+ * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
+ * v1 UI is two shared pins; ranking is `locations: Location[]` (N≥2).
+ */
+export const MEET_HALFWAY_CHIP = {
+  id: "meet-halfway",
+  ar: "بيننا",
+  en: "Halfway",
+} as const;
+
 export function vibeChipLabel(
   chip: Pick<VibeChip, "ar" | "en">,
   language: Language,

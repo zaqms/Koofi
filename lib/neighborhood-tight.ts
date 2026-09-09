@@ -12,7 +12,7 @@ const centroidCache = new Map<NeighborhoodId, Pin | null>();
 
 export function neighborhoodCentroid(
   id: NeighborhoodId,
-  shops: Pick<Shop, "neighborhood" | "pin" | "mapsShareUrl">[],
+  shops: readonly Pick<Shop, "neighborhood" | "pin" | "mapsShareUrl">[],
 ): Pin | null {
   if (centroidCache.has(id)) return centroidCache.get(id) ?? null;
 

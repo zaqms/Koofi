@@ -2,7 +2,8 @@ import { listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
 import { extractPrimaryDistrict } from "./district-dictionary";
-import { rankInDistrict } from "./district-rank";
+import { rankByPopularity, rankInDistrict } from "./district-rank";
+import { isMeetHalfwayChipAsk } from "./meet-halfway";
 import { coffeeShopsInDistrict } from "./directory-category";
 import { haversineKm } from "./distance";
 import { neighborhoodTightShops } from "./neighborhood-tight";
@@ -38,20 +39,7 @@ function isPopularAsk(moments: readonly MomentTag[]): boolean {
   return moments.includes("popular");
 }
 
-function popularityScore(shop: Shop): number {
-  return shop.popularityIndex ?? Number.NEGATIVE_INFINITY;
-}
-
-/** Most Popular lock: popularityIndex DESC, id ASC. Never shuffle equal scores. */
-export function rankByPopularity(shops: Shop[]): Shop[] {
-  return [...shops]
-    .filter((shop) => shop.popularityIndex != null)
-    .sort((a, b) => {
-      const delta = popularityScore(b) - popularityScore(a);
-      if (delta !== 0) return delta;
-      return a.id.localeCompare(b.id);
-    });
-}
+export { rankByPopularity } from "./district-rank";
 
 function pickReasonsForPopular(
   shops: Shop[],
@@ -239,6 +227,16 @@ export function pickCafes(input: {
 }): PickResult {
   const intent = parseIntent(input.text);
   const language = input.language ?? intent.language;
+  if (isMeetHalfwayChipAsk(input.text)) {
+    return {
+      language,
+      picks: [],
+      thinCatalog: false,
+      askedNeighborhoods: intent.neighborhoods,
+      avoidedNeighborhoods: intent.avoidedNeighborhoods,
+      askedMoments: intent.moments,
+    };
+  }
   const been = new Set((input.beenIds ?? []).filter(Boolean));
   const avoided = new Set(intent.avoidedNeighborhoods);
   const catalog = listRealShops();

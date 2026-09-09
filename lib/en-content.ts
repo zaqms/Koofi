@@ -196,6 +196,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-rawdah": ["ghirnatah", "al-safa", "al-rabwah", "qurtubah"],
   qurtubah: ["ghirnatah", "al-rawdah", "al-mughrizat", "al-safa"],
   "an-nazhah": ["qurtubah", "al-malqa", "al-yasmin", "olaya"],
+  "al-hamra": ["ghirnatah", "al-rawdah", "qurtubah", "al-safa"],
 };
 
 type DistrictLead = {
@@ -378,6 +379,20 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
+  "al-hamra": {
+    lead: `Al Hamra (الحمراء) sits on Riyadh’s east belt — same side of town as Ghirnatah and Qurtubah, not the KAFD page and not the north-Riyadh loop. This page is the Al Hamra set on wain.lol: ten cafes we’ve actually added, each with a Maps pin.
+
+A few names on this list are [SERENE COFFEE ROASTERY](/en/c/serene-coffee-roastery), [Rimthan + Coffee](/en/c/rimthan-coffee-al-hamra), and [Harf coffee](/en/c/harf-coffee-al-hamra). They’re here with the rest. We don’t rank them.
+
+Ten cards is the whole set for now. Open a card if a name fits. Skip it if it doesn’t.`,
+    hereIntro: `There are **{count}** cafes from Al Hamra on the catalog today:`,
+    hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin.`,
+    nearbyIntro: `If Al Hamra isn’t the stop, these east-Riyadh lists are next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Hamra. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "Ten cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
+  },
 };
 
 const CNI_BLURBS: Record<string, string> = {
@@ -390,6 +405,16 @@ const CNI_BLURBS: Record<string, string> = {
   "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Al Rabwah catalog — east of the Olaya–Wurud stretch, its own neighborhood page. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
   "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the Al Sahafah list, next to KAFD but not on the KAFD page. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
   "archi-ghirnatah": `**Archi Granada** is on the Ghirnatah list — east Riyadh, a different side of town from KAFD. Other Granada-area places on wain.lol are linked below if you want to stay on that side of the city.`,
+  "serene-coffee-roastery": `**SERENE COFFEE ROASTERY** is on the Al Hamra list on wain.lol — the east-belt page, not Olaya and not KAFD. Catalog tags on the card: Roastery. Other الحمراء names sit underneath if this one isn’t the stop.`,
+  "rimthan-coffee-al-hamra": `**Rimthan + Coffee** is one of the Al Hamra cafes on wain.lol. If you’re already on that east-Riyadh stretch and you want this card, you’re in the right spot. The rest of the Al Hamra catalog is linked below.`,
+  "mind-break-al-hamra": `**Mind Break** is on the Al Hamra catalog — its own card on the الحمراء list, not a citywide ranking. Other Al Hamra names we’ve added are linked underneath.`,
+  "jather-al-hamra": `Al Hamra has **Jather** on the catalog. This is the card if you want that name from the east-belt list. Siblings from the same حي sit below — only what’s actually added.`,
+  "harf-coffee-al-hamra": `**Harf coffee** is on the wain.lol list for Al Hamra in Riyadh. Same neighborhood page as Serene and Rimthan, its own pin. Hop the other الحمراء cards below if you want a different name.`,
+  "zeila-al-hamra": `**Zeila** is on the Al Hamra list on wain.lol — east belt, not folded into Ghirnatah next door. The other Al Hamra places on the catalog are linked below.`,
+  "cord-cafe-al-hamra": `**Cord Cafe** is on the Al Hamra list — a roastery card on that east-Riyadh page. Catalog tags on the card: Roastery. The rest of الحمراء is linked underneath.`,
+  "drip-al-hamra": `This is the **Drip** page on wain.lol for Al Hamra — a distinct الحمراء pin, not the Olaya Drip card. Other Al Hamra names on the catalog sit below if you want to stay in that حي.`,
+  "coffee-address-al-hamra": `**Coffee Address** is on the Al Hamra catalog on wain.lol. If this east-belt name is the one you wanted, the card is here. We don’t invent extras; the other الحمراء shops we’ve added are linked below.`,
+  "glint-al-hamra": `Al Hamra has **Glint** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Hamra places on wain.lol are linked below.`,
 };
 
 const CAFE_OPENERS = [

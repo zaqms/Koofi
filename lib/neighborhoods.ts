@@ -349,6 +349,20 @@ export const NEIGHBORHOODS: Record<
       "alnuzhah",
     ],
   },
+  "al-hamra": {
+    id: "al-hamra",
+    ar: "الحمراء",
+    en: "Al Hamra",
+    aliases: [
+      "الحمراء",
+      "حمراء",
+      "hamra",
+      "al hamra",
+      "al-hamra",
+      "alhamra",
+      "Al Hamra",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

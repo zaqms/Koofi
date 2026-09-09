@@ -122,7 +122,7 @@ function assertNamedFirst(ask: string, language: "ar" | "en", pred: (id: string)
 
 assertNamedFirst("woods", "en", (id) => id.startsWith("woods-"));
 assertNamedFirst("وودز", "ar", (id) => id.startsWith("woods-"));
-assertNamedFirst("drip", "en", (id) => id === "drip-olaya");
+assertNamedFirst("drip", "en", (id) => id.startsWith("drip-"));
 assertNamedFirst("نسج", "ar", (id) => id === "nasj-al-malqa");
 assertNamedFirst("خطوة جمل", "ar", (id) => id.startsWith("camel-step"));
 assertNamedFirst("nasj", "en", (id) => id === "nasj-al-malqa");
@@ -229,8 +229,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 141,
-  `popularity map should have 141 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 151,
+  `popularity map should have 151 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),

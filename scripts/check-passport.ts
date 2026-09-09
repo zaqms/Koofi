@@ -171,6 +171,21 @@ assert(list.includes("useShopClaim"), "list reads verified ids");
 const page = readFileSync("components/cafe-card-page.tsx", "utf8");
 assert(page.includes("ShopUpvoteProvider"), "card page wraps upvote provider");
 assert(page.includes("allowPassportPreview"), "page gates fixture off production");
+assert(
+  page.includes("onDark={passportPage}"),
+  "Passport charcoal footer uses light type + inverted wordmark",
+);
+
+const siteFooter = readFileSync("components/site-footer.tsx", "utf8");
+assert(siteFooter.includes("text-foam/85"), "dark footer links are foam");
+assert(
+  siteFooter.includes('onDark\n    ? "text-xs text-foam/85'),
+  "dark footer does not keep ink-soft links",
+);
+
+const wordmark = readFileSync("components/brand-wordmark.tsx", "utf8");
+assert(wordmark.includes("brightness-0 invert"), "footer wordmark inverts on charcoal");
+assert(wordmark.includes("text-foam"), "wordmark fallback is foam on dark");
 
 const claims = readFileSync("lib/claims.ts", "utf8");
 assert(claims.includes("listPublicVerifiedIds"), "verified id list for badges");

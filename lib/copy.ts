@@ -99,6 +99,70 @@ export const copy = {
     ar: `قريب يحتاج موقعك. ${LOCKED_OPENER}`,
     en: `Nearby needs your location. ${LOCKED_OPENER_EN}`,
   },
+  meetHalfwayMe: {
+    ar: "أنت وين؟",
+    en: "Where are you?",
+  },
+  meetHalfwayOther: {
+    ar: "صاحبك وين؟",
+    en: "Where's your friend?",
+  },
+  meetHalfwayGo: {
+    ar: "دور بينكم",
+    en: "Find halfway",
+  },
+  meetHalfwayHint: {
+    ar: "ارمي دبوسين — رابط قوقل ماب أو موقعك.",
+    en: "Drop two pins — a Google Maps link or your location.",
+  },
+  meetHalfwayPinPlaceholder: {
+    ar: "رابط قوقل ماب أو إحداثيات…",
+    en: "A Google Maps link or lat,lng…",
+  },
+  meetHalfwayMyPin: {
+    ar: "موقعي",
+    en: "My pin",
+  },
+  meetHalfwayBadPin: {
+    ar: "ما قدرت أقرأ الدبوس. حط رابط قوقل ماب أو إحداثيات.",
+    en: "Couldn't read that pin. Use a Google Maps link or lat,lng.",
+  },
+  meetHalfwayThree: {
+    ar: "ثلاث قهاوي بينكم",
+    en: "Three cafes between you",
+  },
+  meetHalfwayEmpty: {
+    ar: "ما في أكثر بهالمنطقة",
+    en: "That's all in this area.",
+  },
+  meetHalfwayInvite: {
+    ar: "اعزم خويك",
+    en: "Invite your friend",
+  },
+  meetHalfwayInviteHint: {
+    ar: "أرسل الرابط — صاحبك يدبس من جواله.",
+    en: "Send the link — your friend drops their pin on their phone.",
+  },
+  meetHalfwayInviteWaiting: {
+    ar: "لما صاحبك يدبس، الثلاث تظهر هنا. تقدر تحدث الصفحة.",
+    en: "When your friend drops their pin, the three show here. You can refresh.",
+  },
+  meetHalfwayInviteGuestHint: {
+    ar: "صاحبك دبّس. حط موقعك بس.",
+    en: "Your friend already pinned. Drop your location only.",
+  },
+  meetHalfwayInviteExpired: {
+    ar: "هالرابط انتهى. اطلب رابط جديد.",
+    en: "This link expired. Ask for a new invite.",
+  },
+  meetHalfwayMore: {
+    ar: "غيرها",
+    en: "Others",
+  },
+  meetHalfwayNoMore: {
+    ar: "ما في أكثر بهالمنطقة",
+    en: "That's all in this area.",
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",

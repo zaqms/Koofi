@@ -78,6 +78,16 @@ export const NEARBY_CHIP = {
   en: "Nearby",
 } as const;
 
+/**
+ * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
+ * v1 UI is two shared pins; ranking is `locations: Location[]` (N≥2).
+ */
+export const MEET_HALFWAY_CHIP = {
+  id: "meet-halfway",
+  ar: "بيننا",
+  en: "Halfway",
+} as const;
+
 export function vibeChipLabel(
   chip: Pick<VibeChip, "ar" | "en">,
   language: Language,
@@ -111,6 +121,17 @@ export function packPath(id: string): string {
 
 export function packSharePath(id: string): string {
   return `${packPath(id)}?from=wa`;
+}
+
+/** بيننا invite. Public, no login. Encoded locations[] + 45-min expiry. */
+export const HALFWAY_INVITE_PATH_PREFIX = "/h";
+
+export function halfwayInvitePath(id: string): string {
+  return `${HALFWAY_INVITE_PATH_PREFIX}/${encodeURIComponent(id)}`;
+}
+
+export function halfwayInviteSharePath(id: string): string {
+  return `${halfwayInvitePath(id)}?from=wa`;
 }
 
 export function aboutPath(language: Language = "ar"): string {

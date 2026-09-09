@@ -1,5 +1,5 @@
 import { NEIGHBORHOODS } from "./neighborhoods";
-import { VIBE_CHIPS } from "./product";
+import { MEET_HALFWAY_CHIP, NEARBY_CHIP, VIBE_CHIPS } from "./product";
 import { shopBrandKey } from "./shop-brand";
 import type { Shop } from "./types";
 
@@ -104,7 +104,8 @@ const NEIGHBORHOOD_ALIASES = new Set(
 );
 
 const CHIP_ASKS = new Set(
-  VIBE_CHIPS.flatMap((chip) => [chip.en, chip.ar])
+  [...VIBE_CHIPS, NEARBY_CHIP, MEET_HALFWAY_CHIP]
+    .flatMap((chip) => [chip.en, chip.ar])
     .map((label) => normalize(label))
     .filter(Boolean),
 );

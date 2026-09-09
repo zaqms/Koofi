@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
+import { MeetHalfwayResultsFooter } from "@/components/meet-halfway-results-footer";
 import { PickList, type ChatPick } from "@/components/pick-list";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import { BrandHomeLink } from "@/components/brand-home-link";
@@ -20,6 +21,7 @@ import {
   halfwayInviteShareText,
 } from "@/lib/halfway-invite";
 import {
+  halfwayResultsFooterKind,
   meetHalfwayAskLabel,
   type HalfwayPinInput,
 } from "@/lib/meet-halfway";
@@ -55,6 +57,8 @@ type AssistantMessage = {
   thinCatalog?: boolean;
   districtMatch?: DistrictMatch;
   halfwayMore?: boolean;
+  halfwayLocations?: HalfwayPinInput[];
+  halfwayPaged?: boolean;
 };
 
 type UserMessage = {
@@ -83,7 +87,62 @@ type PendingSend = {
   id: string;
   promise: Promise<PendingResult>;
   applied: boolean;
+  halfway?: {
+    locations: HalfwayPinInput[];
+    more: boolean;
+  };
 };
+
+function shownHalfwayPickIds(messages: readonly Message[]): string[] {
+  const ids: string[] = [];
+  for (const message of messages) {
+    if (message.role !== "assistant") continue;
+    if (typeof message.halfwayMore !== "boolean") continue;
+    for (const pick of message.picks ?? []) {
+      if (pick.id) ids.push(pick.id);
+    }
+  }
+  return ids;
+}
+
+function lastHalfwayLocations(
+  messages: readonly Message[],
+): HalfwayPinInput[] | null {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (
+      message?.role === "assistant" &&
+      message.halfwayLocations &&
+      message.halfwayLocations.length >= 2
+    ) {
+      return message.halfwayLocations;
+    }
+  }
+  return null;
+}
+
+function markLastHalfwayExhausted(
+  messages: readonly Message[],
+  locations?: HalfwayPinInput[],
+): Message[] {
+  const next = [...messages];
+  for (let index = next.length - 1; index >= 0; index -= 1) {
+    const message = next[index];
+    if (
+      message?.role === "assistant" &&
+      typeof message.halfwayMore === "boolean"
+    ) {
+      next[index] = {
+        ...message,
+        halfwayMore: false,
+        halfwayPaged: true,
+        halfwayLocations: locations ?? message.halfwayLocations,
+      };
+      break;
+    }
+  }
+  return next;
+}
 
 type LiveThread = {
   messages: Message[];
@@ -180,8 +239,14 @@ export function Chat({
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
-  const halfwayLocationsRef = useRef<HalfwayPinInput[] | null>(null);
-  const halfwayShownRef = useRef<string[]>([]);
+  const halfwayLocationsRef = useRef<HalfwayPinInput[] | null>(
+    pendingSends[threadKey]?.halfway?.locations ??
+      lastHalfwayLocations(threads[threadKey]?.messages ?? []) ??
+      null,
+  );
+  const halfwayShownRef = useRef<string[]>(
+    shownHalfwayPickIds(threads[threadKey]?.messages ?? []),
+  );
   useVisitorLocation();
 
   useEffect(() => {
@@ -261,6 +326,10 @@ export function Chat({
         if (result.data.districtMatch) {
           trackDistrictMatch(result.data.districtMatch);
         }
+        const halfway = pending.halfway;
+        if (halfway) {
+          halfwayLocationsRef.current = halfway.locations;
+        }
         if (result.data.picks?.length) {
           halfwayShownRef.current = [
             ...halfwayShownRef.current,
@@ -268,6 +337,27 @@ export function Chat({
           ];
         }
         setMessages((current) => {
+          const locations = halfway?.locations;
+          const paged = Boolean(halfway?.more);
+          const exhaustedAfterPage =
+            paged &&
+            typeof result.data.halfwayMore === "boolean" &&
+            !result.data.halfwayMore &&
+            !result.data.picks?.length;
+
+          if (exhaustedAfterPage) {
+            const withLastHalfway = markLastHalfwayExhausted(
+              current,
+              locations,
+            );
+            threads[threadKey] = {
+              messages: withLastHalfway,
+              composerLanguage: result.data.language,
+              awaitingMaps: waitForMaps,
+            };
+            return withLastHalfway;
+          }
+
           const next: Message[] = [
             ...current,
             {
@@ -279,6 +369,8 @@ export function Chat({
               thinCatalog: result.data.thinCatalog,
               districtMatch: result.data.districtMatch,
               halfwayMore: result.data.halfwayMore,
+              halfwayLocations: locations,
+              halfwayPaged: paged || undefined,
             },
           ];
           threads[threadKey] = {
@@ -594,9 +686,19 @@ export function Chat({
       });
     }
 
+    const shownIds = more
+      ? Array.from(
+          new Set([
+            ...halfwayShownRef.current,
+            ...shownHalfwayPickIds(threads[threadKey]?.messages ?? messages),
+          ]),
+        )
+      : [];
+
     const pending: PendingSend = {
       id: crypto.randomUUID(),
       applied: false,
+      halfway: { locations, more },
       promise: (async (): Promise<PendingResult> => {
         try {
           const response = await fetch("/api/chat", {
@@ -607,9 +709,7 @@ export function Chat({
               halfway: { locations },
               halfwayMore: more || undefined,
               beenIds: more
-                ? Array.from(
-                    new Set([...halfwayShownRef.current, ...been.ids]),
-                  )
+                ? Array.from(new Set([...shownIds, ...been.ids]))
                 : been.ids,
               landing,
               via: "chip",
@@ -803,20 +903,19 @@ export function Chat({
                   mapsSource="pack"
                 />
               ) : null}
-              {index === messages.length - 1 &&
-              message.halfwayMore &&
-              !busy &&
-              halfwayLocationsRef.current ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const locations = halfwayLocationsRef.current;
+              {index === messages.length - 1 && !busy ? (
+                <MeetHalfwayResultsFooter
+                  language={landing}
+                  kind={halfwayResultsFooterKind({
+                    halfwayMore: message.halfwayMore,
+                    paged: message.halfwayPaged,
+                  })}
+                  onMore={() => {
+                    const locations =
+                      message.halfwayLocations ?? halfwayLocationsRef.current;
                     if (locations) sendMeetHalfway(locations, { more: true });
                   }}
-                  className="inline-flex h-10 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink"
-                >
-                  {copy.meetHalfwayMore[landing]}
-                </button>
+                />
               ) : null}
               {message.districtMatch ? (
                 <Link

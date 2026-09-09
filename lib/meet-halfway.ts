@@ -251,6 +251,23 @@ export function meetHalfwayReply(input: {
   return copy.fewerPicks[input.language];
 }
 
+/**
+ * Results footer under بيننا cards (local two-pin and /h/ guest).
+ * غيرها only when the same midpoint band still has leftover shops.
+ * Empty copy only after paging that leftover to zero — not on a
+ * first page whose band is exactly 3.
+ */
+export type HalfwayResultsFooterKind = "more" | "exhausted" | null;
+
+export function halfwayResultsFooterKind(input: {
+  halfwayMore?: boolean;
+  paged?: boolean;
+}): HalfwayResultsFooterKind {
+  if (input.halfwayMore === true) return "more";
+  if (input.halfwayMore === false && input.paged) return "exhausted";
+  return null;
+}
+
 export function parseHalfwayPinInputs(value: unknown): HalfwayPinInput[] | null {
   if (!value || typeof value !== "object") return null;
   const locations = (value as { locations?: unknown }).locations;

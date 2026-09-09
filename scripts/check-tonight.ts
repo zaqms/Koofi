@@ -271,6 +271,7 @@ const files = [
   "lib/copy.ts",
   "lib/track.ts",
   "components/viral-share.tsx",
+  "components/cafe-presence-row.tsx",
   "components/cafe-card.tsx",
   "components/cafe-passport-card.tsx",
   "app/c/[id]/tonight/image/route.tsx",
@@ -321,19 +322,22 @@ assert(!viral.includes("line: inviteLine"), "invite must not bake copy onto the 
 assert(!viral.includes("line={inviteLine}"), "invite preview is Tonight framing");
 
 const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
-assert(passport.includes("ViralShareActions"), "Passport has وين؟ invite");
-assert(passport.includes("DirectoryUpvote"), "upvote stays");
-assert(passport.includes("takeMeThere"), "Maps CTA stays");
+assert(passport.includes("CafePresenceRow"), "Passport has ▲ · وين؟ · Maps row");
 assert(!passport.includes("ShareListingButton"), "Passport card drops listing share");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
-assert(thin.includes("ViralShareActions"), "thin card has وين؟ invite");
-assert(thin.includes("DirectoryUpvote"), "thin card has ▲");
-assert(thin.includes("takeMeThere"), "thin Maps is ودّني هناك");
+assert(thin.includes("CafePresenceRow"), "thin card has ▲ · وين؟ · Maps row");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here stays quiet");
-assert(thin.includes("MapsLink"), "thin Maps stays");
 assert(!thin.includes("ShareListingButton"), "thin card drops listing share");
+
+const presence = readFileSync("components/cafe-presence-row.tsx", "utf8");
+assert(presence.includes("ViralShareActions"), "row has وين؟ invite");
+assert(presence.includes("DirectoryUpvote"), "row has ▲");
+assert(presence.includes("takeMeThere"), "row Maps is ودّني هناك");
+assert(presence.includes("shrink-0"), "Maps hugs its label");
+assert(!presence.includes("flex-1"), "Maps does not stretch");
+assert(presence.includes("whitespace-nowrap"), "Maps label stays one line");
 
 const directory = readFileSync("components/directory-card.tsx", "utf8");
 assert(directory.includes("ShareListingButton"), "directory list can still share a listing");

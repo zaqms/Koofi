@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { DirectoryUpvote } from "@/components/directory-upvote";
-import { MapsLink } from "@/components/maps-link";
-import { TargetIcon } from "@/components/target-icon";
+import { CafePresenceRow } from "@/components/cafe-presence-row";
 import { VerifiedBadge } from "@/components/verified-badge";
-import { ViralShareActions } from "@/components/viral-share";
 import {
   passportHasBrewing,
   passportHeroPhotos,
@@ -14,7 +11,6 @@ import {
 } from "@/lib/claims-types";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
-import { shopMapsHref } from "@/lib/public-url";
 import type { Language, Shop } from "@/lib/types";
 import { vibeLabels } from "@/lib/vibe-labels";
 
@@ -245,34 +241,13 @@ export function CafePassportCard({
         ) : null}
       </div>
 
-      <div className="px-5 pb-3">
-        <ViralShareActions
+      <div className="sticky bottom-0 border-t border-line bg-foam px-5 py-3">
+        <CafePresenceRow
           shop={shop}
           language={language}
           photo={photo ?? null}
           variant="passport"
         />
-      </div>
-
-      <div
-        className="sticky bottom-0 flex items-center gap-2 border-t border-line bg-foam px-5 py-3"
-        dir="ltr"
-      >
-        <DirectoryUpvote
-          shopId={shop.id}
-          language={language}
-          variant="passport"
-        />
-        <MapsLink
-          href={shopMapsHref(shop)}
-          shopId={shop.id}
-          locale={language}
-          source="card"
-          className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-lg border border-gold px-3 py-2 text-sm text-gold hover:bg-passport-wash"
-        >
-          <TargetIcon />
-          <span>{copy.takeMeThere[language]}</span>
-        </MapsLink>
       </div>
     </article>
   );

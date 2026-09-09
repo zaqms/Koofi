@@ -1456,7 +1456,7 @@ assert(
   halfwayPicker.includes("meetHalfwayMyPin") &&
     halfwayPicker.includes("meetHalfwayInvite") &&
     !halfwayPicker.includes("directoryNeighborhoods"),
-  "بيننا asks for pins + ادعُ صاحبك, not districts",
+  "بيننا asks for pins + اعزم خويك, not districts",
 );
 
 const homeLanding = readFileSync(

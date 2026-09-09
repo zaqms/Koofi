@@ -136,7 +136,7 @@ export const copy = {
     en: "I don't have a cafe between you on the list yet.",
   },
   meetHalfwayInvite: {
-    ar: "ادعُ صاحبك",
+    ar: "اعزم خويك",
     en: "Invite your friend",
   },
   meetHalfwayInviteHint: {

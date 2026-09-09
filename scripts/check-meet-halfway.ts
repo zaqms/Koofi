@@ -61,11 +61,12 @@ assert(
     copy.includes("ثلاث قهاوي بينكم") &&
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
-    copy.includes("ادعُ صاحبك"),
+    copy.includes("اعزم خويك"),
   "copy asks for pins, not districts",
 );
 assert(!copy.includes("أنا في"), "district label أنا في is gone");
 assert(!copy.includes("الثاني"), "district label الثاني is gone");
+assert(!copy.includes("ادعُ صاحبك") && !copy.includes("ادع صاحبك"), "old invite CTA is gone");
 
 const ui = readFileSync(join(repoRoot, "components/meet-halfway-picker.tsx"), "utf8");
 assert(!ui.includes("<select"), "no district dropdowns as primary UX");
@@ -76,7 +77,7 @@ assert(
     ui.includes("meetHalfwayOther") &&
     ui.includes("meetHalfwayMyPin") &&
     ui.includes("meetHalfwayInvite"),
-  "two pin fields plus ادعُ صاحبك",
+  "two pin fields plus اعزم خويك",
 );
 assert(!ui.includes("directoryNeighborhoods"), "picker is not a district directory");
 
@@ -206,9 +207,12 @@ const inviteText = halfwayInviteShareText({
 });
 assert(
   inviteText.includes("بيننا") &&
+    inviteText.includes("اعزم خويك") &&
     inviteText.includes("wain.lol/h/") &&
     inviteText.includes("from=wa") &&
-    !inviteText.includes("maps.google"),
+    !inviteText.includes("maps.google") &&
+    !inviteText.includes("ادعُ صاحبك") &&
+    !inviteText.includes("ادع صاحبك"),
   "invite packet is وين؟-family share text, not a Maps dump",
 );
 const expired = inspectHalfwayInviteId(

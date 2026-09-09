@@ -155,7 +155,7 @@ export function halfwayInviteShareText(input: {
 }): string {
   const line =
     input.language === "ar"
-      ? "بيننا — أنا هنا. وين أنت؟"
+      ? "بيننا — اعزم خويك. أنا هنا. وين أنت؟"
       : "Halfway — I'm here. Where are you?";
   return `${line}\n\n${input.url}`;
 }

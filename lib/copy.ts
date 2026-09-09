@@ -135,6 +135,26 @@ export const copy = {
     ar: "ما لقيت قهوة بينكم في القائمة الحين.",
     en: "I don't have a cafe between you on the list yet.",
   },
+  meetHalfwayInvite: {
+    ar: "ادعُ صاحبك",
+    en: "Invite your friend",
+  },
+  meetHalfwayInviteHint: {
+    ar: "أرسل الرابط — صاحبك يدبس من جواله.",
+    en: "Send the link — your friend drops their pin on their phone.",
+  },
+  meetHalfwayInviteWaiting: {
+    ar: "لما صاحبك يدبس، الثلاث تظهر هنا. تقدر تحدث الصفحة.",
+    en: "When your friend drops their pin, the three show here. You can refresh.",
+  },
+  meetHalfwayInviteGuestHint: {
+    ar: "صاحبك دبّس. حط موقعك بس.",
+    en: "Your friend already pinned. Drop your location only.",
+  },
+  meetHalfwayInviteExpired: {
+    ar: "هالرابط انتهى. اطلب رابط جديد.",
+    en: "This link expired. Ask for a new invite.",
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",

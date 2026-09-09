@@ -25,7 +25,7 @@ export type AnalyticsEventName =
   | "invite_share";
 
 export type MapsClickSource = "pack" | "list" | "card";
-export type ShareInboundKind = "pack" | "listing";
+export type ShareInboundKind = "pack" | "listing" | "halfway";
 export type ListingShareSource = "list" | "card";
 export type ChatQueryVia = "typed" | "chip";
 

@@ -1,7 +1,7 @@
 /**
  * بيننا pin-first lock (Amjad). District dropdowns are not the product.
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { listRealShops } from "../lib/catalog";
@@ -9,12 +9,19 @@ import { rankByPopularity } from "../lib/district-rank";
 import { parseSharedPin, looksLikeSharedPin } from "../lib/shared-pin";
 import { shopMapsHref } from "../lib/public-url";
 import {
+  decodeHalfwayInviteId,
+  encodeHalfwayInviteId,
+  halfwayInviteSharePath,
+  halfwayInviteShareText,
+  inspectHalfwayInviteId,
+} from "../lib/halfway-invite";
+import {
   meetHalfwayAskLabel,
   parseHalfwayPinInputs,
   pickHalfwayShops,
   locationsCentroid,
 } from "../lib/meet-halfway";
-import { MEET_HALFWAY_CHIP, VIBE_CHIPS } from "../lib/product";
+import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
 
 const SHOPS = listRealShops();
 const repoRoot = join(fileURLToPath(new URL(".", import.meta.url)), "..");
@@ -53,7 +60,8 @@ assert(
   copy.includes("meetHalfwayThree") &&
     copy.includes("ثلاث قهاوي بينكم") &&
     copy.includes("أنت وين؟") &&
-    copy.includes("موقعي"),
+    copy.includes("موقعي") &&
+    copy.includes("ادعُ صاحبك"),
   "copy asks for pins, not districts",
 );
 assert(!copy.includes("أنا في"), "district label أنا في is gone");
@@ -66,8 +74,9 @@ assert(ui.includes("requestVisitorLocation"), "browser geolocation on first pin"
 assert(
   ui.includes("meetHalfwayMe") &&
     ui.includes("meetHalfwayOther") &&
-    ui.includes("meetHalfwayMyPin"),
-  "two pin fields only (me + friend + my-pin)",
+    ui.includes("meetHalfwayMyPin") &&
+    ui.includes("meetHalfwayInvite"),
+  "two pin fields plus ادعُ صاحبك",
 );
 assert(!ui.includes("directoryNeighborhoods"), "picker is not a district directory");
 
@@ -171,5 +180,69 @@ assert(mid && Number.isFinite(mid.lat) && Number.isFinite(mid.lng), "band around
 
 assert(meetHalfwayAskLabel("ar") === "بيننا · دبوسين", "ask label is two pins");
 assert(meetHalfwayAskLabel("en") === "Halfway · two pins", "EN ask label");
+
+const inviteId = encodeHalfwayInviteId({
+  locale: "ar",
+  locations: [{ lat: 24.761, lng: 46.604 }],
+  now: 1_700_000_000_000,
+  ttlMs: 45 * 60 * 1000,
+});
+if (!inviteId) fail("encode one host pin");
+const inviteSeed = decodeHalfwayInviteId(inviteId, 1_700_000_000_000);
+if (!inviteSeed?.locations[0]) fail("decode host pin");
+assert(inviteSeed.locations.length === 1, "decode one host pin");
+assert(
+  Math.abs(inviteSeed.locations[0].lat - 24.761) < 1e-4,
+  "invite URL carries A's pin",
+);
+assert(
+  halfwayInvitePath(inviteId).startsWith("/h/") &&
+    halfwayInviteSharePath(inviteId).endsWith("?from=wa"),
+  "invite share is /h/{id}?from=wa",
+);
+const inviteText = halfwayInviteShareText({
+  language: "ar",
+  url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
+});
+assert(
+  inviteText.includes("بيننا") &&
+    inviteText.includes("wain.lol/h/") &&
+    inviteText.includes("from=wa") &&
+    !inviteText.includes("maps.google"),
+  "invite packet is وين؟-family share text, not a Maps dump",
+);
+const expired = inspectHalfwayInviteId(
+  inviteId,
+  1_700_000_000_000 + 45 * 60 * 1000 + 1,
+);
+assert(
+  !expired.ok && expired.reason === "expired",
+  "invite expires inside 30–60 min (45)",
+);
+const threeInvite = encodeHalfwayInviteId({
+  locale: "en",
+  locations: [
+    { lat: 24.76, lng: 46.6 },
+    { lat: 24.69, lng: 46.68 },
+    { lat: 24.8, lng: 46.7 },
+  ],
+});
+const threeSeed = threeInvite ? decodeHalfwayInviteId(threeInvite) : null;
+assert(threeSeed !== null && threeSeed.locations.length === 3, "invite payload is N locations, not a pair");
+
+const chatUi = readFileSync(join(repoRoot, "components/chat.tsx"), "utf8");
+assert(
+  chatUi.includes("sharePackPacket") && chatUi.includes("inviteHalfwayFriend"),
+  "invite uses the same system share family as وين؟ / packet",
+);
+const invitePage = readFileSync(join(repoRoot, "app/h/[id]/page.tsx"), "utf8");
+assert(
+  invitePage.includes("halfwayInvite") && invitePage.includes('kind="halfway"'),
+  "friend lands on /h/{id} with guest pin only",
+);
+assert(
+  existsSync(join(repoRoot, "app/api/halfway/invite/route.ts")),
+  "optional join overlay for A refresh",
+);
 
 console.log("meet-halfway pin-first lock ok");

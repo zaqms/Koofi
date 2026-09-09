@@ -152,7 +152,7 @@ assert(!footer.includes("966570064331"), "footer source does not hardcode digits
 assert(footer.includes('status === "none"'), "CTA hidden when not none");
 
 const passportCard = readFileSync("components/cafe-passport-card.tsx", "utf8");
-assert(passportCard.includes("CafePresenceRow"), "Passport has ▲ · وين؟ · Maps row");
+assert(passportCard.includes("CafePresenceRow"), "Passport has ▲ · share · وين؟ · Maps row");
 assert(passportCard.includes("VerifiedBadge"), "Passport has Verified");
 assert(passportCard.includes("reviewsTab"), "Passport has Reviews tab");
 assert(passportCard.includes("cardNo"), "Passport has CARD N° chrome");

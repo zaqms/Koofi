@@ -2,6 +2,7 @@
 
 import { DirectoryUpvote } from "@/components/directory-upvote";
 import { MapsLink } from "@/components/maps-link";
+import { ShareListingButton } from "@/components/share-listing-button";
 import { TargetIcon } from "@/components/target-icon";
 import { ViralShareActions } from "@/components/viral-share";
 import { copy } from "@/lib/copy";
@@ -16,8 +17,8 @@ type CafePresenceRowProps = {
 };
 
 /**
- * Locked cafe actions: compact ▲, wider gold وين؟, Maps hugging its label.
- * No listing share. No channel grid.
+ * Locked cafe actions: compact ▲, listing-share icon, wider gold وين؟,
+ * Maps hugging its label. No X / Stories / Snap grid.
  */
 export function CafePresenceRow({
   shop,
@@ -36,6 +37,13 @@ export function CafePresenceRow({
         shopId={shop.id}
         language={language}
         variant={variant === "passport" ? "passport" : "list"}
+      />
+      <ShareListingButton
+        shop={shop}
+        language={language}
+        source="card"
+        compact
+        variant={variant === "passport" ? "passport" : "default"}
       />
       <ViralShareActions
         shop={shop}

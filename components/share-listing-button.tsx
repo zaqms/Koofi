@@ -38,7 +38,7 @@ export function ShareListingButton({
   }
 
   return (
-    <div className="inline-flex flex-col items-start gap-0.5">
+    <div className="inline-flex shrink-0 flex-col items-start gap-0.5">
       <button
         type="button"
         onClick={() => {
@@ -61,7 +61,9 @@ export function ShareListingButton({
         {compact ? null : <span>{copy.sharePack[language]}</span>}
       </button>
       {copied ? (
-        <p className="text-[11px] text-ink-soft">{copy.packetCopied[language]}</p>
+        <p className={compact ? "sr-only" : "text-[11px] text-ink-soft"}>
+          {copy.packetCopied[language]}
+        </p>
       ) : null}
     </div>
   );

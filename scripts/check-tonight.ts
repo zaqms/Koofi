@@ -322,22 +322,33 @@ assert(!viral.includes("line: inviteLine"), "invite must not bake copy onto the 
 assert(!viral.includes("line={inviteLine}"), "invite preview is Tonight framing");
 
 const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
-assert(passport.includes("CafePresenceRow"), "Passport has ▲ · وين؟ · Maps row");
-assert(!passport.includes("ShareListingButton"), "Passport card drops listing share");
+assert(passport.includes("CafePresenceRow"), "Passport has ▲ · share · وين؟ · Maps row");
+assert(!passport.includes("ShareListingButton"), "Passport listing share lives in the presence row");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
-assert(thin.includes("CafePresenceRow"), "thin card has ▲ · وين؟ · Maps row");
+assert(thin.includes("CafePresenceRow"), "thin card has ▲ · share · وين؟ · Maps row");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here stays quiet");
-assert(!thin.includes("ShareListingButton"), "thin card drops listing share");
+assert(!thin.includes("ShareListingButton"), "thin listing share lives in the presence row");
 
 const presence = readFileSync("components/cafe-presence-row.tsx", "utf8");
-assert(presence.includes("ViralShareActions"), "row has وين؟ invite");
 assert(presence.includes("DirectoryUpvote"), "row has ▲");
+assert(presence.includes("ShareListingButton"), "row has compact listing share");
+assert(presence.includes("ViralShareActions"), "row has وين؟ invite");
 assert(presence.includes("takeMeThere"), "row Maps is ودّني هناك");
+assert(presence.includes("compact"), "listing share is icon-only");
+assert(presence.includes('source="card"'), "listing share is the card path");
 assert(presence.includes("shrink-0"), "Maps hugs its label");
 assert(!presence.includes("flex-1"), "Maps does not stretch");
 assert(presence.includes("whitespace-nowrap"), "Maps label stays one line");
+assert(!presence.includes("tonightShareX"), "no X channel on the bar");
+assert(!presence.includes("ستوريز"), "no Stories on the bar");
+
+const listingShare = readFileSync("components/share-listing-button.tsx", "utf8");
+assert(listingShare.includes("listingPacketForShop"), "icon share is listing packet");
+assert(listingShare.includes("sharePackPacket"), "icon share uses Web Share / copy");
+assert(!listingShare.includes("tonightImagePath"), "listing share is not the وين؟ mint");
+assert(!listingShare.includes("inviteShareText"), "listing share is not the وين؟ invite");
 
 const directory = readFileSync("components/directory-card.tsx", "utf8");
 assert(directory.includes("ShareListingButton"), "directory list can still share a listing");

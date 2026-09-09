@@ -100,32 +100,28 @@ export const copy = {
     en: `Nearby needs your location. ${LOCKED_OPENER_EN}`,
   },
   meetHalfwayMe: {
-    ar: "أنت وين؟",
-    en: "Where are you?",
+    ar: "أنا في",
+    en: "I'm in",
   },
   meetHalfwayOther: {
-    ar: "صاحبك وين؟",
-    en: "Where's your friend?",
+    ar: "الثاني",
+    en: "The other",
   },
   meetHalfwayGo: {
     ar: "دور بينكم",
     en: "Find halfway",
   },
   meetHalfwayHint: {
-    ar: "ارمي دبوسين — رابط قوقل ماب أو موقعك.",
-    en: "Drop two pins — a Google Maps link or your location.",
+    ar: "اختار حيين، ندور قهوة في النص.",
+    en: "Pick two areas — we'll find coffee in the middle.",
   },
-  meetHalfwayPinPlaceholder: {
-    ar: "رابط قوقل ماب أو إحداثيات…",
-    en: "A Google Maps link or lat,lng…",
+  meetHalfwayPickArea: {
+    ar: "اختار حي",
+    en: "Pick an area",
   },
-  meetHalfwayMyPin: {
-    ar: "موقعي",
-    en: "My pin",
-  },
-  meetHalfwayBadPin: {
-    ar: "ما قدرت أقرأ الدبوس. حط رابط قوقل ماب أو إحداثيات.",
-    en: "Couldn't read that pin. Use a Google Maps link or lat,lng.",
+  meetHalfwayNeedDistricts: {
+    ar: "اختار الحيين أولاً.",
+    en: "Pick both areas first.",
   },
   meetHalfwayThree: {
     ar: "ثلاث قهاوي بينكم",

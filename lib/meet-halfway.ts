@@ -3,11 +3,10 @@ import { shopToChatPick } from "./chat-pick";
 import { rankByPopularity, rankInDistrict } from "./district-rank";
 import { haversineKm } from "./distance";
 import { neighborhoodCentroid } from "./neighborhood-tight";
+import { isNeighborhoodId, neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import { MEET_HALFWAY_CHIP } from "./product";
-import { resolveSharedPin } from "./shared-pin";
 import { dedupeSameBrand } from "./shop-brand";
-import { isNeighborhoodId } from "./neighborhoods";
 import type { ChatPick, Language, NeighborhoodId, Pin, Shop } from "./types";
 import { uniqueWhyLines } from "./why-line";
 
@@ -15,23 +14,19 @@ import { uniqueWhyLines } from "./why-line";
  * Meet Halfway (`بيننا`).
  *
  * Core ranking is `locations: Location[]` (N≥2). Midpoint is the
- * centroid of the resolved pins (or district centroids when a row
- * has no pin). Do not hard-code a pair-only algorithm.
+ * centroid of the N district centroids — do not hard-code a pair-only
+ * algorithm. v1 UI ships exactly two district pickers. A later 3–4
+ * friend UI can pass more Location rows without changing this helper.
  *
- * v1 UI ships exactly two shared pins (Maps paste / geo). A later
- * 3–4 friend UI can pass more Location rows without changing this
- * helper. `district` is an extension/fallback — pins always win.
+ * `pin` is reserved for a later Maps/geo phase. v1 does not collect pins.
  */
 export type HalfwayLocation = {
-  pin?: Pin;
   district?: NeighborhoodId;
+  pin?: Pin;
 };
 
-/** Wire/JSON row from the بيننا picker or a later N-pin UI. */
-export type HalfwayPinInput = {
-  text?: string;
-  lat?: number;
-  lng?: number;
+/** Wire/JSON row from the بيننا picker. v1 sends district only. */
+export type HalfwayInput = {
   district?: string;
 };
 
@@ -50,12 +45,6 @@ function normalizeChipAsk(text: string): string {
     .replace(/[^\p{L}\p{N}\s-]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function asPin(lat: number, lng: number): Pin | null {
-  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-  if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
-  return { lat, lng };
 }
 
 /** Exact chip label only — typed `بيننا` / Halfway, not a vibe moment. */
@@ -77,7 +66,7 @@ export function locationPin(
   return null;
 }
 
-/** Centroid of N resolved location pins. Same mean-lat/lng as district centroids. */
+/** Centroid of N resolved location pins (district centroids in v1). */
 export function locationsCentroid(
   locations: readonly HalfwayLocation[],
   shops: readonly Pick<Shop, "neighborhood" | "pin" | "mapsShareUrl">[],
@@ -109,23 +98,11 @@ function uniqueDistricts(
   return ids;
 }
 
-export async function resolveHalfwayLocations(
-  rows: readonly HalfwayPinInput[],
-): Promise<HalfwayLocation[]> {
+export function resolveHalfwayLocations(
+  rows: readonly HalfwayInput[],
+): HalfwayLocation[] {
   const locations: HalfwayLocation[] = [];
   for (const row of rows) {
-    const fromCoords = asPin(row.lat ?? Number.NaN, row.lng ?? Number.NaN);
-    if (fromCoords) {
-      locations.push({ pin: fromCoords });
-      continue;
-    }
-    if (typeof row.text === "string" && row.text.trim()) {
-      const pin = await resolveSharedPin(row.text);
-      if (pin) {
-        locations.push({ pin });
-        continue;
-      }
-    }
     if (typeof row.district === "string" && isNeighborhoodId(row.district)) {
       locations.push({ district: row.district });
     }
@@ -151,9 +128,8 @@ export function pickHalfwayShops(input: {
   const { locations } = input;
   if (locations.length < 2) return [];
 
-  const nonePinned = locations.every((location) => !location.pin);
   const districts = uniqueDistricts(locations);
-  if (nonePinned && districts.length === 1) {
+  if (districts.length === 1) {
     const only = districts[0];
     if (!only) return [];
     return dedupeSameBrand(rankInDistrict(shops, only)).slice(0, limit);
@@ -195,7 +171,7 @@ export function pickHalfwayShops(input: {
     if (ranked.length >= limit) return ranked.slice(0, limit);
   }
 
-  // Snap to nearest catalog pins around the N-centroid, then Most Popular.
+  // Snap to nearest catalog cafes around the N-centroid, then Most Popular.
   withCoords.sort((a, b) => a.km - b.km);
   const nearest = dedupeSameBrand(withCoords.map((row) => row.shop)).slice(
     0,
@@ -219,24 +195,31 @@ export function meetHalfwayChatPicks(input: {
   );
 }
 
-export function meetHalfwayAskLabel(language: Language): string {
-  return language === "ar"
-    ? `${MEET_HALFWAY_CHIP.ar} · دبوسين`
-    : `${MEET_HALFWAY_CHIP.en} · two pins`;
+export function meetHalfwayAskLabel(
+  locations: readonly HalfwayLocation[],
+  language: Language,
+): string {
+  const chip =
+    language === "ar" ? MEET_HALFWAY_CHIP.ar : MEET_HALFWAY_CHIP.en;
+  const names = locations
+    .map((location) =>
+      location.district
+        ? neighborhoodLabel(location.district, language)
+        : "",
+    )
+    .filter(Boolean);
+  return names.length > 0 ? `${chip} · ${names.join(" × ")}` : chip;
 }
 
-export function parseHalfwayPinInputs(value: unknown): HalfwayPinInput[] | null {
+export function parseHalfwayInputs(value: unknown): HalfwayInput[] | null {
   if (!value || typeof value !== "object") return null;
   const locations = (value as { locations?: unknown }).locations;
   if (!Array.isArray(locations) || locations.length < 2) return null;
-  const rows: HalfwayPinInput[] = [];
+  const rows: HalfwayInput[] = [];
   for (const row of locations) {
     if (!row || typeof row !== "object") continue;
     const item = row as Record<string, unknown>;
     rows.push({
-      text: typeof item.text === "string" ? item.text : undefined,
-      lat: typeof item.lat === "number" ? item.lat : undefined,
-      lng: typeof item.lng === "number" ? item.lng : undefined,
       district: typeof item.district === "string" ? item.district : undefined,
     });
   }

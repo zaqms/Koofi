@@ -43,8 +43,8 @@ export function HomeLanding({
       district={district}
       listing={listing}
       intro={
-        language === "en" && district ? (
-          <DistrictEnBody district={district} />
+        district ? (
+          <DistrictEnBody district={district} language={language} />
         ) : null
       }
     />

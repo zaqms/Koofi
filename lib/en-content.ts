@@ -145,7 +145,7 @@ const GOLD_DISTRICT = {
   "al-wurud": GOLD_MASTER_AL_WURUD,
 } as const;
 
-const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]> = {
+export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]> = {
   hittin: ["al-malqa", "al-yasmin", "al-narjis", "al-nakheel"],
   "al-malqa": ["hittin", "al-yasmin", "al-narjis", "al-nakheel"],
   "al-nakheel": ["hittin", "al-malqa", "olaya", "al-rahmaniyyah"],

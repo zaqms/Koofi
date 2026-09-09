@@ -678,9 +678,12 @@ assert(
   "EN title is Coffee shops in {district} · wain.lol",
 );
 assert(
-  districtDescription("al-malqa", "ar") ===
-    `مقاهي في ${malqaAr} · ${copy.directoryHint.ar}`,
-  "AR description stays category phrase + directoryHint",
+  districtDescription("al-malqa", "ar").includes(malqaAr),
+  "AR malqa description names the district",
+);
+assert(
+  districtDescription("al-malqa", "ar").includes("wain.lol"),
+  "AR malqa description names wain.lol",
 );
 assert(
   districtDescription("ghirnatah", "en").includes("Ghirnatah"),

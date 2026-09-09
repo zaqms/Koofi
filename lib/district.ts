@@ -4,10 +4,10 @@ import { copy } from "./copy";
 import {
   COFFEE_SHOPS_CATEGORY,
   categoryDistrictHeading,
-  coffeeShopsInDistrict,
   type DirectoryCategoryId,
 } from "./directory-category";
 import { directoryNeighborhoods } from "./directory";
+import { districtArMeta, districtArTitle } from "./ar-content";
 import { districtEnMeta, districtEnTitle } from "./en-content";
 import { pageAlternates } from "./locale";
 import { isNeighborhoodId, neighborhoodLabel } from "./neighborhoods";
@@ -41,6 +41,9 @@ export function districtTitle(
   if (language === "en" && category === COFFEE_SHOPS_CATEGORY) {
     return districtEnTitle(id);
   }
+  if (language === "ar" && category === COFFEE_SHOPS_CATEGORY) {
+    return districtArTitle(id);
+  }
   return `${categoryDistrictHeading(category, id, language)} · ${PRODUCT_NAME}`;
 }
 
@@ -52,11 +55,11 @@ export function districtDescription(
   if (language === "en" && category === COFFEE_SHOPS_CATEGORY) {
     return districtEnMeta(id);
   }
+  if (language === "ar" && category === COFFEE_SHOPS_CATEGORY) {
+    return districtArMeta(id);
+  }
   const name = neighborhoodLabel(id, language);
   const hint = copy.directoryHint[language];
-  if (category === COFFEE_SHOPS_CATEGORY) {
-    return `${coffeeShopsInDistrict(name, language)} · ${hint}`;
-  }
   return `${hint} · ${name}`;
 }
 

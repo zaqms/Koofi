@@ -81,7 +81,9 @@ export async function CafeCardPageView({
           social={social}
         />
       </ShopUpvoteProvider>
-      {language === "en" && !passportPage ? <CafeEnBlurb shop={shop} /> : null}
+      {!passportPage ? (
+        <CafeEnBlurb shop={shop} language={language} />
+      ) : null}
       {passportPage ? null : (
         <p className="mt-6">
           <Link href={home} className="text-sm text-bean hover:text-bean-deep">

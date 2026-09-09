@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cafeArMeta, cafeArTitle } from "./ar-content";
 import {
   cafeEnMeta,
   cafeEnTitle,
@@ -13,19 +14,13 @@ import {
 } from "./product";
 import type { Language, Shop } from "./types";
 
-export function cafeArTitle(shop: Shop): string {
-  return `${shop.nameAr} · ${shop.nameEn}`;
-}
-
-export function cafeArDescription(shop: Shop): string {
-  return `${shop.neighborhoodAr} · ${shop.vibeTags.join("، ")}`;
-}
+export { cafeArMeta, cafeArTitle } from "./ar-content";
 
 export function cafePageMetadata(shop: Shop, language: Language): Metadata {
   const title =
     language === "en" ? cafeEnTitle(shop) : cafeArTitle(shop);
   const description =
-    language === "en" ? cafeEnMeta(shop) : cafeArDescription(shop);
+    language === "en" ? cafeEnMeta(shop) : cafeArMeta(shop);
   const url = cardPath(shop.id, language);
   const ogImage = {
     url: cafeOgImagePath(shop.id, language),

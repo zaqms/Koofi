@@ -129,6 +129,7 @@ for (const district of [
   "as-sahafah",
   "ghirnatah",
   "al-hamra",
+  "al-yarmouk",
 ] as const) {
   const body = districtEnMarkdown(district);
   const lead = body.split("## What’s here")[0] ?? "";
@@ -585,6 +586,36 @@ assert(
   "AR wurud About still links About",
 );
 
+const DISTRICT_CONTRAST_DROPPED_EN = [
+  "not the same ten cards",
+  "not a north-Riyadh or KAFD",
+  "not the KAFD page",
+  "not the KAFD list",
+  "not a KAFD page",
+  "not the KAFD office",
+  "not on the KAFD page",
+  "not locked to KAFD",
+  "if you need that list instead",
+  "not folded into",
+  "not the Al Hamra",
+  "not Olaya and not KAFD",
+  "different stretch from KAFD",
+  "different side of town from KAFD",
+] as const;
+const DISTRICT_CONTRAST_DROPPED_AR = [
+  "مو نفس عشر بطاقات",
+  "مو صفحة كافد",
+  "مو قائمة كافد",
+  "مو صفحة شمال",
+  "مو أبراج كافد",
+  "مو نفس قائمة الورود",
+  "جهة ثانية عن كافد",
+  "مو مطوية مع",
+  "مو لازم كافد",
+  "هالقائمة بدل",
+  "مو بطاقة",
+] as const;
+
 for (const district of liveDistricts) {
   const en = districtEnMarkdown(district);
   const ar = districtArMarkdown(district);
@@ -593,6 +624,7 @@ for (const district of liveDistricts) {
     ...CONSUMER_PAGE_DROPPED_AR,
     ...PASTE_LECTURE_DROPPED,
     NO_MENU_LECTURE,
+    ...DISTRICT_CONTRAST_DROPPED_EN,
   ]) {
     assert(!en.includes(phrase), `EN ${district} must not pitch ${phrase}`);
   }
@@ -601,6 +633,7 @@ for (const district of liveDistricts) {
     ...CONSUMER_PAGE_DROPPED_AR,
     ...PASTE_LECTURE_DROPPED_AR,
     ...CAFE_META_DROPPED_AR,
+    ...DISTRICT_CONTRAST_DROPPED_AR,
   ]) {
     assert(!ar.includes(phrase), `AR ${district} must not pitch ${phrase}`);
   }
@@ -614,6 +647,7 @@ for (const shop of listRealShops()) {
     ...CAFE_META_DROPPED,
     ...PASTE_LECTURE_DROPPED,
     NO_MENU_LECTURE,
+    ...DISTRICT_CONTRAST_DROPPED_EN,
   ]) {
     assert(!en.includes(phrase), `EN ${shop.id} must not lecture ${phrase}`);
   }
@@ -622,6 +656,7 @@ for (const shop of listRealShops()) {
     ...CONSUMER_PAGE_DROPPED_AR,
     ...CAFE_META_DROPPED_AR,
     ...PASTE_LECTURE_DROPPED_AR,
+    ...DISTRICT_CONTRAST_DROPPED_AR,
   ]) {
     assert(!ar.includes(phrase), `AR ${shop.id} must not lecture ${phrase}`);
   }

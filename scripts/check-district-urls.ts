@@ -54,7 +54,9 @@ assert(resolveDistrictSlug("qurtubah") === "qurtubah", "qurtubah resolves");
 assert(resolveDistrictSlug("an-nazhah") === "an-nazhah", "an-nazhah resolves");
 assert(resolveDistrictSlug("al-hamra") === "al-hamra", "al-hamra resolves");
 assert(resolveDistrictSlug("al-yarmouk") === "al-yarmouk", "al-yarmouk resolves");
+assert(resolveDistrictSlug("al-nahdah") === "al-nahdah", "al-nahdah resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
+assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
 assert(resolveDistrictSlug("غرناطة") === null, "Arabic label is not a slug");
 
@@ -92,8 +94,9 @@ assert(areas.includes("qurtubah"), "directory includes qurtubah");
 assert(areas.includes("an-nazhah"), "directory includes an-nazhah");
 assert(areas.includes("al-hamra"), "directory includes al-hamra");
 assert(areas.includes("al-yarmouk"), "directory includes al-yarmouk");
-assert(areas.length === 24, `expected 24 districts, got ${areas.length}`);
-assert(listRealShops().length === 161, `catalog 151→161, got ${listRealShops().length}`);
+assert(areas.includes("al-nahdah"), "directory includes al-nahdah");
+assert(areas.length === 25, `expected 25 districts, got ${areas.length}`);
+assert(listRealShops().length === 171, `catalog 161→171, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -538,6 +541,90 @@ assert(
   "shafel-roastery-al-yarmouk uses a distinct official place hex",
 );
 
+const nahdah = filterDirectoryShops(shops, "al-nahdah");
+assert(nahdah.length === 10, `al-nahdah has 10 shops, got ${nahdah.length}`);
+assert(
+  nahdah.every((shop) => shop.neighborhood === "al-nahdah"),
+  "al-nahdah filter stays in district",
+);
+for (const id of [
+  "kapu-cafe-al-nahdah",
+  "dahal-specialty-al-nahdah",
+  "ghazala-cafe-al-nahdah",
+  "shafel-roastery-al-nahdah",
+  "half-ten-al-nahdah",
+  "bon-ferro-al-nahdah",
+  "coffee-address-al-nahdah",
+  "chord-daily-coffee-al-nahdah",
+  "taco-cup-al-nahdah",
+  "awj-cafe-al-nahdah",
+]) {
+  assert(
+    nahdah.some((shop) => shop.id === id),
+    `al-nahdah includes ${id}`,
+  );
+}
+assert(
+  neighborhoodLabel("al-nahdah", "ar") === "النهضة",
+  "al-nahdah Arabic label",
+);
+assert(
+  neighborhoodLabel("al-nahdah", "en") === "Al Nahdah",
+  "al-nahdah English label",
+);
+assert(
+  districtPath("al-nahdah", "ar") === "/coffee-shops/al-nahdah",
+  "AR al-nahdah coffee-shops path",
+);
+assert(
+  districtPath("al-nahdah", "en") === "/en/coffee-shops/al-nahdah",
+  "EN al-nahdah coffee-shops path",
+);
+
+const nahdahIntentAsks = [
+  "النهضة",
+  "نهضة",
+  "nahdah",
+  "al nahdah",
+  "al-nahdah",
+  "alnahdah",
+  "Al Nahdah",
+  "nahda",
+  "al-nahda",
+];
+for (const ask of nahdahIntentAsks) {
+  const intent = parseIntent(ask);
+  assert(
+    intent.neighborhoods.includes("al-nahdah"),
+    `parseIntent(${ask}) should hit al-nahdah`,
+  );
+}
+
+const addressNahdah = getShop("coffee-address-al-nahdah");
+assert(addressNahdah, "coffee-address-al-nahdah is a distinct catalog shop");
+assert(
+  addressNahdah.mapsShareUrl !== addressHamra.mapsShareUrl &&
+    addressNahdah.mapsShareUrl !== addressYarmouk.mapsShareUrl,
+  "coffee-address-al-nahdah uses a distinct official place hex",
+);
+
+const shafelNahdah = getShop("shafel-roastery-al-nahdah");
+assert(shafelNahdah, "shafel-roastery-al-nahdah is a distinct catalog shop");
+assert(
+  shafelNahdah.mapsShareUrl !== shafelYarmouk.mapsShareUrl &&
+    shafelNahdah.mapsShareUrl !== shovelYasmin.mapsShareUrl,
+  "shafel-roastery-al-nahdah uses a distinct official place hex",
+);
+
+const cordHamra = getShop("cord-cafe-al-hamra");
+const chordNahdah = getShop("chord-daily-coffee-al-nahdah");
+assert(cordHamra, "cord-cafe-al-hamra stays in the catalog");
+assert(chordNahdah, "chord-daily-coffee-al-nahdah is a distinct catalog shop");
+assert(
+  chordNahdah.mapsShareUrl !== cordHamra.mapsShareUrl,
+  "chord-daily-coffee-al-nahdah uses a distinct official place hex",
+);
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
     "november-coffee-an-nazhah,belong-an-nazhah,elite-cup-roasters-an-nazhah",
@@ -565,7 +652,8 @@ const scoutPack: {
     | "qurtubah"
     | "an-nazhah"
     | "al-hamra"
-    | "al-yarmouk";
+    | "al-yarmouk"
+    | "al-nahdah";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -990,6 +1078,93 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/nus-talqimah-al-yarmouk-ig.jpg",
     pin: { lat: 24.8036476, lng: 46.7823123 },
+  },
+  {
+    id: "kapu-cafe-al-nahdah",
+    hex: "0x3e2fab006fc29d1d:0x6a2ec990621bbdf6",
+    neighborhood: "al-nahdah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/kapu-cafe-al-nahdah.jpg",
+    pin: { lat: 24.7576811, lng: 46.8271043 },
+  },
+  {
+    id: "dahal-specialty-al-nahdah",
+    hex: "0x3e2f010fb8f6585f:0xc3e6d2fabf01a46c",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/dahal-specialty-al-nahdah.jpg",
+    pin: { lat: 24.7516863, lng: 46.8038631 },
+  },
+  {
+    id: "ghazala-cafe-al-nahdah",
+    hex: "0x3e2f01875e38ff97:0xc5979aa1ec438750",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ghazala-cafe-al-nahdah.jpg",
+    pin: { lat: 24.7633626, lng: 46.8013449 },
+  },
+  {
+    id: "shafel-roastery-al-nahdah",
+    hex: "0x3e2f013a921c5aef:0x99dcd7909c19c6df",
+    neighborhood: "al-nahdah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/shafel-roastery-al-nahdah.png",
+    pin: { lat: 24.7530414, lng: 46.80502 },
+  },
+  {
+    id: "half-ten-al-nahdah",
+    hex: "0x3e2f016dfa1fc09f:0x5aea401159953cbb",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7590713, lng: 46.8151485 },
+  },
+  {
+    id: "bon-ferro-al-nahdah",
+    hex: "0x3e2f012d4a548e31:0x2d65151db6fc0270",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bon-ferro-al-nahdah.jpg",
+    pin: { lat: 24.7540985, lng: 46.8042991 },
+  },
+  {
+    id: "coffee-address-al-nahdah",
+    hex: "0x3e2f012a3960ff87:0x2996eb4bdb39a559",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-al-nahdah.png",
+    pin: { lat: 24.7613807, lng: 46.8114104 },
+  },
+  {
+    id: "chord-daily-coffee-al-nahdah",
+    hex: "0x3e2f010077857247:0x79a2b6b88582e071",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/chord-daily-coffee-al-nahdah-ig.jpg",
+    pin: { lat: 24.7611736, lng: 46.8246659 },
+  },
+  {
+    id: "taco-cup-al-nahdah",
+    hex: "0x3e2f01edb9650413:0x2222fd5eaa07f25c",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7579051, lng: 46.814571 },
+  },
+  {
+    id: "awj-cafe-al-nahdah",
+    hex: "0x3e2f01000a8944b9:0xae7c66474051ecb7",
+    neighborhood: "al-nahdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7734201, lng: 46.8175941 },
   },
 ];
 

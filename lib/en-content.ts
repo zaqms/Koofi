@@ -196,6 +196,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "an-nazhah": ["qurtubah", "al-malqa", "al-yasmin", "olaya"],
   "al-hamra": ["ghirnatah", "al-rawdah", "qurtubah", "al-safa"],
   "al-yarmouk": ["al-hamra", "qurtubah", "al-rawdah", "ghirnatah"],
+  "al-nahdah": ["al-yarmouk", "al-hamra", "al-rawdah", "al-safa"],
 };
 
 type DistrictLead = {
@@ -406,6 +407,20 @@ The count is ten because that’s how many Al Yarmouk places we’ve added.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Ten cafes in Al Yarmouk on wain.lol — an east Riyadh list including Silo, NOSOUND, and RATIO, each with a Maps link.",
   },
+  "al-nahdah": {
+    lead: `Al Nahdah (النهضة) is a Riyadh حي on the city’s east side. If you’re already in النهضة and you just want a coffee from the catalog, this is the Al Nahdah set on wain.lol.
+
+Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other seven. We don’t rank them.
+
+The count is ten because that’s how many Al Nahdah places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from Al Nahdah on the catalog today:`,
+    hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Nahdah isn’t the stop, these east-Riyadh lists are next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Nahdah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "Ten cafes in Al Nahdah on wain.lol — an east Riyadh list including Kapu, Ghazala, and Coffee Address, each with a Maps link.",
+  },
 };
 
 const CNI_BLURBS: Record<string, string> = {
@@ -438,6 +453,16 @@ const CNI_BLURBS: Record<string, string> = {
   "ratio-speciality-al-yarmouk": `**RATIO Speciality Coffee** is on the Al Yarmouk list. The other Al Yarmouk places on the catalog are linked below.`,
   "coffee-zam-al-yarmouk": `**COFFEE ZAM** is on the wain.lol list for Al Yarmouk in Riyadh. Same neighborhood page as Silo and NOSOUND, its own pin. Hop the other اليرموك cards below if you want a different name.`,
   "nus-talqimah-al-yarmouk": `Al Yarmouk has **Nus Talqimah** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Yarmouk places on wain.lol are linked below.`,
+  "kapu-cafe-al-nahdah": `**Kapu Cafe** is on the Al Nahdah list on wain.lol. Catalog tags on the card: Roastery. Other النهضة names sit underneath if this one isn’t the stop.`,
+  "dahal-specialty-al-nahdah": `**Dahal Specialty Coffee** is on the Al Nahdah catalog — its own النهضة pin. Other النهضة names we’ve added are linked underneath.`,
+  "ghazala-cafe-al-nahdah": `This is the **Ghazala Cafe** page on wain.lol for Al Nahdah. Other Al Nahdah names on the catalog sit below if you want to stay in that حي.`,
+  "shafel-roastery-al-nahdah": `**Shafel Coffee Roastery** is on the wain.lol list for Al Nahdah in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Kapu and Coffee Address, its own pin. Hop the other النهضة cards below if you want a different name.`,
+  "half-ten-al-nahdah": `**Half Ten** is one of the Al Nahdah cafes on wain.lol. If you’re already in النهضة and you want this card, you’re in the right spot. The rest of the Al Nahdah catalog is linked below.`,
+  "bon-ferro-al-nahdah": `Al Nahdah has **Bon Ferro Specialty Coffee** on the catalog. This is the card if you want that name from the النهضة list. Siblings from the same حي sit below.`,
+  "coffee-address-al-nahdah": `**Coffee Address** is on the Al Nahdah catalog on wain.lol. This is the النهضة pin. We don’t invent extras; the other Al Nahdah shops we’ve added are linked below.`,
+  "chord-daily-coffee-al-nahdah": `**Chord Daily Coffee** is on the Al Nahdah list. The other Al Nahdah places on the catalog are linked below.`,
+  "taco-cup-al-nahdah": `**TACO CUP** is on the wain.lol list for Al Nahdah in Riyadh. Same neighborhood page as Kapu and Ghazala, its own pin. Hop the other النهضة cards below if you want a different name.`,
+  "awj-cafe-al-nahdah": `Al Nahdah has **Awj Cafe** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Nahdah places on wain.lol are linked below.`,
 };
 
 const CAFE_OPENERS = [

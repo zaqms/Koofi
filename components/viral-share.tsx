@@ -255,7 +255,7 @@ function TonightSheet({
       {imageUrl ? (
         <p className="mt-2 text-sm text-ink-soft">{copy.tonightReady[language]}</p>
       ) : null}
-      <ShareCopy text={text} language={language} />
+      <ShareCopy text={text} />
       <ChannelRow
         language={language}
         shopId={shop.id}
@@ -337,7 +337,7 @@ function InviteSheet({
       ) : (
         <TonightPreview shop={shop} language={language} photo={photo} line="" />
       )}
-      <ShareCopy text={text} language={language} />
+      <ShareCopy text={text} />
       <ChannelRow
         language={language}
         shopId={shop.id}
@@ -452,14 +452,10 @@ function TonightPreview({
   );
 }
 
-function ShareCopy({ text, language }: { text: string; language: Language }) {
+function ShareCopy({ text }: { text: string }) {
   return (
     <div className="mt-4">
-      <p className="text-[11px] tracking-[0.14em] text-gold uppercase">
-        {copy.tonightShareBoth[language]}
-      </p>
-      <p className="mt-1 text-[11px] text-ink-soft">{copy.tonightShareCopy[language]}</p>
-      <p className="mt-1 rounded-2xl bg-passport-wash px-3 py-3 text-sm leading-6 whitespace-pre-wrap">
+      <p className="rounded-2xl bg-passport-wash px-3 py-3 text-sm leading-6 whitespace-pre-wrap">
         {text}
       </p>
     </div>

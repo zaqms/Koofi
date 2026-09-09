@@ -51,8 +51,8 @@ export function sanitizeTonightLine(raw: string | null | undefined): string {
 export function isInviteShareLine(line: string): boolean {
   const trimmed = line.trim();
   return (
-    /^وين؟ أنا بـ .+ — تعال$/.test(trimmed) ||
-    /^wain\? I'm at .+ — come$/i.test(trimmed) ||
+    /^وين؟ أنا بـ /.test(trimmed) ||
+    /^wain\? I'm at /i.test(trimmed) ||
     /^I'm at .+ — come through$/i.test(trimmed) ||
     /^أنا بـ .+ الحين — تعال$/.test(trimmed)
   );
@@ -141,9 +141,7 @@ export function inviteShareText(input: {
 }): string {
   const name = shopDisplayName(input.shop, input.language);
   const line =
-    input.language === "ar"
-      ? `وين؟ أنا بـ ${name} — تعال`
-      : `wain? I'm at ${name} — come`;
+    input.language === "ar" ? `وين؟ أنا بـ ${name}` : `wain? I'm at ${name}`;
   return `${line}\n\n${input.cardUrl}`;
 }
 

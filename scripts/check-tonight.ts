@@ -59,7 +59,6 @@ assert(cafu, "Cafu is in the catalog");
 assert(PRODUCT_NAME === "wain.lol", "public brand is wain.lol");
 assert(TONIGHT_WATERMARK === "wain.lol", "card watermark is wain.lol");
 assert(TONIGHT_WATERMARK_PX >= 36, "watermark is large enough to read");
-assert(copy.tonightShareBoth.ar === "الصورة والنص مع بعض", "share is image+text");
 assert(copy.tonightFallback.ar.includes("نزّلنا الصورة"), "fallback downloads image");
 assert(copy.tonightFallback.ar.includes("نسخنا النص"), "fallback copies text");
 assert(
@@ -136,14 +135,16 @@ const woodsEn = inviteShareText({
 });
 assert(
   woodsAr ===
-    `وين؟ أنا بـ ${shopDisplayName(woods, "ar")} — تعال\n\nhttps://wain.lol/c/woods-olaya?from=tonight`,
+    `وين؟ أنا بـ ${shopDisplayName(woods, "ar")}\n\nhttps://wain.lol/c/woods-olaya?from=tonight`,
   `AR invite prefill:\n${woodsAr}`,
 );
 assert(
   woodsEn ===
-    `wain? I'm at ${shopDisplayName(woods, "en")} — come\n\nhttps://wain.lol/en/c/woods-olaya?from=tonight`,
+    `wain? I'm at ${shopDisplayName(woods, "en")}\n\nhttps://wain.lol/en/c/woods-olaya?from=tonight`,
   `EN invite prefill:\n${woodsEn}`,
 );
+assert(!woodsAr.includes("تعال"), "AR invite has no تعال");
+assert(!/\bcome\b/i.test(woodsEn), "EN invite has no come");
 assert(!/maps\.(google|app)|google\.com\/maps/i.test(woodsAr), "invite has no Maps URL");
 assert(!/koofi/i.test(woodsAr + woodsEn), "invite is not Koofi");
 
@@ -203,16 +204,15 @@ assert(sanitizeTonightLine("x".repeat(200)).length === TONIGHT_LINE_MAX, "line c
 assert(sanitizeTonightLine("https://maps.app.goo.gl/abc") === "", "Maps line dropped");
 assert(sanitizeTonightLine("go to maps.google.com") === "", "Maps line dropped");
 assert(
-  isInviteShareLine(`وين؟ أنا بـ ${shopDisplayName(woods, "ar")} — تعال`),
+  isInviteShareLine(`وين؟ أنا بـ ${shopDisplayName(woods, "ar")}`),
   "AR وين؟ invite prefill is detected",
 );
 assert(
-  isInviteShareLine(`wain? I'm at ${shopDisplayName(woods, "en")} — come`),
+  isInviteShareLine(`wain? I'm at ${shopDisplayName(woods, "en")}`),
   "EN wain? invite prefill is detected",
 );
 assert(
-  sanitizeTonightCardLine(`وين؟ أنا بـ ${shopDisplayName(woods, "ar")} — تعال`) ===
-    "",
+  sanitizeTonightCardLine(`وين؟ أنا بـ ${shopDisplayName(woods, "ar")}`) === "",
   "invite copy never becomes a Tonight card line",
 );
 assert(
@@ -297,6 +297,10 @@ assert(viral.includes("canShareImageAndText"), "share requires image+text");
 assert(viral.includes("downloadBlob"), "Stories download fallback");
 assert(viral.includes("tonightFallback"), "fallback tells them both landed");
 assert(viral.includes("ShareCopy"), "sheet shows the copy next to the card");
+assert(!viral.includes("tonightShareBoth"), "no IMAGE AND TEXT TOGETHER chrome");
+assert(!viral.includes("tonightShareCopy"), "no The copy chrome");
+assert(!viral.includes("الصورة والنص مع بعض"), "no AR instructional share header");
+assert(!viral.includes("The copy"), "no EN The copy header");
 assert(viral.includes("TONIGHT_WATERMARK"), "preview watermark is wain.lol");
 assert(!/navigator\.share\(\{\s*text\s*\}\)/.test(viral), "no text-only Web Share");
 assert(viral.includes("xShareHref"), "explicit X");

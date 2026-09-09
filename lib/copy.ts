@@ -567,6 +567,90 @@ export const copy = {
     ar: "هالمقهى بعد ما تحقق. التعديل مقفل.",
     en: "This cafe is not verified yet. Editing is closed.",
   },
+  tonightCard: {
+    ar: "بطاقة الليلة",
+    en: "Tonight’s card",
+  },
+  tonightEyebrow: {
+    ar: "الليلة",
+    en: "tonight",
+  },
+  tonightHint: {
+    ar: "سطر واحد، إذا تبي",
+    en: "One line, if you want",
+  },
+  tonightPlaceholder: {
+    ar: "جو الليلة؟",
+    en: "tonight’s vibe?",
+  },
+  tonightMint: {
+    ar: "سوّ البطاقة",
+    en: "Make the card",
+  },
+  tonightReady: {
+    ar: "بطاقتك جاهزة",
+    en: "Card’s ready",
+  },
+  tonightEphemeral: {
+    ar: "هالليلة بس",
+    en: "just tonight",
+  },
+  tonightRateLimited: {
+    ar: "مهلك. جرّب بعد شوي.",
+    en: "Easy — try again in a bit.",
+  },
+  tonightShareSystem: {
+    ar: "شارك",
+    en: "Share",
+  },
+  tonightShareX: {
+    ar: "X",
+    en: "X",
+  },
+  tonightShareIg: {
+    ar: "ستوريز",
+    en: "Stories",
+  },
+  tonightShareSnap: {
+    ar: "سناب",
+    en: "Snap",
+  },
+  tonightDownload: {
+    ar: "نزّل الصورة",
+    en: "Download image",
+  },
+  tonightCopyLink: {
+    ar: "انسخ الرابط",
+    en: "Copy link",
+  },
+  tonightClose: {
+    ar: "سكّر",
+    en: "Close",
+  },
+  inviteCta: {
+    ar: "وين؟",
+    en: "wain?",
+  },
+  inviteTitle: {
+    ar: "وين؟",
+    en: "wain?",
+  },
+  inviteHint: {
+    ar: "أرسلها للي تبيه معك",
+    en: "Send it to whoever should come",
+  },
+  tonightShareBoth: {
+    ar: "الصورة والنص مع بعض",
+    en: "Image and text together",
+  },
+  tonightShareCopy: {
+    ar: "النص",
+    en: "The copy",
+  },
+  tonightFallback: {
+    ar: "نزّلنا الصورة ونسخنا النص — حطّهم مع بعض",
+    en: "Image saved and text copied — post them together",
+  },
 } as const;
 
 export function ownerEditErrorCopy(

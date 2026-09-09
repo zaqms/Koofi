@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { DirectoryUpvote } from "@/components/directory-upvote";
 import { MapsLink } from "@/components/maps-link";
-import { ShareListingButton } from "@/components/share-listing-button";
 import { TargetIcon } from "@/components/target-icon";
 import { VerifiedBadge } from "@/components/verified-badge";
+import { ViralShareActions } from "@/components/viral-share";
 import {
   passportHasBrewing,
   passportHeroPhotos,
@@ -94,12 +94,6 @@ export function CafePassportCard({
             >
               {copy.switchLanguage[language]}
             </Link>
-            <ShareListingButton
-              shop={shop}
-              language={language}
-              source="card"
-              variant="ghost"
-            />
           </div>
         </div>
         {photos.length > 0 ? (
@@ -251,6 +245,15 @@ export function CafePassportCard({
         ) : null}
       </div>
 
+      <div className="px-5 pb-3">
+        <ViralShareActions
+          shop={shop}
+          language={language}
+          photo={photo ?? null}
+          variant="passport"
+        />
+      </div>
+
       <div
         className="sticky bottom-0 flex items-center gap-2 border-t border-line bg-foam px-5 py-3"
         dir="ltr"
@@ -258,12 +261,6 @@ export function CafePassportCard({
         <DirectoryUpvote
           shopId={shop.id}
           language={language}
-          variant="passport"
-        />
-        <ShareListingButton
-          shop={shop}
-          language={language}
-          source="card"
           variant="passport"
         />
         <MapsLink

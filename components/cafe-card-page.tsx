@@ -87,8 +87,8 @@ export async function CafeCardPageView({
           </Link>
         </p>
       )}
-      <div className={passportPage ? "px-2 text-foam/70" : undefined}>
-        <SiteFooter language={language} padded={false} />
+      <div className={passportPage ? "px-2" : undefined}>
+        <SiteFooter language={language} padded={false} onDark={passportPage} />
       </div>
     </main>
   );

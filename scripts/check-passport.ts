@@ -127,6 +127,8 @@ const files = [
   "components/target-icon.tsx",
   "lib/passport-preview.ts",
   "lib/copy.ts",
+  "lib/tonight.ts",
+  "components/viral-share.tsx",
 ];
 for (const file of files) {
   const source = readFileSync(file, "utf8");
@@ -150,6 +152,7 @@ assert(footer.includes('status === "none"'), "CTA hidden when not none");
 
 const passportCard = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passportCard.includes("DirectoryUpvote"), "Passport reuses shared ▲");
+assert(passportCard.includes("ViralShareActions"), "Passport has وين؟ invite");
 assert(passportCard.includes("takeMeThere"), "Passport Maps CTA");
 assert(passportCard.includes("VerifiedBadge"), "Passport has Verified");
 assert(passportCard.includes("reviewsTab"), "Passport has Reviews tab");
@@ -168,6 +171,21 @@ assert(list.includes("useShopClaim"), "list reads verified ids");
 const page = readFileSync("components/cafe-card-page.tsx", "utf8");
 assert(page.includes("ShopUpvoteProvider"), "card page wraps upvote provider");
 assert(page.includes("allowPassportPreview"), "page gates fixture off production");
+assert(
+  page.includes("onDark={passportPage}"),
+  "Passport charcoal footer uses light type + inverted wordmark",
+);
+
+const siteFooter = readFileSync("components/site-footer.tsx", "utf8");
+assert(siteFooter.includes("text-foam/85"), "dark footer links are foam");
+assert(
+  siteFooter.includes('onDark\n    ? "text-xs text-foam/85'),
+  "dark footer does not keep ink-soft links",
+);
+
+const wordmark = readFileSync("components/brand-wordmark.tsx", "utf8");
+assert(wordmark.includes("brightness-0 invert"), "footer wordmark inverts on charcoal");
+assert(wordmark.includes("text-foam"), "wordmark fallback is foam on dark");
 
 const claims = readFileSync("lib/claims.ts", "utf8");
 assert(claims.includes("listPublicVerifiedIds"), "verified id list for badges");

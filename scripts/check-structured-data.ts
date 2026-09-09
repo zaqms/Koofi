@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   filterDirectoryShops,
@@ -18,8 +18,9 @@ import {
   buildSitemapXml,
   LEGACY_SITEMAP_PATH,
   listSitemapLocs,
+  PUBLIC_SITEMAP_FILE,
+  SITEMAP_LASTMOD_PATTERN,
   SITEMAP_PATH,
-  sitemapMetadataEntries,
   sitemapPublicUrl,
 } from "../lib/sitemap-xml";
 import {
@@ -158,7 +159,13 @@ assert(
 
 const sitemap = buildSitemapXml("2026-09-04");
 const sitemapLocs = listSitemapLocs();
-const sitemapEntries = sitemapMetadataEntries(new Date("2026-09-04T00:00:00.000Z"));
+const staticSitemap = readRepo(PUBLIC_SITEMAP_FILE);
+const staticLocs = [...staticSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+  (match) => match[1],
+);
+const staticLastmods = [...staticSitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map(
+  (match) => match[1],
+);
 assert(sitemap.includes("https://wain.lol/llms.txt<"), "sitemap lists /llms.txt");
 assert(
   sitemap.includes(`https://wain.lol/c/${sample.id}<`),
@@ -183,20 +190,52 @@ assert(
 assert(!sitemap.includes("/n/"), "sitemap must not revive /n/");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
 assert(
-  sitemapLocs.length === sitemapEntries.length,
-  "MetadataRoute sitemap keeps the same loc count as the catalog urlset",
+  staticLocs.join("\n") === sitemapLocs.join("\n"),
+  "public/sitemap.xml locs must match listSitemapLocs() — run npm run generate-sitemap",
 );
 assert(
-  sitemapEntries.every((entry) => sitemapLocs.includes(entry.url)),
-  "MetadataRoute sitemap must not invent locs",
+  staticLastmods.length === staticLocs.length,
+  "every static sitemap url has a lastmod",
 );
 assert(
-  sitemapEntries.every((entry) => !("alternates" in entry)),
-  "MetadataRoute sitemap must omit xhtml/hreflang alternates",
+  staticLastmods.every((lastmod) => SITEMAP_LASTMOD_PATTERN.test(lastmod)),
+  "static sitemap lastmod must be date-only YYYY-MM-DD",
+);
+assert(
+  !/T\d{2}:\d{2}/.test(staticSitemap),
+  "static sitemap must not use ISO datetime lastmod",
+);
+assert(
+  !/xhtml|hreflang|xmlns:xhtml|rel="alternate"/i.test(staticSitemap),
+  "static sitemap must be urlset 0.9 only — no xhtml/hreflang",
+);
+assert(
+  staticSitemap.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'),
+  "static sitemap uses sitemap 0.9 xmlns",
+);
+assert(
+  !staticSitemap.includes("xmlns:"),
+  "static sitemap has no extra xmlns prefixes",
 );
 assert(sitemapPublicUrl() === "https://wain.lol/sitemap.xml", "canonical sitemap URL");
 assert(SITEMAP_PATH === "/sitemap.xml", "canonical sitemap path");
 assert(LEGACY_SITEMAP_PATH === "/sitemap/sitemap.xml", "legacy sitemap path");
+assert(
+  !existsSync(join(process.cwd(), "app/sitemap.ts")),
+  "MetadataRoute app/sitemap.ts must be removed so public/sitemap.xml is the only /sitemap.xml",
+);
+assert(
+  !existsSync(join(process.cwd(), "app/sitemap.xml")),
+  "app/sitemap.xml must not compete with public/sitemap.xml",
+);
+assert(
+  readRepo("scripts/generate-sitemap.ts").includes("buildSitemapXml"),
+  "generate-sitemap writes the catalog urlset",
+);
+assert(
+  readRepo("package.json").includes("generate-sitemap.ts"),
+  "build regenerates public/sitemap.xml",
+);
 
 const robots = readRepo("app/robots.ts");
 assert(robots.includes('"/api/shops"'), "robots allows /api/shops");
@@ -208,11 +247,6 @@ assert(robots.includes('"/owner/edit"'), "robots disallows owner edit");
 assert(robots.includes("sitemapPublicUrl()"), "robots advertises the canonical sitemap helper");
 assert(!robots.includes("sitemapPublicUrls"), "robots no longer lists both sitemap URLs");
 assert(!robots.includes(LEGACY_SITEMAP_PATH), "robots must not advertise the legacy sitemap");
-
-const sitemapRoute = readRepo("app/sitemap.ts");
-assert(sitemapRoute.includes("sitemapMetadataEntries"), "app/sitemap.ts uses catalog locs");
-assert(!sitemapRoute.includes("alternates"), "app/sitemap.ts has no hreflang alternates");
-assert(!sitemapRoute.includes("force-dynamic"), "app/sitemap.ts is not force-dynamic");
 
 const nextConfig = readRepo("next.config.ts");
 assert(

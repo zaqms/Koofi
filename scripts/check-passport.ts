@@ -152,7 +152,7 @@ assert(footer.includes('status === "none"'), "CTA hidden when not none");
 
 const passportCard = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passportCard.includes("DirectoryUpvote"), "Passport reuses shared ▲");
-assert(passportCard.includes("ViralShareActions"), "Passport has Tonight / Invite");
+assert(passportCard.includes("ViralShareActions"), "Passport has وين؟ invite");
 assert(passportCard.includes("takeMeThere"), "Passport Maps CTA");
 assert(passportCard.includes("VerifiedBadge"), "Passport has Verified");
 assert(passportCard.includes("reviewsTab"), "Passport has Reviews tab");

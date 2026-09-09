@@ -17,6 +17,9 @@ export const TONIGHT_IMAGE_SIZE = { width: 1080, height: 1920 } as const;
 export const TONIGHT_WATERMARK = "wain.lol";
 export const TONIGHT_WATERMARK_PX = 42;
 
+/** Parked. بطاقة الليلة stays in code; cafe cards lead with وين؟ / wain? */
+export const SHOW_TONIGHT_CARD = false;
+
 export const VIRAL_SHARE_CHANNELS = [
   "system",
   "x",
@@ -48,6 +51,8 @@ export function sanitizeTonightLine(raw: string | null | undefined): string {
 export function isInviteShareLine(line: string): boolean {
   const trimmed = line.trim();
   return (
+    /^وين؟ أنا بـ .+ — تعال$/.test(trimmed) ||
+    /^wain\? I'm at .+ — come$/i.test(trimmed) ||
     /^I'm at .+ — come through$/i.test(trimmed) ||
     /^أنا بـ .+ الحين — تعال$/.test(trimmed)
   );
@@ -137,8 +142,8 @@ export function inviteShareText(input: {
   const name = shopDisplayName(input.shop, input.language);
   const line =
     input.language === "ar"
-      ? `أنا بـ ${name} الحين — تعال`
-      : `I'm at ${name} — come through`;
+      ? `وين؟ أنا بـ ${name} — تعال`
+      : `wain? I'm at ${name} — come`;
   return `${line}\n\n${input.cardUrl}`;
 }
 

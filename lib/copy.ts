@@ -628,12 +628,12 @@ export const copy = {
     en: "Close",
   },
   inviteCta: {
-    ar: "تعال",
-    en: "Come with me",
+    ar: "وين؟",
+    en: "wain?",
   },
   inviteTitle: {
-    ar: "خذني معه",
-    en: "Come with me",
+    ar: "وين؟",
+    en: "wain?",
   },
   inviteHint: {
     ar: "أرسلها للي تبيه معك",

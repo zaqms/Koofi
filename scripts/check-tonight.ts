@@ -22,6 +22,7 @@ import {
   tonightDistrict,
   tonightFilename,
   tonightHeroForShop,
+  SHOW_TONIGHT_CARD,
   tonightImagePath,
   tonightShareText,
   VIRAL_SHARE_CHANNELS,
@@ -73,13 +74,15 @@ assert(
   canShareImageAndText(() => false, { files: [], text: "x" }) === false,
   "canShare false forces download+copy",
 );
-assert(copy.tonightCard.ar === "بطاقة الليلة", "AR tonight CTA");
-assert(copy.tonightCard.en === "Tonight’s card", "EN tonight CTA");
+assert(SHOW_TONIGHT_CARD === false, "بطاقة الليلة is parked from cafe cards");
+assert(copy.tonightCard.ar === "بطاقة الليلة", "parked AR tonight label stays");
+assert(copy.tonightCard.en === "Tonight’s card", "parked EN tonight label stays");
 assert(copy.tonightEyebrow.ar === "الليلة", "AR ephemeral eyebrow");
 assert(copy.tonightEyebrow.en === "tonight", "EN ephemeral eyebrow");
-assert(copy.inviteCta.ar === "تعال", "AR invite CTA");
-assert(copy.inviteCta.en === "Come with me", "EN invite CTA");
-assert(copy.inviteTitle.ar === "خذني معه", "AR invite title");
+assert(copy.inviteCta.ar === "وين؟", "AR invite CTA is وين؟");
+assert(copy.inviteCta.en === "wain?", "EN invite CTA is wain?");
+assert(copy.inviteTitle.ar === "وين؟", "AR invite title matches CTA");
+assert(copy.inviteTitle.en === "wain?", "EN invite title matches CTA");
 assert(copy.tonightMint.ar === "سوّ البطاقة", "Najdi mint verb");
 assert(copy.tonightClose.ar === "سكّر", "Najdi close");
 assert(copy.tonightDownload.ar === "نزّل الصورة", "Najdi download");
@@ -133,12 +136,12 @@ const woodsEn = inviteShareText({
 });
 assert(
   woodsAr ===
-    `أنا بـ ${shopDisplayName(woods, "ar")} الحين — تعال\n\nhttps://wain.lol/c/woods-olaya?from=tonight`,
+    `وين؟ أنا بـ ${shopDisplayName(woods, "ar")} — تعال\n\nhttps://wain.lol/c/woods-olaya?from=tonight`,
   `AR invite prefill:\n${woodsAr}`,
 );
 assert(
   woodsEn ===
-    `I'm at ${shopDisplayName(woods, "en")} — come through\n\nhttps://wain.lol/en/c/woods-olaya?from=tonight`,
+    `wain? I'm at ${shopDisplayName(woods, "en")} — come\n\nhttps://wain.lol/en/c/woods-olaya?from=tonight`,
   `EN invite prefill:\n${woodsEn}`,
 );
 assert(!/maps\.(google|app)|google\.com\/maps/i.test(woodsAr), "invite has no Maps URL");
@@ -200,16 +203,21 @@ assert(sanitizeTonightLine("x".repeat(200)).length === TONIGHT_LINE_MAX, "line c
 assert(sanitizeTonightLine("https://maps.app.goo.gl/abc") === "", "Maps line dropped");
 assert(sanitizeTonightLine("go to maps.google.com") === "", "Maps line dropped");
 assert(
-  isInviteShareLine("I'm at WOODS Cafe and Roastery — come through"),
-  "EN invite prefill is detected",
+  isInviteShareLine(`وين؟ أنا بـ ${shopDisplayName(woods, "ar")} — تعال`),
+  "AR وين؟ invite prefill is detected",
 );
 assert(
-  isInviteShareLine(`أنا بـ ${shopDisplayName(woods, "ar")} الحين — تعال`),
-  "AR invite prefill is detected",
+  isInviteShareLine(`wain? I'm at ${shopDisplayName(woods, "en")} — come`),
+  "EN wain? invite prefill is detected",
+);
+assert(
+  sanitizeTonightCardLine(`وين؟ أنا بـ ${shopDisplayName(woods, "ar")} — تعال`) ===
+    "",
+  "invite copy never becomes a Tonight card line",
 );
 assert(
   sanitizeTonightCardLine("I'm at WOODS Cafe and Roastery — come through") === "",
-  "invite copy never becomes a Tonight card line",
+  "parked invite phrasing still stays off the card",
 );
 assert(
   sanitizeTonightCardLine("جو الليلة") === "جو الليلة",
@@ -278,7 +286,8 @@ for (const file of files) {
 }
 
 const viral = readFileSync("components/viral-share.tsx", "utf8");
-assert(viral.includes("tonight_card_open"), "composer fires tonight_card_open");
+assert(viral.includes("SHOW_TONIGHT_CARD"), "بطاقة الليلة is gated");
+assert(viral.includes("tonight_card_open"), "tonight_* stays wired while parked");
 assert(viral.includes("tonight_card_mint"), "mint fires tonight_card_mint");
 assert(viral.includes("tonight_card_share"), "share fires tonight_card_share");
 assert(viral.includes("invite_open"), "invite sheet fires invite_open");
@@ -296,13 +305,13 @@ assert(!viral.includes("line: inviteLine"), "invite must not bake copy onto the 
 assert(!viral.includes("line={inviteLine}"), "invite preview is Tonight framing");
 
 const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
-assert(passport.includes("ViralShareActions"), "Passport has Tonight / Invite");
+assert(passport.includes("ViralShareActions"), "Passport has وين؟ invite");
 assert(passport.includes("DirectoryUpvote"), "upvote stays");
 assert(passport.includes("takeMeThere"), "Maps CTA stays");
 assert(passport.includes("ShareListingButton"), "listing share stays");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
-assert(thin.includes("ViralShareActions"), "thin card has Tonight / Invite");
+assert(thin.includes("ViralShareActions"), "thin card has وين؟ invite");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here stays quiet");
 assert(thin.includes("MapsLink"), "thin Maps stays");

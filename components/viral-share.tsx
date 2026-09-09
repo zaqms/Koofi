@@ -17,6 +17,7 @@ import {
   tonightDistrict,
   tonightImagePath,
   tonightShareText,
+  SHOW_TONIGHT_CARD,
   xShareHref,
 } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
@@ -74,22 +75,27 @@ export function ViralShareActions({
     variant === "passport"
       ? "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-lg border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam"
       : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl bg-bean px-3 text-sm text-foam hover:bg-bean-deep";
-  const inviteClass =
-    variant === "passport"
+  const inviteClass = SHOW_TONIGHT_CARD
+    ? variant === "passport"
       ? "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-lg border border-gold px-3 text-sm text-gold hover:bg-passport-wash"
-      : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl border border-line px-3 text-sm hover:border-bean";
+      : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl border border-line px-3 text-sm hover:border-bean"
+    : variant === "passport"
+      ? "inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam"
+      : "inline-flex min-h-11 w-full items-center justify-center rounded-2xl bg-bean px-3 text-sm text-foam hover:bg-bean-deep";
 
   return (
     <>
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          className={tonightClass}
-          onClick={openTonight}
-          lang={language}
-        >
-          {copy.tonightCard[language]}
-        </button>
+        {SHOW_TONIGHT_CARD ? (
+          <button
+            type="button"
+            className={tonightClass}
+            onClick={openTonight}
+            lang={language}
+          >
+            {copy.tonightCard[language]}
+          </button>
+        ) : null}
         <button
           type="button"
           className={inviteClass}
@@ -99,7 +105,7 @@ export function ViralShareActions({
           {copy.inviteCta[language]}
         </button>
       </div>
-      {sheet === "tonight" ? (
+      {SHOW_TONIGHT_CARD && sheet === "tonight" ? (
         <TonightSheet
           shop={shop}
           language={language}

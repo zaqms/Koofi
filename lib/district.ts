@@ -8,6 +8,8 @@ import {
   type DirectoryCategoryId,
 } from "./directory-category";
 import { directoryNeighborhoods } from "./directory";
+import { districtEnMeta, districtEnTitle } from "./en-content";
+import { pageAlternates } from "./locale";
 import { isNeighborhoodId, neighborhoodLabel } from "./neighborhoods";
 import {
   categoryDistrictPath,
@@ -36,6 +38,9 @@ export function districtTitle(
   language: Language,
   category: DirectoryCategoryId = COFFEE_SHOPS_CATEGORY,
 ): string {
+  if (language === "en" && category === COFFEE_SHOPS_CATEGORY) {
+    return districtEnTitle(id);
+  }
   return `${categoryDistrictHeading(category, id, language)} · ${PRODUCT_NAME}`;
 }
 
@@ -44,6 +49,9 @@ export function districtDescription(
   language: Language,
   category: DirectoryCategoryId = COFFEE_SHOPS_CATEGORY,
 ): string {
+  if (language === "en" && category === COFFEE_SHOPS_CATEGORY) {
+    return districtEnMeta(id);
+  }
   const name = neighborhoodLabel(id, language);
   const hint = copy.directoryHint[language];
   if (category === COFFEE_SHOPS_CATEGORY) {
@@ -66,6 +74,11 @@ export function districtMetadata(
     description,
     applicationName: PRODUCT_NAME,
     appleWebApp: { title: PRODUCT_NAME },
+    alternates: pageAlternates(
+      url,
+      categoryDistrictPath(category, id, "ar"),
+      categoryDistrictPath(category, id, "en"),
+    ),
     openGraph: {
       title,
       description,

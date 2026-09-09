@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { CafeCardPageView } from "@/components/cafe-card-page";
 import { JsonLd } from "@/components/json-ld";
+import { cafeMissingMetadata, cafePageMetadata } from "@/lib/cafe-metadata";
 import { getShop, listRealShops } from "@/lib/catalog";
-import { PRODUCT_NAME } from "@/lib/product";
 import { shopJsonLd } from "@/lib/structured-data";
 
 type CardPageProps = {
@@ -22,14 +22,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: CardPageProps) {
   const { id } = await params;
   const shop = getShop(id);
-  if (!shop) {
-    return { title: `${PRODUCT_NAME} · البطاقة` };
-  }
-
-  return {
-    title: `${shop.nameAr} · ${shop.nameEn}`,
-    description: `${shop.neighborhoodAr} · ${shop.vibeTags.join("، ")}`,
-  };
+  if (!shop) return cafeMissingMetadata("ar");
+  return cafePageMetadata(shop, "ar");
 }
 
 export default async function CafeCardPage({ params, searchParams }: CardPageProps) {

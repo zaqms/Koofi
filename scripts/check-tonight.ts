@@ -4,6 +4,7 @@ import { copy } from "../lib/copy";
 import { PRODUCT_NAME, publicCardUrl, shopDisplayName } from "../lib/product";
 import {
   canMintTonight,
+  canShareImageAndText,
   inviteShareText,
   isViralShareChannel,
   satoriArabicLine,
@@ -12,6 +13,8 @@ import {
   TONIGHT_LINE_MAX,
   TONIGHT_MINTS_PER_SESSION,
   TONIGHT_MINTS_PER_SHOP,
+  TONIGHT_WATERMARK,
+  TONIGHT_WATERMARK_PX,
   tonightCardPath,
   tonightCardUrl,
   tonightDistrict,
@@ -50,6 +53,23 @@ assert(woods, "Woods is in the catalog");
 assert(cafu, "Cafu is in the catalog");
 
 assert(PRODUCT_NAME === "wain.lol", "public brand is wain.lol");
+assert(TONIGHT_WATERMARK === "wain.lol", "card watermark is wain.lol");
+assert(TONIGHT_WATERMARK_PX >= 36, "watermark is large enough to read");
+assert(copy.tonightShareBoth.ar === "الصورة والنص مع بعض", "share is image+text");
+assert(copy.tonightFallback.ar.includes("نزّلنا الصورة"), "fallback downloads image");
+assert(copy.tonightFallback.ar.includes("نسخنا النص"), "fallback copies text");
+assert(
+  canShareImageAndText(undefined, { files: [], text: "x" }) === false,
+  "missing canShare cannot claim files+text",
+);
+assert(
+  canShareImageAndText(() => true, { files: [], text: "x" }) === true,
+  "canShare true allows files+text",
+);
+assert(
+  canShareImageAndText(() => false, { files: [], text: "x" }) === false,
+  "canShare false forces download+copy",
+);
 assert(copy.tonightCard.ar === "بطاقة الليلة", "AR tonight CTA");
 assert(copy.tonightCard.en === "Tonight’s card", "EN tonight CTA");
 assert(copy.tonightEyebrow.ar === "الليلة", "AR ephemeral eyebrow");
@@ -237,7 +257,12 @@ assert(viral.includes("tonight_card_share"), "share fires tonight_card_share");
 assert(viral.includes("invite_open"), "invite sheet fires invite_open");
 assert(viral.includes("invite_share"), "invite share is separate");
 assert(viral.includes("navigator.share"), "Web Share API");
+assert(viral.includes("canShareImageAndText"), "share requires image+text");
 assert(viral.includes("downloadBlob"), "Stories download fallback");
+assert(viral.includes("tonightFallback"), "fallback tells them both landed");
+assert(viral.includes("ShareCopy"), "sheet shows the copy next to the card");
+assert(viral.includes("TONIGHT_WATERMARK"), "preview watermark is wain.lol");
+assert(!/navigator\.share\(\{\s*text\s*\}\)/.test(viral), "no text-only Web Share");
 assert(viral.includes("xShareHref"), "explicit X");
 assert(!viral.includes("wa.me/966"), "invite is not WhatsApp Cloud send");
 
@@ -256,7 +281,8 @@ assert(thin.includes("MapsLink"), "thin Maps stays");
 assert(existsSync("app/c/[id]/tonight/image/route.tsx"), "mint route exists");
 const image = readFileSync("app/c/[id]/tonight/image/route.tsx", "utf8");
 assert(image.includes("ImageResponse"), "card is minted as an image");
-assert(image.includes("PRODUCT_NAME"), "watermark is wain.lol");
+assert(image.includes("TONIGHT_WATERMARK"), "watermark is wain.lol");
+assert(image.includes("TONIGHT_WATERMARK_PX"), "watermark size is locked");
 assert(image.includes("الليلة"), "AR-first eyebrow on the card");
 
 console.log("check-tonight: ok");

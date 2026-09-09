@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ShareIcon } from "@/components/share-icon";
 import { copy } from "@/lib/copy";
 import { trackEvent, type ViralShareChannel } from "@/lib/track";
 import {
   canMintTonight,
+  canShareImageAndText,
   inviteShareText,
   recordTonightMint,
   sanitizeTonightLine,
   TONIGHT_LINE_MAX,
+  TONIGHT_WATERMARK,
   tonightCardUrl,
   tonightFilename,
   tonightDistrict,
@@ -247,6 +249,7 @@ function TonightSheet({
       {imageUrl ? (
         <p className="mt-2 text-sm text-ink-soft">{copy.tonightReady[language]}</p>
       ) : null}
+      <ShareCopy text={text} language={language} />
       <ChannelRow
         language={language}
         shopId={shop.id}
@@ -276,11 +279,19 @@ function InviteSheet({
   onClose: () => void;
 }) {
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const imageUrlRef = useRef<string | null>(null);
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const cardUrl = tonightCardUrl(shop.id, language, origin);
   const text = inviteShareText({ shop, language, cardUrl });
   const inviteLine = sanitizeTonightLine(text.split("\n")[0] ?? "");
+
+  useEffect(() => {
+    return () => {
+      if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
+    };
+  }, []);
 
   async function ensureImage(): Promise<Blob | null> {
     if (imageBlob) return imageBlob;
@@ -296,6 +307,10 @@ function InviteSheet({
     const blob = await response.blob();
     recordTonightMint(shop.id, Date.now(), store);
     setImageBlob(blob);
+    if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
+    const next = URL.createObjectURL(blob);
+    imageUrlRef.current = next;
+    setImageUrl(next);
     return blob;
   }
 
@@ -307,9 +322,18 @@ function InviteSheet({
       hint={copy.inviteHint[language]}
       onClose={onClose}
     >
-      <p className="rounded-2xl bg-passport-wash px-3 py-3 text-sm leading-6 whitespace-pre-wrap">
-        {text}
-      </p>
+      {imageUrl ? (
+        // Minted story card — branded image travels with the invite copy.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={imageUrl}
+          alt=""
+          className="max-h-80 w-full rounded-2xl object-cover"
+        />
+      ) : (
+        <TonightPreview shop={shop} language={language} photo={photo} line={inviteLine} />
+      )}
+      <ShareCopy text={text} language={language} />
       <ChannelRow
         language={language}
         shopId={shop.id}
@@ -400,8 +424,8 @@ function TonightPreview({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={hero} alt="" className="size-full object-cover" />
         ) : (
-          <div className="flex size-full items-center justify-center text-gold">
-            wain.lol
+          <div className="flex size-full items-center justify-center font-serif text-2xl tracking-[0.16em] text-gold">
+            {TONIGHT_WATERMARK}
           </div>
         )}
       </div>
@@ -417,8 +441,24 @@ function TonightPreview({
           {area}
         </p>
         {line ? <p className="mt-3 text-sm leading-6">{line}</p> : null}
-        <p className="mt-4 text-[11px] tracking-[0.14em] text-gold">wain.lol</p>
+        <p className="mt-4 border-t border-gold/50 pt-3 font-serif text-base tracking-[0.16em] text-gold">
+          {TONIGHT_WATERMARK}
+        </p>
       </div>
+    </div>
+  );
+}
+
+function ShareCopy({ text, language }: { text: string; language: Language }) {
+  return (
+    <div className="mt-4">
+      <p className="text-[11px] tracking-[0.14em] text-gold uppercase">
+        {copy.tonightShareBoth[language]}
+      </p>
+      <p className="mt-1 text-[11px] text-ink-soft">{copy.tonightShareCopy[language]}</p>
+      <p className="mt-1 rounded-2xl bg-passport-wash px-3 py-3 text-sm leading-6 whitespace-pre-wrap">
+        {text}
+      </p>
     </div>
   );
 }
@@ -444,6 +484,7 @@ function ChannelRow({
   onCopied: () => void;
   ensureImage: () => Promise<Blob | null>;
 }) {
+  const [fallback, setFallback] = useState(false);
   const channels = useMemo(
     () =>
       [
@@ -457,6 +498,38 @@ function ChannelRow({
     [language],
   );
 
+  async function deliverBoth(blob: Blob): Promise<"shared" | "fallback" | "cancelled"> {
+    const file = new File([blob], filename, { type: blob.type || "image/png" });
+    const payload = { files: [file], text };
+    if (typeof navigator.share === "function") {
+      const allowed =
+        typeof navigator.canShare !== "function" ||
+        canShareImageAndText(
+          (data) => navigator.canShare?.(data) === true,
+          payload,
+        );
+      if (allowed) {
+        try {
+          await navigator.share(payload);
+          return "shared";
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") {
+            return "cancelled";
+          }
+        }
+      }
+    }
+    downloadBlob(blob, filename);
+    try {
+      await navigator.clipboard.writeText(text);
+      onCopied();
+    } catch {
+      /* image still downloaded */
+    }
+    setFallback(true);
+    return "fallback";
+  }
+
   async function fire(channel: ViralShareChannel) {
     const tracked = () =>
       trackEvent(event, {
@@ -464,6 +537,9 @@ function ChannelRow({
         locale: language,
         channel,
       });
+
+    const blob = imageBlob ?? (await ensureImage());
+    if (!blob) return;
 
     if (channel === "copy") {
       try {
@@ -476,75 +552,25 @@ function ChannelRow({
       return;
     }
 
-    if (channel === "x") {
-      window.open(xShareHref(text), "_blank", "noopener,noreferrer");
-      tracked();
-      return;
-    }
-
     if (channel === "download") {
-      const blob = imageBlob ?? (await ensureImage());
-      if (blob) downloadBlob(blob, filename);
-      tracked();
-      return;
-    }
-
-    const blob = imageBlob ?? (await ensureImage());
-    const file = blob
-      ? new File([blob], filename, { type: blob.type || "image/png" })
-      : null;
-    const fileShare = file ? { files: [file], text } : { text };
-
-    if (channel === "system") {
-      if (typeof navigator.share === "function") {
-        try {
-          if (file && navigator.canShare?.(fileShare) !== false) {
-            await navigator.share(fileShare);
-            tracked();
-            return;
-          }
-          if (navigator.canShare?.({ text }) !== false) {
-            await navigator.share({ text });
-            tracked();
-            return;
-          }
-        } catch (error) {
-          if (error instanceof DOMException && error.name === "AbortError") return;
-        }
-      }
+      downloadBlob(blob, filename);
       try {
         await navigator.clipboard.writeText(text);
         onCopied();
-        trackEvent(event, { shop_id: shopId, locale: language, channel: "copy" });
       } catch {
-        /* stay quiet */
+        /* image still downloaded */
       }
-      return;
-    }
-
-    if (file && typeof navigator.share === "function") {
-      try {
-        if (navigator.canShare?.(fileShare) !== false) {
-          await navigator.share(fileShare);
-          tracked();
-          return;
-        }
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-      }
-    }
-    if (blob) {
-      downloadBlob(blob, filename);
+      setFallback(true);
       tracked();
       return;
     }
-    try {
-      await navigator.clipboard.writeText(text);
-      onCopied();
-      trackEvent(event, { shop_id: shopId, locale: language, channel: "copy" });
-    } catch {
-      /* stay quiet */
+
+    const result = await deliverBoth(blob);
+    if (result === "cancelled") return;
+    if (channel === "x" && result === "fallback") {
+      window.open(xShareHref(text), "_blank", "noopener,noreferrer");
     }
+    tracked();
   }
 
   return (
@@ -564,6 +590,9 @@ function ChannelRow({
       ))}
       {copied ? (
         <p className="col-span-2 text-[11px] text-ink-soft">{copy.packetCopied[language]}</p>
+      ) : null}
+      {fallback ? (
+        <p className="col-span-2 text-sm text-gold-deep">{copy.tonightFallback[language]}</p>
       ) : null}
     </div>
   );

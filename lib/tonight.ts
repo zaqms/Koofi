@@ -14,6 +14,8 @@ export const TONIGHT_MINTS_PER_SHOP = 5;
 export const TONIGHT_MINTS_PER_SESSION = 12;
 
 export const TONIGHT_IMAGE_SIZE = { width: 1080, height: 1920 } as const;
+export const TONIGHT_WATERMARK = "wain.lol";
+export const TONIGHT_WATERMARK_PX = 42;
 
 export const VIRAL_SHARE_CHANNELS = [
   "system",
@@ -139,6 +141,18 @@ export function tonightShareText(input: {
 
 export function xShareHref(text: string): string {
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+}
+
+export function canShareImageAndText(
+  canShare: ((data: { files: File[]; text: string }) => boolean) | undefined,
+  data: { files: File[]; text: string },
+): boolean {
+  if (typeof canShare !== "function") return false;
+  try {
+    return canShare(data) === true;
+  } catch {
+    return false;
+  }
 }
 
 export function isViralShareChannel(

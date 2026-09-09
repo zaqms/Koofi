@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 import { getShop } from "@/lib/catalog";
-import { PRODUCT_NAME } from "@/lib/product";
 import {
   sanitizeTonightLine,
   safeTonightPhotoPath,
@@ -8,6 +7,8 @@ import {
   tonightDistrict,
   tonightHeroForShop,
   TONIGHT_IMAGE_SIZE,
+  TONIGHT_WATERMARK,
+  TONIGHT_WATERMARK_PX,
 } from "@/lib/tonight";
 import type { Language } from "@/lib/types";
 
@@ -87,6 +88,7 @@ export async function GET(request: Request, context: ImageContext) {
         <div
           style={{
             display: "flex",
+            position: "relative",
             width: TONIGHT_IMAGE_SIZE.width,
             height: 980,
             background: "#1b1814",
@@ -111,14 +113,32 @@ export async function GET(request: Request, context: ImageContext) {
                 height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#b0894a",
-                fontSize: 72,
+                color: "#e4c37a",
+                fontSize: 80,
                 letterSpacing: 8,
               }}
             >
-              {PRODUCT_NAME}
+              {TONIGHT_WATERMARK}
             </div>
           )}
+          <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              padding: "28px 48px",
+              background:
+                "linear-gradient(to top, rgba(27,24,20,0.88) 0%, rgba(27,24,20,0) 100%)",
+              color: "#e4c37a",
+              fontSize: 32,
+              letterSpacing: 3,
+              justifyContent: language === "ar" ? "flex-end" : "flex-start",
+            }}
+          >
+            {TONIGHT_WATERMARK}
+          </div>
         </div>
         <div
           style={{
@@ -194,12 +214,17 @@ export async function GET(request: Request, context: ImageContext) {
             style={{
               display: "flex",
               marginTop: "auto",
-              color: "#b0894a",
-              fontSize: 28,
-              letterSpacing: 2,
+              width: "100%",
+              borderTop: "2px solid #e4c37a",
+              paddingTop: 22,
+              color: "#e4c37a",
+              fontSize: TONIGHT_WATERMARK_PX,
+              letterSpacing: 3,
+              fontFamily: serif ? "PassportSerif" : "serif",
+              justifyContent: language === "ar" ? "flex-end" : "flex-start",
             }}
           >
-            {PRODUCT_NAME}
+            {TONIGHT_WATERMARK}
           </div>
         </div>
       </div>

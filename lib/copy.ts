@@ -639,6 +639,18 @@ export const copy = {
     ar: "أرسلها للي تبيه معك",
     en: "Send it to whoever should come",
   },
+  tonightShareBoth: {
+    ar: "الصورة والنص مع بعض",
+    en: "Image and text together",
+  },
+  tonightShareCopy: {
+    ar: "النص",
+    en: "The copy",
+  },
+  tonightFallback: {
+    ar: "نزّلنا الصورة ونسخنا النص — حطّهم مع بعض",
+    en: "Image saved and text copied — post them together",
+  },
 } as const;
 
 export function ownerEditErrorCopy(

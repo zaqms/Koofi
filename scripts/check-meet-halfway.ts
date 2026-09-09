@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { listRealShops } from "../lib/catalog";
 import { rankByPopularity } from "../lib/district-rank";
-import { parseSharedPin, looksLikeSharedPin } from "../lib/shared-pin";
+import { parseSharedPin, looksLikeSharedPin, halfwayPinMethod } from "../lib/shared-pin";
 import { shopMapsHref } from "../lib/public-url";
 import {
   decodeHalfwayInviteId,
@@ -318,6 +318,35 @@ assert(
 assert(
   existsSync(join(repoRoot, "app/api/halfway/invite/route.ts")),
   "optional join overlay for A refresh",
+);
+
+const track = readFileSync(join(repoRoot, "lib/track.ts"), "utf8");
+const halfwayEvents = [
+  "meet_halfway_open",
+  "meet_halfway_pin",
+  "meet_halfway_invite_share",
+  "meet_halfway_invite_open",
+  "meet_halfway_results",
+  "meet_halfway_refresh",
+  "meet_halfway_empty",
+] as const;
+for (const name of halfwayEvents) {
+  assert(track.includes(`"${name}"`), `track.ts exports ${name}`);
+  assert(
+    chatUi.includes(`"${name}"`) || invitePage.includes(`"${name}"`),
+    `${name} fires from chat or /h/`,
+  );
+}
+assert(ui.includes("onPin") && ui.includes("halfwayPinMethod"), "pin field reports which + method");
+assert(chatUi.includes("meet_halfway_pin"), "pin sets push meet_halfway_pin");
+assert(
+  halfwayPinMethod("24.761,46.604") === "paste" &&
+    halfwayPinMethod("https://maps.app.goo.gl/abc") === "maps_url",
+  "pin method is paste vs maps_url, never coords",
+);
+assert(
+  !track.includes("lat?:") && !track.includes("lng?:"),
+  "dataLayer params do not accept pin coordinates",
 );
 
 console.log("meet-halfway pin-first lock ok");

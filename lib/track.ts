@@ -22,12 +22,22 @@ export type AnalyticsEventName =
   | "tonight_card_mint"
   | "tonight_card_share"
   | "invite_open"
-  | "invite_share";
+  | "invite_share"
+  | "meet_halfway_open"
+  | "meet_halfway_pin"
+  | "meet_halfway_invite_share"
+  | "meet_halfway_invite_open"
+  | "meet_halfway_results"
+  | "meet_halfway_refresh"
+  | "meet_halfway_empty";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing" | "halfway";
 export type ListingShareSource = "list" | "card";
 export type ChatQueryVia = "typed" | "chip";
+export type MeetHalfwayPinWhich = "a" | "b" | "self";
+export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
+export type MeetHalfwayResultSource = "local" | "invite";
 
 export type AnalyticsParams = {
   locale?: Language;
@@ -36,7 +46,7 @@ export type AnalyticsParams = {
   pack_id?: string;
   from?: string;
   kind?: ShareInboundKind;
-  source?: MapsClickSource | ListingShareSource;
+  source?: MapsClickSource | ListingShareSource | MeetHalfwayResultSource;
   text_length?: number;
   chip_id?: string;
   chip_label?: string;
@@ -47,6 +57,10 @@ export type AnalyticsParams = {
   query_text?: string;
   via?: ChatQueryVia;
   channel?: ViralShareChannel;
+  which?: MeetHalfwayPinWhich;
+  method?: MeetHalfwayPinMethod;
+  count?: number;
+  page?: number;
 };
 
 const DEDUPE_MS = 400;

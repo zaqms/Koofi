@@ -55,6 +55,7 @@ type AssistantMessage = {
   thinCatalog?: boolean;
   districtMatch?: DistrictMatch;
   halfwayMore?: boolean;
+  halfwayLocations?: HalfwayPinInput[];
 };
 
 type UserMessage = {
@@ -83,12 +84,15 @@ type PendingSend = {
   id: string;
   promise: Promise<PendingResult>;
   applied: boolean;
+  halfwayLocations?: HalfwayPinInput[];
 };
 
 type LiveThread = {
   messages: Message[];
   composerLanguage: Language;
   awaitingMaps: boolean;
+  halfwayLocations?: HalfwayPinInput[] | null;
+  halfwayShown?: string[];
 };
 
 type ChatProps = {
@@ -180,8 +184,12 @@ export function Chat({
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
-  const halfwayLocationsRef = useRef<HalfwayPinInput[] | null>(null);
-  const halfwayShownRef = useRef<string[]>([]);
+  const halfwayLocationsRef = useRef<HalfwayPinInput[] | null>(
+    threads[threadKey]?.halfwayLocations ?? null,
+  );
+  const halfwayShownRef = useRef<string[]>(
+    threads[threadKey]?.halfwayShown ?? [],
+  );
   useVisitorLocation();
 
   useEffect(() => {
@@ -201,6 +209,8 @@ export function Chat({
       messages,
       composerLanguage,
       awaitingMaps,
+      halfwayLocations: halfwayLocationsRef.current,
+      halfwayShown: halfwayShownRef.current,
     };
   }, [threadKey, messages, composerLanguage, awaitingMaps]);
 
@@ -261,6 +271,9 @@ export function Chat({
         if (result.data.districtMatch) {
           trackDistrictMatch(result.data.districtMatch);
         }
+        if (pending.halfwayLocations) {
+          halfwayLocationsRef.current = pending.halfwayLocations;
+        }
         if (result.data.picks?.length) {
           halfwayShownRef.current = [
             ...halfwayShownRef.current,
@@ -268,6 +281,10 @@ export function Chat({
           ];
         }
         setMessages((current) => {
+          const halfwayLocations =
+            pending.halfwayLocations ??
+            halfwayLocationsRef.current ??
+            undefined;
           const next: Message[] = [
             ...current,
             {
@@ -279,12 +296,15 @@ export function Chat({
               thinCatalog: result.data.thinCatalog,
               districtMatch: result.data.districtMatch,
               halfwayMore: result.data.halfwayMore,
+              halfwayLocations,
             },
           ];
           threads[threadKey] = {
             messages: next,
             composerLanguage: result.data.language,
             awaitingMaps: waitForMaps,
+            halfwayLocations: halfwayLocations ?? null,
+            halfwayShown: halfwayShownRef.current,
           };
           return next;
         });
@@ -305,6 +325,8 @@ export function Chat({
           messages: next,
           composerLanguage: result.language,
           awaitingMaps: false,
+          halfwayLocations: halfwayLocationsRef.current,
+          halfwayShown: halfwayShownRef.current,
         };
         return next;
       });
@@ -563,9 +585,13 @@ export function Chat({
     if (inFlightRef.current) return;
     const more = Boolean(options?.more);
     setHalfwayWaitingId(null);
+    halfwayLocationsRef.current = locations;
     if (!more) {
-      halfwayLocationsRef.current = locations;
       halfwayShownRef.current = [];
+    }
+    if (threads[threadKey]) {
+      threads[threadKey].halfwayLocations = locations;
+      threads[threadKey].halfwayShown = halfwayShownRef.current;
     }
 
     const ask = more
@@ -589,6 +615,8 @@ export function Chat({
           messages: next,
           composerLanguage,
           awaitingMaps: false,
+          halfwayLocations: locations,
+          halfwayShown: halfwayShownRef.current,
         };
         return next;
       });
@@ -597,6 +625,7 @@ export function Chat({
     const pending: PendingSend = {
       id: crypto.randomUUID(),
       applied: false,
+      halfwayLocations: locations,
       promise: (async (): Promise<PendingResult> => {
         try {
           const response = await fetch("/api/chat", {
@@ -661,10 +690,14 @@ export function Chat({
     delete pendingSends[threadKey];
     inFlightRef.current = false;
     const openerOnly = [openerMessage(landing)];
+    halfwayLocationsRef.current = null;
+    halfwayShownRef.current = [];
     threads[threadKey] = {
       messages: openerOnly,
       composerLanguage: landing,
       awaitingMaps: false,
+      halfwayLocations: null,
+      halfwayShown: [],
     };
     setMessages(openerOnly);
     setDraft("");
@@ -675,8 +708,6 @@ export function Chat({
     setPickedChipId(null);
     setMeetHalfwayOpen(false);
     setHalfwayWaitingId(null);
-    halfwayLocationsRef.current = null;
-    halfwayShownRef.current = [];
   }
 
   const hasThread =
@@ -806,11 +837,12 @@ export function Chat({
               {index === messages.length - 1 &&
               message.halfwayMore &&
               !busy &&
-              halfwayLocationsRef.current ? (
+              (message.halfwayLocations ?? halfwayLocationsRef.current) ? (
                 <button
                   type="button"
                   onClick={() => {
-                    const locations = halfwayLocationsRef.current;
+                    const locations =
+                      message.halfwayLocations ?? halfwayLocationsRef.current;
                     if (locations) sendMeetHalfway(locations, { more: true });
                   }}
                   className="inline-flex h-10 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink"

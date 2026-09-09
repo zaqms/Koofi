@@ -293,6 +293,15 @@ assert(
   "بيننا results offer غيرها from the same band",
 );
 assert(
+  chatUi.includes("pending.halfwayLocations") &&
+    chatUi.includes("message.halfwayLocations ?? halfwayLocationsRef.current"),
+  "غيرها survives /h/ remount — pins live on the result, not only a ref",
+);
+assert(
+  chatUi.includes("joinHalfwayInvite") && chatUi.includes("halfwayLocations: locations"),
+  "invite-guest دور بينكم stores the same pins as local",
+);
+assert(
   chat.includes("halfwayMore") && chat.includes("meetHalfwayReply"),
   "chat API pages the midpoint band and can exhaust it",
 );

@@ -52,6 +52,7 @@ assert(resolveDistrictSlug("al-safa") === "al-safa", "al-safa resolves");
 assert(resolveDistrictSlug("al-rawdah") === "al-rawdah", "al-rawdah resolves");
 assert(resolveDistrictSlug("qurtubah") === "qurtubah", "qurtubah resolves");
 assert(resolveDistrictSlug("an-nazhah") === "an-nazhah", "an-nazhah resolves");
+assert(resolveDistrictSlug("al-hamra") === "al-hamra", "al-hamra resolves");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
 assert(resolveDistrictSlug("غرناطة") === null, "Arabic label is not a slug");
 
@@ -87,8 +88,9 @@ assert(areas.includes("al-safa"), "directory includes al-safa");
 assert(areas.includes("al-rawdah"), "directory includes al-rawdah");
 assert(areas.includes("qurtubah"), "directory includes qurtubah");
 assert(areas.includes("an-nazhah"), "directory includes an-nazhah");
-assert(areas.length === 22, `expected 22 districts, got ${areas.length}`);
-assert(listRealShops().length === 141, `catalog 131→141, got ${listRealShops().length}`);
+assert(areas.includes("al-hamra"), "directory includes al-hamra");
+assert(areas.length === 23, `expected 23 districts, got ${areas.length}`);
+assert(listRealShops().length === 151, `catalog 141→151, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -363,6 +365,79 @@ assert(
   "ghandoura maps href is Amjad corrected place id",
 );
 
+const hamra = filterDirectoryShops(shops, "al-hamra");
+assert(hamra.length === 10, `al-hamra has 10 shops, got ${hamra.length}`);
+assert(
+  hamra.every((shop) => shop.neighborhood === "al-hamra"),
+  "al-hamra filter stays in district",
+);
+for (const id of [
+  "serene-coffee-roastery",
+  "rimthan-coffee-al-hamra",
+  "mind-break-al-hamra",
+  "jather-al-hamra",
+  "harf-coffee-al-hamra",
+  "zeila-al-hamra",
+  "cord-cafe-al-hamra",
+  "drip-al-hamra",
+  "coffee-address-al-hamra",
+  "glint-al-hamra",
+]) {
+  assert(
+    hamra.some((shop) => shop.id === id),
+    `al-hamra includes ${id}`,
+  );
+}
+assert(
+  neighborhoodLabel("al-hamra", "ar") === "الحمراء",
+  "al-hamra Arabic label",
+);
+assert(
+  neighborhoodLabel("al-hamra", "en") === "Al Hamra",
+  "al-hamra English label",
+);
+assert(
+  districtPath("al-hamra", "ar") === "/coffee-shops/al-hamra",
+  "AR al-hamra coffee-shops path",
+);
+assert(
+  districtPath("al-hamra", "en") === "/en/coffee-shops/al-hamra",
+  "EN al-hamra coffee-shops path",
+);
+
+const hamraIntentAsks = [
+  "الحمراء",
+  "حمراء",
+  "hamra",
+  "al hamra",
+  "al-hamra",
+  "alhamra",
+  "Al Hamra",
+];
+for (const ask of hamraIntentAsks) {
+  const intent = parseIntent(ask);
+  assert(
+    intent.neighborhoods.includes("al-hamra"),
+    `parseIntent(${ask}) should hit al-hamra`,
+  );
+}
+
+const dripOlaya = getShop("drip-olaya");
+assert(dripOlaya, "drip-olaya stays in the catalog");
+assert(dripOlaya.neighborhood === "olaya", "drip-olaya stays Olaya");
+assert(
+  dripOlaya.mapsShareUrl ===
+    "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f037e720ece5b:0x59f110b0efd484fe",
+  "drip-olaya maps pin stays untouched",
+);
+const dripHamra = getShop("drip-al-hamra");
+assert(dripHamra, "drip-al-hamra is a distinct catalog shop");
+assert(dripHamra.neighborhood === "al-hamra", "drip-al-hamra is Al Hamra");
+assert(
+  dripHamra.mapsShareUrl !== dripOlaya.mapsShareUrl,
+  "drip-al-hamra uses a distinct official place hex",
+);
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
     "november-coffee-an-nazhah,belong-an-nazhah,elite-cup-roasters-an-nazhah",
@@ -383,10 +458,17 @@ assert(
 const scoutPack: {
   id: string;
   hex: string;
-  neighborhood: "al-safa" | "al-rabwah" | "al-rawdah" | "qurtubah" | "an-nazhah";
+  neighborhood:
+    | "al-safa"
+    | "al-rabwah"
+    | "al-rawdah"
+    | "qurtubah"
+    | "an-nazhah"
+    | "al-hamra";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
+  pin?: { lat: number; lng: number };
 }[] = [
   {
     id: "hawaf-al-safa",
@@ -628,6 +710,96 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/ghandoura-an-nazhah.png",
   },
+  {
+    id: "serene-coffee-roastery",
+    hex: "0x3e2effbaf1698ceb:0xda495846c2d4c231",
+    neighborhood: "al-hamra",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa", "pastry"],
+    logoUrl: "/logos/serene-coffee-roastery.png",
+    pin: { lat: 24.7829655, lng: 46.7586255 },
+  },
+  {
+    id: "rimthan-coffee-al-hamra",
+    hex: "0x3e2f01c71ac623a3:0x7c502c31b04d0292",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rimthan-coffee-mark.png",
+    pin: { lat: 24.776146, lng: 46.7756026 },
+  },
+  {
+    id: "mind-break-al-hamra",
+    hex: "0x3e2f010eba648ef3:0x962f916a8a3071be",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/mind-break.jpg",
+    pin: { lat: 24.7694973, lng: 46.7625231 },
+  },
+  {
+    id: "jather-al-hamra",
+    hex: "0x3e2f03005afeefe3:0xfb9336e4d0f8a037",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jather.jpg",
+    pin: { lat: 24.7634329, lng: 46.7412428 },
+  },
+  {
+    id: "harf-coffee-al-hamra",
+    hex: "0x3e2f01002c3f7aa7:0x2ecc757cd9c9f7f8",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/harf-coffee.jpg",
+    pin: { lat: 24.7777618, lng: 46.7695092 },
+  },
+  {
+    id: "zeila-al-hamra",
+    hex: "0x3e2eff1ea23180b9:0x647b98e76654807a",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/zeila.jpg",
+    pin: { lat: 24.7881246, lng: 46.7599681 },
+  },
+  {
+    id: "cord-cafe-al-hamra",
+    hex: "0x3e2eff002d2c105d:0x3ba7f72a62caaee9",
+    neighborhood: "al-hamra",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/cord-cafe.jpg",
+    pin: { lat: 24.7785386, lng: 46.7628587 },
+  },
+  {
+    id: "drip-al-hamra",
+    hex: "0x3e2effad91197a37:0xf0d7eced6ebb0497",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drip-al-hamra.jpg",
+    pin: { lat: 24.7878805, lng: 46.7593322 },
+  },
+  {
+    id: "coffee-address-al-hamra",
+    hex: "0x3e2efffcecbb3509:0x6fc42bb33821c4f2",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.7826536, lng: 46.7494331 },
+  },
+  {
+    id: "glint-al-hamra",
+    hex: "0x3e2eff9f23a4abe3:0xa01e11a8f5626441",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/glint.jpg",
+    pin: { lat: 24.7874817, lng: 46.7679309 },
+  },
 ];
 
 for (const row of scoutPack) {
@@ -651,7 +823,12 @@ for (const row of scoutPack) {
   } else {
     assert(!("logoUrl" in shop), `${row.id} catalog has no logoUrl (letter tile)`);
   }
-  assert(!("pin" in shop), `${row.id} catalog has no invented pin`);
+  if (row.pin) {
+    assert(shop.pin?.lat === row.pin.lat, `${row.id} official pin lat`);
+    assert(shop.pin?.lng === row.pin.lng, `${row.id} official pin lng`);
+  } else {
+    assert(!("pin" in shop), `${row.id} catalog has no invented pin`);
+  }
   assert(
     shop.vibeTags.join(",") === row.vibe.join(","),
     `${row.id} vibeTags`,

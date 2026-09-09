@@ -36,8 +36,9 @@ assert(
 );
 assert(MEET_HALFWAY_CHIP.en === "Halfway", "EN twin is Halfway");
 assert(VIBE_CHIPS.length === 11, "Soft Places stay parked — VIBE_CHIPS stays 11");
+const vibeChipIds: readonly string[] = VIBE_CHIPS.map((chip) => chip.id);
 assert(
-  !VIBE_CHIPS.some((c) => c.id === "meet-halfway"),
+  !vibeChipIds.includes("meet-halfway"),
   "بيننا is not a Soft Places vibe chip",
 );
 
@@ -132,7 +133,7 @@ const threePins = [
 ];
 const c2 = locationsCentroid([threePins[0], threePins[1]], SHOPS);
 const c3 = locationsCentroid(threePins, SHOPS);
-assert(c2 && c3, "centroids resolve");
+if (!c2 || !c3) fail("centroids resolve");
 assert(
   Math.abs(c3.lat - c2.lat) > 1e-6 || Math.abs(c3.lng - c2.lng) > 1e-6,
   "N=3 centroid is not hardcoded as the N=2 pair",

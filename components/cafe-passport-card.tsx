@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { DirectoryUpvote } from "@/components/directory-upvote";
 import { MapsLink } from "@/components/maps-link";
-import { ShareListingButton } from "@/components/share-listing-button";
 import { TargetIcon } from "@/components/target-icon";
 import { VerifiedBadge } from "@/components/verified-badge";
 import { ViralShareActions } from "@/components/viral-share";
@@ -95,12 +94,6 @@ export function CafePassportCard({
             >
               {copy.switchLanguage[language]}
             </Link>
-            <ShareListingButton
-              shop={shop}
-              language={language}
-              source="card"
-              variant="ghost"
-            />
           </div>
         </div>
         {photos.length > 0 ? (
@@ -268,12 +261,6 @@ export function CafePassportCard({
         <DirectoryUpvote
           shopId={shop.id}
           language={language}
-          variant="passport"
-        />
-        <ShareListingButton
-          shop={shop}
-          language={language}
-          source="card"
           variant="passport"
         />
         <MapsLink

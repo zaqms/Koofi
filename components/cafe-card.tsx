@@ -7,10 +7,10 @@ import {
   type PassportSocial,
 } from "@/components/cafe-passport-card";
 import { CardBeen } from "@/components/card-been";
-import { MapPinIcon } from "@/components/map-pin-icon";
+import { DirectoryUpvote } from "@/components/directory-upvote";
 import { MapsLink } from "@/components/maps-link";
-import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopDistance } from "@/components/shop-distance";
+import { TargetIcon } from "@/components/target-icon";
 import { ShopVisual } from "@/components/shop-visual";
 import { ViralShareActions } from "@/components/viral-share";
 import {
@@ -180,26 +180,25 @@ function ThinCafeCard({
       </dl>
 
       <div className="mt-5 flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <MapsLink
-            href={shopMapsHref(shop)}
-            shopId={shop.id}
-            locale={language}
-            source="card"
-            className="inline-flex size-10 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
-            aria-label={copy.maps[language]}
-            title={copy.maps[language]}
-          >
-            <MapPinIcon />
-          </MapsLink>
-          <ShareListingButton shop={shop} language={language} source="card" />
-        </div>
         <ViralShareActions
           shop={shop}
           language={language}
           photo={shop.photoUrl ?? shop.logoUrl ?? null}
           variant="thin"
         />
+        <div className="flex items-center gap-2">
+          <DirectoryUpvote shopId={shop.id} language={language} />
+          <MapsLink
+            href={shopMapsHref(shop)}
+            shopId={shop.id}
+            locale={language}
+            source="card"
+            className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-2xl border border-gold px-3 text-sm text-gold-deep hover:bg-passport-wash"
+          >
+            <TargetIcon />
+            <span>{copy.takeMeThere[language]}</span>
+          </MapsLink>
+        </div>
         {site ? (
           <a
             href={site}

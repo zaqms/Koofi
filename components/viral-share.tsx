@@ -116,14 +116,14 @@ export function ViralShareActions({
   const tonightClass =
     variant === "passport"
       ? "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-lg border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam"
-      : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl bg-bean px-3 text-sm text-foam hover:bg-bean-deep";
+      : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam";
   const inviteClass = SHOW_TONIGHT_CARD
     ? variant === "passport"
       ? "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-lg border border-gold px-3 text-sm text-gold hover:bg-passport-wash"
-      : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl border border-line px-3 text-sm hover:border-bean"
+      : "inline-flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-2xl border border-gold px-3 text-sm text-gold hover:bg-passport-wash"
     : variant === "passport"
       ? "inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam"
-      : "inline-flex min-h-11 w-full items-center justify-center rounded-2xl bg-bean px-3 text-sm text-foam hover:bg-bean-deep";
+      : "inline-flex min-h-11 w-full items-center justify-center rounded-2xl border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam";
 
   return (
     <>

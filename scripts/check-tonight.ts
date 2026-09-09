@@ -299,6 +299,8 @@ assert(viral.includes("tonightFallback"), "fallback tells them both landed");
 assert(viral.includes("ShareCopy"), "sheet shows the copy next to the card");
 assert(viral.includes("QuietShareExtras"), "Download · Copy are quiet secondaries");
 assert(viral.includes('channel: "system"'), "primary share is system Web Share");
+assert(viral.includes("border-gold bg-passport-wash"), "وين؟ is the gold CTA");
+assert(!viral.includes("bg-bean"), "وين؟ is not the bean button");
 assert(viral.includes('channel: "download"'), "download stays a secondary channel");
 assert(viral.includes('channel: "copy"'), "copy stays a secondary channel");
 assert(!viral.includes("tonightShareBoth"), "no IMAGE AND TEXT TOGETHER chrome");
@@ -322,13 +324,19 @@ const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passport.includes("ViralShareActions"), "Passport has وين؟ invite");
 assert(passport.includes("DirectoryUpvote"), "upvote stays");
 assert(passport.includes("takeMeThere"), "Maps CTA stays");
-assert(passport.includes("ShareListingButton"), "listing share stays");
+assert(!passport.includes("ShareListingButton"), "Passport card drops listing share");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
 assert(thin.includes("ViralShareActions"), "thin card has وين؟ invite");
+assert(thin.includes("DirectoryUpvote"), "thin card has ▲");
+assert(thin.includes("takeMeThere"), "thin Maps is ودّني هناك");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here stays quiet");
 assert(thin.includes("MapsLink"), "thin Maps stays");
+assert(!thin.includes("ShareListingButton"), "thin card drops listing share");
+
+const directory = readFileSync("components/directory-card.tsx", "utf8");
+assert(directory.includes("ShareListingButton"), "directory list can still share a listing");
 
 assert(existsSync("app/c/[id]/tonight/image/route.tsx"), "mint route exists");
 const image = readFileSync("app/c/[id]/tonight/image/route.tsx", "utf8");

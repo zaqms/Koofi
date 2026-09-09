@@ -155,6 +155,14 @@ export const copy = {
     ar: "هالرابط انتهى. اطلب رابط جديد.",
     en: "This link expired. Ask for a new invite.",
   },
+  meetHalfwayMore: {
+    ar: "غيرها",
+    en: "Others",
+  },
+  meetHalfwayNoMore: {
+    ar: "ما في أكثر بهالمنطقة",
+    en: "That's all in this area.",
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",

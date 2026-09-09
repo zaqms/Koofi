@@ -25,6 +25,7 @@ type ChatRequest = {
   via?: "typed" | "chip";
   session?: string;
   halfway?: unknown;
+  halfwayMore?: boolean;
 };
 
 function landingLanguage(value: unknown): Language {
@@ -63,6 +64,12 @@ export async function POST(request: Request) {
     }
 
     const shops = pickHalfwayShops({ locations, beenIds });
+    const leftover = pickHalfwayShops({
+      locations,
+      beenIds: [...beenIds, ...shops.map((shop) => shop.id)],
+      limit: 1,
+    });
+    const halfwayMore = leftover.length > 0;
     const whys = uniqueWhyLines(shops, landing);
     const result: PickResult = {
       language: landing,
@@ -78,7 +85,9 @@ export async function POST(request: Request) {
     const picks = await toChatPicksWithPlaces(result);
     const reply =
       shops.length === 0
-        ? copy.meetHalfwayEmpty[landing]
+        ? body.halfwayMore
+          ? copy.meetHalfwayNoMore[landing]
+          : copy.meetHalfwayEmpty[landing]
         : shops.length === 3
           ? copy.meetHalfwayThree[landing]
           : copy.fewerPicks[landing];
@@ -96,6 +105,7 @@ export async function POST(request: Request) {
       reply,
       thinCatalog: result.thinCatalog,
       picks,
+      halfwayMore,
     });
   }
 

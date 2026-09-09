@@ -19,6 +19,7 @@ import {
   meetHalfwayAskLabel,
   parseHalfwayPinInputs,
   pickHalfwayShops,
+  halfwayCandidatePool,
   locationsCentroid,
 } from "../lib/meet-halfway";
 import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
@@ -61,7 +62,9 @@ assert(
     copy.includes("ثلاث قهاوي بينكم") &&
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
-    copy.includes("اعزم خويك"),
+    copy.includes("اعزم خويك") &&
+    copy.includes("غيرها") &&
+    copy.includes("ما في أكثر بهالمنطقة"),
   "copy asks for pins, not districts",
 );
 assert(!copy.includes("أنا في"), "district label أنا في is gone");
@@ -166,6 +169,37 @@ assert(
   "order is locked Most Popular (popularityIndex)",
 );
 
+const pool = halfwayCandidatePool({ locations: two, shops: SHOPS });
+assert(pool.length >= 3, "midpoint band has a candidate set");
+assert(
+  shops.map((s) => s.id).join() === pool.slice(0, 3).map((s) => s.id).join(),
+  "first three are the top of the same band",
+);
+const nextThree = pickHalfwayShops({
+  locations: two,
+  shops: SHOPS,
+  beenIds: shops.map((s) => s.id),
+});
+assert(
+  nextThree.every((s) => !shops.some((shown) => shown.id === s.id)),
+  "غيرها skips cafes already shown",
+);
+assert(
+  nextThree.map((s) => s.id).join() ===
+    pool
+      .filter((s) => !shops.some((shown) => shown.id === s.id))
+      .slice(0, 3)
+      .map((s) => s.id)
+      .join(),
+  "next three stay on the same Most Popular band",
+);
+const exhausted = pickHalfwayShops({
+  locations: two,
+  shops: SHOPS,
+  beenIds: pool.map((s) => s.id),
+});
+assert(exhausted.length === 0, "exhausted band returns nothing");
+
 const samePin = pickHalfwayShops({
   locations: [
     { pin: { lat: 24.7136, lng: 46.6753 } },
@@ -238,6 +272,14 @@ const chatUi = readFileSync(join(repoRoot, "components/chat.tsx"), "utf8");
 assert(
   chatUi.includes("sharePackPacket") && chatUi.includes("inviteHalfwayFriend"),
   "invite uses the same system share family as وين؟ / packet",
+);
+assert(
+  chatUi.includes("meetHalfwayMore") && chatUi.includes("halfwayMore"),
+  "بيننا results offer غيرها from the same band",
+);
+assert(
+  chat.includes("halfwayMore") && chat.includes("meetHalfwayNoMore"),
+  "chat API pages the midpoint band and can exhaust it",
 );
 const invitePage = readFileSync(join(repoRoot, "app/h/[id]/page.tsx"), "utf8");
 assert(

@@ -134,20 +134,14 @@ export async function resolveHalfwayLocations(
 }
 
 /**
- * Live-catalog shops in a band around the N-location centroid, ranked
- * with locked Most Popular (`popularityIndex`). Never invents shops.
+ * Full Most Popular list for the midpoint band (or snap pool) used by
+ * بيننا. `غيرها` pages this same set — do not re-expand after skips.
  */
-export function pickHalfwayShops(input: {
+export function halfwayCandidatePool(input: {
   locations: readonly HalfwayLocation[];
-  beenIds?: string[];
   shops?: readonly Shop[];
-  limit?: number;
 }): Shop[] {
-  const limit = input.limit ?? TARGET_PICKS;
-  const been = new Set((input.beenIds ?? []).filter(Boolean));
-  const shops = (input.shops ?? listRealShops()).filter(
-    (shop) => !been.has(shop.id),
-  );
+  const shops = input.shops ?? listRealShops();
   const { locations } = input;
   if (locations.length < 2) return [];
 
@@ -156,7 +150,7 @@ export function pickHalfwayShops(input: {
   if (nonePinned && districts.length === 1) {
     const only = districts[0];
     if (!only) return [];
-    return dedupeSameBrand(rankInDistrict(shops, only)).slice(0, limit);
+    return dedupeSameBrand(rankInDistrict(shops, only));
   }
 
   const midpoint = locationsCentroid(locations, shops);
@@ -165,7 +159,7 @@ export function pickHalfwayShops(input: {
     const inAreas = shops.filter((shop) =>
       districts.includes(shop.neighborhood),
     );
-    return dedupeSameBrand(rankByPopularity(inAreas)).slice(0, limit);
+    return dedupeSameBrand(rankByPopularity(inAreas));
   }
 
   const locationPins: Pin[] = [];
@@ -192,16 +186,37 @@ export function pickHalfwayShops(input: {
       .filter((row) => row.km <= bandKm)
       .map((row) => row.shop);
     const ranked = dedupeSameBrand(rankByPopularity(inBand));
-    if (ranked.length >= limit) return ranked.slice(0, limit);
+    if (ranked.length >= TARGET_PICKS) return ranked;
   }
 
   // Snap to nearest catalog pins around the N-centroid, then Most Popular.
   withCoords.sort((a, b) => a.km - b.km);
   const nearest = dedupeSameBrand(withCoords.map((row) => row.shop)).slice(
     0,
-    Math.max(SNAP_POOL, limit),
+    Math.max(SNAP_POOL, TARGET_PICKS),
   );
-  return dedupeSameBrand(rankByPopularity(nearest)).slice(0, limit);
+  return dedupeSameBrand(rankByPopularity(nearest));
+}
+
+/**
+ * Live-catalog shops in a band around the N-location centroid, ranked
+ * with locked Most Popular (`popularityIndex`). Never invents shops.
+ * `beenIds` skips cafes already shown this session (`غيرها`).
+ */
+export function pickHalfwayShops(input: {
+  locations: readonly HalfwayLocation[];
+  beenIds?: string[];
+  shops?: readonly Shop[];
+  limit?: number;
+}): Shop[] {
+  const limit = input.limit ?? TARGET_PICKS;
+  const been = new Set((input.beenIds ?? []).filter(Boolean));
+  return halfwayCandidatePool({
+    locations: input.locations,
+    shops: input.shops,
+  })
+    .filter((shop) => !been.has(shop.id))
+    .slice(0, limit);
 }
 
 export function meetHalfwayChatPicks(input: {

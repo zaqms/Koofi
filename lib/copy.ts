@@ -132,8 +132,8 @@ export const copy = {
     en: "Three cafes between you",
   },
   meetHalfwayEmpty: {
-    ar: "ما لقيت قهوة بينكم في القائمة الحين.",
-    en: "I don't have a cafe between you on the list yet.",
+    ar: "ما في أكثر بهالمنطقة",
+    en: "That's all in this area.",
   },
   meetHalfwayInvite: {
     ar: "اعزم خويك",

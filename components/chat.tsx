@@ -830,7 +830,8 @@ export function Chat({
                   )}
                 </Link>
               ) : null}
-              {message.thinCatalog ? (
+              {message.thinCatalog &&
+              typeof message.halfwayMore !== "boolean" ? (
                 <p className="text-xs leading-5 text-ink-soft">
                   {copy.thinCatalog[message.language]}
                 </p>

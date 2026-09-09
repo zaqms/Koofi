@@ -17,6 +17,7 @@ import {
 } from "../lib/halfway-invite";
 import {
   meetHalfwayAskLabel,
+  meetHalfwayReply,
   parseHalfwayPinInputs,
   pickHalfwayShops,
   halfwayCandidatePool,
@@ -70,6 +71,20 @@ assert(
 assert(!copy.includes("أنا في"), "district label أنا في is gone");
 assert(!copy.includes("الثاني"), "district label الثاني is gone");
 assert(!copy.includes("ادعُ صاحبك") && !copy.includes("ادع صاحبك"), "old invite CTA is gone");
+assert(
+  meetHalfwayReply({ shopCount: 0, language: "ar" }) === "ما في أكثر بهالمنطقة",
+  "exhausted بيننا is exactly ما في أكثر بهالمنطقة",
+);
+assert(
+  !meetHalfwayReply({ shopCount: 0, language: "ar" }).includes("القائمة عندي") &&
+    !meetHalfwayReply({ shopCount: 0, language: "ar" }).includes("ألف أسماء") &&
+    !meetHalfwayReply({ shopCount: 0, language: "en" }).includes("still small"),
+  "exhausted بيننا is not the thin-catalog disclaimer",
+);
+assert(
+  meetHalfwayReply({ shopCount: 3, language: "ar" }) === "ثلاث قهاوي بينكم",
+  "full page stays ثلاث قهاوي بينكم",
+);
 
 const ui = readFileSync(join(repoRoot, "components/meet-halfway-picker.tsx"), "utf8");
 assert(!ui.includes("<select"), "no district dropdowns as primary UX");
@@ -278,8 +293,22 @@ assert(
   "بيننا results offer غيرها from the same band",
 );
 assert(
-  chat.includes("halfwayMore") && chat.includes("meetHalfwayNoMore"),
+  chat.includes("halfwayMore") && chat.includes("meetHalfwayReply"),
   "chat API pages the midpoint band and can exhaust it",
+);
+assert(
+  !chat.includes("thinCatalog: shops.length < 3"),
+  "بيننا never flags the generic thin-catalog disclaimer",
+);
+assert(
+  !chat.includes("copy.thinCatalog") &&
+    !chat.includes("copy.emptyCatalog") &&
+    !chat.includes("copy.meetHalfwayEmpty"),
+  "بيننا empty path does not use soft/SEO catalog copy",
+);
+assert(
+  chatUi.includes('typeof message.halfwayMore !== "boolean"'),
+  "chat UI never paints thinCatalog under بيننا",
 );
 const invitePage = readFileSync(join(repoRoot, "app/h/[id]/page.tsx"), "utf8");
 assert(

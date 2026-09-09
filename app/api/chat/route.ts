@@ -5,6 +5,7 @@ import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import {
   isMeetHalfwayChipAsk,
+  meetHalfwayReply,
   parseHalfwayPinInputs,
   pickHalfwayShops,
   resolveHalfwayLocations,
@@ -77,20 +78,16 @@ export async function POST(request: Request) {
         shop,
         why: whys[index] ?? "",
       })),
-      thinCatalog: shops.length < 3,
+      thinCatalog: false,
       askedNeighborhoods: [],
       avoidedNeighborhoods: [],
       askedMoments: [],
     };
     const picks = await toChatPicksWithPlaces(result);
-    const reply =
-      shops.length === 0
-        ? body.halfwayMore
-          ? copy.meetHalfwayNoMore[landing]
-          : copy.meetHalfwayEmpty[landing]
-        : shops.length === 3
-          ? copy.meetHalfwayThree[landing]
-          : copy.fewerPicks[landing];
+    const reply = meetHalfwayReply({
+      shopCount: shops.length,
+      language: landing,
+    });
 
     recordLearnAsk({
       text: text || copy.meetHalfwayThree[landing],

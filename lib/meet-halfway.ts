@@ -1,5 +1,6 @@
 import { listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
+import { copy } from "./copy";
 import { rankByPopularity, rankInDistrict } from "./district-rank";
 import { haversineKm } from "./distance";
 import { neighborhoodCentroid } from "./neighborhood-tight";
@@ -238,6 +239,16 @@ export function meetHalfwayAskLabel(language: Language): string {
   return language === "ar"
     ? `${MEET_HALFWAY_CHIP.ar} · دبوسين`
     : `${MEET_HALFWAY_CHIP.en} · two pins`;
+}
+
+/** Exhausted بيننا band — never the generic thin-catalog disclaimer. */
+export function meetHalfwayReply(input: {
+  shopCount: number;
+  language: Language;
+}): string {
+  if (input.shopCount <= 0) return copy.meetHalfwayNoMore[input.language];
+  if (input.shopCount >= 3) return copy.meetHalfwayThree[input.language];
+  return copy.fewerPicks[input.language];
 }
 
 export function parseHalfwayPinInputs(value: unknown): HalfwayPinInput[] | null {

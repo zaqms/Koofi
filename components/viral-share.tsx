@@ -285,7 +285,6 @@ function InviteSheet({
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const cardUrl = tonightCardUrl(shop.id, language, origin);
   const text = inviteShareText({ shop, language, cardUrl });
-  const inviteLine = sanitizeTonightLine(text.split("\n")[0] ?? "");
 
   useEffect(() => {
     return () => {
@@ -299,7 +298,6 @@ function InviteSheet({
     if (!store || !canMintTonight(shop.id, Date.now(), store)) return null;
     const path = tonightImagePath(shop.id, {
       locale: language,
-      line: inviteLine,
       photo: photo ?? undefined,
     });
     const response = await fetch(path);
@@ -331,7 +329,7 @@ function InviteSheet({
           className="mx-auto max-h-[min(46vh,22rem)] w-auto rounded-2xl"
         />
       ) : (
-        <TonightPreview shop={shop} language={language} photo={photo} line={inviteLine} />
+        <TonightPreview shop={shop} language={language} photo={photo} line="" />
       )}
       <ShareCopy text={text} language={language} />
       <ChannelRow

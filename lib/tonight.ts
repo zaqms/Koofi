@@ -44,6 +44,23 @@ export function sanitizeTonightLine(raw: string | null | undefined): string {
   return trimmed.replace(/[\u0000-\u001F\u007F]/g, "");
 }
 
+/** Invite prefill stays on the share text, never on the minted card. */
+export function isInviteShareLine(line: string): boolean {
+  const trimmed = line.trim();
+  return (
+    /^I'm at .+ — come through$/i.test(trimmed) ||
+    /^أنا بـ .+ الحين — تعال$/.test(trimmed)
+  );
+}
+
+export function sanitizeTonightCardLine(
+  raw: string | null | undefined,
+): string {
+  const line = sanitizeTonightLine(raw);
+  if (!line || isInviteShareLine(line)) return "";
+  return line;
+}
+
 export function tonightCardPath(
   shopId: string,
   language: Language = "ar",
@@ -64,7 +81,7 @@ export function tonightImagePath(
   input: { locale: Language; line?: string; photo?: string },
 ): string {
   const params = new URLSearchParams({ locale: input.locale });
-  const line = sanitizeTonightLine(input.line);
+  const line = sanitizeTonightCardLine(input.line);
   if (line) params.set("line", line);
   const photo = safeTonightPhotoPath(input.photo);
   if (photo) params.set("photo", photo);

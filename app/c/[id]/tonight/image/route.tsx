@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 import { getShop } from "@/lib/catalog";
+import { loadTonightHeroDataUri } from "@/lib/tonight-hero";
 import {
-  sanitizeTonightLine,
+  sanitizeTonightCardLine,
   safeTonightPhotoPath,
   satoriArabicLine,
   tonightDistrict,
@@ -40,11 +41,12 @@ export async function GET(request: Request, context: ImageContext) {
 
   const url = new URL(request.url);
   const language = localeFrom(url.searchParams.get("locale"));
-  const line = sanitizeTonightLine(url.searchParams.get("line"));
-  const photo =
-    safeTonightPhotoPath(url.searchParams.get("photo")) ??
-    tonightHeroForShop(shop);
-  const hero = photo ? new URL(photo, url.origin).toString() : null;
+  const line = sanitizeTonightCardLine(url.searchParams.get("line"));
+  const requested = safeTonightPhotoPath(url.searchParams.get("photo"));
+  const fallback = tonightHeroForShop(shop);
+  const hero =
+    (await loadTonightHeroDataUri(requested)) ??
+    (await loadTonightHeroDataUri(fallback));
   const district = tonightDistrict(shop, language);
   const eyebrow = language === "ar" ? "الليلة" : "tonight";
   const align = language === "ar" ? "flex-end" : "flex-start";

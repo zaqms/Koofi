@@ -9,6 +9,8 @@ import {
   isViralShareChannel,
   satoriArabicLine,
   recordTonightMint,
+  isInviteShareLine,
+  sanitizeTonightCardLine,
   sanitizeTonightLine,
   TONIGHT_LINE_MAX,
   TONIGHT_MINTS_PER_SESSION,
@@ -26,6 +28,7 @@ import {
   xShareHref,
   type TonightMintStore,
 } from "../lib/tonight";
+import { loadTonightHeroDataUri } from "../lib/tonight-hero";
 import type { AnalyticsEventName } from "../lib/track";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -196,6 +199,29 @@ assert(sanitizeTonightLine("  جو   هادي  ") === "جو هادي", "line col
 assert(sanitizeTonightLine("x".repeat(200)).length === TONIGHT_LINE_MAX, "line cap");
 assert(sanitizeTonightLine("https://maps.app.goo.gl/abc") === "", "Maps line dropped");
 assert(sanitizeTonightLine("go to maps.google.com") === "", "Maps line dropped");
+assert(
+  isInviteShareLine("I'm at WOODS Cafe and Roastery — come through"),
+  "EN invite prefill is detected",
+);
+assert(
+  isInviteShareLine(`أنا بـ ${shopDisplayName(woods, "ar")} الحين — تعال`),
+  "AR invite prefill is detected",
+);
+assert(
+  sanitizeTonightCardLine("I'm at WOODS Cafe and Roastery — come through") === "",
+  "invite copy never becomes a Tonight card line",
+);
+assert(
+  sanitizeTonightCardLine("جو الليلة") === "جو الليلة",
+  "a real one-liner still mints",
+);
+assert(
+  tonightImagePath("woods-olaya", {
+    locale: "en",
+    line: "I'm at WOODS Cafe and Roastery — come through",
+  }).includes("line=") === false,
+  "mint path drops invite copy",
+);
 
 const store = memoryStore();
 const now = 1_700_000_000_000;
@@ -233,6 +259,7 @@ assert(trackSource.includes("channel?: ViralShareChannel"), "share events carry 
 
 const files = [
   "lib/tonight.ts",
+  "lib/tonight-hero.ts",
   "lib/copy.ts",
   "lib/track.ts",
   "components/viral-share.tsx",
@@ -265,6 +292,8 @@ assert(viral.includes("TONIGHT_WATERMARK"), "preview watermark is wain.lol");
 assert(!/navigator\.share\(\{\s*text\s*\}\)/.test(viral), "no text-only Web Share");
 assert(viral.includes("xShareHref"), "explicit X");
 assert(!viral.includes("wa.me/966"), "invite is not WhatsApp Cloud send");
+assert(!viral.includes("line: inviteLine"), "invite must not bake copy onto the card");
+assert(!viral.includes("line={inviteLine}"), "invite preview is Tonight framing");
 
 const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passport.includes("ViralShareActions"), "Passport has Tonight / Invite");
@@ -289,8 +318,19 @@ assert(image.includes("TONIGHT_IMAGE_SIZE.height"), "hero fills the 9:16 canvas"
 assert(!image.includes("980"), "no black half / cropped top slab");
 assert(image.includes("#f3ead8"), "empty fallback is cream, not black");
 assert(image.includes("linear-gradient(to top"), "scrim keeps gold/cream type readable");
-  assert(viral.includes("aspect-[9/16]"), "composer preview is 9:16 photo-forward");
-  assert(!viral.includes("aspect-[4/5]"), "preview is not a split card");
-  assert(!viral.includes("max-h-80"), "minted preview must show the full 9:16 card");
+assert(image.includes("loadTonightHeroDataUri"), "mint embeds hero bytes, not an SSO-blocked URL");
+assert(!image.includes("new URL(photo"), "mint must not HTTP-fetch the hero");
+assert(viral.includes("aspect-[9/16]"), "composer preview is 9:16 photo-forward");
+assert(!viral.includes("aspect-[4/5]"), "preview is not a split card");
+assert(!viral.includes("max-h-80"), "minted preview must show the full 9:16 card");
 
-console.log("check-tonight: ok");
+loadTonightHeroDataUri("/passport/woods-olaya-1.jpg")
+  .then((hero) => {
+    assert(hero?.startsWith("data:image/jpeg;base64,"), "Woods hero embeds as a data URI");
+    assert((hero?.length ?? 0) > 10_000, "embedded Woods hero is not an empty stub");
+    console.log("check-tonight: ok");
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });

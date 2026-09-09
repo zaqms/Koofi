@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ShareIcon } from "@/components/share-icon";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { copy } from "@/lib/copy";
-import { trackEvent, type ViralShareChannel } from "@/lib/track";
+import { trackEvent } from "@/lib/track";
 import {
   canMintTonight,
   canShareImageAndText,
@@ -18,7 +17,6 @@ import {
   tonightImagePath,
   tonightShareText,
   SHOW_TONIGHT_CARD,
-  xShareHref,
 } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
 
@@ -52,6 +50,17 @@ export function ViralShareActions({
   variant = "thin",
 }: ViralShareActionsProps) {
   const [sheet, setSheet] = useState<SheetKind>(null);
+  const [inviteBlob, setInviteBlob] = useState<Blob | null>(null);
+  const [inviteUrl, setInviteUrl] = useState<string | null>(null);
+  const [inviteCopied, setInviteCopied] = useState(false);
+  const [inviteFallback, setInviteFallback] = useState(false);
+  const inviteUrlRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (inviteUrlRef.current) URL.revokeObjectURL(inviteUrlRef.current);
+    };
+  }, []);
 
   function openTonight() {
     trackEvent(
@@ -62,13 +71,46 @@ export function ViralShareActions({
     setSheet("tonight");
   }
 
-  function openInvite() {
+  async function handleInviteClick() {
     trackEvent(
       "invite_open",
       { shop_id: shop.id, locale: language },
       { dedupeKey: `invite_open:${shop.id}:${language}` },
     );
+    setInviteCopied(false);
+    setInviteFallback(false);
+    setInviteBlob(null);
+    if (inviteUrlRef.current) {
+      URL.revokeObjectURL(inviteUrlRef.current);
+      inviteUrlRef.current = null;
+      setInviteUrl(null);
+    }
     setSheet("invite");
+    const origin = window.location.origin;
+    const text = inviteShareText({
+      shop,
+      language,
+      cardUrl: tonightCardUrl(shop.id, language, origin),
+    });
+    const blob = await mintInviteImage(shop.id, language, photo);
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    inviteUrlRef.current = url;
+    setInviteBlob(blob);
+    setInviteUrl(url);
+    const result = await deliverBoth(
+      blob,
+      tonightFilename(shop.id),
+      text,
+      () => setInviteCopied(true),
+      () => setInviteFallback(true),
+    );
+    if (result === "cancelled") return;
+    trackEvent("invite_share", {
+      shop_id: shop.id,
+      locale: language,
+      channel: "system",
+    });
   }
 
   const tonightClass =
@@ -99,7 +141,9 @@ export function ViralShareActions({
         <button
           type="button"
           className={inviteClass}
-          onClick={openInvite}
+          onClick={() => {
+            void handleInviteClick();
+          }}
           lang={language}
         >
           {copy.inviteCta[language]}
@@ -120,6 +164,12 @@ export function ViralShareActions({
           language={language}
           photo={photo}
           variant={variant}
+          imageBlob={inviteBlob}
+          imageUrl={inviteUrl}
+          copied={inviteCopied}
+          fallback={inviteFallback}
+          onCopied={() => setInviteCopied(true)}
+          onFallback={() => setInviteFallback(true)}
           onClose={() => setSheet(null)}
         />
       ) : null}
@@ -256,7 +306,7 @@ function TonightSheet({
         <p className="mt-2 text-sm text-ink-soft">{copy.tonightReady[language]}</p>
       ) : null}
       <ShareCopy text={text} />
-      <ChannelRow
+      <QuietShareExtras
         language={language}
         shopId={shop.id}
         text={text}
@@ -264,6 +314,7 @@ function TonightSheet({
         filename={tonightFilename(shop.id)}
         event="tonight_card_share"
         copied={copied}
+        fallback={false}
         onCopied={() => setCopied(true)}
         ensureImage={async () => imageBlob ?? mint()}
       />
@@ -276,47 +327,29 @@ function InviteSheet({
   language,
   photo,
   variant,
+  imageBlob,
+  imageUrl,
+  copied,
+  fallback,
+  onCopied,
+  onFallback,
   onClose,
 }: {
   shop: ViralShareShop;
   language: Language;
   photo: string | null;
   variant: "passport" | "thin";
+  imageBlob: Blob | null;
+  imageUrl: string | null;
+  copied: boolean;
+  fallback: boolean;
+  onCopied: () => void;
+  onFallback: () => void;
   onClose: () => void;
 }) {
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-  const imageUrlRef = useRef<string | null>(null);
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const cardUrl = tonightCardUrl(shop.id, language, origin);
   const text = inviteShareText({ shop, language, cardUrl });
-
-  useEffect(() => {
-    return () => {
-      if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
-    };
-  }, []);
-
-  async function ensureImage(): Promise<Blob | null> {
-    if (imageBlob) return imageBlob;
-    const store = sessionStore();
-    if (!store || !canMintTonight(shop.id, Date.now(), store)) return null;
-    const path = tonightImagePath(shop.id, {
-      locale: language,
-      photo: photo ?? undefined,
-    });
-    const response = await fetch(path);
-    if (!response.ok) return null;
-    const blob = await response.blob();
-    recordTonightMint(shop.id, Date.now(), store);
-    setImageBlob(blob);
-    if (imageUrlRef.current) URL.revokeObjectURL(imageUrlRef.current);
-    const next = URL.createObjectURL(blob);
-    imageUrlRef.current = next;
-    setImageUrl(next);
-    return blob;
-  }
 
   return (
     <ShareSheet
@@ -338,7 +371,7 @@ function InviteSheet({
         <TonightPreview shop={shop} language={language} photo={photo} line="" />
       )}
       <ShareCopy text={text} />
-      <ChannelRow
+      <QuietShareExtras
         language={language}
         shopId={shop.id}
         text={text}
@@ -346,8 +379,10 @@ function InviteSheet({
         filename={tonightFilename(shop.id)}
         event="invite_share"
         copied={copied}
-        onCopied={() => setCopied(true)}
-        ensureImage={ensureImage}
+        fallback={fallback}
+        onCopied={onCopied}
+        onFallback={onFallback}
+        ensureImage={async () => imageBlob}
       />
     </ShareSheet>
   );
@@ -462,7 +497,63 @@ function ShareCopy({ text }: { text: string }) {
   );
 }
 
-function ChannelRow({
+async function mintInviteImage(
+  shopId: string,
+  language: Language,
+  photo: string | null,
+): Promise<Blob | null> {
+  const store = sessionStore();
+  if (!store || !canMintTonight(shopId, Date.now(), store)) return null;
+  const path = tonightImagePath(shopId, {
+    locale: language,
+    photo: photo ?? undefined,
+  });
+  const response = await fetch(path);
+  if (!response.ok) return null;
+  const blob = await response.blob();
+  recordTonightMint(shopId, Date.now(), store);
+  return blob;
+}
+
+async function deliverBoth(
+  blob: Blob,
+  filename: string,
+  text: string,
+  onCopied: () => void,
+  onFallback: () => void,
+): Promise<"shared" | "fallback" | "cancelled"> {
+  const file = new File([blob], filename, { type: blob.type || "image/png" });
+  const payload = { files: [file], text };
+  if (typeof navigator.share === "function") {
+    const allowed =
+      typeof navigator.canShare !== "function" ||
+      canShareImageAndText(
+        (data) => navigator.canShare?.(data) === true,
+        payload,
+      );
+    if (allowed) {
+      try {
+        await navigator.share(payload);
+        return "shared";
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return "cancelled";
+        }
+      }
+    }
+  }
+  downloadBlob(blob, filename);
+  try {
+    await navigator.clipboard.writeText(text);
+    onCopied();
+  } catch {
+    /* image still downloaded */
+  }
+  onFallback();
+  return "fallback";
+}
+
+function QuietShareExtras({
   language,
   shopId,
   text,
@@ -470,7 +561,9 @@ function ChannelRow({
   filename,
   event,
   copied,
+  fallback,
   onCopied,
+  onFallback,
   ensureImage,
 }: {
   language: Language;
@@ -480,44 +573,14 @@ function ChannelRow({
   filename: string;
   event: "tonight_card_share" | "invite_share";
   copied: boolean;
+  fallback: boolean;
   onCopied: () => void;
+  onFallback?: () => void;
   ensureImage: () => Promise<Blob | null>;
 }) {
-  const [fallback, setFallback] = useState(false);
-  const channels = useMemo(
-    () =>
-      [
-        { id: "system" as const, label: copy.tonightShareSystem[language] },
-        { id: "x" as const, label: copy.tonightShareX[language] },
-        { id: "ig" as const, label: copy.tonightShareIg[language] },
-        { id: "snap" as const, label: copy.tonightShareSnap[language] },
-        { id: "download" as const, label: copy.tonightDownload[language] },
-        { id: "copy" as const, label: copy.tonightCopyLink[language] },
-      ] satisfies Array<{ id: ViralShareChannel; label: string }>,
-    [language],
-  );
-
-  async function deliverBoth(blob: Blob): Promise<"shared" | "fallback" | "cancelled"> {
-    const file = new File([blob], filename, { type: blob.type || "image/png" });
-    const payload = { files: [file], text };
-    if (typeof navigator.share === "function") {
-      const allowed =
-        typeof navigator.canShare !== "function" ||
-        canShareImageAndText(
-          (data) => navigator.canShare?.(data) === true,
-          payload,
-        );
-      if (allowed) {
-        try {
-          await navigator.share(payload);
-          return "shared";
-        } catch (error) {
-          if (error instanceof DOMException && error.name === "AbortError") {
-            return "cancelled";
-          }
-        }
-      }
-    }
+  async function onDownload() {
+    const blob = imageBlob ?? (await ensureImage());
+    if (!blob) return;
     downloadBlob(blob, filename);
     try {
       await navigator.clipboard.writeText(text);
@@ -525,73 +588,62 @@ function ChannelRow({
     } catch {
       /* image still downloaded */
     }
-    setFallback(true);
-    return "fallback";
+    onFallback?.();
+    trackEvent(event, {
+      shop_id: shopId,
+      locale: language,
+      channel: "download",
+    });
   }
 
-  async function fire(channel: ViralShareChannel) {
-    const tracked = () =>
+  async function onCopy() {
+    const blob = imageBlob ?? (await ensureImage());
+    if (!blob) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      onCopied();
       trackEvent(event, {
         shop_id: shopId,
         locale: language,
-        channel,
+        channel: "copy",
       });
-
-    const blob = imageBlob ?? (await ensureImage());
-    if (!blob) return;
-
-    if (channel === "copy") {
-      try {
-        await navigator.clipboard.writeText(text);
-        onCopied();
-        tracked();
-      } catch {
-        /* stay quiet */
-      }
-      return;
+    } catch {
+      /* stay quiet */
     }
-
-    if (channel === "download") {
-      downloadBlob(blob, filename);
-      try {
-        await navigator.clipboard.writeText(text);
-        onCopied();
-      } catch {
-        /* image still downloaded */
-      }
-      setFallback(true);
-      tracked();
-      return;
-    }
-
-    const result = await deliverBoth(blob);
-    if (result === "cancelled") return;
-    if (channel === "x" && result === "fallback") {
-      window.open(xShareHref(text), "_blank", "noopener,noreferrer");
-    }
-    tracked();
   }
 
   return (
-    <div className="mt-4 grid grid-cols-2 gap-2">
-      {channels.map((channel) => (
+    <div className="mt-4">
+      <p className="text-center text-[11px] leading-5 text-ink-soft">
         <button
-          key={channel.id}
           type="button"
           onClick={() => {
-            void fire(channel.id);
+            void onDownload();
           }}
-          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg border border-line px-2 text-sm hover:border-gold hover:text-gold-deep"
+          className="underline-offset-2 hover:text-ink hover:underline"
         >
-          {channel.id === "system" ? <ShareIcon /> : null}
-          <span>{channel.label}</span>
+          {copy.tonightDownload[language]}
         </button>
-      ))}
+        <span aria-hidden="true"> · </span>
+        <button
+          type="button"
+          onClick={() => {
+            void onCopy();
+          }}
+          className="underline-offset-2 hover:text-ink hover:underline"
+        >
+          {copy.tonightCopyLink[language]}
+        </button>
+      </p>
       {copied ? (
-        <p className="col-span-2 text-[11px] text-ink-soft">{copy.packetCopied[language]}</p>
+        <p className="mt-2 text-center text-[11px] text-ink-soft">
+          {copy.packetCopied[language]}
+        </p>
       ) : null}
       {fallback ? (
-        <p className="col-span-2 text-sm text-gold-deep">{copy.tonightFallback[language]}</p>
+        <p className="mt-2 text-center text-sm text-gold-deep">
+          {copy.tonightFallback[language]}
+        </p>
       ) : null}
     </div>
   );

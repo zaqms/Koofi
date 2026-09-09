@@ -1,4 +1,3 @@
-import type { MetadataRoute } from "next";
 import { listDirectoryShops, listRealShops } from "./catalog";
 import { directoryNeighborhoods } from "./directory";
 import {
@@ -16,6 +15,12 @@ export const SITEMAP_PATH = "/sitemap.xml" as const;
 
 /** Old Bing / GSC submit path. Redirects to SITEMAP_PATH. */
 export const LEGACY_SITEMAP_PATH = "/sitemap/sitemap.xml" as const;
+
+/** Build-time static file served at SITEMAP_PATH. */
+export const PUBLIC_SITEMAP_FILE = "public/sitemap.xml" as const;
+
+/** GSC-safe lastmod. Date only — no ISO datetime / milliseconds. */
+export const SITEMAP_LASTMOD_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 function escapeXml(value: string): string {
   return value
@@ -66,22 +71,23 @@ export function sitemapPublicUrl(): string {
   return `${PUBLIC_SITE_URL}${SITEMAP_PATH}`;
 }
 
-/**
- * MetadataRoute entries for app/sitemap.ts.
- * No alternates / xhtml:link — GSC could not read the prior hreflang urlset.
- */
-export function sitemapMetadataEntries(
-  lastModified = new Date(),
-): MetadataRoute.Sitemap {
-  return listSitemapLocs().map((url) => ({
-    url,
-    lastModified,
-    changeFrequency: "weekly",
-  }));
+/** Date-only lastmod (`YYYY-MM-DD`). MetadataRoute Date objects emit ISO datetimes. */
+export function sitemapLastmodDate(date = new Date()): string {
+  const lastmod = date.toISOString().slice(0, 10);
+  if (!SITEMAP_LASTMOD_PATTERN.test(lastmod)) {
+    throw new Error(`sitemap lastmod must be YYYY-MM-DD, got ${lastmod}`);
+  }
+  return lastmod;
 }
 
-/** Fixture helper for check scripts. Same locs as sitemapMetadataEntries. */
-export function buildSitemapXml(lastmod = new Date().toISOString().slice(0, 10)): string {
+/**
+ * Hand-built urlset for public/sitemap.xml.
+ * Catalog locs only. No xhtml/hreflang. Date-only lastmod.
+ */
+export function buildSitemapXml(lastmod = sitemapLastmodDate()): string {
+  if (!SITEMAP_LASTMOD_PATTERN.test(lastmod)) {
+    throw new Error(`sitemap lastmod must be YYYY-MM-DD, got ${lastmod}`);
+  }
   const urls = listSitemapLocs().flatMap((loc) => [
     "  <url>",
     `    <loc>${escapeXml(loc)}</loc>`,

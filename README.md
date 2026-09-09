@@ -58,7 +58,7 @@ Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh cof
 | `/llms.txt` | Short agent note pointing at `/api/shops` and the MCP URL |
 | `POST/GET /api/mcp` (also `/mcp`) | Public read-only MCP server. Same catalog as `GET /api/shops`. Streamable HTTP, no login |
 
-`robots.txt` allows `/api/shops`, `/api/mcp`, `/mcp`, and `/llms.txt`; other `/api/` routes stay disallowed. The sitemap still lists district + card URLs and adds `/llms.txt`.
+`robots.txt` allows `/api/shops`, `/api/mcp`, `/mcp`, and `/llms.txt`; other `/api/` routes stay disallowed. The sitemap is the static `public/sitemap.xml` (district + card URLs and `/llms.txt`). Regenerate with `npm run generate-sitemap` when the catalog grows — `npm run build` does that automatically.
 
 ### Shop object (API)
 

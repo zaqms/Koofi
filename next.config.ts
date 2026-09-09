@@ -3,8 +3,9 @@ import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "./lib/landing-experiment
 
 const sitemapHeaders = [
   { key: "Content-Type", value: "application/xml; charset=utf-8" },
-  // Static .xml on Vercel can get Content-Disposition: attachment — GSC then
-  // reports "Sitemap could not be read" even when URL Inspection succeeds.
+  // public/sitemap.xml is a static file. Vercel can attach
+  // Content-Disposition: attachment on .xml — GSC then reports
+  // "Sitemap could not be read" even when URL Inspection succeeds.
   { key: "Content-Disposition", value: "inline" },
   {
     key: "Cache-Control",

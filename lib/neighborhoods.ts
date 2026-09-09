@@ -363,6 +363,23 @@ export const NEIGHBORHOODS: Record<
       "Al Hamra",
     ],
   },
+  "al-yarmouk": {
+    id: "al-yarmouk",
+    ar: "اليرموك",
+    en: "Al Yarmouk",
+    aliases: [
+      "اليرموك",
+      "يرموك",
+      "yarmouk",
+      "al yarmouk",
+      "al-yarmouk",
+      "alyarmouk",
+      "Al Yarmouk",
+      "yarmuk",
+      "al yarmuk",
+      "al-yarmuk",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

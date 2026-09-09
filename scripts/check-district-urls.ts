@@ -53,6 +53,8 @@ assert(resolveDistrictSlug("al-rawdah") === "al-rawdah", "al-rawdah resolves");
 assert(resolveDistrictSlug("qurtubah") === "qurtubah", "qurtubah resolves");
 assert(resolveDistrictSlug("an-nazhah") === "an-nazhah", "an-nazhah resolves");
 assert(resolveDistrictSlug("al-hamra") === "al-hamra", "al-hamra resolves");
+assert(resolveDistrictSlug("al-yarmouk") === "al-yarmouk", "al-yarmouk resolves");
+assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
 assert(resolveDistrictSlug("غرناطة") === null, "Arabic label is not a slug");
 
@@ -89,8 +91,9 @@ assert(areas.includes("al-rawdah"), "directory includes al-rawdah");
 assert(areas.includes("qurtubah"), "directory includes qurtubah");
 assert(areas.includes("an-nazhah"), "directory includes an-nazhah");
 assert(areas.includes("al-hamra"), "directory includes al-hamra");
-assert(areas.length === 23, `expected 23 districts, got ${areas.length}`);
-assert(listRealShops().length === 151, `catalog 141→151, got ${listRealShops().length}`);
+assert(areas.includes("al-yarmouk"), "directory includes al-yarmouk");
+assert(areas.length === 24, `expected 24 districts, got ${areas.length}`);
+assert(listRealShops().length === 161, `catalog 151→161, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -438,6 +441,103 @@ assert(
   "drip-al-hamra uses a distinct official place hex",
 );
 
+const yarmouk = filterDirectoryShops(shops, "al-yarmouk");
+assert(yarmouk.length === 10, `al-yarmouk has 10 shops, got ${yarmouk.length}`);
+assert(
+  yarmouk.every((shop) => shop.neighborhood === "al-yarmouk"),
+  "al-yarmouk filter stays in district",
+);
+for (const id of [
+  "silo-cafe-al-yarmouk",
+  "nosound-al-yarmouk",
+  "obo-speciality-al-yarmouk",
+  "shafel-roastery-al-yarmouk",
+  "coffee-address-al-yarmouk",
+  "aleel-roastery-al-yarmouk",
+  "bourbon-al-yarmouk",
+  "ratio-speciality-al-yarmouk",
+  "coffee-zam-al-yarmouk",
+  "nus-talqimah-al-yarmouk",
+]) {
+  assert(
+    yarmouk.some((shop) => shop.id === id),
+    `al-yarmouk includes ${id}`,
+  );
+}
+assert(
+  neighborhoodLabel("al-yarmouk", "ar") === "اليرموك",
+  "al-yarmouk Arabic label",
+);
+assert(
+  neighborhoodLabel("al-yarmouk", "en") === "Al Yarmouk",
+  "al-yarmouk English label",
+);
+assert(
+  districtPath("al-yarmouk", "ar") === "/coffee-shops/al-yarmouk",
+  "AR al-yarmouk coffee-shops path",
+);
+assert(
+  districtPath("al-yarmouk", "en") === "/en/coffee-shops/al-yarmouk",
+  "EN al-yarmouk coffee-shops path",
+);
+
+const yarmoukIntentAsks = [
+  "اليرموك",
+  "يرموك",
+  "yarmouk",
+  "al yarmouk",
+  "al-yarmouk",
+  "alyarmouk",
+  "Al Yarmouk",
+  "yarmuk",
+  "al-yarmuk",
+];
+for (const ask of yarmoukIntentAsks) {
+  const intent = parseIntent(ask);
+  assert(
+    intent.neighborhoods.includes("al-yarmouk"),
+    `parseIntent(${ask}) should hit al-yarmouk`,
+  );
+}
+
+const addressHamra = getShop("coffee-address-al-hamra");
+const addressYarmouk = getShop("coffee-address-al-yarmouk");
+assert(addressHamra, "coffee-address-al-hamra stays in the catalog");
+assert(addressYarmouk, "coffee-address-al-yarmouk is a distinct catalog shop");
+assert(
+  addressYarmouk.mapsShareUrl !== addressHamra.mapsShareUrl,
+  "coffee-address-al-yarmouk uses a distinct official place hex",
+);
+
+const nosoundNarjis = getShop("nosound-al-narjis");
+const nosoundQurtubah = getShop("nosound-qurtubah");
+const nosoundYarmouk = getShop("nosound-al-yarmouk");
+assert(nosoundNarjis && nosoundQurtubah, "other-district NOSOUND pins stay");
+assert(nosoundYarmouk, "nosound-al-yarmouk is a distinct catalog shop");
+assert(
+  nosoundYarmouk.mapsShareUrl !== nosoundNarjis.mapsShareUrl &&
+    nosoundYarmouk.mapsShareUrl !== nosoundQurtubah.mapsShareUrl,
+  "nosound-al-yarmouk uses a distinct official place hex",
+);
+
+const oboQurtubah = getShop("obo-qurtubah");
+const oboYarmouk = getShop("obo-speciality-al-yarmouk");
+assert(oboQurtubah, "obo-qurtubah stays in the catalog");
+assert(oboYarmouk, "obo-speciality-al-yarmouk is a distinct catalog shop");
+assert(
+  oboYarmouk.mapsShareUrl !== oboQurtubah.mapsShareUrl,
+  "obo-speciality-al-yarmouk uses a distinct official place hex",
+);
+
+const shovelYasmin = getShop("shovel-al-yasmin");
+const shafelYarmouk = getShop("shafel-roastery-al-yarmouk");
+assert(shovelYasmin, "shovel-al-yasmin stays in the catalog");
+assert(shafelYarmouk, "shafel-roastery-al-yarmouk is a distinct catalog shop");
+assert(
+  shafelYarmouk.mapsShareUrl !== shovelYasmin.mapsShareUrl,
+  "shafel-roastery-al-yarmouk uses a distinct official place hex",
+);
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
     "november-coffee-an-nazhah,belong-an-nazhah,elite-cup-roasters-an-nazhah",
@@ -464,7 +564,8 @@ const scoutPack: {
     | "al-rawdah"
     | "qurtubah"
     | "an-nazhah"
-    | "al-hamra";
+    | "al-hamra"
+    | "al-yarmouk";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -799,6 +900,94 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/glint.jpg",
     pin: { lat: 24.7874817, lng: 46.7679309 },
+  },
+  {
+    id: "silo-cafe-al-yarmouk",
+    hex: "0x3e2effa506ee527d:0x9ac2482912025e9d",
+    neighborhood: "al-yarmouk",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/silo-cafe-al-yarmouk.png",
+    pin: { lat: 24.8095657, lng: 46.8010424 },
+  },
+  {
+    id: "nosound-al-yarmouk",
+    hex: "0x3e2eff23d99f5617:0xd20e45e1c4986a0d",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/nosound-al-yarmouk.png",
+    pin: { lat: 24.8099494, lng: 46.7794305 },
+  },
+  {
+    id: "obo-speciality-al-yarmouk",
+    hex: "0x3e2eff001111c4b7:0x76241484f7a74634",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8073428, lng: 46.8013679 },
+  },
+  {
+    id: "shafel-roastery-al-yarmouk",
+    hex: "0x3e2effc92f650149:0xe249596174724693",
+    neighborhood: "al-yarmouk",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/shafel-roastery-al-yarmouk.png",
+    pin: { lat: 24.8202118, lng: 46.7890373 },
+  },
+  {
+    id: "coffee-address-al-yarmouk",
+    hex: "0x3e2eff9a4651eac7:0x5fd092bea9a44569",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-al-yarmouk.png",
+    pin: { lat: 24.8155525, lng: 46.7783003 },
+  },
+  {
+    id: "aleel-roastery-al-yarmouk",
+    hex: "0x3e2eff926413248f:0x24fcd150e8760525",
+    neighborhood: "al-yarmouk",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/aleel-roastery-al-yarmouk.png",
+    pin: { lat: 24.79502, lng: 46.7738079 },
+  },
+  {
+    id: "bourbon-al-yarmouk",
+    hex: "0x3e2eff798c639d45:0x375fceb08818b6e5",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bourbon-al-yarmouk.png",
+    pin: { lat: 24.8098125, lng: 46.7783419 },
+  },
+  {
+    id: "ratio-speciality-al-yarmouk",
+    hex: "0x3e2e55f8cd4e1917:0xbc7c44af66996afe",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ratio-speciality-al-yarmouk.png",
+    pin: { lat: 24.8194701, lng: 46.7874456 },
+  },
+  {
+    id: "coffee-zam-al-yarmouk",
+    hex: "0x3e2effc4e747b721:0xffd19d8557198519",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-zam-al-yarmouk.png",
+    pin: { lat: 24.816499, lng: 46.7847336 },
+  },
+  {
+    id: "nus-talqimah-al-yarmouk",
+    hex: "0x3e2effbb7712f5cd:0xf217d75463bb2527",
+    neighborhood: "al-yarmouk",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8036476, lng: 46.7823123 },
   },
 ];
 

@@ -197,6 +197,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   qurtubah: ["ghirnatah", "al-rawdah", "al-mughrizat", "al-safa"],
   "an-nazhah": ["qurtubah", "al-malqa", "al-yasmin", "olaya"],
   "al-hamra": ["ghirnatah", "al-rawdah", "qurtubah", "al-safa"],
+  "al-yarmouk": ["al-hamra", "qurtubah", "al-rawdah", "ghirnatah"],
 };
 
 type DistrictLead = {
@@ -393,6 +394,20 @@ Ten cards is the whole set for now. Open a card if a name fits. Skip it if it do
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Ten cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
   },
+  "al-yarmouk": {
+    lead: `Al Yarmouk (اليرموك) is further out on Riyadh’s east side than الحمراء — toward the Eastern Ring, not the same ten cards as Al Hamra, and not a north-Riyadh or KAFD page. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmouk set on wain.lol.
+
+Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other seven. We don’t rank them.
+
+The count is ten because that’s how many Al Yarmouk places we’ve added — not a claim this حي is a second east-side strip.`,
+    hereIntro: `There are **{count}** cafes from Al Yarmouk on the catalog today:`,
+    hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Yarmouk isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Yarmouk. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "Ten cafes in Al Yarmouk on wain.lol — an east Riyadh list past Al Hamra, including Silo, NOSOUND, and RATIO, each with a Maps link.",
+  },
 };
 
 const CNI_BLURBS: Record<string, string> = {
@@ -415,6 +430,16 @@ const CNI_BLURBS: Record<string, string> = {
   "drip-al-hamra": `This is the **Drip** page on wain.lol for Al Hamra — a distinct الحمراء pin, not the Olaya Drip card. Other Al Hamra names on the catalog sit below if you want to stay in that حي.`,
   "coffee-address-al-hamra": `**Coffee Address** is on the Al Hamra catalog on wain.lol. If this east-belt name is the one you wanted, the card is here. We don’t invent extras; the other الحمراء shops we’ve added are linked below.`,
   "glint-al-hamra": `Al Hamra has **Glint** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Hamra places on wain.lol are linked below.`,
+  "silo-cafe-al-yarmouk": `**Silo Cafe** is on the Al Yarmouk list on wain.lol — further east than الحمراء, not the Al Hamra page. Catalog tags on the card: Roastery. Other اليرموك names sit underneath if this one isn’t the stop.`,
+  "nosound-al-yarmouk": `This is the **NOSOUND** page on wain.lol for Al Yarmouk — a distinct اليرموك pin, not the Narjis or Qurtubah NOSOUND cards. Other Al Yarmouk names on the catalog sit below if you want to stay in that حي.`,
+  "obo-speciality-al-yarmouk": `**OBO Speciality Coffee** is on the Al Yarmouk catalog — its own east-Riyadh pin, not the Qurtubah OBO card. Other اليرموك names we’ve added are linked underneath.`,
+  "shafel-roastery-al-yarmouk": `**Shafel Coffee Roastery** is on the wain.lol list for Al Yarmouk in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Silo and RATIO, its own pin. Hop the other اليرموك cards below if you want a different name.`,
+  "coffee-address-al-yarmouk": `**Coffee Address** is on the Al Yarmouk catalog on wain.lol. This is the اليرموك pin, not the Al Hamra Coffee Address card. We don’t invent extras; the other Al Yarmouk shops we’ve added are linked below.`,
+  "aleel-roastery-al-yarmouk": `Al Yarmouk has **Aleel Roastery** on the catalog. Catalog tags on the card: Roastery. This is the card if you want that name from the list past الحمراء. Siblings from the same حي sit below.`,
+  "bourbon-al-yarmouk": `**Bourbon Speciality Coffee** is one of the Al Yarmouk cafes on wain.lol. If you’re already out toward the Eastern Ring and you want this card, you’re in the right spot. The rest of the Al Yarmouk catalog is linked below.`,
+  "ratio-speciality-al-yarmouk": `**RATIO Speciality Coffee** is on the Al Yarmouk list — a اليرموك card, not folded into Al Hamra next door. The other Al Yarmouk places on the catalog are linked below.`,
+  "coffee-zam-al-yarmouk": `**COFFEE ZAM** is on the wain.lol list for Al Yarmouk in Riyadh. Same neighborhood page as Silo and NOSOUND, its own pin. Hop the other اليرموك cards below if you want a different name.`,
+  "nus-talqimah-al-yarmouk": `Al Yarmouk has **Nus Talqimah** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Yarmouk places on wain.lol are linked below.`,
 };
 
 const CAFE_OPENERS = [

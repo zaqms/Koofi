@@ -1,58 +1,87 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { copy } from "@/lib/copy";
-import { listDirectoryShops } from "@/lib/catalog";
-import { directoryNeighborhoods } from "@/lib/directory";
-import type { HalfwayInput } from "@/lib/meet-halfway";
-import { neighborhoodLabel } from "@/lib/neighborhoods";
-import type { Language, NeighborhoodId } from "@/lib/types";
+import type { HalfwayPinInput } from "@/lib/meet-halfway";
+import { looksLikeSharedPin, parseSharedPin } from "@/lib/shared-pin";
+import { requestVisitorLocation } from "@/lib/visitor-location";
+import type { Language, Pin } from "@/lib/types";
+
+type PinDraft = {
+  text: string;
+  pin?: Pin;
+};
 
 type MeetHalfwayPickerProps = {
   language: Language;
   disabled?: boolean;
-  onSubmit: (locations: HalfwayInput[]) => void;
+  onSubmit: (locations: HalfwayPinInput[]) => void;
 };
 
-function DistrictSelect({
+function PinField({
   id,
   label,
-  value,
+  draft,
   language,
-  areas,
   disabled,
+  showMyPin,
   onChange,
 }: {
   id: string;
   label: string;
-  value: NeighborhoodId | "";
+  draft: PinDraft;
   language: Language;
-  areas: NeighborhoodId[];
   disabled?: boolean;
-  onChange: (next: NeighborhoodId | "") => void;
+  showMyPin?: boolean;
+  onChange: (next: PinDraft) => void;
 }) {
+  async function useMyPin() {
+    const visitor = await requestVisitorLocation({ retry: true });
+    if (visitor.status !== "ready") return;
+    const pin = { lat: visitor.lat, lng: visitor.lng };
+    onChange({
+      text: `${pin.lat.toFixed(5)}, ${pin.lng.toFixed(5)}`,
+      pin,
+    });
+  }
+
   return (
     <label className="block text-start" htmlFor={id}>
       <span className="mb-1 block text-[11px] leading-4 text-ink-soft">
         {label}
       </span>
-      <select
-        id={id}
-        value={value}
-        disabled={disabled}
-        onChange={(event) => {
-          const next = event.target.value;
-          onChange(next === "" ? "" : (next as NeighborhoodId));
-        }}
-        className="min-h-12 w-full rounded-2xl border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-bean disabled:opacity-50"
-      >
-        <option value="">{copy.meetHalfwayPickArea[language]}</option>
-        {areas.map((area) => (
-          <option key={area} value={area}>
-            {neighborhoodLabel(area, language)}
-          </option>
-        ))}
-      </select>
+      <div className="flex items-center gap-2">
+        <input
+          id={id}
+          type="text"
+          inputMode="url"
+          autoComplete="off"
+          spellCheck={false}
+          value={draft.text}
+          disabled={disabled}
+          placeholder={copy.meetHalfwayPinPlaceholder[language]}
+          onChange={(event) => {
+            const text = event.target.value;
+            onChange({
+              text,
+              pin: parseSharedPin(text) ?? undefined,
+            });
+          }}
+          className="min-h-12 min-w-0 flex-1 rounded-2xl border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-bean disabled:opacity-50"
+        />
+        {showMyPin ? (
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => {
+              void useMyPin();
+            }}
+            className="h-12 shrink-0 rounded-2xl border border-line bg-paper px-3 text-xs text-ink disabled:opacity-50"
+          >
+            {copy.meetHalfwayMyPin[language]}
+          </button>
+        ) : null}
+      </div>
     </label>
   );
 }
@@ -62,19 +91,21 @@ export function MeetHalfwayPicker({
   disabled,
   onSubmit,
 }: MeetHalfwayPickerProps) {
-  const areas = useMemo(
-    () => directoryNeighborhoods(listDirectoryShops()),
-    [],
-  );
-  const [me, setMe] = useState<NeighborhoodId | "">("");
-  const [other, setOther] = useState<NeighborhoodId | "">("");
+  const [me, setMe] = useState<PinDraft>({ text: "" });
+  const [other, setOther] = useState<PinDraft>({ text: "" });
+  const ready =
+    (me.pin || looksLikeSharedPin(me.text)) &&
+    (other.pin || looksLikeSharedPin(other.text));
 
   function submit() {
-    if (!me || !other || disabled) return;
-    // v1 UI is exactly two district pickers.
+    if (!ready || disabled) return;
+    // v1 UI is exactly two shared pins.
     // Core ranking is locations: Location[] (N≥2) — add a third/fourth
-    // picker here later for 3–4 friends. Do not pair-hardcode the API.
-    onSubmit([{ district: me }, { district: other }]);
+    // pin field here later for 3–4 friends. Do not pair-hardcode the API.
+    onSubmit([
+      { text: me.text, lat: me.pin?.lat, lng: me.pin?.lng },
+      { text: other.text, lat: other.pin?.lat, lng: other.pin?.lng },
+    ]);
   }
 
   return (
@@ -86,28 +117,27 @@ export function MeetHalfwayPicker({
         {copy.meetHalfwayHint[language]}
       </p>
       <div className="grid gap-2">
-        <DistrictSelect
+        <PinField
           id="meet-halfway-me"
           label={copy.meetHalfwayMe[language]}
-          value={me}
+          draft={me}
           language={language}
-          areas={areas}
           disabled={disabled}
+          showMyPin
           onChange={setMe}
         />
-        <DistrictSelect
+        <PinField
           id="meet-halfway-other"
           label={copy.meetHalfwayOther[language]}
-          value={other}
+          draft={other}
           language={language}
-          areas={areas}
           disabled={disabled}
           onChange={setOther}
         />
       </div>
       <button
         type="button"
-        disabled={disabled || !me || !other}
+        disabled={disabled || !ready}
         onClick={submit}
         className="h-12 w-full rounded-2xl bg-bean text-sm text-foam disabled:opacity-50"
       >

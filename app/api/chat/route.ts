@@ -5,7 +5,7 @@ import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import {
   isMeetHalfwayChipAsk,
-  parseHalfwayInputs,
+  parseHalfwayPinInputs,
   pickHalfwayShops,
   resolveHalfwayLocations,
 } from "@/lib/meet-halfway";
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   }
 
   const landing = landingLanguage(body.landing);
-  const halfwayRows = parseHalfwayInputs(body.halfway);
+  const halfwayRows = parseHalfwayPinInputs(body.halfway);
   const text = typeof body.text === "string" ? body.text.trim() : "";
   if (!text && !halfwayRows) {
     return Response.json({ error: "empty_text" }, { status: 400 });
@@ -52,11 +52,11 @@ export async function POST(request: Request) {
     : [];
 
   if (halfwayRows) {
-    const locations = resolveHalfwayLocations(halfwayRows);
+    const locations = await resolveHalfwayLocations(halfwayRows);
     if (locations.length < 2) {
       return Response.json({
         language: landing,
-        reply: copy.meetHalfwayNeedDistricts[landing],
+        reply: copy.meetHalfwayBadPin[landing],
         thinCatalog: false,
         picks: [],
       });

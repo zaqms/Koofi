@@ -80,7 +80,7 @@ export const NEARBY_CHIP = {
 
 /**
  * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
- * v1 UI is two district pickers; ranking is `locations: Location[]` (N≥2).
+ * v1 UI is two shared pins; ranking is `locations: Location[]` (N≥2).
  */
 export const MEET_HALFWAY_CHIP = {
   id: "meet-halfway",

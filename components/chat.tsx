@@ -16,8 +16,7 @@ import {
 import { readLearnSession } from "@/lib/learn-session";
 import {
   meetHalfwayAskLabel,
-  resolveHalfwayLocations,
-  type HalfwayInput,
+  type HalfwayPinInput,
 } from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
 import { MEET_HALFWAY_CHIP, NEARBY_CHIP, districtPath } from "@/lib/product";
@@ -420,13 +419,10 @@ export function Chat({
     });
   }
 
-  function sendMeetHalfway(locations: HalfwayInput[]) {
+  function sendMeetHalfway(locations: HalfwayPinInput[]) {
     if (inFlightRef.current) return;
 
-    const ask = meetHalfwayAskLabel(
-      resolveHalfwayLocations(locations),
-      landing,
-    );
+    const ask = meetHalfwayAskLabel(landing);
     trackChatQuery({ text: ask, locale: landing, via: "chip" });
 
     const userMessage: UserMessage = {

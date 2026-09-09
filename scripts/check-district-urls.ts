@@ -1447,14 +1447,15 @@ const halfwayPicker = readFileSync(
 );
 assert(
   halfwayPicker.includes("meetHalfwayMe") &&
-    halfwayPicker.includes("directoryNeighborhoods"),
-  "بيننا picker is two live-catalog district selects",
+    halfwayPicker.includes("looksLikeSharedPin") &&
+    halfwayPicker.includes("requestVisitorLocation"),
+  "بيننا picker is two shared pins (Maps URL / lat-lng / geo)",
 );
-assert(halfwayPicker.includes("<select"), "بيننا v1 uses district dropdowns");
+assert(!halfwayPicker.includes("<select"), "بيننا has no district dropdowns");
 assert(
-  !halfwayPicker.includes("requestVisitorLocation") &&
-    !halfwayPicker.includes("shared-pin"),
-  "بيننا v1 has no pin / geo share",
+  halfwayPicker.includes("meetHalfwayMyPin") &&
+    !halfwayPicker.includes("directoryNeighborhoods"),
+  "بيننا asks for pins, not districts",
 );
 
 const homeLanding = readFileSync(

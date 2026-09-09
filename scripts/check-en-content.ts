@@ -22,6 +22,7 @@ import {
   cafeEnTitle,
   cafeOgImagePath,
   CNI_PRIORITY_CAFE_IDS,
+  CONSUMER_PAGE_DROPPED,
   DROPPED_SLOGANS,
   EN_CONTENT_DATE_MODIFIED,
   GATE_CAFE_ID,
@@ -214,6 +215,37 @@ for (const phrase of DROPPED_SLOGANS) {
   ].join("\n");
   assert(!hay.includes(phrase), `dropped slogan leaked: ${phrase}`);
 }
+
+for (const phrase of CONSUMER_PAGE_DROPPED) {
+  assert(
+    !GOLD_MASTER_KAFD.markdown.includes(phrase),
+    `EN kafd About must not pitch ${phrase}`,
+  );
+  assert(
+    !GOLD_MASTER_AL_WURUD.markdown.includes(phrase),
+    `EN wurud About must not pitch ${phrase}`,
+  );
+  assert(
+    !GOLD_MASTER_GATE.markdown.includes(phrase),
+    `EN Gate must not pitch ${phrase}`,
+  );
+}
+assert(
+  GOLD_MASTER_KAFD.markdown.includes("three suggestions"),
+  "EN kafd About stays human-facing",
+);
+assert(
+  GOLD_MASTER_KAFD.markdown.includes("[About](/en/about)"),
+  "EN kafd About still links About",
+);
+assert(
+  GOLD_MASTER_AL_WURUD.markdown.includes("three suggestions"),
+  "EN wurud About stays human-facing",
+);
+assert(
+  GOLD_MASTER_AL_WURUD.markdown.includes("[About](/en/about)"),
+  "EN wurud About still links About",
+);
 
 assert(localeFromPathname("/en/coffee-shops/kafd") === "en", "EN pathname");
 assert(localeFromPathname("/coffee-shops/kafd") === "ar", "AR pathname");
@@ -478,8 +510,59 @@ const arHay = [
   districtArMarkdown("al-narjis"),
   cafeArMarkdown(gate),
 ].join("\n");
-for (const phrase of [...DROPPED_SLOGANS, ...MSA_LEAK, ...DIALECT_LEAK]) {
+const CONSUMER_PAGE_DROPPED_AR = [
+  "/llms.txt",
+  "وإذا تبني أدوات",
+  "مقروء للآلات",
+  "للـ agents",
+] as const;
+for (const phrase of [
+  ...DROPPED_SLOGANS,
+  ...MSA_LEAK,
+  ...DIALECT_LEAK,
+  ...CONSUMER_PAGE_DROPPED_AR,
+]) {
   assert(!arHay.includes(phrase), `AR leak: ${phrase}`);
+}
+assert(
+  GOLD_MASTER_KAFD_AR.markdown.includes("ثلاث اقتراحات"),
+  "AR kafd About stays human-facing",
+);
+assert(
+  GOLD_MASTER_KAFD_AR.markdown.includes("[عن وين](/about)"),
+  "AR kafd About still links About",
+);
+assert(
+  GOLD_MASTER_AL_WURUD_AR.markdown.includes("ثلاث اقتراحات"),
+  "AR wurud About stays human-facing",
+);
+assert(
+  GOLD_MASTER_AL_WURUD_AR.markdown.includes("[عن وين](/about)"),
+  "AR wurud About still links About",
+);
+
+for (const district of liveDistricts) {
+  for (const [label, body] of [
+    ["EN", districtEnMarkdown(district)],
+    ["AR", districtArMarkdown(district)],
+  ] as const) {
+    for (const phrase of [...CONSUMER_PAGE_DROPPED, ...CONSUMER_PAGE_DROPPED_AR]) {
+      assert(
+        !body.includes(phrase),
+        `${label} ${district} must not pitch ${phrase}`,
+      );
+    }
+  }
+}
+for (const shop of listRealShops()) {
+  for (const [label, body] of [
+    ["EN", cafeEnMarkdown(shop)],
+    ["AR", cafeArMarkdown(shop)],
+  ] as const) {
+    for (const phrase of [...CONSUMER_PAGE_DROPPED, ...CONSUMER_PAGE_DROPPED_AR]) {
+      assert(!body.includes(phrase), `${label} ${shop.id} must not pitch ${phrase}`);
+    }
+  }
 }
 
 assert(htmlLang("ar") === "ar" && htmlDir("ar") === "rtl", "AR html lang/dir stay locked");

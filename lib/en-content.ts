@@ -50,6 +50,14 @@ export const DROPPED_SLOGANS = [
   "A link, not an app",
 ] as const;
 
+/** Consumer district/cafe bodies must not pitch the agent catalog. */
+export const CONSUMER_PAGE_DROPPED = [
+  "/llms.txt",
+  "If you build tools or agents",
+  "the public catalog is in",
+  "machine-readable",
+] as const;
+
 export const GATE_FORBIDDEN_CLAIMS = ["parking", "wifi", "wi-fi", "outdoor"] as const;
 
 /** Locked 9 Sep 2026. Do not rewrite. */
@@ -85,7 +93,7 @@ Worth a look if you’re not locked to KAFD:
 
 ## About wain
 
-wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or browse by area like this. We’re not trying to be a review site or a delivery app — just a clean list with Maps when you need directions. More background is on [About](/en/about). If you build tools or agents, the public catalog is in [\`/llms.txt\`](/llms.txt).
+wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or browse by area like this. We’re not trying to be a review site or a delivery app — just a clean list with Maps when you need directions. More background is on [About](/en/about).
 
 We’re Riyadh-only for now. Missing a place you like? You can send a Maps link from the site.`,
 } as const;
@@ -120,7 +128,7 @@ Short list on purpose — soft launch, only what we’ve actually added. Open a 
 
 ## About wain
 
-wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list like this one. We’re not a review site and we’re not delivery. [About](/en/about) has the longer explanation; [\`/llms.txt\`](/llms.txt) is the public catalog if you need it machine-readable.
+wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list like this one. We’re not a review site and we’re not delivery. [About](/en/about) has the longer explanation.
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
 } as const;
@@ -193,7 +201,7 @@ The list is longer than KAFD’s seven and longer than Al Wurud’s four. That�
     hereIntro: `There are **{count}** cafes from Al Narjis on the catalog today:`,
     hereOutro: `Names come from the catalog as we added them. Open a card when one fits, then **Take me there** for the pin and hours on Google Maps. We don’t paste hours onto the page.`,
     nearbyIntro: `If Al Narjis isn’t the stop, these north-Riyadh lists are next door on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Narjis. Not a review site, not delivery. [About](/en/about) has the longer note; [\`/llms.txt\`](/llms.txt) is the public catalog.
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Narjis. Not a review site, not delivery. [About](/en/about) has the longer note.
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Cafes in Al Narjis on wain.lol — a north Riyadh list including Core, CAF LAB, and Repository, each with a Maps link.",
@@ -202,7 +210,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     lead: `Diriyah sits west of the usual north-Riyadh loop — JAX, Bujairi, the older town. This page is the Diriyah set we’ve put on wain.lol so far, not the KAFD office list and not a citywide ranking.`,
     hereIntro: `**{countWordCap}** cafes from Diriyah are on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like Diriyah. [About](/en/about) has the longer explanation; [\`/llms.txt\`](/llms.txt) is the public catalog.
+    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like Diriyah. [About](/en/about) has the longer explanation.
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
@@ -210,7 +218,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     lead: `Al Yasmin is a north Riyadh neighborhood next to Malqa and Narjis. This page is the Yasmin cafes we’ve added to wain.lol so far — a longer list than some, still only what’s actually in the catalog.`,
     hereIntro: `There are **{count}** cafes from Al Yasmin on the list right now:`,
     hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin. We don’t copy hours onto the page.`,
-    about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about). Agents can use [\`/llms.txt\`](/llms.txt).
+    about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
   },
@@ -218,7 +226,7 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
     lead: `Al Mughrizat is one of the thinner lists on wain.lol. We only add what we have — no filler names to make the page look busy.`,
     hereIntro: `There is **{count}** cafe from Al Mughrizat on the catalog today:`,
     hereOutro: `That’s the whole set for now. Open the card, then **Take me there** for the Maps pin and today’s hours.`,
-    about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or open a neighborhood page like this. [About](/en/about). [\`/llms.txt\`](/llms.txt) if you need the catalog machine-readable.
+    about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or open a neighborhood page like this. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
@@ -226,7 +234,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     lead: `Al Rabwah (الربوة) sits east of the Olaya–Wurud stretch. This page is the Rabwah cafes on the catalog today — a neighborhood list, not a “best of.”`,
     hereIntro: `There are **{count}** cafes from Al Rabwah on wain.lol right now:`,
     hereOutro: `Short of inventing extra names. Open a card, then **Take me there** so Maps can show the pin and hours.`,
-    about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list like Al Rabwah. We’re not a review site and we’re not delivery. [About](/en/about); [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list like Al Rabwah. We’re not a review site and we’re not delivery. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
@@ -234,7 +242,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     lead: `Al Sahafah sits on the north side near KAFD, but this is its own list. If you want the financial-district page, that’s [Coffee shops in KAFD](/en/coffee-shops/kafd). This one is the Sahafah cafes we’ve added so far.`,
     hereIntro: `**{countWordCap}** cafes from Al Sahafah are on the catalog today:`,
     hereOutro: `Soft launch length. Open a card when one fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. Three suggestions, or a neighborhood list. [About](/en/about) has the longer note; [\`/llms.txt\`](/llms.txt) is the public catalog.
+    about: `wain.lol is a small Riyadh coffee guide. Three suggestions, or a neighborhood list. [About](/en/about) has the longer note.
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
@@ -242,7 +250,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     lead: `Ghirnatah (غرناطة) is east Riyadh — a different side of town from KAFD. This page is the Granada-area cafes we’ve put on wain.lol so far.`,
     hereIntro: `There are **{count}** cafes from Ghirnatah on the list right now:`,
     hereOutro: `Pick one that sounds right, open the card, and hit **Take me there** when you want the pin. We don’t paste hours here.`,
-    about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about). [\`/llms.txt\`](/llms.txt) for agents.
+    about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
@@ -250,7 +258,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     lead: `Hittin is one of the north-west Riyadh neighborhoods on the catalog. This page is the Hittin places we’ve added to wain.lol so far.`,
     hereIntro: `There are **{count}** cafes from Hittin on the list right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
   },
@@ -258,7 +266,7 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
     lead: `Al Malqa is a north Riyadh neighborhood on wain.lol. Here’s the Malqa set from the catalog — not a ranking, just the names we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Malqa on the catalog today:`,
     hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin. Hours stay on Maps.`,
-    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a list like this. [About](/en/about); [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a list like this. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
@@ -266,7 +274,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     lead: `Al Nakheel’s page is the Nakheel cafes on the list today — a north Riyadh neighborhood, not a citywide ranking.`,
     hereIntro: `**{countWordCap}** cafes from Al Nakheel are on wain.lol right now:`,
     hereOutro: `Short of what we’ve actually added. **Take me there** opens Maps for the pin and today’s hours.`,
-    about: `Browse by area or ask the chat. More on [About](/en/about). [\`/llms.txt\`](/llms.txt) is the public catalog.
+    about: `Browse by area or ask the chat. More on [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
@@ -274,7 +282,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     lead: `Olaya is the central stretch a lot of people already know. This is the Olaya set on wain.lol, each with a Maps link — not a “best cafes in Olaya” essay.`,
     hereIntro: `There are **{count}** cafes from Olaya on the list right now:`,
     hereOutro: `Open a card when a name fits, then **Take me there**. Hours and the exact pin live on Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or browse by area like Olaya. [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or browse by area like Olaya. [About](/en/about).
 
 We’re Riyadh-only for now. Missing a place you like? Send a Maps link from the site.`,
   },
@@ -282,7 +290,7 @@ We’re Riyadh-only for now. Missing a place you like? Send a Maps link from the
     lead: `Sulimaniyah sits beside Olaya and Tahlia. These are the Sulimaniyah cafes on the catalog so far — its own page, not folded into Olaya.`,
     hereIntro: `There are **{count}** cafes from Sulimaniyah on the catalog today:`,
     hereOutro: `Pick one, open the card, and hit **Take me there** when you’re ready. We don’t copy hours onto the page.`,
-    about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list. [About](/en/about); [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
@@ -290,7 +298,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     lead: `Al Rabi is a thin list today — one shop on the catalog. We don’t pad it with names we haven’t added.`,
     hereIntro: `There is **{count}** cafe from Al Rabi on wain.lol right now:`,
     hereOutro: `That’s the set. Open the card, then **Take me there** for the Maps pin.`,
-    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
@@ -298,7 +306,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     lead: `Al Masif has one place on wain.lol right now. Short on purpose — only what we’ve actually added.`,
     hereIntro: `There is **{count}** cafe from Al Masif on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** so Google Maps can show the pin and hours.`,
-    about: `Browse by area or ask the chat. More on [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `Browse by area or ask the chat. More on [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
@@ -306,7 +314,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     lead: `Al Rahmaniyyah is on the catalog with a single shop for now. This page stays that honest.`,
     hereIntro: `There is **{count}** cafe from Al Rahmaniyyah on the list right now:`,
     hereOutro: `**Take me there** opens Maps for the pin. We don’t paste hours here.`,
-    about: `wain.lol helps you find coffee in Riyadh. [About](/en/about); [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol helps you find coffee in Riyadh. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
@@ -314,7 +322,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     lead: `Al Shohda is a small east-Riyadh list — one cafe added so far. Not a clone of Ghirnatah next door.`,
     hereIntro: `There is **{count}** cafe from Al Shohda on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
@@ -322,7 +330,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     lead: `Al Safa is an east Riyadh neighborhood on the list. Here are the Safa places we’ve added — its own page, not folded into Ghirnatah.`,
     hereIntro: `There are **{count}** cafes from Al Safa on wain.lol right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
-    about: `Ask for three suggestions, or browse a neighborhood list. [About](/en/about); [\`/llms.txt\`](/llms.txt).
+    about: `Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
   },
@@ -330,7 +338,7 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
     lead: `Al Rawdah has one shop on the catalog today. That’s the whole page — we don’t invent neighbors to fill the list.`,
     hereIntro: `There is **{count}** cafe from Al Rawdah on the catalog today:`,
     hereOutro: `Open the card, then **Take me there**. Hours stay on Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
@@ -338,7 +346,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     lead: `Qurtubah is an east Riyadh neighborhood with a longer list than most. These are the Qurtubah cafes on wain.lol — still only what’s in the catalog.`,
     hereIntro: `There are **{count}** cafes from Qurtubah on the list right now:`,
     hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin. We don’t copy hours onto the page.`,
-    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like Qurtubah. [About](/en/about); [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like Qurtubah. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
@@ -346,7 +354,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     lead: `An Nuzhah is on the catalog as its own neighborhood list. Here are the places we’ve added so far — not a citywide ranking.`,
     hereIntro: `There are **{count}** cafes from An Nuzhah on the catalog today:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the Maps pin and today’s hours.`,
-    about: `Browse by area or ask the chat. More on [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `Browse by area or ask the chat. More on [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
@@ -432,7 +440,7 @@ function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
     lead: `${name} is one of the Riyadh neighborhoods on wain.lol. This page is the ${name} places we’ve added to the catalog so far.`,
     hereIntro: `There are **{count}** cafes from ${name} on the list right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps. We don’t paste hours onto the page.`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about). [\`/llms.txt\`](/llms.txt).
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
   };

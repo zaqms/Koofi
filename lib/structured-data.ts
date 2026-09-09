@@ -1,5 +1,6 @@
 import { getShop, listDirectoryShops, listRealShops } from "./catalog";
 import { coffeeShopsInDistrict } from "./directory-category";
+import { EN_CONTENT_DATE_MODIFIED } from "./en-content";
 import { listPopularPublicShops } from "./most-popular";
 import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
@@ -36,6 +37,7 @@ export const PUBLIC_SHOP_FIELDS = [
   "sameAs",
   "hasMap",
   "geo",
+  "dateModified",
 ] as const;
 
 const FORBIDDEN_PUBLIC_KEYS = [
@@ -83,6 +85,7 @@ export type CafeOrCoffeeShopJsonLd = {
   sameAs?: string[];
   hasMap?: string;
   geo?: GeoJsonLd;
+  dateModified?: string;
 };
 
 export type PublicShopRecord = {
@@ -98,6 +101,7 @@ export type PublicShopRecord = {
   sameAs?: string[];
   hasMap?: string;
   geo?: GeoJsonLd;
+  dateModified?: string;
 };
 
 export type ItemListJsonLd = {
@@ -106,6 +110,7 @@ export type ItemListJsonLd = {
   name: string;
   url: string;
   numberOfItems: number;
+  dateModified?: string;
   itemListElement: {
     "@type": "ListItem";
     position: number;
@@ -135,6 +140,9 @@ export type WebSiteJsonLd = {
  * Site entity for AI / Knowledge Graph. sameAs is omitted on purpose —
  * no @smarketer, no Platformance/Cali, no invented socials until dedicated
  * wain.lol profiles exist.
+ *
+ * TODO(aeo): add Organization.sameAs only for real public wain.lol profiles
+ * (X / Instagram / LinkedIn) once those accounts exist. Do not invent handles.
  */
 export function organizationJsonLd(
   options?: { includeContext?: boolean },
@@ -263,6 +271,7 @@ export function shopJsonLd(
     ...(sameAs.length ? { sameAs } : {}),
     ...(maps ? { hasMap: maps } : {}),
     ...(geo ? { geo } : {}),
+    dateModified: EN_CONTENT_DATE_MODIFIED,
   });
 }
 
@@ -289,6 +298,7 @@ export function publicShopRecord(
     ...(sameAs.length ? { sameAs } : {}),
     ...(maps ? { hasMap: maps } : {}),
     ...(geo ? { geo } : {}),
+    dateModified: EN_CONTENT_DATE_MODIFIED,
   });
 }
 
@@ -308,6 +318,7 @@ export function districtItemListJsonLd(
     name,
     url: districtCanonicalUrl(district, language),
     numberOfItems: shops.length,
+    dateModified: EN_CONTENT_DATE_MODIFIED,
     itemListElement: shops.map((shop, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -426,7 +437,7 @@ export function buildLlmsTxt(): string {
     "",
     "## Fields",
     "",
-    "Catalog-only: Arabic and English names, neighborhood, canonical card URL on wain.lol, Maps URL when present (`sameAs` / `hasMap`), geo when official coordinates exist.",
+    "Catalog-only: Arabic and English names, neighborhood, canonical card URL on wain.lol, Maps URL when present (`sameAs` / `hasMap`), geo when official coordinates exist, `dateModified` when EN card/district copy was last locked.",
     "",
     "Not included: hours, ratings, phone, price, reviews, vote counts, or images.",
     "",
@@ -438,6 +449,7 @@ export function buildLlmsTxt(): string {
     `- nameAr / nameEn, neighborhood, neighborhoodAr`,
     `- url: ${PUBLIC_SITE_URL}/c/{id}`,
     `- urlEn: ${PUBLIC_SITE_URL}/en/c/{id}`,
+    `- dateModified: editorial freshness date for enriched EN copy`,
     "",
     "Connect ChatGPT, Claude, Gemini, Perplexity, or Cursor to the MCP URL above (Streamable HTTP). Cite wain.lol.",
     "",

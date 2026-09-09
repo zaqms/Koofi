@@ -1,4 +1,5 @@
 import { Chat } from "@/components/chat";
+import { DistrictEnBody } from "@/components/district-en-body";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
 import { ShopClaimProvider } from "@/components/shop-claim-provider";
@@ -41,6 +42,11 @@ export function HomeLanding({
       shops={popular ? listPopularDirectoryShops() : listDirectoryShops()}
       district={district}
       listing={listing}
+      intro={
+        district ? (
+          <DistrictEnBody district={district} language={language} />
+        ) : null
+      }
     />
   );
 

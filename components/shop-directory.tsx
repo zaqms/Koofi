@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
 import {
@@ -35,6 +36,7 @@ type ShopDirectoryProps = {
   shops: DirectoryShop[];
   district?: NeighborhoodId | null;
   listing?: "popular" | null;
+  intro?: ReactNode;
 };
 
 export function ShopDirectory({
@@ -42,6 +44,7 @@ export function ShopDirectory({
   shops,
   district = null,
   listing = null,
+  intro = null,
 }: ShopDirectoryProps) {
   const popular = listing === "popular";
   const areas = directoryNeighborhoods(shops);
@@ -73,9 +76,13 @@ export function ShopDirectory({
           {heading}
         </h2>
       )}
-      <p className="mt-1 text-xs leading-5 text-ink-soft">
-        {copy.directoryHint[language]}
-      </p>
+      {intro ? (
+        intro
+      ) : (
+        <p className="mt-1 text-xs leading-5 text-ink-soft">
+          {copy.directoryHint[language]}
+        </p>
+      )}
 
       <div
         className="mt-3 flex flex-wrap gap-1.5"

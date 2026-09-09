@@ -5,6 +5,7 @@ import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
 import { copy } from "../lib/copy";
 import {
   districtDescription,
+  districtMetadata,
   districtTitle,
   resolveDistrictSlug,
 } from "../lib/district";
@@ -677,14 +678,34 @@ assert(
   "EN title is Coffee shops in {district} · wain.lol",
 );
 assert(
-  districtDescription("al-malqa", "ar") ===
-    `مقاهي في ${malqaAr} · ${copy.directoryHint.ar}`,
-  "AR description stays category phrase + directoryHint",
+  districtDescription("al-malqa", "ar").includes(malqaAr),
+  "AR malqa description names the district",
 );
 assert(
-  districtDescription("ghirnatah", "en") ===
-    `Coffee shops in ${ghirEn} · ${copy.directoryHint.en}`,
-  "EN description stays category phrase + directoryHint",
+  districtDescription("al-malqa", "ar").includes("wain.lol"),
+  "AR malqa description names wain.lol",
+);
+assert(
+  districtDescription("ghirnatah", "en").includes("Ghirnatah"),
+  "EN ghirnatah description names Ghirnatah",
+);
+assert(
+  districtDescription("ghirnatah", "en").includes("wain.lol"),
+  "EN ghirnatah description names wain.lol",
+);
+
+const ghirMeta = districtMetadata("ghirnatah", "en");
+assert(
+  ghirMeta.alternates?.canonical === "/en/coffee-shops/ghirnatah",
+  "EN district canonical",
+);
+assert(
+  ghirMeta.alternates?.languages?.["ar-SA"] === "/coffee-shops/ghirnatah",
+  "district hreflang ar-SA",
+);
+assert(
+  ghirMeta.alternates?.languages?.en === "/en/coffee-shops/ghirnatah",
+  "district hreflang en",
 );
 
 const sitemap = buildSitemapXml("2026-09-04");

@@ -7,12 +7,9 @@ import {
   type PassportSocial,
 } from "@/components/cafe-passport-card";
 import { CardBeen } from "@/components/card-been";
-import { DirectoryUpvote } from "@/components/directory-upvote";
-import { MapsLink } from "@/components/maps-link";
+import { CafePresenceRow } from "@/components/cafe-presence-row";
 import { ShopDistance } from "@/components/shop-distance";
-import { TargetIcon } from "@/components/target-icon";
 import { ShopVisual } from "@/components/shop-visual";
-import { ViralShareActions } from "@/components/viral-share";
 import {
   emptyPassport,
   preferPassportUi,
@@ -24,7 +21,6 @@ import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { woodsPassportFixture } from "@/lib/passport-preview";
 import { officialShopCoords } from "@/lib/place-coords";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
-import { shopMapsHref } from "@/lib/public-url";
 import type { Language, Shop } from "@/lib/types";
 import { vibeLine } from "@/lib/vibe-labels";
 
@@ -180,25 +176,12 @@ function ThinCafeCard({
       </dl>
 
       <div className="mt-5 flex flex-col gap-2">
-        <ViralShareActions
+        <CafePresenceRow
           shop={shop}
           language={language}
           photo={shop.photoUrl ?? shop.logoUrl ?? null}
           variant="thin"
         />
-        <div className="flex items-center gap-2">
-          <DirectoryUpvote shopId={shop.id} language={language} />
-          <MapsLink
-            href={shopMapsHref(shop)}
-            shopId={shop.id}
-            locale={language}
-            source="card"
-            className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-2xl border border-gold px-3 text-sm text-gold-deep hover:bg-passport-wash"
-          >
-            <TargetIcon />
-            <span>{copy.takeMeThere[language]}</span>
-          </MapsLink>
-        </div>
         {site ? (
           <a
             href={site}

@@ -18,7 +18,7 @@ export function DistrictEnBody({
       : districtEnMarkdown(district);
 
   return (
-    <div className="mt-3">
+    <div className="mt-8">
       <EnRichText markdown={markdown} skipHeadingLevel1 />
     </div>
   );

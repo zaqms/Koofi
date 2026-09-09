@@ -76,9 +76,7 @@ export function ShopDirectory({
           {heading}
         </h2>
       )}
-      {intro ? (
-        intro
-      ) : (
+      {intro ? null : (
         <p className="mt-1 text-xs leading-5 text-ink-soft">
           {copy.directoryHint[language]}
         </p>
@@ -141,6 +139,7 @@ export function ShopDirectory({
           <DirectoryCard key={shop.id} shop={shop} language={language} />
         ))}
       </ul>
+      {intro}
     </section>
   );
 }

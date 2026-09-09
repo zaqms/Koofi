@@ -277,6 +277,13 @@ assert(
   readRepo("components/home-landing.tsx").includes("DistrictEnBody"),
   "district body is wired",
 );
+const shopDirectory = readRepo("components/shop-directory.tsx");
+const cafeListMarkup = '<ul className="mt-4 grid gap-2">';
+assert(shopDirectory.includes(cafeListMarkup), "directory renders cafe cards");
+assert(
+  shopDirectory.indexOf(cafeListMarkup) < shopDirectory.lastIndexOf("{intro}"),
+  "district SEO body renders after cafe cards",
+);
 assert(
   !readRepo("components/home-landing.tsx").includes(
     'language === "en" && district',

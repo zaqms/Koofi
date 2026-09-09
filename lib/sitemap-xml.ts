@@ -1,3 +1,4 @@
+import type { MetadataRoute } from "next";
 import { listDirectoryShops, listRealShops } from "./catalog";
 import { directoryNeighborhoods } from "./directory";
 import {
@@ -10,15 +11,11 @@ import {
   PUBLIC_SITE_URL,
 } from "./product";
 
-/** Canonical sitemap URLs for robots.txt and GSC. Apex only. */
-export const SITEMAP_PATHS = ["/sitemap.xml", "/sitemap/sitemap.xml"] as const;
+/** Canonical sitemap for robots.txt and GSC. Apex only. */
+export const SITEMAP_PATH = "/sitemap.xml" as const;
 
-export const SITEMAP_CONTENT_TYPE = "application/xml; charset=utf-8";
-
-const SITEMAP_HEADERS = {
-  "Content-Type": SITEMAP_CONTENT_TYPE,
-  "Cache-Control": "public, max-age=3600",
-};
+/** Old Bing / GSC submit path. Redirects to SITEMAP_PATH. */
+export const LEGACY_SITEMAP_PATH = "/sitemap/sitemap.xml" as const;
 
 function escapeXml(value: string): string {
   return value
@@ -60,22 +57,38 @@ function sitemapPaths(): string[] {
   return paths;
 }
 
+/** Same loc set the live sitemap must emit. Catalog-driven; do not invent URLs. */
+export function listSitemapLocs(): string[] {
+  return sitemapPaths().map((path) => publicLoc(path));
+}
+
+export function sitemapPublicUrl(): string {
+  return `${PUBLIC_SITE_URL}${SITEMAP_PATH}`;
+}
+
 /**
- * Hand-built urlset for Google Search Console.
- * No MetadataRoute, no xhtml/hreflang, http xmlns only, apex https locs.
+ * MetadataRoute entries for app/sitemap.ts.
+ * No alternates / xhtml:link — GSC could not read the prior hreflang urlset.
  */
+export function sitemapMetadataEntries(
+  lastModified = new Date(),
+): MetadataRoute.Sitemap {
+  return listSitemapLocs().map((url) => ({
+    url,
+    lastModified,
+    changeFrequency: "weekly",
+  }));
+}
+
+/** Fixture helper for check scripts. Same locs as sitemapMetadataEntries. */
 export function buildSitemapXml(lastmod = new Date().toISOString().slice(0, 10)): string {
-  const urls = sitemapPaths().flatMap((path) => {
-    const loc = publicLoc(path);
-    if (!loc) return [];
-    return [
-      "  <url>",
-      `    <loc>${escapeXml(loc)}</loc>`,
-      `    <lastmod>${escapeXml(lastmod)}</lastmod>`,
-      "    <changefreq>weekly</changefreq>",
-      "  </url>",
-    ];
-  });
+  const urls = listSitemapLocs().flatMap((loc) => [
+    "  <url>",
+    `    <loc>${escapeXml(loc)}</loc>`,
+    `    <lastmod>${escapeXml(lastmod)}</lastmod>`,
+    "    <changefreq>weekly</changefreq>",
+    "  </url>",
+  ]);
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
@@ -84,15 +97,4 @@ export function buildSitemapXml(lastmod = new Date().toISOString().slice(0, 10))
     "</urlset>",
     "",
   ].join("\n");
-}
-
-export function sitemapPublicUrls(): string[] {
-  return SITEMAP_PATHS.map((path) => `${PUBLIC_SITE_URL}${path}`);
-}
-
-export function sitemapXmlResponse(): Response {
-  return new Response(buildSitemapXml(), {
-    status: 200,
-    headers: SITEMAP_HEADERS,
-  });
 }

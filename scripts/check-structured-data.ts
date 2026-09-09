@@ -14,7 +14,14 @@ import {
   faqPageJsonLd,
 } from "../lib/faq";
 import { districtPath, mostPopularPath } from "../lib/product";
-import { buildSitemapXml } from "../lib/sitemap-xml";
+import {
+  buildSitemapXml,
+  LEGACY_SITEMAP_PATH,
+  listSitemapLocs,
+  SITEMAP_PATH,
+  sitemapMetadataEntries,
+  sitemapPublicUrl,
+} from "../lib/sitemap-xml";
 import {
   buildLlmsTxt,
   districtItemListJsonLd,
@@ -150,6 +157,8 @@ assert(
 );
 
 const sitemap = buildSitemapXml("2026-09-04");
+const sitemapLocs = listSitemapLocs();
+const sitemapEntries = sitemapMetadataEntries(new Date("2026-09-04T00:00:00.000Z"));
 assert(sitemap.includes("https://wain.lol/llms.txt<"), "sitemap lists /llms.txt");
 assert(
   sitemap.includes(`https://wain.lol/c/${sample.id}<`),
@@ -173,6 +182,21 @@ assert(
 );
 assert(!sitemap.includes("/n/"), "sitemap must not revive /n/");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
+assert(
+  sitemapLocs.length === sitemapEntries.length,
+  "MetadataRoute sitemap keeps the same loc count as the catalog urlset",
+);
+assert(
+  sitemapEntries.every((entry) => sitemapLocs.includes(entry.url)),
+  "MetadataRoute sitemap must not invent locs",
+);
+assert(
+  sitemapEntries.every((entry) => !("alternates" in entry)),
+  "MetadataRoute sitemap must omit xhtml/hreflang alternates",
+);
+assert(sitemapPublicUrl() === "https://wain.lol/sitemap.xml", "canonical sitemap URL");
+assert(SITEMAP_PATH === "/sitemap.xml", "canonical sitemap path");
+assert(LEGACY_SITEMAP_PATH === "/sitemap/sitemap.xml", "legacy sitemap path");
 
 const robots = readRepo("app/robots.ts");
 assert(robots.includes('"/api/shops"'), "robots allows /api/shops");
@@ -181,6 +205,25 @@ assert(robots.includes('"/mcp"'), "robots allows /mcp");
 assert(robots.includes('"/api/"'), "robots still disallows other /api/");
 assert(robots.includes('"/ops/"'), "robots disallows /ops/");
 assert(robots.includes('"/owner/edit"'), "robots disallows owner edit");
+assert(robots.includes("sitemapPublicUrl()"), "robots advertises the canonical sitemap helper");
+assert(!robots.includes("sitemapPublicUrls"), "robots no longer lists both sitemap URLs");
+assert(!robots.includes(LEGACY_SITEMAP_PATH), "robots must not advertise the legacy sitemap");
+
+const sitemapRoute = readRepo("app/sitemap.ts");
+assert(sitemapRoute.includes("sitemapMetadataEntries"), "app/sitemap.ts uses catalog locs");
+assert(!sitemapRoute.includes("alternates"), "app/sitemap.ts has no hreflang alternates");
+assert(!sitemapRoute.includes("force-dynamic"), "app/sitemap.ts is not force-dynamic");
+
+const nextConfig = readRepo("next.config.ts");
+assert(
+  nextConfig.includes('source: "/sitemap/sitemap.xml"') &&
+    nextConfig.includes('destination: "/sitemap.xml"'),
+  "legacy /sitemap/sitemap.xml 301s to /sitemap.xml",
+);
+assert(
+  nextConfig.includes('value: "inline"'),
+  "sitemap Content-Disposition is inline so GSC can read it",
+);
 
 const cafeCard = readRepo("components/cafe-card.tsx");
 assert(

@@ -61,9 +61,21 @@ export const CONSUMER_PAGE_DROPPED = [
 /** Cafe blurbs must not lecture about the thin card / pasted hours. */
 export const CAFE_META_DROPPED = [
   "We keep the card simple",
-  "No menu, ratings, or opening times pasted here",
   "Looking for a specialty coffee stop in Al Wurud",
   "quieter streets beside KAFD",
+] as const;
+
+/** Consumer cafe/district bodies must not narrate what we don’t paste. */
+export const PASTE_LECTURE_DROPPED = [
+  "We don’t paste hours onto the page",
+  "We don't paste hours onto the page",
+  "We don’t paste hours here",
+  "We don't paste hours here",
+  "We don’t copy hours onto the page",
+  "We don't copy hours onto the page",
+  "we don’t copy those onto the page",
+  "we don't copy those onto the page",
+  "opening times pasted",
 ] as const;
 
 export const GATE_FORBIDDEN_CLAIMS = ["parking", "wifi", "wi-fi", "outdoor"] as const;
@@ -88,7 +100,7 @@ There are **seven** cafes from KAFD on the list right now:
 - [Toby's Estate (KAFD)](/en/c/tobys-estate-kafd)
 - [Trieste](/en/c/trieste-kafd)
 
-Pick one that sounds right, open the card, and hit **Take me there** when you’re ready to go. Hours and the exact pin live on Google Maps — we don’t copy those onto the page, so you always see what’s current.
+Pick one that sounds right, open the card, and hit **Take me there** when you’re ready to go. Hours and the exact pin live on Google Maps.
 
 ## Other neighborhoods nearby
 
@@ -125,7 +137,7 @@ KAFD is right next door if you need that list instead: [Coffee shops in KAFD](/e
 - [Joe Barrel Coffee](/en/c/joe-barrel-al-wurud)
 - [The Gate Specialty Coffee](/en/c/the-gate-specialty-coffee-al-wurud)
 
-Short list on purpose — soft launch, only what we’ve actually added. Open a card when one fits, then **Take me there** for the pin and hours on Google Maps. We don’t paste hours onto the page.
+Short list on purpose — soft launch, only what we’ve actually added. Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.
 
 ## Other neighborhoods nearby
 
@@ -207,7 +219,7 @@ A few of the names people ask about first are [CORE COFFEE & ROASTERY](/en/c/cor
 
 The list is longer than KAFD’s seven and longer than Al Wurud’s four. That’s just how many Al Narjis places we’ve actually added — not a claim that this neighborhood is “the” coffee district. Open a card if a name fits. Skip it if it doesn’t.`,
     hereIntro: `There are **{count}** cafes from Al Narjis on the catalog today:`,
-    hereOutro: `Names come from the catalog as we added them. Open a card when one fits, then **Take me there** for the pin and hours on Google Maps. We don’t paste hours onto the page.`,
+    hereOutro: `Names come from the catalog as we added them. Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
     nearbyIntro: `If Al Narjis isn’t the stop, these north-Riyadh lists are next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Narjis. Not a review site, not delivery. [About](/en/about) has the longer note.
 
@@ -225,7 +237,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   "al-yasmin": {
     lead: `Al Yasmin is a north Riyadh neighborhood next to Malqa and Narjis. This page is the Yasmin cafes we’ve added to wain.lol so far — a longer list than some, still only what’s actually in the catalog.`,
     hereIntro: `There are **{count}** cafes from Al Yasmin on the list right now:`,
-    hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin. We don’t copy hours onto the page.`,
+    hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin.`,
     about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
@@ -257,7 +269,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   ghirnatah: {
     lead: `Ghirnatah (غرناطة) is east Riyadh — a different side of town from KAFD. This page is the Granada-area cafes we’ve put on wain.lol so far.`,
     hereIntro: `There are **{count}** cafes from Ghirnatah on the list right now:`,
-    hereOutro: `Pick one that sounds right, open the card, and hit **Take me there** when you want the pin. We don’t paste hours here.`,
+    hereOutro: `Pick one that sounds right, open the card, and hit **Take me there** when you want the pin.`,
     about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
@@ -297,7 +309,7 @@ We’re Riyadh-only for now. Missing a place you like? Send a Maps link from the
   sulimaniyah: {
     lead: `Sulimaniyah sits beside Olaya and Tahlia. These are the Sulimaniyah cafes on the catalog so far — its own page, not folded into Olaya.`,
     hereIntro: `There are **{count}** cafes from Sulimaniyah on the catalog today:`,
-    hereOutro: `Pick one, open the card, and hit **Take me there** when you’re ready. We don’t copy hours onto the page.`,
+    hereOutro: `Pick one, open the card, and hit **Take me there** when you’re ready.`,
     about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
@@ -321,7 +333,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-rahmaniyyah": {
     lead: `Al Rahmaniyyah is on the catalog with a single shop for now. This page stays that honest.`,
     hereIntro: `There is **{count}** cafe from Al Rahmaniyyah on the list right now:`,
-    hereOutro: `**Take me there** opens Maps for the pin. We don’t paste hours here.`,
+    hereOutro: `**Take me there** opens Maps for the pin.`,
     about: `wain.lol helps you find coffee in Riyadh. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
@@ -353,7 +365,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   qurtubah: {
     lead: `Qurtubah is an east Riyadh neighborhood with a longer list than most. These are the Qurtubah cafes on wain.lol — still only what’s in the catalog.`,
     hereIntro: `There are **{count}** cafes from Qurtubah on the list right now:`,
-    hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin. We don’t copy hours onto the page.`,
+    hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin.`,
     about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like Qurtubah. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
@@ -447,7 +459,7 @@ function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
   return {
     lead: `${name} is one of the Riyadh neighborhoods on wain.lol. This page is the ${name} places we’ve added to the catalog so far.`,
     hereIntro: `There are **{count}** cafes from ${name} on the list right now:`,
-    hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps. We don’t paste hours onto the page.`,
+    hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
@@ -497,7 +509,7 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
   const hereIntro = fillCount(copy.hereIntro ?? hereDefault, count);
   const hereOutro =
     copy.hereOutro ??
-    `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps. We don’t paste hours onto the page.`;
+    `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`;
   const nearbyIntro = copy.nearbyIntro ?? "";
   const nearby = nearbyListMarkdown(district);
 

@@ -24,6 +24,7 @@ import {
   CAFE_META_DROPPED,
   CNI_PRIORITY_CAFE_IDS,
   CONSUMER_PAGE_DROPPED,
+  PASTE_LECTURE_DROPPED,
   DROPPED_SLOGANS,
   EN_CONTENT_DATE_MODIFIED,
   GATE_CAFE_ID,
@@ -549,6 +550,15 @@ const CAFE_META_DROPPED_AR = [
   "تدور قهوة مختصة بالورود",
   "ما نلصق منيو",
 ] as const;
+const PASTE_LECTURE_DROPPED_AR = [
+  "ما نلصق الساعات",
+  "ما ننسخ الساعات",
+  "ما ننسخها هنا",
+  "ما فيه منيو",
+] as const;
+const NO_MENU_LECTURE = ["No menu, ratings, or ", "opening times pasted here"].join(
+  "",
+);
 for (const phrase of [
   ...DROPPED_SLOGANS,
   ...MSA_LEAK,
@@ -575,32 +585,54 @@ assert(
 );
 
 for (const district of liveDistricts) {
-  for (const [label, body] of [
-    ["EN", districtEnMarkdown(district)],
-    ["AR", districtArMarkdown(district)],
-  ] as const) {
-    for (const phrase of [...CONSUMER_PAGE_DROPPED, ...CONSUMER_PAGE_DROPPED_AR]) {
-      assert(
-        !body.includes(phrase),
-        `${label} ${district} must not pitch ${phrase}`,
-      );
-    }
+  const en = districtEnMarkdown(district);
+  const ar = districtArMarkdown(district);
+  for (const phrase of [
+    ...CONSUMER_PAGE_DROPPED,
+    ...CONSUMER_PAGE_DROPPED_AR,
+    ...PASTE_LECTURE_DROPPED,
+    NO_MENU_LECTURE,
+  ]) {
+    assert(!en.includes(phrase), `EN ${district} must not pitch ${phrase}`);
+  }
+  for (const phrase of [
+    ...CONSUMER_PAGE_DROPPED,
+    ...CONSUMER_PAGE_DROPPED_AR,
+    ...PASTE_LECTURE_DROPPED_AR,
+    ...CAFE_META_DROPPED_AR,
+  ]) {
+    assert(!ar.includes(phrase), `AR ${district} must not pitch ${phrase}`);
   }
 }
 for (const shop of listRealShops()) {
   const en = cafeEnMarkdown(shop);
   const ar = cafeArMarkdown(shop);
-  for (const phrase of [...CONSUMER_PAGE_DROPPED, ...CONSUMER_PAGE_DROPPED_AR]) {
-    assert(!en.includes(phrase), `EN ${shop.id} must not pitch ${phrase}`);
-    assert(!ar.includes(phrase), `AR ${shop.id} must not pitch ${phrase}`);
-  }
-  for (const phrase of CAFE_META_DROPPED) {
+  for (const phrase of [
+    ...CONSUMER_PAGE_DROPPED,
+    ...CONSUMER_PAGE_DROPPED_AR,
+    ...CAFE_META_DROPPED,
+    ...PASTE_LECTURE_DROPPED,
+    NO_MENU_LECTURE,
+  ]) {
     assert(!en.includes(phrase), `EN ${shop.id} must not lecture ${phrase}`);
   }
-  for (const phrase of CAFE_META_DROPPED_AR) {
+  for (const phrase of [
+    ...CONSUMER_PAGE_DROPPED,
+    ...CONSUMER_PAGE_DROPPED_AR,
+    ...CAFE_META_DROPPED_AR,
+    ...PASTE_LECTURE_DROPPED_AR,
+  ]) {
     assert(!ar.includes(phrase), `AR ${shop.id} must not lecture ${phrase}`);
   }
 }
+assert(
+  !GOLD_MASTER_KAFD.markdown.includes(NO_MENU_LECTURE),
+  "EN kafd gold master has no menu-paste lecture",
+);
+assert(
+  !GOLD_MASTER_GATE.markdown.includes(NO_MENU_LECTURE),
+  "EN Gate gold master has no menu-paste lecture",
+);
 
 assert(htmlLang("ar") === "ar" && htmlDir("ar") === "rtl", "AR html lang/dir stay locked");
 

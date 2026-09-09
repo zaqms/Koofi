@@ -2459,6 +2459,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01edb9650413:0x2222fd5eaa07f25c",
       "pin": { "lat": 24.7579051, "lng": 46.814571 },
+      "logoUrl": "/logos/taco-cup-al-nahdah-ig.jpg",
       "popularityIndex": 47.8,
       "example": false
     },

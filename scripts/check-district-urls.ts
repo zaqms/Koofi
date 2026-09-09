@@ -1156,6 +1156,7 @@ const scoutPack: {
     neighborhood: "al-nahdah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/taco-cup-al-nahdah-ig.jpg",
     pin: { lat: 24.7579051, lng: 46.814571 },
   },
   {

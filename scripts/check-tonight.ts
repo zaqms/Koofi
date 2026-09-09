@@ -284,5 +284,13 @@ assert(image.includes("ImageResponse"), "card is minted as an image");
 assert(image.includes("TONIGHT_WATERMARK"), "watermark is wain.lol");
 assert(image.includes("TONIGHT_WATERMARK_PX"), "watermark size is locked");
 assert(image.includes("الليلة"), "AR-first eyebrow on the card");
+assert(image.includes("objectFit: \"cover\""), "hero is full-bleed cover");
+assert(image.includes("TONIGHT_IMAGE_SIZE.height"), "hero fills the 9:16 canvas");
+assert(!image.includes("980"), "no black half / cropped top slab");
+assert(image.includes("#f3ead8"), "empty fallback is cream, not black");
+assert(image.includes("linear-gradient(to top"), "scrim keeps gold/cream type readable");
+  assert(viral.includes("aspect-[9/16]"), "composer preview is 9:16 photo-forward");
+  assert(!viral.includes("aspect-[4/5]"), "preview is not a split card");
+  assert(!viral.includes("max-h-80"), "minted preview must show the full 9:16 card");
 
 console.log("check-tonight: ok");

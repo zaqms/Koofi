@@ -47,6 +47,7 @@ export async function GET(request: Request, context: ImageContext) {
   const hero = photo ? new URL(photo, url.origin).toString() : null;
   const district = tonightDistrict(shop, language);
   const eyebrow = language === "ar" ? "الليلة" : "tonight";
+  const align = language === "ar" ? "flex-end" : "flex-start";
 
   const [arabic, arabicBold, serif] = await Promise.all([
     loadFont(
@@ -79,82 +80,81 @@ export async function GET(request: Request, context: ImageContext) {
           width: TONIGHT_IMAGE_SIZE.width,
           height: TONIGHT_IMAGE_SIZE.height,
           display: "flex",
-          flexDirection: "column",
-          background: "#1b1814",
+          position: "relative",
+          background: "#f3ead8",
           color: "#fffaf3",
           fontFamily: arabic ? "PlexArabic" : "sans-serif",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            position: "relative",
-            width: TONIGHT_IMAGE_SIZE.width,
-            height: 980,
-            background: "#1b1814",
-            overflow: "hidden",
-          }}
-        >
-          {hero ? (
-            // Cafe hero / logo only. Same-origin paths.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={hero}
-              alt=""
-              width={TONIGHT_IMAGE_SIZE.width}
-              height={980}
-              style={{ objectFit: "cover" }}
-            />
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                width: "100%",
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#e4c37a",
-                fontSize: 80,
-                letterSpacing: 8,
-              }}
-            >
-              {TONIGHT_WATERMARK}
-            </div>
-          )}
+        {hero ? (
+          // Full-bleed cafe hero / logo. Never a black empty half.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={hero}
+            alt=""
+            width={TONIGHT_IMAGE_SIZE.width}
+            height={TONIGHT_IMAGE_SIZE.height}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: TONIGHT_IMAGE_SIZE.width,
+              height: TONIGHT_IMAGE_SIZE.height,
+              objectFit: "cover",
+            }}
+          />
+        ) : (
           <div
             style={{
               display: "flex",
               position: "absolute",
+              top: 0,
               left: 0,
-              right: 0,
-              bottom: 0,
-              padding: "28px 48px",
-              background:
-                "linear-gradient(to top, rgba(27,24,20,0.88) 0%, rgba(27,24,20,0) 100%)",
-              color: "#e4c37a",
-              fontSize: 32,
-              letterSpacing: 3,
-              justifyContent: language === "ar" ? "flex-end" : "flex-start",
+              width: TONIGHT_IMAGE_SIZE.width,
+              height: TONIGHT_IMAGE_SIZE.height,
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#f3ead8",
+              color: "#8d6b38",
+              fontSize: 80,
+              letterSpacing: 8,
+              fontFamily: serif ? "PassportSerif" : "serif",
             }}
           >
             {TONIGHT_WATERMARK}
           </div>
-        </div>
+        )}
+        <div
+          style={{
+            display: "flex",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 280,
+            background:
+              "linear-gradient(to bottom, rgba(27,24,20,0.55) 0%, rgba(27,24,20,0) 100%)",
+          }}
+        />
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            flex: 1,
-            padding: "56px 64px 52px",
-            background: "#1b1814",
-            alignItems: language === "ar" ? "flex-end" : "flex-start",
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: "72px 56px 56px",
+            background:
+              "linear-gradient(to top, rgba(27,24,20,0.92) 0%, rgba(27,24,20,0.62) 58%, rgba(27,24,20,0) 100%)",
+            alignItems: align,
           }}
         >
           <div
             style={{
               display: "flex",
-              color: "#b0894a",
-              fontSize: 28,
+              color: "#e4c37a",
+              fontSize: 30,
               letterSpacing: language === "ar" ? 0 : 6,
               textTransform: "uppercase",
             }}
@@ -164,11 +164,12 @@ export async function GET(request: Request, context: ImageContext) {
           <div
             style={{
               display: "flex",
-              marginTop: 22,
+              marginTop: 18,
               fontFamily: serif ? "PassportSerif" : "serif",
-              fontSize: 64,
+              fontSize: 62,
               fontWeight: 700,
-              lineHeight: 1.15,
+              lineHeight: 1.12,
+              color: "#fffaf3",
             }}
           >
             {shop.nameEn}
@@ -176,9 +177,9 @@ export async function GET(request: Request, context: ImageContext) {
           <div
             style={{
               display: "flex",
-              marginTop: 14,
-              fontSize: 40,
-              lineHeight: 1.35,
+              marginTop: 10,
+              fontSize: 38,
+              lineHeight: 1.3,
               color: "#f3ead8",
             }}
           >
@@ -187,12 +188,13 @@ export async function GET(request: Request, context: ImageContext) {
           <div
             style={{
               display: "flex",
-              marginTop: 28,
-              border: "1px solid #b0894a",
+              marginTop: 22,
+              border: "1.5px solid #e4c37a",
               borderRadius: 999,
               padding: "10px 22px",
-              color: "#b0894a",
+              color: "#e4c37a",
               fontSize: 26,
+              background: "rgba(27,24,20,0.35)",
             }}
           >
             {language === "ar" ? satoriArabicLine(district) : district}
@@ -201,9 +203,9 @@ export async function GET(request: Request, context: ImageContext) {
             <div
               style={{
                 display: "flex",
-                marginTop: 36,
+                marginTop: 28,
                 fontSize: 34,
-                lineHeight: 1.45,
+                lineHeight: 1.4,
                 color: "#fffaf3",
               }}
             >
@@ -213,15 +215,11 @@ export async function GET(request: Request, context: ImageContext) {
           <div
             style={{
               display: "flex",
-              marginTop: "auto",
-              width: "100%",
-              borderTop: "2px solid #e4c37a",
-              paddingTop: 22,
+              marginTop: 36,
               color: "#e4c37a",
               fontSize: TONIGHT_WATERMARK_PX,
               letterSpacing: 3,
               fontFamily: serif ? "PassportSerif" : "serif",
-              justifyContent: language === "ar" ? "flex-end" : "flex-start",
             }}
           >
             {TONIGHT_WATERMARK}

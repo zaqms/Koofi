@@ -203,12 +203,12 @@ function TonightSheet({
       </p>
       <p className="mt-1 text-sm text-ink-soft">{copy.tonightEphemeral[language]}</p>
       {imageUrl ? (
-        // Minted story card preview.
+        // Full minted 9:16 card — contain, never crop the overlay/watermark.
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={imageUrl}
           alt=""
-          className="mt-4 max-h-80 w-full rounded-2xl object-cover"
+          className="mx-auto mt-4 max-h-[min(46vh,22rem)] w-auto rounded-2xl"
         />
       ) : (
         <TonightPreview shop={shop} language={language} photo={photo} line={cleanLine} />
@@ -328,7 +328,7 @@ function InviteSheet({
         <img
           src={imageUrl}
           alt=""
-          className="max-h-80 w-full rounded-2xl object-cover"
+          className="mx-auto max-h-[min(46vh,22rem)] w-auto rounded-2xl"
         />
       ) : (
         <TonightPreview shop={shop} language={language} photo={photo} line={inviteLine} />
@@ -376,8 +376,8 @@ function ShareSheet({
       <section
         className={
           variant === "passport"
-            ? "relative z-10 w-full max-w-md overflow-hidden rounded-[28px] border border-gold/35 bg-foam px-5 py-5 text-ink shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
-            : "relative z-10 w-full max-w-md overflow-hidden rounded-[28px] border border-line bg-foam px-5 py-5 text-ink shadow-[0_12px_40px_rgba(28,20,16,0.12)]"
+            ? "relative z-10 max-h-[min(92dvh,52rem)] w-full max-w-md overflow-y-auto rounded-[28px] border border-gold/35 bg-foam px-5 py-5 text-ink shadow-[0_18px_50px_rgba(0,0,0,0.35)]"
+            : "relative z-10 max-h-[min(92dvh,52rem)] w-full max-w-md overflow-y-auto rounded-[28px] border border-line bg-foam px-5 py-5 text-ink shadow-[0_12px_40px_rgba(28,20,16,0.12)]"
         }
         dir={dir}
         lang={language}
@@ -418,30 +418,29 @@ function TonightPreview({
   const area = tonightDistrict(shop, language);
   const hero = photo ?? shop.photoUrl ?? shop.logoUrl;
   return (
-    <div className="mt-4 overflow-hidden rounded-2xl bg-charcoal text-foam">
-      <div className="aspect-[4/5] bg-charcoal">
-        {hero ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={hero} alt="" className="size-full object-cover" />
-        ) : (
-          <div className="flex size-full items-center justify-center font-serif text-2xl tracking-[0.16em] text-gold">
-            {TONIGHT_WATERMARK}
-          </div>
-        )}
-      </div>
-      <div className="px-4 py-4">
+    <div className="relative mx-auto mt-4 aspect-[9/16] w-full max-w-[13rem] overflow-hidden rounded-2xl bg-passport-wash text-foam">
+      {hero ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={hero} alt="" className="absolute inset-0 size-full object-cover" />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center font-serif text-2xl tracking-[0.16em] text-gold-deep">
+          {TONIGHT_WATERMARK}
+        </div>
+      )}
+      <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-charcoal/50 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal/90 via-charcoal/55 to-transparent px-4 pb-4 pt-16">
         <p className="text-[11px] tracking-[0.14em] text-gold uppercase">
           {copy.tonightEyebrow[language]}
         </p>
-        <p className="mt-1 font-serif text-xl font-semibold">{shop.nameEn}</p>
-        <p className="mt-1 text-sm text-foam/80" dir="rtl">
+        <p className="mt-1 font-serif text-xl font-semibold text-foam">{shop.nameEn}</p>
+        <p className="mt-1 text-sm text-passport-wash" dir="rtl">
           {shop.nameAr}
         </p>
-        <p className="mt-3 inline-flex rounded-full border border-gold px-2.5 py-0.5 text-[11px] text-gold">
+        <p className="mt-3 inline-flex rounded-full border border-gold bg-charcoal/40 px-2.5 py-0.5 text-[11px] text-gold">
           {area}
         </p>
-        {line ? <p className="mt-3 text-sm leading-6">{line}</p> : null}
-        <p className="mt-4 border-t border-gold/50 pt-3 font-serif text-base tracking-[0.16em] text-gold">
+        {line ? <p className="mt-3 text-sm leading-6 text-foam">{line}</p> : null}
+        <p className="mt-4 font-serif text-base tracking-[0.16em] text-gold">
           {TONIGHT_WATERMARK}
         </p>
       </div>

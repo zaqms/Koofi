@@ -58,6 +58,14 @@ export const CONSUMER_PAGE_DROPPED = [
   "machine-readable",
 ] as const;
 
+/** Cafe blurbs must not lecture about the thin card / pasted hours. */
+export const CAFE_META_DROPPED = [
+  "We keep the card simple",
+  "No menu, ratings, or opening times pasted here",
+  "Looking for a specialty coffee stop in Al Wurud",
+  "quieter streets beside KAFD",
+] as const;
+
 export const GATE_FORBIDDEN_CLAIMS = ["parking", "wifi", "wi-fi", "outdoor"] as const;
 
 /** Locked 9 Sep 2026. Do not rewrite. */
@@ -137,7 +145,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
 export const GOLD_MASTER_GATE = {
   title: `The Gate Specialty Coffee · Al Wurud · Riyadh · ${PRODUCT_NAME}`,
   meta: "The Gate Specialty Coffee in Al Wurud on wain.lol — specialty coffee and desserts near KAFD; open Maps for the pin and hours.",
-  markdown: `Looking for a specialty coffee stop in Al Wurud — the quieter streets beside KAFD? **The Gate Specialty Coffee** is on our Riyadh list for that neighborhood. In Al Wurud’s Al Olaya Mall area, reviews often mention specialty brews, cheesecake and other desserts, friendly service, and a calm, aesthetic spot to unwind. We keep the card simple: name, Al Wurud, and **Take me there** so Google Maps can show the pin and today’s hours. No menu, ratings, or opening times pasted here.
+  markdown: `**The Gate Specialty Coffee** is on wain.lol’s Al Wurud list, in the Al Olaya Mall area. Reviews often mention specialty brews, cheesecake and other desserts, friendly service, and a calm, aesthetic spot to unwind.
 
 Others on the same Al Wurud list:
 
@@ -361,15 +369,15 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 };
 
 const CNI_BLURBS: Record<string, string> = {
-  "core-coffee-and-roastery-al-narjis": `Looking for a coffee stop in Al Narjis on the north side of Riyadh? **CORE COFFEE & ROASTERY** is on our list for that neighborhood — same Al Narjis page as CAF LAB and Repository, not the KAFD list. We keep the card simple: name, Al Narjis, and **Take me there** so Google Maps can show the pin and today’s hours. No menu, ratings, or opening times pasted here. If you want another name from the same north-Riyadh list, the siblings are below.`,
-  "caf-lab-al-narjis": `**CAF LAB** is one of the Al Narjis places on wain.lol. If you’re already up north and you just want this card, you’re in the right spot — not a KAFD page, not a citywide ranking. The page stays thin: name, district, and **Take me there** for the pin. Hours live on Google Maps, not here. Other Al Narjis names on the catalog are linked underneath.`,
-  "repository-coffee-roasters-al-narjis": `**Repository Coffee Roasters** is on the Al Narjis catalog with the other north-Riyadh names. This card is the wain.lol entry for that shop — not a review, not a menu, not a copy of the Core or CAF LAB cards. Open **Take me there** when you want the Maps pin and today’s hours. The rest of the Al Narjis list is linked below if you want to hop.`,
-  "jazel-speciality-cafe-diriyah": `**Jazel speciality cafe** is on the Diriyah list on wain.lol — west of the usual north-Riyadh loop, not folded into Olaya or KAFD. The card is the name, Diriyah, and **Take me there**. We don’t paste hours, ratings, or a menu onto the page. Other Diriyah places we’ve added sit on the same neighborhood list if this one isn’t the stop.`,
-  "qirat-al-yasmin": `**Qirat – Specialty Coffee** is one of the Al Yasmin cafes on wain.lol. If you’re browsing that north-Riyadh neighborhood next to Malqa and Narjis, this is the card. Name, Al Yasmin, **Take me there** for the pin. Hours stay on Google Maps. The other Yasmin names on the catalog are linked below — we don’t invent extras.`,
-  "cred-al-mughrizat": `Al Mughrizat is a short list on wain.lol, and **CRED** is the cafe on it today. We only add what we have, so this page is that one card — name, Al Mughrizat, and **Take me there** so Google Maps can show the pin and today’s hours. No menu, ratings, or opening times pasted here. If you wanted a longer neighborhood list, the district page points at nearby areas we actually cover. There’s no sibling cafe on this list yet.`,
-  "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Al Rabwah catalog — east of the Olaya–Wurud stretch, its own neighborhood page. The card stays simple: name, Al Rabwah, **Take me there** for the Google Maps pin. We don’t copy hours or ratings here. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
-  "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the Al Sahafah list, next to KAFD but not on the KAFD page. This is the wain.lol card: name, Al Sahafah, and **Take me there** when you want the pin. Hours live on Google Maps. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
-  "archi-ghirnatah": `**Archi Granada** is on the Ghirnatah list — east Riyadh, a different side of town from KAFD. The card is name, Ghirnatah, and **Take me there**. No menu, ratings, or opening times pasted here. Other Granada-area places on wain.lol are linked below if you want to stay on that side of the city.`,
+  "core-coffee-and-roastery-al-narjis": `Looking for a coffee stop in Al Narjis on the north side of Riyadh? **CORE COFFEE & ROASTERY** is on our list for that neighborhood — same Al Narjis page as CAF LAB and Repository, not the KAFD list. If you want another name from the same north-Riyadh list, the siblings are below.`,
+  "caf-lab-al-narjis": `**CAF LAB** is one of the Al Narjis places on wain.lol. If you’re already up north and you just want this shop, you’re in the right spot — not a KAFD page, not a citywide ranking. Other Al Narjis names on the catalog are linked underneath.`,
+  "repository-coffee-roasters-al-narjis": `**Repository Coffee Roasters** is on the Al Narjis catalog with the other north-Riyadh names — same list as Core and CAF LAB, its own card. The rest of the Al Narjis list is linked below if you want to hop.`,
+  "jazel-speciality-cafe-diriyah": `**Jazel speciality cafe** is on the Diriyah list on wain.lol — west of the usual north-Riyadh loop, not folded into Olaya or KAFD. Other Diriyah places we’ve added sit on the same neighborhood list if this one isn’t the stop.`,
+  "qirat-al-yasmin": `**Qirat – Specialty Coffee** is one of the Al Yasmin cafes on wain.lol. If you’re browsing that north-Riyadh neighborhood next to Malqa and Narjis, this is the card. The other Yasmin names on the catalog are linked below — we don’t invent extras.`,
+  "cred-al-mughrizat": `Al Mughrizat is a short list on wain.lol, and **CRED** is the cafe on it today. We only add what we have. If you wanted a longer neighborhood list, the district page points at nearby areas we actually cover. There’s no sibling cafe on this list yet.`,
+  "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Al Rabwah catalog — east of the Olaya–Wurud stretch, its own neighborhood page. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
+  "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the Al Sahafah list, next to KAFD but not on the KAFD page. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
+  "archi-ghirnatah": `**Archi Granada** is on the Ghirnatah list — east Riyadh, a different side of town from KAFD. Other Granada-area places on wain.lol are linked below if you want to stay on that side of the city.`,
 };
 
 const CAFE_OPENERS = [
@@ -534,7 +542,7 @@ function defaultCafeBlurb(shop: Shop): string {
     vibe.length > 0 && vibe[0] !== "Coffee"
       ? ` Catalog tags on the card: ${vibe.join(", ")}.`
       : "";
-  return `${opener(shop.nameEn, district)}${vibeLine} We keep the card simple: name, ${district}, and **Take me there** so Google Maps can show the pin and today’s hours. No menu, ratings, or opening times pasted here. If you want the rest of that neighborhood, the district page is linked below.`;
+  return `${opener(shop.nameEn, district)}${vibeLine} If you want the rest of that neighborhood, the district page is linked below.`;
 }
 
 function cafeSiblingsMarkdown(shop: Shop): string {

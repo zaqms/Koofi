@@ -21,6 +21,7 @@ import {
   cafeEnMeta,
   cafeEnTitle,
   cafeOgImagePath,
+  CAFE_META_DROPPED,
   CNI_PRIORITY_CAFE_IDS,
   CONSUMER_PAGE_DROPPED,
   DROPPED_SLOGANS,
@@ -191,7 +192,7 @@ for (const id of CNI_PRIORITY_CAFE_IDS) {
   assert(!blurbs.has(blurb), `${id} blurb must be unique`);
   blurbs.add(blurb);
   const words = wordCount(blurb);
-  assert(words >= 80 && words <= 220, `${id} blurb word count ${words}`);
+  assert(words >= 50 && words <= 220, `${id} blurb word count ${words}`);
 }
 
 function districtPathFor(id: string): string {
@@ -384,7 +385,32 @@ for (const claim of GATE_FORBIDDEN_CLAIMS_AR) {
   );
 }
 assert(
-  GOLD_MASTER_GATE_AR.markdown.includes("قهوة مختصة"),
+  !GOLD_MASTER_GATE.markdown.includes("Looking for a specialty coffee stop"),
+  "EN Gate dropped the quieter-streets opener",
+);
+assert(
+  !GOLD_MASTER_GATE.markdown.includes("We keep the card simple"),
+  "EN Gate dropped card-simple meta",
+);
+assert(
+  GOLD_MASTER_GATE.markdown.includes("Al Olaya Mall"),
+  "EN Gate keeps Al Olaya Mall",
+);
+assert(
+  GOLD_MASTER_GATE.markdown.includes("cheesecake"),
+  "EN Gate keeps cheesecake theme",
+);
+assert(
+  !GOLD_MASTER_GATE_AR.markdown.includes("تدور قهوة مختصة بالورود"),
+  "AR Gate dropped the quieter-streets opener",
+);
+assert(
+  !GOLD_MASTER_GATE_AR.markdown.includes("البطاقة بسيطة"),
+  "AR Gate dropped card-simple meta",
+);
+assert(
+  GOLD_MASTER_GATE_AR.markdown.includes("القهوة المختصة") ||
+    GOLD_MASTER_GATE_AR.markdown.includes("قهوة مختصة"),
   "AR Gate keeps specialty-coffee theme",
 );
 assert(
@@ -488,7 +514,7 @@ for (const id of CNI_PRIORITY_CAFE_IDS) {
   assert(!arBlurbs.has(blurb), `${id} AR blurb must be unique`);
   arBlurbs.add(blurb);
   const words = wordCount(blurb);
-  assert(words >= 60 && words <= 220, `${id} AR blurb word count ${words}`);
+  assert(words >= 40 && words <= 220, `${id} AR blurb word count ${words}`);
 }
 
 const extraAr = listRealShops()
@@ -515,6 +541,13 @@ const CONSUMER_PAGE_DROPPED_AR = [
   "وإذا تبني أدوات",
   "مقروء للآلات",
   "للـ agents",
+] as const;
+const CAFE_META_DROPPED_AR = [
+  "البطاقة بسيطة",
+  "ما فيه منيو ولا تقييم",
+  "أوقات دوام منسوخة",
+  "تدور قهوة مختصة بالورود",
+  "ما نلصق منيو",
 ] as const;
 for (const phrase of [
   ...DROPPED_SLOGANS,
@@ -555,13 +588,17 @@ for (const district of liveDistricts) {
   }
 }
 for (const shop of listRealShops()) {
-  for (const [label, body] of [
-    ["EN", cafeEnMarkdown(shop)],
-    ["AR", cafeArMarkdown(shop)],
-  ] as const) {
-    for (const phrase of [...CONSUMER_PAGE_DROPPED, ...CONSUMER_PAGE_DROPPED_AR]) {
-      assert(!body.includes(phrase), `${label} ${shop.id} must not pitch ${phrase}`);
-    }
+  const en = cafeEnMarkdown(shop);
+  const ar = cafeArMarkdown(shop);
+  for (const phrase of [...CONSUMER_PAGE_DROPPED, ...CONSUMER_PAGE_DROPPED_AR]) {
+    assert(!en.includes(phrase), `EN ${shop.id} must not pitch ${phrase}`);
+    assert(!ar.includes(phrase), `AR ${shop.id} must not pitch ${phrase}`);
+  }
+  for (const phrase of CAFE_META_DROPPED) {
+    assert(!en.includes(phrase), `EN ${shop.id} must not lecture ${phrase}`);
+  }
+  for (const phrase of CAFE_META_DROPPED_AR) {
+    assert(!ar.includes(phrase), `AR ${shop.id} must not lecture ${phrase}`);
   }
 }
 

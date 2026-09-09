@@ -21,6 +21,7 @@ import {
   parseHalfwayPinInputs,
   pickHalfwayShops,
   halfwayCandidatePool,
+  halfwayResultsFooterKind,
   locationsCentroid,
 } from "../lib/meet-halfway";
 import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
@@ -84,6 +85,22 @@ assert(
 assert(
   meetHalfwayReply({ shopCount: 3, language: "ar" }) === "ثلاث قهاوي بينكم",
   "full page stays ثلاث قهاوي بينكم",
+);
+assert(
+  halfwayResultsFooterKind({ halfwayMore: true, paged: false }) === "more",
+  "leftover band shows غيرها on first page",
+);
+assert(
+  halfwayResultsFooterKind({ halfwayMore: false, paged: false }) === null,
+  "band of exactly 3 hides غيرها and does not paint empty copy",
+);
+assert(
+  halfwayResultsFooterKind({ halfwayMore: false, paged: true }) === "exhausted",
+  "empty copy only after paging the leftover to zero",
+);
+assert(
+  halfwayResultsFooterKind({}) === null,
+  "non-بيننا messages have no results footer",
 );
 
 const ui = readFileSync(join(repoRoot, "components/meet-halfway-picker.tsx"), "utf8");
@@ -284,13 +301,31 @@ const threeSeed = threeInvite ? decodeHalfwayInviteId(threeInvite) : null;
 assert(threeSeed !== null && threeSeed.locations.length === 3, "invite payload is N locations, not a pair");
 
 const chatUi = readFileSync(join(repoRoot, "components/chat.tsx"), "utf8");
+const resultsFooter = readFileSync(
+  join(repoRoot, "components/meet-halfway-results-footer.tsx"),
+  "utf8",
+);
 assert(
   chatUi.includes("sharePackPacket") && chatUi.includes("inviteHalfwayFriend"),
   "invite uses the same system share family as وين؟ / packet",
 );
 assert(
-  chatUi.includes("meetHalfwayMore") && chatUi.includes("halfwayMore"),
-  "بيننا results offer غيرها from the same band",
+  chatUi.includes("MeetHalfwayResultsFooter") &&
+    chatUi.includes("halfwayResultsFooterKind") &&
+    resultsFooter.includes("meetHalfwayMore") &&
+    resultsFooter.includes("meetHalfwayNoMore"),
+  "local two-pin and /h/ guest share one بيننا results footer",
+);
+assert(
+  chatUi.includes("joinHalfwayInvite") &&
+    chatUi.includes("[...halfwayInvite.locations, row]") &&
+    chatUi.includes("halfwayLocations") &&
+    chatUi.includes("halfway: { locations, more }"),
+  "guest /h/ results keep locations on the message so غيرها survives remount",
+);
+assert(
+  !chatUi.includes("halfwayLocationsRef.current ?"),
+  "غيرها is not gated on a remount-volatile ref",
 );
 assert(
   chat.includes("halfwayMore") && chat.includes("meetHalfwayReply"),
@@ -312,8 +347,15 @@ assert(
 );
 const invitePage = readFileSync(join(repoRoot, "app/h/[id]/page.tsx"), "utf8");
 assert(
-  invitePage.includes("halfwayInvite") && invitePage.includes('kind="halfway"'),
-  "friend lands on /h/{id} with guest pin only",
+  invitePage.includes("halfwayInvite") &&
+    invitePage.includes('kind="halfway"') &&
+    invitePage.includes("<Chat"),
+  "friend lands on /h/{id} with the same Chat results footer",
+);
+assert(
+  !resultsFooter.includes("thinCatalog") &&
+    !resultsFooter.includes("copy.thinCatalog"),
+  "shared footer is not the thin-catalog disclaimer",
 );
 assert(
   existsSync(join(repoRoot, "app/api/halfway/invite/route.ts")),

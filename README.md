@@ -11,6 +11,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Two landings, same chat: **`/`** is Arabic (`اي قهوة ناوي تروح؟`, Arabic chips, RTL). **`/en`** is English (`Which coffee you heading to?`, English chips, LTR). Header switches with `EN` / `عربي`. Not a marketing site. Not both languages stacked in one bubble.
 - Ten vibe chips under the opener, one label each. Tapping still returns **three** pick cards. Chips stay available above the composer so they can try another vibe without starting a new conversation. Typing the other language still flips the reply. WhatsApp has no chip UI; typing the same Arabic or English phrase maps the same way.
 - They can also type a vibe or a neighborhood. A follow-up like `أبعد عن العليا` / `away from Olaya` gets another spoken line and a new three from the remaining catalog — not a general chat.
+- **District chat → top 3.** Typing a live حي (EN / AR / aliases / common typos — `حطين`, `Hittin`, `al narjis`, `النرجس`, `Olaya`, `العليا`, …) returns **exactly three** in-district cafe cards ranked by the locked popularity index: `0.6 × log-norm(Maps reviewCount) + 0.4 × log-norm(IG followers)`. Ranking uses the baked `popularityIndex` (same index as Most Popular). Missing IG followers are 0 / bottom — the catalog has no durable `igFollowers` field; do not scrape Instagram. A chip links to `/coffee-shops/{district-slug}` (EN: `/en/coffee-shops/{slug}`) for the full district list. Soft Places vibe matching / “ثلاث الليلة” stays parked. Izdihar / الازدهار is not a live catalog district — do not invent it.
 - Koofi sends **exactly three** cafe picks when it can. It does not collapse to a single shop card when three shops exist. A short spoken line sits above the cards (xAI chat completions, `grok-4.6`). The share unit is still the cards: name, one-line why, and a Google Maps pin. For a real shop the Maps click is Amjad’s `mapsShareUrl` short link, not a reconstructed lat/lng search. People forward that pin to go. The `/c/[id]` card is optional and secondary. If `XAI_API_KEY` is missing or the model call fails, the spoken line falls back to today’s heading copy. Cards still send.
 - Riyadh only. Neighborhoods: Hittin (حطين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود), Al Rabwah (الربوة), Al Rabi (الربيع), Al Masif (المصيف), Al Rahmaniyyah (الرحمانية).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
@@ -165,6 +166,7 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | Event | When | Parameters |
 | --- | --- | --- |
 | `chat_query` | A user ask is submitted through the composer (`send`) | `query_text` (exact typed / submitted text), `locale`, `via` (`typed` / `chip`), `text_length` |
+| `district_match` | A typed ask resolved to a live district and returned in-district picks | `district_slug`, `locale` |
 | `chip_tap` | A vibe or Nearby chip is tapped | `chip_id`, `chip_label`, `locale` |
 | `district_select` | A list حي filter is chosen | `district_id`, `district_ar`, `district_en`, `locale` |
 | `three_pick_shown` | Three pick cards render | `locale`, `shop_ids`, optional `pack_id` |
@@ -177,6 +179,29 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `cafe_unvote` | Directory-list ▲ undo on a shop | `shop_id`, `locale` |
 
 `chat_query` is the search event. Cafe and neighborhood text is intended — that is the product question. It fires once per `send()` (composer submit or a chip label that is actually posted to `/api/chat`). It does **not** fire for the locked opener, for chip UI that is only displayed, or for Nearby (Nearby never hits `/api/chat`). A 400ms dedupe key `chat_query:{via}:{text}` covers retries and remounts.
+
+`district_match` fires after `/api/chat` returns a district-named three (or thin in-district set). Parameters are `district_slug` (catalog حي id, e.g. `hittin`) and `locale` (`ar` / `en` from the landing). District three-picks still fire the existing `three_pick_shown` and `maps_click` events from the same cards. Dedupe key `district_match:{slug}:{locale}`.
+
+### District chat (GTM)
+
+In container **GTM-W3TM4552**:
+
+1. Data Layer Variable `DL - district_slug` → `district_slug` (reuse `DL - locale` if it already exists).
+2. Trigger `CE - district_match` → Custom Event `district_match`.
+3. GA4 Event tag `GA4 - district_match` → Event Name `district_match` → params `district_slug` = `{{DL - district_slug}}`, `locale` = `{{DL - locale}}` → trigger `CE - district_match`.
+4. Preview: type `حطين` on `/` and `Hittin` / `al narjis` on `/en`. Confirm `chat_query` still fires, then `district_match` with the slug, then `three_pick_shown` when the three cards render. Maps pin still sends `maps_click`.
+
+In GA4 register `district_slug` as an event-scoped custom dimension if you want Explorations.
+
+### IG followers (catalog)
+
+No live shop has a durable Instagram follower count in `catalog.json`. District ranking therefore uses baked `popularityIndex` (the locked 0.6 Maps / 0.4 IG formula). Missing IG is 0 / bottom. Do not scrape Instagram for this path. Places `reviewCount` on cards is display-only — not a second ranker. The Most Popular chip formula is unchanged.
+
+```bash
+npx tsx scripts/check-district-chat.ts
+npx tsx scripts/check-chat-query.ts
+npx tsx scripts/check-plg.ts
+```
 
 Repo code cannot create GTM tags. In container **GTM-W3TM4552**:
 

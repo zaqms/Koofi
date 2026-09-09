@@ -113,6 +113,11 @@ export type PickReason = {
   why: string;
 };
 
+export type DistrictMatch = {
+  district_slug: NeighborhoodId;
+  locale: Language;
+};
+
 export type PickResult = {
   language: Language;
   picks: PickReason[];
@@ -120,4 +125,6 @@ export type PickResult = {
   askedNeighborhoods: NeighborhoodId[];
   avoidedNeighborhoods: NeighborhoodId[];
   askedMoments: MomentTag[];
+  /** Set when the ask named a live district. All picks stay in that حي. */
+  matchedDistrict?: NeighborhoodId;
 };

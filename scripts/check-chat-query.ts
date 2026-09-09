@@ -1,4 +1,9 @@
-import { chatQueryParams, trackChatQuery } from "../lib/track";
+import {
+  chatQueryParams,
+  districtMatchParams,
+  trackChatQuery,
+  trackDistrictMatch,
+} from "../lib/track";
 import { LOCKED_OPENER, LOCKED_OPENER_EN } from "../lib/product";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -81,6 +86,26 @@ try {
     stub.dataLayer.every((row) => row.query_text !== LOCKED_OPENER_EN),
     "opener English is not a chat_query",
   );
+
+  const match = districtMatchParams({
+    district_slug: "hittin",
+    locale: "ar",
+  });
+  assert(match?.district_slug === "hittin", "district_match slug");
+  assert(match?.locale === "ar", "district_match locale");
+  assert(
+    districtMatchParams({ district_slug: "  ", locale: "en" }) === null,
+    "blank slug is not a match",
+  );
+
+  assert(
+    trackDistrictMatch({ district_slug: "al-narjis", locale: "en" }),
+    "district_match tracks",
+  );
+  const matches = stub.dataLayer.filter((row) => row.event === "district_match");
+  assert(matches.length === 1, `expected 1 district_match, got ${matches.length}`);
+  assert(matches[0]?.district_slug === "al-narjis", "district_match slug on dataLayer");
+  assert(matches[0]?.locale === "en", "district_match locale on dataLayer");
 } finally {
   if (previousWindow === undefined) {
     delete (globalThis as { window?: unknown }).window;

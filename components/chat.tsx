@@ -8,15 +8,19 @@ import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
+import {
+  COFFEE_SHOPS_CATEGORY,
+  categoryDistrictHeading,
+} from "@/lib/directory-category";
 import { readLearnSession } from "@/lib/learn-session";
 import { nearbyChatPicks } from "@/lib/nearby";
-import { NEARBY_CHIP } from "@/lib/product";
-import { trackChatQuery, trackEvent } from "@/lib/track";
+import { NEARBY_CHIP, districtPath } from "@/lib/product";
+import { trackChatQuery, trackDistrictMatch, trackEvent } from "@/lib/track";
 import {
   requestVisitorLocation,
   useVisitorLocation,
 } from "@/lib/visitor-location";
-import type { Language } from "@/lib/types";
+import type { DistrictMatch, Language } from "@/lib/types";
 
 export type ChatRestore = {
   packId: string;
@@ -32,6 +36,7 @@ type AssistantMessage = {
   text: string;
   picks?: ChatPick[];
   thinCatalog?: boolean;
+  districtMatch?: DistrictMatch;
 };
 
 type UserMessage = {
@@ -48,6 +53,7 @@ type ChatResponse = {
   thinCatalog: boolean;
   picks: ChatPick[];
   awaitingMaps?: boolean;
+  districtMatch?: DistrictMatch;
 };
 
 type PendingResult =
@@ -184,6 +190,9 @@ export function Chat({
         const waitForMaps = Boolean(result.data.awaitingMaps);
         setComposerLanguage(result.data.language);
         setAwaitingMaps(waitForMaps);
+        if (result.data.districtMatch) {
+          trackDistrictMatch(result.data.districtMatch);
+        }
         setMessages((current) => {
           const next: Message[] = [
             ...current,
@@ -194,6 +203,7 @@ export function Chat({
               text: result.data.reply,
               picks: result.data.picks,
               thinCatalog: result.data.thinCatalog,
+              districtMatch: result.data.districtMatch,
             },
           ];
           threads[threadKey] = {
@@ -538,6 +548,18 @@ export function Chat({
                   }
                   mapsSource="pack"
                 />
+              ) : null}
+              {message.districtMatch ? (
+                <Link
+                  href={districtPath(message.districtMatch.district_slug, landing)}
+                  className="inline-flex rounded-full border border-line bg-foam px-2.5 py-1 text-[11px] leading-5 text-ink hover:border-bean hover:bg-paper-deep"
+                >
+                  {categoryDistrictHeading(
+                    COFFEE_SHOPS_CATEGORY,
+                    message.districtMatch.district_slug,
+                    landing,
+                  )}
+                </Link>
               ) : null}
               {message.thinCatalog ? (
                 <p className="text-xs leading-5 text-ink-soft">

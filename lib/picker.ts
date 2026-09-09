@@ -1,12 +1,17 @@
 import { listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
+import { extractPrimaryDistrict } from "./district-dictionary";
+import { rankInDistrict } from "./district-rank";
+import { coffeeShopsInDistrict } from "./directory-category";
 import { haversineKm } from "./distance";
 import { neighborhoodTightShops } from "./neighborhood-tight";
 import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import { parseIntent } from "./parse-intent";
 import {
+  PUBLIC_SITE_URL,
+  districtPath,
   exampleBadge,
   isExampleShop,
   shopDisplayName,
@@ -54,6 +59,24 @@ function pickReasonsForPopular(
   moments: MomentTag[],
 ): PickReason[] {
   const ranked = dedupeSameBrand(rankByPopularity(shops)).slice(0, TARGET_PICKS);
+  const whys = uniqueWhyLines(ranked, language, moments);
+  return ranked.map((shop, index) => ({
+    shop,
+    why: whys[index] ?? shop.neighborhoodAr,
+  }));
+}
+
+/** District-named ask: top 3 in that حي only, baked popularityIndex. */
+function pickReasonsForDistrict(
+  shops: Shop[],
+  district: NeighborhoodId,
+  language: Language,
+  moments: MomentTag[],
+): PickReason[] {
+  const ranked = dedupeSameBrand(rankInDistrict(shops, district)).slice(
+    0,
+    TARGET_PICKS,
+  );
   const whys = uniqueWhyLines(ranked, language, moments);
   return ranked.map((shop, index) => ({
     shop,
@@ -226,6 +249,29 @@ export function pickCafes(input: {
   const citywide = catalog.filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
   );
+  const matchedDistrict = extractPrimaryDistrict(input.text);
+
+  if (matchedDistrict) {
+    const inDistrict = citywide.filter(
+      (shop) => shop.neighborhood === matchedDistrict,
+    );
+    const picks = pickReasonsForDistrict(
+      inDistrict,
+      matchedDistrict,
+      language,
+      intent.moments,
+    );
+    return {
+      language,
+      picks,
+      thinCatalog:
+        inDistrict.length < TARGET_PICKS || picks.length < TARGET_PICKS,
+      askedNeighborhoods: intent.neighborhoods,
+      avoidedNeighborhoods: intent.avoidedNeighborhoods,
+      askedMoments: intent.moments,
+      matchedDistrict,
+    };
+  }
 
   if (named.length > 0) {
     const pinned = named.filter((shop) => !avoided.has(shop.neighborhood));
@@ -342,6 +388,13 @@ export function formatReply(result: PickResult, spoken?: string): string {
     lines.push(`   ${pick.why}`);
     lines.push(`   ${copy.maps[language]}: ${shopMapsHref(pick.shop)}`);
   });
+
+  if (result.matchedDistrict) {
+    const name = neighborhoodLabel(result.matchedDistrict, language);
+    const href = `${PUBLIC_SITE_URL}${districtPath(result.matchedDistrict, language)}`;
+    lines.push("");
+    lines.push(`${coffeeShopsInDistrict(name, language)}: ${href}`);
+  }
 
   if (thinCatalog) {
     lines.push("");

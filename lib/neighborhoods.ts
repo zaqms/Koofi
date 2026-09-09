@@ -380,6 +380,24 @@ export const NEIGHBORHOODS: Record<
       "al-yarmuk",
     ],
   },
+  "al-nahdah": {
+    id: "al-nahdah",
+    ar: "النهضة",
+    en: "Al Nahdah",
+    aliases: [
+      "النهضة",
+      "نهضة",
+      "nahdah",
+      "al nahdah",
+      "al-nahdah",
+      "alnahdah",
+      "Al Nahdah",
+      "nahda",
+      "al nahda",
+      "al-nahda",
+      "alnahda",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

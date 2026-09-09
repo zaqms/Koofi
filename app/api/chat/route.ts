@@ -5,7 +5,7 @@ import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
-import type { Language } from "@/lib/types";
+import type { DistrictMatch, Language } from "@/lib/types";
 import { speakForPicks } from "@/lib/voice";
 
 export const runtime = "nodejs";
@@ -97,10 +97,15 @@ export async function POST(request: Request) {
     shopIds: picks.map((pick) => pick.id),
   });
 
+  const districtMatch: DistrictMatch | undefined = result.matchedDistrict
+    ? { district_slug: result.matchedDistrict, locale: landing }
+    : undefined;
+
   return Response.json({
     language: result.language,
     reply,
     thinCatalog: result.thinCatalog,
     picks,
+    ...(districtMatch ? { districtMatch } : {}),
   });
 }

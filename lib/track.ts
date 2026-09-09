@@ -16,6 +16,7 @@ export type AnalyticsEventName =
   | "cafe_unvote"
   | "chip_tap"
   | "district_select"
+  | "district_match"
   | "chat_query"
   | "tonight_card_open"
   | "tonight_card_mint"
@@ -42,6 +43,7 @@ export type AnalyticsParams = {
   district_id?: string;
   district_ar?: string;
   district_en?: string;
+  district_slug?: string;
   query_text?: string;
   via?: ChatQueryVia;
   channel?: ViralShareChannel;
@@ -94,6 +96,28 @@ export function trackChatQuery(input: {
   if (!params || !params.query_text) return false;
   trackEvent("chat_query", params, {
     dedupeKey: `chat_query:${params.via}:${params.query_text}`,
+  });
+  return true;
+}
+
+/** Fire district_match when a typed ask resolved to a live حي. */
+export function districtMatchParams(input: {
+  district_slug: string;
+  locale: Language;
+}): AnalyticsParams | null {
+  const district_slug = input.district_slug.trim();
+  if (!district_slug) return null;
+  return { district_slug, locale: input.locale };
+}
+
+export function trackDistrictMatch(input: {
+  district_slug: string;
+  locale: Language;
+}): boolean {
+  const params = districtMatchParams(input);
+  if (!params || !params.district_slug) return false;
+  trackEvent("district_match", params, {
+    dedupeKey: `district_match:${params.district_slug}:${params.locale}`,
   });
   return true;
 }

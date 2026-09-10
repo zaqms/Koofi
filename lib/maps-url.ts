@@ -8,6 +8,14 @@ const MAPS_HOSTS = new Set([
 ]);
 
 const URL_IN_TEXT = /https?:\/\/[^\s<>"']+/gi;
+const PREVIEW_HREF =
+  /(?:href|src)="((?:https?:\/\/(?:www\.)?google\.com)?\/maps\/preview\/place[^"]+)"/i;
+const HTML_LIMIT = 48_000;
+
+const MAPS_FETCH_HEADERS = {
+  Accept: "text/html,application/json;q=0.9,*/*;q=0.8",
+  "User-Agent": "Mozilla/5.0",
+} as const;
 
 export function isAllowedMapsHost(host: string): boolean {
   return MAPS_HOSTS.has(host.toLowerCase());
@@ -30,7 +38,10 @@ export function isMapsUrl(value: string): boolean {
     return (
       url.pathname.includes("/maps") ||
       url.host.startsWith("maps.") ||
-      url.searchParams.has("q")
+      url.searchParams.has("q") ||
+      url.searchParams.has("ftid") ||
+      url.searchParams.has("cid") ||
+      url.searchParams.has("ll")
     );
   }
   return true;
@@ -52,7 +63,22 @@ export function looksLikeHttpUrl(text: string): boolean {
   return /https?:\/\//i.test(text) || /\bwww\./i.test(text);
 }
 
-/** Follow Google Maps short links. Google hosts only. Does not scrape the page. */
+async function fetchGoogleMaps(url: string): Promise<Response | null> {
+  const parsed = parseHttpUrl(url);
+  if (!parsed || !isAllowedMapsHost(parsed.host)) return null;
+  try {
+    return await fetch(url, {
+      method: "GET",
+      redirect: "manual",
+      headers: MAPS_FETCH_HEADERS,
+      signal: AbortSignal.timeout(8000),
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Follow Google Maps short links, including `?g_st=ic` iOS share URLs. */
 export async function followGoogleRedirects(start: string): Promise<string> {
   let current = start;
   const seen = new Set<string>();
@@ -61,20 +87,8 @@ export async function followGoogleRedirects(start: string): Promise<string> {
     if (seen.has(current)) break;
     seen.add(current);
 
-    const parsed = parseHttpUrl(current);
-    if (!parsed || !isAllowedMapsHost(parsed.host)) break;
-
-    let response: Response;
-    try {
-      response = await fetch(current, {
-        method: "GET",
-        redirect: "manual",
-        headers: { Accept: "text/html" },
-        signal: AbortSignal.timeout(8000),
-      });
-    } catch {
-      break;
-    }
+    const response = await fetchGoogleMaps(current);
+    if (!response) break;
 
     const location = response.headers.get("location");
     if (!location) break;
@@ -89,4 +103,23 @@ export async function followGoogleRedirects(start: string): Promise<string> {
   }
 
   return current;
+}
+
+/** Google's own `/maps/preview/place` href from a Maps HTML shell. */
+export function extractMapsPreviewHref(html: string): string | null {
+  const match = html.match(PREVIEW_HREF);
+  if (!match?.[1]) return null;
+  return match[1].replace(/&amp;/g, "&");
+}
+
+/** Google hosts only. Reads enough HTML to find the preview place link. */
+export async function fetchGoogleMapsHtml(url: string): Promise<string | null> {
+  const response = await fetchGoogleMaps(url);
+  if (!response || !response.ok) return null;
+  try {
+    const raw = await response.text();
+    return raw.slice(0, HTML_LIMIT);
+  } catch {
+    return null;
+  }
 }

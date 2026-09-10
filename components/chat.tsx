@@ -91,6 +91,7 @@ type ChatResponse = {
   awaitingMaps?: boolean;
   districtMatch?: DistrictMatch;
   halfwayMore?: boolean;
+  halfwayError?: "bad_pin";
 };
 
 type PendingResult =
@@ -453,6 +454,11 @@ export function Chat({
             ...halfwayShownRef.current,
             ...result.data.picks.map((pick) => pick.id),
           ];
+        }
+        if (result.data.halfwayError === "bad_pin") {
+          setMeetHalfwayOpen(true);
+        } else if (typeof result.data.halfwayMore === "boolean") {
+          setMeetHalfwayOpen(false);
         }
         if (typeof result.data.halfwayMore === "boolean") {
           const source =
@@ -844,7 +850,6 @@ export function Chat({
     trackChatQuery({ text: ask, locale: landing, via: "chip" });
 
     inFlightRef.current = true;
-    setMeetHalfwayOpen(false);
     setAwaitingMaps(false);
     setBusy(true);
     if (!more) {
@@ -987,6 +992,38 @@ export function Chat({
   // بيننا pin fields are the only paste target while the picker is open
   // (host chip + /h/ guest). Ask composer + أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen;
+  const halfwayPicker = meetHalfwayOpen ? (
+    <MeetHalfwayPicker
+      language={landing}
+      disabled={busy}
+      mode={halfwayInvite ? "guest" : "pair"}
+      waiting={Boolean(halfwayWaitingId) || halfwayJoined}
+      joined={halfwayJoined}
+      initialMe={halfwayWaitingMe}
+      friendPin={halfwayFriendPin}
+      onSubmit={(rows) => {
+        if (halfwayInvite) {
+          void joinHalfwayInvite(rows[0]);
+          return;
+        }
+        sendMeetHalfway(rows);
+      }}
+      onInvite={halfwayInvite ? undefined : inviteHalfwayFriend}
+      onPin={(input) => {
+        trackEvent(
+          "meet_halfway_pin",
+          {
+            locale: landing,
+            which: input.which,
+            method: input.method,
+          },
+          {
+            dedupeKey: `meet_halfway_pin:${input.which}:${input.method}`,
+          },
+        );
+      }}
+    />
+  ) : null;
 
   return (
     <div
@@ -1073,38 +1110,6 @@ export function Chat({
                     <p className="text-xs leading-5 text-ink-soft">
                       {copy.meetHalfwayInviteExpired[landing]}
                     </p>
-                  ) : null}
-                  {meetHalfwayOpen ? (
-                    <MeetHalfwayPicker
-                      language={landing}
-                      disabled={busy}
-                      mode={halfwayInvite ? "guest" : "pair"}
-                      waiting={Boolean(halfwayWaitingId) || halfwayJoined}
-                      joined={halfwayJoined}
-                      initialMe={halfwayWaitingMe}
-                      friendPin={halfwayFriendPin}
-                      onSubmit={(rows) => {
-                        if (halfwayInvite) {
-                          void joinHalfwayInvite(rows[0]);
-                          return;
-                        }
-                        sendMeetHalfway(rows);
-                      }}
-                      onInvite={halfwayInvite ? undefined : inviteHalfwayFriend}
-                      onPin={(input) => {
-                        trackEvent(
-                          "meet_halfway_pin",
-                          {
-                            locale: landing,
-                            which: input.which,
-                            method: input.method,
-                          },
-                          {
-                            dedupeKey: `meet_halfway_pin:${input.which}:${input.method}`,
-                          },
-                        );
-                      }}
-                    />
                   ) : null}
                 </>
               ) : null}
@@ -1227,6 +1232,16 @@ export function Chat({
             />
           </div>
         </form>
+      ) : halfwayPicker ? (
+        <div
+          className={
+            hasThread
+              ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+              : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          }
+        >
+          {halfwayPicker}
+        </div>
       ) : null}
     </div>
   );

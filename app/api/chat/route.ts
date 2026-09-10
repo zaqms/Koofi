@@ -6,6 +6,7 @@ import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import {
   isMeetHalfwayChipAsk,
   meetHalfwayReply,
+  halfwayPinFailCopy,
   parseHalfwayPinInputs,
   pickHalfwayShops,
   resolveHalfwayLocations,
@@ -58,9 +59,10 @@ export async function POST(request: Request) {
     if (locations.length < 2) {
       return Response.json({
         language: landing,
-        reply: copy.meetHalfwayBadPin[landing],
+        reply: halfwayPinFailCopy(landing, halfwayRows),
         thinCatalog: false,
         picks: [],
+        halfwayError: "bad_pin",
       });
     }
 

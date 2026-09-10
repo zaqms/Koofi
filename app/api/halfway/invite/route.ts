@@ -1,5 +1,6 @@
 import { copy } from "@/lib/copy";
 import { allowRate, clientIp } from "@/lib/feedback";
+import { halfwayPinFailCopy } from "@/lib/meet-halfway";
 import {
   encodeHalfwayInviteId,
   halfwayInviteHasGuest,
@@ -99,10 +100,15 @@ export async function POST(request: Request) {
       ? encodeHalfwayInviteId({ locale, locations: [mintedPin] })
       : null;
     if (!mintedId) {
+      const pinFail = !(inspected && !inspected.ok);
       return Response.json(
         {
           error: inspected && !inspected.ok ? inspected.reason : "bad_pin",
-          reply: copy.meetHalfwayInviteExpired.ar,
+          reply: pinFail
+            ? halfwayPinFailCopy(locale, [
+                { text: typeof body.text === "string" ? body.text : undefined },
+              ])
+            : copy.meetHalfwayInviteExpired[locale],
           locations: [],
         },
         { status: inspected && !inspected.ok && inspected.reason === "expired" ? 410 : 400 },
@@ -130,8 +136,15 @@ export async function POST(request: Request) {
   if (body.seed !== true) {
     const joined = await resolveBodyPin(body);
     if (!joined) {
+      const locale = inspected.seed.locale === "en" ? "en" : "ar";
       return Response.json(
-        { error: "bad_pin", locations: pinsToRows(incoming) },
+        {
+          error: "bad_pin",
+          reply: halfwayPinFailCopy(locale, [
+            { text: typeof body.text === "string" ? body.text : undefined },
+          ]),
+          locations: pinsToRows(incoming),
+        },
         { status: 400 },
       );
     }

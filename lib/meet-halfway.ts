@@ -6,6 +6,7 @@ import { haversineKm } from "./distance";
 import { neighborhoodCentroid } from "./neighborhood-tight";
 import { officialShopCoords } from "./place-coords";
 import { MEET_HALFWAY_CHIP } from "./product";
+import { extractMapsUrl } from "./maps-url";
 import { resolveSharedPin } from "./shared-pin";
 import { dedupeSameBrand } from "./shop-brand";
 import { isNeighborhoodId } from "./neighborhoods";
@@ -266,6 +267,18 @@ export function halfwayResultsFooterKind(input: {
   if (input.halfwayMore === true) return "more";
   if (input.halfwayMore === false && input.paged) return "exhausted";
   return null;
+}
+
+export function halfwayPinFailCopy(
+  language: Language,
+  rows: readonly HalfwayPinInput[],
+): string {
+  const usedMaps = rows.some(
+    (row) => typeof row.text === "string" && Boolean(extractMapsUrl(row.text)),
+  );
+  return usedMaps
+    ? copy.meetHalfwayBadMaps[language]
+    : copy.meetHalfwayBadPin[language];
 }
 
 export function parseHalfwayPinInputs(value: unknown): HalfwayPinInput[] | null {

@@ -67,9 +67,15 @@ function PinField({
     method: MeetHalfwayPinMethod;
   }) => void;
 }) {
+  const [locationOff, setLocationOff] = useState(false);
+
   async function useMyPin() {
     const visitor = await requestVisitorLocation({ retry: true });
-    if (visitor.status !== "ready") return;
+    if (visitor.status !== "ready") {
+      setLocationOff(true);
+      return;
+    }
+    setLocationOff(false);
     const pin = { lat: visitor.lat, lng: visitor.lng };
     onChange({
       text: `${pin.lat.toFixed(5)}, ${pin.lng.toFixed(5)}`,
@@ -102,6 +108,7 @@ function PinField({
               (!draft.pin ||
                 draft.pin.lat !== pin.lat ||
                 draft.pin.lng !== pin.lng);
+            if (locationOff) setLocationOff(false);
             onChange({ text, pin });
             if (pin && (!wasSet || moved)) {
               onPin?.({ which, method: halfwayPinMethod(text) });
@@ -122,6 +129,11 @@ function PinField({
           </button>
         ) : null}
       </div>
+      {locationOff ? (
+        <p className="mt-1 text-[11px] leading-4 text-ink-soft" role="status">
+          {copy.meetHalfwayLocationOff[language]}
+        </p>
+      ) : null}
     </label>
   );
 }

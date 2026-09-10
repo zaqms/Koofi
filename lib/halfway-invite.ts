@@ -10,8 +10,8 @@ import type { Language, Pin } from "./types";
  *
  * TTL is 45 minutes (inside the 30–60 lock). No accounts.
  * Optional Neon/memory overlay (`lib/halfway-invite-store.ts`) lets
- * Person A refresh once the friend joins. Friend B never needs it —
- * A's pin is already in the URL.
+ * Person A see the friend's pin without a page refresh. Friend B
+ * never needs it — A's pin is already in the URL.
  */
 export const HALFWAY_INVITE_TTL_MS = 45 * 60 * 1000;
 export const HALFWAY_INVITE_MAX_PINS = 4;
@@ -70,6 +70,24 @@ function cleanPins(rows: readonly { lat?: number; lng?: number }[]): Pin[] {
 
 export function sameHalfwayPin(a: Pin, b: Pin): boolean {
   return Math.abs(a.lat - b.lat) < 1e-4 && Math.abs(a.lng - b.lng) < 1e-4;
+}
+
+/** First stored pin that is not already in the host/URL seed. */
+export function guestPinFromLocations(
+  host: readonly Pin[],
+  locations: readonly Pin[],
+): Pin | null {
+  for (const pin of locations) {
+    if (!host.some((row) => sameHalfwayPin(row, pin))) return pin;
+  }
+  return locations.length >= 2 ? (locations[1] ?? null) : null;
+}
+
+export function halfwayInviteHasGuest(
+  host: readonly Pin[],
+  locations: readonly Pin[],
+): boolean {
+  return locations.length >= 2 && guestPinFromLocations(host, locations) !== null;
 }
 
 export function encodeHalfwayInviteId(input: {

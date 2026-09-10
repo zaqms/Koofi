@@ -27,6 +27,7 @@ export type AnalyticsEventName =
   | "meet_halfway_pin"
   | "meet_halfway_invite_share"
   | "meet_halfway_invite_open"
+  | "meet_halfway_invite_joined"
   | "meet_halfway_results"
   | "meet_halfway_refresh"
   | "meet_halfway_empty";

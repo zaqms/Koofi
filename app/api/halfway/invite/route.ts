@@ -2,6 +2,7 @@ import { copy } from "@/lib/copy";
 import { allowRate, clientIp } from "@/lib/feedback";
 import {
   encodeHalfwayInviteId,
+  halfwayInviteHasGuest,
   inspectHalfwayInviteId,
   roundHalfwayPin,
 } from "@/lib/halfway-invite";
@@ -13,6 +14,7 @@ import { resolveSharedPin } from "@/lib/shared-pin";
 import type { Pin } from "@/lib/types";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const WRITE_WINDOW_MS = 10 * 60 * 1000;
 const WRITE_LIMIT = 12;
@@ -62,11 +64,15 @@ export async function GET(request: Request) {
     ? stored
     : inspected.seed.locations;
 
-  return Response.json({
-    language: inspected.seed.locale,
-    exp: inspected.seed.exp,
-    locations: pinsToRows(locations),
-  });
+  return Response.json(
+    {
+      language: inspected.seed.locale,
+      exp: inspected.seed.exp,
+      locations: pinsToRows(locations),
+      joined: halfwayInviteHasGuest(inspected.seed.locations, locations),
+    },
+    { headers: { "Cache-Control": "no-store" } },
+  );
 }
 
 export async function POST(request: Request) {

@@ -144,8 +144,12 @@ export const copy = {
     en: "Send the link — your friend drops their pin on their phone.",
   },
   meetHalfwayInviteWaiting: {
-    ar: "لما صاحبك يدبس، الثلاث تظهر هنا. تقدر تحدث الصفحة.",
-    en: "When your friend drops their pin, the three show here. You can refresh.",
+    ar: "ننتظر دبوس صاحبك. الثلاث تظهر هنا لحالها.",
+    en: "Waiting for your friend’s pin — three cafes will appear here.",
+  },
+  meetHalfwayInviteJoined: {
+    ar: "صاحبك دبّس.",
+    en: "Your friend dropped their pin.",
   },
   meetHalfwayInviteGuestHint: {
     ar: "صاحبك دبّس. حط موقعك بس.",

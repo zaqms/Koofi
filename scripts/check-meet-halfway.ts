@@ -11,10 +11,13 @@ import { shopMapsHref } from "../lib/public-url";
 import {
   decodeHalfwayInviteId,
   encodeHalfwayInviteId,
+  guestPinFromLocations,
+  halfwayInviteHasGuest,
   halfwayInviteSharePath,
   halfwayInviteShareText,
   inspectHalfwayInviteId,
 } from "../lib/halfway-invite";
+import { parseHalfwayWaiting } from "../lib/halfway-waiting";
 import {
   meetHalfwayAskLabel,
   meetHalfwayReply,
@@ -66,8 +69,24 @@ assert(
     copy.includes("موقعي") &&
     copy.includes("اعزم خويك") &&
     copy.includes("غيرها") &&
-    copy.includes("ما في أكثر بهالمنطقة"),
+    copy.includes("ما في أكثر بهالمنطقة") &&
+    copy.includes("صاحبك دبّس.") &&
+    copy.includes("Your friend dropped their pin."),
   "copy asks for pins, not districts",
+);
+assert(
+  !copy.includes("تقدر تحدث الصفحة") && !copy.includes("You can refresh"),
+  "host wait copy no longer asks for a manual refresh",
+);
+assert(
+  copy.includes("ننتظر دبوس صاحبك. الثلاث تظهر هنا لحالها.") &&
+    copy.includes("Waiting for your friend’s pin — three cafes will appear here."),
+  "host wait copy is locked AR + EN (three cafes, not bare the three)",
+);
+assert(
+  !copy.includes("The three show here on their own") &&
+    !copy.includes("the three will appear here"),
+  "EN wait copy does not use bare the three",
 );
 assert(!copy.includes("أنا في"), "district label أنا في is gone");
 assert(!copy.includes("الثاني"), "district label الثاني is gone");
@@ -300,6 +319,44 @@ const threeInvite = encodeHalfwayInviteId({
 const threeSeed = threeInvite ? decodeHalfwayInviteId(threeInvite) : null;
 assert(threeSeed !== null && threeSeed.locations.length === 3, "invite payload is N locations, not a pair");
 
+const hostPin = { lat: 24.761, lng: 46.604 };
+const friendPin = { lat: 24.687, lng: 46.685 };
+assert(
+  halfwayInviteHasGuest([hostPin], [hostPin, friendPin]) &&
+    !halfwayInviteHasGuest([hostPin], [hostPin]),
+  "guest pin is detected only after B joins",
+);
+const foundGuest = guestPinFromLocations([hostPin], [hostPin, friendPin]);
+assert(
+  foundGuest !== null &&
+    Math.abs(foundGuest.lat - friendPin.lat) < 1e-4 &&
+    Math.abs(foundGuest.lng - friendPin.lng) < 1e-4,
+  "guest pin is the stored row that is not A's pin",
+);
+const liveInviteId = encodeHalfwayInviteId({
+  locale: "en",
+  locations: [hostPin],
+});
+if (!liveInviteId) fail("encode live host wait token");
+const waitingRecord = parseHalfwayWaiting(
+  JSON.stringify({
+    id: liveInviteId,
+    locale: "en",
+    me: hostPin,
+  }),
+);
+assert(
+  waitingRecord !== null &&
+    waitingRecord.id === liveInviteId &&
+    waitingRecord.locale === "en",
+  "host wait record restores a live invite token",
+);
+assert(
+  parseHalfwayWaiting(JSON.stringify({ id: "bad", locale: "en", me: hostPin })) ===
+    null,
+  "expired or bad wait records are dropped",
+);
+
 const chatUi = readFileSync(join(repoRoot, "components/chat.tsx"), "utf8");
 const resultsFooter = readFileSync(
   join(repoRoot, "components/meet-halfway-results-footer.tsx"),
@@ -320,7 +377,9 @@ assert(
   chatUi.includes("joinHalfwayInvite") &&
     chatUi.includes("[...halfwayInvite.locations, row]") &&
     chatUi.includes("halfwayLocations") &&
-    chatUi.includes("halfway: { locations, more }"),
+    chatUi.includes("halfway: {") &&
+    chatUi.includes("locations,") &&
+    chatUi.includes("more,"),
   "guest /h/ results keep locations on the message so غيرها survives remount",
 );
 assert(
@@ -357,9 +416,34 @@ assert(
     !resultsFooter.includes("copy.thinCatalog"),
   "shared footer is not the thin-catalog disclaimer",
 );
+const inviteApi = readFileSync(
+  join(repoRoot, "app/api/halfway/invite/route.ts"),
+  "utf8",
+);
 assert(
   existsSync(join(repoRoot, "app/api/halfway/invite/route.ts")),
-  "optional join overlay for A refresh",
+  "optional join overlay for host poll after B pins",
+);
+assert(
+  inviteApi.includes('Cache-Control": "no-store"') &&
+    inviteApi.includes('dynamic = "force-dynamic"') &&
+    inviteApi.includes("halfwayInviteHasGuest"),
+  "invite GET is not cached and reports joined",
+);
+assert(
+  chatUi.includes("readHalfwayWaiting") &&
+    chatUi.includes("writeHalfwayWaiting") &&
+    chatUi.includes("visibilitychange") &&
+    chatUi.includes('cache: "no-store"') &&
+    chatUi.includes("meet_halfway_invite_joined") &&
+    chatUi.includes("setHalfwayJoined") &&
+    chatUi.includes("guestPinFromLocations"),
+  "host page keeps polling invite state and cues when B pins",
+);
+assert(
+  ui.includes("meetHalfwayInviteJoined") &&
+    ui.includes('aria-live={joined || waiting ? "polite" : undefined}'),
+  "picker shows a live joined cue",
 );
 
 const track = readFileSync(join(repoRoot, "lib/track.ts"), "utf8");
@@ -381,6 +465,11 @@ for (const name of halfwayEvents) {
 }
 assert(ui.includes("onPin") && ui.includes("halfwayPinMethod"), "pin field reports which + method");
 assert(chatUi.includes("meet_halfway_pin"), "pin sets push meet_halfway_pin");
+assert(
+  track.includes('"meet_halfway_invite_joined"') &&
+    chatUi.includes("meet_halfway_invite_joined"),
+  "additive host-sees-guest-pin event does not replace the GTM v7 seven",
+);
 assert(
   halfwayPinMethod("24.761,46.604") === "paste" &&
     halfwayPinMethod("https://maps.app.goo.gl/abc") === "maps_url",

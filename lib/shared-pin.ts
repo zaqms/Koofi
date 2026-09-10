@@ -1,6 +1,10 @@
 import {
+  extractMapsPreviewHref,
   extractMapsUrl,
+  fetchGoogleMapsHtml,
   followGoogleRedirects,
+  isAllowedMapsHost,
+  parseHttpUrl,
 } from "./maps-url";
 import type { Pin } from "./types";
 
@@ -21,6 +25,18 @@ function pinFromLatLngText(text: string): Pin | null {
   const pair = text.match(LAT_LNG);
   if (!pair?.[1] || !pair[2]) return null;
   return asPin(Number(pair[1]), Number(pair[2]));
+}
+
+/**
+ * Place pin from Maps preview JSON (`)]}'` + `[null,null,lat,lng]`).
+ * iOS `maps.app.goo.gl` share links resolve to address + ftid, not @lat,lng.
+ */
+export function pinFromMapsPreviewPayload(text: string): Pin | null {
+  const match = text.match(
+    /\[null,null,(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)\]/,
+  );
+  if (!match?.[1] || !match[2]) return null;
+  return asPin(Number(match[1]), Number(match[2]));
 }
 
 /** Sync parse: lat,lng, place `!3d!4d`, `@lat,lng`, or `q`/`query`/`ll`. */
@@ -77,6 +93,27 @@ export function looksLikeSharedPin(raw: string): boolean {
   return Boolean(extractMapsUrl(text));
 }
 
+async function pinFromMapsPreviewPage(url: string): Promise<Pin | null> {
+  const html = await fetchGoogleMapsHtml(url);
+  if (!html) return null;
+
+  const href = extractMapsPreviewHref(html);
+  if (!href) return pinFromMapsPreviewPayload(html);
+
+  let preview: URL | null;
+  try {
+    preview = new URL(href, url);
+  } catch {
+    return pinFromMapsPreviewPayload(html);
+  }
+  if (!isAllowedMapsHost(preview.host)) return null;
+  if (!preview.pathname.includes("/maps/preview/place")) return null;
+
+  const body = await fetchGoogleMapsHtml(preview.toString());
+  if (!body) return pinFromMapsPreviewPayload(html);
+  return pinFromMapsPreviewPayload(body) ?? parseSharedPin(body);
+}
+
 /** Follow Google short links, then parse. Server-only (no CORS). */
 export async function resolveSharedPin(raw: string): Promise<Pin | null> {
   const direct = parseSharedPin(raw);
@@ -84,5 +121,8 @@ export async function resolveSharedPin(raw: string): Promise<Pin | null> {
   const maps = extractMapsUrl(raw);
   if (!maps) return null;
   const resolved = await followGoogleRedirects(maps);
-  return parseSharedPin(resolved);
+  const fromResolved = parseSharedPin(resolved);
+  if (fromResolved) return fromResolved;
+  if (!parseHttpUrl(resolved)) return null;
+  return pinFromMapsPreviewPage(resolved);
 }

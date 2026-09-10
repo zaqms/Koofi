@@ -6,7 +6,17 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { listRealShops } from "../lib/catalog";
 import { rankByPopularity } from "../lib/district-rank";
-import { parseSharedPin, looksLikeSharedPin, halfwayPinMethod } from "../lib/shared-pin";
+import {
+  extractMapsPreviewHref,
+  extractMapsUrl,
+  isMapsUrl,
+} from "../lib/maps-url";
+import {
+  parseSharedPin,
+  looksLikeSharedPin,
+  halfwayPinMethod,
+  pinFromMapsPreviewPayload,
+} from "../lib/shared-pin";
 import { shopMapsHref } from "../lib/public-url";
 import {
   decodeHalfwayInviteId,
@@ -24,6 +34,7 @@ import {
   parseHalfwayPinInputs,
   pickHalfwayShops,
   halfwayCandidatePool,
+  halfwayPinFailCopy,
   halfwayResultsFooterKind,
   locationsCentroid,
 } from "../lib/meet-halfway";
@@ -71,7 +82,13 @@ assert(
     copy.includes("غيرها") &&
     copy.includes("ما في أكثر بهالمنطقة") &&
     copy.includes("صاحبك دبّس.") &&
-    copy.includes("Your friend dropped their pin."),
+    copy.includes("Your friend dropped their pin.") &&
+    copy.includes("meetHalfwayBadMaps") &&
+    copy.includes("meetHalfwayLocationOff") &&
+    copy.includes("That Maps share link didn’t drop a pin") &&
+    copy.includes("Location is off on this phone") &&
+    copy.includes("رابط المشاركة ما طلع دبوس") &&
+    copy.includes("الموقع مقفل على هالجوال"),
   "copy asks for pins, not districts",
 );
 assert(
@@ -130,8 +147,9 @@ assert(
   ui.includes("meetHalfwayMe") &&
     ui.includes("meetHalfwayOther") &&
     ui.includes("meetHalfwayMyPin") &&
-    ui.includes("meetHalfwayInvite"),
-  "two pin fields plus اعزم خويك",
+    ui.includes("meetHalfwayInvite") &&
+    ui.includes("meetHalfwayLocationOff"),
+  "two pin fields plus اعزم خويك; My pin deny is not silent",
 );
 assert(!ui.includes("directoryNeighborhoods"), "picker is not a district directory");
 
@@ -145,7 +163,9 @@ assert(
 );
 assert(
   chat.includes("if (halfwayRows)") &&
-    chat.indexOf("if (halfwayRows)") < chat.indexOf("if (extractMapsUrl(text))"),
+    chat.indexOf("if (halfwayRows)") < chat.indexOf("if (extractMapsUrl(text))") &&
+    chat.includes('halfwayError: "bad_pin"') &&
+    chat.includes("halfwayPinFailCopy"),
   "halfway pin body is handled before Maps add-shop",
 );
 
@@ -177,6 +197,54 @@ assert(
 );
 assert(looksLikeSharedPin("24.76,46.60"), "looksLikeSharedPin lat,lng");
 assert(looksLikeSharedPin("https://maps.app.goo.gl/abc"), "looksLikeSharedPin short Maps");
+
+const iosShare =
+  "https://maps.app.goo.gl/WrfesXqL3DGLUx7c6?g_st=ic";
+assert(isMapsUrl(iosShare), "iOS Maps share with g_st=ic is a Maps URL");
+assert(extractMapsUrl(iosShare) !== null, "extractMapsUrl keeps g_st=ic shortlinks");
+assert(
+  extractMapsUrl(`pin: ${iosShare} thanks`)?.includes("WrfesXqL3DGLUx7c6"),
+  "shortlink in text is extracted",
+);
+assert(
+  parseSharedPin(iosShare) === null,
+  "shortlink has no sync lat,lng — resolve follows redirects",
+);
+assert(
+  looksLikeSharedPin(iosShare) && halfwayPinMethod(iosShare) === "maps_url",
+  "iOS share is a maps_url pin, not typed coords",
+);
+
+const previewHref = extractMapsPreviewHref(
+  `<link href="/maps/preview/place?authuser=0&amp;hl=en&amp;q=RERE3349&amp;pb=%211s0xabc%3A0xdef">`,
+);
+assert(
+  previewHref?.startsWith("/maps/preview/place") &&
+    previewHref.includes("RERE3349") &&
+    !previewHref.includes("&amp;"),
+  "preview href is unescaped from the Maps HTML shell",
+);
+
+const previewPin = pinFromMapsPreviewPayload(
+  `)]}'\n[null,null,null,null,[[3624.8,46.7364759,24.697133]],null,[null,null,24.697133,46.736476],"0x3e2f03f0f7a50a49:0xfa4ca27cecd04d29"]`,
+);
+assert(
+  previewPin !== null &&
+    Math.abs(previewPin.lat - 24.697133) < 1e-5 &&
+    Math.abs(previewPin.lng - 46.736476) < 1e-5,
+  "preview JSON [null,null,lat,lng] is the shared pin",
+);
+assert(
+  halfwayPinFailCopy("en", [{ text: iosShare }]).includes("Maps share link") &&
+    halfwayPinFailCopy("en", [{ text: "not-a-pin" }]).includes("Couldn't read that pin"),
+  "Maps paste and bare text get different pin-fail copy",
+);
+assert(
+  halfwayPinFailCopy("ar", [{ text: iosShare }]).includes("رابط المشاركة") &&
+    halfwayPinFailCopy("ar", [{ text: "مو دبوس" }]).includes("ما قدرت أقرأ الدبوس") &&
+    !halfwayPinFailCopy("en", [{ text: "24.76,46.60" }]).includes("share link didn’t drop"),
+  "lat,lng fail is not the Maps-share error",
+);
 
 const parsed = parseHalfwayPinInputs({
   locations: [{ text: "24.761, 46.604" }, { text: "24.687, 46.685" }],
@@ -367,6 +435,12 @@ assert(
   "invite uses the same system share family as وين؟ / packet",
 );
 assert(
+  chatUi.includes("showHalfwayPinFail") &&
+    chatUi.includes("halfwayPinFailCopy") &&
+    chatUi.includes("setMeetHalfwayOpen(true)"),
+  "اعزم خويك / pin-read fail keeps pin UI open and speaks Maps vs bare-pin copy",
+);
+assert(
   chatUi.includes("MeetHalfwayResultsFooter") &&
     chatUi.includes("halfwayResultsFooterKind") &&
     resultsFooter.includes("meetHalfwayMore") &&
@@ -417,13 +491,26 @@ assert(
   "host + /h/ guest hide the bottom ask form while بيننا is open",
 );
 const askFormGate =
-  chatUi.match(/showAskComposer \? \(\s*<form[\s\S]*?<\/form>\s*\) : null/)?.[0] ??
-  "";
+  chatUi.match(
+    /showAskComposer \? \(\s*<form[\s\S]*?<\/form>\s*\) : halfwayPicker \? \(/,
+  )?.[0] ?? "";
 assert(
   askFormGate.includes("<form") &&
     askFormGate.includes('id="koofi-ask"') &&
     askFormGate.includes("<AddShopButton"),
   "hidden form includes the ask composer + أضف قهوة / Add a coffee shop",
+);
+assert(
+  chatUi.includes("const halfwayPicker = meetHalfwayOpen") &&
+    chatUi.includes("halfwayPicker ? (") &&
+    !/message\.id === "opener"[\s\S]*<MeetHalfwayPicker/.test(chatUi),
+  "EN host + /h/ guest pin fields sit in the composer slot, not only under chips",
+);
+assert(
+  chatUi.includes('result.data.halfwayError === "bad_pin"') &&
+    chatUi.includes("setMeetHalfwayOpen(true)") &&
+    !/inFlightRef\.current = true;\s*setMeetHalfwayOpen\(false\)/.test(chatUi),
+  "parse fail keeps بيننا pin UI open; composer stays hidden",
 );
 assert(
   chatUi.includes("<AddShopButton") &&
@@ -433,8 +520,11 @@ assert(
   "ask composer and أضف قهوة stay in Chat; they restore when بيننا closes",
 );
 assert(
-  invitePage.includes("<Chat") && chatUi.includes("showAskComposer"),
-  "guest /h/ uses the same Chat composer gate as the host",
+  invitePage.includes("<Chat") &&
+    invitePage.includes("halfwayInvite") &&
+    chatUi.includes("showAskComposer") &&
+    chatUi.includes('result.data.halfwayError === "bad_pin"'),
+  "guest /h/ uses the same Chat composer gate as the host, including after a bad pin",
 );
 assert(
   !resultsFooter.includes("thinCatalog") &&

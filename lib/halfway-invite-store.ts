@@ -8,7 +8,7 @@ import {
 import type { Pin } from "./types";
 
 /**
- * Optional overlay so Person A can refresh after B joins.
+ * Optional overlay so Person A's host page can poll after B joins.
  * Source of truth for B is still the checksummed `/h/{id}` URL.
  * Neon when DATABASE_URL is set; memory for local `next dev`.
  */
@@ -57,9 +57,17 @@ async function ensureStore(): Promise<"ready" | "missing"> {
 }
 
 function parsePins(value: unknown): Pin[] {
-  if (!Array.isArray(value)) return [];
+  let rows = value;
+  if (typeof rows === "string") {
+    try {
+      rows = JSON.parse(rows) as unknown;
+    } catch {
+      return [];
+    }
+  }
+  if (!Array.isArray(rows)) return [];
   const pins: Pin[] = [];
-  for (const row of value) {
+  for (const row of rows) {
     if (!row || typeof row !== "object") continue;
     const lat = (row as { lat?: unknown }).lat;
     const lng = (row as { lng?: unknown }).lng;

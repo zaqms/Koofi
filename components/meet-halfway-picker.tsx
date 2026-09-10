@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { copy } from "@/lib/copy";
 import type { HalfwayPinInput } from "@/lib/meet-halfway";
 import { halfwayPinMethod, looksLikeSharedPin, parseSharedPin } from "@/lib/shared-pin";
@@ -20,6 +20,9 @@ type MeetHalfwayPickerProps = {
   disabled?: boolean;
   mode?: MeetHalfwayPickerMode;
   waiting?: boolean;
+  joined?: boolean;
+  initialMe?: Pin | null;
+  friendPin?: Pin | null;
   onSubmit: (locations: HalfwayPinInput[]) => void;
   onInvite?: (me: HalfwayPinInput) => void;
   onPin?: (input: {
@@ -27,6 +30,14 @@ type MeetHalfwayPickerProps = {
     method: MeetHalfwayPinMethod;
   }) => void;
 };
+
+function pinDraftFrom(pin?: Pin | null): PinDraft {
+  if (!pin) return { text: "" };
+  return {
+    text: `${pin.lat.toFixed(5)}, ${pin.lng.toFixed(5)}`,
+    pin,
+  };
+}
 
 function asInput(draft: PinDraft): HalfwayPinInput {
   return { text: draft.text, lat: draft.pin?.lat, lng: draft.pin?.lng };
@@ -120,21 +131,36 @@ export function MeetHalfwayPicker({
   disabled,
   mode = "pair",
   waiting = false,
+  joined = false,
+  initialMe = null,
+  friendPin = null,
   onSubmit,
   onInvite,
   onPin,
 }: MeetHalfwayPickerProps) {
-  const [me, setMe] = useState<PinDraft>({ text: "" });
-  const [other, setOther] = useState<PinDraft>({ text: "" });
+  const [me, setMe] = useState<PinDraft>(() => pinDraftFrom(initialMe));
+  const [other, setOther] = useState<PinDraft>(() => pinDraftFrom(friendPin));
   const guest = mode === "guest";
   const meReady = Boolean(me.pin || looksLikeSharedPin(me.text));
   const otherReady = Boolean(other.pin || looksLikeSharedPin(other.text));
   const pairReady = meReady && otherReady;
   const hint = guest
     ? copy.meetHalfwayInviteGuestHint[language]
-    : waiting
-      ? copy.meetHalfwayInviteWaiting[language]
-      : copy.meetHalfwayHint[language];
+    : joined
+      ? copy.meetHalfwayInviteJoined[language]
+      : waiting
+        ? copy.meetHalfwayInviteWaiting[language]
+        : copy.meetHalfwayHint[language];
+
+  useEffect(() => {
+    if (!initialMe) return;
+    setMe((current) => (current.pin ? current : pinDraftFrom(initialMe)));
+  }, [initialMe]);
+
+  useEffect(() => {
+    if (!friendPin) return;
+    setOther(pinDraftFrom(friendPin));
+  }, [friendPin]);
 
   function submitPair() {
     if (!pairReady || disabled) return;
@@ -159,14 +185,24 @@ export function MeetHalfwayPicker({
       className="space-y-2.5 rounded-2xl border border-line bg-foam p-3"
       dir={language === "ar" ? "rtl" : "ltr"}
     >
-      <p className="text-xs leading-5 text-ink-soft">{hint}</p>
+      <p
+        className={
+          joined
+            ? "rounded-xl bg-bean/10 px-2.5 py-2 text-xs leading-5 text-ink"
+            : "text-xs leading-5 text-ink-soft"
+        }
+        role={joined || waiting ? "status" : undefined}
+        aria-live={joined || waiting ? "polite" : undefined}
+      >
+        {hint}
+      </p>
       <div className="grid gap-2">
         <PinField
           id="meet-halfway-me"
           label={copy.meetHalfwayMe[language]}
           draft={me}
           language={language}
-          disabled={disabled || waiting}
+          disabled={disabled || (waiting && !joined)}
           showMyPin
           which={guest ? "self" : "a"}
           onChange={setMe}
@@ -178,7 +214,7 @@ export function MeetHalfwayPicker({
             label={copy.meetHalfwayOther[language]}
             draft={other}
             language={language}
-            disabled={disabled || waiting}
+            disabled={disabled || (waiting && !joined)}
             which="b"
             onChange={setOther}
             onPin={onPin}
@@ -213,7 +249,7 @@ export function MeetHalfwayPicker({
           ) : null}
           <button
             type="button"
-            disabled={disabled || waiting || !pairReady}
+            disabled={disabled || (waiting && !joined) || !pairReady}
             onClick={submitPair}
             className="h-12 w-full rounded-2xl border border-line bg-paper text-sm text-ink disabled:opacity-50"
           >

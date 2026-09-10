@@ -145,7 +145,7 @@ export const copy = {
   },
   meetHalfwayInviteWaiting: {
     ar: "ننتظر دبوس صاحبك. الثلاث تظهر هنا لحالها.",
-    en: "Waiting for your friend's pin. The three show here on their own.",
+    en: "Waiting for your friend’s pin — three cafes will appear here.",
   },
   meetHalfwayInviteJoined: {
     ar: "صاحبك دبّس.",

@@ -79,9 +79,14 @@ assert(
   "host wait copy no longer asks for a manual refresh",
 );
 assert(
-  copy.includes("ننتظر دبوس صاحبك") &&
-    copy.includes("The three show here on their own"),
-  "host wait copy says the three appear on their own",
+  copy.includes("ننتظر دبوس صاحبك. الثلاث تظهر هنا لحالها.") &&
+    copy.includes("Waiting for your friend’s pin — three cafes will appear here."),
+  "host wait copy is locked AR + EN (three cafes, not bare the three)",
+);
+assert(
+  !copy.includes("The three show here on their own") &&
+    !copy.includes("the three will appear here"),
+  "EN wait copy does not use bare the three",
 );
 assert(!copy.includes("أنا في"), "district label أنا في is gone");
 assert(!copy.includes("الثاني"), "district label الثاني is gone");

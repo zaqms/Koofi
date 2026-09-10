@@ -412,6 +412,31 @@ assert(
   "friend lands on /h/{id} with the same Chat results footer",
 );
 assert(
+  chatUi.includes("const showAskComposer = !meetHalfwayOpen") &&
+    /showAskComposer \? \(\s*<form/.test(chatUi),
+  "host + /h/ guest hide the bottom ask form while بيننا is open",
+);
+const askFormGate =
+  chatUi.match(/showAskComposer \? \(\s*<form[\s\S]*?<\/form>\s*\) : null/)?.[0] ??
+  "";
+assert(
+  askFormGate.includes("<form") &&
+    askFormGate.includes('id="koofi-ask"') &&
+    askFormGate.includes("<AddShopButton"),
+  "hidden form includes the ask composer + أضف قهوة / Add a coffee shop",
+);
+assert(
+  chatUi.includes("<AddShopButton") &&
+    chatUi.includes('id="koofi-ask"') &&
+    chatUi.includes("setMeetHalfwayOpen(false)") &&
+    chatUi.includes("setMeetHalfwayOpen(true)"),
+  "ask composer and أضف قهوة stay in Chat; they restore when بيننا closes",
+);
+assert(
+  invitePage.includes("<Chat") && chatUi.includes("showAskComposer"),
+  "guest /h/ uses the same Chat composer gate as the host",
+);
+assert(
   !resultsFooter.includes("thinCatalog") &&
     !resultsFooter.includes("copy.thinCatalog"),
   "shared footer is not the thin-catalog disclaimer",

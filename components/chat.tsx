@@ -574,7 +574,7 @@ export function Chat({
     observer.observe(el);
     if (footer) observer.observe(footer);
     return () => observer.disconnect();
-  }, [messages, busy]);
+  }, [messages, busy, meetHalfwayOpen]);
 
   function send(
     text: string,
@@ -984,6 +984,9 @@ export function Chat({
         message.role === "user" ||
         (message.role === "assistant" && message.id !== "opener"),
     );
+  // بيننا pin fields are the only paste target while the picker is open
+  // (host chip + /h/ guest). Ask composer + أضف قهوة come back on close.
+  const showAskComposer = !meetHalfwayOpen;
 
   return (
     <div
@@ -1170,59 +1173,61 @@ export function Chat({
         {hasThread ? <div aria-hidden className="h-3 shrink-0" /> : null}
       </div>
 
-      <form
-        ref={footerRef}
-        className={
-          hasThread
-            ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-            : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-        }
-        onSubmit={(event) => {
-          event.preventDefault();
-          send(draft);
-        }}
-      >
-        <label className="sr-only" htmlFor="koofi-ask">
-          {awaitingMaps
-            ? copy.mapsPlaceholder[landing]
-            : copy.placeholder[landing]}
-        </label>
-        <div className="flex items-center gap-2">
-          <textarea
-            id="koofi-ask"
-            value={draft}
-            rows={1}
-            dir={landing === "ar" ? "rtl" : "ltr"}
-            onChange={(event) => setDraft(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                send(draft);
+      {showAskComposer ? (
+        <form
+          ref={footerRef}
+          className={
+            hasThread
+              ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+              : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          }
+          onSubmit={(event) => {
+            event.preventDefault();
+            send(draft);
+          }}
+        >
+          <label className="sr-only" htmlFor="koofi-ask">
+            {awaitingMaps
+              ? copy.mapsPlaceholder[landing]
+              : copy.placeholder[landing]}
+          </label>
+          <div className="flex items-center gap-2">
+            <textarea
+              id="koofi-ask"
+              value={draft}
+              rows={1}
+              dir={landing === "ar" ? "rtl" : "ltr"}
+              onChange={(event) => setDraft(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  send(draft);
+                }
+              }}
+              placeholder={
+                awaitingMaps
+                  ? copy.mapsPlaceholder[landing]
+                  : copy.placeholder[landing]
               }
-            }}
-            placeholder={
-              awaitingMaps
-                ? copy.mapsPlaceholder[landing]
-                : copy.placeholder[landing]
-            }
-            className="min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
-          />
-          <button
-            type="submit"
-            disabled={busy || !draft.trim()}
-            className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
-          >
-            {copy.send[landing]}
-          </button>
-        </div>
-        <div className="mt-2 text-start">
-          <AddShopButton
-            language={landing}
-            disabled={busy}
-            onAdd={askForShop}
-          />
-        </div>
-      </form>
+              className="min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
+            />
+            <button
+              type="submit"
+              disabled={busy || !draft.trim()}
+              className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+            >
+              {copy.send[landing]}
+            </button>
+          </div>
+          <div className="mt-2 text-start">
+            <AddShopButton
+              language={landing}
+              disabled={busy}
+              onAdd={askForShop}
+            />
+          </div>
+        </form>
+      ) : null}
     </div>
   );
 }

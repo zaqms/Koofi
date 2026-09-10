@@ -55,6 +55,11 @@ assert(resolveDistrictSlug("an-nazhah") === "an-nazhah", "an-nazhah resolves");
 assert(resolveDistrictSlug("al-hamra") === "al-hamra", "al-hamra resolves");
 assert(resolveDistrictSlug("al-yarmouk") === "al-yarmouk", "al-yarmouk resolves");
 assert(resolveDistrictSlug("al-nahdah") === "al-nahdah", "al-nahdah resolves");
+assert(resolveDistrictSlug("al-manar") === "al-manar", "al-manar resolves");
+assert(resolveDistrictSlug("al-rayyan") === "al-rayyan", "al-rayyan resolves");
+assert(resolveDistrictSlug("al-rawabi") === "al-rawabi", "al-rawabi resolves");
+assert(resolveDistrictSlug("al-fayha") === "al-fayha", "al-fayha resolves");
+assert(resolveDistrictSlug("al-raqban") === "al-raqban", "al-raqban resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -95,8 +100,13 @@ assert(areas.includes("an-nazhah"), "directory includes an-nazhah");
 assert(areas.includes("al-hamra"), "directory includes al-hamra");
 assert(areas.includes("al-yarmouk"), "directory includes al-yarmouk");
 assert(areas.includes("al-nahdah"), "directory includes al-nahdah");
-assert(areas.length === 25, `expected 25 districts, got ${areas.length}`);
-assert(listRealShops().length === 171, `catalog 161→171, got ${listRealShops().length}`);
+assert(areas.includes("al-manar"), "directory includes al-manar");
+assert(areas.includes("al-rayyan"), "directory includes al-rayyan");
+assert(areas.includes("al-rawabi"), "directory includes al-rawabi");
+assert(areas.includes("al-fayha"), "directory includes al-fayha");
+assert(areas.includes("al-raqban"), "directory includes al-raqban");
+assert(areas.length === 30, `expected 30 districts, got ${areas.length}`);
+assert(listRealShops().length === 187, `catalog 171→187, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -199,9 +209,18 @@ assert(
   rawdah.every((shop) => shop.neighborhood === "al-rawdah"),
   "al-rawdah filter stays in district",
 );
+assert(rawdah.length === 3, `al-rawdah has 3 shops, got ${rawdah.length}`);
 assert(
   rawdah.some((shop) => shop.id === "hai-coffee-roasters-al-rawdah"),
   "al-rawdah includes hai-coffee-roasters-al-rawdah",
+);
+assert(
+  rawdah.some((shop) => shop.id === "on-al-rawdah"),
+  "al-rawdah includes on-al-rawdah",
+);
+assert(
+  rawdah.some((shop) => shop.id === "steam-roastery-al-rawdah"),
+  "al-rawdah includes steam-roastery-al-rawdah",
 );
 assert(
   neighborhoodLabel("al-rawdah", "ar") === "الروضة",
@@ -625,6 +644,87 @@ assert(
   "chord-daily-coffee-al-nahdah uses a distinct official place hex",
 );
 
+const manar = filterDirectoryShops(shops, "al-manar");
+assert(manar.length === 2, `al-manar has 2 shops, got ${manar.length}`);
+for (const id of ["vase-coffee-al-manar", "recaf-al-manar"]) {
+  assert(manar.some((shop) => shop.id === id), `al-manar includes ${id}`);
+}
+assert(neighborhoodLabel("al-manar", "ar") === "المنار", "al-manar Arabic label");
+assert(neighborhoodLabel("al-manar", "en") === "Al Manar", "al-manar English label");
+for (const ask of ["المنار", "منار", "manar", "al manar", "al-manar"]) {
+  assert(parseIntent(ask).neighborhoods.includes("al-manar"), `parseIntent(${ask}) should hit al-manar`);
+}
+const recafSafa = getShop("recaf-al-safa");
+const recafManar = getShop("recaf-al-manar");
+assert(recafSafa, "recaf-al-safa stays in the catalog");
+assert(recafManar, "recaf-al-manar is a distinct catalog shop");
+assert(
+  recafManar.mapsShareUrl !== recafSafa.mapsShareUrl,
+  "recaf-al-manar uses a distinct official place hex",
+);
+
+const rayyan = filterDirectoryShops(shops, "al-rayyan");
+assert(rayyan.length === 7, `al-rayyan has 7 shops, got ${rayyan.length}`);
+for (const id of [
+  "kultura-al-rayyan",
+  "da-nonna-al-rayyan",
+  "amber-speciality-al-rayyan",
+  "floated-al-rayyan",
+  "sica-al-rayyan",
+  "fabrica-de-cafe-al-rayyan",
+  "78-specialty-coffee-al-rayyan",
+]) {
+  assert(rayyan.some((shop) => shop.id === id), `al-rayyan includes ${id}`);
+}
+assert(neighborhoodLabel("al-rayyan", "ar") === "الريان", "al-rayyan Arabic label");
+assert(neighborhoodLabel("al-rayyan", "en") === "Al Rayyan", "al-rayyan English label");
+for (const ask of ["الريان", "ريان", "rayyan", "al rayyan", "ar-rayyan"]) {
+  assert(parseIntent(ask).neighborhoods.includes("al-rayyan"), `parseIntent(${ask}) should hit al-rayyan`);
+}
+
+const rawabi = filterDirectoryShops(shops, "al-rawabi");
+assert(rawabi.length === 2, `al-rawabi has 2 shops, got ${rawabi.length}`);
+for (const id of ["the-it-al-rawabi", "essert-al-rawabi"]) {
+  assert(rawabi.some((shop) => shop.id === id), `al-rawabi includes ${id}`);
+}
+assert(neighborhoodLabel("al-rawabi", "ar") === "الروابي", "al-rawabi Arabic label");
+assert(neighborhoodLabel("al-rawabi", "en") === "Al Rawabi", "al-rawabi English label");
+for (const ask of ["الروابي", "روابي", "rawabi", "al rawabi", "ar-rawabi"]) {
+  assert(parseIntent(ask).neighborhoods.includes("al-rawabi"), `parseIntent(${ask}) should hit al-rawabi`);
+}
+
+const fayha = filterDirectoryShops(shops, "al-fayha");
+assert(fayha.length === 2, `al-fayha has 2 shops, got ${fayha.length}`);
+for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha"]) {
+  assert(fayha.some((shop) => shop.id === id), `al-fayha includes ${id}`);
+}
+assert(neighborhoodLabel("al-fayha", "ar") === "الفيحاء", "al-fayha Arabic label");
+assert(neighborhoodLabel("al-fayha", "en") === "Al Fayha", "al-fayha English label");
+for (const ask of ["الفيحاء", "فيحاء", "fayha", "al fayha", "al-fayha"]) {
+  assert(parseIntent(ask).neighborhoods.includes("al-fayha"), `parseIntent(${ask}) should hit al-fayha`);
+}
+
+const raqban = filterDirectoryShops(shops, "al-raqban");
+assert(raqban.length === 1, `al-raqban has 1 shop, got ${raqban.length}`);
+assert(
+  raqban.some((shop) => shop.id === "maqha-mahamasa-al-raqban"),
+  "al-raqban includes maqha-mahamasa-al-raqban",
+);
+assert(neighborhoodLabel("al-raqban", "ar") === "الرقبان", "al-raqban Arabic label");
+assert(neighborhoodLabel("al-raqban", "en") === "Al Raqban", "al-raqban English label");
+for (const ask of ["الرقبان", "رقبان", "raqban", "al raqban", "al-raqban"]) {
+  assert(parseIntent(ask).neighborhoods.includes("al-raqban"), `parseIntent(${ask}) should hit al-raqban`);
+}
+const haiRawdah = getShop("hai-coffee-roasters-al-rawdah");
+const raqbanShop = getShop("maqha-mahamasa-al-raqban");
+assert(haiRawdah, "hai-coffee-roasters-al-rawdah stays in the catalog");
+assert(raqbanShop, "maqha-mahamasa-al-raqban is a distinct catalog shop");
+assert(
+  raqbanShop.mapsShareUrl !== haiRawdah.mapsShareUrl,
+  "al-raqban cafe uses a distinct official place hex from HAI Rawdah",
+);
+assert(raqbanShop.neighborhood === "al-raqban", "raqban shop is not folded into al-rawdah");
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
     "november-coffee-an-nazhah,belong-an-nazhah,elite-cup-roasters-an-nazhah",
@@ -653,7 +753,12 @@ const scoutPack: {
     | "an-nazhah"
     | "al-hamra"
     | "al-yarmouk"
-    | "al-nahdah";
+    | "al-nahdah"
+    | "al-manar"
+    | "al-rayyan"
+    | "al-rawabi"
+    | "al-fayha"
+    | "al-raqban";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -1166,6 +1271,118 @@ const scoutPack: {
     vibe: ["قهوة"],
     moments: ["qahwa"],
     pin: { lat: 24.7734201, lng: 46.8175941 },
+  },
+  {
+    id: "vase-coffee-al-manar",
+    hex: "0x3e2f01ccc13f3451:0xae3dda615e00c6b3",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "recaf-al-manar",
+    hex: "0x3e2f01929b82eea1:0x89bad8d2f1573463",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "kultura-al-rayyan",
+    hex: "0x3e2f0116f2a31b83:0xbcef7ac8735bbfd1",
+    neighborhood: "al-rayyan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "da-nonna-al-rayyan",
+    hex: "0x3e2f0100548ec795:0xa6bdf61330fe728d",
+    neighborhood: "al-rayyan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "amber-speciality-al-rayyan",
+    hex: "0x3e2f07725742b605:0x8836e0aca4b85d09",
+    neighborhood: "al-rayyan",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "floated-al-rayyan",
+    hex: "0x3e2f010072319b5b:0xe1af295792ab646d",
+    neighborhood: "al-rayyan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "sica-al-rayyan",
+    hex: "0x3e2f0100484beb45:0x7c300df5671a0f8",
+    neighborhood: "al-rayyan",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "fabrica-de-cafe-al-rayyan",
+    hex: "0x3e2f018daa5b6821:0xb89a892653598037",
+    neighborhood: "al-rayyan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "78-specialty-coffee-al-rayyan",
+    hex: "0x3e2f0167d7abda79:0x73d51f64c16cc56",
+    neighborhood: "al-rayyan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "the-it-al-rawabi",
+    hex: "0x3e2f070d4dd944ed:0xc1e07e729b777b1d",
+    neighborhood: "al-rawabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "essert-al-rawabi",
+    hex: "0x3e2f07004f893d2f:0x9a3b291a0c19ec46",
+    neighborhood: "al-rawabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "rukyah-al-fayha",
+    hex: "0x3e2f070062c5a10f:0x7cd84702e1e15833",
+    neighborhood: "al-fayha",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "roof-coffee-al-fayha",
+    hex: "0x3e2f070047e03f6f:0x5bb80c4447e38ece",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "maqha-mahamasa-al-raqban",
+    hex: "0x3e2fa90033b5a43b:0x210c2933359fdb69",
+    neighborhood: "al-raqban",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "on-al-rawdah",
+    hex: "0x3e2f01e672a325cd:0x94bc2f1da36aedbf",
+    neighborhood: "al-rawdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "steam-roastery-al-rawdah",
+    hex: "0x3e2f010055c30fb3:0x85b9cfe71ec71819",
+    neighborhood: "al-rawdah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
   },
 ];
 

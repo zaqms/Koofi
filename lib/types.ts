@@ -27,6 +27,11 @@ export const NEIGHBORHOOD_IDS = [
   "al-hamra",
   "al-yarmouk",
   "al-nahdah",
+  "al-manar",
+  "al-rayyan",
+  "al-rawabi",
+  "al-fayha",
+  "al-raqban",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 

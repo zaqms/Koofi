@@ -86,7 +86,9 @@ assert(
     copy.includes("meetHalfwayBadMaps") &&
     copy.includes("meetHalfwayLocationOff") &&
     copy.includes("That Maps share link didn’t drop a pin") &&
-    copy.includes("Location is off on this phone"),
+    copy.includes("Location is off on this phone") &&
+    copy.includes("رابط المشاركة ما طلع دبوس") &&
+    copy.includes("الموقع مقفل على هالجوال"),
   "copy asks for pins, not districts",
 );
 assert(
@@ -239,6 +241,7 @@ assert(
 );
 assert(
   halfwayPinFailCopy("ar", [{ text: iosShare }]).includes("رابط المشاركة") &&
+    halfwayPinFailCopy("ar", [{ text: "مو دبوس" }]).includes("ما قدرت أقرأ الدبوس") &&
     !halfwayPinFailCopy("en", [{ text: "24.76,46.60" }]).includes("share link didn’t drop"),
   "lat,lng fail is not the Maps-share error",
 );
@@ -432,6 +435,12 @@ assert(
   "invite uses the same system share family as وين؟ / packet",
 );
 assert(
+  chatUi.includes("showHalfwayPinFail") &&
+    chatUi.includes("halfwayPinFailCopy") &&
+    chatUi.includes("setMeetHalfwayOpen(true)"),
+  "اعزم خويك / pin-read fail keeps pin UI open and speaks Maps vs bare-pin copy",
+);
+assert(
   chatUi.includes("MeetHalfwayResultsFooter") &&
     chatUi.includes("halfwayResultsFooterKind") &&
     resultsFooter.includes("meetHalfwayMore") &&
@@ -511,8 +520,11 @@ assert(
   "ask composer and أضف قهوة stay in Chat; they restore when بيننا closes",
 );
 assert(
-  invitePage.includes("<Chat") && chatUi.includes("showAskComposer"),
-  "guest /h/ uses the same Chat composer gate as the host",
+  invitePage.includes("<Chat") &&
+    invitePage.includes("halfwayInvite") &&
+    chatUi.includes("showAskComposer") &&
+    chatUi.includes('result.data.halfwayError === "bad_pin"'),
+  "guest /h/ uses the same Chat composer gate as the host, including after a bad pin",
 );
 assert(
   !resultsFooter.includes("thinCatalog") &&

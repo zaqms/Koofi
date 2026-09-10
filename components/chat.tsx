@@ -29,6 +29,7 @@ import {
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
 import {
+  halfwayPinFailCopy,
   halfwayResultsFooterKind,
   meetHalfwayAskLabel,
   type HalfwayPinInput,
@@ -745,6 +746,16 @@ export function Chat({
     return null;
   }
 
+  function showHalfwayPinFail(rows: HalfwayPinInput[], reply?: string) {
+    setMeetHalfwayOpen(true);
+    applyAssistant({
+      id: crypto.randomUUID(),
+      role: "assistant",
+      language: landing,
+      text: reply?.trim() || halfwayPinFailCopy(landing, rows),
+    });
+  }
+
   async function inviteHalfwayFriend(me: HalfwayPinInput) {
     const pin = pinFromInput(me);
     let id = encodeHalfwayInviteId({
@@ -764,9 +775,20 @@ export function Chat({
             seed: true,
           }),
         });
-        const data = (await response.json()) as { id?: string };
+        const data = (await response.json()) as {
+          id?: string;
+          reply?: string;
+        };
         id = typeof data.id === "string" ? data.id : null;
+        if (!id) {
+          showHalfwayPinFail(
+            [me],
+            typeof data.reply === "string" ? data.reply : undefined,
+          );
+          return;
+        }
       } catch {
+        showHalfwayPinFail([me]);
         return;
       }
     } else {
@@ -780,7 +802,10 @@ export function Chat({
         // Overlay write is best-effort; the /h/{id} URL still has A's pin.
       }
     }
-    if (!id) return;
+    if (!id) {
+      showHalfwayPinFail([me]);
+      return;
+    }
     const origin = window.location.origin.replace(/\/$/, "");
     const url = `${origin}${halfwayInviteSharePath(id)}`;
     if (pin) {

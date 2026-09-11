@@ -81,8 +81,8 @@ assert(
 const copy = readFileSync(join(repoRoot, "lib/copy.ts"), "utf8");
 assert(
   copy.includes("meetHalfwayThree") &&
-    copy.includes("ثلاث قهاوي أنسب لكم الاثنين") &&
-    copy.includes("3 cafes fair for both of you") &&
+    copy.includes("ثلاث قهاوي بينكم") &&
+    copy.includes("Three cafes between you") &&
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
     copy.includes("اعزم خويك") &&
@@ -90,6 +90,7 @@ assert(
     copy.includes("ما في أكثر بهالمنطقة") &&
     copy.includes("صاحبك دبّس.") &&
     copy.includes("Your friend dropped their pin.") &&
+    copy.includes("Waiting for your friend’s pin — three cafes will appear here.") &&
     copy.includes("meetHalfwayBadMaps") &&
     copy.includes("meetHalfwayLocationOff") &&
     copy.includes("That Maps share link didn’t drop a pin") &&
@@ -100,12 +101,12 @@ assert(
     copy.includes("Find the fairest spot for both of you.") &&
     copy.includes("انسخ الرابط") &&
     copy.includes("ما يحتاج حساب.") &&
-    !copy.includes("ثلاث قهاوي بينكم") &&
-    !copy.includes("Three cafes between you") &&
+    !copy.includes("ثلاث قهاوي أنسب لكم الاثنين") &&
+    !copy.includes("3 cafes fair for both of you") &&
     !copy.includes("هيتين") &&
     !copy.includes("lat,lng…") &&
     !copy.includes("إحداثيات"),
-  "copy is fair-for-both pins, not midpoint form or coords",
+  "locked بيننا lines stay; coords stay off the UI",
 );
 assert(
   !copy.includes("تقدر تحدث الصفحة") && !copy.includes("You can refresh"),
@@ -135,9 +136,12 @@ assert(
   "exhausted بيننا is not the thin-catalog disclaimer",
 );
 assert(
-  meetHalfwayReply({ shopCount: 3, language: "ar" }) ===
-    "ثلاث قهاوي أنسب لكم الاثنين",
-  "full page is fair-for-both, not midpoint form",
+  meetHalfwayReply({ shopCount: 3, language: "ar" }) === "ثلاث قهاوي بينكم",
+  "full page stays ثلاث قهاوي بينكم",
+);
+assert(
+  meetHalfwayReply({ shopCount: 3, language: "en" }) === "Three cafes between you",
+  "EN full page stays Three cafes between you",
 );
 assert(
   halfwayResultsFooterKind({ halfwayMore: true, paged: false }) === "more",

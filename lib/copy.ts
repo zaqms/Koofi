@@ -184,8 +184,8 @@ export const copy = {
     en: "Location is off on this phone. Paste a Google Maps link below.",
   },
   meetHalfwayThree: {
-    ar: "ثلاث قهاوي أنسب لكم الاثنين",
-    en: "3 cafes fair for both of you",
+    ar: "ثلاث قهاوي بينكم",
+    en: "Three cafes between you",
   },
   meetHalfwayEmpty: {
     ar: "ما في أكثر بهالمنطقة",

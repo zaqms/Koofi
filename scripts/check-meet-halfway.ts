@@ -29,6 +29,11 @@ import {
 } from "../lib/halfway-invite";
 import { parseHalfwayWaiting } from "../lib/halfway-waiting";
 import {
+  estimateDriveMinutes,
+  formatHalfwayPlaceLabel,
+  nearestNeighborhoodFromPin,
+} from "../lib/halfway-place";
+import {
   meetHalfwayAskLabel,
   meetHalfwayReply,
   parseHalfwayPinInputs,
@@ -38,6 +43,7 @@ import {
   halfwayResultsFooterKind,
   locationsCentroid,
 } from "../lib/meet-halfway";
+import { neighborhoodCentroid } from "../lib/neighborhood-tight";
 import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
 
 const SHOPS = listRealShops();
@@ -75,7 +81,8 @@ assert(
 const copy = readFileSync(join(repoRoot, "lib/copy.ts"), "utf8");
 assert(
   copy.includes("meetHalfwayThree") &&
-    copy.includes("ثلاث قهاوي بينكم") &&
+    copy.includes("ثلاث قهاوي أنسب لكم الاثنين") &&
+    copy.includes("3 cafes fair for both of you") &&
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
     copy.includes("اعزم خويك") &&
@@ -88,8 +95,17 @@ assert(
     copy.includes("That Maps share link didn’t drop a pin") &&
     copy.includes("Location is off on this phone") &&
     copy.includes("رابط المشاركة ما طلع دبوس") &&
-    copy.includes("الموقع مقفل على هالجوال"),
-  "copy asks for pins, not districts",
+    copy.includes("الموقع مقفل على هالجوال") &&
+    copy.includes("نلقى لكم الاثنين أنسب مكان.") &&
+    copy.includes("Find the fairest spot for both of you.") &&
+    copy.includes("انسخ الرابط") &&
+    copy.includes("ما يحتاج حساب.") &&
+    !copy.includes("ثلاث قهاوي بينكم") &&
+    !copy.includes("Three cafes between you") &&
+    !copy.includes("هيتين") &&
+    !copy.includes("lat,lng…") &&
+    !copy.includes("إحداثيات"),
+  "copy is fair-for-both pins, not midpoint form or coords",
 );
 assert(
   !copy.includes("تقدر تحدث الصفحة") && !copy.includes("You can refresh"),
@@ -119,8 +135,9 @@ assert(
   "exhausted بيننا is not the thin-catalog disclaimer",
 );
 assert(
-  meetHalfwayReply({ shopCount: 3, language: "ar" }) === "ثلاث قهاوي بينكم",
-  "full page stays ثلاث قهاوي بينكم",
+  meetHalfwayReply({ shopCount: 3, language: "ar" }) ===
+    "ثلاث قهاوي أنسب لكم الاثنين",
+  "full page is fair-for-both, not midpoint form",
 );
 assert(
   halfwayResultsFooterKind({ halfwayMore: true, paged: false }) === "more",
@@ -148,10 +165,24 @@ assert(
     ui.includes("meetHalfwayOther") &&
     ui.includes("meetHalfwayMyPin") &&
     ui.includes("meetHalfwayInvite") &&
-    ui.includes("meetHalfwayLocationOff"),
-  "two pin fields plus اعزم خويك; My pin deny is not silent",
+    ui.includes("meetHalfwayLocationOff") &&
+    ui.includes("meetHalfwayCopyLink") &&
+    ui.includes("peekReadyVisitorLocation") &&
+    ui.includes("MeetHalfwayHero"),
+  "invite + waiting use locked pin copy; My pin deny is not silent",
 );
+assert(!ui.includes("toFixed(5)"), "Ready card never paints lat,lng");
 assert(!ui.includes("directoryNeighborhoods"), "picker is not a district directory");
+const hero = readFileSync(
+  join(repoRoot, "components/meet-halfway-hero.tsx"),
+  "utf8",
+);
+assert(hero.includes("Pin — cup — pin"), "hero is pin–cup–pin");
+assert(
+  (hero.match(/CoffeeCupIcon/g) ?? []).length >= 2 &&
+    (hero.match(/<CoffeeCupIcon/g) ?? []).length === 1,
+  "hero has exactly one coffee cup in the middle",
+);
 
 const chips = readFileSync(join(repoRoot, "components/vibe-chips.tsx"), "utf8");
 assert(chips.includes("MEET_HALFWAY_CHIP"), "chip stays on existing row");
@@ -335,6 +366,32 @@ assert(mid && Number.isFinite(mid.lat) && Number.isFinite(mid.lng), "band around
 assert(meetHalfwayAskLabel("ar") === "بيننا · دبوسين", "ask label is two pins");
 assert(meetHalfwayAskLabel("en") === "Halfway · two pins", "EN ask label");
 
+const hittinCenter = neighborhoodCentroid("hittin", SHOPS);
+assert(hittinCenter !== null, "Hittin centroid exists");
+assert(
+  nearestNeighborhoodFromPin(hittinCenter as { lat: number; lng: number }) ===
+    "hittin",
+  "Hittin pin labels as حطين, not a raw coord",
+);
+assert(
+  formatHalfwayPlaceLabel(hittinCenter, "ar") === "حطين، الرياض" &&
+    formatHalfwayPlaceLabel(hittinCenter, "en") === "Hittin, Riyadh" &&
+    !formatHalfwayPlaceLabel(hittinCenter, "ar").includes("هيتين") &&
+    !formatHalfwayPlaceLabel(hittinCenter, "ar").includes(","),
+  "place label is حي + الرياض, never هيتين or lat,lng",
+);
+assert(
+  estimateDriveMinutes(
+    { lat: 24.761, lng: 46.604 },
+    { lat: 24.761, lng: 46.604 },
+  ) === 1 &&
+    estimateDriveMinutes(
+      { lat: 24.761, lng: 46.604 },
+      { lat: 24.687, lng: 46.685 },
+    ) >= 1,
+  "drive-time estimate is cheap haversine minutes, not a traffic API",
+);
+
 const inviteId = encodeHalfwayInviteId({
   locale: "ar",
   locations: [{ lat: 24.761, lng: 46.604 }],
@@ -447,6 +504,13 @@ assert(
     resultsFooter.includes("meetHalfwayNoMore"),
   "local two-pin and /h/ guest share one بيننا results footer",
 );
+const pickList = readFileSync(join(repoRoot, "components/pick-list.tsx"), "utf8");
+assert(
+  pickList.includes("meetHalfwayBestMatch") &&
+    pickList.includes("meetHalfwayOpenMaps") &&
+    pickList.includes("HalfwayDriveTimes"),
+  "results cards keep Maps and add fair-for-both extras",
+);
 assert(
   chatUi.includes("joinHalfwayInvite") &&
     chatUi.includes("[...halfwayInvite.locations, row]") &&
@@ -491,9 +555,7 @@ assert(
   "host + /h/ guest hide the bottom ask form while بيننا is open",
 );
 const askFormGate =
-  chatUi.match(
-    /showAskComposer \? \(\s*<form[\s\S]*?<\/form>\s*\) : halfwayPicker \? \(/,
-  )?.[0] ?? "";
+  chatUi.match(/showAskComposer \? \(\s*<form[\s\S]*?<\/form>/)?.[0] ?? "";
 assert(
   askFormGate.includes("<form") &&
     askFormGate.includes('id="koofi-ask"') &&
@@ -502,9 +564,11 @@ assert(
 );
 assert(
   chatUi.includes("const halfwayPicker = meetHalfwayOpen") &&
-    chatUi.includes("halfwayPicker ? (") &&
+    chatUi.includes("showHalfwaySetup") &&
+    chatUi.includes("showHalfwayResults") &&
+    chatUi.includes("onCopyLink") &&
     !/message\.id === "opener"[\s\S]*<MeetHalfwayPicker/.test(chatUi),
-  "EN host + /h/ guest pin fields sit in the composer slot, not only under chips",
+  "host + /h/ guest use first-class invite / waiting / results screens",
 );
 assert(
   chatUi.includes('result.data.halfwayError === "bad_pin"') &&

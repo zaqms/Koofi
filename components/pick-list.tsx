@@ -183,7 +183,7 @@ export function PickList({
           );
         })}
       </ol>
-      {picks.length > 0 ? (
+      {picks.length > 0 && !halfway ? (
         <SharePackButton
           picks={picks}
           language={language}

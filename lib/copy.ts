@@ -212,8 +212,16 @@ export const copy = {
     en: "Your friend already pinned. Drop your location only.",
   },
   meetHalfwayInviteExpired: {
-    ar: "هالرابط انتهى. اطلب رابط جديد.",
-    en: "This link expired. Ask for a new invite.",
+    ar: "هالجولة انتهت.",
+    en: "This Halfway expired.",
+  },
+  meetHalfwayShareResults: {
+    ar: "شارك النتائج",
+    en: "Share results",
+  },
+  meetHalfwayStartNew: {
+    ar: "ابدأ بيننا جديد",
+    en: "Start a new Halfway",
   },
   meetHalfwayMore: {
     ar: "غيرها",

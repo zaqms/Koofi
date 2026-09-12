@@ -30,7 +30,11 @@ export type AnalyticsEventName =
   | "meet_halfway_invite_joined"
   | "meet_halfway_results"
   | "meet_halfway_refresh"
-  | "meet_halfway_empty";
+  | "meet_halfway_empty"
+  | "meet_halfway_results_share"
+  | "meet_halfway_start_new"
+  | "meet_halfway_restore"
+  | "meet_halfway_expired";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing" | "halfway";
@@ -39,6 +43,7 @@ export type ChatQueryVia = "typed" | "chip";
 export type MeetHalfwayPinWhich = "a" | "b" | "self";
 export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
 export type MeetHalfwayResultSource = "local" | "invite";
+export type MeetHalfwayStartSource = "results" | "expired";
 
 export type AnalyticsParams = {
   locale?: Language;
@@ -47,7 +52,11 @@ export type AnalyticsParams = {
   pack_id?: string;
   from?: string;
   kind?: ShareInboundKind;
-  source?: MapsClickSource | ListingShareSource | MeetHalfwayResultSource;
+  source?:
+    | MapsClickSource
+    | ListingShareSource
+    | MeetHalfwayResultSource
+    | MeetHalfwayStartSource;
   text_length?: number;
   chip_id?: string;
   chip_label?: string;

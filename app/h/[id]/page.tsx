@@ -1,7 +1,12 @@
 import { Chat } from "@/components/chat";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
-import { inspectHalfwayInviteId } from "@/lib/halfway-invite";
+import { parseHalfwayInviteToken } from "@/lib/halfway-invite";
+import { resolveHalfwayInviteSession } from "@/lib/halfway-invite-store";
+import {
+  halfwayFrozenMore,
+  restoreHalfwayPicks,
+} from "@/lib/meet-halfway";
 import { PRODUCT_NAME, SOCIAL_TWITTER_CARD } from "@/lib/product";
 
 export const dynamic = "force-dynamic";
@@ -18,11 +23,23 @@ function inboundFrom(value: string | string[] | undefined): string | undefined {
 
 export async function generateMetadata({ params }: HalfwayInvitePageProps) {
   const { id } = await params;
-  const inspected = inspectHalfwayInviteId(decodeURIComponent(id));
+  const rawId = decodeURIComponent(id);
+  const parsed = parseHalfwayInviteToken(rawId);
+  const resolved = await resolveHalfwayInviteSession(rawId);
+  const locale =
+    resolved.ok ? resolved.seed.locale : parsed.ok ? parsed.seed.locale : "ar";
   const title =
-    inspected.ok && inspected.seed.locale === "en"
-      ? "Halfway — drop your pin"
-      : "بيننا — دبّس موقعك";
+    !resolved.ok && resolved.reason === "expired"
+      ? locale === "en"
+        ? "This Halfway expired"
+        : "هالجولة انتهت"
+      : resolved.ok && resolved.session.shopIds.length > 0
+        ? locale === "en"
+          ? "Three cafes between you"
+          : "ثلاث قهاوي بينكم"
+        : locale === "en"
+          ? "Halfway — drop your pin"
+          : "بيننا — دبّس موقعك";
   return {
     title: `${title} · ${PRODUCT_NAME}`,
     robots: { index: false, follow: false },
@@ -44,27 +61,51 @@ export default async function HalfwayInvitePage({
 }: HalfwayInvitePageProps) {
   const rawId = decodeURIComponent((await params).id);
   const from = inboundFrom((await searchParams).from);
-  const inspected = inspectHalfwayInviteId(rawId);
-  const language = inspected.ok ? inspected.seed.locale : "ar";
+  const parsed = parseHalfwayInviteToken(rawId);
+  const resolved = await resolveHalfwayInviteSession(rawId);
+  const language =
+    resolved.ok ? resolved.seed.locale : parsed.ok ? parsed.seed.locale : "ar";
+  const expired = !resolved.ok && resolved.reason === "expired";
+  const shopIds = resolved.ok ? resolved.session.shopIds : [];
+  const locations = resolved.ok
+    ? resolved.session.locations
+    : parsed.ok
+      ? parsed.seed.locations
+      : [];
+  const picks =
+    shopIds.length > 0
+      ? restoreHalfwayPicks({ shopIds, language })
+      : undefined;
+  const halfwayMore =
+    resolved.ok && picks && picks.length > 0
+      ? halfwayFrozenMore({
+          locations: resolved.session.locations.map((pin) => ({ pin })),
+          shopIds,
+        })
+      : undefined;
 
   return (
     <main className="min-h-dvh">
-      {inspected.ok ? (
+      {resolved.ok ? (
         <TrackShareInbound kind="halfway" packId={rawId} from={from} />
       ) : null}
       <Chat
         landing={language}
         selectedChipId="meet-halfway"
-        halfwayInviteExpired={!inspected.ok && inspected.reason === "expired"}
+        halfwayInviteExpired={expired}
         halfwayInvite={
-          inspected.ok
+          resolved.ok
             ? {
                 id: rawId,
-                language: inspected.seed.locale,
-                locations: inspected.seed.locations.map((pin) => ({
+                language: resolved.seed.locale,
+                locations: locations.map((pin) => ({
                   lat: pin.lat,
                   lng: pin.lng,
                 })),
+                shopIds,
+                picks,
+                halfwayMore,
+                joined: resolved.joined,
               }
             : undefined
         }

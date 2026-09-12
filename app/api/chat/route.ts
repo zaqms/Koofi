@@ -4,12 +4,19 @@ import { isOffTopicAsk } from "@/lib/off-topic-intent";
 import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import {
+  freezeHalfwayInviteResults,
+  readHalfwayInviteSession,
+} from "@/lib/halfway-invite-store";
+import {
   isMeetHalfwayChipAsk,
   meetHalfwayReply,
+  halfwayFrozenMore,
   halfwayPinFailCopy,
   parseHalfwayPinInputs,
+  parseHalfwaySessionId,
   pickHalfwayShops,
   resolveHalfwayLocations,
+  restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
@@ -66,6 +73,44 @@ export async function POST(request: Request) {
       });
     }
 
+    const sessionId = parseHalfwaySessionId(body.halfway);
+    const more = body.halfwayMore === true;
+    if (sessionId && !more) {
+      let storedShopIds: string[] = [];
+      try {
+        storedShopIds = (await readHalfwayInviteSession(sessionId))?.shopIds ?? [];
+      } catch {
+        storedShopIds = [];
+      }
+      const frozen = restoreHalfwayPicks({
+        shopIds: storedShopIds,
+        language: landing,
+      });
+      if (frozen.length > 0) {
+        const leftover = halfwayFrozenMore({
+          locations,
+          shopIds: frozen.map((pick) => pick.id),
+        });
+        recordLearnAsk({
+          text: text || copy.meetHalfwayThree[landing],
+          landing,
+          via: body.via,
+          session: body.session,
+          shopIds: frozen.map((pick) => pick.id),
+        });
+        return Response.json({
+          language: landing,
+          reply: meetHalfwayReply({
+            shopCount: frozen.length,
+            language: landing,
+          }),
+          thinCatalog: false,
+          picks: frozen,
+          halfwayMore: leftover,
+        });
+      }
+    }
+
     const shops = pickHalfwayShops({ locations, beenIds });
     const leftover = pickHalfwayShops({
       locations,
@@ -90,6 +135,18 @@ export async function POST(request: Request) {
       shopCount: shops.length,
       language: landing,
     });
+
+    if (sessionId && !more && picks.length > 0) {
+      try {
+        await freezeHalfwayInviteResults({
+          id: sessionId,
+          shopIds: picks.map((pick) => pick.id),
+          locations: locations.flatMap((row) => (row.pin ? [row.pin] : [])),
+        });
+      } catch {
+        // Overlay freeze is best-effort; the in-memory three still render.
+      }
+    }
 
     recordLearnAsk({
       text: text || copy.meetHalfwayThree[landing],

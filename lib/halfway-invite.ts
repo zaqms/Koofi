@@ -8,12 +8,14 @@ import type { Language, Pin } from "./types";
  * encodes Person A's pin; a later 3–4 friend link can encode more rows
  * without changing the shape. Guest adds one pin on `/h/{id}`.
  *
- * TTL is 45 minutes (inside the 30–60 lock). No accounts.
- * Optional Neon/memory overlay (`lib/halfway-invite-store.ts`) lets
- * Person A see the friend's pin without a page refresh. Friend B
- * never needs it — A's pin is already in the URL.
+ * Waiting (1 pin) TTL is 45 minutes (inside the 30–60 lock).
+ * Completed sessions (both pins + frozen shop_ids) live 48 hours
+ * after results freeze — overlay `expires_at`, not a new URL.
+ * No accounts. Optional Neon/memory overlay lets Person A poll
+ * the friend's pin and restore the same three cafes on refresh.
  */
 export const HALFWAY_INVITE_TTL_MS = 45 * 60 * 1000;
+export const HALFWAY_RESULTS_TTL_MS = 48 * 60 * 60 * 1000;
 export const HALFWAY_INVITE_MAX_PINS = 4;
 
 export type HalfwayInviteSeed = {
@@ -109,12 +111,12 @@ export function encodeHalfwayInviteId(input: {
   return `${body}.${checksum(body)}`;
 }
 
-export function inspectHalfwayInviteId(
+/** Checksum + payload only. Overlay expiry may outlive token `e`. */
+export function parseHalfwayInviteToken(
   id: string,
-  now = Date.now(),
 ):
   | { ok: true; seed: HalfwayInviteSeed }
-  | { ok: false; reason: "bad" | "expired" } {
+  | { ok: false; reason: "bad" } {
   const trimmed = id.trim();
   const dot = trimmed.lastIndexOf(".");
   if (dot < 2) return { ok: false, reason: "bad" };
@@ -145,7 +147,6 @@ export function inspectHalfwayInviteId(
       }),
     );
     if (locations.length < 1) return { ok: false, reason: "bad" };
-    if (parsed.e <= now) return { ok: false, reason: "expired" };
     return {
       ok: true,
       seed: {
@@ -157,6 +158,18 @@ export function inspectHalfwayInviteId(
   } catch {
     return { ok: false, reason: "bad" };
   }
+}
+
+export function inspectHalfwayInviteId(
+  id: string,
+  now = Date.now(),
+):
+  | { ok: true; seed: HalfwayInviteSeed }
+  | { ok: false; reason: "bad" | "expired" } {
+  const parsed = parseHalfwayInviteToken(id);
+  if (!parsed.ok) return parsed;
+  if (parsed.seed.exp <= now) return { ok: false, reason: "expired" };
+  return parsed;
 }
 
 export function decodeHalfwayInviteId(
@@ -175,6 +188,16 @@ export function halfwayInviteShareText(input: {
     input.language === "ar"
       ? "بيننا — اعزم خويك. أنا هنا. وين أنت؟"
       : "Halfway — I'm here. Where are you?";
+  return `${line}\n\n${input.url}`;
+}
+
+/** Same `/h/{id}` as the invite — never a `/p/` pack. */
+export function halfwayResultsShareText(input: {
+  language: Language;
+  url: string;
+}): string {
+  const line =
+    input.language === "ar" ? "ثلاث قهاوي بينكم" : "Three cafes between you";
   return `${line}\n\n${input.url}`;
 }
 

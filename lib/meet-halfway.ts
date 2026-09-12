@@ -20,8 +20,9 @@ import { uniqueWhyLines } from "./why-line";
  * centroid of the resolved pins (or district centroids when a row
  * has no pin). Do not hard-code a pair-only algorithm.
  *
- * v1 UI is invite → waiting → results (two people). A later
- * 3–4 friend UI can pass more Location rows without changing this
+ * v1 UI is one `/h/{id}` URL: invite → waiting → results (two people).
+ * First-page shop_ids freeze on the overlay so refresh does not reshuffle.
+ * A later 3–4 friend UI can pass more Location rows without changing this
  * helper. `district` is an extension/fallback — pins always win.
  */
 export type HalfwayLocation = {
@@ -279,6 +280,40 @@ export function halfwayPinFailCopy(
   return usedMaps
     ? copy.meetHalfwayBadMaps[language]
     : copy.meetHalfwayBadPin[language];
+}
+
+export function parseHalfwaySessionId(value: unknown): string | null {
+  if (!value || typeof value !== "object") return null;
+  const id = (value as { id?: unknown }).id;
+  return typeof id === "string" && id.trim() ? id.trim() : null;
+}
+
+export function restoreHalfwayPicks(input: {
+  shopIds: readonly string[];
+  language: Language;
+}): ChatPick[] {
+  const shops = input.shopIds.flatMap((id) => {
+    const shop = listRealShops().find((row) => row.id === id);
+    return shop ? [shop] : [];
+  });
+  const whys = uniqueWhyLines(shops, input.language);
+  return shops.map((shop, index) =>
+    shopToChatPick(shop, input.language, whys[index] ?? ""),
+  );
+}
+
+export function halfwayFrozenMore(input: {
+  locations: readonly HalfwayLocation[];
+  shopIds: readonly string[];
+}): boolean {
+  if (input.locations.length < 2 || input.shopIds.length === 0) return false;
+  return (
+    pickHalfwayShops({
+      locations: input.locations,
+      beenIds: [...input.shopIds],
+      limit: 1,
+    }).length > 0
+  );
 }
 
 export function parseHalfwayPinInputs(value: unknown): HalfwayPinInput[] | null {

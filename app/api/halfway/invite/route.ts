@@ -1,15 +1,18 @@
 import { copy } from "@/lib/copy";
 import { allowRate, clientIp } from "@/lib/feedback";
-import { halfwayPinFailCopy } from "@/lib/meet-halfway";
+import {
+  halfwayFrozenMore,
+  halfwayPinFailCopy,
+  restoreHalfwayPicks,
+} from "@/lib/meet-halfway";
 import {
   encodeHalfwayInviteId,
-  halfwayInviteHasGuest,
-  inspectHalfwayInviteId,
+  parseHalfwayInviteToken,
   roundHalfwayPin,
 } from "@/lib/halfway-invite";
 import {
-  readHalfwayInviteLocations,
-  writeHalfwayInviteLocations,
+  resolveHalfwayInviteSession,
+  upsertHalfwayInviteSession,
 } from "@/lib/halfway-invite-store";
 import { resolveSharedPin } from "@/lib/shared-pin";
 import type { Pin } from "@/lib/types";
@@ -47,30 +50,39 @@ async function resolveBodyPin(body: {
 
 export async function GET(request: Request) {
   const id = new URL(request.url).searchParams.get("id")?.trim() ?? "";
-  const inspected = inspectHalfwayInviteId(id);
-  if (!inspected.ok) {
+  const resolved = await resolveHalfwayInviteSession(id);
+  if (!resolved.ok) {
     return Response.json(
-      { error: inspected.reason, locations: [] },
-      { status: inspected.reason === "expired" ? 410 : 400 },
+      { error: resolved.reason, locations: [] },
+      { status: resolved.reason === "expired" ? 410 : 400 },
     );
   }
 
-  let stored: Pin[] | null = null;
-  try {
-    stored = await readHalfwayInviteLocations(id);
-  } catch {
-    stored = null;
-  }
-  const locations = stored && stored.length > inspected.seed.locations.length
-    ? stored
-    : inspected.seed.locations;
+  const shopIds = resolved.session.shopIds;
+  const picks =
+    shopIds.length > 0
+      ? restoreHalfwayPicks({
+          shopIds,
+          language: resolved.seed.locale,
+        })
+      : [];
+  const halfwayMore =
+    picks.length > 0
+      ? halfwayFrozenMore({
+          locations: resolved.session.locations.map((pin) => ({ pin })),
+          shopIds,
+        })
+      : false;
 
   return Response.json(
     {
-      language: inspected.seed.locale,
-      exp: inspected.seed.exp,
-      locations: pinsToRows(locations),
-      joined: halfwayInviteHasGuest(inspected.seed.locations, locations),
+      language: resolved.seed.locale,
+      exp: resolved.session.expiresAt,
+      locations: pinsToRows(resolved.session.locations),
+      joined: resolved.joined,
+      shop_ids: shopIds,
+      picks,
+      halfwayMore,
     },
     { headers: { "Cache-Control": "no-store" } },
   );
@@ -92,18 +104,18 @@ export async function POST(request: Request) {
   }
 
   let id = inviteIdFrom(body.id);
-  let inspected = id ? inspectHalfwayInviteId(id) : null;
-  if (!inspected?.ok) {
+  let parsed = id ? parseHalfwayInviteToken(id) : null;
+  if (!parsed?.ok) {
     const mintedPin = await resolveBodyPin(body);
     const locale = body.locale === "en" ? "en" : "ar";
     const mintedId = mintedPin
       ? encodeHalfwayInviteId({ locale, locations: [mintedPin] })
       : null;
     if (!mintedId) {
-      const pinFail = !(inspected && !inspected.ok);
+      const pinFail = !(parsed && !parsed.ok);
       return Response.json(
         {
-          error: inspected && !inspected.ok ? inspected.reason : "bad_pin",
+          error: parsed && !parsed.ok ? "bad" : "bad_pin",
           reply: pinFail
             ? halfwayPinFailCopy(locale, [
                 { text: typeof body.text === "string" ? body.text : undefined },
@@ -111,20 +123,32 @@ export async function POST(request: Request) {
             : copy.meetHalfwayInviteExpired[locale],
           locations: [],
         },
-        { status: inspected && !inspected.ok && inspected.reason === "expired" ? 410 : 400 },
+        { status: 400 },
       );
     }
     id = mintedId;
-    inspected = inspectHalfwayInviteId(id);
+    parsed = parseHalfwayInviteToken(id);
   }
-  if (!inspected.ok) {
+  if (!parsed.ok) {
     return Response.json(
       {
-        error: inspected.reason,
+        error: parsed.reason,
         reply: copy.meetHalfwayInviteExpired.ar,
         locations: [],
       },
-      { status: inspected.reason === "expired" ? 410 : 400 },
+      { status: 400 },
+    );
+  }
+
+  const resolved = await resolveHalfwayInviteSession(id);
+  if (!resolved.ok) {
+    return Response.json(
+      {
+        error: resolved.reason,
+        reply: copy.meetHalfwayInviteExpired[parsed.seed.locale],
+        locations: [],
+      },
+      { status: resolved.reason === "expired" ? 410 : 400 },
     );
   }
 
@@ -132,11 +156,11 @@ export async function POST(request: Request) {
     return Response.json({ error: "rate_limited", locations: [] }, { status: 429 });
   }
 
-  const incoming: Pin[] = [...inspected.seed.locations];
+  const incoming: Pin[] = [...resolved.session.locations];
   if (body.seed !== true) {
     const joined = await resolveBodyPin(body);
     if (!joined) {
-      const locale = inspected.seed.locale === "en" ? "en" : "ar";
+      const locale = resolved.seed.locale === "en" ? "en" : "ar";
       return Response.json(
         {
           error: "bad_pin",
@@ -151,21 +175,37 @@ export async function POST(request: Request) {
     incoming.push(joined);
   }
 
-  let stored: Pin[] | null = null;
+  let stored = resolved.session;
   try {
-    stored = await writeHalfwayInviteLocations({
+    const next = await upsertHalfwayInviteSession({
       id,
       locations: incoming,
-      expiresAt: inspected.seed.exp,
+      expiresAt: resolved.session.expiresAt,
     });
+    if (next) stored = next;
   } catch {
-    stored = null;
+    stored = {
+      ...resolved.session,
+      locations: incoming,
+    };
   }
+
+  const shopIds = stored.shopIds;
+  const picks =
+    shopIds.length > 0
+      ? restoreHalfwayPicks({
+          shopIds,
+          language: resolved.seed.locale,
+        })
+      : [];
 
   return Response.json({
     id,
-    language: inspected.seed.locale,
-    exp: inspected.seed.exp,
-    locations: pinsToRows(stored ?? incoming),
+    language: resolved.seed.locale,
+    exp: stored.expiresAt,
+    locations: pinsToRows(stored.locations),
+    joined: stored.locations.length >= 2,
+    shop_ids: shopIds,
+    picks,
   });
 }

@@ -25,8 +25,13 @@ import {
   halfwayInviteHasGuest,
   halfwayInviteSharePath,
   halfwayInviteShareText,
+  halfwayResultsShareText,
   inspectHalfwayInviteId,
+  parseHalfwayInviteToken,
+  HALFWAY_INVITE_TTL_MS,
+  HALFWAY_RESULTS_TTL_MS,
 } from "../lib/halfway-invite";
+import { mergeHalfwayInviteSessionForTest } from "../lib/halfway-invite-store";
 import { parseHalfwayWaiting } from "../lib/halfway-waiting";
 import {
   estimateDriveMinutes,
@@ -42,6 +47,7 @@ import {
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
   locationsCentroid,
+  restoreHalfwayPicks,
 } from "../lib/meet-halfway";
 import { neighborhoodCentroid } from "../lib/neighborhood-tight";
 import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
@@ -102,6 +108,15 @@ assert(
     copy.includes("Find the fairest spot for both of you.") &&
     copy.includes("انسخ الرابط") &&
     copy.includes("ما يحتاج حساب.") &&
+    copy.includes("هالجولة انتهت.") &&
+    copy.includes("This Halfway expired.") &&
+    copy.includes("شارك النتائج") &&
+    copy.includes("Share results") &&
+    copy.includes("ابدأ بيننا جديد") &&
+    copy.includes("Start a new Halfway") &&
+    !copy.includes("هالرابط انتهى. اطلب رابط جديد.") &&
+    !copy.includes("Ask for a new invite.") &&
+    !copy.includes("Save for later") &&
     !copy.includes("ثلاث قهاوي أنسب لكم الاثنين") &&
     !copy.includes("3 cafes fair for both of you") &&
     !copy.includes("هيتين") &&
@@ -446,6 +461,72 @@ assert(
   !expired.ok && expired.reason === "expired",
   "invite expires inside 30–60 min (45)",
 );
+assert(
+  HALFWAY_INVITE_TTL_MS === 45 * 60 * 1000,
+  "waiting TTL stays 45 minutes",
+);
+assert(
+  HALFWAY_RESULTS_TTL_MS === 48 * 60 * 60 * 1000,
+  "completed session TTL is 48 hours after results freeze",
+);
+const parsedPastExpiry = parseHalfwayInviteToken(inviteId);
+assert(
+  parsedPastExpiry.ok && parsedPastExpiry.seed.exp === 1_700_000_000_000 + HALFWAY_INVITE_TTL_MS,
+  "token checksum still parses after waiting TTL so overlay can extend completed sessions",
+);
+const resultsShare = halfwayResultsShareText({
+  language: "ar",
+  url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
+});
+assert(
+  resultsShare.includes("ثلاث قهاوي بينكم") &&
+    resultsShare.includes("wain.lol/h/") &&
+    resultsShare.includes("from=wa") &&
+    !resultsShare.includes("/p/"),
+  "Share results is the same /h/{id}, never a /p/ pack",
+);
+const frozenFirst = mergeHalfwayInviteSessionForTest({
+  existing: null,
+  locations: [
+    { lat: 24.761, lng: 46.604 },
+    { lat: 24.687, lng: 46.685 },
+  ],
+  expiresAt: 1_700_000_000_000 + HALFWAY_INVITE_TTL_MS,
+  shopIds: shops.map((shop) => shop.id),
+  freezeResults: true,
+  now: 1_700_000_000_000,
+});
+if (!frozenFirst) fail("first results freeze shop_ids");
+assert(
+  frozenFirst.shopIds.join() === shops.map((shop) => shop.id).join() &&
+    frozenFirst.expiresAt === 1_700_000_000_000 + HALFWAY_RESULTS_TTL_MS,
+  "first results freeze shop_ids and extend expires_at to 48h",
+);
+const frozenAgain = mergeHalfwayInviteSessionForTest({
+  existing: frozenFirst,
+  locations: [
+    { lat: 24.761, lng: 46.604 },
+    { lat: 24.687, lng: 46.685 },
+  ],
+  expiresAt: 1,
+  shopIds: ["not-the-same"],
+  freezeResults: true,
+  now: 1_700_000_000_000 + 60_000,
+});
+if (!frozenAgain) fail("second freeze keeps shop_ids");
+assert(
+  frozenAgain.shopIds.join() === frozenFirst.shopIds.join() &&
+    frozenAgain.expiresAt === frozenFirst.expiresAt,
+  "refresh must not reshuffle frozen shop_ids or rewrite results TTL",
+);
+const restoredPicks = restoreHalfwayPicks({
+  shopIds: frozenFirst.shopIds,
+  language: "ar",
+});
+assert(
+  restoredPicks.map((pick) => pick.id).join() === frozenFirst.shopIds.join(),
+  "restore paints the same three cafe ids in freeze order",
+);
 const threeInvite = encodeHalfwayInviteId({
   locale: "en",
   locations: [
@@ -567,8 +648,14 @@ assert(
 );
 
 assert(
-  chatUi.includes("sharePackPacket") && chatUi.includes("inviteHalfwayFriend"),
-  "invite uses the same system share family as وين؟ / packet",
+  chatUi.includes("sharePackPacket") &&
+    chatUi.includes("inviteHalfwayFriend") &&
+    chatUi.includes("router.replace") &&
+    chatUi.includes("halfwayInvitePath") &&
+    chatUi.includes("halfwayResultsShareText") &&
+    chatUi.includes("startNewHalfway") &&
+    !chatUi.includes("Save for later"),
+  "invite uses the same system share family; host replace onto /h/{id}; results share is not Save for later",
 );
 assert(
   chatUi.includes("showHalfwayPinFail") &&
@@ -579,9 +666,14 @@ assert(
 assert(
   chatUi.includes("MeetHalfwayResultsFooter") &&
     chatUi.includes("halfwayResultsFooterKind") &&
+    chatUi.includes("onShareResults") &&
+    chatUi.includes("onStartNew") &&
     resultsFooter.includes("meetHalfwayMore") &&
-    resultsFooter.includes("meetHalfwayNoMore"),
-  "local two-pin and /h/ guest share one بيننا results footer",
+    resultsFooter.includes("meetHalfwayNoMore") &&
+    resultsFooter.includes("meetHalfwayShareResults") &&
+    resultsFooter.includes("meetHalfwayStartNew") &&
+    !resultsFooter.includes("Save for later"),
+  "local two-pin and /h/ guest share one بيننا results footer; Share results + Start a new Halfway",
 );
 const pickList = readFileSync(join(repoRoot, "components/pick-list.tsx"), "utf8");
 assert(
@@ -597,7 +689,7 @@ assert(
     chatUi.includes("halfway: {") &&
     chatUi.includes("locations,") &&
     chatUi.includes("more,") &&
-    chatUi.includes("initialMe={halfwayInvite ? null : halfwayWaitingMe}") &&
+    chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
     chatUi.includes("auto: !halfwayInvite && !meetHalfwayOpen"),
   "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
 );
@@ -627,8 +719,10 @@ const invitePage = readFileSync(join(repoRoot, "app/h/[id]/page.tsx"), "utf8");
 assert(
   invitePage.includes("halfwayInvite") &&
     invitePage.includes('kind="halfway"') &&
-    invitePage.includes("<Chat"),
-  "friend lands on /h/{id} with the same Chat results footer",
+    invitePage.includes("<Chat") &&
+    invitePage.includes("resolveHalfwayInviteSession") &&
+    invitePage.includes("shopIds"),
+  "friend lands on /h/{id} with overlay session + frozen shop_ids",
 );
 assert(
   chatUi.includes("const showAskComposer = !meetHalfwayOpen") &&
@@ -687,8 +781,9 @@ assert(
 assert(
   inviteApi.includes('Cache-Control": "no-store"') &&
     inviteApi.includes('dynamic = "force-dynamic"') &&
-    inviteApi.includes("halfwayInviteHasGuest"),
-  "invite GET is not cached and reports joined",
+    inviteApi.includes("resolveHalfwayInviteSession") &&
+    inviteApi.includes("shop_ids"),
+  "invite GET is not cached and returns overlay pins + frozen shop_ids",
 );
 assert(
   chatUi.includes("readHalfwayWaiting") &&

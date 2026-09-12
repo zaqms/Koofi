@@ -8,6 +8,7 @@ import type { Language, Pin } from "./types";
  * keep polling after a remount or refresh (no accounts).
  */
 export const HALFWAY_WAITING_STORAGE_KEY = "wain.halfwayWaiting.v1";
+export const HALFWAY_FRESH_STORAGE_KEY = "wain.halfwayFresh.v1";
 
 export type HalfwayWaitingRecord = {
   id: string;
@@ -82,5 +83,27 @@ export function clearHalfwayWaiting(): void {
     window.sessionStorage.removeItem(HALFWAY_WAITING_STORAGE_KEY);
   } catch {
     // ignore
+  }
+}
+
+/** After Start a new Halfway — home Chat opens a fresh invite, not the old `/h/{id}`. */
+export function markHalfwayFresh(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(HALFWAY_FRESH_STORAGE_KEY, "1");
+  } catch {
+    // ignore
+  }
+}
+
+export function consumeHalfwayFresh(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const raw = window.sessionStorage.getItem(HALFWAY_FRESH_STORAGE_KEY);
+    if (!raw) return false;
+    window.sessionStorage.removeItem(HALFWAY_FRESH_STORAGE_KEY);
+    return raw === "1";
+  } catch {
+    return false;
   }
 }

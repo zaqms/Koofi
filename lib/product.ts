@@ -80,8 +80,8 @@ export const NEARBY_CHIP = {
 
 /**
  * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
- * v1 UI is invite → waiting → results (two people); ranking is
- * `locations: Location[]` (N≥2). Soft Places stays parked.
+ * v1 UI is one `/h/{id}` URL: invite → waiting → results (two people);
+ * ranking is `locations: Location[]` (N≥2). Soft Places stays parked.
  */
 export const MEET_HALFWAY_CHIP = {
   id: "meet-halfway",
@@ -124,7 +124,7 @@ export function packSharePath(id: string): string {
   return `${packPath(id)}?from=wa`;
 }
 
-/** بيننا invite. Public, no login. Encoded locations[] + 45-min expiry. */
+/** بيننا session. Public, no login. Waiting 45 min; results freeze 48h. */
 export const HALFWAY_INVITE_PATH_PREFIX = "/h";
 
 export function halfwayInvitePath(id: string): string {

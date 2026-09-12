@@ -825,6 +825,24 @@ assert(
     chatUi.includes("meet_halfway_invite_joined"),
   "additive host-sees-guest-pin event does not replace the GTM v7 seven",
 );
+const persistentEvents = [
+  "meet_halfway_results_share",
+  "meet_halfway_start_new",
+  "meet_halfway_restore",
+  "meet_halfway_expired",
+] as const;
+for (const name of persistentEvents) {
+  assert(track.includes(`"${name}"`), `track.ts exports additive ${name}`);
+  assert(
+    chatUi.includes(`"${name}"`),
+    `${name} fires from chat for persistent session`,
+  );
+}
+assert(
+  !track.includes('"meet_halfway_freeze"') &&
+    !chatUi.includes('"meet_halfway_freeze"'),
+  "freeze is server-side; return visits use meet_halfway_restore",
+);
 assert(
   halfwayPinMethod("24.761,46.604") === "paste" &&
     halfwayPinMethod("https://maps.app.goo.gl/abc") === "maps_url",

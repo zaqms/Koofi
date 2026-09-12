@@ -56,6 +56,7 @@ import {
   trackDistrictMatch,
   trackEvent,
   type MeetHalfwayResultSource,
+  type MeetHalfwayStartSource,
 } from "@/lib/track";
 import {
   requestVisitorLocation,
@@ -170,6 +171,31 @@ function overlayPins(rows: HalfwayPinInput[] | undefined): HalfwayPinInput[] {
       typeof row.lng === "number" &&
       Number.isFinite(row.lat) &&
       Number.isFinite(row.lng),
+  );
+}
+
+function halfwayIdFromPath(): string | undefined {
+  const match = window.location.pathname.match(/\/h\/([^/]+)/);
+  return match?.[1] ? decodeURIComponent(match[1]) : undefined;
+}
+
+function trackHalfwayRestore(input: {
+  id?: string;
+  count: number;
+  locale: Language;
+  seenRef: { current: boolean };
+}): void {
+  if (input.seenRef.current) return;
+  input.seenRef.current = true;
+  trackEvent(
+    "meet_halfway_restore",
+    {
+      locale: input.locale,
+      count: input.count,
+      source: "invite",
+      ...(input.id ? { pack_id: input.id } : {}),
+    },
+    { dedupeKey: `meet_halfway_restore:${input.id ?? input.locale}` },
   );
 }
 
@@ -409,9 +435,11 @@ export function Chat({
       picks: ChatPick[];
       shopIds?: string[];
       halfwayMore?: boolean;
+      reason?: "restore" | "live";
     }) => void
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
+  const halfwayRestoreSeenRef = useRef(false);
   useVisitorLocation({ auto: !halfwayInvite && !meetHalfwayOpen });
 
   useEffect(() => {
@@ -421,6 +449,29 @@ export function Chat({
       { locale: landing, pack_id: halfwayInvite.id, source: "invite" },
       { dedupeKey: `meet_halfway_invite_open:${halfwayInvite.id}` },
     );
+  }, [halfwayInvite, landing]);
+
+  useEffect(() => {
+    if (!sessionExpired) return;
+    const packId = halfwayInvite?.id ?? halfwayIdFromPath();
+    trackEvent(
+      "meet_halfway_expired",
+      {
+        locale: landing,
+        ...(packId ? { pack_id: packId } : {}),
+      },
+      { dedupeKey: `meet_halfway_expired:${packId ?? landing}` },
+    );
+  }, [sessionExpired, landing, halfwayInvite]);
+
+  useEffect(() => {
+    if (!halfwayInvite?.picks?.length) return;
+    trackHalfwayRestore({
+      id: halfwayInvite.id,
+      count: halfwayInvite.picks.length,
+      locale: landing,
+      seenRef: halfwayRestoreSeenRef,
+    });
   }, [halfwayInvite, landing]);
 
   useEffect(() => {
@@ -480,6 +531,7 @@ export function Chat({
             picks,
             shopIds,
             halfwayMore: data.halfwayMore,
+            reason: "restore",
           });
           return;
         }
@@ -542,12 +594,12 @@ export function Chat({
         const picks = Array.isArray(data.picks) ? data.picks : [];
         const shopIds = Array.isArray(data.shop_ids) ? data.shop_ids : [];
         if (picks.length > 0) {
-          halfwayJoinSeenRef.current = true;
           applyFrozenHalfwayRef.current({
             locations,
             picks,
             shopIds,
             halfwayMore: data.halfwayMore,
+            reason: "live",
           });
           setHalfwayWaitingId(null);
           return;
@@ -1159,9 +1211,42 @@ export function Chat({
     picks: ChatPick[];
     shopIds?: string[];
     halfwayMore?: boolean;
+    reason?: "restore" | "live";
   }) {
     const picks = input.picks;
     if (picks.length === 0) return;
+    const packId = halfwayInvite?.id ?? halfwayWaitingId ?? undefined;
+    if (input.reason === "live") {
+      if (!halfwayJoinSeenRef.current && packId) {
+        halfwayJoinSeenRef.current = true;
+        trackEvent(
+          "meet_halfway_invite_joined",
+          { locale: landing, pack_id: packId, source: "invite" },
+          { dedupeKey: `meet_halfway_invite_joined:${packId}` },
+        );
+      }
+      halfwayJoinSeenRef.current = true;
+      trackEvent(
+        "meet_halfway_results",
+        {
+          locale: landing,
+          count: picks.length,
+          source: "invite",
+        },
+        {
+          dedupeKey: `meet_halfway_results:invite:${picks
+            .map((pick) => pick.id)
+            .join(",")}`,
+        },
+      );
+    } else {
+      trackHalfwayRestore({
+        id: packId,
+        count: picks.length,
+        locale: landing,
+        seenRef: halfwayRestoreSeenRef,
+      });
+    }
     setSessionExpired(false);
     setMeetHalfwayOpen(true);
     setHalfwayWaitingUi(false);
@@ -1201,6 +1286,11 @@ export function Chat({
   function shareHalfwayResults() {
     const id = halfwayInvite?.id ?? halfwayWaitingId;
     if (!id) return;
+    trackEvent(
+      "meet_halfway_results_share",
+      { locale: landing, pack_id: id },
+      { dedupeKey: `meet_halfway_results_share:${id}` },
+    );
     const origin = window.location.origin.replace(/\/$/, "");
     const url = `${origin}${halfwayInviteSharePath(id)}`;
     void sharePackPacket(
@@ -1208,7 +1298,17 @@ export function Chat({
     );
   }
 
-  function startNewHalfway() {
+  function startNewHalfway(source: MeetHalfwayStartSource = "results") {
+    const packId = halfwayInvite?.id ?? halfwayWaitingId ?? halfwayIdFromPath();
+    trackEvent(
+      "meet_halfway_start_new",
+      {
+        locale: landing,
+        source,
+        ...(packId ? { pack_id: packId } : {}),
+      },
+      { dedupeKey: `meet_halfway_start_new:${source}:${packId ?? landing}` },
+    );
     clearHalfwayWaiting();
     markHalfwayFresh();
     router.replace(homePath(landing));
@@ -1425,7 +1525,7 @@ export function Chat({
                   ? shareHalfwayResults
                   : undefined
               }
-              onStartNew={startNewHalfway}
+              onStartNew={() => startNewHalfway("results")}
             />
           ) : (
             <p className="text-sm text-ink-soft">{copy.looking[composerLanguage]}</p>
@@ -1441,7 +1541,7 @@ export function Chat({
           </p>
           <button
             type="button"
-            onClick={startNewHalfway}
+            onClick={() => startNewHalfway("expired")}
             className="inline-flex h-12 w-full items-center justify-center gap-1.5 rounded-full border border-line bg-foam text-sm text-ink"
           >
             <span aria-hidden className="text-base leading-none">

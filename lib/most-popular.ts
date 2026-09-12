@@ -6,6 +6,7 @@ import type { DirectoryShop } from "./directory";
 import { categoryDistrictStaticParams } from "./district";
 import { rankByPopularity } from "./picker";
 import {
+  COFFEE_SHOP_CHIP_SLUGS,
   MOST_POPULAR_HEADING,
   MOST_POPULAR_SLUG,
   PRODUCT_NAME,
@@ -68,6 +69,12 @@ export function categoryListingStaticParams(): {
   return [
     ...categoryDistrictStaticParams(),
     { category: COFFEE_SHOPS_CATEGORY, slug: MOST_POPULAR_SLUG },
+    ...COFFEE_SHOP_CHIP_SLUGS.map(
+      (slug): { category: DirectoryCategoryId; slug: string } => ({
+        category: COFFEE_SHOPS_CATEGORY,
+        slug,
+      }),
+    ),
   ];
 }
 

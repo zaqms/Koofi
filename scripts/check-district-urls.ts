@@ -1628,12 +1628,12 @@ const vibeChips = readFileSync(
   "utf8",
 );
 assert(
-  vibeChips.includes("mostPopularPath(language)"),
+  vibeChips.includes("chipSharePath(chip.id, language)"),
   "Most Popular chip is a shareable Link",
 );
 assert(
   readFileSync(join(process.cwd(), "components/chat.tsx"), "utf8").includes(
-    'if (chip.id === "popular")',
+    'chipId === "popular"',
   ),
   "chat must not post Most Popular to /api/chat",
 );
@@ -1688,7 +1688,8 @@ const homeLanding = readFileSync(
   "utf8",
 );
 assert(
-  homeLanding.includes('selectedChipId={popular ? "popular" : undefined}'),
+  homeLanding.includes('? "popular"') &&
+    homeLanding.includes("selectedChipId={pageChipId}"),
   "most-popular landing selects the popular vibe chip",
 );
 assert(
@@ -1710,7 +1711,8 @@ const chatSource = readFileSync(
 );
 assert(
   chatSource.includes("selectedChipId") &&
-    chatSource.includes("selectedId={selectedChipId ?? pickedChipId}"),
+    chatSource.includes("selectedChipId === undefined") &&
+    chatSource.includes("pickedChipId"),
   "chat forwards selectedChipId to vibe chips",
 );
 

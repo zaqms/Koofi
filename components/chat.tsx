@@ -47,8 +47,10 @@ import { nearbyChatPicks } from "@/lib/nearby";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
+  VIBE_CHIPS,
   districtPath,
   homePath,
+  vibeChipLabel,
 } from "@/lib/product";
 import { copyShareText, sharePackPacket } from "@/lib/share-pack";
 import {
@@ -317,6 +319,15 @@ function restoreMessages(restore: ChatRestore, landing: Language): Message[] {
   return messages;
 }
 
+function liveChipLabel(chipId: string, language: Language): string | null {
+  if (chipId === NEARBY_CHIP.id) return vibeChipLabel(NEARBY_CHIP, language);
+  if (chipId === MEET_HALFWAY_CHIP.id) {
+    return vibeChipLabel(MEET_HALFWAY_CHIP, language);
+  }
+  const vibe = VIBE_CHIPS.find((chip) => chip.id === chipId);
+  return vibe ? vibeChipLabel(vibe, language) : null;
+}
+
 function askBeforePicks(messages: Message[], index: number): string {
   for (let i = index - 1; i >= 0; i -= 1) {
     const message = messages[i];
@@ -331,7 +342,7 @@ export function Chat({
   halfwayInvite,
   halfwayInviteExpired = false,
   localeHref,
-  selectedChipId = null,
+  selectedChipId,
 }: ChatProps) {
   const router = useRouter();
   const threadKey = halfwayInvite
@@ -369,6 +380,7 @@ export function Chat({
   );
   const [pickedChipId, setPickedChipId] = useState<string | null>(() => {
     if (halfwayInvite) return MEET_HALFWAY_CHIP.id;
+    if (selectedChipId) return selectedChipId;
     if (threads[threadKey]?.halfwayWaitingId || sessionHostWait()) {
       return MEET_HALFWAY_CHIP.id;
     }
@@ -379,7 +391,8 @@ export function Chat({
       startFresh ||
       (Boolean(halfwayInvite) && !halfwayInviteExpired) ||
       Boolean(threads[threadKey]?.halfwayWaitingId) ||
-      Boolean(sessionHostWait(halfwayInvite)),
+      Boolean(sessionHostWait(halfwayInvite)) ||
+      (selectedChipId === MEET_HALFWAY_CHIP.id && !halfwayInviteExpired),
   );
   const [halfwayWaitingId, setHalfwayWaitingId] = useState<string | null>(
     () => {
@@ -440,6 +453,8 @@ export function Chat({
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
   const halfwayRestoreSeenRef = useRef(false);
+  const routedChipOpenedRef = useRef<string | null>(null);
+  const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   useVisitorLocation({ auto: !halfwayInvite && !meetHalfwayOpen });
 
   useEffect(() => {
@@ -1314,39 +1329,64 @@ export function Chat({
     router.replace(homePath(landing));
   }
 
-  function sendChip(chip: ChipPick) {
-    setPickedChipId(chip.id);
-    trackEvent(
-      "chip_tap",
-      { chip_id: chip.id, chip_label: chip.label, locale: landing },
-      { dedupeKey: `chip_tap:${chip.id}` },
-    );
-    if (chip.id === "popular") {
+  function openRoutedChip(chipId: string) {
+    if (chipId === "popular") {
       setMeetHalfwayOpen(false);
       return;
     }
-    if (chip.id === NEARBY_CHIP.id) {
-      setMeetHalfwayOpen(false);
-      void sendNearby(chip.label);
-      return;
-    }
-    if (chip.id === MEET_HALFWAY_CHIP.id) {
+    const label = liveChipLabel(chipId, landing);
+    if (chipId === MEET_HALFWAY_CHIP.id) {
       setMeetHalfwayOpen(true);
       setHalfwayPinError(null);
       trackEvent(
         "meet_halfway_open",
         {
           locale: landing,
-          chip_id: chip.id,
-          chip_label: chip.label,
+          chip_id: chipId,
+          chip_label: label ?? MEET_HALFWAY_CHIP.ar,
         },
         { dedupeKey: `meet_halfway_open:${landing}` },
       );
       return;
     }
+    if (
+      label &&
+      (pendingSends[threadKey] ||
+        messages.some(
+          (message) => message.role === "user" && message.text === label,
+        ))
+    ) {
+      return;
+    }
+    if (chipId === NEARBY_CHIP.id) {
+      setMeetHalfwayOpen(false);
+      if (label) void sendNearby(label);
+      return;
+    }
+    if (!label) return;
     setMeetHalfwayOpen(false);
-    send(chip.label, { suggesting: false, via: "chip" });
+    send(label, { suggesting: false, via: "chip" });
   }
+  openRoutedChipRef.current = openRoutedChip;
+
+  function sendChip(chip: ChipPick) {
+    setPickedChipId(chip.id);
+    routedChipOpenedRef.current = chip.id;
+    trackEvent(
+      "chip_tap",
+      { chip_id: chip.id, chip_label: chip.label, locale: landing },
+      { dedupeKey: `chip_tap:${chip.id}` },
+    );
+    openRoutedChip(chip.id);
+  }
+
+  useEffect(() => {
+    if (halfwayInvite || halfwayInviteExpired) return;
+    if (!selectedChipId || selectedChipId === "popular") return;
+    if (routedChipOpenedRef.current === selectedChipId) return;
+    routedChipOpenedRef.current = selectedChipId;
+    openRoutedChipRef.current(selectedChipId);
+  }, [selectedChipId, halfwayInvite, halfwayInviteExpired]);
 
   function startOver() {
     delete pendingSends[threadKey];
@@ -1364,6 +1404,7 @@ export function Chat({
     setComposerLanguage(landing);
     setAwaitingMaps(false);
     setPickedChipId(null);
+    routedChipOpenedRef.current = null;
     setMeetHalfwayOpen(false);
     setHalfwayWaitingId(null);
     setHalfwayWaitingMe(null);
@@ -1612,7 +1653,11 @@ export function Chat({
                   <VibeChips
                     language={landing}
                     disabled={busy}
-                    selectedId={selectedChipId ?? pickedChipId}
+                    selectedId={
+                      selectedChipId === undefined
+                        ? pickedChipId
+                        : selectedChipId
+                    }
                     onPick={sendChip}
                   />
                   {halfwayInviteExpired ? (

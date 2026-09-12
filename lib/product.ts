@@ -270,6 +270,64 @@ export function mostPopularPath(language: Language = "ar"): string {
   return language === "en" ? `/en${path}` : path;
 }
 
+/**
+ * Shareable بيننا landing. Must stay `/halfway`, never `/h` —
+ * `/h/{id}` is the invite session URL after اعزم خويك.
+ */
+export const HALFWAY_LANDING_PATH = "/halfway";
+
+export function halfwayPath(language: Language = "ar"): string {
+  return language === "en"
+    ? `/en${HALFWAY_LANDING_PATH}`
+    : HALFWAY_LANDING_PATH;
+}
+
+/**
+ * Ajz-locked coffee-shops slugs for nearby + vibe chips.
+ * `popular` stays `most-popular`. `meet-halfway` stays `/halfway`.
+ * Do not rename. Soft Places stays parked.
+ */
+export const COFFEE_SHOP_CHIP_SLUGS = [
+  "nearby",
+  "coffee",
+  "pastry",
+  "roaster",
+  "specialty",
+  "quiet",
+  "work",
+  "study",
+  "late",
+  "outdoor",
+  "date",
+] as const;
+
+export type CoffeeShopChipSlug = (typeof COFFEE_SHOP_CHIP_SLUGS)[number];
+
+export function isCoffeeShopChipSlug(
+  slug: string,
+): slug is CoffeeShopChipSlug {
+  return (COFFEE_SHOP_CHIP_SLUGS as readonly string[]).includes(slug);
+}
+
+export function coffeeShopChipPath(
+  slug: CoffeeShopChipSlug,
+  language: Language = "ar",
+): string {
+  const path = `/${COFFEE_SHOPS_CATEGORY}/${encodeURIComponent(slug)}`;
+  return language === "en" ? `/en${path}` : path;
+}
+
+/** Dedicated shareable path for a live chip. Ajz URL map. */
+export function chipSharePath(
+  chipId: string,
+  language: Language = "ar",
+): string {
+  if (chipId === MEET_HALFWAY_CHIP.id) return halfwayPath(language);
+  if (chipId === "popular") return mostPopularPath(language);
+  if (isCoffeeShopChipSlug(chipId)) return coffeeShopChipPath(chipId, language);
+  return mostPopularPath(language);
+}
+
 export function mostPopularHeading(language: Language): string {
   return MOST_POPULAR_HEADING[language];
 }

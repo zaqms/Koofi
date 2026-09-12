@@ -1666,7 +1666,7 @@ assert(
   halfwayPicker.includes("meetHalfwayMe") &&
     halfwayPicker.includes("looksLikeSharedPin") &&
     halfwayPicker.includes("requestVisitorLocation") &&
-    halfwayPicker.includes("peekReadyVisitorLocation") &&
+    halfwayPicker.includes("usePeekVisitorLocation") &&
     halfwayPicker.includes("MeetHalfwayHero"),
   "بيننا picker is pin–cup–pin invite (Maps URL / geo), coords hidden",
 );

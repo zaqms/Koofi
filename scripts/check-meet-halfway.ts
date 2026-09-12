@@ -45,6 +45,7 @@ import {
 } from "../lib/meet-halfway";
 import { neighborhoodCentroid } from "../lib/neighborhood-tight";
 import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
+import { decideVisitorLocationPeek } from "../lib/visitor-location-peek";
 
 const SHOPS = listRealShops();
 const repoRoot = join(fileURLToPath(new URL(".", import.meta.url)), "..");
@@ -171,9 +172,17 @@ assert(
     ui.includes("meetHalfwayInvite") &&
     ui.includes("meetHalfwayLocationOff") &&
     ui.includes("meetHalfwayCopyLink") &&
-    ui.includes("peekReadyVisitorLocation") &&
+    ui.includes("usePeekVisitorLocation") &&
     ui.includes("MeetHalfwayHero"),
   "invite + waiting use locked pin copy; My pin deny is not silent",
+);
+assert(
+  ui.includes("never seed from the friend's /h/ host pin") &&
+    ui.includes("visitorPin") &&
+    ui.includes("wantChange") &&
+    !ui.includes("setMe(friendPin") &&
+    !ui.includes("pinDraftFrom(friendPin"),
+  "guest Ready is the visitor pin, not the friend's invite pin",
 );
 assert(!ui.includes("toFixed(5)"), "Ready card never paints lat,lng");
 assert(!ui.includes("directoryNeighborhoods"), "picker is not a district directory");
@@ -492,6 +501,72 @@ const resultsFooter = readFileSync(
   "utf8",
 );
 assert(
+  decideVisitorLocationPeek({
+    snapshotStatus: "pending",
+    permission: "granted",
+    inflight: false,
+    rememberedGranted: false,
+  }) === "request" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "unavailable",
+      permission: "granted",
+      inflight: false,
+      rememberedGranted: false,
+    }) === "request" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "pending",
+      permission: "prompt",
+      inflight: true,
+      rememberedGranted: false,
+    }) === "await-inflight" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "pending",
+      permission: "prompt",
+      inflight: false,
+      rememberedGranted: true,
+    }) === "request" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "pending",
+      permission: "prompt",
+      inflight: false,
+      rememberedGranted: false,
+    }) === "idle" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "pending",
+      permission: "denied",
+      inflight: false,
+      rememberedGranted: true,
+    }) === "idle" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "ready",
+      permission: "prompt",
+      inflight: false,
+      rememberedGranted: false,
+    }) === "use-ready",
+  "auto-Ready reads only when granted/remembered; prompt/denied stay on My pin",
+);
+
+const visitorLocation = readFileSync(
+  join(repoRoot, "lib/visitor-location.ts"),
+  "utf8",
+);
+const visitorPeek = readFileSync(
+  join(repoRoot, "lib/visitor-location-peek.ts"),
+  "utf8",
+);
+assert(
+  visitorLocation.includes("peekReadyVisitorLocation") &&
+    visitorLocation.includes("decideVisitorLocationPeek") &&
+    visitorLocation.includes("usePeekVisitorLocation") &&
+    visitorLocation.includes("retry: true") &&
+    visitorLocation.includes("VISITOR_GEO_GRANTED_KEY") &&
+    visitorPeek.includes("decideVisitorLocationPeek") &&
+    !visitorLocation.includes("lat,lng") &&
+    !visitorPeek.includes("lat,lng"),
+  "geo peek retries a granted read and never stores coordinates",
+);
+
+assert(
   chatUi.includes("sharePackPacket") && chatUi.includes("inviteHalfwayFriend"),
   "invite uses the same system share family as وين؟ / packet",
 );
@@ -521,8 +596,10 @@ assert(
     chatUi.includes("halfwayLocations") &&
     chatUi.includes("halfway: {") &&
     chatUi.includes("locations,") &&
-    chatUi.includes("more,"),
-  "guest /h/ results keep locations on the message so غيرها survives remount",
+    chatUi.includes("more,") &&
+    chatUi.includes("initialMe={halfwayInvite ? null : halfwayWaitingMe}") &&
+    chatUi.includes("auto: !halfwayInvite && !meetHalfwayOpen"),
+  "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
 );
 assert(
   !chatUi.includes("halfwayLocationsRef.current ?"),

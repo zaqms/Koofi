@@ -14,8 +14,9 @@ import {
 } from "@/lib/shared-pin";
 import type { MeetHalfwayPinMethod, MeetHalfwayPinWhich } from "@/lib/track";
 import {
-  peekReadyVisitorLocation,
+  readGeolocationPermission,
   requestVisitorLocation,
+  usePeekVisitorLocation,
 } from "@/lib/visitor-location";
 import type { Language, Pin } from "@/lib/types";
 
@@ -104,11 +105,23 @@ export function MeetHalfwayPicker({
   onPin,
 }: MeetHalfwayPickerProps) {
   const [me, setMe] = useState<PinDraft>(() => pinDraftFrom(initialMe));
-  const [editing, setEditing] = useState(() => !initialMe);
+  const [wantChange, setWantChange] = useState(false);
   const [locationOff, setLocationOff] = useState(false);
   const [copied, setCopied] = useState(false);
   const guest = mode === "guest";
-  const resolvedMe = me.pin || me.text || !initialMe ? me : pinDraftFrom(initialMe);
+  const visitor = usePeekVisitorLocation();
+  const visitorPin =
+    !initialMe && !me.pin && !me.text && visitor.status === "ready"
+      ? { lat: visitor.lat, lng: visitor.lng }
+      : null;
+  const resolvedMe: PinDraft =
+    me.pin || me.text
+      ? me
+      : initialMe
+        ? pinDraftFrom(initialMe)
+        : visitorPin
+          ? { text: "", pin: visitorPin }
+          : me;
   const meReady = Boolean(
     resolvedMe.pin || looksLikeSharedPin(resolvedMe.text),
   );
@@ -130,33 +143,23 @@ export function MeetHalfwayPicker({
     onPinRef.current = onPin;
   }, [onPin]);
   useEffect(() => {
-    if (autoReadyRef.current || resolvedMe.pin || initialMe) return;
-    autoReadyRef.current = true;
-    let cancelled = false;
-    void peekReadyVisitorLocation().then((visitor) => {
-      if (cancelled) return;
-      if (visitor.status === "ready") {
-        setMe({
-          text: "",
-          pin: { lat: visitor.lat, lng: visitor.lng },
-        });
-        setEditing(false);
-        setLocationOff(false);
-        onPinRef.current?.({ which, method: "geolocation" });
-        return;
-      }
-      if (visitor.status === "unavailable") setLocationOff(true);
+    void readGeolocationPermission().then((permission) => {
+      if (permission === "denied") setLocationOff(true);
     });
-    return () => {
-      cancelled = true;
-    };
-  }, [initialMe, resolvedMe.pin, which]);
+  }, []);
+  useEffect(() => {
+    // Visitor pin only — never seed from the friend's /h/ host pin.
+    if (autoReadyRef.current || initialMe || me.pin || me.text) return;
+    if (visitor.status !== "ready") return;
+    autoReadyRef.current = true;
+    onPinRef.current?.({ which, method: "geolocation" });
+  }, [initialMe, me.pin, me.text, visitor, which]);
 
   async function dropMyPin() {
     const visitor = await requestVisitorLocation({ retry: true });
     if (visitor.status !== "ready") {
       setLocationOff(true);
-      setEditing(true);
+      setWantChange(true);
       return;
     }
     setLocationOff(false);
@@ -164,7 +167,7 @@ export function MeetHalfwayPicker({
       text: "",
       pin: { lat: visitor.lat, lng: visitor.lng },
     });
-    setEditing(false);
+    setWantChange(false);
     onPin?.({ which, method: "geolocation" });
   }
 
@@ -181,7 +184,7 @@ export function MeetHalfwayPicker({
       text: looksLikeCoordsOnly(text) ? "" : text,
       pin,
     });
-    if (pin) setEditing(false);
+    if (pin) setWantChange(false);
     if (pin && (!wasSet || moved)) {
       onPin?.({ which, method: halfwayPinMethod(text) });
     }
@@ -205,7 +208,7 @@ export function MeetHalfwayPicker({
     window.setTimeout(() => setCopied(false), 2000);
   }
 
-  const showPaste = editing || locationOff || (!meReady && !resolvedMe.pin);
+  const showPaste = !meReady || locationOff || wantChange;
 
   if (waiting || joined) {
     return (
@@ -300,7 +303,7 @@ export function MeetHalfwayPicker({
               <button
                 type="button"
                 disabled={disabled}
-                onClick={() => setEditing(true)}
+                onClick={() => setWantChange(true)}
                 className="text-[11px] text-ink-soft underline-offset-2 hover:underline disabled:opacity-50"
               >
                 {copy.meetHalfwayChange[language]}

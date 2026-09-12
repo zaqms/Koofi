@@ -1,16 +1,26 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import {
+  decideVisitorLocationPeek,
+  type GeoPermission,
+} from "./visitor-location-peek";
 
 export type VisitorLocation =
   | { status: "pending" }
   | { status: "ready"; lat: number; lng: number }
   | { status: "unavailable" };
 
+export type { GeoPermission, VisitorLocationPeekAction } from "./visitor-location-peek";
+export { decideVisitorLocationPeek };
+
 type Listener = () => void;
 
 const listeners = new Set<Listener>();
 const pendingSnapshot: VisitorLocation = { status: "pending" };
+
+/** Boolean only — never lat/lng. Lets Safari-lying-as-prompt still auto-Ready. */
+export const VISITOR_GEO_GRANTED_KEY = "wain.visitorGeoGranted.v1";
 
 let snapshot: VisitorLocation = pendingSnapshot;
 let inflight: Promise<VisitorLocation> | null = null;
@@ -36,6 +46,25 @@ function getServerSnapshot(): VisitorLocation {
   return pendingSnapshot;
 }
 
+export function readRememberedGeoGranted(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(VISITOR_GEO_GRANTED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeRememberedGeoGranted(granted: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (granted) window.localStorage.setItem(VISITOR_GEO_GRANTED_KEY, "1");
+    else window.localStorage.removeItem(VISITOR_GEO_GRANTED_KEY);
+  } catch {
+    // Private mode / quota — permission query still works this session.
+  }
+}
+
 function readPosition(): Promise<VisitorLocation> {
   return new Promise((resolve) => {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
@@ -45,21 +74,21 @@ function readPosition(): Promise<VisitorLocation> {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        writeRememberedGeoGranted(true);
         resolve({
           status: "ready",
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
       },
-      () => {
+      (error) => {
+        if (error.code === 1) writeRememberedGeoGranted(false);
         resolve({ status: "unavailable" });
       },
       { enableHighAccuracy: false, maximumAge: 60_000, timeout: 8_000 },
     );
   });
 }
-
-export type GeoPermission = "granted" | "prompt" | "denied" | "unknown";
 
 /** Permissions API only — never opens the browser prompt. */
 export async function readGeolocationPermission(): Promise<GeoPermission> {
@@ -87,8 +116,20 @@ export async function readGeolocationPermission(): Promise<GeoPermission> {
  */
 export async function peekReadyVisitorLocation(): Promise<VisitorLocation> {
   if (snapshot.status === "ready") return snapshot;
+  if (inflight) return inflight;
+
   const permission = await readGeolocationPermission();
-  if (permission === "granted") return requestVisitorLocation();
+  const latest = getSnapshot();
+  if (latest.status === "ready") return latest;
+  if (inflight) return inflight;
+
+  const action = decideVisitorLocationPeek({
+    snapshotStatus: snapshot.status,
+    permission,
+    inflight: false,
+    rememberedGranted: readRememberedGeoGranted(),
+  });
+  if (action === "request") return requestVisitorLocation({ retry: true });
   return snapshot.status === "unavailable" ? snapshot : pendingSnapshot;
 }
 
@@ -110,18 +151,33 @@ export function requestVisitorLocation(options?: {
   return inflight;
 }
 
-export function useVisitorLocation(): VisitorLocation {
-  const location = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
+export function useVisitorLocationSnapshot(): VisitorLocation {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+/** Subscribe + peek. Does not open the browser prompt. */
+export function usePeekVisitorLocation(): VisitorLocation {
+  const location = useVisitorLocationSnapshot();
 
   useEffect(() => {
+    void peekReadyVisitorLocation();
+  }, []);
+
+  return location;
+}
+
+export function useVisitorLocation(options?: {
+  auto?: boolean;
+}): VisitorLocation {
+  const location = useVisitorLocationSnapshot();
+  const auto = options?.auto !== false;
+
+  useEffect(() => {
+    if (!auto) return;
     if (autoStarted) return;
     autoStarted = true;
     void requestVisitorLocation();
-  }, []);
+  }, [auto]);
 
   return location;
 }

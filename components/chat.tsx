@@ -337,7 +337,7 @@ export function Chat({
     ) => void
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
-  useVisitorLocation();
+  useVisitorLocation({ auto: !halfwayInvite && !meetHalfwayOpen });
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -1092,7 +1092,7 @@ export function Chat({
       mode={halfwayInvite ? "guest" : "pair"}
       waiting={halfwayWaitingUi || halfwayJoined}
       joined={halfwayJoined}
-      initialMe={halfwayWaitingMe}
+      initialMe={halfwayInvite ? null : halfwayWaitingMe}
       friendPin={halfwayFriendPin}
       error={halfwayPinError}
       onSubmit={(rows) => {

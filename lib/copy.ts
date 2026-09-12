@@ -112,28 +112,76 @@ export const copy = {
     en: "Find halfway",
   },
   meetHalfwayHint: {
-    ar: "ارمي دبوسين — رابط مشاركة قوقل ماب أو موقعك.",
-    en: "Drop two pins — a Google Maps share link or your location.",
+    ar: "ارمي موقعك واعزم خويك — نلقى لكم الاثنين أنسب قهوة.",
+    en: "Drop your pin and invite your friend — we’ll find the fairest spot for both of you.",
+  },
+  meetHalfwayTagline: {
+    ar: "نلقى لكم الاثنين أنسب مكان.",
+    en: "Find the fairest spot for both of you.",
   },
   meetHalfwayPinPlaceholder: {
-    ar: "رابط مشاركة قوقل ماب أو إحداثيات…",
-    en: "A Google Maps share link or lat,lng…",
+    ar: "رابط مشاركة قوقل ماب…",
+    en: "A Google Maps share link…",
   },
   meetHalfwayMyPin: {
     ar: "موقعي",
     en: "My pin",
   },
+  meetHalfwayReady: {
+    ar: "جاهز",
+    en: "Ready",
+  },
+  meetHalfwayWaitingStatus: {
+    ar: "ننتظر",
+    en: "Waiting",
+  },
+  meetHalfwayChange: {
+    ar: "غيّر",
+    en: "Change",
+  },
+  meetHalfwayCopyLink: {
+    ar: "انسخ الرابط",
+    en: "Copy link",
+  },
+  meetHalfwayNoAccount: {
+    ar: "ما يحتاج حساب.",
+    en: "No account needed.",
+  },
+  meetHalfwayClose: {
+    ar: "سكّر",
+    en: "Close",
+  },
+  meetHalfwayCity: {
+    ar: "الرياض",
+    en: "Riyadh",
+  },
+  meetHalfwayMapsPin: {
+    ar: "دبوس قوقل ماب",
+    en: "Maps pin",
+  },
+  meetHalfwayFairSub: {
+    ar: "عادلة للوقت والمسافة",
+    en: "Balanced for time and distance",
+  },
+  meetHalfwayBestMatch: {
+    ar: "الأنسب",
+    en: "Best match",
+  },
+  meetHalfwayOpenMaps: {
+    ar: "افتح في ماب",
+    en: "Open in Maps",
+  },
   meetHalfwayBadPin: {
-    ar: "ما قدرت أقرأ الدبوس. حط رابط مشاركة قوقل ماب أو إحداثيات.",
-    en: "Couldn't read that pin. Paste a Google Maps share link or lat,lng.",
+    ar: "ما قدرت أقرأ الدبوس. حط رابط مشاركة قوقل ماب.",
+    en: "Couldn't read that pin. Paste a Google Maps share link.",
   },
   meetHalfwayBadMaps: {
-    ar: "رابط المشاركة ما طلع دبوس. جرّب الرابط الكامل، أو حط إحداثيات.",
-    en: "That Maps share link didn’t drop a pin. Try the full link, or paste lat,lng.",
+    ar: "رابط المشاركة ما طلع دبوس. جرّب الرابط الكامل.",
+    en: "That Maps share link didn’t drop a pin. Try the full link.",
   },
   meetHalfwayLocationOff: {
-    ar: "الموقع مقفل على هالجوال. حط رابط قوقل ماب في خانة الدبوس.",
-    en: "Location is off on this phone. Paste a Google Maps link in the pin field.",
+    ar: "الموقع مقفل على هالجوال. حط رابط قوقل ماب تحت.",
+    en: "Location is off on this phone. Paste a Google Maps link below.",
   },
   meetHalfwayThree: {
     ar: "ثلاث قهاوي بينكم",

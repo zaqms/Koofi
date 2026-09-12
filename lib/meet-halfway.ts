@@ -20,7 +20,7 @@ import { uniqueWhyLines } from "./why-line";
  * centroid of the resolved pins (or district centroids when a row
  * has no pin). Do not hard-code a pair-only algorithm.
  *
- * v1 UI ships exactly two shared pins (Maps paste / geo). A later
+ * v1 UI is invite → waiting → results (two people). A later
  * 3–4 friend UI can pass more Location rows without changing this
  * helper. `district` is an extension/fallback — pins always win.
  */

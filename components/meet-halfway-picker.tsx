@@ -1,11 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MeetHalfwayHero } from "@/components/meet-halfway-hero";
+import { MapPinIcon } from "@/components/map-pin-icon";
 import { copy } from "@/lib/copy";
+import { formatHalfwayPlaceLabel } from "@/lib/halfway-place";
 import type { HalfwayPinInput } from "@/lib/meet-halfway";
-import { halfwayPinMethod, looksLikeSharedPin, parseSharedPin } from "@/lib/shared-pin";
+import { MEET_HALFWAY_CHIP } from "@/lib/product";
+import {
+  halfwayPinMethod,
+  looksLikeSharedPin,
+  parseSharedPin,
+} from "@/lib/shared-pin";
 import type { MeetHalfwayPinMethod, MeetHalfwayPinWhich } from "@/lib/track";
-import { requestVisitorLocation } from "@/lib/visitor-location";
+import {
+  peekReadyVisitorLocation,
+  requestVisitorLocation,
+} from "@/lib/visitor-location";
 import type { Language, Pin } from "@/lib/types";
 
 type PinDraft = {
@@ -23,8 +34,10 @@ type MeetHalfwayPickerProps = {
   joined?: boolean;
   initialMe?: Pin | null;
   friendPin?: Pin | null;
+  error?: string | null;
   onSubmit: (locations: HalfwayPinInput[]) => void;
   onInvite?: (me: HalfwayPinInput) => void;
+  onCopyLink?: (me: HalfwayPinInput) => Promise<boolean> | boolean | void;
   onPin?: (input: {
     which: MeetHalfwayPinWhich;
     method: MeetHalfwayPinMethod;
@@ -33,108 +46,46 @@ type MeetHalfwayPickerProps = {
 
 function pinDraftFrom(pin?: Pin | null): PinDraft {
   if (!pin) return { text: "" };
-  return {
-    text: `${pin.lat.toFixed(5)}, ${pin.lng.toFixed(5)}`,
-    pin,
-  };
+  return { text: "", pin };
 }
 
 function asInput(draft: PinDraft): HalfwayPinInput {
   return { text: draft.text, lat: draft.pin?.lat, lng: draft.pin?.lng };
 }
 
-function PinField({
-  id,
-  label,
-  draft,
+function looksLikeCoordsOnly(text: string): boolean {
+  const trimmed = text.trim();
+  if (!trimmed) return false;
+  return /^-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?$/.test(trimmed);
+}
+
+function StatusDot({
+  ready,
   language,
-  disabled,
-  showMyPin,
-  which,
-  onChange,
-  onPin,
 }: {
-  id: string;
-  label: string;
-  draft: PinDraft;
+  ready: boolean;
   language: Language;
-  disabled?: boolean;
-  showMyPin?: boolean;
-  which: MeetHalfwayPinWhich;
-  onChange: (next: PinDraft) => void;
-  onPin?: (input: {
-    which: MeetHalfwayPinWhich;
-    method: MeetHalfwayPinMethod;
-  }) => void;
 }) {
-  const [locationOff, setLocationOff] = useState(false);
-
-  async function useMyPin() {
-    const visitor = await requestVisitorLocation({ retry: true });
-    if (visitor.status !== "ready") {
-      setLocationOff(true);
-      return;
-    }
-    setLocationOff(false);
-    const pin = { lat: visitor.lat, lng: visitor.lng };
-    onChange({
-      text: `${pin.lat.toFixed(5)}, ${pin.lng.toFixed(5)}`,
-      pin,
-    });
-    onPin?.({ which, method: "geolocation" });
-  }
-
   return (
-    <label className="block text-start" htmlFor={id}>
-      <span className="mb-1 block text-[11px] leading-4 text-ink-soft">
-        {label}
-      </span>
-      <div className="flex items-center gap-2">
-        <input
-          id={id}
-          type="text"
-          inputMode="url"
-          autoComplete="off"
-          spellCheck={false}
-          value={draft.text}
-          disabled={disabled}
-          placeholder={copy.meetHalfwayPinPlaceholder[language]}
-          onChange={(event) => {
-            const text = event.target.value;
-            const pin = parseSharedPin(text) ?? undefined;
-            const wasSet = Boolean(draft.pin);
-            const moved =
-              pin &&
-              (!draft.pin ||
-                draft.pin.lat !== pin.lat ||
-                draft.pin.lng !== pin.lng);
-            if (locationOff) setLocationOff(false);
-            onChange({ text, pin });
-            if (pin && (!wasSet || moved)) {
-              onPin?.({ which, method: halfwayPinMethod(text) });
-            }
-          }}
-          className="min-h-12 min-w-0 flex-1 rounded-2xl border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-bean disabled:opacity-50"
-        />
-        {showMyPin ? (
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={() => {
-              void useMyPin();
-            }}
-            className="h-12 shrink-0 rounded-2xl border border-line bg-paper px-3 text-xs text-ink disabled:opacity-50"
-          >
-            {copy.meetHalfwayMyPin[language]}
-          </button>
-        ) : null}
-      </div>
-      {locationOff ? (
-        <p className="mt-1 text-[11px] leading-4 text-ink-soft" role="status">
-          {copy.meetHalfwayLocationOff[language]}
-        </p>
-      ) : null}
-    </label>
+    <span
+      className={
+        ready
+          ? "inline-flex items-center gap-1 text-[11px] leading-4 text-emerald-800"
+          : "inline-flex items-center gap-1 text-[11px] leading-4 text-ink-soft"
+      }
+    >
+      <span
+        aria-hidden
+        className={
+          ready
+            ? "size-1.5 rounded-full bg-emerald-700"
+            : "size-1.5 rounded-full border border-ink-soft/50"
+        }
+      />
+      {ready
+        ? copy.meetHalfwayReady[language]
+        : copy.meetHalfwayWaitingStatus[language]}
+    </span>
   );
 }
 
@@ -146,93 +97,261 @@ export function MeetHalfwayPicker({
   joined = false,
   initialMe = null,
   friendPin = null,
+  error = null,
   onSubmit,
   onInvite,
+  onCopyLink,
   onPin,
 }: MeetHalfwayPickerProps) {
   const [me, setMe] = useState<PinDraft>(() => pinDraftFrom(initialMe));
-  const [other, setOther] = useState<PinDraft>(() => pinDraftFrom(friendPin));
+  const [editing, setEditing] = useState(() => !initialMe);
+  const [locationOff, setLocationOff] = useState(false);
+  const [copied, setCopied] = useState(false);
   const guest = mode === "guest";
-  const meReady = Boolean(me.pin || looksLikeSharedPin(me.text));
-  const otherReady = Boolean(other.pin || looksLikeSharedPin(other.text));
-  const pairReady = meReady && otherReady;
-  const hint = guest
+  const resolvedMe = me.pin || me.text || !initialMe ? me : pinDraftFrom(initialMe);
+  const meReady = Boolean(
+    resolvedMe.pin || looksLikeSharedPin(resolvedMe.text),
+  );
+  const which: MeetHalfwayPinWhich = guest ? "self" : "a";
+  const title =
+    language === "ar" ? MEET_HALFWAY_CHIP.ar : MEET_HALFWAY_CHIP.en;
+  const tagline = guest
     ? copy.meetHalfwayInviteGuestHint[language]
-    : joined
-      ? copy.meetHalfwayInviteJoined[language]
-      : waiting
-        ? copy.meetHalfwayInviteWaiting[language]
-        : copy.meetHalfwayHint[language];
+    : copy.meetHalfwayTagline[language];
+  const placeLabel = resolvedMe.pin
+    ? formatHalfwayPlaceLabel(resolvedMe.pin, language)
+    : looksLikeSharedPin(resolvedMe.text)
+      ? copy.meetHalfwayMapsPin[language]
+      : "";
 
+  const onPinRef = useRef(onPin);
+  const autoReadyRef = useRef(false);
   useEffect(() => {
-    if (!initialMe) return;
-    setMe((current) => (current.pin ? current : pinDraftFrom(initialMe)));
-  }, [initialMe]);
-
+    onPinRef.current = onPin;
+  }, [onPin]);
   useEffect(() => {
-    if (!friendPin) return;
-    setOther(pinDraftFrom(friendPin));
-  }, [friendPin]);
+    if (autoReadyRef.current || resolvedMe.pin || initialMe) return;
+    autoReadyRef.current = true;
+    let cancelled = false;
+    void peekReadyVisitorLocation().then((visitor) => {
+      if (cancelled) return;
+      if (visitor.status === "ready") {
+        setMe({
+          text: "",
+          pin: { lat: visitor.lat, lng: visitor.lng },
+        });
+        setEditing(false);
+        setLocationOff(false);
+        onPinRef.current?.({ which, method: "geolocation" });
+        return;
+      }
+      if (visitor.status === "unavailable") setLocationOff(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [initialMe, resolvedMe.pin, which]);
 
-  function submitPair() {
-    if (!pairReady || disabled) return;
-    // v1 UI is exactly two shared pins.
-    // Core ranking is locations: Location[] (N≥2) — add a third/fourth
-    // pin field here later for 3–4 friends. Do not pair-hardcode the API.
-    onSubmit([asInput(me), asInput(other)]);
+  async function dropMyPin() {
+    const visitor = await requestVisitorLocation({ retry: true });
+    if (visitor.status !== "ready") {
+      setLocationOff(true);
+      setEditing(true);
+      return;
+    }
+    setLocationOff(false);
+    setMe({
+      text: "",
+      pin: { lat: visitor.lat, lng: visitor.lng },
+    });
+    setEditing(false);
+    onPin?.({ which, method: "geolocation" });
+  }
+
+  function onPaste(text: string) {
+    const pin = parseSharedPin(text) ?? undefined;
+    const wasSet = Boolean(resolvedMe.pin);
+    const moved =
+      pin &&
+      (!resolvedMe.pin ||
+        resolvedMe.pin.lat !== pin.lat ||
+        resolvedMe.pin.lng !== pin.lng);
+    if (locationOff && pin) setLocationOff(false);
+    setMe({
+      text: looksLikeCoordsOnly(text) ? "" : text,
+      pin,
+    });
+    if (pin) setEditing(false);
+    if (pin && (!wasSet || moved)) {
+      onPin?.({ which, method: halfwayPinMethod(text) });
+    }
   }
 
   function submitGuest() {
     if (!meReady || disabled) return;
-    onSubmit([asInput(me)]);
+    onSubmit([asInput(resolvedMe)]);
   }
 
   function invite() {
     if (!meReady || disabled || !onInvite) return;
-    onInvite(asInput(me));
+    onInvite(asInput(resolvedMe));
+  }
+
+  async function copyLink() {
+    if (!meReady || disabled || !onCopyLink) return;
+    const ok = await onCopyLink(asInput(resolvedMe));
+    if (ok === false) return;
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 2000);
+  }
+
+  const showPaste = editing || locationOff || (!meReady && !resolvedMe.pin);
+
+  if (waiting || joined) {
+    return (
+      <div
+        className="flex flex-col gap-5 px-1 pt-2 pb-1"
+        dir={language === "ar" ? "rtl" : "ltr"}
+      >
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-foam px-3 py-2.5">
+            <span className="text-sm text-ink">{copy.meetHalfwayMe[language]}</span>
+            <StatusDot ready language={language} />
+          </div>
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-foam px-3 py-2.5">
+            <span className="min-w-0">
+              <span className="block text-sm text-ink">
+                {copy.meetHalfwayOther[language]}
+              </span>
+              {joined && friendPin ? (
+                <span className="block truncate text-[11px] text-ink-soft">
+                  {formatHalfwayPlaceLabel(friendPin, language)}
+                </span>
+              ) : null}
+            </span>
+            <StatusDot ready={joined} language={language} />
+          </div>
+        </div>
+        <MeetHalfwayHero />
+        <p
+          className={
+            joined
+              ? "rounded-2xl bg-bean/10 px-3 py-2.5 text-center text-sm leading-6 text-ink"
+              : "text-center text-sm leading-6 text-ink-soft"
+          }
+          role="status"
+          aria-live={joined || waiting ? "polite" : undefined}
+        >
+          {joined
+            ? copy.meetHalfwayInviteJoined[language]
+            : copy.meetHalfwayInviteWaiting[language]}
+        </p>
+        {onCopyLink ? (
+          <button
+            type="button"
+            disabled={disabled || !meReady}
+            onClick={() => {
+              void copyLink();
+            }}
+            className="h-12 w-full rounded-2xl border border-line bg-foam text-sm text-ink disabled:opacity-50"
+          >
+            {copied
+              ? copy.packetCopied[language]
+              : copy.meetHalfwayCopyLink[language]}
+          </button>
+        ) : null}
+      </div>
+    );
   }
 
   return (
     <div
-      className="space-y-2.5 rounded-2xl border border-line bg-foam p-3"
+      className="flex flex-col gap-5 px-1 pt-4 pb-2"
       dir={language === "ar" ? "rtl" : "ltr"}
     >
-      <p
-        className={
-          joined
-            ? "rounded-xl bg-bean/10 px-2.5 py-2 text-xs leading-5 text-ink"
-            : "text-xs leading-5 text-ink-soft"
-        }
-        role={joined || waiting ? "status" : undefined}
-        aria-live={joined || waiting ? "polite" : undefined}
-      >
-        {hint}
-      </p>
-      <div className="grid gap-2">
-        <PinField
-          id="meet-halfway-me"
-          label={copy.meetHalfwayMe[language]}
-          draft={me}
-          language={language}
-          disabled={disabled || (waiting && !joined)}
-          showMyPin
-          which={guest ? "self" : "a"}
-          onChange={setMe}
-          onPin={onPin}
-        />
-        {guest ? null : (
-          <PinField
-            id="meet-halfway-other"
-            label={copy.meetHalfwayOther[language]}
-            draft={other}
-            language={language}
-            disabled={disabled || (waiting && !joined)}
-            which="b"
-            onChange={setOther}
-            onPin={onPin}
-          />
-        )}
+      <MeetHalfwayHero />
+      <div className="space-y-1.5 text-center">
+        <h1 className="text-3xl font-semibold tracking-tight text-ink">
+          {title}
+        </h1>
+        <p className="text-sm leading-6 text-ink-soft">{tagline}</p>
       </div>
+
+      <div className="rounded-2xl border border-line bg-foam px-3 py-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 items-start gap-2.5">
+            <span className="mt-0.5 text-ink-soft">
+              <MapPinIcon />
+            </span>
+            <div className="min-w-0">
+              <p className="text-[11px] leading-4 text-ink-soft">
+                {copy.meetHalfwayMe[language]}
+              </p>
+              <p className="truncate text-sm font-medium text-ink">
+                {meReady
+                  ? placeLabel
+                  : copy.meetHalfwayMyPin[language]}
+              </p>
+            </div>
+          </div>
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            {meReady ? <StatusDot ready language={language} /> : null}
+            {meReady ? (
+              <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setEditing(true)}
+                className="text-[11px] text-ink-soft underline-offset-2 hover:underline disabled:opacity-50"
+              >
+                {copy.meetHalfwayChange[language]}
+              </button>
+            ) : null}
+          </div>
+        </div>
+
+        {showPaste ? (
+          <div className="mt-3 space-y-2">
+            <label className="block text-start" htmlFor="meet-halfway-me">
+              <span className="sr-only">{copy.meetHalfwayMe[language]}</span>
+              <input
+                id="meet-halfway-me"
+                type="text"
+                inputMode="url"
+                autoComplete="off"
+                spellCheck={false}
+                value={looksLikeCoordsOnly(resolvedMe.text) ? "" : resolvedMe.text}
+                disabled={disabled}
+                placeholder={copy.meetHalfwayPinPlaceholder[language]}
+                onChange={(event) => onPaste(event.target.value)}
+                className="min-h-12 w-full rounded-2xl border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-bean disabled:opacity-50"
+              />
+            </label>
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={() => {
+                void dropMyPin();
+              }}
+              className="h-12 w-full rounded-2xl border border-line bg-paper text-sm text-ink disabled:opacity-50"
+            >
+              {copy.meetHalfwayMyPin[language]}
+            </button>
+          </div>
+        ) : null}
+
+        {locationOff ? (
+          <p className="mt-2 text-[11px] leading-4 text-ink-soft" role="status">
+            {copy.meetHalfwayLocationOff[language]}
+          </p>
+        ) : null}
+      </div>
+
+      {error ? (
+        <p className="text-center text-xs leading-5 text-bean" role="status">
+          {error}
+        </p>
+      ) : null}
+
       {guest ? (
         <button
           type="button"
@@ -254,19 +373,47 @@ export function MeetHalfwayPicker({
               {copy.meetHalfwayInvite[language]}
             </button>
           ) : null}
-          {onInvite ? (
-            <p className="text-[11px] leading-4 text-ink-soft">
-              {copy.meetHalfwayInviteHint[language]}
-            </p>
+          {onCopyLink ? (
+            <button
+              type="button"
+              disabled={disabled || !meReady}
+              onClick={() => {
+                void copyLink();
+              }}
+              className="h-12 w-full rounded-2xl border border-line bg-foam text-sm text-ink disabled:opacity-50"
+            >
+              {copied
+                ? copy.packetCopied[language]
+                : copy.meetHalfwayCopyLink[language]}
+            </button>
           ) : null}
-          <button
-            type="button"
-            disabled={disabled || (waiting && !joined) || !pairReady}
-            onClick={submitPair}
-            className="h-12 w-full rounded-2xl border border-line bg-paper text-sm text-ink disabled:opacity-50"
-          >
-            {copy.meetHalfwayGo[language]}
-          </button>
+          <p className="flex items-center justify-center gap-1.5 text-[11px] leading-4 text-ink-soft">
+            <svg
+              aria-hidden
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              className="shrink-0"
+            >
+              <rect
+                x="6"
+                y="11"
+                width="12"
+                height="9"
+                rx="2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              />
+              <path
+                d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              />
+            </svg>
+            {copy.meetHalfwayNoAccount[language]}
+          </p>
         </div>
       )}
     </div>

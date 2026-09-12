@@ -6,6 +6,10 @@ import { AddShopButton } from "@/components/add-shop-button";
 import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
 import { MeetHalfwayResultsFooter } from "@/components/meet-halfway-results-footer";
 import { PickList, type ChatPick } from "@/components/pick-list";
+import {
+  formatHalfwayPlaceLabel,
+  pinFromHalfwayInput,
+} from "@/lib/halfway-place";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { useBeenIds } from "@/lib/been";
@@ -36,7 +40,7 @@ import {
 } from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
 import { MEET_HALFWAY_CHIP, NEARBY_CHIP, districtPath } from "@/lib/product";
-import { sharePackPacket } from "@/lib/share-pack";
+import { copyShareText, sharePackPacket } from "@/lib/share-pack";
 import {
   trackChatQuery,
   trackDistrictMatch,
@@ -121,6 +125,35 @@ function shownHalfwayPickIds(messages: readonly Message[]): string[] {
     }
   }
   return ids;
+}
+
+function sessionHostWait(
+  halfwayInvite?: HalfwayInviteRestore,
+): ReturnType<typeof readHalfwayWaiting> {
+  if (halfwayInvite) return null;
+  const saved = readHalfwayWaiting();
+  if (!saved) return null;
+  if (!decodeHalfwayInviteId(saved.id)) {
+    clearHalfwayWaiting();
+    return null;
+  }
+  return saved;
+}
+
+function lastHalfwayResult(
+  messages: readonly Message[],
+): AssistantMessage | null {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (
+      message?.role === "assistant" &&
+      typeof message.halfwayMore === "boolean" &&
+      (message.picks?.length ?? 0) > 0
+    ) {
+      return message;
+    }
+  }
+  return null;
 }
 
 function lastHalfwayLocations(
@@ -249,22 +282,38 @@ export function Chat({
   const [awaitingMaps, setAwaitingMaps] = useState(
     () => threads[threadKey]?.awaitingMaps ?? false,
   );
-  const [pickedChipId, setPickedChipId] = useState<string | null>(
-    () => (halfwayInvite ? MEET_HALFWAY_CHIP.id : null),
-  );
+  const [pickedChipId, setPickedChipId] = useState<string | null>(() => {
+    if (halfwayInvite) return MEET_HALFWAY_CHIP.id;
+    if (threads[threadKey]?.halfwayWaitingId || sessionHostWait()) {
+      return MEET_HALFWAY_CHIP.id;
+    }
+    return null;
+  });
   const [meetHalfwayOpen, setMeetHalfwayOpen] = useState(
     () =>
       (Boolean(halfwayInvite) && !halfwayInviteExpired) ||
-      Boolean(threads[threadKey]?.halfwayWaitingId),
+      Boolean(threads[threadKey]?.halfwayWaitingId) ||
+      Boolean(sessionHostWait(halfwayInvite)),
   );
   const [halfwayWaitingId, setHalfwayWaitingId] = useState<string | null>(
-    () => threads[threadKey]?.halfwayWaitingId ?? null,
+    () =>
+      threads[threadKey]?.halfwayWaitingId ??
+      sessionHostWait(halfwayInvite)?.id ??
+      null,
   );
   const [halfwayWaitingMe, setHalfwayWaitingMe] = useState<Pin | null>(
-    () => threads[threadKey]?.halfwayWaitingMe ?? null,
+    () =>
+      threads[threadKey]?.halfwayWaitingMe ??
+      sessionHostWait(halfwayInvite)?.me ??
+      null,
   );
   const [halfwayFriendPin, setHalfwayFriendPin] = useState<Pin | null>(null);
   const [halfwayJoined, setHalfwayJoined] = useState(false);
+  const [halfwayWaitingUi, setHalfwayWaitingUi] = useState(() => {
+    if (threads[threadKey]?.halfwayWaitingId) return true;
+    return Boolean(sessionHostWait(halfwayInvite));
+  });
+  const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
@@ -327,20 +376,6 @@ export function Chat({
     halfwayWaitingId,
     halfwayWaitingMe,
   ]);
-
-  useEffect(() => {
-    if (halfwayInvite) return;
-    const saved = readHalfwayWaiting();
-    if (!saved) return;
-    if (!decodeHalfwayInviteId(saved.id)) {
-      clearHalfwayWaiting();
-      return;
-    }
-    setHalfwayWaitingId(saved.id);
-    setHalfwayWaitingMe(saved.me);
-    setMeetHalfwayOpen(true);
-    setPickedChipId(MEET_HALFWAY_CHIP.id);
-  }, [halfwayInvite]);
 
   useEffect(() => {
     if (!halfwayWaitingId || halfwayInvite) return;
@@ -458,8 +493,10 @@ export function Chat({
         }
         if (result.data.halfwayError === "bad_pin") {
           setMeetHalfwayOpen(true);
+          setHalfwayPinError(result.data.reply || null);
         } else if (typeof result.data.halfwayMore === "boolean") {
-          setMeetHalfwayOpen(false);
+          setMeetHalfwayOpen(true);
+          setHalfwayPinError(null);
         }
         if (typeof result.data.halfwayMore === "boolean") {
           const source =
@@ -747,16 +784,27 @@ export function Chat({
   }
 
   function showHalfwayPinFail(rows: HalfwayPinInput[], reply?: string) {
+    const text = reply?.trim() || halfwayPinFailCopy(landing, rows);
     setMeetHalfwayOpen(true);
+    setHalfwayPinError(text);
     applyAssistant({
       id: crypto.randomUUID(),
       role: "assistant",
       language: landing,
-      text: reply?.trim() || halfwayPinFailCopy(landing, rows),
+      text,
     });
   }
 
-  async function inviteHalfwayFriend(me: HalfwayPinInput) {
+  async function ensureHalfwayInvite(
+    me: HalfwayPinInput,
+  ): Promise<{ id: string; url: string } | null> {
+    if (halfwayWaitingId) {
+      const origin = window.location.origin.replace(/\/$/, "");
+      return {
+        id: halfwayWaitingId,
+        url: `${origin}${halfwayInviteSharePath(halfwayWaitingId)}`,
+      };
+    }
     const pin = pinFromInput(me);
     let id = encodeHalfwayInviteId({
       locale: landing,
@@ -785,11 +833,11 @@ export function Chat({
             [me],
             typeof data.reply === "string" ? data.reply : undefined,
           );
-          return;
+          return null;
         }
       } catch {
         showHalfwayPinFail([me]);
-        return;
+        return null;
       }
     } else {
       try {
@@ -804,7 +852,7 @@ export function Chat({
     }
     if (!id) {
       showHalfwayPinFail([me]);
-      return;
+      return null;
     }
     const origin = window.location.origin.replace(/\/$/, "");
     const url = `${origin}${halfwayInviteSharePath(id)}`;
@@ -816,12 +864,28 @@ export function Chat({
     setHalfwayFriendPin(null);
     halfwayJoinSeenRef.current = false;
     setHalfwayWaitingId(id);
+    setHalfwayPinError(null);
     trackEvent(
       "meet_halfway_invite_share",
       { locale: landing, pack_id: id },
       { dedupeKey: `meet_halfway_invite_share:${id}` },
     );
-    void sharePackPacket(halfwayInviteShareText({ language: landing, url }));
+    return { id, url };
+  }
+
+  async function inviteHalfwayFriend(me: HalfwayPinInput) {
+    const created = await ensureHalfwayInvite(me);
+    if (!created) return;
+    setHalfwayWaitingUi(true);
+    void sharePackPacket(
+      halfwayInviteShareText({ language: landing, url: created.url }),
+    );
+  }
+
+  async function copyHalfwayInvite(me: HalfwayPinInput): Promise<boolean> {
+    const created = await ensureHalfwayInvite(me);
+    if (!created) return false;
+    return copyShareText(created.url);
   }
 
   async function joinHalfwayInvite(row: HalfwayPinInput | undefined) {
@@ -965,6 +1029,7 @@ export function Chat({
     }
     if (chip.id === MEET_HALFWAY_CHIP.id) {
       setMeetHalfwayOpen(true);
+      setHalfwayPinError(null);
       trackEvent(
         "meet_halfway_open",
         {
@@ -999,6 +1064,8 @@ export function Chat({
     setMeetHalfwayOpen(false);
     setHalfwayWaitingId(null);
     setHalfwayWaitingMe(null);
+    setHalfwayWaitingUi(false);
+    setHalfwayPinError(null);
     setHalfwayFriendPin(null);
     setHalfwayJoined(false);
     halfwayJoinSeenRef.current = false;
@@ -1014,18 +1081,20 @@ export function Chat({
         message.role === "user" ||
         (message.role === "assistant" && message.id !== "opener"),
     );
-  // بيننا pin fields are the only paste target while the picker is open
-  // (host chip + /h/ guest). Ask composer + أضف قهوة come back on close.
+  const halfwayResult = lastHalfwayResult(messages);
+  // بيننا first-class screens (invite / waiting / results). Ask composer +
+  // أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen;
   const halfwayPicker = meetHalfwayOpen ? (
     <MeetHalfwayPicker
       language={landing}
       disabled={busy}
       mode={halfwayInvite ? "guest" : "pair"}
-      waiting={Boolean(halfwayWaitingId) || halfwayJoined}
+      waiting={halfwayWaitingUi || halfwayJoined}
       joined={halfwayJoined}
       initialMe={halfwayWaitingMe}
       friendPin={halfwayFriendPin}
+      error={halfwayPinError}
       onSubmit={(rows) => {
         if (halfwayInvite) {
           void joinHalfwayInvite(rows[0]);
@@ -1034,6 +1103,7 @@ export function Chat({
         sendMeetHalfway(rows);
       }}
       onInvite={halfwayInvite ? undefined : inviteHalfwayFriend}
+      onCopyLink={halfwayInvite ? undefined : copyHalfwayInvite}
       onPin={(input) => {
         trackEvent(
           "meet_halfway_pin",
@@ -1049,11 +1119,20 @@ export function Chat({
       }}
     />
   ) : null;
+  const showHalfwayResults =
+    Boolean(halfwayPicker) && Boolean(halfwayResult?.picks?.length);
+  const showHalfwaySetup = Boolean(halfwayPicker) && !showHalfwayResults;
+  const resultLocations =
+    halfwayResult?.halfwayLocations ?? halfwayLocationsRef.current;
+  const resultMe =
+    pinFromHalfwayInput(resultLocations?.[0]) ?? halfwayWaitingMe;
+  const resultFriend =
+    pinFromHalfwayInput(resultLocations?.[1]) ?? halfwayFriendPin;
 
   return (
     <div
       className={
-        hasThread
+        hasThread || meetHalfwayOpen
           ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
           : "mx-auto flex w-full max-w-md flex-col bg-paper"
       }
@@ -1067,7 +1146,18 @@ export function Chat({
             className="text-lg font-semibold"
             onClick={startOver}
           />
-          {restore ? null : (
+          {meetHalfwayOpen ? (
+            <button
+              type="button"
+              onClick={() => setMeetHalfwayOpen(false)}
+              className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+              aria-label={copy.meetHalfwayClose[landing]}
+            >
+              <span aria-hidden className="text-lg leading-none">
+                ×
+              </span>
+            </button>
+          ) : restore ? null : (
             <Link
               href={localeHref ?? (landing === "ar" ? "/en" : "/")}
               className="text-xs text-ink-soft underline-offset-2 hover:underline"
@@ -1076,9 +1166,73 @@ export function Chat({
             </Link>
           )}
         </div>
-        <p className="text-xs text-ink-soft">{copy.cityOnly[landing]}</p>
+        {meetHalfwayOpen ? null : (
+          <p className="text-xs text-ink-soft">{copy.cityOnly[landing]}</p>
+        )}
       </header>
 
+      {showHalfwayResults && halfwayResult?.picks ? (
+        <div
+          ref={listRef}
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4"
+          aria-live="polite"
+        >
+          <div className="space-y-1.5 text-start">
+            <h1 className="text-xl font-semibold leading-7 text-ink">
+              {copy.meetHalfwayThree[landing]}
+            </h1>
+            <p className="text-xs leading-5 text-ink-soft">
+              {copy.meetHalfwayFairSub[landing]}
+            </p>
+            <p className="text-[11px] leading-4 text-ink-soft">
+              {[
+                formatHalfwayPlaceLabel(resultMe, landing),
+                formatHalfwayPlaceLabel(resultFriend, landing),
+              ]
+                .filter((label, index, rows) => rows.indexOf(label) === index)
+                .join(landing === "ar" ? " · " : " · ")}
+            </p>
+          </div>
+          <PickList
+            picks={halfwayResult.picks}
+            language={halfwayResult.language}
+            uiLanguage={landing}
+            beenIds={been.ids}
+            onBeen={been.mark}
+            ask={meetHalfwayAskLabel(landing)}
+            mapsSource="pack"
+            halfway={{ me: resultMe, friend: resultFriend }}
+          />
+          {!busy ? (
+            <MeetHalfwayResultsFooter
+              language={landing}
+              kind={halfwayResultsFooterKind({
+                halfwayMore: halfwayResult.halfwayMore,
+                paged: halfwayResult.halfwayPaged,
+              })}
+              onMore={() => {
+                const locations =
+                  halfwayResult.halfwayLocations ?? halfwayLocationsRef.current;
+                if (locations) sendMeetHalfway(locations, { more: true });
+              }}
+            />
+          ) : (
+            <p className="text-sm text-ink-soft">{copy.looking[composerLanguage]}</p>
+          )}
+        </div>
+      ) : showHalfwaySetup ? (
+        <div
+          className="min-h-0 flex-1 overflow-y-auto px-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
+          aria-live="polite"
+        >
+          {halfwayPicker}
+          {busy ? (
+            <p className="mt-3 text-center text-sm text-ink-soft">
+              {copy.looking[composerLanguage]}
+            </p>
+          ) : null}
+        </div>
+      ) : (
       <div
         ref={listRef}
         className={
@@ -1202,6 +1356,7 @@ export function Chat({
         ) : null}
         {hasThread ? <div aria-hidden className="h-3 shrink-0" /> : null}
       </div>
+      )}
 
       {showAskComposer ? (
         <form
@@ -1257,16 +1412,6 @@ export function Chat({
             />
           </div>
         </form>
-      ) : halfwayPicker ? (
-        <div
-          className={
-            hasThread
-              ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-              : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-          }
-        >
-          {halfwayPicker}
-        </div>
       ) : null}
     </div>
   );

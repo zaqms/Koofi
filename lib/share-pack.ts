@@ -59,7 +59,7 @@ export function whatsAppShareHref(text: string): string {
 
 export type SharePackResult = "shared" | "copied" | "whatsapp" | "cancelled" | "failed";
 
-async function copyPacket(text: string): Promise<boolean> {
+export async function copyShareText(text: string): Promise<boolean> {
   try {
     if (!navigator.clipboard?.writeText) return false;
     await navigator.clipboard.writeText(text);
@@ -89,7 +89,7 @@ export async function sharePackPacket(text: string): Promise<SharePackResult> {
     }
   }
 
-  if (await copyPacket(text)) return "copied";
+  if (await copyShareText(text)) return "copied";
 
   window.location.href = whatsAppShareHref(text);
   return "whatsapp";

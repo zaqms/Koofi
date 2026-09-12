@@ -1665,13 +1665,20 @@ const halfwayPicker = readFileSync(
 assert(
   halfwayPicker.includes("meetHalfwayMe") &&
     halfwayPicker.includes("looksLikeSharedPin") &&
-    halfwayPicker.includes("requestVisitorLocation"),
-  "بيننا picker is two shared pins (Maps URL / lat-lng / geo)",
+    halfwayPicker.includes("requestVisitorLocation") &&
+    halfwayPicker.includes("peekReadyVisitorLocation") &&
+    halfwayPicker.includes("MeetHalfwayHero"),
+  "بيننا picker is pin–cup–pin invite (Maps URL / geo), coords hidden",
 );
 assert(!halfwayPicker.includes("<select"), "بيننا has no district dropdowns");
 assert(
+  !halfwayPicker.includes("toFixed(5)"),
+  "بيننا Ready card does not paint lat,lng",
+);
+assert(
   halfwayPicker.includes("meetHalfwayMyPin") &&
     halfwayPicker.includes("meetHalfwayInvite") &&
+    halfwayPicker.includes("meetHalfwayCopyLink") &&
     !halfwayPicker.includes("directoryNeighborhoods"),
   "بيننا asks for pins + اعزم خويك, not districts",
 );

@@ -9,6 +9,7 @@ import { SharePackButton } from "@/components/share-pack-button";
 import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
+import { estimateDriveMinutes, formatDriveMinutes } from "@/lib/halfway-place";
 import { postLearnMaps } from "@/lib/learn-session";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { packIdForPicks } from "@/lib/share-pack";
@@ -26,6 +27,10 @@ type PickListProps = {
   ask?: string;
   packId?: string;
   mapsSource?: MapsClickSource;
+  halfway?: {
+    me?: Pin | null;
+    friend?: Pin | null;
+  };
 };
 
 export function PickList({
@@ -37,6 +42,7 @@ export function PickList({
   ask = "",
   packId,
   mapsSource = "pack",
+  halfway,
 }: PickListProps) {
   const resolvedPackId =
     packId ??
@@ -74,6 +80,11 @@ export function PickList({
               key={pick.id}
               className="rounded-2xl border border-line bg-foam px-2.5 py-2"
             >
+              {halfway && index === 0 ? (
+                <p className="mb-1.5 inline-flex items-center gap-1 rounded-full bg-bean/10 px-2 py-0.5 text-[11px] leading-4 text-bean">
+                  {copy.meetHalfwayBestMatch[language]}
+                </p>
+              ) : null}
               <div className="flex items-start gap-2.5">
                 <div className="flex min-w-0 flex-1 items-start gap-2.5" dir="ltr">
                   <ShopVisual
@@ -117,6 +128,14 @@ export function PickList({
                     <p className="mt-0.5 truncate text-xs leading-4 text-ink">
                       {pick.why}
                     </p>
+                    {halfway && pick.lat != null && pick.lng != null ? (
+                      <HalfwayDriveTimes
+                        shop={{ lat: pick.lat, lng: pick.lng }}
+                        me={halfway.me}
+                        friend={halfway.friend}
+                        language={language}
+                      />
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -126,14 +145,27 @@ export function PickList({
                   shopId={pick.id}
                   locale={language}
                   source={mapsSource}
-                  className="inline-flex size-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
-                  aria-label={copy.maps[language]}
-                  title={copy.maps[language]}
+                  className={
+                    halfway
+                      ? "inline-flex h-8 items-center gap-1.5 rounded-full px-1 text-xs text-ink-soft hover:bg-paper-deep hover:text-ink"
+                      : "inline-flex size-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+                  }
+                  aria-label={
+                    halfway
+                      ? copy.meetHalfwayOpenMaps[language]
+                      : copy.maps[language]
+                  }
+                  title={
+                    halfway
+                      ? copy.meetHalfwayOpenMaps[language]
+                      : copy.maps[language]
+                  }
                   onClick={() => {
                     postLearnMaps({ shopId: pick.id, pickIndex: index });
                   }}
                 >
                   <MapPinIcon />
+                  {halfway ? copy.meetHalfwayOpenMaps[language] : null}
                 </MapsLink>
                 <Link
                   href={pick.cardPath}
@@ -210,6 +242,31 @@ function PickMetaLine({
           {part}
         </Fragment>
       ))}
+    </p>
+  );
+}
+
+function HalfwayDriveTimes({
+  shop,
+  me,
+  friend,
+  language,
+}: {
+  shop: Pin;
+  me?: Pin | null;
+  friend?: Pin | null;
+  language: Language;
+}) {
+  const mine = me ? formatDriveMinutes(estimateDriveMinutes(me, shop), language) : "";
+  const theirs = friend
+    ? formatDriveMinutes(estimateDriveMinutes(friend, shop), language)
+    : "";
+  if (!mine && !theirs) return null;
+
+  return (
+    <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] leading-4 text-ink-soft">
+      {mine ? <span dir="ltr">{mine}</span> : null}
+      {theirs ? <span dir="ltr">{theirs}</span> : null}
     </p>
   );
 }

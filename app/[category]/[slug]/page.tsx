@@ -1,13 +1,18 @@
 import { notFound } from "next/navigation";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
+import { chipPageMetadata } from "@/lib/chip-page";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
 import { isDirectoryCategory } from "@/lib/directory-category";
 import {
   categoryListingStaticParams,
   mostPopularMetadata,
 } from "@/lib/most-popular";
-import { isMostPopularSlug, PRODUCT_NAME } from "@/lib/product";
+import {
+  isCoffeeShopChipSlug,
+  isMostPopularSlug,
+  PRODUCT_NAME,
+} from "@/lib/product";
 import {
   districtItemListJsonLd,
   mostPopularItemListJsonLd,
@@ -29,6 +34,9 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
   if (isMostPopularSlug(slug)) {
     return mostPopularMetadata("ar");
   }
+  if (isCoffeeShopChipSlug(slug)) {
+    return chipPageMetadata(slug, "ar");
+  }
   const district = resolveDistrictSlug(slug);
   if (!district) {
     return { title: PRODUCT_NAME };
@@ -48,6 +56,9 @@ export default async function CategoryDistrictPage({
         <HomeLanding language="ar" listing="popular" />
       </>
     );
+  }
+  if (isCoffeeShopChipSlug(slug)) {
+    return <HomeLanding language="ar" selectedChipId={slug} />;
   }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();

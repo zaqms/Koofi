@@ -3,9 +3,9 @@ import Link from "next/link";
 import { copy } from "@/lib/copy";
 import {
   MEET_HALFWAY_CHIP,
-  mostPopularPath,
   NEARBY_CHIP,
   VIBE_CHIPS,
+  chipSharePath,
   vibeChipLabel,
 } from "@/lib/product";
 import type { Language } from "@/lib/types";
@@ -188,17 +188,16 @@ export function VibeChips({
           onPick({ id: chip.id, label });
         };
 
-        if (chip.id === "popular") {
+        // Stay on `/h/{id}` when بيننا is already the session chip.
+        // Other chips (and unselected بيننا) use their dedicated share path.
+        if (chip.id === MEET_HALFWAY_CHIP.id && selected) {
           return (
-            <Link
+            <button
               key={chip.id}
-              href={mostPopularPath(language)}
-              // Native `disabled` on the chip that just received the tap moves
-              // focus (often to <body>) and some browsers scroll back to the
-              // opener — it looks like the thread reset. Keep the control
-              // focusable and ignore the click instead.
+              type="button"
               aria-disabled={disabled || undefined}
-              aria-current={selected ? "page" : undefined}
+              aria-pressed={selected || undefined}
+              aria-current="page"
               onClick={onChipClick}
               className={className}
             >
@@ -206,16 +205,20 @@ export function VibeChips({
               <span className="line-clamp-2 text-center text-[11px] leading-tight">
                 {label}
               </span>
-            </Link>
+            </button>
           );
         }
 
         return (
-          <button
+          <Link
             key={chip.id}
-            type="button"
+            href={chipSharePath(chip.id, language)}
+            // Native `disabled` on the chip that just received the tap moves
+            // focus (often to <body>) and some browsers scroll back to the
+            // opener — it looks like the thread reset. Keep the control
+            // focusable and ignore the click instead.
             aria-disabled={disabled || undefined}
-            aria-pressed={selected || undefined}
+            aria-current={selected ? "page" : undefined}
             onClick={onChipClick}
             className={className}
           >
@@ -223,7 +226,7 @@ export function VibeChips({
             <span className="line-clamp-2 text-center text-[11px] leading-tight">
               {label}
             </span>
-          </button>
+          </Link>
         );
       })}
     </div>

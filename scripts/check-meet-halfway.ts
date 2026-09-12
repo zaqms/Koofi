@@ -50,7 +50,12 @@ import {
   restoreHalfwayPicks,
 } from "../lib/meet-halfway";
 import { neighborhoodCentroid } from "../lib/neighborhood-tight";
-import { MEET_HALFWAY_CHIP, VIBE_CHIPS, halfwayInvitePath } from "../lib/product";
+import {
+  MEET_HALFWAY_CHIP,
+  VIBE_CHIPS,
+  halfwayInvitePath,
+  halfwayPath,
+} from "../lib/product";
 import { decideVisitorLocationPeek } from "../lib/visitor-location-peek";
 
 const SHOPS = listRealShops();
@@ -72,6 +77,17 @@ assert(
   "chip بيننا stays in product.ts",
 );
 assert(MEET_HALFWAY_CHIP.en === "Halfway", "EN twin is Halfway");
+assert(halfwayPath("ar") === "/halfway", "shareable بيننا path is /halfway");
+assert(halfwayPath("en") === "/en/halfway", "EN بيننا path is /en/halfway");
+assert(
+  halfwayPath("ar") !== halfwayInvitePath("halfway"),
+  "/halfway does not collide with /h/{id}",
+);
+assert(
+  existsSync(join(repoRoot, "app/halfway/page.tsx")) &&
+    existsSync(join(repoRoot, "app/en/halfway/page.tsx")),
+  "direct /halfway and /en/halfway pages exist",
+);
 assert(VIBE_CHIPS.length === 11, "Soft Places stay parked — VIBE_CHIPS stays 11");
 const vibeChipIds: readonly string[] = VIBE_CHIPS.map((chip) => chip.id);
 assert(

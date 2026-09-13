@@ -1,11 +1,10 @@
 import {
   HalfwayInviteSession,
-  halfwayInviteDynamic,
   halfwayInviteFromSearch,
   halfwayInviteMetadata,
 } from "@/components/halfway-invite-session";
 
-export const dynamic = halfwayInviteDynamic;
+export const dynamic = "force-dynamic";
 
 type HalfwayInvitePageProps = {
   params: Promise<{ id: string }>;

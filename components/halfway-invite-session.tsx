@@ -10,8 +10,6 @@ import {
 import { halfwayInviteLocaleHref, PRODUCT_NAME, SOCIAL_TWITTER_CARD } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
-export const halfwayInviteDynamic = "force-dynamic" as const;
-
 type HalfwayInviteSessionInput = {
   language: Language;
   id: string;

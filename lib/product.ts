@@ -80,7 +80,7 @@ export const NEARBY_CHIP = {
 
 /**
  * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
- * v1 UI is one `/h/{id}` URL: invite → waiting → results (two people);
+ * v1 UI is one share URL `/h/{id}` (EN twin `/en/h/{id}`): invite → waiting → results (two people);
  * ranking is `locations: Location[]` (N≥2). Soft Places stays parked.
  */
 export const MEET_HALFWAY_CHIP = {
@@ -127,12 +127,24 @@ export function packSharePath(id: string): string {
 /** بيننا session. Public, no login. Waiting 45 min; results freeze 48h. */
 export const HALFWAY_INVITE_PATH_PREFIX = "/h";
 
-export function halfwayInvitePath(id: string): string {
-  return `${HALFWAY_INVITE_PATH_PREFIX}/${encodeURIComponent(id)}`;
+/** Share + AR default stay `/h/{id}`. EN guests use `/en/h/{id}`. */
+export function halfwayInvitePath(id: string, language: Language = "ar"): string {
+  const path = `${HALFWAY_INVITE_PATH_PREFIX}/${encodeURIComponent(id)}`;
+  return language === "en" ? `/en${path}` : path;
 }
 
+/** WhatsApp / packet share is always the AR-default `/h/{id}` URL. */
 export function halfwayInviteSharePath(id: string): string {
   return `${halfwayInvitePath(id)}?from=wa`;
+}
+
+export function halfwayInviteLocaleHref(
+  id: string,
+  language: Language,
+  from?: string,
+): string {
+  const path = halfwayInvitePath(id, language === "ar" ? "en" : "ar");
+  return from ? `${path}?from=${encodeURIComponent(from)}` : path;
 }
 
 export function aboutPath(language: Language = "ar"): string {

@@ -1084,8 +1084,8 @@ export function Chat({
     await sharePackPacket(
       halfwayInviteShareText({ language: landing, url: created.url }),
     );
-    if (window.location.pathname !== halfwayInvitePath(created.id)) {
-      router.replace(halfwayInvitePath(created.id));
+    if (window.location.pathname !== halfwayInvitePath(created.id, landing)) {
+      router.replace(halfwayInvitePath(created.id, landing));
     }
   }
 
@@ -1492,25 +1492,28 @@ export function Chat({
             className="text-lg font-semibold"
             onClick={startOver}
           />
-          {meetHalfwayOpen ? (
-            <button
-              type="button"
-              onClick={() => setMeetHalfwayOpen(false)}
-              className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
-              aria-label={copy.meetHalfwayClose[landing]}
-            >
-              <span aria-hidden className="text-lg leading-none">
-                ×
-              </span>
-            </button>
-          ) : restore ? null : (
-            <Link
-              href={localeHref ?? (landing === "ar" ? "/en" : "/")}
-              className="text-xs text-ink-soft underline-offset-2 hover:underline"
-            >
-              {copy.switchLanguage[landing]}
-            </Link>
-          )}
+          <div className="flex items-center gap-3">
+            {restore && !meetHalfwayOpen ? null : (
+              <Link
+                href={localeHref ?? (landing === "ar" ? "/en" : "/")}
+                className="text-xs text-ink-soft underline-offset-2 hover:underline"
+              >
+                {copy.switchLanguage[landing]}
+              </Link>
+            )}
+            {meetHalfwayOpen ? (
+              <button
+                type="button"
+                onClick={() => setMeetHalfwayOpen(false)}
+                className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+                aria-label={copy.meetHalfwayClose[landing]}
+              >
+                <span aria-hidden className="text-lg leading-none">
+                  ×
+                </span>
+              </button>
+            ) : null}
+          </div>
         </div>
         {meetHalfwayOpen ? null : (
           <p className="text-xs text-ink-soft">{copy.cityOnly[landing]}</p>

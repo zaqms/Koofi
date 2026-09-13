@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { MeetHalfwayHero } from "@/components/meet-halfway-hero";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { copy } from "@/lib/copy";
+import {
+  halfwayPinIsReady,
+  halfwayPinSurface,
+} from "@/lib/halfway-pin-ui";
 import { formatHalfwayPlaceLabel } from "@/lib/halfway-place";
 import type { HalfwayPinInput } from "@/lib/meet-halfway";
 import { MEET_HALFWAY_CHIP } from "@/lib/product";
@@ -122,9 +126,7 @@ export function MeetHalfwayPicker({
         : visitorPin
           ? { text: "", pin: visitorPin }
           : me;
-  const meReady = Boolean(
-    resolvedMe.pin || looksLikeSharedPin(resolvedMe.text),
-  );
+  const meReady = halfwayPinIsReady(resolvedMe);
   const which: MeetHalfwayPinWhich = guest ? "self" : "a";
   const title =
     language === "ar" ? MEET_HALFWAY_CHIP.ar : MEET_HALFWAY_CHIP.en;
@@ -149,9 +151,14 @@ export function MeetHalfwayPicker({
   }, []);
   useEffect(() => {
     // Visitor pin only — never seed from the friend's /h/ host pin.
+    // Commit into `me` so AR/EN remounts share one Ready state, not a
+    // derived snapshot that can miss the first locale paint.
     if (autoReadyRef.current || initialMe || me.pin || me.text) return;
     if (visitor.status !== "ready") return;
     autoReadyRef.current = true;
+    setMe({ text: "", pin: { lat: visitor.lat, lng: visitor.lng } });
+    setWantChange(false);
+    setLocationOff(false);
     onPinRef.current?.({ which, method: "geolocation" });
   }, [initialMe, me.pin, me.text, visitor, which]);
 
@@ -208,7 +215,12 @@ export function MeetHalfwayPicker({
     window.setTimeout(() => setCopied(false), 2000);
   }
 
-  const showPaste = !meReady || locationOff || wantChange;
+  const showPaste = halfwayPinSurface({
+    pin: resolvedMe.pin,
+    text: resolvedMe.text,
+    locationOff,
+    wantChange,
+  }) === "paste";
 
   if (waiting || joined) {
     return (
@@ -297,7 +309,7 @@ export function MeetHalfwayPicker({
               </p>
             </div>
           </div>
-          <div className="flex shrink-0 flex-col items-end gap-1">
+          <div className="flex shrink-0 flex-col items-end gap-1 text-end">
             {meReady ? <StatusDot ready language={language} /> : null}
             {meReady ? (
               <button

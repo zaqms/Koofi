@@ -39,6 +39,10 @@ import {
   nearestNeighborhoodFromPin,
 } from "../lib/halfway-place";
 import {
+  halfwayPinIsReady,
+  halfwayPinSurface,
+} from "../lib/halfway-pin-ui";
+import {
   meetHalfwayAskLabel,
   meetHalfwayReply,
   parseHalfwayPinInputs,
@@ -53,6 +57,7 @@ import { neighborhoodCentroid } from "../lib/neighborhood-tight";
 import {
   MEET_HALFWAY_CHIP,
   VIBE_CHIPS,
+  halfwayInviteLocaleHref,
   halfwayInvitePath,
   halfwayPath,
 } from "../lib/product";
@@ -204,6 +209,8 @@ assert(
     ui.includes("meetHalfwayLocationOff") &&
     ui.includes("meetHalfwayCopyLink") &&
     ui.includes("usePeekVisitorLocation") &&
+    ui.includes("halfwayPinSurface") &&
+    ui.includes("setMe({ text: \"\", pin: { lat: visitor.lat, lng: visitor.lng } })") &&
     ui.includes("MeetHalfwayHero"),
   "invite + waiting use locked pin copy; My pin deny is not silent",
 );
@@ -455,6 +462,30 @@ assert(
     halfwayInviteSharePath(inviteId).endsWith("?from=wa"),
   "invite share is /h/{id}?from=wa",
 );
+assert(
+  halfwayInvitePath(inviteId, "en") === `/en/h/${encodeURIComponent(inviteId)}` &&
+    halfwayInviteLocaleHref(inviteId, "ar") ===
+      `/en/h/${encodeURIComponent(inviteId)}` &&
+    halfwayInviteLocaleHref(inviteId, "en") ===
+      `/h/${encodeURIComponent(inviteId)}` &&
+    halfwayInviteSharePath(inviteId) === `/h/${encodeURIComponent(inviteId)}?from=wa`,
+  "WhatsApp share stays /h/{id}; EN guests use /en/h/{id}",
+);
+const nakheelPin = neighborhoodCentroid("al-nakheel", SHOPS);
+if (!nakheelPin) fail("al-nakheel centroid");
+assert(
+  halfwayPinSurface({ pin: nakheelPin }) === "ready" &&
+    halfwayPinSurface({ pin: nakheelPin, wantChange: true }) === "paste" &&
+    halfwayPinSurface({ text: "" }) === "paste" &&
+    halfwayPinIsReady({ pin: nakheelPin }) &&
+    !halfwayPinIsReady({ text: "" }),
+  "Ready vs paste is pin state, not locale",
+);
+assert(
+  formatHalfwayPlaceLabel(nakheelPin, "ar").includes("النخيل") &&
+    formatHalfwayPlaceLabel(nakheelPin, "en").includes("Al Nakheel"),
+  "Ready label has locked AR/EN neighborhood copy",
+);
 const inviteText = halfwayInviteShareText({
   language: "ar",
   url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
@@ -662,6 +693,21 @@ assert(
     !visitorPeek.includes("lat,lng"),
   "geo peek retries a granted read and never stores coordinates",
 );
+assert(
+  !visitorLocation.includes("/en/h") &&
+    !visitorPeek.includes("/en/h") &&
+    !visitorLocation.includes("language === ") &&
+    !visitorPeek.includes("language === "),
+  "auto-Ready peek is not gated on locale or /en/h/",
+);
+assert(
+  !ui.includes("language === \"en\"") &&
+    !ui.includes("language === 'en'") &&
+    ui.includes("meetHalfwayReady") &&
+    ui.includes("meetHalfwayChange") &&
+    ui.includes("text-end"),
+  "Ready/Change render from locked copy for both locales; RTL keeps the row",
+);
 
 assert(
   chatUi.includes("sharePackPacket") &&
@@ -672,6 +718,12 @@ assert(
     chatUi.includes("startNewHalfway") &&
     !chatUi.includes("Save for later"),
   "invite uses the same system share family; host replace onto /h/{id}; results share is not Save for later",
+);
+assert(
+  chatUi.includes("halfwayInvitePath(created.id, landing)") &&
+    chatUi.includes("localeHref") &&
+    chatUi.includes("copy.switchLanguage[landing]"),
+  "host replace keeps path locale; invite can switch /h/ ↔ /en/h/",
 );
 assert(
   chatUi.includes("showHalfwayPinFail") &&
@@ -732,13 +784,33 @@ assert(
   "chat UI never paints thinCatalog under بيننا",
 );
 const invitePage = readFileSync(join(repoRoot, "app/h/[id]/page.tsx"), "utf8");
+const invitePageEn = readFileSync(
+  join(repoRoot, "app/en/h/[id]/page.tsx"),
+  "utf8",
+);
+const inviteSession = readFileSync(
+  join(repoRoot, "components/halfway-invite-session.tsx"),
+  "utf8",
+);
 assert(
-  invitePage.includes("halfwayInvite") &&
-    invitePage.includes('kind="halfway"') &&
-    invitePage.includes("<Chat") &&
-    invitePage.includes("resolveHalfwayInviteSession") &&
-    invitePage.includes("shopIds"),
+  inviteSession.includes("halfwayInvite") &&
+    inviteSession.includes('kind="halfway"') &&
+    inviteSession.includes("<Chat") &&
+    inviteSession.includes("resolveHalfwayInviteSession") &&
+    inviteSession.includes("shopIds") &&
+    inviteSession.includes("localeHref={halfwayInviteLocaleHref") &&
+    inviteSession.includes("landing={language}") &&
+    !inviteSession.includes("resolved.seed.locale") &&
+    !inviteSession.includes("parsed.seed.locale"),
   "friend lands on /h/{id} with overlay session + frozen shop_ids",
+);
+assert(
+  invitePage.includes('language: "ar"') &&
+    invitePage.includes("HalfwayInviteSession") &&
+    invitePageEn.includes('language: "en"') &&
+    invitePageEn.includes("HalfwayInviteSession") &&
+    existsSync(join(repoRoot, "app/en/h/[id]/page.tsx")),
+  "AR /h/{id} and EN /en/h/{id} share one invite session",
 );
 assert(
   chatUi.includes("const showAskComposer = !meetHalfwayOpen") &&
@@ -775,8 +847,8 @@ assert(
   "ask composer and أضف قهوة stay in Chat; they restore when بيننا closes",
 );
 assert(
-  invitePage.includes("<Chat") &&
-    invitePage.includes("halfwayInvite") &&
+  inviteSession.includes("<Chat") &&
+    inviteSession.includes("halfwayInvite") &&
     chatUi.includes("showAskComposer") &&
     chatUi.includes('result.data.halfwayError === "bad_pin"'),
   "guest /h/ uses the same Chat composer gate as the host, including after a bad pin",

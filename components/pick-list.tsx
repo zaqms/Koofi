@@ -78,7 +78,7 @@ export function PickList({
           return (
             <li
               key={pick.id}
-              className="rounded-2xl border border-line bg-foam px-2.5 py-2"
+              className="relative cursor-pointer rounded-2xl border border-line bg-foam px-2.5 py-2 has-[[data-pick-card-link]:focus-visible]:ring-2 has-[[data-pick-card-link]:focus-visible]:ring-bean"
             >
               {halfway && index === 0 ? (
                 <p className="mb-1.5 inline-flex items-center gap-1 rounded-full bg-bean/10 px-2 py-0.5 text-[11px] leading-4 text-bean">
@@ -147,8 +147,8 @@ export function PickList({
                   source={mapsSource}
                   className={
                     halfway
-                      ? "inline-flex h-8 items-center gap-1.5 rounded-full px-1 text-xs text-ink-soft hover:bg-paper-deep hover:text-ink"
-                      : "inline-flex size-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+                      ? "relative z-10 inline-flex h-8 items-center gap-1.5 rounded-full px-1 text-xs text-ink-soft hover:bg-paper-deep hover:text-ink"
+                      : "relative z-10 inline-flex size-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
                   }
                   aria-label={
                     halfway
@@ -160,22 +160,26 @@ export function PickList({
                       ? copy.meetHalfwayOpenMaps[language]
                       : copy.maps[language]
                   }
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.stopPropagation();
                     postLearnMaps({ shopId: pick.id, pickIndex: index });
                   }}
                 >
                   <MapPinIcon />
                   {halfway ? copy.meetHalfwayOpenMaps[language] : null}
                 </MapsLink>
+                {/* Same cafe-card href; ::after stretches the hit target over the tile. */}
                 <Link
                   href={pick.cardPath}
-                  className="text-xs text-ink-soft underline-offset-2 hover:underline"
+                  data-pick-card-link
+                  className="text-xs text-ink-soft underline-offset-2 hover:underline after:absolute after:inset-0 after:z-[1] after:rounded-2xl after:content-[''] focus-visible:outline-none"
                 >
                   {copy.cardLink[language]}
                 </Link>
                 <BeenButton
                   marked={beenIds.includes(pick.id)}
                   language={language}
+                  className="relative z-10"
                   onMark={() => onBeen(pick.id)}
                 />
               </div>

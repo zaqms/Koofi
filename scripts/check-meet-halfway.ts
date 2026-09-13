@@ -698,6 +698,17 @@ assert(
     pickList.includes("HalfwayDriveTimes"),
   "results cards keep Maps and add fair-for-both extras",
 );
+const beenButton = readFileSync(join(repoRoot, "components/been-button.tsx"), "utf8");
+assert(
+  pickList.includes("after:absolute") &&
+    pickList.includes("after:inset-0") &&
+    pickList.includes("pick.cardPath") &&
+    pickList.includes("stopPropagation") &&
+    pickList.includes('className="relative z-10"') &&
+    pickList.includes("relative z-10 inline-flex") &&
+    beenButton.includes("stopPropagation"),
+  "whole result tile opens the cafe card; Maps and Been here stay nested controls",
+);
 assert(
   chatUi.includes("joinHalfwayInvite") &&
     chatUi.includes("[...halfwayInvite.locations, row]") &&

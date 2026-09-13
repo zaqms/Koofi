@@ -49,6 +49,7 @@ const DARK_LOGO_PATHS = new Set([
   "/logos/bourbon-al-yarmouk.png",
   "/logos/ratio-speciality-al-yarmouk.png",
   "/logos/coffee-zam-al-yarmouk.png",
+  "/logos/carve-coffee-bar-al-wurud.jpg",
 ]);
 
 export function ShopVisual({

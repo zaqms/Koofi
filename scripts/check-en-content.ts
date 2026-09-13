@@ -259,6 +259,8 @@ assert(
 
 assert(localeFromPathname("/en/coffee-shops/kafd") === "en", "EN pathname");
 assert(localeFromPathname("/coffee-shops/kafd") === "ar", "AR pathname");
+assert(localeFromPathname("/en/h/demo") === "en", "EN /en/h/{id} pathname");
+assert(localeFromPathname("/h/demo") === "ar", "AR /h/{id} pathname");
 assert(htmlLang("en") === "en" && htmlDir("en") === "ltr", "EN html lang/dir");
 assert(htmlLang("ar") === "ar" && htmlDir("ar") === "rtl", "AR html lang/dir");
 

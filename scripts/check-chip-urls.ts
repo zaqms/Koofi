@@ -72,6 +72,10 @@ assert(
   "guest invite path stays /h/{id}",
 );
 assert(
+  halfwayInvitePath("demo", "en") === "/en/h/demo",
+  "EN guest invite path is /en/h/{id}",
+);
+assert(
   halfwayPath("ar") !== halfwayInvitePath("halfway"),
   "/halfway must not collide with /h/{id}",
 );
@@ -141,6 +145,8 @@ const read = (rel: string) => readFileSync(join(repo, rel), "utf8");
 
 assert(existsSync(join(repo, "app/halfway/page.tsx")), "AR /halfway page");
 assert(existsSync(join(repo, "app/en/halfway/page.tsx")), "EN /halfway page");
+assert(existsSync(join(repo, "app/h/[id]/page.tsx")), "AR /h/{id} page");
+assert(existsSync(join(repo, "app/en/h/[id]/page.tsx")), "EN /en/h/{id} page");
 
 const halfwayAr = read("app/halfway/page.tsx");
 const halfwayEn = read("app/en/halfway/page.tsx");

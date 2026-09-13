@@ -13,14 +13,14 @@ type HalfwayInvitePageProps = {
 
 export async function generateMetadata({ params }: HalfwayInvitePageProps) {
   const { id } = await params;
-  return halfwayInviteMetadata({ language: "ar", id });
+  return halfwayInviteMetadata({ language: "en", id });
 }
 
-export default async function HalfwayInvitePage({
+export default async function EnglishHalfwayInvitePage({
   params,
   searchParams,
 }: HalfwayInvitePageProps) {
   const { id } = await params;
   const from = halfwayInviteFromSearch((await searchParams).from);
-  return <HalfwayInviteSession language="ar" id={id} from={from} />;
+  return <HalfwayInviteSession language="en" id={id} from={from} />;
 }

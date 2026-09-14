@@ -48,18 +48,16 @@ function NeighborhoodCard({
       onClick={() => trackDistrict(id, language)}
       className={
         selected
-          ? "flex aspect-[4/5] w-[6.85rem] shrink-0 snap-start flex-col items-center rounded-[1.55rem] border border-line bg-blush px-2 pt-5 pb-3 text-ink sm:w-[7.6rem] md:w-[8.15rem]"
-          : "flex aspect-[4/5] w-[6.85rem] shrink-0 snap-start flex-col items-center rounded-[1.55rem] border border-line bg-foam px-2 pt-5 pb-3 text-ink-soft sm:w-[7.6rem] md:w-[8.15rem]"
+          ? "flex aspect-square w-[5.15rem] shrink-0 snap-start flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-blush px-1 py-2 text-ink"
+          : "flex aspect-square w-[5.15rem] shrink-0 snap-start flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink"
       }
     >
-      <span className="flex flex-1 items-center justify-center">
-        <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-10" />
-      </span>
+      <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-7" />
       <span
         className={
           selected
-            ? "mt-1 line-clamp-2 text-center text-[12px] font-medium leading-tight"
-            : "mt-1 line-clamp-2 text-center text-[12px] font-normal leading-tight"
+            ? "line-clamp-2 text-center text-[11px] font-medium leading-tight"
+            : "line-clamp-2 text-center text-[11px] font-normal leading-tight"
         }
       >
         {label}
@@ -68,47 +66,74 @@ function NeighborhoodCard({
   );
 }
 
+function Chevron({ point }: { point: "left" | "right" }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      className="size-3.5 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.55"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {point === "right" ? (
+        <path d="M6 3.2 11.2 8 6 12.8" />
+      ) : (
+        <path d="M10 3.2 4.8 8 10 12.8" />
+      )}
+    </svg>
+  );
+}
+
+function ViewAllPill({ language }: { language: Language }) {
+  const rtl = language === "ar";
+  return (
+    <Link
+      href={neighborhoodsPath(language)}
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
+    >
+      {rtl ? (
+        <>
+          <span>{copy.viewAllNeighborhoods.ar}</span>
+          <Chevron point="right" />
+        </>
+      ) : (
+        <>
+          <Chevron point="left" />
+          <span>{copy.viewAllNeighborhoods.en}</span>
+        </>
+      )}
+    </Link>
+  );
+}
+
 export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
+  const rtl = language === "ar";
   const ids = featuredNeighborhoodIds(language);
 
   return (
     <section
-      className="mx-auto w-full max-w-lg bg-paper px-4 pt-8 pb-2 md:max-w-4xl"
+      className="mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-2"
+      dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="browse-neighborhoods"
     >
-      <div className="flex items-end justify-between gap-4" dir="ltr">
-        <Link
-          href={neighborhoodsPath(language)}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-foam px-3.5 py-2 text-[13px] leading-5 text-ink"
-        >
-          <span aria-hidden className="text-[15px] leading-none">
-            ‹
-          </span>
-          <span dir={language === "ar" ? "rtl" : "ltr"}>
-            {copy.viewAllNeighborhoods[language]}
-          </span>
-        </Link>
-        <div className="min-w-0 text-end">
-          <h2
-            id="browse-neighborhoods"
-            className="text-[1.65rem] font-semibold leading-8 tracking-tight text-ink sm:text-[1.85rem] sm:leading-9"
-            dir={language === "ar" ? "rtl" : "ltr"}
-          >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 id="browse-neighborhoods" className="text-base font-semibold">
             {copy.browseNeighborhoods[language]}
           </h2>
-          <p
-            className="mt-1 text-[13px] leading-5 text-ink-soft sm:text-sm"
-            dir={language === "ar" ? "rtl" : "ltr"}
-          >
+          <p className="mt-1 text-xs leading-5 text-ink-soft">
             {copy.browseNeighborhoodsHint[language]}
           </p>
         </div>
+        <ViewAllPill language={language} />
       </div>
 
       <div
-        className="-mx-4 mt-7 flex flex-nowrap gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] snap-x snap-mandatory [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:px-0"
-        dir={language === "ar" ? "rtl" : "ltr"}
+        className="-mx-4 mt-4 flex flex-nowrap gap-2.5 overflow-x-auto px-4 pb-1 [scrollbar-width:none] snap-x snap-mandatory [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         role="list"
       >
         {ids.map((id) => (

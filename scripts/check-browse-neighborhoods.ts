@@ -154,6 +154,7 @@ assert(
   "locked EN subtitle",
 );
 assert(copy.neighborhoodsIndex.en === "Riyadh Neighborhoods", "view-all is Riyadh");
+assert(copy.neighborhoodsIndex.ar === "أحياء الرياض", "AR view-all title is أحياء الرياض");
 assert(
   !/Jeddah|جدة/.test(
     [
@@ -189,16 +190,62 @@ assert(
 const browse = readRepo("components/browse-neighborhoods.tsx");
 assert(browse.includes("overflow-x-auto"), "featured row scrolls on small screens");
 assert(browse.includes("flex-nowrap"), "featured row does not wrap");
+assert(browse.includes("aspect-square"), "cards match the 4×2 vibe-chip square family");
+assert(browse.includes("w-[5.15rem]"), "cards use the chip tile width, not taller 4/5 tiles");
+assert(!browse.includes("aspect-[4/5]"), "cards are not the oversized 4/5 tiles");
+assert(browse.includes("size-7"), "card icons match vibe-chip icon size");
 assert(browse.includes("bg-blush"), "Hittin uses dusty rose, not bean brown");
 assert(!browse.includes("bg-bean"), "featured cards are not vibe-chip brown");
 assert(!browse.includes("<img"), "no photos on neighborhood cards");
 assert(!/Koofi/i.test(browse), "browse section must not say Koofi");
+assert(
+  browse.includes('dir={rtl ? "rtl" : "ltr"}'),
+  "AR browse section is a true RTL twin, not forced LTR",
+);
+assert(
+  !browse.includes('dir="ltr"'),
+  "AR header must not force LTR (no mirrored Arabic)",
+);
+assert(!browse.includes("text-end"), "EN heading is not forced to the right");
+assert(
+  browse.indexOf('id="browse-neighborhoods"') < browse.indexOf("<ViewAllPill"),
+  "heading precedes CTA in DOM; dir=rtl/ltr places title and pill",
+);
+assert(
+  browse.includes('id="browse-neighborhoods" className="text-base font-semibold"'),
+  "browse heading matches New this week / جديد هالأسبوع typography",
+);
+assert(
+  browse.includes('className="mt-1 text-xs leading-5 text-ink-soft"'),
+  "browse subtitle matches New this week secondary scale",
+);
+assert(
+  browse.includes("max-w-md border-t border-line"),
+  "browse section chrome matches New this week / The list",
+);
+assert(
+  browse.includes('point="right"') && browse.includes("viewAllNeighborhoods.ar"),
+  "AR view-all pill chevron points right",
+);
+assert(
+  browse.includes('point="left"') && browse.includes("viewAllNeighborhoods.en"),
+  "EN view-all pill keeps the left chevron",
+);
 
 const viewAll = readRepo("components/neighborhoods-page.tsx");
 assert(viewAll.includes("neighborhood-search"), "view-all has client search");
 assert(viewAll.includes("neighborhoodCafeCountLabel"), "view-all uses real counts");
 assert(!/Koofi/i.test(viewAll), "view-all must not say Koofi");
 assert(!/Jeddah|جدة/.test(viewAll), "view-all UI is not the Jeddah mock names");
+assert(
+  viewAll.includes('dir={language === "ar" ? "rtl" : "ltr"}'),
+  "view-all page is RTL-native on AR",
+);
+assert(
+  viewAll.includes('language === "ar" ? (') &&
+    viewAll.includes('<path d="M6 3.2 11.2 8 6 12.8" />'),
+  "AR view-all back chevron points right",
+);
 
 assert(
   readRepo("app/neighborhoods/page.tsx").includes('language="ar"'),

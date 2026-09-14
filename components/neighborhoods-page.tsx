@@ -41,10 +41,25 @@ export function NeighborhoodsPageView({
       <header className="relative flex items-start justify-between gap-3">
         <Link
           href={homePath(language)}
-          className="inline-flex size-9 shrink-0 items-center justify-center text-[1.35rem] leading-none text-ink"
+          className="inline-flex size-9 shrink-0 items-center justify-center text-ink"
           aria-label={copy.backToChat[language]}
         >
-          ‹
+          <svg
+            aria-hidden
+            viewBox="0 0 16 16"
+            className="size-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.55"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {language === "ar" ? (
+              <path d="M6 3.2 11.2 8 6 12.8" />
+            ) : (
+              <path d="M10 3.2 4.8 8 10 12.8" />
+            )}
+          </svg>
         </Link>
         <div className="min-w-0 flex-1 pt-0.5 text-center">
           <h1 className="text-[1.15rem] font-semibold leading-7 text-ink">
@@ -128,9 +143,22 @@ export function NeighborhoodsPageView({
                     {neighborhoodCafeCountLabel(row.cafeCount, language)}
                   </span>
                 </span>
-                <span aria-hidden className="text-ink-soft">
-                  {language === "ar" ? "‹" : "›"}
-                </span>
+                <svg
+                  aria-hidden
+                  viewBox="0 0 16 16"
+                  className="size-3.5 shrink-0 text-ink-soft"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.55"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {language === "ar" ? (
+                    <path d="M10 3.2 4.8 8 10 12.8" />
+                  ) : (
+                    <path d="M6 3.2 11.2 8 6 12.8" />
+                  )}
+                </svg>
               </Link>
             </li>
           ))}

@@ -5,8 +5,10 @@ import type { Language, NeighborhoodId } from "./types";
 
 /**
  * Locked Riyadh featured row (Amjad / Ajz refs).
- * LTR visual order: Sulaymaniyah → … → Hittin.
- * RTL reading order is the reverse. Dynamic-by-city later.
+ * EN LTR visual: Sulaymaniyah → … → Hittin.
+ * AR is a true RTL twin: DOM + dir=rtl start at حطين (right)
+ * then الملقا ← النخيل ← الياسمين ← العليا ← السليمانية.
+ * Dynamic-by-city later.
  */
 export const RIYADH_FEATURED_NEIGHBORHOODS = [
   "sulimaniyah",

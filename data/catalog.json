@@ -2819,6 +2819,21 @@
       "logoUrl": "/logos/das-mond-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
       "example": false
+    },
+    {
+      "id": "anotherside-cafe-al-munsiyah",
+      "nameAr": "أنذرسايد",
+      "nameEn": "ANOTHERSIDE Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-munsiyah",
+      "neighborhoodAr": "المونسية",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff84e93eee33:0x32fb2f1f77e63982",
+      "pin": { "lat": 24.8191788, "lng": 46.762058 },
+      "logoUrl": "/logos/anotherside-cafe-al-munsiyah.jpg",
+      "popularityIndex": 40,
+      "example": false
     }
   ]
 }

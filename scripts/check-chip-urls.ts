@@ -145,8 +145,9 @@ assert(
   "off-home chip ids stay shareable",
 );
 assert(homeSurfaceChips().length === 8, "home chrome is 4×2 — eight chips");
+const homeChipIds: readonly string[] = homeSurfaceChips().map((chip) => chip.id);
 assert(
-  !homeSurfaceChips().some((chip) => chip.id === "meet-halfway"),
+  !homeChipIds.includes("meet-halfway"),
   "بيننا is not a home grid tile",
 );
 assert(!isHomeChipId("roaster"), "off-home chips stay off the 4×2");

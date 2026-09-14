@@ -1687,16 +1687,18 @@ export function Chat({
                     }
                     onPick={sendChip}
                   />
-                  <VibeChips
-                    language={landing}
-                    disabled={busy}
-                    selectedId={
-                      selectedChipId === undefined
-                        ? (pickedChipId ?? "popular")
-                        : selectedChipId
-                    }
-                    onPick={sendChip}
-                  />
+                  {selectedChipId !== null ? (
+                    <VibeChips
+                      language={landing}
+                      disabled={busy}
+                      selectedId={
+                        selectedChipId === undefined
+                          ? (pickedChipId ?? "popular")
+                          : selectedChipId
+                      }
+                      onPick={sendChip}
+                    />
+                  ) : null}
                   {halfwayInviteExpired ? (
                     <p className="text-xs leading-5 text-ink-soft">
                       {copy.meetHalfwayInviteExpired[landing]}

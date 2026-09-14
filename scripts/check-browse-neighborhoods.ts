@@ -183,8 +183,13 @@ assert(
   "home directory drops the old district wrap",
 );
 assert(
-  directory.includes('className="mt-3 flex flex-wrap gap-1.5"'),
-  "district/popular pages keep the wrap",
+  directory.includes("{popular ? (") &&
+    directory.includes('className="mt-3 flex flex-wrap gap-1.5"'),
+  "Most Popular keeps the wrap; district pages do not resurrect it",
+);
+assert(
+  !directory.includes("{district || popular ? (\n      <div"),
+  "district results do not show the old neighborhood pill wrap",
 );
 
 const browse = readRepo("components/browse-neighborhoods.tsx");
@@ -202,6 +207,11 @@ assert(browse.includes("shrink-0"), "featured tiles do not shrink to fit the vie
 assert(browse.includes("pe-0"), "overflow edge has no end padding that would hide the peek");
 assert(!browse.includes("snap-mandatory"), "mandatory snap must not eat the next-card sliver");
 assert(!browse.includes("aspect-[4/5]"), "cards are not the oversized 4/5 tiles");
+assert(browse.includes("overflow-hidden"), "card chrome clips label overflow");
+assert(
+  browse.includes("line-clamp-2") && browse.includes("[overflow-wrap:anywhere]"),
+  "long district names clamp and wrap inside the tile",
+);
 assert(browse.includes("size-7"), "card icons match vibe-chip icon size");
 assert(browse.includes("bg-blush"), "Hittin uses dusty rose, not bean brown");
 assert(!browse.includes("bg-bean"), "featured cards are not vibe-chip brown");
@@ -268,6 +278,10 @@ assert(
 const chat = readRepo("components/chat.tsx");
 assert(chat.includes("MeetHalfwayCard"), "بيننا utility card stays");
 assert(chat.includes("VibeChips"), "4×2 vibe chips stay");
+assert(
+  chat.includes("{selectedChipId !== null ? (") && chat.includes("<VibeChips"),
+  "district results do not remount the home 4×2 strip",
+);
 assert(chat.includes("HomeHero"), "P0 opener stays");
 assert(!chat.includes("BrowseNeighborhoods"), "browse is not inside chat chrome");
 

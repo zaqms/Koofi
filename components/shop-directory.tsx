@@ -82,7 +82,7 @@ export function ShopDirectory({
         </p>
       )}
 
-      {district || popular ? (
+      {popular ? (
       <div
         className="mt-3 flex flex-wrap gap-1.5"
         role="group"

@@ -48,16 +48,18 @@ function NeighborhoodCard({
       onClick={() => trackDistrict(id, language)}
       className={
         selected
-          ? "flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-blush px-1 py-2 text-ink"
-          : "flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink"
+          ? "flex aspect-square w-full flex-col items-center overflow-hidden rounded-[1.15rem] border border-line bg-blush px-1 pt-2 pb-1.5 text-ink"
+          : "flex aspect-square w-full flex-col items-center overflow-hidden rounded-[1.15rem] border border-line bg-foam px-1 pt-2 pb-1.5 text-ink"
       }
     >
-      <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-7" />
+      <span className="flex min-h-0 flex-1 items-center justify-center">
+        <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-7" />
+      </span>
       <span
         className={
           selected
-            ? "line-clamp-2 text-center text-[11px] font-medium leading-tight"
-            : "line-clamp-2 text-center text-[11px] font-normal leading-tight"
+            ? "mt-0.5 line-clamp-2 min-h-[2.2em] w-full min-w-0 px-0.5 text-center text-[10px] font-medium leading-[1.15] break-words [overflow-wrap:anywhere]"
+            : "mt-0.5 line-clamp-2 min-h-[2.2em] w-full min-w-0 px-0.5 text-center text-[10px] font-normal leading-[1.15] break-words [overflow-wrap:anywhere]"
         }
       >
         {label}

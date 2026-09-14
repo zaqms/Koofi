@@ -77,6 +77,7 @@ export function HomeLanding({
   return (
     <main className="min-h-dvh">
       <Chat
+        key={district ?? listing ?? selectedChipId ?? "home"}
         landing={language}
         localeHref={localeHref}
         selectedChipId={pageChipId}

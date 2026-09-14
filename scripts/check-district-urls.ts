@@ -108,7 +108,7 @@ assert(areas.includes("al-fayha"), "directory includes al-fayha");
 assert(areas.includes("al-raqban"), "directory includes al-raqban");
 assert(areas.includes("al-munsiyah"), "directory includes al-munsiyah");
 assert(areas.length === 31, `expected 31 districts, got ${areas.length}`);
-assert(listRealShops().length === 196, `catalog 187→196, got ${listRealShops().length}`);
+assert(listRealShops().length === 197, `catalog 187→197, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -728,7 +728,7 @@ assert(
 assert(raqbanShop.neighborhood === "al-raqban", "raqban shop is not folded into al-rawdah");
 
 const munsiyah = filterDirectoryShops(shops, "al-munsiyah");
-assert(munsiyah.length === 9, `al-munsiyah has 9 shops, got ${munsiyah.length}`);
+assert(munsiyah.length === 10, `al-munsiyah has 10 shops, got ${munsiyah.length}`);
 assert(
   munsiyah.every((shop) => shop.neighborhood === "al-munsiyah"),
   "al-munsiyah filter stays in district",
@@ -743,16 +743,18 @@ for (const id of [
   "true-side-al-munsiyah",
   "coffee-address-al-munsiyah",
   "das-mond-al-munsiyah",
+  "anotherside-cafe-al-munsiyah",
 ]) {
   assert(
     munsiyah.some((shop) => shop.id === id),
     `al-munsiyah includes ${id}`,
   );
 }
-assert(!getShop("anotherside-cafe-al-munsiyah"), "ANOTHERSIDE stays held out of catalog");
+assert(getShop("anotherside-cafe-al-munsiyah"), "ANOTHERSIDE hold is cleared");
 assert(
-  !munsiyah.some((shop) => shop.id.includes("anotherside")),
-  "al-munsiyah list does not include ANOTHERSIDE",
+  getShop("anotherside-cafe-al-munsiyah")?.logoUrl ===
+    "/logos/anotherside-cafe-al-munsiyah.jpg",
+  "ANOTHERSIDE uses official wordmark, not a letter tile",
 );
 assert(
   neighborhoodLabel("al-munsiyah", "ar") === "المونسية",
@@ -1542,6 +1544,15 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/das-mond-al-munsiyah-ig.jpg",
     pin: { lat: 24.8407049, lng: 46.7509581 },
+  },
+  {
+    id: "anotherside-cafe-al-munsiyah",
+    hex: "0x3e2eff84e93eee33:0x32fb2f1f77e63982",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/anotherside-cafe-al-munsiyah.jpg",
+    pin: { lat: 24.8191788, lng: 46.762058 },
   },
 ];
 

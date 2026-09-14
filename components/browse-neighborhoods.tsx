@@ -90,23 +90,13 @@ function Chevron({ point }: { point: "left" | "right" }) {
 }
 
 function ViewAllPill({ language }: { language: Language }) {
-  const rtl = language === "ar";
   return (
     <Link
       href={neighborhoodsPath(language)}
       className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
     >
-      {rtl ? (
-        <>
-          <span>{copy.viewAllNeighborhoods.ar}</span>
-          <Chevron point="right" />
-        </>
-      ) : (
-        <>
-          <Chevron point="left" />
-          <span>{copy.viewAllNeighborhoods.en}</span>
-        </>
-      )}
+      <span>{copy.viewAllNeighborhoods[language]}</span>
+      <Chevron point="right" />
     </Link>
   );
 }

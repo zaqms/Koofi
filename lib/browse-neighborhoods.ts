@@ -5,18 +5,18 @@ import type { Language, NeighborhoodId } from "./types";
 
 /**
  * Locked Riyadh featured row (Amjad / Ajz refs).
- * EN LTR visual: Sulaymaniyah → … → Hittin.
- * AR is a true RTL twin: DOM + dir=rtl start at حطين (right)
- * then الملقا ← النخيل ← الياسمين ← العليا ← السليمانية.
+ * Same DOM start at Hittin for both locales:
+ * EN LTR: Hittin (left, selected) → Malqa → Nakheel → Yasmin → Olaya → Sulaymaniyah.
+ * AR RTL: حطين (right, selected) → الملقا → … → السليمانية (left peek).
  * Dynamic-by-city later.
  */
 export const RIYADH_FEATURED_NEIGHBORHOODS = [
-  "sulimaniyah",
-  "olaya",
-  "al-yasmin",
-  "al-nakheel",
-  "al-malqa",
   "hittin",
+  "al-malqa",
+  "al-nakheel",
+  "al-yasmin",
+  "olaya",
+  "sulimaniyah",
 ] as const satisfies readonly NeighborhoodId[];
 
 export type FeaturedNeighborhoodId =
@@ -105,11 +105,8 @@ export function neighborhoodIconKind(id: NeighborhoodId): NeighborhoodIconKind {
 }
 
 export function featuredNeighborhoodIds(
-  language: Language,
+  _language: Language,
 ): readonly FeaturedNeighborhoodId[] {
-  if (language === "ar") {
-    return [...RIYADH_FEATURED_NEIGHBORHOODS].reverse();
-  }
   return RIYADH_FEATURED_NEIGHBORHOODS;
 }
 

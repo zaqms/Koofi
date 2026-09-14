@@ -30,21 +30,21 @@ assert(neighborhoodsPath("en") === "/en/neighborhoods", "EN view-all path");
 
 assert(
   RIYADH_FEATURED_NEIGHBORHOODS.join(",") ===
-    "sulimaniyah,olaya,al-yasmin,al-nakheel,al-malqa,hittin",
-  "Riyadh featured ids match the refs",
+    "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
+  "Riyadh featured ids start at Hittin",
 );
 assert(RIYADH_FEATURED_NEIGHBORHOODS.length === 6, "exactly 6 featured cards");
 assert(BROWSE_DEMO_SELECTED === "hittin", "Hittin is the demo selected card");
 
 assert(
   featuredNeighborhoodIds("en").join(",") ===
-    RIYADH_FEATURED_NEIGHBORHOODS.join(","),
-  "EN featured order is LTR visual",
+    "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
+  "EN LTR starts at selected Hittin on the left",
 );
 assert(
   featuredNeighborhoodIds("ar").join(",") ===
     "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
-  "AR featured order is RTL reading",
+  "AR RTL uses the same Hittin-first DOM so حطين sits on the right",
 );
 
 assert(
@@ -153,6 +153,10 @@ assert(
   copy.browseNeighborhoodsHint.en === "Find coffee spots near you.",
   "locked EN subtitle",
 );
+assert(
+  copy.viewAllNeighborhoods.en === "View all neighborhoods",
+  "locked EN view-all pill copy (chevron is after the text in the component)",
+);
 assert(copy.neighborhoodsIndex.en === "Riyadh Neighborhoods", "view-all is Riyadh");
 assert(copy.neighborhoodsIndex.ar === "أحياء الرياض", "AR view-all title is أحياء الرياض");
 assert(
@@ -243,12 +247,15 @@ assert(
   "browse section chrome matches New this week / The list",
 );
 assert(
-  browse.includes('point="right"') && browse.includes("viewAllNeighborhoods.ar"),
-  "AR view-all pill chevron points right",
+  browse.includes("viewAllNeighborhoods[language]") &&
+    browse.includes('<Chevron point="right" />'),
+  "view-all pills render copy then a right-pointing chevron",
 );
 assert(
-  browse.includes('point="left"') && browse.includes("viewAllNeighborhoods.en"),
-  "EN view-all pill keeps the left chevron",
+  !browse.includes('point="left"') &&
+    browse.indexOf("viewAllNeighborhoods[language]") <
+      browse.indexOf('<Chevron point="right" />'),
+  "EN view-all chevron is after the text and points right, not left",
 );
 
 const viewAll = readRepo("components/neighborhoods-page.tsx");

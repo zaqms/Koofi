@@ -33,11 +33,17 @@ export const SOCIAL_TWITTER_CARD = "summary_large_image" as const;
 /** People-facing Arabic name in sentences. Wordmark stays Latin `wain.lol`. */
 export const PRODUCT_NAME_AR = "وين";
 
-/** Locked until Amjad picks a GenZ line. */
-export const LOCKED_OPENER = "اي قهوة ناوي تروح؟";
+/** Locked P0 home headline (Amjad / Shoug AR native). */
+export const LOCKED_OPENER = "وين ودّك تروح اليوم؟";
 
 /** English landing opener on `/en`. Arabic opener stays on `/`. */
-export const LOCKED_OPENER_EN = "Which coffee you heading to?";
+export const LOCKED_OPENER_EN = "Where do you want to go today?";
+
+/** Support line under the home headline. No eyebrow slogans. */
+export const LOCKED_HOME_SUPPORT = {
+  ar: "اختر جوّك، أو خلّنا نلقى لكم مكان بالنص.",
+  en: "Pick a vibe, or let us find you a place in the middle.",
+} as const;
 
 export type VibeChip = {
   id: string;
@@ -49,20 +55,21 @@ export type VibeChip = {
 /**
  * Locked vibe chips under the opener. Arabic is the default label.
  * The coffee chip maps onto `qahwa` so picker scoring stays consistent.
- * The popular chip (`اللي عليها طلب` / Most Popular) ranks the full catalog
+ * The popular chip (`الأكثر شعبية` / Most Popular) ranks the full catalog
  * by baked `popularityIndex` DESC — it does not require a `popular` momentTag.
+ * AR display labels are the P0 home set. Ids + URLs stay. Soft Places parked.
  */
 export const VIBE_CHIPS = [
-  { id: "popular", ar: "اللي عليها طلب", en: "Most Popular", momentTag: "popular" },
+  { id: "popular", ar: "الأكثر شعبية", en: "Most Popular", momentTag: "popular" },
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
-  { id: "pastry", ar: "أفضل معجنات", en: "Best Pastries", momentTag: "pastry" },
+  { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
   { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
-  { id: "quiet", ar: "جلسة هادية", en: "Cozy and Quiet", momentTag: "quiet" },
-  { id: "work", ar: "قعدة شغل", en: "Best for Work", momentTag: "work" },
+  { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },
+  { id: "work", ar: "للشغل", en: "Best for Work", momentTag: "work" },
   { id: "study", ar: "قعدة مذاكرة", en: "Best for Studies", momentTag: "study" },
   { id: "late", ar: "مفتوح لآخر الليل", en: "Open late", momentTag: "late" },
-  { id: "outdoor", ar: "جلسة برا", en: "Outdoor seating", momentTag: "outdoor" },
+  { id: "outdoor", ar: "جلسات خارجية", en: "Outdoor seating", momentTag: "outdoor" },
   { id: "date", ar: "لموعد", en: "Good for a date", momentTag: "date" },
 ] as const satisfies readonly VibeChip[];
 
@@ -74,9 +81,53 @@ export type VibeChipId = (typeof VIBE_CHIPS)[number]["id"];
  */
 export const NEARBY_CHIP = {
   id: "nearby",
-  ar: "قريب",
+  ar: "قريب مني",
   en: "Nearby",
 } as const;
+
+/**
+ * P0 home chip chrome is 4×2 only (RTL R→L in this array order).
+ * Off-home ids keep their URLs: roaster, specialty, study, late.
+ * بيننا is a utility card above this grid — not a tile.
+ */
+export const HOME_CHIP_IDS = [
+  "popular",
+  "coffee",
+  "pastry",
+  "quiet",
+  "nearby",
+  "outdoor",
+  "date",
+  "work",
+] as const;
+
+export type HomeChipId = (typeof HOME_CHIP_IDS)[number];
+
+export const OFF_HOME_CHIP_IDS = [
+  "roaster",
+  "specialty",
+  "study",
+  "late",
+] as const;
+
+export function isHomeChipId(id: string): id is HomeChipId {
+  return (HOME_CHIP_IDS as readonly string[]).includes(id);
+}
+
+export type HomeSurfaceChip =
+  | (typeof VIBE_CHIPS)[number]
+  | typeof NEARBY_CHIP;
+
+export function homeSurfaceChips(): readonly HomeSurfaceChip[] {
+  return HOME_CHIP_IDS.map((id) => {
+    if (id === NEARBY_CHIP.id) return NEARBY_CHIP;
+    const vibe = VIBE_CHIPS.find((chip) => chip.id === id);
+    if (!vibe) {
+      throw new Error(`home chip missing: ${id}`);
+    }
+    return vibe;
+  });
+}
 
 /**
  * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
@@ -87,6 +138,19 @@ export const MEET_HALFWAY_CHIP = {
   id: "meet-halfway",
   ar: "بيننا",
   en: "Halfway",
+} as const;
+
+/** P0 بيننا utility-card subtitle. Picker tagline stays in copy.ts. */
+export const MEET_HALFWAY_HOME_SUB = {
+  ar: "نلقى لكم قهوة بالنص",
+  en: "We'll find you coffee in the middle.",
+} as const;
+
+/** Locked 3D pins+cup cluster for the بيننا home card. */
+export const MEET_HALFWAY_HOME_ART = {
+  src: "/brand/baynana-3d.png",
+  width: 1177,
+  height: 447,
 } as const;
 
 export function vibeChipLabel(

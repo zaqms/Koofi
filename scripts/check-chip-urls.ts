@@ -10,14 +10,23 @@ import {
   COFFEE_SHOP_CHIP_SLUGS,
   HALFWAY_INVITE_PATH_PREFIX,
   HALFWAY_LANDING_PATH,
+  HOME_CHIP_IDS,
+  LOCKED_HOME_SUPPORT,
+  LOCKED_OPENER,
+  LOCKED_OPENER_EN,
   MEET_HALFWAY_CHIP,
+  MEET_HALFWAY_HOME_ART,
+  MEET_HALFWAY_HOME_SUB,
   NEARBY_CHIP,
+  OFF_HOME_CHIP_IDS,
   VIBE_CHIPS,
   chipSharePath,
   coffeeShopChipPath,
   halfwayInvitePath,
   halfwayPath,
+  homeSurfaceChips,
   isCoffeeShopChipSlug,
+  isHomeChipId,
   isMostPopularSlug,
   mostPopularPath,
 } from "../lib/product";
@@ -115,7 +124,62 @@ assert(
 );
 assert(VIBE_CHIPS.length === 11, "Soft Places stay parked — 11 vibe chips");
 assert(NEARBY_CHIP.id === "nearby", "nearby chip id stays nearby");
+assert(NEARBY_CHIP.ar === "قريب مني", "nearby AR display is قريب مني");
 assert(MEET_HALFWAY_CHIP.id === "meet-halfway", "بيننا chip id stays");
+assert(MEET_HALFWAY_CHIP.ar === "بيننا", "بيننا AR title stays");
+assert(
+  MEET_HALFWAY_HOME_SUB.ar === "نلقى لكم قهوة بالنص",
+  "بيننا home subtitle is locked",
+);
+assert(
+  MEET_HALFWAY_HOME_ART.src === "/brand/baynana-3d.png",
+  "بيننا 3D cluster is a public asset",
+);
+assert(
+  HOME_CHIP_IDS.join(",") ===
+    "popular,coffee,pastry,quiet,nearby,outdoor,date,work",
+  "P0 home 4×2 RTL order is locked",
+);
+assert(
+  OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late",
+  "off-home chip ids stay shareable",
+);
+assert(homeSurfaceChips().length === 8, "home chrome is 4×2 — eight chips");
+assert(
+  !homeSurfaceChips().some((chip) => chip.id === "meet-halfway"),
+  "بيننا is not a home grid tile",
+);
+assert(!isHomeChipId("roaster"), "off-home chips stay off the 4×2");
+assert(
+  !(HOME_CHIP_IDS as readonly string[]).includes("meet-halfway"),
+  "بيننا is not a home chip id",
+);
+assert(LOCKED_OPENER === "وين ودّك تروح اليوم؟", "AR P0 headline locked");
+assert(
+  LOCKED_OPENER_EN === "Where do you want to go today?",
+  "EN P0 headline locked",
+);
+assert(
+  LOCKED_HOME_SUPPORT.ar === "اختر جوّك، أو خلّنا نلقى لكم مكان بالنص.",
+  "AR P0 support locked",
+);
+
+const LOCKED_HOME_LABELS: Record<string, string> = {
+  popular: "الأكثر شعبية",
+  coffee: "أفضل قهوة",
+  pastry: "قهوة وحلى",
+  quiet: "هادي ورايق",
+  work: "للشغل",
+  date: "لموعد",
+  outdoor: "جلسات خارجية",
+  nearby: "قريب مني",
+};
+for (const chip of homeSurfaceChips()) {
+  assert(
+    chip.ar === LOCKED_HOME_LABELS[chip.id],
+    `AR home label ${chip.id} → ${LOCKED_HOME_LABELS[chip.id]}`,
+  );
+}
 
 const staticParams = categoryListingStaticParams();
 for (const slug of ["most-popular", ...COFFEE_SHOP_CHIP_SLUGS]) {
@@ -132,8 +196,8 @@ assert(
 );
 
 assert(
-  TEMPORARY_DEFAULT_LANDING_MOST_POPULAR === true,
-  "TEMP Most Popular default stays on",
+  TEMPORARY_DEFAULT_LANDING_MOST_POPULAR === false,
+  "P0 home is `/` — Most Popular redirect is off",
 );
 assert(
   mostPopularPath("ar") === LOCKED_CHIP_PATHS.popular.ar,
@@ -181,12 +245,41 @@ assert(
   "vibe/nearby/popular chips are Links to dedicated paths",
 );
 assert(
-  chips.includes("MEET_HALFWAY_CHIP.id && selected"),
-  "selected بيننا stays on /h/{id} and does not jump to /halfway",
+  chips.includes("homeSurfaceChips") && chips.includes("grid-cols-4"),
+  "home chip chrome is the locked 4×2 subset",
+);
+assert(
+  !chips.includes("meet-halfway") && !chips.includes("MEET_HALFWAY_CHIP"),
+  "بيننا is not a tile in the chip grid",
 );
 assert(
   !chips.includes("ثلاث الليلة") && !chips.includes("ON TONIGHT"),
   "Soft Places chips stay parked",
+);
+
+const halfwayCard = read("components/meet-halfway-card.tsx");
+assert(
+  halfwayCard.includes("chipSharePath(MEET_HALFWAY_CHIP.id, language)"),
+  "بيننا utility card links to /halfway",
+);
+assert(
+  halfwayCard.includes("MEET_HALFWAY_CHIP.id") &&
+    halfwayCard.includes("selected") &&
+    halfwayCard.includes('type="button"'),
+  "selected بيننا stays on /h/{id} and does not jump to /halfway",
+);
+assert(
+  halfwayCard.includes("MEET_HALFWAY_HOME_ART"),
+  "بيننا card uses the locked 3D cluster",
+);
+assert(
+  existsSync(join(repo, "public/brand/baynana-3d.png")),
+  "3D pins+cup art is committed under public/",
+);
+assert(
+  halfwayCard.includes("language === \"ar\"") &&
+    halfwayCard.includes('path d="M19 12H5"'),
+  "RTL forward CTA arrow points left",
 );
 
 const landing = read("components/home-landing.tsx");
@@ -215,10 +308,36 @@ assert(!/Soft Places/i.test(chat), "no Soft Places analytics or UI in chat");
 
 const nextConfig = read("next.config.ts");
 assert(
-  /source:\s*"\/"\s*,\s*\n\s*destination:\s*"\/coffee-shops\/most-popular"/.test(
+  !/source:\s*"\/"\s*,\s*\n\s*destination:\s*"\/coffee-shops\/most-popular"/.test(
     nextConfig,
   ),
-  "TEMP `/` 308 to Most Popular stays",
+  "`/` is the P0 home — no 308 to Most Popular",
+);
+assert(
+  !/source:\s*"\/en"\s*,\s*\n\s*destination:\s*"\/en\/coffee-shops\/most-popular"/.test(
+    nextConfig,
+  ),
+  "`/en` is the EN home — no 308 to Most Popular",
+);
+assert(
+  nextConfig.includes("TEMPORARY_DEFAULT_LANDING_MOST_POPULAR"),
+  "Most Popular redirect stays behind the revert flag",
+);
+
+const hero = read("components/home-hero.tsx");
+assert(
+  hero.includes("copy.opener") &&
+    hero.includes("copy.homeSupport") &&
+    !hero.includes("cityOnly") &&
+    !/Koofi/i.test(hero),
+  "home chrome is headline + support, no eyebrow, no Koofi",
+);
+assert(
+  chat.includes("HomeHero") &&
+    chat.includes("MeetHalfwayCard") &&
+    chat.includes("VibeChips") &&
+    chat.includes('pickedChipId ?? "popular"'),
+  "landing stacks بيننا card above chips; default selected is popular",
 );
 
 console.log("check-chip-urls: ok");

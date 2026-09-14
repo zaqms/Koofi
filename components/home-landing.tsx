@@ -31,6 +31,8 @@ export function HomeLanding({
 }: HomeLandingProps) {
   const other: Language = language === "ar" ? "en" : "ar";
   const popular = listing === "popular";
+  const bareHome =
+    selectedChipId === undefined && listing == null && !district;
   const pageChipId =
     selectedChipId !== undefined
       ? selectedChipId
@@ -38,14 +40,16 @@ export function HomeLanding({
         ? "popular"
         : district
           ? null
+          : "popular";
+  const localeHref = bareHome
+    ? undefined
+    : pageChipId
+      ? chipSharePath(pageChipId, other)
+      : popular
+        ? mostPopularPath(other)
+        : district
+          ? districtPath(district, other)
           : undefined;
-  const localeHref = pageChipId
-    ? chipSharePath(pageChipId, other)
-    : popular
-      ? mostPopularPath(other)
-      : district
-        ? districtPath(district, other)
-        : undefined;
   const week = (
     <NewThisWeek language={language} shops={listNewThisWeekShops()} />
   );

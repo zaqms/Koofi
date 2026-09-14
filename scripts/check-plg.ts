@@ -255,6 +255,26 @@ assert(
   "اللي عليها طلب chip must resolve to popular",
 );
 assert(
+  parseIntent("الأكثر شعبية").moments.join(",") === "popular",
+  "الأكثر شعبية chip must resolve to popular",
+);
+assert(
+  parseIntent("قهوة وحلى").moments.join(",") === "pastry",
+  "قهوة وحلى chip must resolve to pastry",
+);
+assert(
+  parseIntent("هادي ورايق").moments.join(",") === "quiet",
+  "هادي ورايق chip must resolve to quiet",
+);
+assert(
+  parseIntent("للشغل").moments.join(",") === "work",
+  "للشغل chip must resolve to work",
+);
+assert(
+  parseIntent("جلسات خارجية").moments.join(",") === "outdoor",
+  "جلسات خارجية chip must resolve to outdoor",
+);
+assert(
   parseIntent("Best Coffee").moments.join(",") === "qahwa",
   "Best Coffee chip must stay qahwa",
 );

@@ -58,7 +58,7 @@ export function MeetHalfwayCard({
   const title = vibeChipLabel(MEET_HALFWAY_CHIP, language);
   const subtitle = copy.meetHalfwayHomeSub[language];
   const className =
-    "flex w-full items-center gap-3 rounded-[26px] bg-paper-deep px-3.5 py-3.5 text-start shadow-[0_1px_0_rgba(30,23,20,0.04)] aria-disabled:pointer-events-none aria-disabled:opacity-50";
+    "flex w-full items-center gap-2.5 rounded-[26px] border border-line/80 bg-paper-deep px-3 py-3.5 text-start aria-disabled:pointer-events-none aria-disabled:opacity-50";
 
   const onCardClick = (
     event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
@@ -75,7 +75,7 @@ export function MeetHalfwayCard({
     <>
       <span
         aria-hidden
-        className="relative h-[4.25rem] w-[9.5rem] shrink-0 sm:h-[4.75rem] sm:w-[11rem]"
+        className="relative h-16 w-40 shrink-0"
       >
         {/* Local static PNG. Decorative — title is the accessible name. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

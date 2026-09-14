@@ -33,7 +33,7 @@ function Icon({ children }: { children: ReactNode }) {
       strokeWidth="1.55"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-6 shrink-0"
+      className="size-7 shrink-0"
     >
       {children}
     </svg>
@@ -63,17 +63,18 @@ function ChipIcon({ id }: { id: string }) {
     case "pastry":
       return (
         <Icon>
-          <path d="M5.2 16.2c1.1-5.4 5-9.2 11.6-10.6-.2 5.8-3.1 9.8-9.4 12.2-1.1-.7-1.8-1.1-2.2-1.6z" />
-          <path d="M8.2 12.6c1.6-2.1 3.8-3.6 6.6-4.6" />
-          <path d="M9.4 15c1.2-1.3 2.6-2.2 4.4-2.8" />
+          <path d="M4.8 15.6c.4-5.4 5.2-9.4 13.4-10.2-1.4 5.4-4.4 9-10.6 11.4-1.4.6-2.4.2-2.8-1.2z" />
+          <path d="M8.4 12.2c2-2.4 4.8-4 8-4.8" />
+          <path d="M7.6 15.4c2.2-1.4 4.6-2.2 7.2-2.4" />
         </Icon>
       );
     case "quiet":
       return (
         <Icon>
-          <path d="M5 14.5V11c0-1.4 1.2-2.6 2.6-2.6h8.8C17.8 8.4 19 9.6 19 11v3.5" />
-          <path d="M5 14.5h14v1.2c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3z" />
-          <path d="M8 8.4V7.2A2.2 2.2 0 0 1 10.2 5h3.6A2.2 2.2 0 0 1 16 7.2v1.2" />
+          <path d="M6.8 10.8V8.6A2.4 2.4 0 0 1 9.2 6.2h5.6A2.4 2.4 0 0 1 17.2 8.6v2.2" />
+          <path d="M4.6 12.4h2.2v5.2H5.8A1.2 1.2 0 0 1 4.6 16.4z" />
+          <path d="M17.2 12.4h2.2v4a1.2 1.2 0 0 1-1.2 1.2h-1" />
+          <path d="M6.8 12.6h10.4v5H6.8z" />
         </Icon>
       );
     case "work":
@@ -146,8 +147,8 @@ function ChipIcon({ id }: { id: string }) {
 
 function vibeChipClass(selected: boolean): string {
   return selected
-    ? "flex min-h-[5.6rem] flex-col items-center justify-center gap-1.5 rounded-[26px] border border-bean bg-bean px-1 py-2.5 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
-    : "flex min-h-[5.6rem] flex-col items-center justify-center gap-1.5 rounded-[26px] border border-line bg-foam px-1 py-2.5 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+    ? "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-2 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+    : "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
 }
 
 export function VibeChips({

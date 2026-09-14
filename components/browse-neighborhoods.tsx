@@ -48,8 +48,8 @@ function NeighborhoodCard({
       onClick={() => trackDistrict(id, language)}
       className={
         selected
-          ? "flex aspect-square w-[5.15rem] shrink-0 snap-start flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-blush px-1 py-2 text-ink"
-          : "flex aspect-square w-[5.15rem] shrink-0 snap-start flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink"
+          ? "flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-blush px-1 py-2 text-ink"
+          : "flex aspect-square w-full flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink"
       }
     >
       <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-7" />
@@ -133,11 +133,16 @@ export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
       </div>
 
       <div
-        className="-mx-4 mt-4 flex flex-nowrap gap-2.5 overflow-x-auto px-4 pb-1 [scrollbar-width:none] snap-x snap-mandatory [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="-mx-4 mt-4 flex flex-nowrap gap-2.5 overflow-x-auto ps-4 pe-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         role="list"
+        data-neighborhood-row=""
       >
         {ids.map((id) => (
-          <div key={id} role="listitem">
+          <div
+            key={id}
+            role="listitem"
+            className="w-[calc((100%-2.5rem)/5.35)] shrink-0"
+          >
             <NeighborhoodCard
               id={id}
               language={language}

@@ -191,7 +191,12 @@ const browse = readRepo("components/browse-neighborhoods.tsx");
 assert(browse.includes("overflow-x-auto"), "featured row scrolls on small screens");
 assert(browse.includes("flex-nowrap"), "featured row does not wrap");
 assert(browse.includes("aspect-square"), "cards match the 4×2 vibe-chip square family");
-assert(browse.includes("w-[5.15rem]"), "cards use the chip tile width, not taller 4/5 tiles");
+assert(
+  browse.includes("w-[calc((100%-2.5rem)/5.35)]") && browse.includes("shrink-0"),
+  "card width is ~5.35 across so the 6th card peeks instead of 5 fitting flush",
+);
+assert(browse.includes("pe-0"), "overflow edge has no end padding that would hide the peek");
+assert(!browse.includes("snap-mandatory"), "mandatory snap must not eat the next-card sliver");
 assert(!browse.includes("aspect-[4/5]"), "cards are not the oversized 4/5 tiles");
 assert(browse.includes("size-7"), "card icons match vibe-chip icon size");
 assert(browse.includes("bg-blush"), "Hittin uses dusty rose, not bean brown");

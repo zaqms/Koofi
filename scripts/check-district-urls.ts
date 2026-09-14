@@ -60,6 +60,7 @@ assert(resolveDistrictSlug("al-rayyan") === "al-rayyan", "al-rayyan resolves");
 assert(resolveDistrictSlug("al-rawabi") === "al-rawabi", "al-rawabi resolves");
 assert(resolveDistrictSlug("al-fayha") === "al-fayha", "al-fayha resolves");
 assert(resolveDistrictSlug("al-raqban") === "al-raqban", "al-raqban resolves");
+assert(resolveDistrictSlug("al-munsiyah") === "al-munsiyah", "al-munsiyah resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -105,8 +106,9 @@ assert(areas.includes("al-rayyan"), "directory includes al-rayyan");
 assert(areas.includes("al-rawabi"), "directory includes al-rawabi");
 assert(areas.includes("al-fayha"), "directory includes al-fayha");
 assert(areas.includes("al-raqban"), "directory includes al-raqban");
-assert(areas.length === 30, `expected 30 districts, got ${areas.length}`);
-assert(listRealShops().length === 187, `catalog 171→187, got ${listRealShops().length}`);
+assert(areas.includes("al-munsiyah"), "directory includes al-munsiyah");
+assert(areas.length === 31, `expected 31 districts, got ${areas.length}`);
+assert(listRealShops().length === 196, `catalog 187→196, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -725,10 +727,85 @@ assert(
 );
 assert(raqbanShop.neighborhood === "al-raqban", "raqban shop is not folded into al-rawdah");
 
+const munsiyah = filterDirectoryShops(shops, "al-munsiyah");
+assert(munsiyah.length === 9, `al-munsiyah has 9 shops, got ${munsiyah.length}`);
+assert(
+  munsiyah.every((shop) => shop.neighborhood === "al-munsiyah"),
+  "al-munsiyah filter stays in district",
+);
+for (const id of [
+  "serb-specialty-al-munsiyah",
+  "roasting-stages-al-munsiyah",
+  "eagle-coffee-al-munsiyah",
+  "najd-roastery-al-munsiyah",
+  "cu-specialty-al-munsiyah",
+  "45-degrees-al-munsiyah",
+  "true-side-al-munsiyah",
+  "coffee-address-al-munsiyah",
+  "das-mond-al-munsiyah",
+]) {
+  assert(
+    munsiyah.some((shop) => shop.id === id),
+    `al-munsiyah includes ${id}`,
+  );
+}
+assert(!getShop("anotherside-cafe-al-munsiyah"), "ANOTHERSIDE stays held out of catalog");
+assert(
+  !munsiyah.some((shop) => shop.id.includes("anotherside")),
+  "al-munsiyah list does not include ANOTHERSIDE",
+);
+assert(
+  neighborhoodLabel("al-munsiyah", "ar") === "المونسية",
+  "al-munsiyah Arabic label",
+);
+assert(
+  neighborhoodLabel("al-munsiyah", "en") === "Al Munsiyah",
+  "al-munsiyah English label",
+);
+assert(
+  districtPath("al-munsiyah", "ar") === "/coffee-shops/al-munsiyah",
+  "AR al-munsiyah coffee-shops path",
+);
+assert(
+  districtPath("al-munsiyah", "en") === "/en/coffee-shops/al-munsiyah",
+  "EN al-munsiyah coffee-shops path",
+);
+for (const ask of [
+  "المونسية",
+  "مونسية",
+  "munsiyah",
+  "al munsiyah",
+  "al-munsiyah",
+  "Al Munsiyah",
+]) {
+  assert(
+    parseIntent(ask).neighborhoods.includes("al-munsiyah"),
+    `parseIntent(${ask}) should hit al-munsiyah`,
+  );
+}
+
+const najdQurtubah = getShop("najd-roastery-qurtubah");
+const najdMunsiyah = getShop("najd-roastery-al-munsiyah");
+assert(najdQurtubah, "najd-roastery-qurtubah stays in the catalog");
+assert(najdMunsiyah, "najd-roastery-al-munsiyah is a distinct catalog shop");
+assert(
+  najdMunsiyah.mapsShareUrl !== najdQurtubah.mapsShareUrl,
+  "najd-roastery-al-munsiyah uses a distinct official place hex",
+);
+
+const addressMunsiyah = getShop("coffee-address-al-munsiyah");
+assert(addressMunsiyah, "coffee-address-al-munsiyah is a distinct catalog shop");
+assert(
+  addressMunsiyah.mapsShareUrl !== addressHamra.mapsShareUrl &&
+    addressMunsiyah.mapsShareUrl !== addressYarmouk.mapsShareUrl &&
+    addressMunsiyah.mapsShareUrl !== addressNahdah.mapsShareUrl,
+  "coffee-address-al-munsiyah uses a distinct official place hex",
+);
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
-    "november-coffee-an-nazhah,belong-an-nazhah,elite-cup-roasters-an-nazhah",
-  "New this week allowlist is the An Nuzhah trio",
+    "serb-specialty-al-munsiyah,roasting-stages-al-munsiyah,eagle-coffee-al-munsiyah",
+  "New this week allowlist is the Al Munsiyah trio",
 );
 assert(
   listNewThisWeekShops()
@@ -758,7 +835,8 @@ const scoutPack: {
     | "al-rayyan"
     | "al-rawabi"
     | "al-fayha"
-    | "al-raqban";
+    | "al-raqban"
+    | "al-munsiyah";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -1383,6 +1461,87 @@ const scoutPack: {
     neighborhood: "al-rawdah",
     vibe: ["محمصة", "قهوة"],
     moments: ["roaster", "qahwa"],
+  },
+  {
+    id: "serb-specialty-al-munsiyah",
+    hex: "0x3e2eff8013dd1479:0x1056b156047683c8",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/serb-specialty-al-munsiyah-ig.jpg",
+    pin: { lat: 24.82489, lng: 46.7505998 },
+  },
+  {
+    id: "roasting-stages-al-munsiyah",
+    hex: "0x3e2eff5a7a2fac3f:0x398188763a63fe64",
+    neighborhood: "al-munsiyah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/roasting-stages-al-munsiyah.png",
+    pin: { lat: 24.8256315, lng: 46.7592872 },
+  },
+  {
+    id: "eagle-coffee-al-munsiyah",
+    hex: "0x3e2ee59bb5832bdd:0xc11522a5efa0b5fc",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/eagle-coffee-al-munsiyah-ig.jpg",
+    pin: { lat: 24.8189761, lng: 46.763994 },
+  },
+  {
+    id: "najd-roastery-al-munsiyah",
+    hex: "0x3e2eff00423b29f1:0x8703dd4f4153e5cb",
+    neighborhood: "al-munsiyah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/najd-roastery-al-munsiyah.png",
+    pin: { lat: 24.8173974, lng: 46.7534432 },
+  },
+  {
+    id: "cu-specialty-al-munsiyah",
+    hex: "0x3e2effb0fc87ca03:0x83c58f550d2c5eff",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/cu-specialty-al-munsiyah-ig.jpg",
+    pin: { lat: 24.8431383, lng: 46.7624001 },
+  },
+  {
+    id: "45-degrees-al-munsiyah",
+    hex: "0x3e2effa75faab00b:0xe291f6ba9313c805",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/45-degrees-al-munsiyah-ig.jpg",
+    pin: { lat: 24.8348614, lng: 46.7739141 },
+  },
+  {
+    id: "true-side-al-munsiyah",
+    hex: "0x3e2eff00faea78a1:0x6aef17bb831ee99b",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/true-side-al-munsiyah-ig.jpg",
+    pin: { lat: 24.8188296, lng: 46.7617362 },
+  },
+  {
+    id: "coffee-address-al-munsiyah",
+    hex: "0x3e2eff00786d8df5:0xd0ff3a2c456c840c",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-al-munsiyah.png",
+    pin: { lat: 24.8245625, lng: 46.7499375 },
+  },
+  {
+    id: "das-mond-al-munsiyah",
+    hex: "0x3e2effc1858c2761:0x6d4485abc147505b",
+    neighborhood: "al-munsiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/das-mond-al-munsiyah-ig.jpg",
+    pin: { lat: 24.8407049, lng: 46.7509581 },
   },
 ];
 

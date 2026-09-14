@@ -82,6 +82,7 @@ export function ShopDirectory({
         </p>
       )}
 
+      {district || popular ? (
       <div
         className="mt-3 flex flex-wrap gap-1.5"
         role="group"
@@ -133,6 +134,7 @@ export function ShopDirectory({
           );
         })}
       </div>
+      ) : null}
 
       <ul className="mt-4 grid gap-2">
         {visible.map((shop) => (

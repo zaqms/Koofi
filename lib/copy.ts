@@ -310,6 +310,34 @@ export const copy = {
     ar: "كل الأحياء",
     en: "All areas",
   },
+  browseNeighborhoods: {
+    ar: "تصفّح حسب الحي",
+    en: "Browse by Neighborhood",
+  },
+  browseNeighborhoodsHint: {
+    ar: "اكتشف القهاوي في حيّك.",
+    en: "Find coffee spots near you.",
+  },
+  viewAllNeighborhoods: {
+    ar: "عرض جميع الأحياء",
+    en: "View all neighborhoods",
+  },
+  neighborhoodsIndex: {
+    ar: "أحياء الرياض",
+    en: "Riyadh Neighborhoods",
+  },
+  neighborhoodsIndexHint: {
+    ar: "استكشف القهاوي في الرياض.",
+    en: "Explore coffee spots across Riyadh.",
+  },
+  neighborhoodsSearch: {
+    ar: "ابحث عن حي…",
+    en: "Search neighborhoods...",
+  },
+  neighborhoodsEmpty: {
+    ar: "ما فيه حي بهالاسم.",
+    en: "No neighborhoods match.",
+  },
   districtMissing: {
     ar: "هالحي مو موجود",
     en: "This area isn’t on the list",

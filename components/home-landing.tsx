@@ -1,3 +1,4 @@
+import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { Chat } from "@/components/chat";
 import { DistrictEnBody } from "@/components/district-en-body";
 import { NewThisWeek } from "@/components/new-this-week";
@@ -81,6 +82,7 @@ export function HomeLanding({
         selectedChipId={pageChipId}
         chipOpen={chipOpen}
       />
+      {bareHome ? <BrowseNeighborhoods language={language} /> : null}
       <ShopUpvoteProvider>
         <ShopClaimProvider>
           {filterPutsDirectoryFirst(listing, district) ? (

@@ -7,6 +7,7 @@ import {
   feedbackPath,
   homePath,
   mostPopularPath,
+  neighborhoodsPath,
   PUBLIC_SITE_URL,
 } from "./product";
 
@@ -45,6 +46,8 @@ function sitemapPaths(): string[] {
     aboutPath("en"),
     feedbackPath("ar"),
     feedbackPath("en"),
+    neighborhoodsPath("ar"),
+    neighborhoodsPath("en"),
     "/llms.txt",
   ];
 

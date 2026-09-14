@@ -26,6 +26,7 @@ const CAFE_WORDS = [
   NEARBY_CHIP.en,
   MEET_HALFWAY_CHIP.ar,
   MEET_HALFWAY_CHIP.en,
+  "قريب",
   "قهوه",
   "قهاوي",
   "فنجان",

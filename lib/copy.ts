@@ -4,8 +4,10 @@ import {
   LOCKED_ABOUT,
   LOCKED_CONTACT,
   LOCKED_FEEDBACK,
+  LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
+  MEET_HALFWAY_HOME_SUB,
   VIBE_CHIPS,
 } from "./product";
 import type { Language } from "./types";
@@ -14,8 +16,10 @@ export {
   LOCKED_ABOUT,
   LOCKED_CONTACT,
   LOCKED_FEEDBACK,
+  LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
+  MEET_HALFWAY_HOME_SUB,
   PRODUCT_NAME,
   VIBE_CHIPS,
 } from "./product";
@@ -30,6 +34,8 @@ export function t<T extends Record<Language, string>>(
 export const copy = {
   opener: LOCKED_OPENER,
   openerEn: LOCKED_OPENER_EN,
+  homeSupport: LOCKED_HOME_SUPPORT,
+  meetHalfwayHomeSub: MEET_HALFWAY_HOME_SUB,
   chips: VIBE_CHIPS,
   pickVibe: {
     ar: "اختار جو",

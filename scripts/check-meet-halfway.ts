@@ -236,7 +236,19 @@ assert(
 );
 
 const chips = readFileSync(join(repoRoot, "components/vibe-chips.tsx"), "utf8");
-assert(chips.includes("MEET_HALFWAY_CHIP"), "chip stays on existing row");
+assert(
+  !chips.includes("MEET_HALFWAY_CHIP") && !chips.includes("meet-halfway"),
+  "بيننا is not a vibe-grid tile",
+);
+const halfwayCard = readFileSync(
+  join(repoRoot, "components/meet-halfway-card.tsx"),
+  "utf8",
+);
+assert(
+  halfwayCard.includes("MEET_HALFWAY_CHIP") &&
+    halfwayCard.includes("chipSharePath"),
+  "بيننا is the P0 utility card linking to /halfway",
+);
 
 const chat = readFileSync(join(repoRoot, "app/api/chat/route.ts"), "utf8");
 assert(

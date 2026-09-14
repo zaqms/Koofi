@@ -9,9 +9,11 @@ import { formatListingPacket, formatSharePacket, packetHasMapsUrl } from "../lib
 import { listingPacketForShop } from "../lib/share-pack";
 import { shopWhyLine } from "../lib/why-line";
 import { toChatPicks, headingForPicks } from "../lib/picker";
+import { restoreOffHomeChipOpen } from "../lib/chip-open";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
+  OFF_HOME_CHIP_IDS,
   packSharePath,
   VIBE_CHIPS,
 } from "../lib/product";
@@ -255,6 +257,26 @@ assert(
   "اللي عليها طلب chip must resolve to popular",
 );
 assert(
+  parseIntent("الأكثر شعبية").moments.join(",") === "popular",
+  "الأكثر شعبية chip must resolve to popular",
+);
+assert(
+  parseIntent("قهوة وحلى").moments.join(",") === "pastry",
+  "قهوة وحلى chip must resolve to pastry",
+);
+assert(
+  parseIntent("هادي ورايق").moments.join(",") === "quiet",
+  "هادي ورايق chip must resolve to quiet",
+);
+assert(
+  parseIntent("للشغل").moments.join(",") === "work",
+  "للشغل chip must resolve to work",
+);
+assert(
+  parseIntent("جلسات خارجية").moments.join(",") === "outdoor",
+  "جلسات خارجية chip must resolve to outdoor",
+);
+assert(
   parseIntent("Best Coffee").moments.join(",") === "qahwa",
   "Best Coffee chip must stay qahwa",
 );
@@ -295,6 +317,17 @@ assert(
   bestCoffee.picks.every((pick) => pick.shop.momentTags.includes("qahwa")),
   "Best Coffee still ranks qahwa-tagged shops",
 );
+
+for (const language of ["ar", "en"] as const) {
+  for (const id of OFF_HOME_CHIP_IDS) {
+    const open = restoreOffHomeChipOpen(id, language);
+    assert(open?.picks.length === 3, `${language} ${id} share URL still has 3 picks`);
+    assert(
+      open.picks.every((pick) => catalogIds.has(pick.id)),
+      `${language} ${id} invented a shop`,
+    );
+  }
+}
 
 console.log("ok");
 console.log(

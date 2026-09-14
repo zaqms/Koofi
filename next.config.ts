@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "./lib/landing-experiment";
 
+void TEMPORARY_DEFAULT_LANDING_MOST_POPULAR;
+
 const sitemapHeaders = [
   { key: "Content-Type", value: "application/xml; charset=utf-8" },
   // public/sitemap.xml is a static file. Vercel can attach
@@ -14,24 +16,10 @@ const sitemapHeaders = [
 ];
 
 /**
- * TEMPORARY experiment (Amjad): `/` + `/en` 308 to Most Popular.
- * Clear landing path for bounce-rate analytics. Flip the flag to revert.
+ * P0 home (Amjad GREENLIGHT): `/` and `/en` render the native chrome.
+ * TEMPORARY_DEFAULT_LANDING_MOST_POPULAR stays in lib/landing-experiment.ts
+ * as the revert hook — do not re-add a root 308 here in this PR.
  */
-const defaultLandingRedirects = TEMPORARY_DEFAULT_LANDING_MOST_POPULAR
-  ? [
-      {
-        source: "/",
-        destination: "/coffee-shops/most-popular",
-        statusCode: 308,
-      },
-      {
-        source: "/en",
-        destination: "/en/coffee-shops/most-popular",
-        statusCode: 308,
-      },
-    ]
-  : [];
-
 const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/sitemap.xml", headers: sitemapHeaders }];
@@ -58,7 +46,6 @@ const nextConfig: NextConfig = {
         destination: "/en/coffee-shops/most-popular",
         statusCode: 308,
       },
-      ...defaultLandingRedirects,
     ];
   },
 };

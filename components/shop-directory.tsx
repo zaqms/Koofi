@@ -27,7 +27,7 @@ import type { Language, NeighborhoodId } from "@/lib/types";
 
 const POPULAR_CHIP = VIBE_CHIPS.find((chip) => chip.id === "popular") ?? {
   id: "popular",
-  ar: "اللي عليها طلب",
+  ar: "الأكثر شعبية",
   en: "Most Popular",
 };
 

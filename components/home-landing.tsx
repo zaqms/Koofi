@@ -8,10 +8,12 @@ import { SiteFooter } from "@/components/site-footer";
 import { listDirectoryShops } from "@/lib/catalog";
 import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
+import { restoreOffHomeChipOpen } from "@/lib/chip-open";
 import {
   chipSharePath,
   districtPath,
   filterPutsDirectoryFirst,
+  isOffHomeChipId,
   mostPopularPath,
 } from "@/lib/product";
 import type { Language, NeighborhoodId } from "@/lib/types";
@@ -31,6 +33,8 @@ export function HomeLanding({
 }: HomeLandingProps) {
   const other: Language = language === "ar" ? "en" : "ar";
   const popular = listing === "popular";
+  const bareHome =
+    selectedChipId === undefined && listing == null && !district;
   const pageChipId =
     selectedChipId !== undefined
       ? selectedChipId
@@ -38,14 +42,20 @@ export function HomeLanding({
         ? "popular"
         : district
           ? null
+          : "popular";
+  const localeHref = bareHome
+    ? undefined
+    : pageChipId
+      ? chipSharePath(pageChipId, other)
+      : popular
+        ? mostPopularPath(other)
+        : district
+          ? districtPath(district, other)
           : undefined;
-  const localeHref = pageChipId
-    ? chipSharePath(pageChipId, other)
-    : popular
-      ? mostPopularPath(other)
-      : district
-        ? districtPath(district, other)
-        : undefined;
+  const chipOpen =
+    pageChipId && isOffHomeChipId(pageChipId)
+      ? restoreOffHomeChipOpen(pageChipId, language)
+      : null;
   const week = (
     <NewThisWeek language={language} shops={listNewThisWeekShops()} />
   );
@@ -69,6 +79,7 @@ export function HomeLanding({
         landing={language}
         localeHref={localeHref}
         selectedChipId={pageChipId}
+        chipOpen={chipOpen}
       />
       <ShopUpvoteProvider>
         <ShopClaimProvider>

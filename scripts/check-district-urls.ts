@@ -1768,20 +1768,20 @@ assert(
 assert(nextConfig.includes("statusCode: 308"), "alias is 308");
 
 assert(
-  TEMPORARY_DEFAULT_LANDING_MOST_POPULAR === true,
-  "TEMPORARY experiment flag defaults Most Popular landing on",
+  TEMPORARY_DEFAULT_LANDING_MOST_POPULAR === false,
+  "P0 home is `/` — Most Popular redirect is off",
 );
 assert(
-  /source:\s*"\/"\s*,\s*\n\s*destination:\s*"\/coffee-shops\/most-popular"/.test(
+  !/source:\s*"\/"\s*,\s*\n\s*destination:\s*"\/coffee-shops\/most-popular"/.test(
     nextConfig,
   ),
-  "TEMPORARY: `/` 308s to AR most-popular",
+  "`/` is the P0 home — no 308 to Most Popular",
 );
 assert(
-  /source:\s*"\/en"\s*,\s*\n\s*destination:\s*"\/en\/coffee-shops\/most-popular"/.test(
+  !/source:\s*"\/en"\s*,\s*\n\s*destination:\s*"\/en\/coffee-shops\/most-popular"/.test(
     nextConfig,
   ),
-  "TEMPORARY: `/en` 308s to EN most-popular",
+  "`/en` is the EN home — no 308 to Most Popular",
 );
 assert(
   nextConfig.includes("TEMPORARY_DEFAULT_LANDING_MOST_POPULAR"),
@@ -1815,8 +1815,15 @@ assert(
   "selected popular vibe chip marks the current page",
 );
 assert(
-  vibeChips.includes("MEET_HALFWAY_CHIP") && vibeChips.includes("meet-halfway"),
-  "بيننا sits on the existing chip row",
+  vibeChips.includes("homeSurfaceChips") && !vibeChips.includes("meet-halfway"),
+  "home chip grid is the 4×2 subset — بيننا is not a tile",
+);
+assert(
+  readFileSync(
+    join(process.cwd(), "components/meet-halfway-card.tsx"),
+    "utf8",
+  ).includes("MEET_HALFWAY_CHIP"),
+  "بيننا is a utility card above the chips",
 );
 assert(
   !vibeChips.includes("ثلاث الليلة") && !vibeChips.includes("ON TONIGHT"),

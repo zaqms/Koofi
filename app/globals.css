@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f3eee4;
-  --paper-deep: #e8e0d2;
-  --ink: #1c1410;
-  --ink-soft: #5c4e45;
-  --foam: #fffaf3;
-  --bean: #6f2f22;
-  --bean-deep: #4e1f17;
-  --line: #d9cfc0;
+  --paper: #fefbf6;
+  --paper-deep: #f3ebe3;
+  --ink: #1e1714;
+  --ink-soft: #6b5c52;
+  --foam: #fffdfb;
+  --bean: #7f3526;
+  --bean-deep: #5c2419;
+  --line: #e4d8cc;
   --charcoal: #1b1814;
   --vote: #9be38a;
   --gold: #b0894a;

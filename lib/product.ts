@@ -114,6 +114,12 @@ export function isHomeChipId(id: string): id is HomeChipId {
   return (HOME_CHIP_IDS as readonly string[]).includes(id);
 }
 
+export type OffHomeChipId = (typeof OFF_HOME_CHIP_IDS)[number];
+
+export function isOffHomeChipId(id: string): id is OffHomeChipId {
+  return (OFF_HOME_CHIP_IDS as readonly string[]).includes(id);
+}
+
 export type HomeSurfaceChip =
   | (typeof VIBE_CHIPS)[number]
   | typeof NEARBY_CHIP;

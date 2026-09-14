@@ -14,6 +14,7 @@ import {
 import { HomeHero } from "@/components/home-hero";
 import { MeetHalfwayCard } from "@/components/meet-halfway-card";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
+import type { ChipOpenRestore } from "@/lib/chip-open";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { useBeenIds } from "@/lib/been";
 import { copy } from "@/lib/copy";
@@ -52,6 +53,7 @@ import {
   VIBE_CHIPS,
   districtPath,
   homePath,
+  isOffHomeChipId,
   vibeChipLabel,
 } from "@/lib/product";
 import { copyShareText, sharePackPacket } from "@/lib/share-pack";
@@ -288,6 +290,8 @@ type ChatProps = {
   halfwayInviteExpired?: boolean;
   localeHref?: string;
   selectedChipId?: string | null;
+  /** Off-home share URLs serve three picks on the server. Not a home tile. */
+  chipOpen?: ChipOpenRestore | null;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
@@ -321,6 +325,24 @@ function restoreMessages(restore: ChatRestore, landing: Language): Message[] {
   return messages;
 }
 
+function chipOpenMessages(open: ChipOpenRestore, landing: Language): Message[] {
+  return [
+    openerMessage(landing),
+    {
+      id: `chip-ask-${open.chipId}`,
+      role: "user",
+      text: open.ask,
+    },
+    {
+      id: `chip-picks-${open.chipId}`,
+      role: "assistant",
+      language: open.language,
+      text: open.reply,
+      picks: open.picks,
+    },
+  ];
+}
+
 function liveChipLabel(chipId: string, language: Language): string | null {
   if (chipId === NEARBY_CHIP.id) return vibeChipLabel(NEARBY_CHIP, language);
   if (chipId === MEET_HALFWAY_CHIP.id) {
@@ -345,13 +367,16 @@ export function Chat({
   halfwayInviteExpired = false,
   localeHref,
   selectedChipId,
+  chipOpen,
 }: ChatProps) {
   const router = useRouter();
   const threadKey = halfwayInvite
     ? `halfway:${halfwayInvite.id}`
     : restore
       ? `pack:${restore.packId}`
-      : landing;
+      : chipOpen
+        ? `chip:${landing}:${chipOpen.chipId}`
+        : landing;
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [startFresh] = useState(() => consumeHalfwayFresh());
   const [sessionExpired, setSessionExpired] = useState(halfwayInviteExpired);
@@ -365,7 +390,9 @@ export function Chat({
         ? [openerMessage(landing), restoredHalfway]
         : restore
           ? restoreMessages(restore, landing)
-          : [openerMessage(landing)])
+          : chipOpen?.picks.length
+            ? chipOpenMessages(chipOpen, landing)
+            : [openerMessage(landing)])
     );
   });
   const [draft, setDraft] = useState("");
@@ -455,7 +482,9 @@ export function Chat({
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
   const halfwayRestoreSeenRef = useRef(false);
-  const routedChipOpenedRef = useRef<string | null>(null);
+  const routedChipOpenedRef = useRef<string | null>(
+    chipOpen?.picks.length ? chipOpen.chipId : null,
+  );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   useVisitorLocation({ auto: !halfwayInvite && !meetHalfwayOpen });
 
@@ -1385,10 +1414,14 @@ export function Chat({
   useEffect(() => {
     if (halfwayInvite || halfwayInviteExpired) return;
     if (!selectedChipId || selectedChipId === "popular") return;
+    if (chipOpen?.chipId === selectedChipId && chipOpen.picks.length > 0) {
+      routedChipOpenedRef.current = selectedChipId;
+      return;
+    }
     if (routedChipOpenedRef.current === selectedChipId) return;
     routedChipOpenedRef.current = selectedChipId;
     openRoutedChipRef.current(selectedChipId);
-  }, [selectedChipId, halfwayInvite, halfwayInviteExpired]);
+  }, [selectedChipId, halfwayInvite, halfwayInviteExpired, chipOpen]);
 
   function startOver() {
     delete pendingSends[threadKey];
@@ -1639,7 +1672,9 @@ export function Chat({
                   {copy.meetHalfwayInviteJoined[landing]}
                 </p>
               ) : null}
-              {message.id === "opener" && !hasThread ? (
+              {message.id === "opener" &&
+              !hasThread &&
+              !isOffHomeChipId(selectedChipId ?? "") ? (
                 <div className="space-y-5">
                   <HomeHero language={landing} />
                   <MeetHalfwayCard

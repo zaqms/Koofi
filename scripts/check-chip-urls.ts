@@ -27,9 +27,11 @@ import {
   homeSurfaceChips,
   isCoffeeShopChipSlug,
   isHomeChipId,
+  isOffHomeChipId,
   isMostPopularSlug,
   mostPopularPath,
 } from "../lib/product";
+import { restoreOffHomeChipOpen } from "../lib/chip-open";
 import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "../lib/landing-experiment";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -151,6 +153,26 @@ assert(
   "بيننا is not a home grid tile",
 );
 assert(!isHomeChipId("roaster"), "off-home chips stay off the 4×2");
+assert(
+  OFF_HOME_CHIP_IDS.every((id) => isOffHomeChipId(id)) &&
+    !isOffHomeChipId("coffee") &&
+    !isOffHomeChipId("popular"),
+  "off-home helper matches only the four share URLs",
+);
+for (const language of ["ar", "en"] as const) {
+  for (const id of OFF_HOME_CHIP_IDS) {
+    const open = restoreOffHomeChipOpen(id, language);
+    assert(open, `${language} ${id} still opens`);
+    assert(
+      open.picks.length === 3,
+      `${language} ${id} must serve three picks, got ${open.picks.length}`,
+    );
+  }
+}
+assert(
+  restoreOffHomeChipOpen("coffee", "ar") === null,
+  "home-strip chips are not off-home restores",
+);
 assert(
   !(HOME_CHIP_IDS as readonly string[]).includes("meet-halfway"),
   "بيننا is not a home chip id",
@@ -292,6 +314,12 @@ assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),
   "most-popular still selects popular and locale-switches on that path",
 );
+assert(
+  landing.includes("restoreOffHomeChipOpen") &&
+    landing.includes("chipOpen") &&
+    landing.includes("isOffHomeChipId"),
+  "off-home share URLs server-serve three picks",
+);
 
 const chat = read("components/chat.tsx");
 assert(
@@ -300,6 +328,17 @@ assert(
     chat.includes("router.replace") &&
     chat.includes("halfwayInvitePath"),
   "direct chip URLs open the same UI; اعزم خويك still replace → /h/{id}",
+);
+assert(
+  chat.includes("chipOpen") &&
+    chat.includes("chipOpenMessages") &&
+    chat.includes("isOffHomeChipId") &&
+    chat.includes("liveChipLabel"),
+  "off-home URLs paint three picks; live chips still open by label",
+);
+assert(
+  !chat.includes("isHomeChipId"),
+  "chip-open is not gated on the 4×2 home set",
 );
 assert(
   chat.includes("chipId === \"popular\"") || chat.includes('chipId === "popular"'),

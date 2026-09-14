@@ -9,9 +9,11 @@ import { formatListingPacket, formatSharePacket, packetHasMapsUrl } from "../lib
 import { listingPacketForShop } from "../lib/share-pack";
 import { shopWhyLine } from "../lib/why-line";
 import { toChatPicks, headingForPicks } from "../lib/picker";
+import { restoreOffHomeChipOpen } from "../lib/chip-open";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
+  OFF_HOME_CHIP_IDS,
   packSharePath,
   VIBE_CHIPS,
 } from "../lib/product";
@@ -315,6 +317,17 @@ assert(
   bestCoffee.picks.every((pick) => pick.shop.momentTags.includes("qahwa")),
   "Best Coffee still ranks qahwa-tagged shops",
 );
+
+for (const language of ["ar", "en"] as const) {
+  for (const id of OFF_HOME_CHIP_IDS) {
+    const open = restoreOffHomeChipOpen(id, language);
+    assert(open?.picks.length === 3, `${language} ${id} share URL still has 3 picks`);
+    assert(
+      open.picks.every((pick) => catalogIds.has(pick.id)),
+      `${language} ${id} invented a shop`,
+    );
+  }
+}
 
 console.log("ok");
 console.log(

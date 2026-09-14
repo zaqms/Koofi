@@ -117,8 +117,8 @@ export function NeighborhoodsPageView({
                 }}
                 className="flex items-center gap-3 border-b border-line/80 py-3.5 text-ink"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-foam text-ink-soft">
-                  <NeighborhoodIcon kind={row.icon} className="size-5" />
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-line bg-foam text-ink-soft">
+                  <NeighborhoodIcon kind={row.icon} className="size-[1.35rem]" />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[15px] font-medium leading-5">

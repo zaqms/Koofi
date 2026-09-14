@@ -53,7 +53,7 @@ function NeighborhoodCard({
       }
     >
       <span className="flex flex-1 items-center justify-center">
-        <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-9" />
+        <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-10" />
       </span>
       <span
         className={

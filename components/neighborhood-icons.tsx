@@ -19,7 +19,7 @@ function IconFrame({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.35"
+      strokeWidth="1.45"
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className ?? "size-8"}
@@ -34,104 +34,132 @@ export function NeighborhoodIcon({ kind, className }: NeighborhoodIconProps) {
     case "fortress":
       return (
         <IconFrame className={className}>
-          <path d="M5.2 19.4V9.6l2.1-1.8h9.4l2.1 1.8v9.8" />
-          <path d="M5.2 9.6h2.15V7.4h2.1v2.2h2.15V7.4h2.1v2.2h2.15V7.4h2.1v2.2" />
-          <path d="M10.4 19.4v-4.1a1.6 1.6 0 0 1 3.2 0v4.1" />
+          <path d="M4.8 19.6V10.2h14.4v9.4" />
+          <path d="M4.8 10.2V7.1h2.4v3.1h2.4V7.1h2.4v3.1h2.4V7.1h2.4v3.1h2.4V7.1h2.4v3.1" />
+          <path d="M10.2 19.6v-4.2a1.8 1.8 0 0 1 3.6 0v4.2" />
         </IconFrame>
       );
     case "towers":
       return (
         <IconFrame className={className}>
-          <path d="M4.8 19.2V9.4h5.2v9.8" />
-          <path d="M10.6 19.2V5.6h8.6v13.6" />
-          <path d="M6.2 11.6h2.2M6.2 14.2h2.2M6.2 16.8h2.2" />
-          <path d="M13 8.2h3.6M13 11h3.6M13 13.8h3.6M13 16.6h3.6" />
+          <rect x="4.4" y="9.2" width="6.2" height="10.4" rx="0.6" />
+          <rect x="11.6" y="4.8" width="8" height="14.8" rx="0.6" />
+          <path d="M6.1 12h2.8M6.1 14.6h2.8M6.1 17.2h2.8" />
+          <path d="M13.6 7.4h4M13.6 10.2h4M13.6 13h4M13.6 15.8h4" />
         </IconFrame>
       );
     case "flower":
       return (
         <IconFrame className={className}>
+          <ellipse cx="12" cy="6.7" rx="1.55" ry="2.7" />
+          <ellipse
+            cx="12"
+            cy="6.7"
+            rx="1.55"
+            ry="2.7"
+            transform="rotate(60 12 12)"
+          />
+          <ellipse
+            cx="12"
+            cy="6.7"
+            rx="1.55"
+            ry="2.7"
+            transform="rotate(120 12 12)"
+          />
+          <ellipse
+            cx="12"
+            cy="6.7"
+            rx="1.55"
+            ry="2.7"
+            transform="rotate(180 12 12)"
+          />
+          <ellipse
+            cx="12"
+            cy="6.7"
+            rx="1.55"
+            ry="2.7"
+            transform="rotate(240 12 12)"
+          />
+          <ellipse
+            cx="12"
+            cy="6.7"
+            rx="1.55"
+            ry="2.7"
+            transform="rotate(300 12 12)"
+          />
           <circle cx="12" cy="12" r="1.45" />
-          <path d="M12 5.2c1.25 1.55 1.25 3.2 0 4.15-1.25-.95-1.25-2.6 0-4.15z" />
-          <path d="M12 14.65c1.25 1.55 1.25 3.2 0 4.15-1.25-.95-1.25-2.6 0-4.15z" />
-          <path d="M5.2 12c1.55-1.25 3.2-1.25 4.15 0-1.25.95-2.6 1.25-4.15 0z" />
-          <path d="M14.65 12c1.55-1.25 3.2-1.25 4.15 0-1.25.95-2.6 1.25-4.15 0z" />
-          <path d="M7.15 7.15c1.95.4 3.1 1.7 2.7 3.05-1.35-.4-2.65-1.55-2.7-3.05z" />
-          <path d="M16.85 7.15c-1.95.4-3.1 1.7-2.7 3.05 1.35-.4 2.65-1.55 2.7-3.05z" />
-          <path d="M7.15 16.85c1.95-.4 3.1-1.7 2.7-3.05-1.35.4-2.65 1.55-2.7 3.05z" />
-          <path d="M16.85 16.85c-1.95-.4-3.1-1.7-2.7-3.05 1.35.4 2.65 1.55 2.7 3.05z" />
         </IconFrame>
       );
     case "palm":
       return (
         <IconFrame className={className}>
-          <path d="M12 20.2V10.6" />
-          <path d="M12 11.2c-2.4-1.2-5.2-1.1-7.1.4 2.2.15 4.1 1.15 5.4 2.8" />
-          <path d="M12 11.2c2.4-1.2 5.2-1.1 7.1.4-2.2.15-4.1 1.15-5.4 2.8" />
-          <path d="M12 10.4c-1.6-2.3-1.9-5.1-.8-7.2 1 2.1 2.4 3.7 3.4 4.6" />
-          <path d="M12 10.4c1.6-2.3 1.9-5.1.8-7.2-1 2.1-2.4 3.7-3.4 4.6" />
-          <path d="M12 11c-3.1.15-5.4 1.7-6.2 3.8 1.8-.7 3.7-.7 5.5.1" />
-          <path d="M12 11c3.1.15 5.4 1.7 6.2 3.8-1.8-.7-3.7-.7-5.5.1" />
+          <path d="M12 20.4V10.2" />
+          <path d="M12 10.6C8.2 9.1 5.4 9.4 4.2 11.2c2.5-.1 4.6 1 6.1 2.8" />
+          <path d="M12 10.6c3.8-1.5 6.6-1.2 7.8.6-2.5-.1-4.6 1-6.1 2.8" />
+          <path d="M12 10.2C9.8 7.4 9.2 4.8 10.4 3.2c.8 2.2 2 3.8 3.2 4.8" />
+          <path d="M12 10.2c2.2-2.8 2.8-5.4 1.6-7-0.8 2.2-2 3.8-3.2 4.8" />
+          <path d="M12 11.2c-3.4.4-5.8 2.2-6.4 4.2 1.9-.8 3.9-.7 5.6.2" />
+          <path d="M12 11.2c3.4.4 5.8 2.2 6.4 4.2-1.9-.8-3.9-.7-5.6.2" />
         </IconFrame>
       );
     case "building":
       return (
         <IconFrame className={className}>
-          <path d="M7.2 19.4V6.6h9.6v12.8" />
-          <path d="M9.2 9h1.5M13.3 9h1.5M9.2 12h1.5M13.3 12h1.5M9.2 15h1.5M13.3 15h1.5" />
+          <rect x="6.6" y="4.8" width="10.8" height="14.8" rx="0.7" />
+          <path d="M9 8h2M13 8h2M9 11.2h2M13 11.2h2M9 14.4h2M13 14.4h2" />
         </IconFrame>
       );
     case "landmark":
       return (
         <IconFrame className={className}>
-          <path d="M12 20.5V4.4" />
-          <path d="M12 4.4l.7 2.4-.7 1.3-.7-1.3z" />
-          <circle cx="12" cy="9.15" r="1.7" />
-          <path d="M10.6 20.5h2.8" />
+          <path d="M12 20.6V4.2" />
+          <path d="M12 4.2l1.05 2.6-1.05 1.15L10.95 6.8z" />
+          <circle cx="12" cy="9.35" r="1.85" />
+          <path d="M10.2 20.6h3.6" />
         </IconFrame>
       );
     case "waves":
       return (
         <IconFrame className={className}>
-          <path d="M4.4 10.2c1.6 1.5 3.2 1.5 4.8 0s3.2-1.5 4.8 0 3.2 1.5 4.8 0" />
-          <path d="M4.4 14.2c1.6 1.5 3.2 1.5 4.8 0s3.2-1.5 4.8 0 3.2 1.5 4.8 0" />
+          <path d="M4.2 10c1.7 1.55 3.4 1.55 5.1 0s3.4-1.55 5.1 0 3.4 1.55 5.1 0" />
+          <path d="M4.2 14.2c1.7 1.55 3.4 1.55 5.1 0s3.4-1.55 5.1 0 3.4 1.55 5.1 0" />
         </IconFrame>
       );
     case "tree":
       return (
         <IconFrame className={className}>
-          <path d="M12 20.2v-6.2" />
-          <path d="M12 14c-2.8-.2-4.8-2.2-4.8-4.6 0-2.5 2.1-4.4 4.8-4.4s4.8 1.9 4.8 4.4c0 2.4-2 4.4-4.8 4.6z" />
-          <path d="M9.6 20.2h4.8" />
+          <path d="M12 20.4v-6.4" />
+          <path d="M12 14.2c-3-.2-5.1-2.4-5.1-5 0-2.7 2.3-4.8 5.1-4.8s5.1 2.1 5.1 4.8c0 2.6-2.1 4.8-5.1 5z" />
+          <path d="M9.4 20.4h5.2" />
         </IconFrame>
       );
     case "dome":
       return (
         <IconFrame className={className}>
-          <path d="M5.4 19.2V12h13.2v7.2" />
-          <path d="M7.2 12a4.8 4.8 0 0 1 9.6 0" />
-          <path d="M12 5.4V7.2" />
+          <path d="M5.2 19.4V12.2h13.6v7.2" />
+          <path d="M7 12.2a5 5 0 0 1 10 0" />
+          <path d="M12 5.2v2.2" />
         </IconFrame>
       );
     case "diamond":
       return (
         <IconFrame className={className}>
-          <path d="M12 4.8 19.2 12 12 19.2 4.8 12z" />
+          <path d="M12 4.6 19.4 12 12 19.4 4.6 12z" />
         </IconFrame>
       );
     case "pin":
       return (
         <IconFrame className={className}>
-          <path d="M12 20.4s5.4-5.1 5.4-9.2a5.4 5.4 0 1 0-10.8 0c0 4.1 5.4 9.2 5.4 9.2z" />
-          <circle cx="12" cy="11" r="1.55" />
+          <path d="M12 20.6s5.6-5.2 5.6-9.4a5.6 5.6 0 1 0-11.2 0c0 4.2 5.6 9.4 5.6 9.4z" />
+          <circle cx="12" cy="11.1" r="1.6" />
         </IconFrame>
       );
     case "sail":
       return (
         <IconFrame className={className}>
-          <path d="M6.4 17.6h11.2c.7 0 1.3.6 1.2 1.3l-.2.7H5.4l-.2-.7c-.1-.7.5-1.3 1.2-1.3z" />
-          <path d="M11.6 17.4V5.2" />
-          <path d="M11.6 5.4 17 13.8H11.6z" />
+          <path d="M5.8 17.6h12.4c.7 0 1.25.55 1.15 1.25l-.25.75H4.9l-.25-.75c-.1-.7.45-1.25 1.15-1.25z" />
+          <path d="M11.5 17.4V5" />
+          <path d="M11.5 5.2 17.4 14H11.5z" />
         </IconFrame>
       );
     default:

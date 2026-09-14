@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   BROWSE_DEMO_SELECTED,
+  EN_FEATURED_LTR,
+  AR_FEATURED_RTL_DOM,
   RIYADH_FEATURED_NEIGHBORHOODS,
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
@@ -37,6 +39,16 @@ assert(RIYADH_FEATURED_NEIGHBORHOODS.length === 6, "exactly 6 featured cards");
 assert(BROWSE_DEMO_SELECTED === "hittin", "Hittin is the demo selected card");
 
 assert(
+  EN_FEATURED_LTR.join(",") ===
+    "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
+  "EN LTR list is Hittin-first",
+);
+assert(
+  AR_FEATURED_RTL_DOM.join(",") ===
+    "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
+  "AR RTL DOM is Hittin-first so حطين is the rightmost start",
+);
+assert(
   featuredNeighborhoodIds("en").join(",") ===
     "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
   "EN LTR starts at selected Hittin on the left",
@@ -44,7 +56,7 @@ assert(
 assert(
   featuredNeighborhoodIds("ar").join(",") ===
     "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
-  "AR RTL uses the same Hittin-first DOM so حطين sits on the right",
+  "AR RTL DOM starts at Hittin so حطين sits on the right",
 );
 
 assert(
@@ -177,6 +189,14 @@ assert(
   "bare home mounts Browse by Neighborhood",
 );
 assert(
+  homeLanding.includes("DocumentLocale"),
+  "home pins html lang/dir so /en cannot inherit RTL",
+);
+assert(
+  readRepo("app/en/layout.tsx").includes("document.documentElement.dir='ltr'"),
+  "EN layout forces html dir=ltr before paint",
+);
+assert(
   !homeLanding.includes("Soft Places") && !homeLanding.includes("ثلاث الليلة"),
   "Soft Places stays parked on home landing",
 );
@@ -226,9 +246,30 @@ assert(
   "AR browse section is a true RTL twin, not forced LTR",
 );
 assert(
-  !browse.includes('dir="ltr"'),
-  "AR header must not force LTR (no mirrored Arabic)",
+  browse.includes('data-featured-visual="hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah"'),
+  "EN belt pins Hittin-first LTR visual order",
 );
+assert(
+  browse.includes('direction: "ltr"') && browse.includes("pl-4 pr-0"),
+  "EN belt uses physical LTR direction and left padding so peek stays on the right",
+);
+assert(
+  browse.includes('data-view-all-cta="en"') &&
+    browse.includes("copy.viewAllNeighborhoods.en"),
+  "EN view-all is a separate LTR pill, not the AR branch",
+);
+const enCta = browse.slice(browse.indexOf('data-view-all-cta="en"'));
+assert(
+  enCta.indexOf("copy.viewAllNeighborhoods.en") <
+    enCta.indexOf('<Chevron point="right" />'),
+  "EN view-all is text then a right chevron",
+);
+assert(
+  browse.includes("copy.viewAllNeighborhoods.ar") &&
+    browse.includes('<Chevron point="right" />'),
+  "AR view-all stays Arabic text then a right chevron",
+);
+assert(!browse.includes('point="left"'), "EN view-all never uses a leading left chevron");
 assert(!browse.includes("text-end"), "EN heading is not forced to the right");
 assert(
   browse.indexOf('id="browse-neighborhoods"') < browse.indexOf("<ViewAllPill"),
@@ -247,15 +288,9 @@ assert(
   "browse section chrome matches New this week / The list",
 );
 assert(
-  browse.includes("viewAllNeighborhoods[language]") &&
-    browse.includes('<Chevron point="right" />'),
-  "view-all pills render copy then a right-pointing chevron",
-);
-assert(
-  !browse.includes('point="left"') &&
-    browse.indexOf("viewAllNeighborhoods[language]") <
-      browse.indexOf('<Chevron point="right" />'),
-  "EN view-all chevron is after the text and points right, not left",
+  browse.includes("copy.viewAllNeighborhoods.en") &&
+    browse.includes("copy.viewAllNeighborhoods.ar"),
+  "view-all pills use locale-specific copy, not a shared leading-chevron branch",
 );
 
 const viewAll = readRepo("components/neighborhoods-page.tsx");

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
 import { MeetHalfwayResultsFooter } from "@/components/meet-halfway-results-footer";
@@ -520,7 +520,7 @@ export function Chat({
     });
   }, [halfwayInvite, landing]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const html = document.documentElement;
     const previousLang = html.lang;
     const previousDir = html.dir;

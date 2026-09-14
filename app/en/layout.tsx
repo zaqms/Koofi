@@ -8,5 +8,15 @@ export const metadata: Metadata = {
 };
 
 export default function EnglishLayout({ children }: { children: ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "document.documentElement.lang='en';document.documentElement.dir='ltr';",
+        }}
+      />
+      {children}
+    </>
+  );
 }

@@ -5,9 +5,9 @@ import type { Language, NeighborhoodId } from "./types";
 
 /**
  * Locked Riyadh featured row (Amjad / Ajz refs).
- * Same DOM start at Hittin for both locales:
- * EN LTR: Hittin (left, selected) → Malqa → Nakheel → Yasmin → Olaya → Sulaymaniyah.
- * AR RTL: حطين (right, selected) → الملقا → … → السليمانية (left peek).
+ * EN and AR are separate lists — do not share one DOM and hope dir flips it.
+ * EN LTR visual: Hittin (left, selected) → Malqa → Nakheel → Yasmin → Olaya → Sulaymaniyah.
+ * AR RTL DOM: Hittin first so dir=rtl puts حطين on the right; peek on the left.
  * Dynamic-by-city later.
  */
 export const RIYADH_FEATURED_NEIGHBORHOODS = [
@@ -18,6 +18,15 @@ export const RIYADH_FEATURED_NEIGHBORHOODS = [
   "olaya",
   "sulimaniyah",
 ] as const satisfies readonly NeighborhoodId[];
+
+/** EN `/en` LTR paint order. First visible full card must be Hittin. */
+export const EN_FEATURED_LTR = RIYADH_FEATURED_NEIGHBORHOODS;
+
+/**
+ * AR `/` RTL DOM. First in this list is the RTL start (rightmost).
+ * Do not reverse this for English.
+ */
+export const AR_FEATURED_RTL_DOM = RIYADH_FEATURED_NEIGHBORHOODS;
 
 export type FeaturedNeighborhoodId =
   (typeof RIYADH_FEATURED_NEIGHBORHOODS)[number];
@@ -105,9 +114,9 @@ export function neighborhoodIconKind(id: NeighborhoodId): NeighborhoodIconKind {
 }
 
 export function featuredNeighborhoodIds(
-  _language: Language,
+  language: Language,
 ): readonly FeaturedNeighborhoodId[] {
-  return RIYADH_FEATURED_NEIGHBORHOODS;
+  return language === "en" ? EN_FEATURED_LTR : AR_FEATURED_RTL_DOM;
 }
 
 export function neighborhoodCafeCount(

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLayoutEffect, useRef } from "react";
 import { NeighborhoodIcon } from "@/components/neighborhood-icons";
 import {
   BROWSE_DEMO_SELECTED,
@@ -90,14 +91,109 @@ function Chevron({ point }: { point: "left" | "right" }) {
 }
 
 function ViewAllPill({ language }: { language: Language }) {
+  if (language === "ar") {
+    return (
+      <Link
+        href={neighborhoodsPath("ar")}
+        className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
+      >
+        <span>{copy.viewAllNeighborhoods.ar}</span>
+        <Chevron point="right" />
+      </Link>
+    );
+  }
+
   return (
     <Link
-      href={neighborhoodsPath(language)}
-      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
+      href={neighborhoodsPath("en")}
+      dir={"ltr"}
+      data-view-all-cta="en"
+      className="inline-flex shrink-0 flex-row items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
+      style={{ direction: "ltr", unicodeBidi: "isolate", flexDirection: "row" }}
     >
-      <span>{copy.viewAllNeighborhoods[language]}</span>
+      <span>{copy.viewAllNeighborhoods.en}</span>
       <Chevron point="right" />
     </Link>
+  );
+}
+
+function FeaturedRow({
+  language,
+  ids,
+}: {
+  language: Language;
+  ids: readonly NeighborhoodId[];
+}) {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const en = language === "en";
+
+  useLayoutEffect(() => {
+    if (!en) return;
+    const row = rowRef.current;
+    if (!row) return;
+    row.dir = "ltr";
+    row.style.direction = "ltr";
+    row.style.unicodeBidi = "isolate";
+    row.scrollLeft = 0;
+  }, [en]);
+
+  if (en) {
+    return (
+      <div
+        ref={rowRef}
+        className="@container -mx-4 mt-4 overflow-x-auto pl-4 pr-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        role="list"
+        data-neighborhood-row=""
+        data-featured-visual="hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah"
+        dir={"ltr"}
+        style={{ direction: "ltr", unicodeBidi: "isolate" }}
+      >
+        <div
+          className="flex w-max flex-nowrap gap-2.5"
+          style={{ direction: "ltr", flexDirection: "row" }}
+        >
+          {ids.map((id) => (
+            <div
+              key={id}
+              role="listitem"
+              data-neighborhood-id={id}
+              className="w-[min(5.15rem,calc((100cqi-2.5rem)/4.45))] shrink-0"
+            >
+              <NeighborhoodCard
+                id={id}
+                language={language}
+                selected={id === BROWSE_DEMO_SELECTED}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="@container -mx-4 mt-4 overflow-x-auto ps-4 pe-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      role="list"
+      data-neighborhood-row=""
+    >
+      <div className="flex w-max flex-nowrap gap-2.5">
+        {ids.map((id) => (
+          <div
+            key={id}
+            role="listitem"
+            data-neighborhood-id={id}
+            className="w-[min(5.15rem,calc((100cqi-2.5rem)/4.45))] shrink-0"
+          >
+            <NeighborhoodCard
+              id={id}
+              language={language}
+              selected={id === BROWSE_DEMO_SELECTED}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -111,8 +207,13 @@ export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
       dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="browse-neighborhoods"
+      style={rtl ? undefined : { direction: "ltr", unicodeBidi: "isolate" }}
     >
-      <div className="flex items-start justify-between gap-3">
+      <div
+        className="flex items-start justify-between gap-3"
+        style={rtl ? undefined : { direction: "ltr" }}
+        dir={rtl ? undefined : "ltr"}
+      >
         <div className="min-w-0">
           <h2 id="browse-neighborhoods" className="text-base font-semibold">
             {copy.browseNeighborhoods[language]}
@@ -124,27 +225,7 @@ export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
         <ViewAllPill language={language} />
       </div>
 
-      <div
-        className="@container -mx-4 mt-4 overflow-x-auto ps-4 pe-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        role="list"
-        data-neighborhood-row=""
-      >
-        <div className="flex w-max flex-nowrap gap-2.5">
-          {ids.map((id) => (
-            <div
-              key={id}
-              role="listitem"
-              className="w-[min(5.15rem,calc((100cqi-2.5rem)/4.45))] shrink-0"
-            >
-              <NeighborhoodCard
-                id={id}
-                language={language}
-                selected={id === BROWSE_DEMO_SELECTED}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      <FeaturedRow language={language} ids={ids} />
     </section>
   );
 }

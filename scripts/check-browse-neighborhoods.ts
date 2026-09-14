@@ -192,8 +192,8 @@ assert(browse.includes("overflow-x-auto"), "featured row scrolls on small screen
 assert(browse.includes("flex-nowrap"), "featured row does not wrap");
 assert(browse.includes("aspect-square"), "cards match the 4×2 vibe-chip square family");
 assert(
-  browse.includes("w-[calc((100%-2.5rem)/5.35)]") && browse.includes("shrink-0"),
-  "card width is ~5.35 across so the 6th card peeks instead of 5 fitting flush",
+  browse.includes("w-[calc((100%-3.125rem)/5.4)]") && browse.includes("shrink-0"),
+  "card width leaves a 6th-card sliver instead of fitting 5 flush",
 );
 assert(browse.includes("pe-0"), "overflow edge has no end padding that would hide the peek");
 assert(!browse.includes("snap-mandatory"), "mandatory snap must not eat the next-card sliver");

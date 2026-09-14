@@ -141,7 +141,7 @@ export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
           <div
             key={id}
             role="listitem"
-            className="w-[calc((100%-2.5rem)/5.35)] shrink-0"
+            className="w-[calc((100%-3.125rem)/5.4)] shrink-0"
           >
             <NeighborhoodCard
               id={id}

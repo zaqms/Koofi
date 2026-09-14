@@ -476,6 +476,26 @@ export const NEIGHBORHOODS: Record<
       "Al Raqban",
     ],
   },
+  "al-munsiyah": {
+    id: "al-munsiyah",
+    ar: "المونسية",
+    en: "Al Munsiyah",
+    aliases: [
+      "المونسية",
+      "مونسية",
+      "المونسيه",
+      "مونسيه",
+      "munsiyah",
+      "al munsiyah",
+      "al-munsiyah",
+      "almunsiyah",
+      "Al Munsiyah",
+      "munisiyah",
+      "al munisiyah",
+      "al-munisiyah",
+      "almunisiyah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

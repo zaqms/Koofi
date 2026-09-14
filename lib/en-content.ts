@@ -202,6 +202,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-rawabi": ["al-rayyan", "al-manar", "al-fayha", "al-safa"],
   "al-fayha": ["al-safa", "al-manar", "al-rayyan", "al-rawabi"],
   "al-raqban": ["al-manar", "al-safa", "al-fayha", "al-rawabi"],
+  "al-munsiyah": ["qurtubah", "al-yarmouk", "al-hamra", "al-rawdah"],
 };
 
 type DistrictLead = {
@@ -493,6 +494,20 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     meta: "One cafe in Al Raqban on wain.lol — a Riyadh neighborhood list, with a Maps link.",
   },
+  "al-munsiyah": {
+    lead: `Al Munsiyah (المونسية) sits on Riyadh’s east belt, past Qurtubah. If you’re already in المونسية and you just want a coffee from the catalog, this is the Al Munsiyah set on wain.lol.
+
+Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other six. We don’t rank them.
+
+The count is nine because that’s how many Al Munsiyah places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from Al Munsiyah on the catalog today:`,
+    hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Munsiyah isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Munsiyah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "Nine cafes in Al Munsiyah on wain.lol — an east Riyadh list including Serb, Roasting Stages, and Eagle, each with a Maps link.",
+  },
 };
 
 const CNI_BLURBS: Record<string, string> = {
@@ -535,6 +550,15 @@ const CNI_BLURBS: Record<string, string> = {
   "chord-daily-coffee-al-nahdah": `**Chord Daily Coffee** is on the Al Nahdah list. The other Al Nahdah places on the catalog are linked below.`,
   "taco-cup-al-nahdah": `**TACO CUP** is on the wain.lol list for Al Nahdah in Riyadh. Same neighborhood page as Kapu and Ghazala, its own pin. Hop the other النهضة cards below if you want a different name.`,
   "awj-cafe-al-nahdah": `Al Nahdah has **Awj Cafe** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Nahdah places on wain.lol are linked below.`,
+  "serb-specialty-al-munsiyah": `**Serb Specialty Coffee** is on the Al Munsiyah list on wain.lol. Other المونسية names sit underneath if this one isn’t the stop.`,
+  "roasting-stages-al-munsiyah": `**Roasting Stages** is on the Al Munsiyah catalog — a roastery card on that east-Riyadh page. Catalog tags on the card: Roastery. Other المونسية names we’ve added are linked underneath.`,
+  "eagle-coffee-al-munsiyah": `This is the **Eagle Coffee** page on wain.lol for Al Munsiyah. Other Al Munsiyah names on the catalog sit below if you want to stay in that حي.`,
+  "najd-roastery-al-munsiyah": `**Najd Roastery** is on the wain.lol list for Al Munsiyah in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Serb and Eagle, its own pin. Hop the other المونسية cards below if you want a different name.`,
+  "cu-specialty-al-munsiyah": `**CU Specialty Coffee** is one of the Al Munsiyah cafes on wain.lol. If you’re already in المونسية and you want this card, you’re in the right spot. The rest of the Al Munsiyah catalog is linked below.`,
+  "45-degrees-al-munsiyah": `Al Munsiyah has **45 Degrees Coffee** on the catalog. This is the card if you want that name from the المونسية list. Siblings from the same حي sit below.`,
+  "true-side-al-munsiyah": `**TRUE SIDE** is on the Al Munsiyah list. The other Al Munsiyah places on the catalog are linked below.`,
+  "coffee-address-al-munsiyah": `**Coffee Address** is on the Al Munsiyah catalog on wain.lol. This is the المونسية pin. We don’t invent extras; the other Al Munsiyah shops we’ve added are linked below.`,
+  "das-mond-al-munsiyah": `Al Munsiyah has **Das Mond Café** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Munsiyah places on wain.lol are linked below.`,
 };
 
 const CAFE_OPENERS = [

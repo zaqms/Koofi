@@ -136,6 +136,7 @@ for (const district of [
   "al-rawabi",
   "al-fayha",
   "al-raqban",
+  "al-munsiyah",
 ] as const) {
   const body = districtEnMarkdown(district);
   const lead = body.split("## What’s here")[0] ?? "";

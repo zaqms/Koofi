@@ -191,10 +191,14 @@ const browse = readRepo("components/browse-neighborhoods.tsx");
 assert(browse.includes("overflow-x-auto"), "featured row scrolls on small screens");
 assert(browse.includes("flex-nowrap"), "featured row does not wrap");
 assert(browse.includes("aspect-square"), "cards match the 4×2 vibe-chip square family");
+assert(browse.includes("5.15rem"), "cards stay the 4×2 vibe-chip tile width");
 assert(
-  browse.includes("w-[calc((100%-3.125rem)/5.4)]") && browse.includes("shrink-0"),
-  "card width leaves a 6th-card sliver instead of fitting 5 flush",
+  browse.includes("min(5.15rem,calc((100cqi-2.5rem)/4.45))") &&
+    browse.includes("@container"),
+  "narrow phones keep a visible next-card sliver without growing past the chip tile",
 );
+assert(browse.includes("w-max"), "inner track is max-content so six tiles overflow the phone row");
+assert(browse.includes("shrink-0"), "featured tiles do not shrink to fit the viewport");
 assert(browse.includes("pe-0"), "overflow edge has no end padding that would hide the peek");
 assert(!browse.includes("snap-mandatory"), "mandatory snap must not eat the next-card sliver");
 assert(!browse.includes("aspect-[4/5]"), "cards are not the oversized 4/5 tiles");

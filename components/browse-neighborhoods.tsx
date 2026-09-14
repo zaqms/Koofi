@@ -133,23 +133,25 @@ export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
       </div>
 
       <div
-        className="-mx-4 mt-4 flex flex-nowrap gap-2.5 overflow-x-auto ps-4 pe-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="@container -mx-4 mt-4 overflow-x-auto ps-4 pe-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         role="list"
         data-neighborhood-row=""
       >
-        {ids.map((id) => (
-          <div
-            key={id}
-            role="listitem"
-            className="w-[calc((100%-3.125rem)/5.4)] shrink-0"
-          >
-            <NeighborhoodCard
-              id={id}
-              language={language}
-              selected={id === BROWSE_DEMO_SELECTED}
-            />
-          </div>
-        ))}
+        <div className="flex w-max flex-nowrap gap-2.5">
+          {ids.map((id) => (
+            <div
+              key={id}
+              role="listitem"
+              className="w-[min(5.15rem,calc((100cqi-2.5rem)/4.45))] shrink-0"
+            >
+              <NeighborhoodCard
+                id={id}
+                language={language}
+                selected={id === BROWSE_DEMO_SELECTED}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

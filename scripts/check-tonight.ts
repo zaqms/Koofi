@@ -135,12 +135,12 @@ const woodsEn = inviteShareText({
 });
 assert(
   woodsAr ===
-    `وين؟ أنا بـ ${shopDisplayName(woods, "ar")}\n\nhttps://wain.lol/c/woods-olaya?from=tonight`,
+    `وين؟ أنا بـ ${shopDisplayName(woods, "ar")}\n\nhttps://wain.lol/c/woods-olaya?from=tonight&utm_source=invite&utm_medium=share`,
   `AR invite prefill:\n${woodsAr}`,
 );
 assert(
   woodsEn ===
-    `wain? I'm at ${shopDisplayName(woods, "en")}\n\nhttps://wain.lol/en/c/woods-olaya?from=tonight`,
+    `wain? I'm at ${shopDisplayName(woods, "en")}\n\nhttps://wain.lol/en/c/woods-olaya?from=tonight&utm_source=invite&utm_medium=share`,
   `EN invite prefill:\n${woodsEn}`,
 );
 assert(!woodsAr.includes("تعال"), "AR invite has no تعال");
@@ -156,7 +156,13 @@ const tonightText = tonightShareText({
 });
 assert(tonightText.includes("جو هادي"), "tonight share keeps the one-liner");
 assert(tonightText.includes("/c/woods-olaya?from=tonight"), "tonight deep-links /c/{id}");
-assert(tonightCardPath("cafu-olaya", "ar") === "/c/cafu-olaya?from=tonight", "thin card deep link");
+assert(tonightText.includes("utm_source=invite"), "tonight invite utm_source is invite");
+assert(tonightText.includes("utm_medium=share"), "tonight invite must carry utm_medium with source");
+assert(
+  tonightCardPath("cafu-olaya", "ar") ===
+    "/c/cafu-olaya?from=tonight&utm_source=invite&utm_medium=share",
+  "thin card deep link",
+);
 assert(publicCardUrl("cafu-olaya", "ar") === "https://wain.lol/c/cafu-olaya", "public card URL unchanged");
 
 assert(
@@ -346,6 +352,10 @@ assert(!presence.includes("ستوريز"), "no Stories on the bar");
 
 const listingShare = readFileSync("components/share-listing-button.tsx", "utf8");
 assert(listingShare.includes("listingPacketForShop"), "icon share is listing packet");
+assert(
+  listingShare.includes("source"),
+  "listing packet gets card vs list utm_source from the button",
+);
 assert(listingShare.includes("sharePackPacket"), "icon share uses Web Share / copy");
 assert(!listingShare.includes("tonightImagePath"), "listing share is not the وين؟ mint");
 assert(!listingShare.includes("inviteShareText"), "listing share is not the وين؟ invite");

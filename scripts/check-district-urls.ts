@@ -900,7 +900,6 @@ assert(
 const markab = getShop("markab-king-fahd");
 assert(markab, "markab-king-fahd is a distinct catalog shop");
 assert(markab.neighborhood === "king-fahd", "Markab is not folded into olaya");
-assert(markab.neighborhood !== "olaya", "Markab address street is not the Olaya حي");
 for (const ask of ["الملك فهد", "حي الملك فهد", "king fahd", "King Fahd", "king-fahd"]) {
   assert(
     parseIntent(ask).neighborhoods.includes("king-fahd"),

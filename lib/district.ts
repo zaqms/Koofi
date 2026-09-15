@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { listDirectoryShops } from "./catalog";
 import { copy } from "./copy";
 import {
   COFFEE_SHOPS_CATEGORY,
   categoryDistrictHeading,
   type DirectoryCategoryId,
 } from "./directory-category";
-import { directoryNeighborhoods } from "./directory";
 import { districtArMeta, districtArTitle } from "./ar-content";
 import { districtEnMeta, districtEnTitle } from "./en-content";
 import { pageAlternates } from "./locale";
@@ -17,7 +15,7 @@ import {
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "./product";
-import type { Language, NeighborhoodId } from "./types";
+import { NEIGHBORHOOD_IDS, type Language, type NeighborhoodId } from "./types";
 
 export function resolveDistrictSlug(slug: string): NeighborhoodId | null {
   return isNeighborhoodId(slug) ? slug : null;
@@ -27,7 +25,7 @@ export function categoryDistrictStaticParams(): {
   category: DirectoryCategoryId;
   slug: NeighborhoodId;
 }[] {
-  return directoryNeighborhoods(listDirectoryShops()).map((slug) => ({
+  return NEIGHBORHOOD_IDS.map((slug) => ({
     category: COFFEE_SHOPS_CATEGORY,
     slug,
   }));

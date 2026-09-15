@@ -606,6 +606,9 @@ export function districtArMeta(district: NeighborhoodId): string {
   const name = neighborhoodLabel(district, "ar");
   const count = shopsInDistrict(district).length;
   const word = countWordAr(count);
+  if (count === 0) {
+    return `ما فيه قهاوي بـ${name} على wain.lol للحين — قائمة حي بالرياض.`;
+  }
   if (count === 1) {
     return `قهوة وحدة بـ${name} على wain.lol — قائمة حي بالرياض، مع رابط قوقل ماب.`;
   }
@@ -621,13 +624,20 @@ export function districtArMarkdown(district: NeighborhoodId): string {
   const count = shops.length;
   const copy = DISTRICT_COPY_AR[district] ?? defaultDistrictCopy(district);
   const hereDefault =
-    count === 1
-      ? `فيه قهوة **${countWordAr(count)}** من ${name} بالقائمة الحين:`
-      : `فيه **${countWordAr(count)}** قهاوي من ${name} بالقائمة الحين:`;
-  const hereIntro = fillCount(copy.hereIntro ?? hereDefault, count);
+    count === 0
+      ? `ما فيه قهاوي من ${name} بالكتالوج للحين.`
+      : count === 1
+        ? `فيه قهوة **${countWordAr(count)}** من ${name} بالقائمة الحين:`
+        : `فيه **${countWordAr(count)}** قهاوي من ${name} بالقائمة الحين:`;
+  const hereIntro = fillCount(
+    count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
+    count,
+  );
   const hereOutro =
-    copy.hereOutro ??
-    `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`;
+    count === 0
+      ? ""
+      : copy.hereOutro ??
+        `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`;
   const nearbyIntro = copy.nearbyIntro ?? "";
   const nearby = nearbyListMarkdown(district);
 

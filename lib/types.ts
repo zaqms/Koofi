@@ -36,6 +36,15 @@ export const NEIGHBORHOOD_IDS = [
   "an-nada",
   "diplomatic-quarter",
   "king-fahd",
+  "al-takhassusi",
+  "al-aqiq",
+  "al-ghadeer",
+  "al-arid",
+  "al-qirawan",
+  "al-wadi",
+  "al-mohammadiyah",
+  "al-muruj",
+  "al-malaz",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 

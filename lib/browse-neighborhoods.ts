@@ -1,38 +1,43 @@
 import { directoryNeighborhoods, type DirectoryShop } from "./directory";
+import { haversineKm } from "./distance";
 import { NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
 import { districtPath, neighborhoodsPath, PRODUCT_NAME } from "./product";
-import type { Language, NeighborhoodId } from "./types";
+import type { City, Language, NeighborhoodId, Pin } from "./types";
+
+export const DEFAULT_BROWSE_CITY: City = "riyadh";
+
+export const CITY_LABEL: Record<City, Record<Language, string>> = {
+  riyadh: { ar: "الرياض", en: "Riyadh" },
+};
 
 /**
- * Locked Riyadh featured row (Amjad / Ajz refs).
- * EN and AR are separate lists — do not share one DOM and hope dir flips it.
- * EN LTR visual: Hittin (left, selected) → Malqa → Nakheel → Yasmin → Olaya → Sulaymaniyah.
- * AR RTL DOM: Hittin first so dir=rtl puts حطين on the right; peek on the left.
- * Dynamic-by-city later.
+ * City-keyed featured strip. Riyadh is live; add a Jeddah key when that
+ * catalog lands — do not hardcode Jeddah names until then.
  */
-export const RIYADH_FEATURED_NEIGHBORHOODS = [
-  "hittin",
-  "al-malqa",
-  "al-nakheel",
-  "al-yasmin",
-  "olaya",
-  "sulimaniyah",
-] as const satisfies readonly NeighborhoodId[];
+export const FEATURED_NEIGHBORHOODS_BY_CITY = {
+  riyadh: [
+    "hittin",
+    "al-malqa",
+    "al-nakheel",
+    "al-yasmin",
+    "olaya",
+    "sulimaniyah",
+  ],
+} as const satisfies Record<City, readonly NeighborhoodId[]>;
 
-/** EN `/en` LTR paint order. First visible full card must be Hittin. */
-export const EN_FEATURED_LTR = RIYADH_FEATURED_NEIGHBORHOODS;
-
-/**
- * AR `/` RTL DOM. First in this list is the RTL start (rightmost).
- * Do not reverse this for English.
- */
-export const AR_FEATURED_RTL_DOM = RIYADH_FEATURED_NEIGHBORHOODS;
+export const RIYADH_FEATURED_NEIGHBORHOODS =
+  FEATURED_NEIGHBORHOODS_BY_CITY.riyadh;
 
 export type FeaturedNeighborhoodId =
   (typeof RIYADH_FEATURED_NEIGHBORHOODS)[number];
 
-/** Home carousel demo selected state from the refs. */
-export const BROWSE_DEMO_SELECTED: FeaturedNeighborhoodId = "hittin";
+export type NeighborhoodSort = "nearby" | "popular" | "az";
+
+export const NEIGHBORHOOD_SORTS: readonly NeighborhoodSort[] = [
+  "nearby",
+  "popular",
+  "az",
+];
 
 /**
  * EN labels for this section. Catalog `en` stays shorter
@@ -96,7 +101,8 @@ export type NeighborhoodRow = {
   href: string;
   label: string;
   cafeCount: number;
-  icon: NeighborhoodIconKind;
+  /** Mean of official shop pins in this حي. Null when none are real. */
+  centroid: Pin | null;
 };
 
 export function browseNeighborhoodLabel(
@@ -114,9 +120,10 @@ export function neighborhoodIconKind(id: NeighborhoodId): NeighborhoodIconKind {
 }
 
 export function featuredNeighborhoodIds(
-  language: Language,
-): readonly FeaturedNeighborhoodId[] {
-  return language === "en" ? EN_FEATURED_LTR : AR_FEATURED_RTL_DOM;
+  _language: Language,
+  city: City = DEFAULT_BROWSE_CITY,
+): readonly NeighborhoodId[] {
+  return FEATURED_NEIGHBORHOODS_BY_CITY[city];
 }
 
 export function neighborhoodCafeCount(
@@ -136,22 +143,82 @@ export function neighborhoodCafeCountLabel(
   return count === 1 ? "1 café" : `${count} cafés`;
 }
 
+export function neighborhoodCentroidFromShops(
+  id: NeighborhoodId,
+  shops: readonly Pick<DirectoryShop, "neighborhood" | "lat" | "lng">[],
+): Pin | null {
+  let lat = 0;
+  let lng = 0;
+  let n = 0;
+  for (const shop of shops) {
+    if (shop.neighborhood !== id) continue;
+    if (shop.lat == null || shop.lng == null) continue;
+    lat += shop.lat;
+    lng += shop.lng;
+    n += 1;
+  }
+  return n > 0 ? { lat: lat / n, lng: lng / n } : null;
+}
+
+export function neighborhoodDistanceKm(
+  row: Pick<NeighborhoodRow, "centroid">,
+  origin: Pin | null,
+): number | null {
+  if (!origin || !row.centroid) return null;
+  const km = haversineKm(origin, row.centroid);
+  return Number.isFinite(km) ? km : null;
+}
+
 export function listNeighborhoodRows(
   language: Language,
   shops: readonly DirectoryShop[],
+  city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
+  void city;
   return directoryNeighborhoods([...shops])
     .map((id) => ({
       id,
       href: districtPath(id, language),
       label: browseNeighborhoodLabel(id, language),
       cafeCount: neighborhoodCafeCount(id, shops),
-      icon: neighborhoodIconKind(id),
+      centroid: neighborhoodCentroidFromShops(id, shops),
     }))
-    .sort((a, b) => {
-      if (b.cafeCount !== a.cafeCount) return b.cafeCount - a.cafeCount;
-      return a.label.localeCompare(b.label, language === "ar" ? "ar" : "en");
+    .sort((a, b) => comparePopular(a, b, language));
+}
+
+function comparePopular(
+  a: NeighborhoodRow,
+  b: NeighborhoodRow,
+  language: Language,
+): number {
+  if (b.cafeCount !== a.cafeCount) return b.cafeCount - a.cafeCount;
+  return a.label.localeCompare(b.label, language === "ar" ? "ar" : "en");
+}
+
+export function sortNeighborhoodRows(
+  rows: readonly NeighborhoodRow[],
+  sort: NeighborhoodSort,
+  origin: Pin | null,
+  language: Language,
+): NeighborhoodRow[] {
+  const copy = [...rows];
+  if (sort === "az") {
+    return copy.sort((a, b) =>
+      a.label.localeCompare(b.label, language === "ar" ? "ar" : "en"),
+    );
+  }
+  if (sort === "nearby" && origin) {
+    return copy.sort((a, b) => {
+      const da = neighborhoodDistanceKm(a, origin);
+      const db = neighborhoodDistanceKm(b, origin);
+      if (da == null && db == null) return comparePopular(a, b, language);
+      if (da == null) return 1;
+      if (db == null) return -1;
+      if (da !== db) return da - db;
+      return comparePopular(a, b, language);
     });
+  }
+  return copy.sort((a, b) => comparePopular(a, b, language));
 }
 
 export function filterNeighborhoodRows(
@@ -175,10 +242,19 @@ export function filterNeighborhoodRows(
   });
 }
 
-export function neighborhoodsIndexTitle(language: Language): string {
-  return language === "ar"
-    ? `أحياء الرياض · ${PRODUCT_NAME}`
-    : `Riyadh Neighborhoods · ${PRODUCT_NAME}`;
+export function neighborhoodsIndexHeading(
+  language: Language,
+  city: City = DEFAULT_BROWSE_CITY,
+): string {
+  const cityName = CITY_LABEL[city][language];
+  return language === "ar" ? `أحياء ${cityName}` : `${cityName} Neighborhoods`;
+}
+
+export function neighborhoodsIndexTitle(
+  language: Language,
+  city: City = DEFAULT_BROWSE_CITY,
+): string {
+  return `${neighborhoodsIndexHeading(language, city)} · ${PRODUCT_NAME}`;
 }
 
 export function neighborhoodsIndexDescription(language: Language): string {

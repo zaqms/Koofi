@@ -1,35 +1,82 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DocumentLocale } from "@/components/document-locale";
-import { NeighborhoodIcon } from "@/components/neighborhood-icons";
 import {
+  DEFAULT_BROWSE_CITY,
+  NEIGHBORHOOD_SORTS,
   filterNeighborhoodRows,
   neighborhoodCafeCountLabel,
+  neighborhoodDistanceKm,
+  neighborhoodsIndexHeading,
+  sortNeighborhoodRows,
   type NeighborhoodRow,
+  type NeighborhoodSort,
 } from "@/lib/browse-neighborhoods";
 import { copy } from "@/lib/copy";
+import { formatDistanceKm } from "@/lib/distance";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { homePath, neighborhoodsPath } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
-import type { Language } from "@/lib/types";
+import type { City, Language, Pin } from "@/lib/types";
+import {
+  requestVisitorLocation,
+  usePeekVisitorLocation,
+} from "@/lib/visitor-location";
 
 type NeighborhoodsPageViewProps = {
   language: Language;
   rows: NeighborhoodRow[];
+  city?: City;
 };
+
+const SORT_COPY: Record<NeighborhoodSort, { ar: string; en: string }> = {
+  nearby: copy.neighborhoodsSortNearby,
+  popular: copy.neighborhoodsSortPopular,
+  az: copy.neighborhoodsSortAz,
+};
+
+function originFromVisitor(
+  visitor: ReturnType<typeof usePeekVisitorLocation>,
+): Pin | null {
+  if (visitor.status !== "ready") return null;
+  return { lat: visitor.lat, lng: visitor.lng };
+}
 
 export function NeighborhoodsPageView({
   language,
   rows,
+  city = DEFAULT_BROWSE_CITY,
 }: NeighborhoodsPageViewProps) {
   const other: Language = language === "ar" ? "en" : "ar";
+  const visitor = usePeekVisitorLocation();
+  const origin = originFromVisitor(visitor);
+  const userPickedSort = useRef(false);
   const [query, setQuery] = useState("");
-  const visible = useMemo(
+  const [sort, setSort] = useState<NeighborhoodSort>("popular");
+
+  useEffect(() => {
+    if (userPickedSort.current) return;
+    if (visitor.status === "ready") setSort("nearby");
+  }, [visitor.status]);
+
+  const filtered = useMemo(
     () => filterNeighborhoodRows(rows, query),
     [rows, query],
   );
+  const visible = useMemo(
+    () => sortNeighborhoodRows(filtered, sort, origin, language),
+    [filtered, sort, origin, language],
+  );
+
+  function pickSort(next: NeighborhoodSort) {
+    userPickedSort.current = true;
+    setSort(next);
+    if (next === "nearby" && visitor.status !== "ready") {
+      void requestVisitorLocation({ retry: true });
+    }
+  }
 
   return (
     <main
@@ -63,7 +110,7 @@ export function NeighborhoodsPageView({
         </Link>
         <div className="min-w-0 flex-1 pt-0.5 text-center">
           <h1 className="text-[1.15rem] font-semibold leading-7 text-ink">
-            {copy.neighborhoodsIndex[language]}
+            {neighborhoodsIndexHeading(language, city)}
           </h1>
           <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
             {copy.neighborhoodsIndexHint[language]}
@@ -107,61 +154,96 @@ export function NeighborhoodsPageView({
         />
       </div>
 
+      <div
+        className="mt-3 flex flex-wrap gap-2"
+        role="tablist"
+        aria-label={language === "ar" ? "ترتيب الأحياء" : "Sort neighborhoods"}
+        data-neighborhood-sorts=""
+      >
+        {NEIGHBORHOOD_SORTS.map((id) => {
+          const selected = sort === id;
+          return (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              data-sort={id}
+              onClick={() => pickSort(id)}
+              className={
+                selected
+                  ? "h-8 rounded-full bg-ink px-3 text-[13px] text-foam"
+                  : "h-8 rounded-full border border-line bg-foam px-3 text-[13px] text-ink"
+              }
+            >
+              {SORT_COPY[id][language]}
+            </button>
+          );
+        })}
+      </div>
+
       {visible.length === 0 ? (
         <p className="mt-8 text-center text-sm text-ink-soft">
           {copy.neighborhoodsEmpty[language]}
         </p>
       ) : (
-        <ul className="mt-3">
-          {visible.map((row) => (
-            <li key={row.id}>
-              <Link
-                href={row.href}
-                onClick={() => {
-                  const hood = NEIGHBORHOODS[row.id];
-                  trackEvent(
-                    "district_select",
-                    {
-                      district_id: hood.id,
-                      district_ar: hood.ar,
-                      district_en: hood.en,
-                      locale: language,
-                    },
-                    { dedupeKey: `district_select:${hood.id}` },
-                  );
-                }}
-                className="flex items-center gap-3 border-b border-line/80 py-3.5 text-ink"
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-line bg-foam text-ink-soft">
-                  <NeighborhoodIcon kind={row.icon} className="size-[1.35rem]" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[15px] font-medium leading-5">
-                    {row.label}
-                  </span>
-                  <span className="mt-0.5 block text-[13px] leading-5 text-ink-soft">
-                    {neighborhoodCafeCountLabel(row.cafeCount, language)}
-                  </span>
-                </span>
-                <svg
-                  aria-hidden
-                  viewBox="0 0 16 16"
-                  className="size-3.5 shrink-0 text-ink-soft"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.55"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+        <ul className="mt-2" data-neighborhood-list="">
+          {visible.map((row) => {
+            const km = neighborhoodDistanceKm(row, origin);
+            const distance = km == null ? null : formatDistanceKm(km, language);
+            return (
+              <li key={row.id}>
+                <Link
+                  href={row.href}
+                  onClick={() => {
+                    const hood = NEIGHBORHOODS[row.id];
+                    trackEvent(
+                      "district_select",
+                      {
+                        district_id: hood.id,
+                        district_ar: hood.ar,
+                        district_en: hood.en,
+                        locale: language,
+                      },
+                      { dedupeKey: `district_select:${hood.id}` },
+                    );
+                  }}
+                  className="flex items-center gap-3 border-b border-line py-3.5 text-ink"
                 >
-                  {language === "ar" ? (
-                    <path d="M10 3.2 4.8 8 10 12.8" />
-                  ) : (
-                    <path d="M6 3.2 11.2 8 6 12.8" />
-                  )}
-                </svg>
-              </Link>
-            </li>
-          ))}
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[15px] font-medium leading-5">
+                      {row.label}
+                    </span>
+                    <span className="mt-0.5 block text-[13px] leading-5 text-ink-soft">
+                      {neighborhoodCafeCountLabel(row.cafeCount, language)}
+                      {distance ? (
+                        <>
+                          {" · "}
+                          <span dir="ltr">{distance}</span>
+                        </>
+                      ) : null}
+                    </span>
+                  </span>
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 16 16"
+                    className="size-3.5 shrink-0 text-ink-soft"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.55"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    {language === "ar" ? (
+                      <path d="M10 3.2 4.8 8 10 12.8" />
+                    ) : (
+                      <path d="M6 3.2 11.2 8 6 12.8" />
+                    )}
+                  </svg>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </main>

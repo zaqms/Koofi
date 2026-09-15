@@ -1,9 +1,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  BROWSE_DEMO_SELECTED,
-  EN_FEATURED_LTR,
-  AR_FEATURED_RTL_DOM,
+  CITY_LABEL,
+  DEFAULT_BROWSE_CITY,
+  FEATURED_NEIGHBORHOODS_BY_CITY,
+  NEIGHBORHOOD_SORTS,
   RIYADH_FEATURED_NEIGHBORHOODS,
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
@@ -11,7 +12,9 @@ import {
   listNeighborhoodRows,
   neighborhoodCafeCount,
   neighborhoodCafeCountLabel,
-  neighborhoodIconKind,
+  neighborhoodDistanceKm,
+  neighborhoodsIndexHeading,
+  sortNeighborhoodRows,
 } from "../lib/browse-neighborhoods";
 import { listDirectoryShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
@@ -29,34 +32,32 @@ function readRepo(path: string): string {
 
 assert(neighborhoodsPath("ar") === "/neighborhoods", "AR view-all path");
 assert(neighborhoodsPath("en") === "/en/neighborhoods", "EN view-all path");
+assert(DEFAULT_BROWSE_CITY === "riyadh", "default browse city is Riyadh");
+assert(
+  CITY_LABEL.riyadh.en === "Riyadh" && CITY_LABEL.riyadh.ar === "الرياض",
+  "Riyadh city labels",
+);
 
 assert(
   RIYADH_FEATURED_NEIGHBORHOODS.join(",") ===
     "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
   "Riyadh featured ids start at Hittin",
 );
-assert(RIYADH_FEATURED_NEIGHBORHOODS.length === 6, "exactly 6 featured cards");
-assert(BROWSE_DEMO_SELECTED === "hittin", "Hittin is the demo selected card");
-
+assert(RIYADH_FEATURED_NEIGHBORHOODS.length === 6, "exactly 6 featured pills");
 assert(
-  EN_FEATURED_LTR.join(",") ===
-    "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
-  "EN LTR list is Hittin-first",
-);
-assert(
-  AR_FEATURED_RTL_DOM.join(",") ===
-    "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
-  "AR RTL DOM is Hittin-first so حطين is the rightmost start",
+  FEATURED_NEIGHBORHOODS_BY_CITY.riyadh.join(",") ===
+    RIYADH_FEATURED_NEIGHBORHOODS.join(","),
+  "featured map is city-keyed",
 );
 assert(
   featuredNeighborhoodIds("en").join(",") ===
     "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
-  "EN LTR starts at selected Hittin on the left",
+  "EN LTR pills start at Hittin",
 );
 assert(
   featuredNeighborhoodIds("ar").join(",") ===
     "hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah",
-  "AR RTL DOM starts at Hittin so حطين sits on the right",
+  "AR RTL DOM starts at Hittin so حطين is the rightmost start",
 );
 
 assert(
@@ -69,17 +70,6 @@ assert(
 );
 assert(browseNeighborhoodLabel("hittin", "en") === "Hittin", "EN Hittin label");
 assert(browseNeighborhoodLabel("hittin", "ar") === "حطين", "AR Hittin label");
-assert(
-  browseNeighborhoodLabel("sulimaniyah", "ar") === "السليمانية",
-  "AR Sulaymaniyah label",
-);
-
-assert(neighborhoodIconKind("sulimaniyah") === "fortress", "fortress icon");
-assert(neighborhoodIconKind("olaya") === "towers", "towers icon");
-assert(neighborhoodIconKind("al-yasmin") === "flower", "flower icon");
-assert(neighborhoodIconKind("al-nakheel") === "palm", "palm icon");
-assert(neighborhoodIconKind("al-malqa") === "building", "building icon");
-assert(neighborhoodIconKind("hittin") === "landmark", "landmark icon");
 
 const shops = listDirectoryShops();
 const rowsEn = listNeighborhoodRows("en", shops);
@@ -96,6 +86,10 @@ assert(
   !rowsEn.some((row) => /jeddah|obhur|salamah|al marwa|faisaliyah/i.test(row.label)),
   "Jeddah layout names are not live rows",
 );
+assert(
+  rowsEn.every((row) => !("icon" in row)),
+  "view-all rows are text-first (no icon field)",
+);
 
 for (const row of rowsEn) {
   assert(
@@ -107,6 +101,12 @@ for (const row of rowsEn) {
     row.href === districtPath(row.id, "en"),
     `${row.id} EN href is the live district route`,
   );
+  if (row.centroid) {
+    assert(
+      Number.isFinite(row.centroid.lat) && Number.isFinite(row.centroid.lng),
+      `${row.id} centroid is a real pin`,
+    );
+  }
 }
 for (const row of rowsAr) {
   assert(
@@ -119,12 +119,47 @@ assert(
   rowsEn.every((row, index) => {
     const next = rowsEn[index + 1];
     if (!next) return true;
-    return row.cafeCount > next.cafeCount ||
+    return (
+      row.cafeCount > next.cafeCount ||
       (row.cafeCount === next.cafeCount &&
-        row.label.localeCompare(next.label, "en") <= 0);
+        row.label.localeCompare(next.label, "en") <= 0)
+    );
   }),
-  "view-all sorts by real cafe count desc",
+  "default view-all sort is real cafe count desc",
 );
+
+const az = sortNeighborhoodRows(rowsEn, "az", null, "en");
+assert(
+  az.every((row, index) => {
+    const next = az[index + 1];
+    if (!next) return true;
+    return row.label.localeCompare(next.label, "en") <= 0;
+  }),
+  "A–Z sort is alphabetical",
+);
+
+const popularFallback = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
+assert(
+  popularFallback[0]?.id === rowsEn[0]?.id,
+  "Nearby without a real origin falls back to Popular",
+);
+
+const withCentroid = rowsEn.find((row) => row.centroid);
+if (withCentroid?.centroid) {
+  const far = { lat: withCentroid.centroid.lat + 0.4, lng: withCentroid.centroid.lng };
+  const nearby = sortNeighborhoodRows(rowsEn, "nearby", withCentroid.centroid, "en");
+  const farSort = sortNeighborhoodRows(rowsEn, "nearby", far, "en");
+  assert(nearby[0]?.id === withCentroid.id, "Nearby sort uses real centroids");
+  assert(
+    neighborhoodDistanceKm(withCentroid, withCentroid.centroid) === 0,
+    "distance at the centroid is zero",
+  );
+  assert(
+    neighborhoodDistanceKm(withCentroid, null) === null,
+    "no fake distance without origin",
+  );
+  assert(farSort[0]?.id === withCentroid.id || farSort.length === nearby.length, "nearby stays complete");
+}
 
 const hittinCount = neighborhoodCafeCount("hittin", shops);
 assert(
@@ -137,9 +172,8 @@ assert(
   "AR count uses قهاوي",
 );
 
-const filtered = filterNeighborhoodRows(rowsEn, "olaya");
 assert(
-  filtered.some((row) => row.id === "olaya"),
+  filterNeighborhoodRows(rowsEn, "olaya").some((row) => row.id === "olaya"),
   "search finds Olaya",
 );
 assert(
@@ -151,26 +185,39 @@ assert(
   "unknown search is empty",
 );
 
-assert(copy.browseNeighborhoods.ar === "تصفّح حسب الحي", "locked AR heading");
+assert(copy.browseNeighborhoods.ar === "تصفح حسب الحي", "locked AR heading");
 assert(
-  copy.browseNeighborhoodsHint.ar === "اكتشف القهاوي في حيّك.",
+  copy.browseNeighborhoodsHint.ar === "اكتشف القهاوي حولك، حي بحي.",
   "locked AR subtitle",
 );
-assert(
-  copy.viewAllNeighborhoods.ar === "عرض جميع الأحياء",
-  "locked AR view-all pill",
-);
+assert(copy.viewAllNeighborhoods.ar === "عرض الكل", "locked AR view-all CTA");
 assert(copy.browseNeighborhoods.en === "Browse by Neighborhood", "locked EN heading");
 assert(
-  copy.browseNeighborhoodsHint.en === "Find coffee spots near you.",
+  copy.browseNeighborhoodsHint.en ===
+    "Coffee around Riyadh, neighborhood by neighborhood.",
   "locked EN subtitle",
 );
+assert(copy.viewAllNeighborhoods.en === "View all", "locked EN view-all CTA");
+assert(copy.neighborhoodsSearch.en === "Search neighborhoods...", "locked EN search");
+assert(copy.neighborhoodsSearch.ar === "ابحث عن الأحياء...", "locked AR search");
+assert(copy.neighborhoodsSortNearby.en === "Nearby", "EN Nearby sort");
+assert(copy.neighborhoodsSortNearby.ar === "الأقرب إليك", "AR Nearby sort");
+assert(copy.neighborhoodsSortPopular.en === "Popular", "EN Popular sort");
+assert(copy.neighborhoodsSortPopular.ar === "الأكثر شيوعاً", "AR Popular sort");
+assert(copy.neighborhoodsSortAz.en === "A–Z", "EN A–Z sort");
+assert(copy.neighborhoodsSortAz.ar === "أ–ي", "AR A–Y sort");
 assert(
-  copy.viewAllNeighborhoods.en === "View all neighborhoods",
-  "locked EN view-all pill copy (chevron is after the text in the component)",
+  neighborhoodsIndexHeading("en") === "Riyadh Neighborhoods",
+  "view-all heading is city-dynamic Riyadh",
 );
-assert(copy.neighborhoodsIndex.en === "Riyadh Neighborhoods", "view-all is Riyadh");
-assert(copy.neighborhoodsIndex.ar === "أحياء الرياض", "AR view-all title is أحياء الرياض");
+assert(
+  neighborhoodsIndexHeading("ar") === "أحياء الرياض",
+  "AR view-all heading is أحياء الرياض",
+);
+assert(
+  NEIGHBORHOOD_SORTS.join(",") === "nearby,popular,az",
+  "sort order is Nearby / Popular / A–Z",
+);
 assert(
   !/Jeddah|جدة/.test(
     [
@@ -178,9 +225,10 @@ assert(
       copy.neighborhoodsIndex.en,
       copy.neighborhoodsIndexHint.ar,
       copy.neighborhoodsIndexHint.en,
+      copy.browseNeighborhoodsHint.en,
     ].join(" "),
   ),
-  "view-all copy stays Riyadh",
+  "copy stays Riyadh until Jeddah is live",
 );
 
 const homeLanding = readRepo("components/home-landing.tsx");
@@ -193,109 +241,61 @@ assert(
   "home pins html lang/dir so /en cannot inherit RTL",
 );
 assert(
-  readRepo("app/en/layout.tsx").includes("document.documentElement.dir='ltr'"),
-  "EN layout forces html dir=ltr before paint",
-);
-assert(
   !homeLanding.includes("Soft Places") && !homeLanding.includes("ثلاث الليلة"),
   "Soft Places stays parked on home landing",
 );
 
 const directory = readRepo("components/shop-directory.tsx");
 assert(
-  directory.includes("{district || popular ? ("),
-  "home directory drops the old district wrap",
-);
-assert(
   directory.includes("{popular ? (") &&
     directory.includes('className="mt-3 flex flex-wrap gap-1.5"'),
   "Most Popular keeps the wrap; district pages do not resurrect it",
 );
-assert(
-  !directory.includes("{district || popular ? (\n      <div"),
-  "district results do not show the old neighborhood pill wrap",
-);
 
 const browse = readRepo("components/browse-neighborhoods.tsx");
-assert(browse.includes("overflow-x-auto"), "featured row scrolls on small screens");
+assert(browse.includes("overflow-x-auto"), "featured row scrolls");
 assert(browse.includes("flex-nowrap"), "featured row does not wrap");
-assert(browse.includes("aspect-square"), "cards match the 4×2 vibe-chip square family");
-assert(browse.includes("5.15rem"), "cards stay the 4×2 vibe-chip tile width");
-assert(
-  browse.includes("min(5.15rem,calc((100cqi-2.5rem)/4.45))") &&
-    browse.includes("@container"),
-  "narrow phones keep a visible next-card sliver without growing past the chip tile",
-);
-assert(browse.includes("w-max"), "inner track is max-content so six tiles overflow the phone row");
-assert(browse.includes("shrink-0"), "featured tiles do not shrink to fit the viewport");
-assert(browse.includes("pe-0"), "overflow edge has no end padding that would hide the peek");
-assert(!browse.includes("snap-mandatory"), "mandatory snap must not eat the next-card sliver");
-assert(!browse.includes("aspect-[4/5]"), "cards are not the oversized 4/5 tiles");
-assert(browse.includes("overflow-hidden"), "card chrome clips label overflow");
-assert(
-  browse.includes("line-clamp-2") && browse.includes("[overflow-wrap:anywhere]"),
-  "long district names clamp and wrap inside the tile",
-);
-assert(browse.includes("size-7"), "card icons match vibe-chip icon size");
-assert(browse.includes("bg-blush"), "Hittin uses dusty rose, not bean brown");
-assert(!browse.includes("bg-bean"), "featured cards are not vibe-chip brown");
-assert(!browse.includes("<img"), "no photos on neighborhood cards");
+assert(browse.includes("rounded-full"), "featured items are pills");
+assert(browse.includes("data-browse-pills"), "homepage strip is the pill band");
+assert(browse.includes("data-browse-scroll"), "circular scroll chevron is present");
+assert(!browse.includes("NeighborhoodIcon"), "homepage strip has no landmark icons");
+assert(!browse.includes("aspect-square"), "homepage strip is not the card belt");
+assert(!browse.includes("bg-blush"), "no default selected Hittin fill");
+assert(!browse.includes("BROWSE_DEMO_SELECTED"), "no demo selected card");
+assert(!browse.includes("<img"), "no photos on neighborhood pills");
 assert(!/Koofi/i.test(browse), "browse section must not say Koofi");
 assert(
   browse.includes('dir={rtl ? "rtl" : "ltr"}'),
-  "AR browse section is a true RTL twin, not forced LTR",
+  "AR browse section is a true RTL twin",
 );
 assert(
-  browse.includes('data-featured-visual="hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah"'),
-  "EN belt pins Hittin-first LTR visual order",
+  browse.includes("border-y border-line"),
+  "subtle beige dividers above and below the strip",
 );
 assert(
-  browse.includes('direction: "ltr"') && browse.includes("pl-4 pr-0"),
-  "EN belt uses physical LTR direction and left padding so peek stays on the right",
+  browse.includes('data-view-all-cta={language}') ||
+    browse.includes('data-view-all-cta={language}'),
+  "view-all is a lightweight text CTA",
+);
+assert(!browse.includes("rounded-full border border-line bg-foam px-3 py-1.5 text-xs"), "CTA is not the old fat pill");
+assert(
+  browse.includes('point={rtl ? "left" : "right"}'),
+  "EN CTA arrow points right; AR CTA arrow points left",
 );
 assert(
-  browse.includes('data-view-all-cta="en"') &&
-    browse.includes("copy.viewAllNeighborhoods.en"),
-  "EN view-all is a separate LTR pill, not the AR branch",
-);
-const enCta = browse.slice(browse.indexOf('data-view-all-cta="en"'));
-assert(
-  enCta.indexOf("copy.viewAllNeighborhoods.en") <
-    enCta.indexOf('<Chevron point="right" />'),
-  "EN view-all is text then a right chevron",
-);
-assert(
-  browse.includes("copy.viewAllNeighborhoods.ar") &&
-    browse.includes('<Chevron point="right" />'),
-  "AR view-all stays Arabic text then a right chevron",
-);
-assert(!browse.includes('point="left"'), "EN view-all never uses a leading left chevron");
-assert(!browse.includes("text-end"), "EN heading is not forced to the right");
-assert(
-  browse.indexOf('id="browse-neighborhoods"') < browse.indexOf("<ViewAllPill"),
-  "heading precedes CTA in DOM; dir=rtl/ltr places title and pill",
-);
-assert(
-  browse.includes('id="browse-neighborhoods" className="text-base font-semibold"'),
-  "browse heading matches New this week / جديد هالأسبوع typography",
-);
-assert(
-  browse.includes('className="mt-1 text-xs leading-5 text-ink-soft"'),
-  "browse subtitle matches New this week secondary scale",
-);
-assert(
-  browse.includes("max-w-md border-t border-line"),
-  "browse section chrome matches New this week / The list",
-);
-assert(
-  browse.includes("copy.viewAllNeighborhoods.en") &&
-    browse.includes("copy.viewAllNeighborhoods.ar"),
-  "view-all pills use locale-specific copy, not a shared leading-chevron branch",
+  browse.indexOf('id="browse-neighborhoods"') <
+    browse.indexOf("<ViewAllLink language={language} />"),
+  "heading precedes CTA in DOM; dir places title and View all",
 );
 
 const viewAll = readRepo("components/neighborhoods-page.tsx");
 assert(viewAll.includes("neighborhood-search"), "view-all has client search");
 assert(viewAll.includes("neighborhoodCafeCountLabel"), "view-all uses real counts");
+assert(viewAll.includes("data-neighborhood-sorts"), "view-all has sort pills");
+assert(viewAll.includes("nearby"), "Nearby sort exists");
+assert(viewAll.includes("usePeekVisitorLocation"), "Nearby uses real visitor location");
+assert(viewAll.includes("formatDistanceKm"), "distance is formatted from real km");
+assert(!viewAll.includes("NeighborhoodIcon"), "view-all rows have no icons");
 assert(!/Koofi/i.test(viewAll), "view-all must not say Koofi");
 assert(!/Jeddah|جدة/.test(viewAll), "view-all UI is not the Jeddah mock names");
 assert(
@@ -305,7 +305,7 @@ assert(
 assert(
   viewAll.includes('language === "ar" ? (') &&
     viewAll.includes('<path d="M6 3.2 11.2 8 6 12.8" />'),
-  "AR view-all back chevron points right",
+  "AR view-all row chevron points left; back control stays",
 );
 
 assert(

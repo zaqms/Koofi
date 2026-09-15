@@ -1,22 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useRef } from "react";
-import { NeighborhoodIcon } from "@/components/neighborhood-icons";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
-  BROWSE_DEMO_SELECTED,
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
-  neighborhoodIconKind,
 } from "@/lib/browse-neighborhoods";
 import { copy } from "@/lib/copy";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { districtPath, neighborhoodsPath } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
-import type { Language, NeighborhoodId } from "@/lib/types";
+import type { City, Language, NeighborhoodId } from "@/lib/types";
 
 type BrowseNeighborhoodsProps = {
   language: Language;
+  city?: City;
 };
 
 function trackDistrict(id: NeighborhoodId, language: Language) {
@@ -33,43 +31,7 @@ function trackDistrict(id: NeighborhoodId, language: Language) {
   );
 }
 
-function NeighborhoodCard({
-  id,
-  language,
-  selected,
-}: {
-  id: NeighborhoodId;
-  language: Language;
-  selected: boolean;
-}) {
-  const label = browseNeighborhoodLabel(id, language);
-  return (
-    <Link
-      href={districtPath(id, language)}
-      onClick={() => trackDistrict(id, language)}
-      className={
-        selected
-          ? "flex aspect-square w-full flex-col items-center overflow-hidden rounded-[1.15rem] border border-line bg-blush px-1 pt-2 pb-1.5 text-ink"
-          : "flex aspect-square w-full flex-col items-center overflow-hidden rounded-[1.15rem] border border-line bg-foam px-1 pt-2 pb-1.5 text-ink"
-      }
-    >
-      <span className="flex min-h-0 flex-1 items-center justify-center">
-        <NeighborhoodIcon kind={neighborhoodIconKind(id)} className="size-7" />
-      </span>
-      <span
-        className={
-          selected
-            ? "mt-0.5 line-clamp-2 min-h-[2.2em] w-full min-w-0 px-0.5 text-center text-[10px] font-medium leading-[1.15] break-words [overflow-wrap:anywhere]"
-            : "mt-0.5 line-clamp-2 min-h-[2.2em] w-full min-w-0 px-0.5 text-center text-[10px] font-normal leading-[1.15] break-words [overflow-wrap:anywhere]"
-        }
-      >
-        {label}
-      </span>
-    </Link>
-  );
-}
-
-function Chevron({ point }: { point: "left" | "right" }) {
+function Arrow({ point }: { point: "left" | "right" }) {
   return (
     <svg
       aria-hidden
@@ -82,42 +44,29 @@ function Chevron({ point }: { point: "left" | "right" }) {
       strokeLinejoin="round"
     >
       {point === "right" ? (
-        <path d="M6 3.2 11.2 8 6 12.8" />
+        <path d="M3.2 8h9.2M8.6 3.8 13 8l-4.4 4.2" />
       ) : (
-        <path d="M10 3.2 4.8 8 10 12.8" />
+        <path d="M12.8 8H3.6M7.4 3.8 3 8l4.4 4.2" />
       )}
     </svg>
   );
 }
 
-function ViewAllPill({ language }: { language: Language }) {
-  if (language === "ar") {
-    return (
-      <Link
-        href={neighborhoodsPath("ar")}
-        className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
-      >
-        <span>{copy.viewAllNeighborhoods.ar}</span>
-        <Chevron point="right" />
-      </Link>
-    );
-  }
-
+function ViewAllLink({ language }: { language: Language }) {
+  const rtl = language === "ar";
   return (
     <Link
-      href={neighborhoodsPath("en")}
-      dir={"ltr"}
-      data-view-all-cta="en"
-      className="inline-flex shrink-0 flex-row items-center gap-1.5 rounded-full border border-line bg-foam px-3 py-1.5 text-xs leading-5 text-ink"
-      style={{ direction: "ltr", unicodeBidi: "isolate", flexDirection: "row" }}
+      href={neighborhoodsPath(language)}
+      data-view-all-cta={language}
+      className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-ink-soft"
     >
-      <span>{copy.viewAllNeighborhoods.en}</span>
-      <Chevron point="right" />
+      <span>{copy.viewAllNeighborhoods[language]}</span>
+      <Arrow point={rtl ? "left" : "right"} />
     </Link>
   );
 }
 
-function FeaturedRow({
+function FeaturedPills({
   language,
   ids,
 }: {
@@ -125,107 +74,95 @@ function FeaturedRow({
   ids: readonly NeighborhoodId[];
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
-  const en = language === "en";
+  const [overflow, setOverflow] = useState(false);
+  const rtl = language === "ar";
 
   useLayoutEffect(() => {
-    if (!en) return;
     const row = rowRef.current;
     if (!row) return;
-    row.dir = "ltr";
-    row.style.direction = "ltr";
-    row.style.unicodeBidi = "isolate";
-    row.scrollLeft = 0;
-  }, [en]);
+    const measure = () => {
+      setOverflow(row.scrollWidth - row.clientWidth > 8);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(row);
+    return () => observer.disconnect();
+  }, [ids]);
 
-  if (en) {
-    return (
-      <div
-        ref={rowRef}
-        className="@container -mx-4 mt-4 overflow-x-auto pl-4 pr-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        role="list"
-        data-neighborhood-row=""
-        data-featured-visual="hittin,al-malqa,al-nakheel,al-yasmin,olaya,sulimaniyah"
-        dir={"ltr"}
-        style={{ direction: "ltr", unicodeBidi: "isolate" }}
-      >
-        <div
-          className="flex w-max flex-nowrap gap-2.5"
-          style={{ direction: "ltr", flexDirection: "row" }}
-        >
-          {ids.map((id) => (
-            <div
-              key={id}
-              role="listitem"
-              data-neighborhood-id={id}
-              className="w-[min(5.15rem,calc((100cqi-2.5rem)/4.45))] shrink-0"
-            >
-              <NeighborhoodCard
-                id={id}
-                language={language}
-                selected={id === BROWSE_DEMO_SELECTED}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+  function scrollForward() {
+    const row = rowRef.current;
+    if (!row) return;
+    const delta = Math.min(220, row.clientWidth * 0.7);
+    row.scrollBy({ left: rtl ? -delta : delta, behavior: "smooth" });
   }
 
   return (
-    <div
-      className="@container -mx-4 mt-4 overflow-x-auto ps-4 pe-0 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-      role="list"
-      data-neighborhood-row=""
-    >
-      <div className="flex w-max flex-nowrap gap-2.5">
-        {ids.map((id) => (
-          <div
-            key={id}
-            role="listitem"
-            data-neighborhood-id={id}
-            className="w-[min(5.15rem,calc((100cqi-2.5rem)/4.45))] shrink-0"
-          >
-            <NeighborhoodCard
-              id={id}
-              language={language}
-              selected={id === BROWSE_DEMO_SELECTED}
-            />
-          </div>
-        ))}
+    <div className="relative mt-3">
+      <div
+        ref={rowRef}
+        className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        role="list"
+        data-neighborhood-row=""
+        data-featured-visual={ids.join(",")}
+      >
+        <div className="flex w-max flex-nowrap items-center gap-2">
+          {ids.map((id) => (
+            <Link
+              key={id}
+              role="listitem"
+              data-neighborhood-id={id}
+              href={districtPath(id, language)}
+              onClick={() => trackDistrict(id, language)}
+              className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-foam px-3.5 text-[13px] leading-none text-ink"
+            >
+              {browseNeighborhoodLabel(id, language)}
+            </Link>
+          ))}
+          {overflow ? (
+            <button
+              type="button"
+              data-browse-scroll=""
+              onClick={scrollForward}
+              aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
+              className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
+            >
+              <Arrow point={rtl ? "left" : "right"} />
+            </button>
+          ) : null}
+        </div>
       </div>
     </div>
   );
 }
 
-export function BrowseNeighborhoods({ language }: BrowseNeighborhoodsProps) {
+export function BrowseNeighborhoods({
+  language,
+  city = "riyadh",
+}: BrowseNeighborhoodsProps) {
   const rtl = language === "ar";
-  const ids = featuredNeighborhoodIds(language);
+  const ids = featuredNeighborhoodIds(language, city);
 
   return (
     <section
-      className="mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-2"
+      className="mx-auto w-full max-w-md border-y border-line bg-paper px-4 py-4"
       dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="browse-neighborhoods"
+      data-browse-pills=""
       style={rtl ? undefined : { direction: "ltr", unicodeBidi: "isolate" }}
     >
-      <div
-        className="flex items-start justify-between gap-3"
-        style={rtl ? undefined : { direction: "ltr" }}
-        dir={rtl ? undefined : "ltr"}
-      >
+      <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h2 id="browse-neighborhoods" className="text-base font-semibold">
+          <h2 id="browse-neighborhoods" className="text-lg font-semibold leading-7">
             {copy.browseNeighborhoods[language]}
           </h2>
-          <p className="mt-1 text-xs leading-5 text-ink-soft">
+          <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
             {copy.browseNeighborhoodsHint[language]}
           </p>
         </div>
-        <ViewAllPill language={language} />
+        <ViewAllLink language={language} />
       </div>
-
-      <FeaturedRow language={language} ids={ids} />
+      <FeaturedPills language={language} ids={ids} />
     </section>
   );
 }

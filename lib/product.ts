@@ -58,7 +58,7 @@ export type VibeChip = {
  * The popular chip (`الأكثر شعبية` / Most Popular) ranks the full catalog
  * by baked `popularityIndex` DESC — it does not require a `popular` momentTag.
  * AR display labels are the P0 home set. Ids stay (`date` filter key).
- * Public date slug is `for-two`. Soft Places parked.
+ * Public date slug is `with-friends`. Soft Places parked.
  */
 export const VIBE_CHIPS = [
   { id: "popular", ar: "الأكثر شعبية", en: "Most Popular", momentTag: "popular" },
@@ -71,7 +71,7 @@ export const VIBE_CHIPS = [
   { id: "study", ar: "قعدة مذاكرة", en: "Best for Studies", momentTag: "study" },
   { id: "late", ar: "مفتوح لآخر الليل", en: "Open late", momentTag: "late" },
   { id: "outdoor", ar: "جلسات خارجية", en: "Outdoor seating", momentTag: "outdoor" },
-  { id: "date", ar: "لاثنين", en: "For two", momentTag: "date" },
+  { id: "date", ar: "مع الأصحاب", en: "With friends", momentTag: "date" },
 ] as const satisfies readonly VibeChip[];
 
 export type VibeChipId = (typeof VIBE_CHIPS)[number]["id"];
@@ -401,8 +401,8 @@ export function halfwayPath(language: Language = "ar"): string {
 /**
  * Ajz-locked coffee-shops slugs for nearby + vibe chips.
  * `popular` stays `most-popular`. `meet-halfway` stays `/halfway`.
- * `date` chip public slug is `for-two` (15 Sep KSA/Ads). Other slugs stay.
- * Soft Places stays parked.
+ * `date` chip public slug is `with-friends` (15 Sep Amjad + Shoug via Ajz).
+ * Other slugs stay. Soft Places stays parked.
  */
 export const COFFEE_SHOP_CHIP_SLUGS = [
   "nearby",
@@ -415,7 +415,7 @@ export const COFFEE_SHOP_CHIP_SLUGS = [
   "study",
   "late",
   "outdoor",
-  "for-two",
+  "with-friends",
 ] as const;
 
 export type CoffeeShopChipSlug = (typeof COFFEE_SHOP_CHIP_SLUGS)[number];
@@ -424,23 +424,23 @@ export type CoffeeShopChipSlug = (typeof COFFEE_SHOP_CHIP_SLUGS)[number];
 export const DATE_CHIP_ID = "date";
 
 /** Public coffee-shops slug for the date chip. */
-export const DATE_CHIP_PUBLIC_SLUG = "for-two" satisfies CoffeeShopChipSlug;
+export const DATE_CHIP_PUBLIC_SLUG = "with-friends" satisfies CoffeeShopChipSlug;
 
-/** Retired public slug. 308 to `for-two` so ads / bookmarks do not 404. */
-export const LEGACY_DATE_CHIP_SLUG = "date";
+/** Retired public slugs. 308 to `with-friends` so ads / bookmarks do not 404. */
+export const LEGACY_DATE_CHIP_SLUGS = ["date", "for-two"] as const;
 
-export const LEGACY_CHIP_REDIRECTS = [
+export const LEGACY_CHIP_REDIRECTS = LEGACY_DATE_CHIP_SLUGS.flatMap((slug) => [
   {
-    source: `/${COFFEE_SHOPS_CATEGORY}/${LEGACY_DATE_CHIP_SLUG}`,
+    source: `/${COFFEE_SHOPS_CATEGORY}/${slug}`,
     destination: `/${COFFEE_SHOPS_CATEGORY}/${DATE_CHIP_PUBLIC_SLUG}`,
-    statusCode: 308,
+    statusCode: 308 as const,
   },
   {
-    source: `/en/${COFFEE_SHOPS_CATEGORY}/${LEGACY_DATE_CHIP_SLUG}`,
+    source: `/en/${COFFEE_SHOPS_CATEGORY}/${slug}`,
     destination: `/en/${COFFEE_SHOPS_CATEGORY}/${DATE_CHIP_PUBLIC_SLUG}`,
-    statusCode: 308,
+    statusCode: 308 as const,
   },
-] as const;
+]);
 
 export function isCoffeeShopChipSlug(
   slug: string,
@@ -448,7 +448,7 @@ export function isCoffeeShopChipSlug(
   return (COFFEE_SHOP_CHIP_SLUGS as readonly string[]).includes(slug);
 }
 
-/** Public slug for a live chip id. `date` → `for-two`; other ids match slugs. */
+/** Public slug for a live chip id. `date` → `with-friends`; other ids match slugs. */
 export function coffeeShopChipSlugForId(
   chipId: string,
 ): CoffeeShopChipSlug | null {
@@ -457,7 +457,7 @@ export function coffeeShopChipSlugForId(
   return null;
 }
 
-/** Route slug → chip id. `for-two` → `date`; other slugs match ids. */
+/** Route slug → chip id. `with-friends` → `date`; other slugs match ids. */
 export function chipIdFromCoffeeShopSlug(slug: string): string | null {
   if (slug === DATE_CHIP_PUBLIC_SLUG) return DATE_CHIP_ID;
   if (isCoffeeShopChipSlug(slug)) return slug;

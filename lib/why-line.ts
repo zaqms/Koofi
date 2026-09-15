@@ -34,8 +34,8 @@ const WHY_LINES: Record<WhyMoment, Record<Language, readonly [string, string]>> 
       en: ["Pastry with the coffee", "If you want pastry"],
     },
     date: {
-      ar: ["لاثنين هادي", "لاثنين، مو زحمة"],
-      en: ["A quiet sit for two", "For two, not the rush"],
+      ar: ["مع الأصحاب هادي", "مع الأصحاب، مو زحمة"],
+      en: ["A quiet sit with friends", "With friends, not the rush"],
     },
     work: {
       ar: ["لقعدة شغل", "طاولة ولابتوب"],

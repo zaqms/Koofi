@@ -1,7 +1,8 @@
 /**
  * Ajz-locked dedicated chip URLs (12 Sep 2026).
- * 15 Sep: date chip public slug is `for-two` (old `/date` 308s).
- * Soft Places stays parked. Do not rename other paths.
+ * 15 Sep: date chip public slug is `with-friends`
+ * (old `/date` and `/for-two` 308). Soft Places stays parked.
+ * Do not rename other paths.
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -15,7 +16,7 @@ import {
   HALFWAY_LANDING_PATH,
   HOME_CHIP_IDS,
   LEGACY_CHIP_REDIRECTS,
-  LEGACY_DATE_CHIP_SLUG,
+  LEGACY_DATE_CHIP_SLUGS,
   LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
@@ -61,7 +62,7 @@ const LOCKED_CHIP_PATHS = {
   study: { ar: "/coffee-shops/study", en: "/en/coffee-shops/study" },
   late: { ar: "/coffee-shops/late", en: "/en/coffee-shops/late" },
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
-  date: { ar: "/coffee-shops/for-two", en: "/en/coffee-shops/for-two" },
+  date: { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
 } as const;
 
 for (const [chipId, paths] of Object.entries(LOCKED_CHIP_PATHS)) {
@@ -200,7 +201,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   pastry: "قهوة وحلى",
   quiet: "هادي ورايق",
   work: "للشغل",
-  date: "لاثنين",
+  date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
   nearby: "قريب مني",
 };
@@ -217,7 +218,7 @@ const LOCKED_HOME_LABELS_EN: Record<string, string> = {
   pastry: "Coffee and sweets",
   quiet: "Cozy and Quiet",
   work: "Best for Work",
-  date: "For two",
+  date: "With friends",
   outdoor: "Outdoor seating",
   nearby: "Nearby",
 };
@@ -229,42 +230,60 @@ for (const chip of homeSurfaceChips()) {
 }
 
 assert(DATE_CHIP_ID === "date", "catalog filter key stays date");
-assert(DATE_CHIP_PUBLIC_SLUG === "for-two", "public date slug is for-two");
-assert(LEGACY_DATE_CHIP_SLUG === "date", "old public slug stays date");
+assert(
+  DATE_CHIP_PUBLIC_SLUG === "with-friends",
+  "public date slug is with-friends",
+);
+assert(
+  LEGACY_DATE_CHIP_SLUGS.join(",") === "date,for-two",
+  "old public slugs stay date and for-two",
+);
 assert(
   coffeeShopChipSlugForId(DATE_CHIP_ID) === DATE_CHIP_PUBLIC_SLUG,
-  "date id maps to for-two slug",
+  "date id maps to with-friends slug",
 );
 assert(
   chipIdFromCoffeeShopSlug(DATE_CHIP_PUBLIC_SLUG) === DATE_CHIP_ID,
-  "for-two slug maps back to date id",
+  "with-friends slug maps back to date id",
 );
-assert(
-  !isCoffeeShopChipSlug(LEGACY_DATE_CHIP_SLUG),
-  "legacy date slug is not a live coffee-shops path",
-);
+for (const slug of LEGACY_DATE_CHIP_SLUGS) {
+  assert(
+    !isCoffeeShopChipSlug(slug),
+    `legacy ${slug} slug is not a live coffee-shops path`,
+  );
+}
 assert(
   isCoffeeShopChipSlug(DATE_CHIP_PUBLIC_SLUG),
-  "for-two is a live coffee-shops slug",
+  "with-friends is a live coffee-shops slug",
 );
 assert(
   !isNeighborhoodId(DATE_CHIP_PUBLIC_SLUG),
-  "for-two must not collide with a district",
+  "with-friends must not collide with a district",
 );
 assert(
-  LEGACY_CHIP_REDIRECTS.length === 2 &&
+  LEGACY_CHIP_REDIRECTS.length === 4 &&
     LEGACY_CHIP_REDIRECTS.every((row) => row.statusCode === 308),
-  "old date URLs 308 to for-two",
+  "old date and for-two URLs 308 to with-friends",
 );
 assert(
   LEGACY_CHIP_REDIRECTS[0]?.source === "/coffee-shops/date" &&
-    LEGACY_CHIP_REDIRECTS[0]?.destination === "/coffee-shops/for-two",
-  "AR date → for-two",
+    LEGACY_CHIP_REDIRECTS[0]?.destination === "/coffee-shops/with-friends",
+  "AR date → with-friends",
 );
 assert(
   LEGACY_CHIP_REDIRECTS[1]?.source === "/en/coffee-shops/date" &&
-    LEGACY_CHIP_REDIRECTS[1]?.destination === "/en/coffee-shops/for-two",
-  "EN date → for-two",
+    LEGACY_CHIP_REDIRECTS[1]?.destination === "/en/coffee-shops/with-friends",
+  "EN date → with-friends",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[2]?.source === "/coffee-shops/for-two" &&
+    LEGACY_CHIP_REDIRECTS[2]?.destination === "/coffee-shops/with-friends",
+  "AR for-two → with-friends",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[3]?.source === "/en/coffee-shops/for-two" &&
+    LEGACY_CHIP_REDIRECTS[3]?.destination === "/en/coffee-shops/with-friends",
+  "EN for-two → with-friends",
 );
 
 const staticParams = categoryListingStaticParams();
@@ -280,10 +299,12 @@ assert(
   !staticParams.some((row) => row.slug === "meet-halfway"),
   "meet-halfway is not a coffee-shops slug",
 );
-assert(
-  !staticParams.some((row) => row.slug === LEGACY_DATE_CHIP_SLUG),
-  "legacy date slug is not a generated coffee-shops page",
-);
+for (const slug of LEGACY_DATE_CHIP_SLUGS) {
+  assert(
+    !staticParams.some((row) => row.slug === slug),
+    `legacy ${slug} slug is not a generated coffee-shops page`,
+  );
+}
 
 assert(
   TEMPORARY_DEFAULT_LANDING_MOST_POPULAR === false,
@@ -363,19 +384,34 @@ const product = read("lib/product.ts");
 const why = read("lib/why-line.ts");
 const vibeLabels = read("lib/vibe-labels.ts");
 assert(
-  !product.includes("Good for a date") && !product.includes("لموعد"),
-  "product chip labels dropped date / موعد",
+  !product.includes("Good for a date") &&
+    !product.includes("لموعد") &&
+    !product.includes('"For two"') &&
+    !product.includes('"لاثنين"'),
+  "product chip labels dropped date / For two",
+);
+assert(
+  product.includes("With friends") && product.includes("مع الأصحاب"),
+  "product chip labels are With friends / مع الأصحاب",
 );
 assert(
   !why.includes("Good for a date") &&
     !why.includes("لموعد") &&
     !why.includes("For a quiet date") &&
-    !why.includes("For a date,"),
-  "why-lines dropped date / موعد",
+    !why.includes("For a date,") &&
+    !why.includes("For two") &&
+    !why.includes("لاثنين"),
+  "why-lines dropped date / For two chip names",
 );
 assert(
-  vibeLabels.includes('date: "For two"') && !vibeLabels.includes('date: "Date"'),
-  "moment fallback label is For two",
+  why.includes("With friends") && why.includes("مع الأصحاب"),
+  "why-lines use With friends / مع الأصحاب",
+);
+assert(
+  vibeLabels.includes('date: "With friends"') &&
+    !vibeLabels.includes('date: "Date"') &&
+    !vibeLabels.includes('date: "For two"'),
+  "moment fallback label is With friends",
 );
 
 const halfwayCard = read("components/meet-halfway-card.tsx");

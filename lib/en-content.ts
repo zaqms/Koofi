@@ -206,6 +206,15 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "an-nada": ["al-yasmin", "al-malqa", "hittin", "as-sahafah"],
   "diplomatic-quarter": ["olaya", "al-rahmaniyyah", "diriyah", "kafd"],
   "king-fahd": ["olaya", "sulimaniyah", "al-wurud", "al-masif"],
+  "al-takhassusi": ["olaya", "sulimaniyah", "king-fahd", "al-wurud"],
+  "al-aqiq": ["hittin", "al-yasmin", "al-nakheel", "al-malqa"],
+  "al-ghadeer": ["al-yasmin", "as-sahafah", "al-narjis", "hittin"],
+  "al-arid": ["al-narjis", "al-yasmin", "as-sahafah", "hittin"],
+  "al-qirawan": ["hittin", "al-malqa", "al-yasmin", "al-nakheel"],
+  "al-wadi": ["al-yasmin", "al-nakheel", "as-sahafah", "hittin"],
+  "al-mohammadiyah": ["olaya", "sulimaniyah", "al-masif", "king-fahd"],
+  "al-muruj": ["al-yasmin", "al-nakheel", "al-rabi", "as-sahafah"],
+  "al-malaz": ["sulimaniyah", "olaya", "al-rabwah", "al-mughrizat"],
 };
 
 type DistrictLead = {
@@ -702,6 +711,9 @@ export function districtEnMeta(district: NeighborhoodId): string {
   const name = neighborhoodLabel(district, "en");
   const count = shopsInDistrict(district).length;
   const word = countWord(count);
+  if (count === 0) {
+    return `No cafes in ${name} on wain.lol yet — a Riyadh neighborhood list.`;
+  }
   if (count === 1) {
     return `One cafe in ${name} on wain.lol — a Riyadh neighborhood list, with a Maps link.`;
   }
@@ -717,13 +729,20 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
   const count = shops.length;
   const copy = DISTRICT_COPY[district] ?? defaultDistrictCopy(district);
   const hereDefault =
-    count === 1
-      ? `There is **${countWord(count)}** cafe from ${name} on the list right now:`
-      : `There are **${countWord(count)}** cafes from ${name} on the list right now:`;
-  const hereIntro = fillCount(copy.hereIntro ?? hereDefault, count);
+    count === 0
+      ? `No cafes from ${name} on the catalog yet.`
+      : count === 1
+        ? `There is **${countWord(count)}** cafe from ${name} on the list right now:`
+        : `There are **${countWord(count)}** cafes from ${name} on the list right now:`;
+  const hereIntro = fillCount(
+    count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
+    count,
+  );
   const hereOutro =
-    copy.hereOutro ??
-    `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`;
+    count === 0
+      ? ""
+      : copy.hereOutro ??
+        `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`;
   const nearbyIntro = copy.nearbyIntro ?? "";
   const nearby = nearbyListMarkdown(district);
 

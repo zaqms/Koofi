@@ -1,8 +1,8 @@
-import { directoryNeighborhoods, type DirectoryShop } from "./directory";
+import type { DirectoryShop } from "./directory";
 import { haversineKm } from "./distance";
 import { NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
 import { districtPath, neighborhoodsPath, PRODUCT_NAME } from "./product";
-import type { City, Language, NeighborhoodId, Pin } from "./types";
+import { NEIGHBORHOOD_IDS, type City, type Language, type NeighborhoodId, type Pin } from "./types";
 
 export const DEFAULT_BROWSE_CITY: City = "riyadh";
 
@@ -31,6 +31,50 @@ export const RIYADH_FEATURED_NEIGHBORHOODS =
 export type FeaturedNeighborhoodId =
   (typeof RIYADH_FEATURED_NEIGHBORHOODS)[number];
 
+/**
+ * Amjad’s locked View All Popular order. Separate from the north-belt
+ * featured pill strip — do not reuse this to reorder home.
+ */
+export const POPULAR_NEIGHBORHOODS_BY_CITY = {
+  riyadh: [
+    "hittin",
+    "al-malqa",
+    "al-takhassusi",
+    "olaya",
+    "al-yasmin",
+    "al-nakheel",
+    "al-aqiq",
+    "as-sahafah",
+    "al-narjis",
+    "al-ghadeer",
+    "al-arid",
+    "al-qirawan",
+    "al-rabi",
+    "al-wadi",
+    "qurtubah",
+    "ghirnatah",
+    "diplomatic-quarter",
+    "diriyah",
+    "sulimaniyah",
+    "al-mohammadiyah",
+    "al-muruj",
+    "al-masif",
+    "al-mughrizat",
+    "al-rawdah",
+    "al-hamra",
+    "al-yarmouk",
+    "al-munsiyah",
+    "al-malaz",
+    "al-wurud",
+  ],
+} as const satisfies Record<City, readonly NeighborhoodId[]>;
+
+export const RIYADH_POPULAR_NEIGHBORHOODS =
+  POPULAR_NEIGHBORHOODS_BY_CITY.riyadh;
+
+export type PopularNeighborhoodId =
+  (typeof RIYADH_POPULAR_NEIGHBORHOODS)[number];
+
 export type NeighborhoodSort = "nearby" | "popular" | "az";
 
 export const NEIGHBORHOOD_SORTS: readonly NeighborhoodSort[] = [
@@ -46,6 +90,12 @@ export const NEIGHBORHOOD_SORTS: readonly NeighborhoodSort[] = [
 const BROWSE_EN_LABELS: Partial<Record<NeighborhoodId, string>> = {
   sulimaniyah: "Al Sulaymaniyah",
   olaya: "Al Olaya",
+  "al-nakheel": "An Nakheel",
+  "as-sahafah": "As Sahafah",
+  "al-rabi": "Ar Rabi",
+  ghirnatah: "Granada",
+  "al-rawdah": "Ar Rawdah",
+  "al-yarmouk": "Al Yarmuk",
 };
 
 export type NeighborhoodIconKind =
@@ -97,6 +147,15 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   "an-nada": "tree",
   "diplomatic-quarter": "landmark",
   "king-fahd": "towers",
+  "al-takhassusi": "building",
+  "al-aqiq": "diamond",
+  "al-ghadeer": "waves",
+  "al-arid": "tree",
+  "al-qirawan": "dome",
+  "al-wadi": "tree",
+  "al-mohammadiyah": "building",
+  "al-muruj": "flower",
+  "al-malaz": "pin",
 };
 
 export type NeighborhoodRow = {
@@ -127,6 +186,18 @@ export function featuredNeighborhoodIds(
   city: City = DEFAULT_BROWSE_CITY,
 ): readonly NeighborhoodId[] {
   return FEATURED_NEIGHBORHOODS_BY_CITY[city];
+}
+
+export function popularNeighborhoodIds(
+  city: City = DEFAULT_BROWSE_CITY,
+): readonly NeighborhoodId[] {
+  return POPULAR_NEIGHBORHOODS_BY_CITY[city];
+}
+
+function popularRank(id: NeighborhoodId, city: City): number {
+  const list = POPULAR_NEIGHBORHOODS_BY_CITY[city] as readonly NeighborhoodId[];
+  const index = list.indexOf(id);
+  return index === -1 ? list.length : index;
 }
 
 export function neighborhoodCafeCount(
@@ -177,23 +248,24 @@ export function listNeighborhoodRows(
   shops: readonly DirectoryShop[],
   city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
-  void city;
-  return directoryNeighborhoods([...shops])
-    .map((id) => ({
-      id,
-      href: districtPath(id, language),
-      label: browseNeighborhoodLabel(id, language),
-      cafeCount: neighborhoodCafeCount(id, shops),
-      centroid: neighborhoodCentroidFromShops(id, shops),
-    }))
-    .sort((a, b) => comparePopular(a, b, language));
+  return NEIGHBORHOOD_IDS.map((id) => ({
+    id,
+    href: districtPath(id, language),
+    label: browseNeighborhoodLabel(id, language),
+    cafeCount: neighborhoodCafeCount(id, shops),
+    centroid: neighborhoodCentroidFromShops(id, shops),
+  })).sort((a, b) => comparePopular(a, b, language, city));
 }
 
 function comparePopular(
   a: NeighborhoodRow,
   b: NeighborhoodRow,
   language: Language,
+  city: City = DEFAULT_BROWSE_CITY,
 ): number {
+  const rankA = popularRank(a.id, city);
+  const rankB = popularRank(b.id, city);
+  if (rankA !== rankB) return rankA - rankB;
   if (b.cafeCount !== a.cafeCount) return b.cafeCount - a.cafeCount;
   return a.label.localeCompare(b.label, language === "ar" ? "ar" : "en");
 }

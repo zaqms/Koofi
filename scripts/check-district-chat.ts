@@ -40,7 +40,7 @@ assert(
   "dictionary smaller than live catalog",
 );
 
-for (const id of live) {
+for (const id of dictionaryDistrictIds()) {
   const place = NEIGHBORHOODS[id];
   assert(place, `live district ${id} has no dictionary row`);
   assert(place.ar.trim().length > 0, `${id} missing AR label`);

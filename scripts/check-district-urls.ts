@@ -65,6 +65,15 @@ assert(resolveDistrictSlug("al-munsiyah") === "al-munsiyah", "al-munsiyah resolv
 assert(resolveDistrictSlug("an-nada") === "an-nada", "an-nada resolves");
 assert(resolveDistrictSlug("diplomatic-quarter") === "diplomatic-quarter", "diplomatic-quarter resolves");
 assert(resolveDistrictSlug("king-fahd") === "king-fahd", "king-fahd resolves");
+assert(resolveDistrictSlug("al-takhassusi") === "al-takhassusi", "al-takhassusi resolves");
+assert(resolveDistrictSlug("al-aqiq") === "al-aqiq", "al-aqiq resolves");
+assert(resolveDistrictSlug("al-ghadeer") === "al-ghadeer", "al-ghadeer resolves");
+assert(resolveDistrictSlug("al-arid") === "al-arid", "al-arid resolves");
+assert(resolveDistrictSlug("al-qirawan") === "al-qirawan", "al-qirawan resolves");
+assert(resolveDistrictSlug("al-wadi") === "al-wadi", "al-wadi resolves");
+assert(resolveDistrictSlug("al-mohammadiyah") === "al-mohammadiyah", "al-mohammadiyah resolves");
+assert(resolveDistrictSlug("al-muruj") === "al-muruj", "al-muruj resolves");
+assert(resolveDistrictSlug("al-malaz") === "al-malaz", "al-malaz resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -864,6 +873,18 @@ assert(
   districtPath("diplomatic-quarter", "en") ===
     "/en/coffee-shops/diplomatic-quarter",
   "EN diplomatic-quarter coffee-shops path",
+);
+assert(
+  districtPath("al-takhassusi", "ar") === "/coffee-shops/al-takhassusi",
+  "AR al-takhassusi coffee-shops path",
+);
+assert(
+  districtPath("al-takhassusi", "en") === "/en/coffee-shops/al-takhassusi",
+  "EN al-takhassusi coffee-shops path",
+);
+assert(
+  districtPath("al-nakheel", "en") === "/en/coffee-shops/al-nakheel",
+  "An Nakheel keeps existing al-nakheel SEO slug",
 );
 for (const ask of [
   "الحي الدبلوماسي",

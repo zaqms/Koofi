@@ -139,6 +139,8 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "date",
     "dating",
     "good for a date",
+    "for two",
+    "لاثنين",
   ],
 };
 

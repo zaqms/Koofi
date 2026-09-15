@@ -317,12 +317,20 @@ assert(
   "أفضل قهوة chip must stay qahwa",
 );
 assert(
+  parseIntent("With friends").moments.join(",") === "date",
+  "With friends chip must resolve to date",
+);
+assert(
+  parseIntent("مع الأصحاب").moments.join(",") === "date",
+  "مع الأصحاب chip must resolve to date",
+);
+assert(
   parseIntent("For two").moments.join(",") === "date",
-  "For two chip must resolve to date",
+  "For two alias still maps to date",
 );
 assert(
   parseIntent("لاثنين").moments.join(",") === "date",
-  "لاثنين chip must resolve to date",
+  "لاثنين alias still maps to date",
 );
 assert(
   parseIntent("Good for a date").moments.join(",") === "date",

@@ -2834,6 +2834,66 @@
       "logoUrl": "/logos/anotherside-cafe-al-munsiyah.jpg",
       "popularityIndex": 40,
       "example": false
+    },
+    {
+      "id": "brew92-an-nada",
+      "nameAr": "برو92",
+      "nameEn": "Brew 92 - Al Nada",
+      "city": "riyadh",
+      "neighborhood": "an-nada",
+      "neighborhoodAr": "الندى",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdfd6d3b8419:0x27bd2abaf235982",
+      "pin": { "lat": 24.8169142, "lng": 46.6877021 },
+      "logoUrl": "/logos/brew92-an-nada.png",
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "ashjar-cafe-ar-rabi",
+      "nameAr": "أشجار كافيه",
+      "nameEn": "Ashjar cafe",
+      "city": "riyadh",
+      "neighborhood": "al-rabi",
+      "neighborhoodAr": "الربيع",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30fc7c43677:0x513b46d8aebb6816",
+      "pin": { "lat": 24.7863116, "lng": 46.6587146 },
+      "logoUrl": "/logos/ashjar-cafe-ar-rabi.png",
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "jazean-diplomatic-quarter",
+      "nameAr": "جازين",
+      "nameEn": "Jazean DQ",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1da53f6c702b:0x93a74da9cf92504c",
+      "pin": { "lat": 24.6858552, "lng": 46.628366 },
+      "logoUrl": "/logos/jazean-diplomatic-quarter.png",
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "markab-king-fahd",
+      "nameAr": "مركب",
+      "nameEn": "Markab",
+      "city": "riyadh",
+      "neighborhood": "king-fahd",
+      "neighborhoodAr": "الملك فهد",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d006b44b683:0x2a0dec5a5c37872",
+      "pin": { "lat": 24.7376542, "lng": 46.6633059 },
+      "logoUrl": "/logos/markab-king-fahd.jpg",
+      "popularityIndex": 40,
+      "example": false
     }
   ]
 }

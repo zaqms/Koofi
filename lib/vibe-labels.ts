@@ -33,7 +33,7 @@ const MOMENT_EN: Record<MomentTag, string> = {
   pastry: "Pastry",
   study: "Study",
   outdoor: "Outdoor",
-  date: "Date",
+  date: "With friends",
 };
 
 export type VibeSource = {

@@ -133,10 +133,14 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
   ],
   date: [
     "مناسب لموعد",
+    "لموعد",
     "موعد",
     "ديت",
     "date",
     "dating",
+    "good for a date",
+    "for two",
+    "لاثنين",
   ],
 };
 

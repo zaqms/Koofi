@@ -9,6 +9,7 @@ import {
   mostPopularMetadata,
 } from "@/lib/most-popular";
 import {
+  chipIdFromCoffeeShopSlug,
   isCoffeeShopChipSlug,
   isMostPopularSlug,
   PRODUCT_NAME,
@@ -35,7 +36,9 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
     return mostPopularMetadata("en");
   }
   if (isCoffeeShopChipSlug(slug)) {
-    return chipPageMetadata(slug, "en");
+    const chipId = chipIdFromCoffeeShopSlug(slug);
+    if (!chipId) return { title: `${PRODUCT_NAME} · Coffee shops` };
+    return chipPageMetadata(chipId, "en");
   }
   const district = resolveDistrictSlug(slug);
   if (!district) {
@@ -58,7 +61,9 @@ export default async function EnglishCategoryDistrictPage({
     );
   }
   if (isCoffeeShopChipSlug(slug)) {
-    return <HomeLanding language="en" selectedChipId={slug} />;
+    const chipId = chipIdFromCoffeeShopSlug(slug);
+    if (!chipId) notFound();
+    return <HomeLanding language="en" selectedChipId={chipId} />;
   }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();

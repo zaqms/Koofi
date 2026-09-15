@@ -14,6 +14,9 @@ import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
   OFF_HOME_CHIP_IDS,
+  SHARE_UTM_MEDIUM,
+  cardSharePath,
+  listingSharePath,
   packSharePath,
   VIBE_CHIPS,
 } from "../lib/product";
@@ -86,17 +89,46 @@ assert(packet.includes("asked: حطين"), "packet must quote the ask");
 assert(packet.includes("wain.lol/p/"), "packet must use /p/ restore URL");
 assert(!packet.includes("/c/"), "packet must not use /c/ cafe cards");
 assert(packet.includes("?from=wa"), "packet URL must carry from=wa");
+assert(packet.includes("utm_source=list"), "pack share utm_source is list");
+assert(
+  packet.includes(`utm_medium=${SHARE_UTM_MEDIUM}`),
+  "pack share must carry utm_medium with source",
+);
 
+const listingShop = hittin.picks[0]!.shop;
 const listing = listingPacketForShop({
-  shop: hittin.picks[0]!.shop,
+  shop: listingShop,
   language: "ar",
   origin: "https://wain.lol",
+  source: "list",
+});
+const cardListing = listingPacketForShop({
+  shop: listingShop,
+  language: "ar",
+  origin: "https://wain.lol",
+  source: "card",
 });
 assert(!packetHasMapsUrl(listing.text), `listing packet leaked Maps:\n${listing.text}`);
 assert(listing.text.includes("/c/"), "listing packet must use /c/");
 assert(listing.text.includes("?from=wa"), "listing packet must carry from=wa");
+assert(listing.text.includes("utm_source=list"), "list share utm_source is list");
+assert(
+  listing.text.includes(`utm_medium=${SHARE_UTM_MEDIUM}`),
+  "list share must carry utm_medium with source",
+);
+assert(cardListing.text.includes("?from=wa"), "card listing packet must carry from=wa");
+assert(cardListing.text.includes("utm_source=card"), "card share utm_source is card");
+assert(
+  cardListing.text.includes(`utm_medium=${SHARE_UTM_MEDIUM}`),
+  "card share must carry utm_medium with source",
+);
+assert(
+  listing.text !== cardListing.text &&
+    listingSharePath(listingShop.id) !== cardSharePath(listingShop.id),
+  "card vs list share URLs must differ by utm_source",
+);
 assert(!listing.text.includes("/p/"), "listing packet must not use /p/");
-assert(listing.text.includes(shopWhyLine(hittin.picks[0]!.shop, "ar")), "listing packet needs why-line");
+assert(listing.text.includes(shopWhyLine(listingShop, "ar")), "listing packet needs why-line");
 
 const wa = whatsAppShareHref(packet);
 assert(
@@ -236,8 +268,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 197,
-  `popularity map should have 197 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 201,
+  `popularity map should have 201 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
@@ -283,6 +315,30 @@ assert(
 assert(
   parseIntent("أفضل قهوة").moments.join(",") === "qahwa",
   "أفضل قهوة chip must stay qahwa",
+);
+assert(
+  parseIntent("With friends").moments.join(",") === "date",
+  "With friends chip must resolve to date",
+);
+assert(
+  parseIntent("مع الأصحاب").moments.join(",") === "date",
+  "مع الأصحاب chip must resolve to date",
+);
+assert(
+  parseIntent("For two").moments.join(",") === "date",
+  "For two alias still maps to date",
+);
+assert(
+  parseIntent("لاثنين").moments.join(",") === "date",
+  "لاثنين alias still maps to date",
+);
+assert(
+  parseIntent("Good for a date").moments.join(",") === "date",
+  "old EN date label still maps to date",
+);
+assert(
+  parseIntent("لموعد").moments.join(",") === "date",
+  "old AR date label still maps to date",
 );
 
 const LOCKED_POPULAR = [

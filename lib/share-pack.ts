@@ -1,6 +1,6 @@
 import { formatListingPacket, formatSharePacket } from "./packet";
 import { encodePackId, packSharePath } from "./pack";
-import { cardSharePath, shopDisplayName } from "./product";
+import { shopDisplayName, shopSharePath, type ListingShareSurface } from "./product";
 import type { ChatPick, Language, Shop } from "./types";
 import { shopWhyLine } from "./why-line";
 
@@ -40,8 +40,9 @@ export function listingPacketForShop(input: {
   shop: Pick<Shop, "id" | "nameAr" | "nameEn" | "neighborhood" | "momentTags" | "vibeTags">;
   language: Language;
   origin: string;
+  source: ListingShareSurface;
 }): { text: string; cardUrl: string } {
-  const cardUrl = `${input.origin.replace(/\/$/, "")}${cardSharePath(input.shop.id, input.language)}`;
+  const cardUrl = `${input.origin.replace(/\/$/, "")}${shopSharePath(input.shop.id, input.language, input.source)}`;
   return {
     cardUrl,
     text: formatListingPacket({

@@ -108,8 +108,10 @@ function ChipIcon({ id }: { id: string }) {
     case "date":
       return (
         <Icon>
-          <circle cx="12" cy="8" r="3.1" />
-          <path d="M5.6 19c.7-3.2 3.2-5 6.4-5s5.7 1.8 6.4 5" />
+          <circle cx="6.8" cy="7.8" r="2.4" />
+          <path d="M3.6 18.8c.45-2.2 1.85-3.45 3.2-3.45s2.75 1.25 3.2 3.45" />
+          <circle cx="17.2" cy="7.8" r="2.4" />
+          <path d="M14 18.8c.45-2.2 1.85-3.45 3.2-3.45s2.75 1.25 3.2 3.45" />
         </Icon>
       );
     case "nearby":

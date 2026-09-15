@@ -1,4 +1,6 @@
+import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { Chat } from "@/components/chat";
+import { DocumentLocale } from "@/components/document-locale";
 import { DistrictEnBody } from "@/components/district-en-body";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
@@ -75,12 +77,15 @@ export function HomeLanding({
 
   return (
     <main className="min-h-dvh">
+      <DocumentLocale language={language} />
       <Chat
+        key={district ?? listing ?? selectedChipId ?? "home"}
         landing={language}
         localeHref={localeHref}
         selectedChipId={pageChipId}
         chipOpen={chipOpen}
       />
+      {bareHome ? <BrowseNeighborhoods language={language} /> : null}
       <ShopUpvoteProvider>
         <ShopClaimProvider>
           {filterPutsDirectoryFirst(listing, district) ? (

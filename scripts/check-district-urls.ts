@@ -37,6 +37,7 @@ import {
   MOST_POPULAR_SLUG,
   mostPopularHeading,
   mostPopularPath,
+  neighborhoodsPath,
   PRODUCT_NAME,
 } from "../lib/product";
 import { rankByPopularity } from "../lib/picker";
@@ -92,6 +93,8 @@ assert(
 );
 assert(homePath("ar") === "/", "AR home");
 assert(homePath("en") === "/en", "EN home");
+assert(neighborhoodsPath("ar") === "/neighborhoods", "AR view-all neighborhoods");
+assert(neighborhoodsPath("en") === "/en/neighborhoods", "EN view-all neighborhoods");
 
 const shops = listDirectoryShops();
 const areas = directoryNeighborhoods(shops);
@@ -1897,6 +1900,14 @@ assert(
   "sitemap missing EN most-popular",
 );
 assert(
+  sitemap.includes("https://wain.lol/neighborhoods<"),
+  "sitemap missing AR neighborhoods index",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/neighborhoods<"),
+  "sitemap missing EN neighborhoods index",
+);
+assert(
   !sitemap.includes("most-popular-cafes-in-riyadh"),
   "sitemap must not list the EN alias",
 );
@@ -2006,6 +2017,17 @@ assert(
 const homeLanding = readFileSync(
   join(process.cwd(), "components/home-landing.tsx"),
   "utf8",
+);
+assert(
+  homeLanding.includes("BrowseNeighborhoods"),
+  "P0 home mounts Browse by Neighborhood",
+);
+assert(
+  readFileSync(
+    join(process.cwd(), "components/shop-directory.tsx"),
+    "utf8",
+  ).includes("{district || popular ? ("),
+  "home drops the old district wrap",
 );
 assert(
   homeLanding.includes('? "popular"') &&

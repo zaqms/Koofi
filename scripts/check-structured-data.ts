@@ -184,6 +184,14 @@ assert(
   "sitemap lists EN most-popular",
 );
 assert(
+  sitemap.includes("https://wain.lol/neighborhoods<"),
+  "sitemap lists AR neighborhoods index",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/neighborhoods<"),
+  "sitemap lists EN neighborhoods index",
+);
+assert(
   !sitemap.includes("most-popular-cafes-in-riyadh"),
   "sitemap must not list the EN popular alias",
 );

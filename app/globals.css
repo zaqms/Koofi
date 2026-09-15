@@ -14,6 +14,7 @@
   --gold: #b0894a;
   --gold-deep: #8d6b38;
   --passport-wash: #f3ead8;
+  --blush: #e3c4b8;
 }
 
 @theme inline {
@@ -30,6 +31,7 @@
   --color-gold: var(--gold);
   --color-gold-deep: var(--gold-deep);
   --color-passport-wash: var(--passport-wash);
+  --color-blush: var(--blush);
   --font-sans: var(--font-koofi);
   --font-serif: var(--font-passport), "Times New Roman", serif;
 }

@@ -255,6 +255,13 @@ export function aboutPath(language: Language = "ar"): string {
   return language === "en" ? "/en/about" : "/about";
 }
 
+/** Full Riyadh neighborhood index (view-all). City is Riyadh only. */
+export const NEIGHBORHOODS_PATH = "/neighborhoods";
+
+export function neighborhoodsPath(language: Language = "ar"): string {
+  return language === "en" ? `/en${NEIGHBORHOODS_PATH}` : NEIGHBORHOODS_PATH;
+}
+
 export function feedbackPath(language: Language = "ar"): string {
   return language === "en" ? "/en/feedback" : "/feedback";
 }

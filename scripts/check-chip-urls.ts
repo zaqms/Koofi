@@ -350,11 +350,13 @@ assert(
 );
 assert(
   chips.includes('case "date"') &&
-    chips.includes('<circle cx="9" cy="8" r="2.65" />') &&
-    chips.includes('d="M15.85 5.5a2.5 2.5 0 0 1 0 5"') &&
+    chips.includes('<circle cx="6.8" cy="7.8" r="2.4" />') &&
+    chips.includes('<circle cx="17.2" cy="7.8" r="2.4" />') &&
+    !chips.includes('a2.5 2.5 0 0 1 0 5') &&
+    !chips.includes('<circle cx="9" cy="8" r="2.65" />') &&
     !chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
     !/heart|romance|💕|❤|couple|hand-hold/i.test(chips),
-  "date chip is a two-heads stroke — no romance glyphs",
+  "date chip is two heads with a gap — no overlap or romance",
 );
 
 const product = read("lib/product.ts");

@@ -27,7 +27,7 @@ export function ShareListingButton({
   async function onShare() {
     const origin =
       typeof window !== "undefined" ? window.location.origin : "";
-    const packet = listingPacketForShop({ shop, language, origin });
+    const packet = listingPacketForShop({ shop, language, origin, source });
     trackEvent(
       "share_listing",
       { shop_id: shop.id, locale: language, source },

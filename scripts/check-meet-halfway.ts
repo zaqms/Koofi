@@ -469,10 +469,13 @@ assert(
   Math.abs(inviteSeed.locations[0].lat - 24.761) < 1e-4,
   "invite URL carries A's pin",
 );
+const halfwayShareQuery = "from=wa&utm_source=invite&utm_medium=share";
 assert(
   halfwayInvitePath(inviteId).startsWith("/h/") &&
-    halfwayInviteSharePath(inviteId).endsWith("?from=wa"),
-  "invite share is /h/{id}?from=wa",
+    halfwayInviteSharePath(inviteId).includes("from=wa") &&
+    halfwayInviteSharePath(inviteId).includes("utm_source=invite") &&
+    halfwayInviteSharePath(inviteId).includes("utm_medium=share"),
+  "invite share is /h/{id}?from=wa plus both UTMs",
 );
 assert(
   halfwayInvitePath(inviteId, "en") === `/en/h/${encodeURIComponent(inviteId)}` &&
@@ -480,7 +483,8 @@ assert(
       `/en/h/${encodeURIComponent(inviteId)}` &&
     halfwayInviteLocaleHref(inviteId, "en") ===
       `/h/${encodeURIComponent(inviteId)}` &&
-    halfwayInviteSharePath(inviteId) === `/h/${encodeURIComponent(inviteId)}?from=wa`,
+    halfwayInviteSharePath(inviteId) ===
+      `/h/${encodeURIComponent(inviteId)}?${halfwayShareQuery}`,
   "WhatsApp share stays /h/{id}; EN guests use /en/h/{id}",
 );
 const nakheelPin = neighborhoodCentroid("al-nakheel", SHOPS);
@@ -507,6 +511,8 @@ assert(
     inviteText.includes("اعزم خويك") &&
     inviteText.includes("wain.lol/h/") &&
     inviteText.includes("from=wa") &&
+    inviteText.includes("utm_source=invite") &&
+    inviteText.includes("utm_medium=share") &&
     !inviteText.includes("maps.google") &&
     !inviteText.includes("ادعُ صاحبك") &&
     !inviteText.includes("ادع صاحبك"),
@@ -541,6 +547,8 @@ assert(
   resultsShare.includes("ثلاث قهاوي بينكم") &&
     resultsShare.includes("wain.lol/h/") &&
     resultsShare.includes("from=wa") &&
+    resultsShare.includes("utm_source=invite") &&
+    resultsShare.includes("utm_medium=share") &&
     !resultsShare.includes("/p/"),
   "Share results is the same /h/{id}, never a /p/ pack",
 );

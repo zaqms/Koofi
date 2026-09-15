@@ -190,8 +190,38 @@ export function packPath(id: string): string {
   return `${PACK_PATH_PREFIX}/${encodeURIComponent(id)}`;
 }
 
+/**
+ * Digital product shares only. Always both `utm_source` and `utm_medium`.
+ * Print/QR hospitality expo stays `utm_medium=card` and is not built here.
+ */
+export const SHARE_UTM_MEDIUM = "share" as const;
+
+export type ShareFrom = "wa" | "tonight";
+export type ShareUtmSource = "card" | "list" | "invite";
+
+/** Cafe-card vs directory-list share. Same `/c/{id}` path; different `utm_source`. */
+export type ListingShareSurface = "card" | "list";
+
+/**
+ * Append `from=` plus both UTMs so surfaces cannot drift.
+ * Never emit `utm_source` without `utm_medium`.
+ */
+export function buildShareUrl(
+  path: string,
+  input: {
+    from: ShareFrom;
+    utmSource: ShareUtmSource;
+  },
+): string {
+  const params = new URLSearchParams();
+  params.set("from", input.from);
+  params.set("utm_source", input.utmSource);
+  params.set("utm_medium", SHARE_UTM_MEDIUM);
+  return `${path}?${params.toString()}`;
+}
+
 export function packSharePath(id: string): string {
-  return `${packPath(id)}?from=wa`;
+  return buildShareUrl(packPath(id), { from: "wa", utmSource: "list" });
 }
 
 /** بيننا session. Public, no login. Waiting 45 min; results freeze 48h. */
@@ -205,7 +235,10 @@ export function halfwayInvitePath(id: string, language: Language = "ar"): string
 
 /** WhatsApp / packet share is always the AR-default `/h/{id}` URL. */
 export function halfwayInviteSharePath(id: string): string {
-  return `${halfwayInvitePath(id)}?from=wa`;
+  return buildShareUrl(halfwayInvitePath(id), {
+    from: "wa",
+    utmSource: "invite",
+  });
 }
 
 export function halfwayInviteLocaleHref(
@@ -431,7 +464,23 @@ export function legacyDistrictPath(
 }
 
 export function cardSharePath(id: string, language: Language = "ar"): string {
-  return `${cardPath(id, language)}?from=wa`;
+  return shopSharePath(id, language, "card");
+}
+
+/** Directory list share. Same `/c/{id}` as the card; `utm_source=list`. */
+export function listingSharePath(id: string, language: Language = "ar"): string {
+  return shopSharePath(id, language, "list");
+}
+
+export function shopSharePath(
+  id: string,
+  language: Language = "ar",
+  surface: ListingShareSurface = "card",
+): string {
+  return buildShareUrl(cardPath(id, language), {
+    from: "wa",
+    utmSource: surface,
+  });
 }
 
 export function shopDisplayName(

@@ -4,7 +4,7 @@ import {
   isPassportPreviewShop,
   WOODS_PASSPORT_HERO_PHOTOS,
 } from "./passport-preview";
-import { cardPath, shopDisplayName } from "./product";
+import { buildShareUrl, cardPath, shopDisplayName } from "./product";
 import type { Language, Shop } from "./types";
 
 export const TONIGHT_LINE_MAX = 72;
@@ -70,7 +70,10 @@ export function tonightCardPath(
   shopId: string,
   language: Language = "ar",
 ): string {
-  return `${cardPath(shopId, language)}?from=tonight`;
+  return buildShareUrl(cardPath(shopId, language), {
+    from: "tonight",
+    utmSource: "invite",
+  });
 }
 
 export function tonightCardUrl(

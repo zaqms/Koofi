@@ -259,7 +259,12 @@ assert(browse.includes("rounded-full"), "featured items are pills");
 assert(browse.includes("data-browse-pills"), "homepage strip is the pill band");
 assert(browse.includes("data-browse-scroll"), "circular scroll chevron is present");
 assert(browse.includes("absolute end-4"), "scroll chevron sits on the trailing edge");
-assert(browse.includes("pe-12"), "pills reserve space so the chevron does not overlay names");
+assert(browse.includes("pe-10"), "pills reserve space so the chevron fades the last peek");
+assert(
+  browse.indexOf("<ViewAllLink language={language} />") <
+    browse.indexOf("{copy.browseNeighborhoodsHint[language]}"),
+  "subtitle sits under the title row so EN stays one line",
+);
 assert(!browse.includes("NeighborhoodIcon"), "homepage strip has no landmark icons");
 assert(!browse.includes("aspect-square"), "homepage strip is not the card belt");
 assert(!browse.includes("bg-blush"), "no default selected Hittin fill");

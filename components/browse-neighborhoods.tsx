@@ -87,12 +87,12 @@ function FeaturedPills({
     <div className="relative -mx-4 mt-3 px-4">
       <div
         ref={rowRef}
-        className="overflow-x-auto pe-12 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="overflow-x-auto pe-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         role="list"
         data-neighborhood-row=""
         data-featured-visual={ids.join(",")}
       >
-        <div className="flex w-max flex-nowrap items-center gap-2">
+        <div className="flex w-max flex-nowrap items-center gap-1.5">
           {ids.map((id) => (
             <Link
               key={id}
@@ -100,7 +100,7 @@ function FeaturedPills({
               data-neighborhood-id={id}
               href={districtPath(id, language)}
               onClick={() => trackDistrict(id, language)}
-              className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-foam px-3.5 text-[13px] leading-none text-ink"
+              className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-foam px-3 text-[13px] leading-none text-ink"
             >
               {browseNeighborhoodLabel(id, language)}
             </Link>
@@ -141,16 +141,14 @@ export function BrowseNeighborhoods({
       style={rtl ? undefined : { direction: "ltr", unicodeBidi: "isolate" }}
     >
       <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h2 id="browse-neighborhoods" className="text-lg font-semibold leading-7">
-            {copy.browseNeighborhoods[language]}
-          </h2>
-          <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
-            {copy.browseNeighborhoodsHint[language]}
-          </p>
-        </div>
+        <h2 id="browse-neighborhoods" className="min-w-0 text-lg font-semibold leading-7">
+          {copy.browseNeighborhoods[language]}
+        </h2>
         <ViewAllLink language={language} />
       </div>
+      <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
+        {copy.browseNeighborhoodsHint[language]}
+      </p>
       <FeaturedPills language={language} ids={ids} />
     </section>
   );

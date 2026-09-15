@@ -61,6 +61,9 @@ assert(resolveDistrictSlug("al-rawabi") === "al-rawabi", "al-rawabi resolves");
 assert(resolveDistrictSlug("al-fayha") === "al-fayha", "al-fayha resolves");
 assert(resolveDistrictSlug("al-raqban") === "al-raqban", "al-raqban resolves");
 assert(resolveDistrictSlug("al-munsiyah") === "al-munsiyah", "al-munsiyah resolves");
+assert(resolveDistrictSlug("an-nada") === "an-nada", "an-nada resolves");
+assert(resolveDistrictSlug("diplomatic-quarter") === "diplomatic-quarter", "diplomatic-quarter resolves");
+assert(resolveDistrictSlug("king-fahd") === "king-fahd", "king-fahd resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -107,8 +110,11 @@ assert(areas.includes("al-rawabi"), "directory includes al-rawabi");
 assert(areas.includes("al-fayha"), "directory includes al-fayha");
 assert(areas.includes("al-raqban"), "directory includes al-raqban");
 assert(areas.includes("al-munsiyah"), "directory includes al-munsiyah");
-assert(areas.length === 31, `expected 31 districts, got ${areas.length}`);
-assert(listRealShops().length === 197, `catalog 196→197, got ${listRealShops().length}`);
+assert(areas.includes("an-nada"), "directory includes an-nada");
+assert(areas.includes("diplomatic-quarter"), "directory includes diplomatic-quarter");
+assert(areas.includes("king-fahd"), "directory includes king-fahd");
+assert(areas.length === 34, `expected 34 districts, got ${areas.length}`);
+assert(listRealShops().length === 201, `catalog 197→201, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -799,10 +805,113 @@ assert(
   "coffee-address-al-munsiyah uses a distinct official place hex",
 );
 
+const rabi = filterDirectoryShops(shops, "al-rabi");
+assert(rabi.length === 2, `al-rabi has 2 shops, got ${rabi.length}`);
+assert(
+  rabi.some((shop) => shop.id === "piccolo-al-rabi"),
+  "al-rabi keeps piccolo-al-rabi",
+);
+assert(
+  rabi.some((shop) => shop.id === "ashjar-cafe-ar-rabi"),
+  "al-rabi includes ashjar-cafe-ar-rabi",
+);
+
+const nada = filterDirectoryShops(shops, "an-nada");
+assert(nada.length === 1, `an-nada has 1 shop, got ${nada.length}`);
+assert(
+  nada.some((shop) => shop.id === "brew92-an-nada"),
+  "an-nada includes brew92-an-nada",
+);
+assert(neighborhoodLabel("an-nada", "ar") === "الندى", "an-nada Arabic label");
+assert(neighborhoodLabel("an-nada", "en") === "An Nada", "an-nada English label");
+assert(
+  districtPath("an-nada", "ar") === "/coffee-shops/an-nada",
+  "AR an-nada coffee-shops path",
+);
+assert(
+  districtPath("an-nada", "en") === "/en/coffee-shops/an-nada",
+  "EN an-nada coffee-shops path",
+);
+for (const ask of ["الندى", "ندى", "nada", "an nada", "an-nada", "An Nada"]) {
+  assert(
+    parseIntent(ask).neighborhoods.includes("an-nada"),
+    `parseIntent(${ask}) should hit an-nada`,
+  );
+}
+
+const dq = filterDirectoryShops(shops, "diplomatic-quarter");
+assert(dq.length === 1, `diplomatic-quarter has 1 shop, got ${dq.length}`);
+assert(
+  dq.some((shop) => shop.id === "jazean-diplomatic-quarter"),
+  "diplomatic-quarter includes jazean-diplomatic-quarter",
+);
+assert(
+  neighborhoodLabel("diplomatic-quarter", "ar") === "الحي الدبلوماسي",
+  "diplomatic-quarter Arabic label",
+);
+assert(
+  neighborhoodLabel("diplomatic-quarter", "en") === "Diplomatic Quarter",
+  "diplomatic-quarter English label",
+);
+assert(
+  districtPath("diplomatic-quarter", "ar") === "/coffee-shops/diplomatic-quarter",
+  "AR diplomatic-quarter coffee-shops path",
+);
+assert(
+  districtPath("diplomatic-quarter", "en") ===
+    "/en/coffee-shops/diplomatic-quarter",
+  "EN diplomatic-quarter coffee-shops path",
+);
+for (const ask of [
+  "الحي الدبلوماسي",
+  "الدبلوماسي",
+  "diplomatic quarter",
+  "Diplomatic Quarter",
+  "السفارات",
+]) {
+  assert(
+    parseIntent(ask).neighborhoods.includes("diplomatic-quarter"),
+    `parseIntent(${ask}) should hit diplomatic-quarter`,
+  );
+}
+
+const kingFahd = filterDirectoryShops(shops, "king-fahd");
+assert(kingFahd.length === 1, `king-fahd has 1 shop, got ${kingFahd.length}`);
+assert(
+  kingFahd.some((shop) => shop.id === "markab-king-fahd"),
+  "king-fahd includes markab-king-fahd",
+);
+assert(
+  neighborhoodLabel("king-fahd", "ar") === "الملك فهد",
+  "king-fahd Arabic label",
+);
+assert(
+  neighborhoodLabel("king-fahd", "en") === "King Fahd",
+  "king-fahd English label",
+);
+assert(
+  districtPath("king-fahd", "ar") === "/coffee-shops/king-fahd",
+  "AR king-fahd coffee-shops path",
+);
+assert(
+  districtPath("king-fahd", "en") === "/en/coffee-shops/king-fahd",
+  "EN king-fahd coffee-shops path",
+);
+const markab = getShop("markab-king-fahd");
+assert(markab, "markab-king-fahd is a distinct catalog shop");
+assert(markab.neighborhood === "king-fahd", "Markab is not folded into olaya");
+assert(markab.neighborhood !== "olaya", "Markab address street is not the Olaya حي");
+for (const ask of ["الملك فهد", "حي الملك فهد", "king fahd", "King Fahd", "king-fahd"]) {
+  assert(
+    parseIntent(ask).neighborhoods.includes("king-fahd"),
+    `parseIntent(${ask}) should hit king-fahd`,
+  );
+}
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
-    "serb-specialty-al-munsiyah,roasting-stages-al-munsiyah,eagle-coffee-al-munsiyah",
-  "New this week allowlist is the Al Munsiyah trio",
+    "brew92-an-nada,ashjar-cafe-ar-rabi,jazean-diplomatic-quarter,markab-king-fahd",
+  "New this week allowlist is the Time Out gap four",
 );
 assert(
   listNewThisWeekShops()
@@ -833,7 +942,11 @@ const scoutPack: {
     | "al-rawabi"
     | "al-fayha"
     | "al-raqban"
-    | "al-munsiyah";
+    | "al-munsiyah"
+    | "an-nada"
+    | "al-rabi"
+    | "diplomatic-quarter"
+    | "king-fahd";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -1548,6 +1661,42 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/anotherside-cafe-al-munsiyah.jpg",
     pin: { lat: 24.8191788, lng: 46.762058 },
+  },
+  {
+    id: "brew92-an-nada",
+    hex: "0x3e2efdfd6d3b8419:0x27bd2abaf235982",
+    neighborhood: "an-nada",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/brew92-an-nada.png",
+    pin: { lat: 24.8169142, lng: 46.6877021 },
+  },
+  {
+    id: "ashjar-cafe-ar-rabi",
+    hex: "0x3e2ee30fc7c43677:0x513b46d8aebb6816",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ashjar-cafe-ar-rabi.png",
+    pin: { lat: 24.7863116, lng: 46.6587146 },
+  },
+  {
+    id: "jazean-diplomatic-quarter",
+    hex: "0x3e2f1da53f6c702b:0x93a74da9cf92504c",
+    neighborhood: "diplomatic-quarter",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jazean-diplomatic-quarter.png",
+    pin: { lat: 24.6858552, lng: 46.628366 },
+  },
+  {
+    id: "markab-king-fahd",
+    hex: "0x3e2f1d006b44b683:0x2a0dec5a5c37872",
+    neighborhood: "king-fahd",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/markab-king-fahd.jpg",
+    pin: { lat: 24.7376542, lng: 46.6633059 },
   },
 ];
 

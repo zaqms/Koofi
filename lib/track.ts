@@ -1,5 +1,5 @@
 import type { ViralShareChannel } from "./tonight";
-import type { Language } from "./types";
+import type { City, Language } from "./types";
 
 export type { ViralShareChannel } from "./tonight";
 
@@ -16,6 +16,9 @@ export type AnalyticsEventName =
   | "cafe_unvote"
   | "chip_tap"
   | "district_select"
+  | "neighborhoods_view_all"
+  | "neighborhoods_search"
+  | "neighborhoods_sort"
   | "district_match"
   | "chat_query"
   | "tonight_card_open"
@@ -39,6 +42,8 @@ export type AnalyticsEventName =
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing" | "halfway";
 export type ListingShareSource = "list" | "card";
+export type DistrictSelectSource = "home_pill" | "view_all";
+export type NeighborhoodsSortId = "nearby" | "popular" | "az";
 export type ChatQueryVia = "typed" | "chip";
 export type MeetHalfwayPinWhich = "a" | "b" | "self";
 export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
@@ -56,7 +61,10 @@ export type AnalyticsParams = {
     | MapsClickSource
     | ListingShareSource
     | MeetHalfwayResultSource
-    | MeetHalfwayStartSource;
+    | MeetHalfwayStartSource
+    | DistrictSelectSource;
+  city?: City;
+  sort?: NeighborhoodsSortId;
   text_length?: number;
   chip_id?: string;
   chip_label?: string;
@@ -120,6 +128,30 @@ export function trackChatQuery(input: {
   if (!params || !params.query_text) return false;
   trackEvent("chat_query", params, {
     dedupeKey: `chat_query:${params.via}:${params.query_text}`,
+  });
+  return true;
+}
+
+export function neighborhoodsSearchParams(input: {
+  query: string;
+  locale: Language;
+  city: City;
+}): AnalyticsParams | null {
+  const query_text = input.query.trim();
+  if (!query_text) return null;
+  return { query_text, locale: input.locale, city: input.city };
+}
+
+/** Fire neighborhoods_search after the View All search debounce. Skip empty. */
+export function trackNeighborhoodsSearch(input: {
+  query: string;
+  locale: Language;
+  city: City;
+}): boolean {
+  const params = neighborhoodsSearchParams(input);
+  if (!params?.query_text) return false;
+  trackEvent("neighborhoods_search", params, {
+    dedupeKey: `neighborhoods_search:${params.locale}:${params.city}:${params.query_text}`,
   });
   return true;
 }

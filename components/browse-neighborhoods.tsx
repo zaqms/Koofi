@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  DEFAULT_BROWSE_CITY,
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
 } from "@/lib/browse-neighborhoods";
 import { copy } from "@/lib/copy";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { districtPath, neighborhoodsPath } from "@/lib/product";
-import { trackEvent } from "@/lib/track";
+import { trackEvent, type DistrictSelectSource } from "@/lib/track";
 import type { City, Language, NeighborhoodId } from "@/lib/types";
 
 type BrowseNeighborhoodsProps = {
@@ -17,7 +18,12 @@ type BrowseNeighborhoodsProps = {
   city?: City;
 };
 
-function trackDistrict(id: NeighborhoodId, language: Language) {
+function trackDistrict(
+  id: NeighborhoodId,
+  language: Language,
+  city: City,
+  source: DistrictSelectSource,
+) {
   const hood = NEIGHBORHOODS[id];
   trackEvent(
     "district_select",
@@ -26,8 +32,10 @@ function trackDistrict(id: NeighborhoodId, language: Language) {
       district_ar: hood.ar,
       district_en: hood.en,
       locale: language,
+      source,
+      city,
     },
-    { dedupeKey: `district_select:${hood.id}` },
+    { dedupeKey: `district_select:${source}:${hood.id}` },
   );
 }
 
@@ -52,12 +60,25 @@ function Arrow({ point }: { point: "left" | "right" }) {
   );
 }
 
-function ViewAllLink({ language }: { language: Language }) {
+function ViewAllLink({
+  language,
+  city,
+}: {
+  language: Language;
+  city: City;
+}) {
   const rtl = language === "ar";
   return (
     <Link
       href={neighborhoodsPath(language)}
       data-view-all-cta={language}
+      onClick={() => {
+        trackEvent(
+          "neighborhoods_view_all",
+          { locale: language, city },
+          { dedupeKey: `neighborhoods_view_all:${language}:${city}` },
+        );
+      }}
       className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-ink-soft"
     >
       <span>{copy.viewAllNeighborhoods[language]}</span>
@@ -69,12 +90,31 @@ function ViewAllLink({ language }: { language: Language }) {
 function FeaturedPills({
   language,
   ids,
+  city,
 }: {
   language: Language;
   ids: readonly NeighborhoodId[];
+  city: City;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const rtl = language === "ar";
+  const [canScroll, setCanScroll] = useState(true);
+
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row) return;
+    const measure = () => {
+      setCanScroll(row.scrollWidth > row.clientWidth + 1);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(row);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [ids]);
 
   function scrollForward() {
     const row = rowRef.current;
@@ -84,10 +124,10 @@ function FeaturedPills({
   }
 
   return (
-    <div className="relative -mx-4 mt-3 px-4">
+    <div className="mt-3 flex items-center gap-2">
       <div
         ref={rowRef}
-        className="overflow-x-auto pe-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         role="list"
         data-neighborhood-row=""
         data-featured-visual={ids.join(",")}
@@ -99,7 +139,7 @@ function FeaturedPills({
               role="listitem"
               data-neighborhood-id={id}
               href={districtPath(id, language)}
-              onClick={() => trackDistrict(id, language)}
+              onClick={() => trackDistrict(id, language, city, "home_pill")}
               className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-foam px-3 text-[13px] leading-none text-ink"
             >
               {browseNeighborhoodLabel(id, language)}
@@ -107,26 +147,24 @@ function FeaturedPills({
           ))}
         </div>
       </div>
-      <button
-        type="button"
-        data-browse-scroll=""
-        onClick={scrollForward}
-        aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
-        className={`absolute end-4 top-0 inline-flex size-9 items-center justify-center rounded-full border border-line bg-foam text-ink ${
-          rtl
-            ? "shadow-[8px_0_12px_8px_var(--paper)]"
-            : "shadow-[-8px_0_12px_8px_var(--paper)]"
-        }`}
-      >
-        <Arrow point={rtl ? "left" : "right"} />
-      </button>
+      {canScroll ? (
+        <button
+          type="button"
+          data-browse-scroll=""
+          onClick={scrollForward}
+          aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
+          className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
+        >
+          <Arrow point={rtl ? "left" : "right"} />
+        </button>
+      ) : null}
     </div>
   );
 }
 
 export function BrowseNeighborhoods({
   language,
-  city = "riyadh",
+  city = DEFAULT_BROWSE_CITY,
 }: BrowseNeighborhoodsProps) {
   const rtl = language === "ar";
   const ids = featuredNeighborhoodIds(language, city);
@@ -144,12 +182,12 @@ export function BrowseNeighborhoods({
         <h2 id="browse-neighborhoods" className="min-w-0 text-lg font-semibold leading-7">
           {copy.browseNeighborhoods[language]}
         </h2>
-        <ViewAllLink language={language} />
+        <ViewAllLink language={language} city={city} />
       </div>
       <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
         {copy.browseNeighborhoodsHint[language]}
       </p>
-      <FeaturedPills language={language} ids={ids} />
+      <FeaturedPills language={language} ids={ids} city={city} />
     </section>
   );
 }

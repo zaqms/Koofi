@@ -18,7 +18,7 @@ import { copy } from "@/lib/copy";
 import { formatDistanceKm } from "@/lib/distance";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { homePath, neighborhoodsPath } from "@/lib/product";
-import { trackEvent } from "@/lib/track";
+import { trackEvent, trackNeighborhoodsSearch } from "@/lib/track";
 import type { City, Language, Pin } from "@/lib/types";
 import {
   requestVisitorLocation,
@@ -61,6 +61,13 @@ export function NeighborhoodsPageView({
     if (visitor.status === "ready") setSort("nearby");
   }, [visitor.status]);
 
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      trackNeighborhoodsSearch({ query, locale: language, city });
+    }, 400);
+    return () => window.clearTimeout(handle);
+  }, [query, language, city]);
+
   const filtered = useMemo(
     () => filterNeighborhoodRows(rows, query),
     [rows, query],
@@ -73,6 +80,11 @@ export function NeighborhoodsPageView({
   function pickSort(next: NeighborhoodSort) {
     userPickedSort.current = true;
     setSort(next);
+    trackEvent(
+      "neighborhoods_sort",
+      { sort: next, locale: language, city },
+      { dedupeKey: `neighborhoods_sort:${language}:${city}:${next}` },
+    );
     if (next === "nearby" && visitor.status !== "ready") {
       void requestVisitorLocation({ retry: true });
     }
@@ -204,8 +216,10 @@ export function NeighborhoodsPageView({
                         district_ar: hood.ar,
                         district_en: hood.en,
                         locale: language,
+                        source: "view_all",
+                        city,
                       },
-                      { dedupeKey: `district_select:${hood.id}` },
+                      { dedupeKey: `district_select:view_all:${hood.id}` },
                     );
                   }}
                   className="flex items-center gap-3 border-b border-line py-3.5 text-ink"

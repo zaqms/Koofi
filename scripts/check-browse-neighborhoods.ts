@@ -245,6 +245,11 @@ assert(
   "Soft Places stays parked on home landing",
 );
 
+const product = readRepo("lib/product.ts");
+assert(product.includes('en: "With friends"'), "home chip label is With friends");
+assert(product.includes('ar: "مع الأصحاب"'), "AR home chip label is مع الأصحاب");
+assert(!product.includes("Good for a date"), "date chip label is gone");
+
 const directory = readRepo("components/shop-directory.tsx");
 assert(
   directory.includes("{popular ? (") &&
@@ -258,13 +263,18 @@ assert(browse.includes("flex-nowrap"), "featured row does not wrap");
 assert(browse.includes("rounded-full"), "featured items are pills");
 assert(browse.includes("data-browse-pills"), "homepage strip is the pill band");
 assert(browse.includes("data-browse-scroll"), "circular scroll chevron is present");
-assert(browse.includes("absolute end-4"), "scroll chevron sits on the trailing edge");
-assert(browse.includes("pe-10"), "pills reserve space so the chevron fades the last peek");
+assert(browse.includes("flex items-center gap-2"), "chevron is a flex sibling of the scroller");
+assert(browse.includes("min-w-0 flex-1 overflow-x-auto"), "pills scroll; chevron stays outside overflow");
+assert(browse.includes("shrink-0 items-center justify-center rounded-full"), "chevron stays circular and unclipped");
+assert(!browse.includes("absolute end-4"), "chevron is not overlayed inside the overflow clip");
 assert(
-  browse.indexOf("<ViewAllLink language={language} />") <
+  browse.indexOf("<ViewAllLink language={language} city={city} />") <
     browse.indexOf("{copy.browseNeighborhoodsHint[language]}"),
   "subtitle sits under the title row so EN stays one line",
 );
+assert(browse.includes('source: "home_pill"') || browse.includes('"home_pill"'), "home pills send source=home_pill");
+assert(browse.includes("neighborhoods_view_all"), "View all CTA fires neighborhoods_view_all");
+assert(browse.includes("city"), "browse events carry city");
 assert(!browse.includes("NeighborhoodIcon"), "homepage strip has no landmark icons");
 assert(!browse.includes("aspect-square"), "homepage strip is not the card belt");
 assert(!browse.includes("bg-blush"), "no default selected Hittin fill");
@@ -291,7 +301,7 @@ assert(
 );
 assert(
   browse.indexOf('id="browse-neighborhoods"') <
-    browse.indexOf("<ViewAllLink language={language} />"),
+    browse.indexOf("<ViewAllLink language={language} city={city} />"),
   "heading precedes CTA in DOM; dir places title and View all",
 );
 
@@ -313,6 +323,24 @@ assert(
   viewAll.includes('language === "ar" ? (') &&
     viewAll.includes('<path d="M6 3.2 11.2 8 6 12.8" />'),
   "AR view-all row chevron points left; back control stays",
+);
+assert(viewAll.includes('source: "view_all"'), "view-all rows send source=view_all");
+assert(viewAll.includes("neighborhoods_sort"), "user sort taps fire neighborhoods_sort");
+assert(viewAll.includes("trackNeighborhoodsSearch"), "search changes fire neighborhoods_search");
+assert(viewAll.includes("400"), "search is debounced ~400ms");
+assert(
+  !viewAll.includes('trackEvent(\n      "neighborhoods_sort"') ||
+    viewAll.indexOf("function pickSort") < viewAll.indexOf("neighborhoods_sort"),
+  "sort analytics live on the user pickSort path",
+);
+assert(
+  !viewAll
+    .slice(
+      viewAll.indexOf("if (visitor.status === \"ready\")"),
+      viewAll.indexOf("function pickSort"),
+    )
+    .includes("neighborhoods_sort"),
+  "auto-geo Nearby does not fire neighborhoods_sort",
 );
 
 assert(

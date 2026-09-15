@@ -84,10 +84,10 @@ function FeaturedPills({
   }
 
   return (
-    <div className="relative mt-3">
+    <div className="relative -mx-4 mt-3 px-4">
       <div
         ref={rowRef}
-        className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="overflow-x-auto pe-12 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         role="list"
         data-neighborhood-row=""
         data-featured-visual={ids.join(",")}
@@ -105,17 +105,21 @@ function FeaturedPills({
               {browseNeighborhoodLabel(id, language)}
             </Link>
           ))}
-          <button
-            type="button"
-            data-browse-scroll=""
-            onClick={scrollForward}
-            aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
-            className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
-          >
-            <Arrow point={rtl ? "left" : "right"} />
-          </button>
         </div>
       </div>
+      <button
+        type="button"
+        data-browse-scroll=""
+        onClick={scrollForward}
+        aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
+        className={`absolute end-4 top-0 inline-flex size-9 items-center justify-center rounded-full border border-line bg-foam text-ink ${
+          rtl
+            ? "shadow-[8px_0_12px_8px_var(--paper)]"
+            : "shadow-[-8px_0_12px_8px_var(--paper)]"
+        }`}
+      >
+        <Arrow point={rtl ? "left" : "right"} />
+      </button>
     </div>
   );
 }

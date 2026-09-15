@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import {
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
@@ -74,20 +74,7 @@ function FeaturedPills({
   ids: readonly NeighborhoodId[];
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
-  const [overflow, setOverflow] = useState(false);
   const rtl = language === "ar";
-
-  useLayoutEffect(() => {
-    const row = rowRef.current;
-    if (!row) return;
-    const measure = () => {
-      setOverflow(row.scrollWidth - row.clientWidth > 8);
-    };
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(row);
-    return () => observer.disconnect();
-  }, [ids]);
 
   function scrollForward() {
     const row = rowRef.current;
@@ -118,17 +105,15 @@ function FeaturedPills({
               {browseNeighborhoodLabel(id, language)}
             </Link>
           ))}
-          {overflow ? (
-            <button
-              type="button"
-              data-browse-scroll=""
-              onClick={scrollForward}
-              aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
-              className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
-            >
-              <Arrow point={rtl ? "left" : "right"} />
-            </button>
-          ) : null}
+          <button
+            type="button"
+            data-browse-scroll=""
+            onClick={scrollForward}
+            aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
+          >
+            <Arrow point={rtl ? "left" : "right"} />
+          </button>
         </div>
       </div>
     </div>

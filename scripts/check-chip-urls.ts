@@ -1,6 +1,7 @@
 /**
  * Ajz-locked dedicated chip URLs (12 Sep 2026).
- * Soft Places stays parked. Do not rename paths.
+ * 15 Sep: date chip public slug is `for-two` (old `/date` 308s).
+ * Soft Places stays parked. Do not rename other paths.
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -8,9 +9,13 @@ import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
 import {
   COFFEE_SHOP_CHIP_SLUGS,
+  DATE_CHIP_ID,
+  DATE_CHIP_PUBLIC_SLUG,
   HALFWAY_INVITE_PATH_PREFIX,
   HALFWAY_LANDING_PATH,
   HOME_CHIP_IDS,
+  LEGACY_CHIP_REDIRECTS,
+  LEGACY_DATE_CHIP_SLUG,
   LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
@@ -20,8 +25,10 @@ import {
   NEARBY_CHIP,
   OFF_HOME_CHIP_IDS,
   VIBE_CHIPS,
+  chipIdFromCoffeeShopSlug,
   chipSharePath,
   coffeeShopChipPath,
+  coffeeShopChipSlugForId,
   halfwayInvitePath,
   halfwayPath,
   homeSurfaceChips,
@@ -54,7 +61,7 @@ const LOCKED_CHIP_PATHS = {
   study: { ar: "/coffee-shops/study", en: "/en/coffee-shops/study" },
   late: { ar: "/coffee-shops/late", en: "/en/coffee-shops/late" },
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
-  date: { ar: "/coffee-shops/date", en: "/en/coffee-shops/date" },
+  date: { ar: "/coffee-shops/for-two", en: "/en/coffee-shops/for-two" },
 } as const;
 
 for (const [chipId, paths] of Object.entries(LOCKED_CHIP_PATHS)) {
@@ -193,7 +200,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   pastry: "قهوة وحلى",
   quiet: "هادي ورايق",
   work: "للشغل",
-  date: "لموعد",
+  date: "لاثنين",
   outdoor: "جلسات خارجية",
   nearby: "قريب مني",
 };
@@ -203,6 +210,62 @@ for (const chip of homeSurfaceChips()) {
     `AR home label ${chip.id} → ${LOCKED_HOME_LABELS[chip.id]}`,
   );
 }
+
+const LOCKED_HOME_LABELS_EN: Record<string, string> = {
+  popular: "Most Popular",
+  coffee: "Best Coffee",
+  pastry: "Coffee and sweets",
+  quiet: "Cozy and Quiet",
+  work: "Best for Work",
+  date: "For two",
+  outdoor: "Outdoor seating",
+  nearby: "Nearby",
+};
+for (const chip of homeSurfaceChips()) {
+  assert(
+    chip.en === LOCKED_HOME_LABELS_EN[chip.id],
+    `EN home label ${chip.id} → ${LOCKED_HOME_LABELS_EN[chip.id]}`,
+  );
+}
+
+assert(DATE_CHIP_ID === "date", "catalog filter key stays date");
+assert(DATE_CHIP_PUBLIC_SLUG === "for-two", "public date slug is for-two");
+assert(LEGACY_DATE_CHIP_SLUG === "date", "old public slug stays date");
+assert(
+  coffeeShopChipSlugForId(DATE_CHIP_ID) === DATE_CHIP_PUBLIC_SLUG,
+  "date id maps to for-two slug",
+);
+assert(
+  chipIdFromCoffeeShopSlug(DATE_CHIP_PUBLIC_SLUG) === DATE_CHIP_ID,
+  "for-two slug maps back to date id",
+);
+assert(
+  !isCoffeeShopChipSlug(LEGACY_DATE_CHIP_SLUG),
+  "legacy date slug is not a live coffee-shops path",
+);
+assert(
+  isCoffeeShopChipSlug(DATE_CHIP_PUBLIC_SLUG),
+  "for-two is a live coffee-shops slug",
+);
+assert(
+  !isNeighborhoodId(DATE_CHIP_PUBLIC_SLUG),
+  "for-two must not collide with a district",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS.length === 2 &&
+    LEGACY_CHIP_REDIRECTS.every((row) => row.statusCode === 308),
+  "old date URLs 308 to for-two",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[0]?.source === "/coffee-shops/date" &&
+    LEGACY_CHIP_REDIRECTS[0]?.destination === "/coffee-shops/for-two",
+  "AR date → for-two",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[1]?.source === "/en/coffee-shops/date" &&
+    LEGACY_CHIP_REDIRECTS[1]?.destination === "/en/coffee-shops/for-two",
+  "EN date → for-two",
+);
 
 const staticParams = categoryListingStaticParams();
 for (const slug of ["most-popular", ...COFFEE_SHOP_CHIP_SLUGS]) {
@@ -216,6 +279,10 @@ for (const slug of ["most-popular", ...COFFEE_SHOP_CHIP_SLUGS]) {
 assert(
   !staticParams.some((row) => row.slug === "meet-halfway"),
   "meet-halfway is not a coffee-shops slug",
+);
+assert(
+  !staticParams.some((row) => row.slug === LEGACY_DATE_CHIP_SLUG),
+  "legacy date slug is not a generated coffee-shops page",
 );
 
 assert(
@@ -255,9 +322,11 @@ const categoryAr = read("app/[category]/[slug]/page.tsx");
 const categoryEn = read("app/en/[category]/[slug]/page.tsx");
 assert(
   categoryAr.includes("isCoffeeShopChipSlug") &&
-    categoryAr.includes("selectedChipId={slug}") &&
+    categoryAr.includes("chipIdFromCoffeeShopSlug") &&
+    categoryAr.includes("selectedChipId={chipId}") &&
     categoryEn.includes("isCoffeeShopChipSlug") &&
-    categoryEn.includes("selectedChipId={slug}"),
+    categoryEn.includes("chipIdFromCoffeeShopSlug") &&
+    categoryEn.includes("selectedChipId={chipId}"),
   "directory category routes open vibe/nearby chips",
 );
 
@@ -278,6 +347,31 @@ assert(
 assert(
   !chips.includes("ثلاث الليلة") && !chips.includes("ON TONIGHT"),
   "Soft Places chips stay parked",
+);
+assert(
+  chips.includes('case "date"') &&
+    chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
+    !/heart|romance|💕|❤/i.test(chips),
+  "date chip keeps the person/user icon",
+);
+
+const product = read("lib/product.ts");
+const why = read("lib/why-line.ts");
+const vibeLabels = read("lib/vibe-labels.ts");
+assert(
+  !product.includes("Good for a date") && !product.includes("لموعد"),
+  "product chip labels dropped date / موعد",
+);
+assert(
+  !why.includes("Good for a date") &&
+    !why.includes("لموعد") &&
+    !why.includes("For a quiet date") &&
+    !why.includes("For a date,"),
+  "why-lines dropped date / موعد",
+);
+assert(
+  vibeLabels.includes('date: "For two"') && !vibeLabels.includes('date: "Date"'),
+  "moment fallback label is For two",
 );
 
 const halfwayCard = read("components/meet-halfway-card.tsx");
@@ -362,6 +456,10 @@ assert(
 assert(
   nextConfig.includes("TEMPORARY_DEFAULT_LANDING_MOST_POPULAR"),
   "Most Popular redirect stays behind the revert flag",
+);
+assert(
+  nextConfig.includes("LEGACY_CHIP_REDIRECTS"),
+  "old date slug redirects are wired in next.config",
 );
 
 const hero = read("components/home-hero.tsx");

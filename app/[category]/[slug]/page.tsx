@@ -9,6 +9,7 @@ import {
   mostPopularMetadata,
 } from "@/lib/most-popular";
 import {
+  chipIdFromCoffeeShopSlug,
   isCoffeeShopChipSlug,
   isMostPopularSlug,
   PRODUCT_NAME,
@@ -35,7 +36,9 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
     return mostPopularMetadata("ar");
   }
   if (isCoffeeShopChipSlug(slug)) {
-    return chipPageMetadata(slug, "ar");
+    const chipId = chipIdFromCoffeeShopSlug(slug);
+    if (!chipId) return { title: PRODUCT_NAME };
+    return chipPageMetadata(chipId, "ar");
   }
   const district = resolveDistrictSlug(slug);
   if (!district) {
@@ -58,7 +61,9 @@ export default async function CategoryDistrictPage({
     );
   }
   if (isCoffeeShopChipSlug(slug)) {
-    return <HomeLanding language="ar" selectedChipId={slug} />;
+    const chipId = chipIdFromCoffeeShopSlug(slug);
+    if (!chipId) notFound();
+    return <HomeLanding language="ar" selectedChipId={chipId} />;
   }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();

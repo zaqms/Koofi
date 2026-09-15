@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "./lib/landing-experiment";
+import { LEGACY_CHIP_REDIRECTS } from "./lib/product";
 
 void TEMPORARY_DEFAULT_LANDING_MOST_POPULAR;
 
@@ -46,6 +47,7 @@ const nextConfig: NextConfig = {
         destination: "/en/coffee-shops/most-popular",
         statusCode: 308,
       },
+      ...LEGACY_CHIP_REDIRECTS,
     ];
   },
 };

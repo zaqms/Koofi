@@ -316,6 +316,22 @@ assert(
   parseIntent("أفضل قهوة").moments.join(",") === "qahwa",
   "أفضل قهوة chip must stay qahwa",
 );
+assert(
+  parseIntent("For two").moments.join(",") === "date",
+  "For two chip must resolve to date",
+);
+assert(
+  parseIntent("لاثنين").moments.join(",") === "date",
+  "لاثنين chip must resolve to date",
+);
+assert(
+  parseIntent("Good for a date").moments.join(",") === "date",
+  "old EN date label still maps to date",
+);
+assert(
+  parseIntent("لموعد").moments.join(",") === "date",
+  "old AR date label still maps to date",
+);
 
 const LOCKED_POPULAR = [
   "namq-al-malqa",

@@ -203,6 +203,9 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-fayha": ["al-safa", "al-manar", "al-rayyan", "al-rawabi"],
   "al-raqban": ["al-manar", "al-safa", "al-fayha", "al-rawabi"],
   "al-munsiyah": ["qurtubah", "al-yarmouk", "al-hamra", "al-rawdah"],
+  "an-nada": ["al-yasmin", "al-malqa", "hittin", "as-sahafah"],
+  "diplomatic-quarter": ["olaya", "al-rahmaniyyah", "diriyah", "kafd"],
+  "king-fahd": ["olaya", "sulimaniyah", "al-wurud", "al-masif"],
 };
 
 type DistrictLead = {
@@ -322,12 +325,13 @@ We’re Riyadh-only for now. Missing a place you like? Send a Maps link from the
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
   "al-rabi": {
-    lead: `Al Rabi is a thin list today — one shop on the catalog. We don’t pad it with names we haven’t added.`,
-    hereIntro: `There is **{count}** cafe from Al Rabi on wain.lol right now:`,
-    hereOutro: `That’s the set. Open the card, then **Take me there** for the Maps pin.`,
+    lead: `Al Rabi (الربيع) is still a short north-Riyadh list. [Piccolo Roasters](/en/c/piccolo-al-rabi) and [Ashjar cafe](/en/c/ashjar-cafe-ar-rabi) are the two cards on this page today. We don’t pad it with names we haven’t added.`,
+    hereIntro: `There are **{count}** cafes from Al Rabi on wain.lol right now:`,
+    hereOutro: `That’s the set. Open a card, then **Take me there** for the Maps pin.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
+    meta: "Two cafes in Al Rabi on wain.lol — a north Riyadh list including Piccolo and Ashjar, each with a Maps link.",
   },
   "al-masif": {
     lead: `Al Masif has one place on wain.lol right now. Short on purpose — only what we’ve actually added.`,
@@ -508,6 +512,42 @@ The count is ten because that’s how many Al Munsiyah places we’ve added.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Ten cafes in Al Munsiyah on wain.lol — an east Riyadh list including Serb, Roasting Stages, and Eagle, each with a Maps link.",
   },
+  "an-nada": {
+    lead: `An Nada (الندى) sits on Riyadh’s north side, next to Yasmin and Malqa. This page is the An Nada set on wain.lol — one cafe we’ve actually added.
+
+[Brew 92 - Al Nada](/en/c/brew92-an-nada) is the card on this list today. We don’t invent extras.`,
+    hereIntro: `There is **{count}** cafe from An Nada on the catalog today:`,
+    hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
+    nearbyIntro: `If An Nada isn’t the stop, these north-Riyadh lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nada. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in An Nada on wain.lol — a north Riyadh list including Brew 92, with a Maps link.",
+  },
+  "diplomatic-quarter": {
+    lead: `The Diplomatic Quarter (الحي الدبلوماسي) is its own Riyadh list — السفارات on the maps card. This page is the DQ set we’ve put on wain.lol so far.
+
+[Jazean DQ](/en/c/jazean-diplomatic-quarter) is the name on this page today. We don’t rank it.`,
+    hereIntro: `There is **{count}** cafe from the Diplomatic Quarter on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If the Diplomatic Quarter isn’t the stop, these Riyadh lists sit closer in on the site:`,
+    about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like the Diplomatic Quarter. [About](/en/about).
+
+Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
+    meta: "One cafe in the Diplomatic Quarter on wain.lol — a Riyadh list including Jazean DQ, with a Maps link.",
+  },
+  "king-fahd": {
+    lead: `King Fahd (الملك فهد) is its own district on the catalog — Olaya Street runs through it, but this is not the Olaya page. This is the King Fahd set on wain.lol.
+
+[Markab](/en/c/markab-king-fahd) is the card we’ve added. Coffee first. We don’t invent extras.`,
+    hereIntro: `There is **{count}** cafe from King Fahd on the catalog today:`,
+    hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
+    nearbyIntro: `If King Fahd isn’t the stop, these central Riyadh lists sit on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like King Fahd. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in King Fahd on wain.lol — a Riyadh district list including Markab, with a Maps link.",
+  },
 };
 
 const CNI_BLURBS: Record<string, string> = {
@@ -560,6 +600,10 @@ const CNI_BLURBS: Record<string, string> = {
   "coffee-address-al-munsiyah": `**Coffee Address** is on the Al Munsiyah catalog on wain.lol. This is the المونسية pin. We don’t invent extras; the other Al Munsiyah shops we’ve added are linked below.`,
   "das-mond-al-munsiyah": `Al Munsiyah has **Das Mond Café** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Munsiyah places on wain.lol are linked below.`,
   "anotherside-cafe-al-munsiyah": `**ANOTHERSIDE Cafe** is on the Al Munsiyah list on wain.lol. Other المونسية names sit underneath if this one isn’t the stop.`,
+  "brew92-an-nada": `**Brew 92 - Al Nada** is on the An Nada list on wain.lol. Catalog tags on the card: Roastery. Other الندى names sit underneath if this one isn’t the stop — short list, only what’s added.`,
+  "ashjar-cafe-ar-rabi": `**Ashjar cafe** is one of the Al Rabi cafes on wain.lol. Same الربيع page as Piccolo, its own pin. Hop the other Al Rabi card below if you want a different name.`,
+  "jazean-diplomatic-quarter": `This is the **Jazean DQ** page on wain.lol for the Diplomatic Quarter. The الحي الدبلوماسي list is that card today. Full neighborhood page is linked below.`,
+  "markab-king-fahd": `**Markab** is on the King Fahd list on wain.lol — الملك فهد, not the Olaya district page. Coffee first. The rest of that حي sits below if another name lands.`,
 };
 
 const CAFE_OPENERS = [

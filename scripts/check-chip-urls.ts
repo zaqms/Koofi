@@ -403,7 +403,7 @@ assert(
     chips.includes("{/* chawan + chasen */}") &&
     chips.includes('<ellipse cx="9"') &&
     !chips.includes("M12.4 4.8c3.2") &&
-    chips.includes('strokeWidth="1.55"') &&
+    chips.includes('strokeWidth = "1.55"') &&
     chips.includes("className=\"size-7 shrink-0\"") &&
     !chips.includes("bg-matcha") &&
     !chips.includes("text-matcha") &&
@@ -469,8 +469,11 @@ assert(
 assert(
   chips.includes('case "drive-through"') &&
     chips.includes("{/* car + pickup cup */}") &&
-    chips.includes('d="M15 17.8V5.6H21"') &&
-    chips.includes('d="M17.45 9L17.7 11.55H19.9L20.15 9Z"') &&
+    chips.includes('strokeWidth="1.5"') &&
+    chips.includes('d="M20.4 18.8V6.6H15.9"') &&
+    chips.includes('d="M16.05 10l.3 2.4h1.5l.3-2.4z"') &&
+    !chips.includes('d="M15 17.8V5.6H21"') &&
+    !chips.includes('d="M17.45 9L17.7 11.55H19.9L20.15 9Z"') &&
     !chips.includes('d="M4.2 14.2h15.6"') &&
     !chips.includes("{/* cup at window */}") &&
     !chips.includes('<rect x="3.2" y="3.8" width="10.2" height="16.4" rx="1.4" />') &&
@@ -479,7 +482,7 @@ assert(
     !chips.includes("border-drive") &&
     !chips.includes('stroke="#1E1714"') &&
     chips.includes('stroke="currentColor"'),
-  "Drive-through uses Amjad car+pickup-cup and sibling vibe tokens",
+  "Drive-through uses latest Design car+pickup-cup at stroke 1.5",
 );
 assert(
   !listDriveThroughDirectoryShops().some(

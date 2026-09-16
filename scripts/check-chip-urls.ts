@@ -469,9 +469,12 @@ assert(
 assert(
   chips.includes('case "drive-through"') &&
     chips.includes("{/* car + pickup cup */}") &&
-    chips.includes('strokeWidth="0.9"') &&
-    chips.includes('d="M21.2 18.55 V5.2 H14.0"') &&
-    chips.includes('d="M15.7 8.85 L16.1 11.95 H17.95 L18.35 8.85"') &&
+    chips.includes('viewBox="0 0 512 512"') &&
+    chips.includes('strokeWidth="18"') &&
+    chips.includes('d="M414 398V145c0-15-12-27-27-27H278"') &&
+    chips.includes('d="M349 240l8 48h30l8-48"') &&
+    !chips.includes('strokeWidth="0.9"') &&
+    !chips.includes('d="M21.2 18.55 V5.2 H14.0"') &&
     !chips.includes('d="M20.4 18.8V6.6H15.9"') &&
     !chips.includes('d="M16.05 10l.3 2.4h1.5l.3-2.4z"') &&
     !chips.includes('d="M15 17.8V5.6H21"') &&
@@ -483,8 +486,9 @@ assert(
     !chips.includes("text-drive") &&
     !chips.includes("border-drive") &&
     !chips.includes('stroke="#1E1714"') &&
+    !chips.includes('stroke="#111"') &&
     chips.includes('stroke="currentColor"'),
-  "Drive-through uses Design redo car+Gamma-post+cup at stroke 0.9",
+  "Drive-through uses Amjad v2 512 ship SVG with currentColor",
 );
 assert(
   !listDriveThroughDirectoryShops().some(

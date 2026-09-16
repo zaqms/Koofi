@@ -122,24 +122,34 @@ function ChipIcon({ id }: { id: string }) {
       );
     case "drive-through":
       return (
-        <Icon strokeWidth="0.9">
+        <svg
+          aria-hidden
+          viewBox="0 0 512 512"
+          fill="none"
+          className="size-7 shrink-0"
+        >
           {/* car + pickup cup */}
-          <rect x="2.2" y="10.0" width="10.2" height="6.4" rx="1.9" />
-          <path d="M4.1 10.0 C4.55 7.85 5.85 6.55 7.3 6.55 C8.75 6.55 10.05 7.85 10.5 10.0" />
-          <path d="M4.1 10.0 H10.5" />
-          <path d="M2.2 11.7 H1.25 A0.75 0.75 0 0 0 1.25 13.2 H2.2" />
-          <path d="M12.4 11.7 H13.35 A0.75 0.75 0 0 1 13.35 13.2 H12.4" />
-          <path d="M4.35 12.95 H6.55" />
-          <path d="M8.05 12.95 H10.25" />
-          <path d="M4.85 16.4 V18.2" />
-          <path d="M9.75 16.4 V18.2" />
-          <path d="M21.2 18.55 V5.2 H14.0" />
-          <path d="M19.7 18.55 H22.7" />
-          <rect x="14.35" y="6.5" width="5.35" height="6.2" rx="1.15" />
-          <path d="M15.5 8.85 H18.55" />
-          <path d="M15.9 8.2 H18.15" />
-          <path d="M15.7 8.85 L16.1 11.95 H17.95 L18.35 8.85" />
-        </Icon>
+          <g
+            stroke="currentColor"
+            strokeWidth="18"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M82 294h22l25-59c6-14 19-23 34-23h88c15 0 28 9 34 23l25 59h22" />
+            <path d="M104 294h206c15 0 28 12 28 28v52c0 13-10 23-23 23H99c-13 0-23-10-23-23v-52c0-16 13-28 28-28z" />
+            <path d="M129 294l22-52h112l22 52" />
+            <path d="M92 294H75c-10 0-18-8-18-18s8-18 18-18h29" />
+            <path d="M322 294h17c10 0 18-8 18-18s-8-18-18-18h-29" />
+            <path d="M104 397v25h34v-25M276 397v25h34v-25" />
+            <path d="M112 338l28 5M274 343l28-5" />
+            <path d="M330 398h119" />
+            <path d="M414 398V145c0-15-12-27-27-27H278" />
+            <path d="M278 118h-56c-11 0-20-9-20-20s9-20 20-20h192c15 0 27 12 27 27v293" />
+            <rect x="326" y="181" width="88" height="135" rx="18" />
+            <path d="M352 223h39l8 17h-55l8-17z" />
+            <path d="M349 240l8 48h30l8-48" />
+          </g>
+        </svg>
       );
     case "matcha":
       return (

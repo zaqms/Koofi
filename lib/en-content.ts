@@ -230,6 +230,14 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "an-nasim-al-gharbi": ["al-nahdah", "al-yarmouk", "al-hamra", "al-rawdah"],
   "ar-rimal": ["al-munsiyah", "qurtubah", "al-yarmouk", "al-hamra"],
   "al-janadriyyah": ["al-munsiyah", "qurtubah", "al-yarmouk", "al-hamra"],
+  namar: ["badr", "al-aziziyah", "al-hazm", "al-malaz"],
+  kkia: ["ar-rimal", "al-janadriyyah", "al-munsiyah", "qurtubah"],
+  "al-jazirah": ["al-nahdah", "al-yarmouk", "al-hamra", "al-rawdah"],
+  "an-nasim": ["al-nahdah", "al-yarmouk", "an-nasim-al-gharbi", "al-hamra"],
+  shubra: ["badr", "al-aziziyah", "al-hazm", "al-malaz"],
+  manfuha: ["ghubairah", "al-malaz", "al-murabba", "al-aziziyah"],
+  tuwaiq: ["al-hazm", "badr", "al-malaz", "king-fahd"],
+  "as-suwaidi": ["al-hazm", "al-malaz", "al-murabba", "sulimaniyah"],
 };
 
 type DistrictLead = {
@@ -647,26 +655,26 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   badr: {
     lead: `Badr (بدر) is a south Riyadh حي. This page is the Badr set on wain.lol so far.
 
-[Drive Coffee](/en/c/drive-badr) is on this list today. We don’t invent extras to fill the page.`,
+[Drive Coffee](/en/c/drive-badr) and [dr.CAFE](/en/c/drcafe-badr) are on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There are **{count}** cafes from Badr on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Badr isn’t the stop, these south-central lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Badr. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Two cafes in Badr on wain.lol — a Riyadh neighborhood list including Drive Coffee, with Maps links.",
+    meta: "Three cafes in Badr on wain.lol — a Riyadh neighborhood list including Drive Coffee and dr.CAFE, with Maps links.",
   },
   "al-aziziyah": {
     lead: `Al Aziziyah (العزيزية) sits on the south side of Riyadh. This page is the Al Aziziyah set on wain.lol so far.
 
-[Drive Coffee](/en/c/drive-al-aziziyah) is the name on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Al Aziziyah on the catalog today:`,
-    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+[Drive Coffee](/en/c/drive-al-aziziyah) and [dr.CAFE](/en/c/drcafe-al-aziziyah) are on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Aziziyah on the catalog today:`,
+    hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Aziziyah isn’t the stop, these south-central lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Aziziyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "Two cafes in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Drive Coffee and dr.CAFE, with Maps links.",
   },
   "al-hazm": {
     lead: `Al Hazm (الحزم) is a southwest Riyadh حي. This page is the Al Hazm set on wain.lol so far.
@@ -707,14 +715,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "an-nasim-al-gharbi": {
     lead: `An Nasim Al Gharbi (النسيم الغربي) sits on the east side of Riyadh. This page is the An Nasim Al Gharbi set on wain.lol so far.
 
-[Drive Coffee](/en/c/drive-an-nasim-al-gharbi) is the name on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from An Nasim Al Gharbi on the catalog today:`,
-    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+[Drive Coffee](/en/c/drive-an-nasim-al-gharbi) and [dr.CAFE](/en/c/drcafe-an-nasim-al-gharbi) are on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from An Nasim Al Gharbi on the catalog today:`,
+    hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If An Nasim Al Gharbi isn’t the stop, these east lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim Al Gharbi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in An Nasim Al Gharbi on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "Two cafes in An Nasim Al Gharbi on wain.lol — a Riyadh neighborhood list including Drive Coffee and dr.CAFE, with Maps links.",
   },
   "ar-rimal": {
     lead: `Ar Rimal (الرمال) sits on the northeast edge of Riyadh. This page is the Ar Rimal set on wain.lol so far.
@@ -739,6 +747,102 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Al Janadriyyah on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+  },
+  namar: {
+    lead: `Namar (نمار) sits on the south side of Riyadh. This page is the Namar set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-namar) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Namar on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Namar isn’t the stop, these south lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Namar. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Namar on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+  },
+  kkia: {
+    lead: `KKIA (مطار الملك خالد) is the airport locality on the official Maps pin. This page is the KKIA set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-kkia) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from KKIA on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If KKIA isn’t the stop, these northeast lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like KKIA. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe at KKIA on wain.lol — a Riyadh locality list including dr.CAFE, with a Maps link.",
+  },
+  "al-jazirah": {
+    lead: `Al Jazirah (الجزيرة) sits on the east side of Riyadh. This page is the Al Jazirah set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-al-jazirah) is on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Jazirah on the catalog today:`,
+    hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Jazirah isn’t the stop, these east lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Jazirah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "Two cafes in Al Jazirah on wain.lol — a Riyadh neighborhood list including dr.CAFE, with Maps links.",
+  },
+  "an-nasim": {
+    lead: `An Nasim (النسيم) sits on the east side of Riyadh. This page is the An Nasim set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-an-nasim) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from An Nasim on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If An Nasim isn’t the stop, these east lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in An Nasim on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+  },
+  shubra: {
+    lead: `Shubra (شبرا) sits on the south side of Riyadh. This page is the Shubra set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-shubra) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Shubra on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Shubra isn’t the stop, these south lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Shubra. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Shubra on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+  },
+  manfuha: {
+    lead: `Manfuha (منفوحة) sits south of the old-city stretch. This page is the Manfuha set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-manfuha) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Manfuha on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Manfuha isn’t the stop, these south-central lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Manfuha. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Manfuha on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+  },
+  tuwaiq: {
+    lead: `Tuwaiq (طويق) sits on the southwest side of Riyadh. This page is the Tuwaiq set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-tuwaiq) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Tuwaiq on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Tuwaiq isn’t the stop, these southwest lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Tuwaiq. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Tuwaiq on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+  },
+  "as-suwaidi": {
+    lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.
+
+[dr.CAFE](/en/c/drcafe-as-suwaidi) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from As Suwaidi on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If As Suwaidi isn’t the stop, these southwest lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Suwaidi. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in As Suwaidi on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
 };
 

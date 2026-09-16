@@ -20,6 +20,7 @@ const KNOWN_BRANDS = [
   "percent arabica",
   "sand clock",
   "house of matcha",
+  "dr cafe",
 ] as const;
 
 function latinName(shop: Pick<Shop, "nameEn" | "nameAr">): string {

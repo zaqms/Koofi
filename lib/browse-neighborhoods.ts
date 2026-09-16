@@ -171,6 +171,14 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   "an-nasim-al-gharbi": "tree",
   "ar-rimal": "palm",
   "al-janadriyyah": "landmark",
+  namar: "tree",
+  kkia: "landmark",
+  "al-jazirah": "waves",
+  "an-nasim": "tree",
+  shubra: "building",
+  manfuha: "pin",
+  tuwaiq: "diamond",
+  "as-suwaidi": "building",
 };
 
 export type NeighborhoodRow = {

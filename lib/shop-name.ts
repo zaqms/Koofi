@@ -159,6 +159,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "hokkaido-al-hamra": ["هوكايدو"],
   "happyland-matcha-diriyah": ["هابي لاند"],
   "salam-cafe-al-malqa": ["قهوة سلام", "salam cafe"],
+  "dr-cafe": ["د.كيف", "د كيف", "dr cafe", "drcafe", "dr.cafe"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

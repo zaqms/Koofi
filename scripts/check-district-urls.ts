@@ -99,6 +99,14 @@ assert(resolveDistrictSlug("al-khaleej") === "al-khaleej", "al-khaleej resolves"
 assert(resolveDistrictSlug("an-nasim-al-gharbi") === "an-nasim-al-gharbi", "an-nasim-al-gharbi resolves");
 assert(resolveDistrictSlug("ar-rimal") === "ar-rimal", "ar-rimal resolves");
 assert(resolveDistrictSlug("al-janadriyyah") === "al-janadriyyah", "al-janadriyyah resolves");
+assert(resolveDistrictSlug("namar") === "namar", "namar resolves");
+assert(resolveDistrictSlug("kkia") === "kkia", "kkia resolves");
+assert(resolveDistrictSlug("al-jazirah") === "al-jazirah", "al-jazirah resolves");
+assert(resolveDistrictSlug("an-nasim") === "an-nasim", "an-nasim resolves");
+assert(resolveDistrictSlug("shubra") === "shubra", "shubra resolves");
+assert(resolveDistrictSlug("manfuha") === "manfuha", "manfuha resolves");
+assert(resolveDistrictSlug("tuwaiq") === "tuwaiq", "tuwaiq resolves");
+assert(resolveDistrictSlug("as-suwaidi") === "as-suwaidi", "as-suwaidi resolves");
 assert(resolveDistrictSlug("king-khalid-international-airport") === null, "KKIA airport slug is not a live district");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
@@ -164,7 +172,7 @@ assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.length === 45, `expected 45 districts, got ${areas.length}`);
 assert(listDiscoveryShops().length === 275, `specialty discovery stays 275, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 324, `catalog 275→324 with DT-lane, got ${listRealShops().length}`);
+assert(listRealShops().length === 343, `catalog 275→343 with DT-lane, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1356,10 +1364,14 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("badr");
-  assert(rows.length === 2, `badr has 2 DT-lane shops, got ${rows.length}`);
+  assert(rows.length === 3, `badr has 3 DT-lane shops, got ${rows.length}`);
   assert(
     rows.some((shop) => shop.id === "drive-badr"),
     "badr includes drive-badr",
+  );
+  assert(
+    rows.some((shop) => shop.id === "drcafe-badr"),
+    "badr includes drcafe-badr",
   );
   assert(neighborhoodLabel("badr", "ar") === "بدر", "badr Arabic label");
   assert(neighborhoodLabel("badr", "en") === "Badr", "badr English label");
@@ -1367,10 +1379,38 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 59, `Drive-through directory is 59, got ${dt.length}`);
+  assert(dt.length === 78, `Drive-through directory is 78, got ${dt.length}`);
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
     "Drive-through directory is tagged only",
+  );
+  assert(
+    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 19,
+    "19 hex-verified dr.CAFE rows are on the Drive-through directory",
+  );
+  assert(
+    !listRealShops().some((shop) =>
+      /starbucks/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
+    ),
+    "Starbucks stays dropped",
+  );
+  const namar = listDirectoryShopsForDistrict("namar");
+  assert(namar.length === 1 && namar[0]?.id === "drcafe-namar", "namar is DT-only dr.CAFE");
+  const jazirah = listDirectoryShopsForDistrict("al-jazirah");
+  assert(jazirah.length === 2, `al-jazirah has 2 DT-lane shops, got ${jazirah.length}`);
+  const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
+  assert(
+    aziziyah.length === 2 && aziziyah.some((shop) => shop.id === "drcafe-al-aziziyah"),
+    "al-aziziyah includes drcafe-al-aziziyah",
+  );
+  const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
+  assert(
+    gharbi.length === 2 && gharbi.some((shop) => shop.id === "drcafe-an-nasim-al-gharbi"),
+    "an-nasim-al-gharbi includes drcafe-an-nasim-al-gharbi",
+  );
+  assert(
+    listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
+    "kkia includes open dr.CAFE, not closed A PLUS",
   );
   assert(
     !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-malaz"),

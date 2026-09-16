@@ -400,9 +400,19 @@ assert(
 );
 assert(
   chips.includes('case "matcha"') &&
-    chips.includes("{/* chawan + chasen */}") &&
-    chips.includes('<ellipse cx="9"') &&
+    chips.includes("{/* bowl + whisk */}") &&
+    chips.includes('viewBox="0 0 512 512"') &&
+    chips.includes('strokeWidth="14"') &&
+    chips.includes('d="M92 190C110 155 170 139 244 139c46 0 86 6 116 19"') &&
+    chips.includes(
+      'd="M371 247l-21 74c-2 9 4 16 13 19l18 6c9 3 17-2 19-11l18-69"',
+    ) &&
+    !chips.includes("{/* chawan + chasen */}") &&
+    !chips.includes('<ellipse cx="9"') &&
+    !chips.includes("M3 9.25c.25 4.85") &&
     !chips.includes("M12.4 4.8c3.2") &&
+    !chips.includes('stroke="#111"') &&
+    chips.includes('stroke="currentColor"') &&
     chips.includes('strokeWidth = "1.55"') &&
     chips.includes("className=\"size-7 shrink-0\"") &&
     !chips.includes("bg-matcha") &&
@@ -410,7 +420,7 @@ assert(
     !chips.includes("border-matcha") &&
     !chips.includes("vibeChipClass(chip.id") &&
     !chips.includes("vibeChipClass(id"),
-  "Matcha keeps the chawan+chasen icon and sibling vibe tokens",
+  "Matcha uses Amjad v2 512 bowl+whisk ship SVG with currentColor",
 );
 assert(
   chips.includes("border-line bg-foam") &&

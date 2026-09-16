@@ -2598,6 +2598,7 @@ const scoutPack: {
     neighborhood: "al-malaz",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/walnut-wood-malaz-mark.png",
     pin: { lat: 24.6663848, lng: 46.7242422 },
   },
   {
@@ -2606,6 +2607,7 @@ const scoutPack: {
     neighborhood: "al-malaz",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/hazzah-malaz-mark.png",
     pin: { lat: 24.6700884, lng: 46.7389702 },
   },
   {
@@ -2614,6 +2616,7 @@ const scoutPack: {
     neighborhood: "al-malaz",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/canto-malaz-mark.png",
     pin: { lat: 24.6614598, lng: 46.7443033 },
   },
 ];

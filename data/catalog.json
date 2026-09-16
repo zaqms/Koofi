@@ -3651,6 +3651,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f05ba44347f55:0xb1841f0e5664d80a",
       "pin": { "lat": 24.6663848, "lng": 46.7242422 },
+      "logoUrl": "/logos/walnut-wood-malaz-mark.png",
       "popularityIndex": 40,
       "example": false
     },
@@ -3665,6 +3666,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f05bb7d55715d:0x13592f76325f0de2",
       "pin": { "lat": 24.6700884, "lng": 46.7389702 },
+      "logoUrl": "/logos/hazzah-malaz-mark.png",
       "popularityIndex": 40,
       "example": false
     },
@@ -3679,6 +3681,7 @@
       "momentTags": ["qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f05114535986d:0xbb8d0dee4e12d7fe",
       "pin": { "lat": 24.6614598, "lng": 46.7443033 },
+      "logoUrl": "/logos/canto-malaz-mark.png",
       "popularityIndex": 40,
       "example": false
     }

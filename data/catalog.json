@@ -3695,6 +3695,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dff7a822ea1:0x8da1607501bf0e7a",
+      "logoUrl": "/logos/house-of-matcha-al-mohammadiyah.webp",
       "popularityIndex": 40,
       "example": false
     },
@@ -3708,6 +3709,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03cc8803eac7:0x5b8677386f9a894e",
+      "logoUrl": "/logos/house-of-matcha-sulimaniyah.webp",
       "popularityIndex": 40,
       "example": false
     },
@@ -3721,7 +3723,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdbd42c9ba8d:0x384a8731bf901bab",
-      "logoUrl": "/logos/somatcha-an-nada.jpg",
+      "logoUrl": "/logos/somatcha-an-nada.png",
       "popularityIndex": 40,
       "example": false
     },
@@ -3735,6 +3737,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f034e019ea32d:0x8d43d3deac74089d",
+      "logoUrl": "/logos/the-matcha-bar-olaya.jpg",
       "popularityIndex": 40,
       "example": false
     },
@@ -3748,6 +3751,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1006cf2209b:0xf3841da23256fe4b",
+      "logoUrl": "/logos/with-heart-diriyah.jpg",
       "popularityIndex": 40,
       "example": false
     },
@@ -3775,7 +3779,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d6cdc2c21b1:0xf7da8c11431eb292",
-      "logoUrl": "/logos/opinion-al-mathar.jpg",
+      "logoUrl": "/logos/opinion-al-mathar.png",
       "popularityIndex": 40,
       "example": false
     },
@@ -3789,7 +3793,7 @@
       "vibeTags": ["قهوة"],
       "momentTags": ["matcha", "qahwa"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb",
-      "logoUrl": "/logos/opinion-hittin.jpg",
+      "logoUrl": "/logos/opinion-hittin.png",
       "popularityIndex": 40,
       "example": false
     },

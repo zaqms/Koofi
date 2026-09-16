@@ -2674,6 +2674,7 @@ const scoutPack: {
     neighborhood: "al-mohammadiyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/house-of-matcha-al-mohammadiyah.webp",
   },
   {
     id: "house-of-matcha-sulimaniyah",
@@ -2681,6 +2682,7 @@ const scoutPack: {
     neighborhood: "sulimaniyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/house-of-matcha-sulimaniyah.webp",
   },
   {
     id: "somatcha-an-nada",
@@ -2688,7 +2690,7 @@ const scoutPack: {
     neighborhood: "an-nada",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/somatcha-an-nada.jpg",
+    logoUrl: "/logos/somatcha-an-nada.png",
   },
   {
     id: "the-matcha-bar-olaya",
@@ -2696,6 +2698,7 @@ const scoutPack: {
     neighborhood: "olaya",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/the-matcha-bar-olaya.jpg",
   },
   {
     id: "with-heart-diriyah",
@@ -2703,6 +2706,7 @@ const scoutPack: {
     neighborhood: "diriyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/with-heart-diriyah.jpg",
   },
   {
     id: "kuro-sulimaniyah",
@@ -2718,7 +2722,7 @@ const scoutPack: {
     neighborhood: "al-mathar",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/opinion-al-mathar.jpg",
+    logoUrl: "/logos/opinion-al-mathar.png",
   },
   {
     id: "opinion-hittin",
@@ -2726,7 +2730,7 @@ const scoutPack: {
     neighborhood: "hittin",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/opinion-hittin.jpg",
+    logoUrl: "/logos/opinion-hittin.png",
   },
   {
     id: "kultura-hittin",

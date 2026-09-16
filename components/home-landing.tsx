@@ -12,6 +12,7 @@ import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
 import { restoreOffHomeChipOpen } from "@/lib/chip-open";
 import {
+  chipDirectoryMoment,
   chipSharePath,
   districtPath,
   filterPutsDirectoryFirst,
@@ -58,6 +59,7 @@ export function HomeLanding({
     pageChipId && isOffHomeChipId(pageChipId)
       ? restoreOffHomeChipOpen(pageChipId, language)
       : null;
+  const chipMoment = chipDirectoryMoment(pageChipId);
   const week = (
     <NewThisWeek language={language} shops={listNewThisWeekShops()} />
   );
@@ -67,6 +69,8 @@ export function HomeLanding({
       shops={popular ? listPopularDirectoryShops() : listDirectoryShops()}
       district={district}
       listing={listing}
+      moment={chipMoment}
+      chipId={chipMoment ? pageChipId : null}
       intro={
         district ? (
           <DistrictEnBody district={district} language={language} />
@@ -88,7 +92,7 @@ export function HomeLanding({
       {bareHome ? <BrowseNeighborhoods language={language} /> : null}
       <ShopUpvoteProvider>
         <ShopClaimProvider>
-          {filterPutsDirectoryFirst(listing, district) ? (
+          {filterPutsDirectoryFirst(listing, district, chipMoment) ? (
             <>
               {directory}
               {week}

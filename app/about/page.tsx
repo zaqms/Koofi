@@ -11,12 +11,12 @@ import {
 
 export const metadata = {
   title: copy.about.ar,
-  description: `${LOCKED_ABOUT.lead.ar} ${LOCKED_ABOUT.body.ar}`,
+  description: LOCKED_ABOUT.lead.ar,
   applicationName: PRODUCT_NAME,
   appleWebApp: { title: PRODUCT_NAME },
   openGraph: {
     title: copy.about.ar,
-    description: `${LOCKED_ABOUT.lead.ar} ${LOCKED_ABOUT.body.ar}`,
+    description: LOCKED_ABOUT.lead.ar,
     siteName: PRODUCT_NAME,
     locale: "ar_SA",
     type: "website",
@@ -26,7 +26,7 @@ export const metadata = {
   twitter: {
     card: SOCIAL_TWITTER_CARD,
     title: copy.about.ar,
-    description: `${LOCKED_ABOUT.lead.ar} ${LOCKED_ABOUT.body.ar}`,
+    description: LOCKED_ABOUT.lead.ar,
     images: [SOCIAL_SHARE_IMAGE],
   },
 };

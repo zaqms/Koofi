@@ -156,6 +156,7 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   "al-mohammadiyah": "building",
   "al-muruj": "flower",
   "al-malaz": "pin",
+  "al-mathar": "building",
 };
 
 export type NeighborhoodRow = {
@@ -270,9 +271,17 @@ export function sortNeighborhoodRows(
   city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
   if (sort === "popular") {
-    return [...rows]
+    const ranked = [...rows]
       .filter((row) => popularRank(row.id, city) < popularNeighborhoodIds(city).length)
       .sort((a, b) => popularRank(a.id, city) - popularRank(b.id, city));
+    const tail = [...rows]
+      .filter(
+        (row) =>
+          popularRank(row.id, city) >= popularNeighborhoodIds(city).length &&
+          row.cafeCount > 0,
+      )
+      .sort((a, b) => compareAz(a, b, language));
+    return [...ranked, ...tail];
   }
   const copy = [...rows];
   if (sort === "az" || (sort === "nearby" && !origin)) {

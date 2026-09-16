@@ -6,6 +6,8 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { listDirectoryShops } from "../lib/catalog";
+import { filterDirectoryShopsByMoment } from "../lib/directory";
 import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
 import {
@@ -27,8 +29,10 @@ import {
   NEARBY_CHIP,
   OFF_HOME_CHIP_IDS,
   VIBE_CHIPS,
+  chipDirectoryMoment,
   chipIdFromCoffeeShopSlug,
   chipSharePath,
+  isStaticDirectoryChip,
   coffeeShopChipPath,
   coffeeShopChipSlugForId,
   halfwayInvitePath,
@@ -64,6 +68,7 @@ const LOCKED_CHIP_PATHS = {
   late: { ar: "/coffee-shops/late", en: "/en/coffee-shops/late" },
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
   date: { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
+  matcha: { ar: "/coffee-shops/matcha", en: "/en/coffee-shops/matcha" },
 } as const;
 
 for (const [chipId, paths] of Object.entries(LOCKED_CHIP_PATHS)) {
@@ -133,7 +138,7 @@ assert(
   !vibeIds.includes("meet-halfway"),
   "بيننا is not a Soft Places vibe chip",
 );
-assert(VIBE_CHIPS.length === 11, "Soft Places stay parked — 11 vibe chips");
+assert(VIBE_CHIPS.length === 12, "Soft Places stay parked — 12 vibe chips");
 assert(NEARBY_CHIP.id === "nearby", "nearby chip id stays nearby");
 assert(NEARBY_CHIP.ar === "قريب مني", "nearby AR display is قريب مني");
 assert(MEET_HALFWAY_CHIP.id === "meet-halfway", "بيننا chip id stays");
@@ -148,11 +153,11 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,quiet,nearby,outdoor,date,work",
-  "P0 home 4×2 RTL order is locked",
+    "popular,coffee,pastry,matcha,nearby,outdoor,date,work",
+  "P0 home 4×2 RTL order is locked — Matcha 4th on the top row",
 );
 assert(
-  OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late",
+  OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",
   "off-home chip ids stay shareable",
 );
 assert(homeSurfaceChips().length === 8, "home chrome is 4×2 — eight chips");
@@ -166,7 +171,7 @@ assert(
   OFF_HOME_CHIP_IDS.every((id) => isOffHomeChipId(id)) &&
     !isOffHomeChipId("coffee") &&
     !isOffHomeChipId("popular"),
-  "off-home helper matches only the four share URLs",
+  "off-home helper matches only the shareable off-home URLs",
 );
 for (const language of ["ar", "en"] as const) {
   for (const id of OFF_HOME_CHIP_IDS) {
@@ -200,7 +205,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   popular: "الأكثر شعبية",
   coffee: "أفضل قهوة",
   pastry: "قهوة وحلى",
-  quiet: "هادي ورايق",
+  matcha: "ماتشا",
   work: "للشغل",
   date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
@@ -217,7 +222,7 @@ const LOCKED_HOME_LABELS_EN: Record<string, string> = {
   popular: "Most Popular",
   coffee: "Best Coffee",
   pastry: "Coffee and sweets",
-  quiet: "Cozy and Quiet",
+  matcha: "Matcha",
   work: "Best for Work",
   date: "With friends",
   outdoor: "Outdoor seating",
@@ -346,9 +351,11 @@ assert(
   categoryAr.includes("isCoffeeShopChipSlug") &&
     categoryAr.includes("chipIdFromCoffeeShopSlug") &&
     categoryAr.includes("selectedChipId={chipId}") &&
+    categoryAr.includes("dynamicParams = true") &&
     categoryEn.includes("isCoffeeShopChipSlug") &&
     categoryEn.includes("chipIdFromCoffeeShopSlug") &&
-    categoryEn.includes("selectedChipId={chipId}"),
+    categoryEn.includes("selectedChipId={chipId}") &&
+    categoryEn.includes("dynamicParams = true"),
   "directory category routes open vibe/nearby chips",
 );
 
@@ -379,6 +386,39 @@ assert(
     !chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
     !/heart|romance|💕|❤|couple|hand-hold/i.test(chips),
   "date chip is two heads with a gap — no overlap or romance",
+);
+assert(
+  chips.includes('case "matcha"') &&
+    chips.includes("{/* chawan + chasen */}") &&
+    chips.includes('<ellipse cx="9"') &&
+    !chips.includes("M12.4 4.8c3.2") &&
+    chips.includes('strokeWidth="1.55"') &&
+    chips.includes("className=\"size-7 shrink-0\"") &&
+    !chips.includes("bg-matcha") &&
+    !chips.includes("text-matcha") &&
+    !chips.includes("border-matcha") &&
+    !chips.includes("vibeChipClass(chip.id") &&
+    !chips.includes("vibeChipClass(id"),
+  "Matcha keeps the chawan+chasen icon and sibling vibe tokens",
+);
+assert(
+  chips.includes("border-line bg-foam") &&
+    chips.includes("text-ink") &&
+    chips.includes("border-bean bg-bean") &&
+    chips.includes("text-foam") &&
+    (chips.match(/border-line bg-foam/g)?.length ?? 0) === 1 &&
+    (chips.match(/border-bean bg-bean/g)?.length ?? 0) === 1,
+  "vibe chips share Paper/white + Ink unselected and dusty-bean selected",
+);
+assert(
+  !read("app/globals.css").includes("--matcha") &&
+    !read("app/globals.css").includes("--color-matcha"),
+  "no special Matcha color tokens",
+);
+assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");
+assert(
+  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 19,
+  "Matcha route directory is the 19 tagged shops",
 );
 
 const product = read("lib/product.ts");
@@ -446,6 +486,12 @@ assert(
   "HomeLanding forwards the route chip to Chat",
 );
 assert(
+  landing.includes("chipDirectoryMoment") &&
+    landing.includes("moment={chipMoment}") &&
+    landing.includes("chipId={chipMoment ? pageChipId : null}"),
+  "chip share URLs filter ShopDirectory to that moment tag",
+);
+assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),
   "most-popular still selects popular and locale-switches on that path",
 );
@@ -476,9 +522,15 @@ assert(
   "chip-open is not gated on the 4×2 home set",
 );
 assert(
-  chat.includes("chipId === \"popular\"") || chat.includes('chipId === "popular"'),
-  "popular still does not post to /api/chat",
+  chat.includes("isStaticDirectoryChip") &&
+    !chat.includes('chipId === "popular"') &&
+    !chat.includes("selectedChipId === \"popular\""),
+  "Most Popular and Matcha are static directory chips — no ask→3",
 );
+assert(isStaticDirectoryChip("popular"), "popular is a static directory chip");
+assert(isStaticDirectoryChip("matcha"), "matcha is a static directory chip");
+assert(!isStaticDirectoryChip("quiet"), "quiet stays off-home three-pick");
+assert(!isStaticDirectoryChip("coffee"), "coffee still opens chat");
 assert(!/Soft Places/i.test(chat), "no Soft Places analytics or UI in chat");
 
 const nextConfig = read("next.config.ts");

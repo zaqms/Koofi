@@ -7,7 +7,11 @@ import { NEIGHBORHOOD_IDS, type CatalogFile, type NeighborhoodId, type Shop } fr
 import type { DirectoryShop } from "./directory";
 
 export type { DirectoryShop } from "./directory";
-export { directoryNeighborhoods, filterDirectoryShops } from "./directory";
+export {
+  directoryNeighborhoods,
+  filterDirectoryShops,
+  filterDirectoryShopsByMoment,
+} from "./directory";
 
 const catalog = catalogFile as CatalogFile;
 const POPULARITY_INDEX = popularityIndexFile as Record<string, number>;

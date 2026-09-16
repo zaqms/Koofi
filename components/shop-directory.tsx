@@ -6,6 +6,7 @@ import { DirectoryCard } from "@/components/directory-card";
 import {
   directoryNeighborhoods,
   filterDirectoryShops,
+  filterDirectoryShopsByMoment,
   type DirectoryShop,
 } from "@/lib/directory";
 import { copy } from "@/lib/copy";
@@ -23,7 +24,7 @@ import {
   vibeChipLabel,
 } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
-import type { Language, NeighborhoodId } from "@/lib/types";
+import type { Language, MomentTag, NeighborhoodId } from "@/lib/types";
 
 const POPULAR_CHIP = VIBE_CHIPS.find((chip) => chip.id === "popular") ?? {
   id: "popular",
@@ -36,6 +37,8 @@ type ShopDirectoryProps = {
   shops: DirectoryShop[];
   district?: NeighborhoodId | null;
   listing?: "popular" | null;
+  moment?: MomentTag | null;
+  chipId?: string | null;
   intro?: ReactNode;
 };
 
@@ -44,21 +47,34 @@ export function ShopDirectory({
   shops,
   district = null,
   listing = null,
+  moment = null,
+  chipId = null,
   intro = null,
 }: ShopDirectoryProps) {
   const popular = listing === "popular";
+  const vibe = chipId
+    ? VIBE_CHIPS.find((chip) => chip.id === chipId)
+    : undefined;
   const areas = directoryNeighborhoods(shops);
-  const visible = popular ? shops : filterDirectoryShops(shops, district);
+  const visible = popular
+    ? shops
+    : moment
+      ? filterDirectoryShopsByMoment(shops, moment)
+      : filterDirectoryShops(shops, district);
   const heading = popular
     ? mostPopularHeading(language)
     : district
       ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
-      : copy.directory[language];
+      : vibe
+        ? vibeChipLabel(vibe, language)
+        : copy.directory[language];
   const headingId = popular
     ? "most-popular"
     : district
       ? "koofi-district"
-      : "koofi-directory";
+      : vibe
+        ? `koofi-chip-${vibe.id}`
+        : "koofi-directory";
 
   return (
     <section
@@ -67,7 +83,7 @@ export function ShopDirectory({
       lang={language}
       aria-labelledby={headingId}
     >
-      {district || popular ? (
+      {district || popular || vibe ? (
         <h1 id={headingId} className="text-base font-semibold">
           {heading}
         </h1>

@@ -16,9 +16,9 @@ export type ChipOpenRestore = {
 };
 
 /**
- * Dedicated `/coffee-shops/{roaster,specialty,study,late}` URLs keep the
- * same three-picks UI as a chip tap. Home chrome stays 4×2 — these four
- * are not tiles. Nearby stays client-side (geo). Soft Places parked.
+ * Dedicated `/coffee-shops/{roaster,specialty,study,late,quiet}` URLs keep the
+ * same three-picks UI as a chip tap. Home chrome stays 4×2 — these stay
+ * off the grid. Nearby stays client-side (geo). Soft Places parked.
  */
 export function restoreOffHomeChipOpen(
   chipId: string,

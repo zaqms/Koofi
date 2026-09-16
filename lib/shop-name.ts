@@ -148,6 +148,10 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "btw-olaya": ["btw"],
   "one-gram-sulimaniyah": ["one gram"],
   "sand-clock": ["ساعة الرمل"],
+  "house-of-matcha": ["هاوس اوف ماتشا"],
+  somatcha: ["سو ماتشا", "so matcha"],
+  "the-matcha-bar-olaya": ["ذا ماتشا بار"],
+  "with-heart-diriyah": ["ويث هارت"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

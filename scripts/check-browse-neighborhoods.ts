@@ -176,7 +176,7 @@ for (const row of rowsEn) {
     `${row.id} count matches catalog`,
   );
   if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
-    const expected = row.id === "al-takhassusi" ? 7 : 8;
+    const expected = row.id === "al-takhassusi" ? 7 : row.id === "al-ghadeer" ? 9 : 8;
     assert(
       row.cafeCount === expected,
       `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
@@ -188,13 +188,13 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 4,
-      `${row.id} Muruj refill has 4 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 6,
+      `${row.id} Muruj refill has 6 cafes, got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 3,
-      `${row.id} Mohammadiyah refill has 3 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 4,
+      `${row.id} Mohammadiyah refill has 4 cafes, got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
@@ -226,21 +226,23 @@ for (const row of rowsAr) {
 
 const popularEn = sortNeighborhoodRows(rowsEn, "popular", null, "en");
 const popularAr = sortNeighborhoodRows(rowsAr, "popular", null, "ar");
-assert(popularEn.length === 29, "Popular is exactly Amjad's 29 districts");
-assert(popularAr.length === 29, "AR Popular is exactly Amjad's 29 districts");
+const popularLeadEn = popularEn.slice(0, 29);
+const popularLeadAr = popularAr.slice(0, 29);
+assert(popularLeadEn.length === 29, "Popular lead is exactly Amjad's 29 districts");
+assert(popularLeadAr.length === 29, "AR Popular lead is exactly Amjad's 29 districts");
 assert(
-  popularEn.map((row) => row.id).join(",") === AMJAD_POPULAR,
-  "Popular follows Amjad's locked order with no unranked tail",
+  popularLeadEn.map((row) => row.id).join(",") === AMJAD_POPULAR,
+  "Popular follows Amjad's locked order",
 );
 assert(
-  popularAr.map((row) => row.id).join(",") === AMJAD_POPULAR,
+  popularLeadAr.map((row) => row.id).join(",") === AMJAD_POPULAR,
   "AR Popular uses the same locked ids",
 );
 assert(
-  popularEn.every((row) =>
+  popularLeadEn.every((row) =>
     (RIYADH_POPULAR_NEIGHBORHOODS as readonly NeighborhoodId[]).includes(row.id),
   ),
-  "Popular contains no unranked districts",
+  "Popular lead contains no unranked districts",
 );
 assert(popularEn[0]?.id === "hittin", "Popular lead is Hittin");
 assert(popularEn[2]?.id === "al-takhassusi", "Popular #3 is Al Takhassusi");
@@ -248,8 +250,20 @@ assert(popularEn[5]?.id === "al-nakheel", "Popular #6 is An Nakheel");
 assert(popularEn[16]?.id === "diplomatic-quarter", "Popular #17 is Diplomatic Quarter");
 assert(popularEn[28]?.id === "al-wurud", "Popular #29 is Al Wurud");
 assert(
-  !popularEn.some((row) => row.id === "kafd" || row.id === "king-fahd"),
-  "unranked districts stay out of Popular",
+  popularEn.some((row) => row.id === "al-mathar"),
+  "Popular tail includes live al-mathar",
+);
+assert(
+  popularAr.some((row) => row.id === "al-mathar"),
+  "AR Popular tail includes المعذر",
+);
+assert(
+  rowsEn.some((row) => row.id === "al-mathar"),
+  "view-all rows include al-mathar",
+);
+assert(
+  rowsAr.some((row) => row.label === "المعذر"),
+  "AR view-all label is المعذر",
 );
 
 const az = sortNeighborhoodRows(rowsEn, "az", null, "en");
@@ -266,6 +280,11 @@ assert(
   az.some((row) => row.id === "kafd"),
   "unranked districts remain on A–Z",
 );
+assert(
+  az.some((row) => row.id === "al-mathar"),
+  "A–Z includes al-mathar",
+);
+assert(az.length === 44, "A–Z is the 44 live catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(
@@ -332,6 +351,14 @@ assert(
 assert(
   filterNeighborhoodRows(rowsAr, "حطين").some((row) => row.id === "hittin"),
   "search finds حطين",
+);
+assert(
+  filterNeighborhoodRows(rowsEn, "mathar").some((row) => row.id === "al-mathar"),
+  "search finds Al Mathar",
+);
+assert(
+  filterNeighborhoodRows(rowsAr, "المعذر").some((row) => row.id === "al-mathar"),
+  "search finds المعذر",
 );
 assert(
   filterNeighborhoodRows(rowsEn, "zzzz-not-a-hood").length === 0,
@@ -464,6 +491,10 @@ assert(
 );
 
 const viewAll = readRepo("components/neighborhoods-page.tsx");
+assert(
+  viewAll.includes('useState<NeighborhoodSort>("az")'),
+  "View All defaults to A–Z so al-mathar is on the first paint",
+);
 assert(viewAll.includes("neighborhood-search"), "view-all has client search");
 assert(viewAll.includes("neighborhoodCafeCountLabel"), "view-all uses real counts");
 assert(viewAll.includes("data-neighborhood-sorts"), "view-all has sort pills");

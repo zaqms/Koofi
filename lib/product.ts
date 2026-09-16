@@ -64,6 +64,7 @@ export const VIBE_CHIPS = [
   { id: "popular", ar: "الأكثر شعبية", en: "Most Popular", momentTag: "popular" },
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
+  { id: "matcha", ar: "ماتشا", en: "Matcha", momentTag: "matcha" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
   { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
   { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },
@@ -88,14 +89,15 @@ export const NEARBY_CHIP = {
 
 /**
  * P0 home chip chrome is 4×2 only (RTL R→L in this array order).
- * Off-home ids keep their URLs: roaster, specialty, study, late.
+ * Matcha sits 4th on the top row (Ajz/Amjad 16 Sep 2026).
+ * Off-home ids keep their URLs: roaster, specialty, study, late, quiet.
  * بيننا is a utility card above this grid — not a tile.
  */
 export const HOME_CHIP_IDS = [
   "popular",
   "coffee",
   "pastry",
-  "quiet",
+  "matcha",
   "nearby",
   "outdoor",
   "date",
@@ -109,10 +111,26 @@ export const OFF_HOME_CHIP_IDS = [
   "specialty",
   "study",
   "late",
+  "quiet",
 ] as const;
 
 export function isHomeChipId(id: string): id is HomeChipId {
   return (HOME_CHIP_IDS as readonly string[]).includes(id);
+}
+
+/**
+ * Static directory chips. Most Popular + Matcha navigate to a full list
+ * page. They must not open the ask→3 agent flow. Quiet / other off-home
+ * chips keep three-pick restore.
+ */
+export const STATIC_DIRECTORY_CHIP_IDS = ["popular", "matcha"] as const;
+
+export function isStaticDirectoryChip(
+  id: string | null | undefined,
+): boolean {
+  return Boolean(
+    id && (STATIC_DIRECTORY_CHIP_IDS as readonly string[]).includes(id),
+  );
 }
 
 export type OffHomeChipId = (typeof OFF_HOME_CHIP_IDS)[number];
@@ -321,19 +339,58 @@ export const LOCKED_FEEDBACK = {
   },
 } as const;
 
-/** Locked About copy. Spoken Riyadh/Najdi on AR. Do not polish or expand. */
+/** Locked About body. Amjad 2026-09-16. Do not polish or expand. Brand Wain. */
 export const LOCKED_ABOUT = {
   lead: {
-    ar: "وين سوّاها واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد.",
-    en: "wain.lol is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
+    ar: "بدأت من سؤال نقوله كل يوم: وين؟",
+    en: "It started with a question we ask all the time: Wain — “Where?”",
   },
-  /** Second AR paragraph only. EN lead stays one block — Amjad did not send EN. */
-  body: {
-    ar: "الموقع كله سوّاه الذكاء الاصطناعي، محد برمجه بيده.",
-  },
-  note: {
-    ar: "إذا فيه شيء مو ضابط، تواصل معنا تحت.",
-    en: "If something’s off, please contact us below!",
+  markdown: {
+    ar: `*بدأت من سؤال نقوله كل يوم: وين؟*
+
+وين نروح؟
+وين القهوة الزينة؟
+وين مكان جديد نجربه؟
+
+القهوة بالنسبة لنا دايم كانت أكثر من مجرد مشروب. عليها نجتمع، نسولف مع أصحابنا، نغيّر جو، نشتغل، نحتفل، وأحيانًا بس نطلع من البيت.
+
+ومع كثرة القهاوي في الرياض، صار اختيار القهوة المناسبة أصعب.
+
+ومن هنا سوّينا *وين*.
+
+وين فكرة سعودية بدأت في الرياض، انبنت على يد ناس يحبون القهوة ويعيشون ثقافتها. هدفنا بسيط: نسهّل عليك اختيار قهوتك الجاية سواء تبي مكان هادي، قهوة قريبة منك، مكان جديد يستاهل التجربة، أو قهوة بالنص بينك وبين خويك.
+
+لا تضيع وقتك وأنت تدور،
+ولا تحتار بين مئات الخيارات.
+
+بس قل لنا وش تدور عليه، وإحنا نجاوبك على سؤال:
+
+*وين القهوة اليوم؟*
+
+صُنع في السعودية. لعشّاق القهوة. ☕🇸🇦`,
+    en: `*It started with a question we ask all the time: Wain — “Where?”*
+
+Where should we go?
+Where’s the good coffee?
+Where’s somewhere new?
+
+Coffee has always been more than just a drink to us. It’s how we catch up, meet friends, take a break, work, celebrate, and sometimes just get out of the house.
+
+But with so many cafés around Riyadh, somehow finding the right one became harder than it should be.
+
+So we built Wain.
+
+A Saudi-made coffee discovery platform, built in Riyadh by people who genuinely love coffee and the culture around it. We’re here to make choosing your next café simpler — whether you want somewhere quiet, somewhere close, a new spot worth trying, or a place halfway between you and a friend.
+
+No endless searching. No hundreds of options to choose from.
+
+Just tell us what you’re looking for, and we’ll help you figure out where to head next.
+
+Or, as we say it:
+
+*وين القهوة اليوم؟*
+
+Made in Saudi. Built for coffee people. ☕🇸🇦`,
   },
 } as const;
 
@@ -415,6 +472,7 @@ export const COFFEE_SHOP_CHIP_SLUGS = [
   "nearby",
   "coffee",
   "pastry",
+  "matcha",
   "roaster",
   "specialty",
   "quiet",
@@ -523,12 +581,26 @@ export function mostPopularHeading(language: Language): string {
   return MOST_POPULAR_HEADING[language];
 }
 
-/** Filtered directory (Most Popular or a district) sits above New this week. */
+/**
+ * Moment tag that filters the shop directory on a chip share URL.
+ * Popular / Nearby / بيننا stay unfiltered here — they have their own pages.
+ */
+export function chipDirectoryMoment(
+  chipId: string | null | undefined,
+): MomentTag | null {
+  if (!chipId || chipId === "popular" || chipId === NEARBY_CHIP.id) return null;
+  const chip = VIBE_CHIPS.find((row) => row.id === chipId);
+  if (!chip || chip.momentTag === "popular") return null;
+  return chip.momentTag;
+}
+
+/** Filtered directory (Most Popular, a district, or a chip moment) sits above New this week. */
 export function filterPutsDirectoryFirst(
   listing: "popular" | null | undefined,
   district: NeighborhoodId | null | undefined,
+  moment?: MomentTag | null,
 ): boolean {
-  return listing === "popular" || Boolean(district);
+  return listing === "popular" || Boolean(district) || Boolean(moment);
 }
 
 export function legacyDistrictPath(

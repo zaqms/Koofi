@@ -216,6 +216,9 @@ export const NEIGHBORHOODS: Record<
       "ad-diriyah",
       "diriya",
       "dereiyah",
+      "jax",
+      "جاكس",
+      "jax district",
     ],
   },
   "al-narjis": {
@@ -690,6 +693,20 @@ export const NEIGHBORHOODS: Record<
       "al-malaz",
       "almalaz",
       "Al Malaz",
+    ],
+  },
+  "al-mathar": {
+    id: "al-mathar",
+    ar: "المعذر",
+    en: "Al Mathar",
+    aliases: [
+      "المعذر",
+      "معذر",
+      "mathar",
+      "al mathar",
+      "al-mathar",
+      "almathar",
+      "Al Mathar",
     ],
   },
 };

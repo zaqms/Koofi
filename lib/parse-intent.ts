@@ -142,6 +142,12 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "for two",
     "لاثنين",
   ],
+  matcha: [
+    "ماتشا",
+    "ماتشه",
+    "matcha",
+    "matcha latte",
+  ],
 };
 
 function chipAliases(moment: MomentTag): string[] {
@@ -162,6 +168,7 @@ const MOMENT_ALIASES: Record<MomentTag, string[]> = {
   study: [...chipAliases("study"), ...EXTRA_ALIASES.study],
   outdoor: [...chipAliases("outdoor"), ...EXTRA_ALIASES.outdoor],
   date: [...chipAliases("date"), ...EXTRA_ALIASES.date],
+  matcha: [...chipAliases("matcha"), ...EXTRA_ALIASES.matcha],
 };
 
 function normalize(text: string): string {

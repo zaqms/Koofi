@@ -23,6 +23,8 @@ type CategoryDistrictPageProps = {
   params: Promise<{ category: string; slug: string }>;
 };
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
   return categoryListingStaticParams();
 }

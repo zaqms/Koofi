@@ -13,7 +13,7 @@ import {
   districtFaqs,
   faqPageJsonLd,
 } from "../lib/faq";
-import { districtPath, mostPopularPath } from "../lib/product";
+import { districtPath, LOCKED_ABOUT, mostPopularPath } from "../lib/product";
 import {
   buildSitemapXml,
   LEGACY_SITEMAP_PATH,
@@ -516,6 +516,23 @@ for (const payload of [aboutLdAr, aboutLdEn, districtFaqLd]) {
 const aboutView = readRepo("components/about-page.tsx");
 assert(aboutView.includes("aboutFaqs("), "About page renders visible FAQs");
 assert(aboutView.includes("FaqList"), "About page uses FaqList");
+assert(aboutView.includes("AboutLockedCopy"), "About page renders locked Amjad body");
+assert(aboutView.includes("<strong"), "About *emphasis* renders as strong");
+assert(!aboutView.includes("<em"), "About emphasis is not italic");
+const aboutCopy = readRepo("lib/product.ts");
+const aboutText = `${LOCKED_ABOUT.markdown.ar}\n${LOCKED_ABOUT.markdown.en}`;
+assert(
+  aboutCopy.includes("بدأت من سؤال نقوله كل يوم: وين؟") &&
+    aboutCopy.includes("صُنع في السعودية. لعشّاق القهوة.") &&
+    aboutCopy.includes("It started with a question we ask all the time: Wain") &&
+    aboutCopy.includes("Made in Saudi. Built for coffee people.") &&
+    aboutCopy.includes("ومن هنا سوّينا *وين*.") &&
+    !aboutCopy.includes("سوّاها واحد في الرياض") &&
+    !aboutCopy.includes("The whole site is built by AI") &&
+    !/\bween\b/i.test(aboutText) &&
+    !/Koofi/i.test(aboutText),
+  "About AR/EN body is Amjad locked Wain copy — وين / wain.lol, never ween",
+);
 assert(
   readRepo("app/about/page.tsx").includes("aboutFaqJsonLd"),
   "AR About injects FAQPage JSON-LD",

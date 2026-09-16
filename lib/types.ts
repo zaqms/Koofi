@@ -45,6 +45,7 @@ export const NEIGHBORHOOD_IDS = [
   "al-mohammadiyah",
   "al-muruj",
   "al-malaz",
+  "al-mathar",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 
@@ -60,6 +61,7 @@ export const MOMENT_TAGS = [
   "study",
   "outdoor",
   "date",
+  "matcha",
 ] as const;
 export type MomentTag = (typeof MOMENT_TAGS)[number];
 

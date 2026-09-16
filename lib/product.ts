@@ -65,7 +65,7 @@ export const VIBE_CHIPS = [
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
   { id: "matcha", ar: "ماتشا", en: "Matcha", momentTag: "matcha" },
-  { id: "drive-through", ar: "طلبات السياره", en: "Drive-through", momentTag: "drive-through" },
+  { id: "drive-through", ar: "طلبات السيارة", en: "Drive-through", momentTag: "drive-through" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
   { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
   { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },
@@ -91,7 +91,7 @@ export const NEARBY_CHIP = {
 /**
  * P0 home chip chrome is 4 columns (RTL R→L in this array order).
  * Matcha sits 4th on the top row (Ajz/Amjad 16 Sep 2026).
- * Drive-through is the new top chip after Matcha (Amjad LOCK 16 Sep 2026).
+ * Drive-through is 9th, after Best for Work / للشغل (Amjad LOCK 16 Sep 2026 evening).
  * Off-home ids keep their URLs: roaster, specialty, study, late, quiet.
  * بيننا is a utility card above this grid — not a tile.
  */
@@ -100,11 +100,11 @@ export const HOME_CHIP_IDS = [
   "coffee",
   "pastry",
   "matcha",
-  "drive-through",
   "nearby",
   "outdoor",
   "date",
   "work",
+  "drive-through",
 ] as const;
 
 export type HomeChipId = (typeof HOME_CHIP_IDS)[number];

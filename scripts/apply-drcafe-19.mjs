@@ -153,7 +153,7 @@ for (const row of handoff.add) {
     city: "riyadh",
     neighborhood: district.id,
     neighborhoodAr: district.ar,
-    vibeTags: ["طلبات السياره"],
+    vibeTags: ["طلبات السيارة"],
     momentTags: ["drive-through"],
     mapsShareUrl,
     ...(pin ? { pin } : {}),

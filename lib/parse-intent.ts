@@ -149,6 +149,7 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "matcha latte",
   ],
   "drive-through": [
+    "طلبات السياره",
     "درايف ثرو",
     "drive-through",
     "drive through",

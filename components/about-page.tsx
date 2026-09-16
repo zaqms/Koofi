@@ -14,7 +14,7 @@ function AboutMarks({ text }: { text: string }) {
     <>
       {parts.map((part, index) =>
         part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
-          <em key={index}>{part.slice(1, -1)}</em>
+          <strong key={index}>{part.slice(1, -1)}</strong>
         ) : (
           <span key={index}>{part}</span>
         ),

@@ -6,7 +6,12 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { listDirectoryShops, listDriveThroughDirectoryShops } from "../lib/catalog";
+import {
+  isDriveThroughLane,
+  listDirectoryShops,
+  listDriveThroughDirectoryShops,
+  listRealShops,
+} from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
 import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
@@ -447,8 +452,8 @@ assert(
   "DT cards dropped legacy درايف ثرو vibe tag",
 );
 assert(
-  listDriveThroughDirectoryShops()
-    .filter((shop) => shop.catalogLane === "drive-through")
+  listRealShops()
+    .filter(isDriveThroughLane)
     .every((shop) => shop.vibeTags.includes("طلبات السياره")),
   "DT-lane cards show طلبات السياره",
 );

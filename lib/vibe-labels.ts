@@ -20,6 +20,7 @@ const VIBE_EN: Record<string, string> = {
   جلسة: "Seating",
   هواء: "Airy",
   دراسة: "Study",
+  "درايف ثرو": "Drive-through",
 };
 
 const MOMENT_EN: Record<MomentTag, string> = {
@@ -35,6 +36,7 @@ const MOMENT_EN: Record<MomentTag, string> = {
   outdoor: "Outdoor",
   date: "With friends",
   matcha: "Matcha",
+  "drive-through": "Drive-through",
 };
 
 export type VibeSource = {

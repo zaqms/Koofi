@@ -1,4 +1,4 @@
-import { listDirectoryShops } from "./catalog";
+import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
 import { filterDirectoryShops } from "./directory";
 import { neighborhoodLabel } from "./neighborhoods";
 import { cardPath, districtPath, PRODUCT_NAME } from "./product";
@@ -217,6 +217,8 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-malaz": ["sulimaniyah", "olaya", "al-rabwah", "al-mughrizat"],
   "al-mathar": ["olaya", "sulimaniyah", "al-takhassusi", "king-fahd"],
   "at-taawun": ["olaya", "al-mughrizat", "al-wurud", "al-rabwah"],
+  "al-mursalat": ["al-mughrizat", "al-masif", "al-wurud", "king-fahd"],
+  "al-murabba": ["al-malaz", "olaya", "sulimaniyah", "king-fahd"],
 };
 
 type DistrictLead = {
@@ -571,6 +573,30 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in At Taawun on wain.lol — a Riyadh neighborhood list including FLOW MATCHA, with a Maps link.",
   },
+  "al-mursalat": {
+    lead: `Al Mursalat (المرسلات) sits between Al Mughrizat and Al Masif. This page is the Al Mursalat set on wain.lol so far.
+
+[Camel Step](/en/c/camel-step-al-mursalat) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Al Mursalat on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Mursalat isn’t the stop, these central-north lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Mursalat. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Al Mursalat on wain.lol — a Riyadh neighborhood list including Camel Step, with a Maps link.",
+  },
+  "al-murabba": {
+    lead: `Al Murabba (المربع) sits by Al Malaz and Olaya. This page is the Al Murabba set on wain.lol so far.
+
+[Coffee Address](/en/c/coffee-address-al-murabba) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Al Murabba on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Murabba isn’t the stop, these central Riyadh lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Murabba. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Al Murabba on wain.lol — a Riyadh neighborhood list including Coffee Address, with a Maps link.",
+  },
 };
 
 const CNI_BLURBS: Record<string, string> = {
@@ -649,7 +675,7 @@ function variantIndex(id: string, modulo: number): number {
 export function shopsInDistrict(district: NeighborhoodId): ReturnType<
   typeof filterDirectoryShops
 > {
-  return filterDirectoryShops(listDirectoryShops(), district);
+  return listDirectoryShopsForDistrict(district);
 }
 
 export function siblingShops(

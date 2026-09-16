@@ -727,6 +727,38 @@ export const NEIGHBORHOODS: Record<
       "Al Taawun",
     ],
   },
+  "al-mursalat": {
+    id: "al-mursalat",
+    ar: "المرسلات",
+    en: "Al Mursalat",
+    aliases: [
+      "المرسلات",
+      "مرسلات",
+      "mursalat",
+      "mursilat",
+      "al mursalat",
+      "al-mursalat",
+      "al mursilat",
+      "al-mursilat",
+      "almursalat",
+      "Al Mursalat",
+    ],
+  },
+  "al-murabba": {
+    id: "al-murabba",
+    ar: "المربع",
+    en: "Al Murabba",
+    aliases: [
+      "المربع",
+      "مربع",
+      "murabba",
+      "muraba",
+      "al murabba",
+      "al-murabba",
+      "almurabba",
+      "Al Murabba",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

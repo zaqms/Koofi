@@ -47,6 +47,8 @@ export const NEIGHBORHOOD_IDS = [
   "al-malaz",
   "al-mathar",
   "at-taawun",
+  "al-mursalat",
+  "al-murabba",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 
@@ -63,6 +65,7 @@ export const MOMENT_TAGS = [
   "outdoor",
   "date",
   "matcha",
+  "drive-through",
 ] as const;
 export type MomentTag = (typeof MOMENT_TAGS)[number];
 
@@ -90,6 +93,11 @@ export type Shop = {
   logoUrl?: string;
   /** Baked Maps+IG popularity. Used only by the Most Popular / popular moment lock. */
   popularityIndex?: number;
+  /**
+   * Drive-through-lane shops are live on cafe cards + the Drive-through
+   * directory only. They stay out of default specialty discovery.
+   */
+  catalogLane?: "drive-through";
   example: boolean;
 };
 

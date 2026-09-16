@@ -93,7 +93,7 @@ assert(
     existsSync(join(repoRoot, "app/en/halfway/page.tsx")),
   "direct /halfway and /en/halfway pages exist",
 );
-assert(VIBE_CHIPS.length === 12, "Soft Places stay parked — VIBE_CHIPS stays 12");
+assert(VIBE_CHIPS.length === 13, "Soft Places stay parked — VIBE_CHIPS stays 13");
 const vibeChipIds: readonly string[] = VIBE_CHIPS.map((chip) => chip.id);
 assert(
   !vibeChipIds.includes("meet-halfway"),

@@ -43,6 +43,17 @@ export function listRealShops(): Shop[] {
   return listShops().filter((shop) => !isExampleShop(shop));
 }
 
+export function isDriveThroughLane(
+  shop: Pick<Shop, "catalogLane">,
+): boolean {
+  return shop.catalogLane === "drive-through";
+}
+
+/** Default specialty discovery — excludes Drive-through-lane additions. */
+export function listDiscoveryShops(): Shop[] {
+  return listRealShops().filter((shop) => !isDriveThroughLane(shop));
+}
+
 export function realShopCount(): number {
   return listRealShops().length;
 }
@@ -52,8 +63,8 @@ function neighborhoodOrder(id: NeighborhoodId): number {
   return index === -1 ? NEIGHBORHOOD_IDS.length : index;
 }
 
-export function listDirectoryShops(): DirectoryShop[] {
-  return listRealShops()
+function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
+  return shops
     .slice()
     .sort((a, b) => {
       const area = neighborhoodOrder(a.neighborhood) - neighborhoodOrder(b.neighborhood);
@@ -76,4 +87,47 @@ export function listDirectoryShops(): DirectoryShop[] {
         ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
       };
     });
+}
+
+/** Specialty directory used by default home, districts with specialty shops, chips. */
+export function listDirectoryShops(): DirectoryShop[] {
+  return toDirectoryShops(listDiscoveryShops());
+}
+
+export function listAllDirectoryShops(): DirectoryShop[] {
+  return toDirectoryShops(listRealShops());
+}
+
+/** Unified Drive-through directory — specialty TAG rows + DT-lane additions. */
+export function listDriveThroughDirectoryShops(): DirectoryShop[] {
+  return toDirectoryShops(
+    listRealShops().filter((shop) => shop.momentTags.includes("drive-through")),
+  );
+}
+
+/**
+ * Specialty shops in a district, or DT-lane shops when that district has
+ * no default-catalog rows (so new DT-only districts still have a page).
+ */
+export function listDirectoryShopsForDistrict(
+  district: NeighborhoodId,
+): DirectoryShop[] {
+  const specialty = listDirectoryShops().filter(
+    (shop) => shop.neighborhood === district,
+  );
+  if (specialty.length > 0) return specialty;
+  return listAllDirectoryShops().filter((shop) => shop.neighborhood === district);
+}
+
+/**
+ * Neighborhood index: specialty catalog plus DT-lane shops that live in
+ * districts with no specialty rows.
+ */
+export function listBrowseDirectoryShops(): DirectoryShop[] {
+  const specialty = listDirectoryShops();
+  const specialtyDistricts = new Set(specialty.map((shop) => shop.neighborhood));
+  const extra = listAllDirectoryShops().filter(
+    (shop) => !specialtyDistricts.has(shop.neighborhood),
+  );
+  return [...specialty, ...extra];
 }

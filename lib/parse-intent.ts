@@ -148,6 +148,15 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "matcha",
     "matcha latte",
   ],
+  "drive-through": [
+    "درايف ثرو",
+    "درايف ثرو",
+    "drive-through",
+    "drive through",
+    "drive-thru",
+    "drive thru",
+    "drivethrough",
+  ],
 };
 
 function chipAliases(moment: MomentTag): string[] {
@@ -169,6 +178,10 @@ const MOMENT_ALIASES: Record<MomentTag, string[]> = {
   outdoor: [...chipAliases("outdoor"), ...EXTRA_ALIASES.outdoor],
   date: [...chipAliases("date"), ...EXTRA_ALIASES.date],
   matcha: [...chipAliases("matcha"), ...EXTRA_ALIASES.matcha],
+  "drive-through": [
+    ...chipAliases("drive-through"),
+    ...EXTRA_ALIASES["drive-through"],
+  ],
 };
 
 function normalize(text: string): string {

@@ -6,7 +6,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { listDirectoryShops } from "../lib/catalog";
+import { listDirectoryShops, listDriveThroughDirectoryShops } from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
 import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
@@ -69,6 +69,10 @@ const LOCKED_CHIP_PATHS = {
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
   date: { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
   matcha: { ar: "/coffee-shops/matcha", en: "/en/coffee-shops/matcha" },
+  "drive-through": {
+    ar: "/coffee-shops/drive-through",
+    en: "/en/coffee-shops/drive-through",
+  },
 } as const;
 
 for (const [chipId, paths] of Object.entries(LOCKED_CHIP_PATHS)) {
@@ -138,7 +142,7 @@ assert(
   !vibeIds.includes("meet-halfway"),
   "بيننا is not a Soft Places vibe chip",
 );
-assert(VIBE_CHIPS.length === 12, "Soft Places stay parked — 12 vibe chips");
+assert(VIBE_CHIPS.length === 13, "Soft Places stay parked — 13 vibe chips");
 assert(NEARBY_CHIP.id === "nearby", "nearby chip id stays nearby");
 assert(NEARBY_CHIP.ar === "قريب مني", "nearby AR display is قريب مني");
 assert(MEET_HALFWAY_CHIP.id === "meet-halfway", "بيننا chip id stays");
@@ -153,14 +157,14 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,nearby,outdoor,date,work",
-  "P0 home 4×2 RTL order is locked — Matcha 4th on the top row",
+    "popular,coffee,pastry,matcha,drive-through,nearby,outdoor,date,work",
+  "P0 home order is locked — Matcha 4th, Drive-through after Matcha",
 );
 assert(
   OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",
   "off-home chip ids stay shareable",
 );
-assert(homeSurfaceChips().length === 8, "home chrome is 4×2 — eight chips");
+assert(homeSurfaceChips().length === 9, "home chrome is nine chips");
 const homeChipIds: readonly string[] = homeSurfaceChips().map((chip) => chip.id);
 assert(
   !homeChipIds.includes("meet-halfway"),
@@ -206,6 +210,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   coffee: "أفضل قهوة",
   pastry: "قهوة وحلى",
   matcha: "ماتشا",
+  "drive-through": "درايف ثرو",
   work: "للشغل",
   date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
@@ -223,6 +228,7 @@ const LOCKED_HOME_LABELS_EN: Record<string, string> = {
   coffee: "Best Coffee",
   pastry: "Coffee and sweets",
   matcha: "Matcha",
+  "drive-through": "Drive-through",
   work: "Best for Work",
   date: "With friends",
   outdoor: "Outdoor seating",
@@ -420,6 +426,31 @@ assert(
   filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 25,
   "Matcha route directory is the 25 tagged shops",
 );
+assert(
+  chipDirectoryMoment("drive-through") === "drive-through",
+  "drive-through slug filters drive-through tags",
+);
+assert(
+  listDriveThroughDirectoryShops().length === 43,
+  "Drive-through directory is 33 ADD + 10 TAG",
+);
+assert(
+  listDriveThroughDirectoryShops().every((shop) =>
+    shop.momentTags.includes("drive-through"),
+  ),
+  "Drive-through directory is drive-through-tagged only",
+);
+assert(
+  !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-wadi"),
+  "DT-lane additions stay out of default specialty directory",
+);
+assert(
+  chips.includes('case "drive-through"') &&
+    !chips.includes("bg-drive") &&
+    !chips.includes("text-drive") &&
+    !chips.includes("border-drive"),
+  "Drive-through uses sibling vibe tokens — no special color",
+);
 
 const product = read("lib/product.ts");
 const why = read("lib/why-line.ts");
@@ -525,10 +556,14 @@ assert(
   chat.includes("isStaticDirectoryChip") &&
     !chat.includes('chipId === "popular"') &&
     !chat.includes("selectedChipId === \"popular\""),
-  "Most Popular and Matcha are static directory chips — no ask→3",
+  "Most Popular, Matcha, and Drive-through are static directory chips — no ask→3",
 );
 assert(isStaticDirectoryChip("popular"), "popular is a static directory chip");
 assert(isStaticDirectoryChip("matcha"), "matcha is a static directory chip");
+assert(
+  isStaticDirectoryChip("drive-through"),
+  "drive-through is a static directory chip",
+);
 assert(!isStaticDirectoryChip("quiet"), "quiet stays off-home three-pick");
 assert(!isStaticDirectoryChip("coffee"), "coffee still opens chat");
 assert(!/Soft Places/i.test(chat), "no Soft Places analytics or UI in chat");

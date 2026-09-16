@@ -1,6 +1,13 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { getShop, listDirectoryShops, listRealShops } from "../lib/catalog";
+import {
+  getShop,
+  listDirectoryShops,
+  listDirectoryShopsForDistrict,
+  listDiscoveryShops,
+  listDriveThroughDirectoryShops,
+  listRealShops,
+} from "../lib/catalog";
 import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
 import { copy } from "../lib/copy";
 import {
@@ -79,6 +86,8 @@ assert(resolveDistrictSlug("al-muruj") === "al-muruj", "al-muruj resolves");
 assert(resolveDistrictSlug("al-malaz") === "al-malaz", "al-malaz resolves");
 assert(resolveDistrictSlug("al-mathar") === "al-mathar", "al-mathar resolves");
 assert(resolveDistrictSlug("at-taawun") === "at-taawun", "at-taawun resolves");
+assert(resolveDistrictSlug("al-mursalat") === "al-mursalat", "al-mursalat resolves");
+assert(resolveDistrictSlug("al-murabba") === "al-murabba", "al-murabba resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -142,7 +151,8 @@ assert(areas.includes("al-malaz"), "directory includes al-malaz");
 assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.length === 45, `expected 45 districts, got ${areas.length}`);
-assert(listRealShops().length === 275, `catalog 269→275, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 275, `specialty discovery stays 275, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 308, `catalog 275→308 with DT-lane, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1282,6 +1292,62 @@ const MALAZ_REFILL = {
 }
 
 {
+  const rows = listDirectoryShopsForDistrict("al-mursalat");
+  assert(rows.length === 1, `al-mursalat has 1 DT-lane shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "camel-step-al-mursalat"),
+    "al-mursalat includes camel-step-al-mursalat",
+  );
+  assert(neighborhoodLabel("al-mursalat", "ar") === "المرسلات", "al-mursalat Arabic label");
+  assert(neighborhoodLabel("al-mursalat", "en") === "Al Mursalat", "al-mursalat English label");
+  for (const ask of ["المرسلات", "مرسلات", "mursalat", "al mursalat", "Al Mursalat"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-mursalat"),
+      `parseIntent(${ask}) should hit al-mursalat`,
+    );
+  }
+}
+
+{
+  const rows = listDirectoryShopsForDistrict("al-murabba");
+  assert(rows.length === 1, `al-murabba has 1 DT-lane shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "coffee-address-al-murabba"),
+    "al-murabba includes coffee-address-al-murabba",
+  );
+  assert(neighborhoodLabel("al-murabba", "ar") === "المربع", "al-murabba Arabic label");
+  assert(neighborhoodLabel("al-murabba", "en") === "Al Murabba", "al-murabba English label");
+  for (const ask of ["المربع", "مربع", "murabba", "al murabba", "Al Murabba"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-murabba"),
+      `parseIntent(${ask}) should hit al-murabba`,
+    );
+  }
+}
+
+{
+  const dt = listDriveThroughDirectoryShops();
+  assert(dt.length === 43, `Drive-through directory is 43, got ${dt.length}`);
+  assert(
+    dt.every((shop) => shop.momentTags.includes("drive-through")),
+    "Drive-through directory is tagged only",
+  );
+  assert(
+    !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-malaz"),
+    "DT-lane Java Malaz stays out of specialty directory",
+  );
+  assert(
+    listDirectoryShops().some((shop) => shop.id === "ulica-al-ghadeer"),
+    "TAG ULICA stays on specialty directory",
+  );
+  const ulica = getShop("ulica-al-ghadeer");
+  assert(
+    ulica?.momentTags.includes("drive-through"),
+    "TAG ULICA is drive-through tagged",
+  );
+}
+
+{
   assert(chipDirectoryMoment("matcha") === "matcha", "matcha chip filters matcha tags");
   assert(chipDirectoryMoment("popular") === null, "popular chip is not a moment filter");
   assert(chipDirectoryMoment("nearby") === null, "nearby chip is not a moment filter");
@@ -1758,7 +1824,7 @@ const scoutPack: {
     hex: "0x3e2effbaf1698ceb:0xda495846c2d4c231",
     neighborhood: "al-hamra",
     vibe: ["محمصة", "قهوة"],
-    moments: ["roaster", "qahwa", "pastry"],
+    moments: ["roaster", "qahwa", "pastry", "drive-through"],
     logoUrl: "/logos/serene-coffee-roastery.png",
     pin: { lat: 24.7829655, lng: 46.7586255 },
   },
@@ -1830,7 +1896,7 @@ const scoutPack: {
     hex: "0x3e2efffcecbb3509:0x6fc42bb33821c4f2",
     neighborhood: "al-hamra",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/coffee-address-mark.png",
     pin: { lat: 24.7826536, lng: 46.7494331 },
   },
@@ -1884,7 +1950,7 @@ const scoutPack: {
     hex: "0x3e2eff9a4651eac7:0x5fd092bea9a44569",
     neighborhood: "al-yarmouk",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/coffee-address-al-yarmouk.png",
     pin: { lat: 24.8155525, lng: 46.7783003 },
   },
@@ -1991,7 +2057,7 @@ const scoutPack: {
     hex: "0x3e2f012a3960ff87:0x2996eb4bdb39a559",
     neighborhood: "al-nahdah",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/coffee-address-al-nahdah.png",
     pin: { lat: 24.7613807, lng: 46.8114104 },
   },
@@ -2201,7 +2267,7 @@ const scoutPack: {
     hex: "0x3e2eff00786d8df5:0xd0ff3a2c456c840c",
     neighborhood: "al-munsiyah",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/coffee-address-al-munsiyah.png",
     pin: { lat: 24.8245625, lng: 46.7499375 },
   },
@@ -2403,7 +2469,7 @@ const scoutPack: {
     hex: "0x3e2ee3bd0ad3f463:0x8d3dee05263debed",
     neighborhood: "al-ghadeer",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/ulica-al-ghadeer.jpg",
   },
   {
@@ -2435,7 +2501,7 @@ const scoutPack: {
     hex: "0x3e2ee3007631ac4b:0x22a7ddce0ec9d709",
     neighborhood: "al-ghadeer",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/drive-al-ghadeer.jpg",
   },
   {
@@ -2487,7 +2553,7 @@ const scoutPack: {
     hex: "0x3e2eef0056ddc7d1:0xfb336407ddf0d6fd",
     neighborhood: "al-arid",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/drive-al-arid.jpg",
     pin: { lat: 24.8989508, lng: 46.6184764 },
   },
@@ -2505,7 +2571,7 @@ const scoutPack: {
     hex: "0x3e2eef0015c62295:0xf26e879a068bc59f",
     neighborhood: "al-arid",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/coffee-address-al-arid.png",
     pin: { lat: 24.8897609, lng: 46.6075216 },
   },
@@ -2577,7 +2643,7 @@ const scoutPack: {
     hex: "0x3e2ee5005d3f77b3:0x3ddaaa1f8ffdf657",
     neighborhood: "al-qirawan",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "drive-through"],
     logoUrl: "/logos/drive-al-qirawan.jpg",
     pin: { lat: 24.8458534, lng: 46.6049121 },
   },
@@ -3086,10 +3152,10 @@ assert(
 );
 
 const popularShops = listPopularDirectoryShops();
-const rankedCatalog = rankByPopularity(listRealShops());
+const rankedCatalog = rankByPopularity(listDiscoveryShops());
 assert(
-  popularShops.length === listRealShops().length,
-  "popular directory lists the full catalog",
+  popularShops.length === listDiscoveryShops().length,
+  "popular directory lists the specialty discovery catalog",
 );
 assert(
   popularShops.map((shop) => shop.id).join(",") ===

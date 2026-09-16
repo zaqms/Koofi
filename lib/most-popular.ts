@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { listDirectoryShops, listRealShops } from "./catalog";
+import { listDirectoryShops, listDiscoveryShops } from "./catalog";
 import { copy } from "./copy";
 import { COFFEE_SHOPS_CATEGORY, type DirectoryCategoryId } from "./directory-category";
 import type { DirectoryShop } from "./directory";
@@ -81,11 +81,11 @@ export function categoryListingStaticParams(): {
 /** Full catalog by baked popularityIndex. No brand-dedupe — directory cards. */
 export function listPopularDirectoryShops(): DirectoryShop[] {
   const byId = new Map(listDirectoryShops().map((shop) => [shop.id, shop]));
-  return rankByPopularity(listRealShops())
+  return rankByPopularity(listDiscoveryShops())
     .map((shop) => byId.get(shop.id))
     .filter((shop): shop is DirectoryShop => shop !== undefined);
 }
 
 export function listPopularPublicShops(): Shop[] {
-  return rankByPopularity(listRealShops());
+  return rankByPopularity(listDiscoveryShops());
 }

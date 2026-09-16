@@ -1,4 +1,4 @@
-import { listRealShops } from "../lib/catalog";
+import { listDiscoveryShops, listRealShops } from "../lib/catalog";
 import {
   dictionaryCoversLiveDistricts,
   dictionaryDistrictIds,
@@ -25,6 +25,7 @@ function assert(cond: unknown, message: string): asserts cond {
 }
 
 const catalog = listRealShops();
+const discovery = listDiscoveryShops();
 const catalogIds = new Set(catalog.map((shop) => shop.id));
 
 const coverage = dictionaryCoversLiveDistricts();
@@ -136,7 +137,7 @@ function assertDistrictTop3(
   const result = pickCafes({ text: ask, language });
   const expected = dedupeSameBrand(
     rankInDistrict(
-      catalog.filter((shop) => shop.neighborhood === district),
+      discovery.filter((shop) => shop.neighborhood === district),
       district,
     ),
   )
@@ -275,6 +276,10 @@ assert(extractPrimaryDistrict("Al Mathar") === "al-mathar", "Al Mathar");
 assert(extractPrimaryDistrict("التعاون") === "at-taawun", "التعاون");
 assert(extractPrimaryDistrict("At Taawun") === "at-taawun", "At Taawun");
 assert(extractPrimaryDistrict("taawun") === "at-taawun", "taawun");
+assert(extractPrimaryDistrict("المرسلات") === "al-mursalat", "المرسلات");
+assert(extractPrimaryDistrict("Al Mursalat") === "al-mursalat", "Al Mursalat");
+assert(extractPrimaryDistrict("المربع") === "al-murabba", "المربع");
+assert(extractPrimaryDistrict("Al Murabba") === "al-murabba", "Al Murabba");
 assert(extractPrimaryDistrict("jax") === "diriyah", "jax alias is diriyah");
 assert(extractPrimaryDistrict("جاكس") === "diriyah", "جاكس alias is diriyah");
 assertDistrictTop3("المروج", "ar", "al-muruj");

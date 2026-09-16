@@ -1,4 +1,4 @@
-import { listRealShops } from "./catalog";
+import { listDiscoveryShops } from "./catalog";
 import { copy } from "./copy";
 import { haversineKm } from "./distance";
 import { neighborhoodCentroid } from "./neighborhood-tight";
@@ -16,7 +16,7 @@ const RIYADH_DRIVE_KMH = 26;
 
 export function nearestNeighborhoodFromPin(
   pin: Pin,
-  shops = listRealShops(),
+  shops = listDiscoveryShops(),
   maxKm = PLACE_SNAP_KM,
 ): NeighborhoodId | null {
   let best: { id: NeighborhoodId; km: number } | null = null;

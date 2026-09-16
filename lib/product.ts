@@ -65,6 +65,7 @@ export const VIBE_CHIPS = [
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
   { id: "matcha", ar: "ماتشا", en: "Matcha", momentTag: "matcha" },
+  { id: "drive-through", ar: "درايف ثرو", en: "Drive-through", momentTag: "drive-through" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
   { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
   { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },
@@ -88,8 +89,9 @@ export const NEARBY_CHIP = {
 } as const;
 
 /**
- * P0 home chip chrome is 4×2 only (RTL R→L in this array order).
+ * P0 home chip chrome is 4 columns (RTL R→L in this array order).
  * Matcha sits 4th on the top row (Ajz/Amjad 16 Sep 2026).
+ * Drive-through is the new top chip after Matcha (Amjad LOCK 16 Sep 2026).
  * Off-home ids keep their URLs: roaster, specialty, study, late, quiet.
  * بيننا is a utility card above this grid — not a tile.
  */
@@ -98,6 +100,7 @@ export const HOME_CHIP_IDS = [
   "coffee",
   "pastry",
   "matcha",
+  "drive-through",
   "nearby",
   "outdoor",
   "date",
@@ -119,11 +122,15 @@ export function isHomeChipId(id: string): id is HomeChipId {
 }
 
 /**
- * Static directory chips. Most Popular + Matcha navigate to a full list
- * page. They must not open the ask→3 agent flow. Quiet / other off-home
- * chips keep three-pick restore.
+ * Static directory chips. Most Popular + Matcha + Drive-through navigate
+ * to a full list page. They must not open the ask→3 agent flow. Quiet /
+ * other off-home chips keep three-pick restore.
  */
-export const STATIC_DIRECTORY_CHIP_IDS = ["popular", "matcha"] as const;
+export const STATIC_DIRECTORY_CHIP_IDS = [
+  "popular",
+  "matcha",
+  "drive-through",
+] as const;
 
 export function isStaticDirectoryChip(
   id: string | null | undefined,
@@ -473,6 +480,7 @@ export const COFFEE_SHOP_CHIP_SLUGS = [
   "coffee",
   "pastry",
   "matcha",
+  "drive-through",
   "roaster",
   "specialty",
   "quiet",

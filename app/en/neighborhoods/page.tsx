@@ -4,7 +4,7 @@ import {
   neighborhoodsIndexDescription,
   neighborhoodsIndexTitle,
 } from "@/lib/browse-neighborhoods";
-import { listDirectoryShops } from "@/lib/catalog";
+import { listBrowseDirectoryShops } from "@/lib/catalog";
 import { pageAlternates } from "@/lib/locale";
 import {
   PRODUCT_NAME,
@@ -49,7 +49,7 @@ export default function EnglishNeighborhoodsPage() {
   return (
     <NeighborhoodsPageView
       language="en"
-      rows={listNeighborhoodRows("en", listDirectoryShops())}
+      rows={listNeighborhoodRows("en", listBrowseDirectoryShops())}
     />
   );
 }

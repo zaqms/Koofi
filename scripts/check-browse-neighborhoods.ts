@@ -19,7 +19,7 @@ import {
   popularNeighborhoodIds,
   sortNeighborhoodRows,
 } from "../lib/browse-neighborhoods";
-import { listDirectoryShops, listRealShops } from "../lib/catalog";
+import { listBrowseDirectoryShops, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { directoryNeighborhoods } from "../lib/directory";
 import { extractPrimaryDistrict } from "../lib/district-dictionary";
@@ -142,7 +142,7 @@ assert(
   "AR التخصصي",
 );
 
-const shops = listDirectoryShops();
+const shops = listBrowseDirectoryShops();
 const rowsEn = listNeighborhoodRows("en", shops);
 const rowsAr = listNeighborhoodRows("ar", shops);
 const live = directoryNeighborhoods(shops);
@@ -304,7 +304,15 @@ assert(
   az.some((row) => row.id === "at-taawun"),
   "A–Z includes at-taawun",
 );
-assert(az.length === 45, "A–Z is the 45 live catalog districts");
+assert(
+  az.some((row) => row.id === "al-mursalat"),
+  "A–Z includes al-mursalat",
+);
+assert(
+  az.some((row) => row.id === "al-murabba"),
+  "A–Z includes al-murabba",
+);
+assert(az.length === 47, "A–Z is the 47 catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

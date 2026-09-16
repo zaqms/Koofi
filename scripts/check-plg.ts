@@ -268,8 +268,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 275,
-  `popularity map should have 275 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 308,
+  `popularity map should have 308 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
@@ -347,6 +347,14 @@ assert(
 assert(
   parseIntent("ماتشا").moments.join(",") === "matcha",
   "ماتشا chip must resolve to matcha",
+);
+assert(
+  parseIntent("Drive-through").moments.join(",") === "drive-through",
+  "Drive-through chip must resolve to drive-through",
+);
+assert(
+  parseIntent("درايف ثرو").moments.join(",") === "drive-through",
+  "درايف ثرو chip must resolve to drive-through",
 );
 
 const LOCKED_POPULAR = [

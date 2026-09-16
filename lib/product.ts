@@ -449,6 +449,34 @@ export const LEGACY_CHIP_REDIRECTS = LEGACY_DATE_CHIP_SLUGS.flatMap((slug) => [
   },
 ]);
 
+/**
+ * Retired cafe-card ids. Same 308 pattern as chip slug retags.
+ * Sand Clock’s live hex was mis-tagged sulimaniyah; keep the old /c/ URL
+ * on the Muruj place so Maps identity does not swap.
+ */
+export const LEGACY_SHOP_REDIRECTS = [
+  {
+    source: `${CARD_PATH_PREFIX}/sand-clock-sulimaniyah`,
+    destination: `${CARD_PATH_PREFIX}/sand-clock-al-muruj`,
+    statusCode: 308 as const,
+  },
+  {
+    source: `/en${CARD_PATH_PREFIX}/sand-clock-sulimaniyah`,
+    destination: `/en${CARD_PATH_PREFIX}/sand-clock-al-muruj`,
+    statusCode: 308 as const,
+  },
+  {
+    source: `${CARD_PATH_PREFIX}/sand-clock-sulimaniyah/:path*`,
+    destination: `${CARD_PATH_PREFIX}/sand-clock-al-muruj/:path*`,
+    statusCode: 308 as const,
+  },
+  {
+    source: `/en${CARD_PATH_PREFIX}/sand-clock-sulimaniyah/:path*`,
+    destination: `/en${CARD_PATH_PREFIX}/sand-clock-al-muruj/:path*`,
+    statusCode: 308 as const,
+  },
+] as const;
+
 export function isCoffeeShopChipSlug(
   slug: string,
 ): slug is CoffeeShopChipSlug {

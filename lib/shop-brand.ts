@@ -18,6 +18,7 @@ const KNOWN_BRANDS = [
   "breehant",
   "roasting house",
   "percent arabica",
+  "sand clock",
 ] as const;
 
 function latinName(shop: Pick<Shop, "nameEn" | "nameAr">): string {

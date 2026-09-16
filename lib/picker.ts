@@ -1,7 +1,10 @@
 import { listDiscoveryShops, listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
-import { extractPrimaryDistrict } from "./district-dictionary";
+import {
+  extractPrimaryDistrict,
+  isExactDistrictAsk,
+} from "./district-dictionary";
 import { rankByPopularity, rankInDistrict } from "./district-rank";
 import { isMeetHalfwayChipAsk } from "./meet-halfway";
 import { coffeeShopsInDistrict } from "./directory-category";
@@ -249,7 +252,7 @@ export function pickCafes(input: {
   );
   const matchedDistrict = extractPrimaryDistrict(input.text);
 
-  if (matchedDistrict) {
+  if (matchedDistrict && (named.length === 0 || isExactDistrictAsk(input.text))) {
     const inDistrict = citywide.filter(
       (shop) => shop.neighborhood === matchedDistrict,
     );

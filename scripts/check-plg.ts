@@ -176,6 +176,8 @@ assertNamedFirst("جزوة", "ar", (id) => id.startsWith("jazwa-"));
 assertNamedFirst("nosound", "en", (id) => id.startsWith("nosound-"));
 assertNamedFirst("نوساوند", "ar", (id) => id.startsWith("nosound-"));
 assertNamedFirst("percent", "en", (id) => id === "percent-arabica-hittin");
+assertNamedFirst("قهوة سلام", "ar", (id) => id === "salam-cafe-al-malqa");
+assertNamedFirst("Salam Cafe", "en", (id) => id === "salam-cafe-al-malqa");
 
 const breehantPack = pickCafes({ text: "breehant", language: "en" });
 assert(
@@ -268,8 +270,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 308,
-  `popularity map should have 308 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 324,
+  `popularity map should have 324 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),

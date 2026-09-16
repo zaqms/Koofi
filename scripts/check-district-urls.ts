@@ -88,6 +88,18 @@ assert(resolveDistrictSlug("al-mathar") === "al-mathar", "al-mathar resolves");
 assert(resolveDistrictSlug("at-taawun") === "at-taawun", "at-taawun resolves");
 assert(resolveDistrictSlug("al-mursalat") === "al-mursalat", "al-mursalat resolves");
 assert(resolveDistrictSlug("al-murabba") === "al-murabba", "al-murabba resolves");
+assert(resolveDistrictSlug("as-salam") === "as-salam", "as-salam resolves");
+assert(resolveDistrictSlug("ghubairah") === "ghubairah", "ghubairah resolves");
+assert(resolveDistrictSlug("al-wisham") === "al-wisham", "al-wisham resolves");
+assert(resolveDistrictSlug("badr") === "badr", "badr resolves");
+assert(resolveDistrictSlug("al-aziziyah") === "al-aziziyah", "al-aziziyah resolves");
+assert(resolveDistrictSlug("al-hazm") === "al-hazm", "al-hazm resolves");
+assert(resolveDistrictSlug("al-andalus") === "al-andalus", "al-andalus resolves");
+assert(resolveDistrictSlug("al-khaleej") === "al-khaleej", "al-khaleej resolves");
+assert(resolveDistrictSlug("an-nasim-al-gharbi") === "an-nasim-al-gharbi", "an-nasim-al-gharbi resolves");
+assert(resolveDistrictSlug("ar-rimal") === "ar-rimal", "ar-rimal resolves");
+assert(resolveDistrictSlug("al-janadriyyah") === "al-janadriyyah", "al-janadriyyah resolves");
+assert(resolveDistrictSlug("king-khalid-international-airport") === null, "KKIA airport slug is not a live district");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -152,7 +164,7 @@ assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.length === 45, `expected 45 districts, got ${areas.length}`);
 assert(listDiscoveryShops().length === 275, `specialty discovery stays 275, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 308, `catalog 275→308 with DT-lane, got ${listRealShops().length}`);
+assert(listRealShops().length === 324, `catalog 275→324 with DT-lane, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1326,8 +1338,36 @@ const MALAZ_REFILL = {
 }
 
 {
+  const rows = listDirectoryShopsForDistrict("as-salam");
+  assert(rows.length === 1, `as-salam has 1 DT-lane shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "a-plus-as-salam"),
+    "as-salam includes a-plus-as-salam",
+  );
+  assert(neighborhoodLabel("as-salam", "ar") === "السلام", "as-salam Arabic label");
+  assert(neighborhoodLabel("as-salam", "en") === "As Salam", "as-salam English label");
+  for (const ask of ["السلام", "as salam", "As Salam"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("as-salam"),
+      `parseIntent(${ask}) should hit as-salam`,
+    );
+  }
+}
+
+{
+  const rows = listDirectoryShopsForDistrict("badr");
+  assert(rows.length === 2, `badr has 2 DT-lane shops, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "drive-badr"),
+    "badr includes drive-badr",
+  );
+  assert(neighborhoodLabel("badr", "ar") === "بدر", "badr Arabic label");
+  assert(neighborhoodLabel("badr", "en") === "Badr", "badr English label");
+}
+
+{
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 43, `Drive-through directory is 43, got ${dt.length}`);
+  assert(dt.length === 59, `Drive-through directory is 59, got ${dt.length}`);
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
     "Drive-through directory is tagged only",

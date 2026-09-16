@@ -158,12 +158,21 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "flow-matcha-at-taawun": ["فلو"],
   "hokkaido-al-hamra": ["هوكايدو"],
   "happyland-matcha-diriyah": ["هابي لاند"],
+  "salam-cafe-al-malqa": ["قهوة سلام", "salam cafe"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
   const alias = normalize(raw);
   if (!alias || isBlockedAlias(alias)) return;
   if (tokens(alias).every((token) => isBlockedAlias(token))) return;
+  into.add(alias);
+}
+
+/** Extra aliases may reuse a حي token when the full phrase is the shop name. */
+function addExtraAlias(into: Set<string>, raw: string): void {
+  const alias = normalize(raw);
+  if (!alias) return;
+  if (isBlockedAlias(alias) && !alias.includes(" ")) return;
   into.add(alias);
 }
 
@@ -190,9 +199,9 @@ export function shopNameAliases(
   if (arabic.length >= 2) addAlias(aliases, arabic.slice(0, 2).join(" "));
   if (arabic.length) addAlias(aliases, arabic.join(" "));
 
-  for (const extra of EXTRA_ALIASES[shop.id] ?? []) addAlias(aliases, extra);
+  for (const extra of EXTRA_ALIASES[shop.id] ?? []) addExtraAlias(aliases, extra);
   for (const extra of EXTRA_ALIASES[shopBrandKey(shop)] ?? []) {
-    addAlias(aliases, extra);
+    addExtraAlias(aliases, extra);
   }
 
   return [...aliases];

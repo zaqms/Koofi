@@ -51,6 +51,15 @@ function placeAliases(id: NeighborhoodId): string[] {
   return [place.id, place.en, place.ar, ...place.aliases];
 }
 
+/** True when the whole ask is a district label, not a shop name that contains one. */
+export function isExactDistrictAsk(raw: string): boolean {
+  const haystack = normalize(raw);
+  if (!haystack) return false;
+  return dictionaryDistrictIds().some((id) =>
+    placeAliases(id).some((alias) => normalize(alias) === haystack),
+  );
+}
+
 /** First district named in the ask (EN / AR / alias / typo). */
 export function extractPrimaryDistrict(raw: string): NeighborhoodId | null {
   const { neighborhoods } = parseIntent(raw);

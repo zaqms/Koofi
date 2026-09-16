@@ -177,7 +177,11 @@ for (const row of rowsEn) {
     `${row.id} count matches catalog`,
   );
   if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
-    assert(row.cafeCount === 8, `${row.id} Wave 1 catalog has 8 cafes, got ${row.cafeCount}`);
+    const expected = row.id === "al-takhassusi" ? 7 : 8;
+    assert(
+      row.cafeCount === expected,
+      `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
+    );
   } else if ((SCOUT_GAP_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);
   } else {

@@ -2982,20 +2982,6 @@
       "example": false
     },
     {
-      "id": "zwaya-al-takhassusi",
-      "nameAr": "مطعم ومقهى زوايا",
-      "nameEn": "Zwaya Restaurant & Cafe",
-      "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
-      "vibeTags": ["قهوة"],
-      "momentTags": ["qahwa"],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1db3b2ff3f01:0xd299858925d43124",
-      "logoUrl": "/logos/zwaya-al-takhassusi.png",
-      "popularityIndex": 40,
-      "example": false
-    },
-    {
       "id": "glim-al-takhassusi",
       "nameAr": "جليم",
       "nameEn": "GLIM",

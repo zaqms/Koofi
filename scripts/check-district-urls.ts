@@ -131,7 +131,7 @@ assert(areas.includes("al-ghadeer"), "directory includes al-ghadeer");
 assert(areas.includes("al-arid"), "directory includes al-arid");
 assert(areas.includes("al-qirawan"), "directory includes al-qirawan");
 assert(areas.length === 39, `expected 39 districts, got ${areas.length}`);
-assert(listRealShops().length === 241, `catalog 201→241, got ${listRealShops().length}`);
+assert(listRealShops().length === 240, `catalog 201→240, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -958,7 +958,6 @@ const WAVE1_DISTRICTS: {
       "groovy-al-takhassusi",
       "dust-and-verse-al-takhassusi",
       "somo-al-takhassusi",
-      "zwaya-al-takhassusi",
       "glim-al-takhassusi",
     ],
   },
@@ -1026,9 +1025,10 @@ const WAVE1_DISTRICTS: {
 
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);
+  const expected = district.id === "al-takhassusi" ? 7 : 8;
   assert(
-    rows.length === 8,
-    `${district.id} has 8 shops, got ${rows.length}`,
+    rows.length === expected,
+    `${district.id} has ${expected} shops, got ${rows.length}`,
   );
   assert(
     rows.every((shop) => shop.neighborhood === district.id),
@@ -1983,14 +1983,6 @@ const scoutPack: {
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/somo-al-takhassusi.jpg",
-  },
-  {
-    id: "zwaya-al-takhassusi",
-    hex: "0x3e2f1db3b2ff3f01:0xd299858925d43124",
-    neighborhood: "al-takhassusi",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-    logoUrl: "/logos/zwaya-al-takhassusi.png",
   },
   {
     id: "glim-al-takhassusi",

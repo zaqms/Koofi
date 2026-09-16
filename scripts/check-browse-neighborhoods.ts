@@ -5,7 +5,9 @@ import {
   DEFAULT_BROWSE_CITY,
   FEATURED_NEIGHBORHOODS_BY_CITY,
   NEIGHBORHOOD_SORTS,
+  POPULAR_NEIGHBORHOODS_BY_CITY,
   RIYADH_FEATURED_NEIGHBORHOODS,
+  RIYADH_POPULAR_NEIGHBORHOODS,
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
   filterNeighborhoodRows,
@@ -14,13 +16,17 @@ import {
   neighborhoodCafeCountLabel,
   neighborhoodDistanceKm,
   neighborhoodsIndexHeading,
+  popularNeighborhoodIds,
   sortNeighborhoodRows,
 } from "../lib/browse-neighborhoods";
-import { listDirectoryShops } from "../lib/catalog";
+import { listDirectoryShops, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { directoryNeighborhoods } from "../lib/directory";
+import { extractPrimaryDistrict } from "../lib/district-dictionary";
+import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { districtPath, neighborhoodsPath } from "../lib/product";
-import type { NeighborhoodId } from "../lib/types";
+import { matchCatalogShops } from "../lib/shop-name";
+import { NEIGHBORHOOD_IDS, type NeighborhoodId } from "../lib/types";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -60,6 +66,40 @@ assert(
   "AR RTL DOM starts at Hittin so حطين is the rightmost start",
 );
 
+const AMJAD_POPULAR =
+  "hittin,al-malqa,al-takhassusi,olaya,al-yasmin,al-nakheel,al-aqiq,as-sahafah,al-narjis,al-ghadeer,al-arid,al-qirawan,al-rabi,al-wadi,qurtubah,ghirnatah,diplomatic-quarter,diriyah,sulimaniyah,al-mohammadiyah,al-muruj,al-masif,al-mughrizat,al-rawdah,al-hamra,al-yarmouk,al-munsiyah,al-malaz,al-wurud";
+assert(
+  RIYADH_POPULAR_NEIGHBORHOODS.join(",") === AMJAD_POPULAR,
+  "Riyadh Popular follows Amjad's locked order",
+);
+assert(RIYADH_POPULAR_NEIGHBORHOODS.length === 29, "exactly 29 Popular slots");
+assert(
+  POPULAR_NEIGHBORHOODS_BY_CITY.riyadh.join(",") ===
+    RIYADH_POPULAR_NEIGHBORHOODS.join(","),
+  "Popular map is city-keyed",
+);
+assert(
+  popularNeighborhoodIds().join(",") === AMJAD_POPULAR,
+  "popularNeighborhoodIds is Amjad's list",
+);
+assert(
+  RIYADH_FEATURED_NEIGHBORHOODS.join(",") !==
+    RIYADH_POPULAR_NEIGHBORHOODS.slice(0, 6).join(","),
+  "home featured belt is not the Popular prefix",
+);
+
+const NEW_POPULAR_DISTRICTS = [
+  "al-takhassusi",
+  "al-aqiq",
+  "al-ghadeer",
+  "al-arid",
+  "al-qirawan",
+  "al-wadi",
+  "al-mohammadiyah",
+  "al-muruj",
+  "al-malaz",
+] as const;
+
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "Al Sulaymaniyah",
   "EN Sulimaniyah uses Al Sulaymaniyah",
@@ -70,17 +110,44 @@ assert(
 );
 assert(browseNeighborhoodLabel("hittin", "en") === "Hittin", "EN Hittin label");
 assert(browseNeighborhoodLabel("hittin", "ar") === "حطين", "AR Hittin label");
+assert(NEIGHBORHOODS.hittin.ar === "حطين", "catalog Hittin Arabic stays حطين");
+assert(browseNeighborhoodLabel("al-nakheel", "en") === "An Nakheel", "EN An Nakheel");
+assert(browseNeighborhoodLabel("as-sahafah", "en") === "As Sahafah", "EN As Sahafah");
+assert(browseNeighborhoodLabel("al-rabi", "en") === "Ar Rabi", "EN Ar Rabi");
+assert(browseNeighborhoodLabel("ghirnatah", "en") === "Granada", "EN Granada");
+assert(browseNeighborhoodLabel("al-rawdah", "en") === "Ar Rawdah", "EN Ar Rawdah");
+assert(browseNeighborhoodLabel("al-yarmouk", "en") === "Al Yarmuk", "EN Al Yarmuk");
+assert(
+  browseNeighborhoodLabel("diplomatic-quarter", "en") === "Diplomatic Quarter",
+  "EN Diplomatic Quarter label",
+);
+assert(
+  browseNeighborhoodLabel("al-takhassusi", "en") === "Al Takhassusi",
+  "EN Al Takhassusi",
+);
+assert(
+  browseNeighborhoodLabel("al-takhassusi", "ar") === "التخصصي",
+  "AR التخصصي",
+);
 
 const shops = listDirectoryShops();
 const rowsEn = listNeighborhoodRows("en", shops);
 const rowsAr = listNeighborhoodRows("ar", shops);
 const live = directoryNeighborhoods(shops);
 
-assert(rowsEn.length === live.length, "view-all lists live Riyadh districts");
-assert(rowsAr.length === live.length, "AR view-all lists the same districts");
+assert(rowsEn.length === NEIGHBORHOOD_IDS.length, "view-all lists every catalog district");
+assert(rowsAr.length === NEIGHBORHOOD_IDS.length, "AR view-all lists the same districts");
 assert(
-  rowsEn.every((row) => live.includes(row.id)),
+  rowsEn.every((row) => NEIGHBORHOOD_IDS.includes(row.id)),
   "view-all rows stay on catalog ids",
+);
+assert(
+  live.every((id) => rowsEn.some((row) => row.id === id)),
+  "view-all still includes every live-with-shops district",
+);
+assert(
+  NEW_POPULAR_DISTRICTS.every((id) => rowsEn.some((row) => row.id === id)),
+  "new Popular districts appear on View All",
 );
 assert(
   !rowsEn.some((row) => /jeddah|obhur|salamah|al marwa|faisaliyah/i.test(row.label)),
@@ -96,7 +163,11 @@ for (const row of rowsEn) {
     row.cafeCount === neighborhoodCafeCount(row.id, shops),
     `${row.id} count matches catalog`,
   );
-  assert(row.cafeCount > 0, `${row.id} has at least one cafe`);
+  if ((NEW_POPULAR_DISTRICTS as readonly string[]).includes(row.id)) {
+    assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);
+  } else {
+    assert(row.cafeCount > 0, `${row.id} has at least one cafe`);
+  }
   assert(
     row.href === districtPath(row.id, "en"),
     `${row.id} EN href is the live district route`,
@@ -115,17 +186,32 @@ for (const row of rowsAr) {
   );
 }
 
+const popularEn = sortNeighborhoodRows(rowsEn, "popular", null, "en");
+const popularAr = sortNeighborhoodRows(rowsAr, "popular", null, "ar");
+assert(popularEn.length === 29, "Popular is exactly Amjad's 29 districts");
+assert(popularAr.length === 29, "AR Popular is exactly Amjad's 29 districts");
 assert(
-  rowsEn.every((row, index) => {
-    const next = rowsEn[index + 1];
-    if (!next) return true;
-    return (
-      row.cafeCount > next.cafeCount ||
-      (row.cafeCount === next.cafeCount &&
-        row.label.localeCompare(next.label, "en") <= 0)
-    );
-  }),
-  "default view-all sort is real cafe count desc",
+  popularEn.map((row) => row.id).join(",") === AMJAD_POPULAR,
+  "Popular follows Amjad's locked order with no unranked tail",
+);
+assert(
+  popularAr.map((row) => row.id).join(",") === AMJAD_POPULAR,
+  "AR Popular uses the same locked ids",
+);
+assert(
+  popularEn.every((row) =>
+    (RIYADH_POPULAR_NEIGHBORHOODS as readonly NeighborhoodId[]).includes(row.id),
+  ),
+  "Popular contains no unranked districts",
+);
+assert(popularEn[0]?.id === "hittin", "Popular lead is Hittin");
+assert(popularEn[2]?.id === "al-takhassusi", "Popular #3 is Al Takhassusi");
+assert(popularEn[5]?.id === "al-nakheel", "Popular #6 is An Nakheel");
+assert(popularEn[16]?.id === "diplomatic-quarter", "Popular #17 is Diplomatic Quarter");
+assert(popularEn[28]?.id === "al-wurud", "Popular #29 is Al Wurud");
+assert(
+  !popularEn.some((row) => row.id === "kafd" || row.id === "king-fahd"),
+  "unranked districts stay out of Popular",
 );
 
 const az = sortNeighborhoodRows(rowsEn, "az", null, "en");
@@ -137,19 +223,36 @@ assert(
   }),
   "A–Z sort is alphabetical",
 );
-
-const popularFallback = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
+assert(az.length === rowsEn.length, "A–Z still lists every catalog district");
 assert(
-  popularFallback[0]?.id === rowsEn[0]?.id,
-  "Nearby without a real origin falls back to Popular",
+  az.some((row) => row.id === "kafd"),
+  "unranked districts remain on A–Z",
 );
 
-const withCentroid = rowsEn.find((row) => row.centroid);
+const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
+assert(
+  nearbyNoOrigin.map((row) => row.id).join(",") ===
+    az.map((row) => row.id).join(","),
+  "Nearby without a real origin is A–Z, not Popular",
+);
+assert(
+  nearbyNoOrigin.slice(0, 5).map((row) => row.id).join(",") !==
+    popularEn.slice(0, 5).map((row) => row.id).join(","),
+  "Nearby first five must not copy Popular first five",
+);
+
+const withCentroid = rowsEn.find((row) => row.id === "al-hamra" && row.centroid) ??
+  rowsEn.find((row) => row.centroid);
 if (withCentroid?.centroid) {
   const far = { lat: withCentroid.centroid.lat + 0.4, lng: withCentroid.centroid.lng };
   const nearby = sortNeighborhoodRows(rowsEn, "nearby", withCentroid.centroid, "en");
   const farSort = sortNeighborhoodRows(rowsEn, "nearby", far, "en");
   assert(nearby[0]?.id === withCentroid.id, "Nearby sort uses real centroids");
+  assert(
+    nearby.slice(0, 5).map((row) => row.id).join(",") !==
+      popularEn.slice(0, 5).map((row) => row.id).join(","),
+    "real Nearby first five must not copy Popular",
+  );
   assert(
     neighborhoodDistanceKm(withCentroid, withCentroid.centroid) === 0,
     "distance at the centroid is zero",
@@ -172,6 +275,18 @@ assert(
   "AR count uses قهاوي",
 );
 
+assert(
+  filterNeighborhoodRows(rowsEn, "takhassusi").some(
+    (row) => row.id === "al-takhassusi",
+  ),
+  "search finds Al Takhassusi",
+);
+assert(
+  filterNeighborhoodRows(rowsAr, "التخصصي").some(
+    (row) => row.id === "al-takhassusi",
+  ),
+  "search finds التخصصي",
+);
 assert(
   filterNeighborhoodRows(rowsEn, "olaya").some((row) => row.id === "olaya"),
   "search finds Olaya",
@@ -275,6 +390,11 @@ assert(
 assert(browse.includes('source: "home_pill"') || browse.includes('"home_pill"'), "home pills send source=home_pill");
 assert(browse.includes("neighborhoods_view_all"), "View all CTA fires neighborhoods_view_all");
 assert(browse.includes("city"), "browse events carry city");
+assert(
+  browse.includes("featuredNeighborhoodIds") &&
+    !browse.includes("popularNeighborhoodIds"),
+  "homepage strip reads featured, not Popular",
+);
 assert(!browse.includes("NeighborhoodIcon"), "homepage strip has no landmark icons");
 assert(!browse.includes("aspect-square"), "homepage strip is not the card belt");
 assert(!browse.includes("bg-blush"), "no default selected Hittin fill");
@@ -311,6 +431,10 @@ assert(viewAll.includes("neighborhoodCafeCountLabel"), "view-all uses real count
 assert(viewAll.includes("data-neighborhood-sorts"), "view-all has sort pills");
 assert(viewAll.includes("nearby"), "Nearby sort exists");
 assert(viewAll.includes("usePeekVisitorLocation"), "Nearby uses real visitor location");
+assert(
+  viewAll.includes("sortNeighborhoodRows(filtered, sort, origin, language, city)"),
+  "view-all Popular filter is city-keyed",
+);
 assert(viewAll.includes("formatDistanceKm"), "distance is formatted from real km");
 assert(!viewAll.includes("NeighborhoodIcon"), "view-all rows have no icons");
 assert(!/Koofi/i.test(viewAll), "view-all must not say Koofi");
@@ -364,7 +488,35 @@ assert(!chat.includes("BrowseNeighborhoods"), "browse is not inside chat chrome"
 
 const featured = new Set<NeighborhoodId>(RIYADH_FEATURED_NEIGHBORHOODS);
 assert(featured.size === 6, "featured ids are unique");
+const popularSet = new Set<NeighborhoodId>(RIYADH_POPULAR_NEIGHBORHOODS);
+assert(popularSet.size === 29, "Popular ids are unique");
+
+const catalog = listRealShops();
+for (const id of NEW_POPULAR_DISTRICTS) {
+  const place = NEIGHBORHOODS[id];
+  assert(place, `${id} has a dictionary row`);
+  assert(place.ar !== "هيتين", `${id} must not use هيتين`);
+  assert(
+    extractPrimaryDistrict(place.en) === id,
+    `${id} EN "${place.en}" did not extract`,
+  );
+  assert(
+    extractPrimaryDistrict(place.ar) === id,
+    `${id} AR "${place.ar}" did not extract`,
+  );
+  assert(extractPrimaryDistrict(place.id) === id, `${id} slug did not extract`);
+  for (const alias of place.aliases) {
+    assert(
+      extractPrimaryDistrict(alias) === id,
+      `${id} alias "${alias}" did not extract`,
+    );
+    assert(
+      matchCatalogShops(alias, catalog).length === 0,
+      `حي alias "${alias}" must not name-match a shop`,
+    );
+  }
+}
 
 console.log(
-  `check-browse-neighborhoods: ok (${rowsEn.length} live districts, ${hittinCount} Hittin cafes)`,
+  `check-browse-neighborhoods: ok (${rowsEn.length} catalog districts, ${live.length} with cafes, ${hittinCount} Hittin cafes)`,
 );

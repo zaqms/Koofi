@@ -117,13 +117,11 @@ function ChipIcon({ id }: { id: string }) {
     case "drive-through":
       return (
         <Icon>
-          {/* cup at window */}
-          <rect x="3.2" y="3.8" width="10.2" height="16.4" rx="1.4" />
-          <path d="M3.2 9h10.2" />
-          <path d="M9.4 11.4h6.4a2.5 2.5 0 0 1 0 5H9.4" />
-          <path d="M9.4 11.4v5c0 1.35 1 2.45 2.35 2.45h1.2" />
-          <path d="M11.5 9.2c.4-.5.4-1 0-1.5" />
-          <path d="M13.7 9.2c.4-.5.4-1 0-1.5" />
+          <path d="M4.2 14.2h15.6" />
+          <path d="M6 14.2 7.4 9.4A1.6 1.6 0 0 1 8.9 8.2h6.2a1.6 1.6 0 0 1 1.5 1.2L18 14.2" />
+          <circle cx="8.2" cy="16.4" r="1.35" />
+          <circle cx="15.8" cy="16.4" r="1.35" />
+          <path d="M9.2 11.2h5.6" />
         </Icon>
       );
     case "matcha":

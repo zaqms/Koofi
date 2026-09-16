@@ -13,6 +13,8 @@ export type DirectoryShop = {
   logoUrl?: string;
   lat?: number;
   lng?: number;
+  /** Position in the live Wain catalog. Later index = added more recently. */
+  catalogIndex: number;
 };
 
 export function directoryNeighborhoods(

@@ -19,6 +19,7 @@ export type AnalyticsEventName =
   | "neighborhoods_view_all"
   | "neighborhoods_search"
   | "neighborhoods_sort"
+  | "directory_sort"
   | "district_match"
   | "chat_query"
   | "tonight_card_open"
@@ -44,6 +45,7 @@ export type ShareInboundKind = "pack" | "listing" | "halfway";
 export type ListingShareSource = "list" | "card";
 export type DistrictSelectSource = "home_pill" | "view_all";
 export type NeighborhoodsSortId = "nearby" | "popular" | "az";
+export type DirectorySortId = "nearby" | "new" | "az";
 export type ChatQueryVia = "typed" | "chip";
 export type MeetHalfwayPinWhich = "a" | "b" | "self";
 export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
@@ -64,7 +66,7 @@ export type AnalyticsParams = {
     | MeetHalfwayStartSource
     | DistrictSelectSource;
   city?: City;
-  sort?: NeighborhoodsSortId;
+  sort?: NeighborhoodsSortId | DirectorySortId;
   text_length?: number;
   chip_id?: string;
   chip_label?: string;

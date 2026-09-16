@@ -581,6 +581,13 @@ assert(
     landing.includes("chipId={chipMoment ? pageChipId : null}"),
   "chip share URLs filter ShopDirectory to that moment tag",
 );
+const directory = read("components/shop-directory.tsx");
+assert(
+  directory.includes('chipId === "drive-through"') &&
+    directory.includes("DirectoryResultSortPills") &&
+    !directory.includes('chipId === "matcha"'),
+  "sort pills are Drive-through results only — Matcha list stays as-is",
+);
 assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),
   "most-popular still selects popular and locale-switches on that path",

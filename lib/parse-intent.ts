@@ -150,7 +150,6 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
   ],
   "drive-through": [
     "درايف ثرو",
-    "درايف ثرو",
     "drive-through",
     "drive through",
     "drive-thru",

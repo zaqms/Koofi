@@ -178,7 +178,7 @@ for (const row of handoff.shops) {
     city: "riyadh",
     neighborhood: district.id,
     neighborhoodAr: district.ar,
-    vibeTags: ["درايف ثرو"],
+    vibeTags: ["طلبات السياره"],
     momentTags: ["drive-through"],
     mapsShareUrl,
     ...(pin ? { pin } : {}),

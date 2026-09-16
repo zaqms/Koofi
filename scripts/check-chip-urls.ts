@@ -210,7 +210,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   coffee: "أفضل قهوة",
   pastry: "قهوة وحلى",
   matcha: "ماتشا",
-  "drive-through": "درايف ثرو",
+  "drive-through": "طلبات السياره",
   work: "للشغل",
   date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
@@ -441,6 +441,23 @@ assert(
   "Drive-through directory is drive-through-tagged only",
 );
 assert(
+  listDriveThroughDirectoryShops().every(
+    (shop) => !shop.vibeTags.includes("درايف ثرو"),
+  ),
+  "DT cards dropped legacy درايف ثرو vibe tag",
+);
+assert(
+  listDriveThroughDirectoryShops()
+    .filter((shop) => shop.catalogLane === "drive-through")
+    .every((shop) => shop.vibeTags.includes("طلبات السياره")),
+  "DT-lane cards show طلبات السياره",
+);
+assert(
+  listDriveThroughDirectoryShops().find((shop) => shop.id === "a-plus-as-salam")
+    ?.nameAr === "اي بلس درايف ثرو",
+  "A PLUS cafe name stays اي بلس درايف ثرو",
+);
+assert(
   !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-wadi"),
   "DT-lane additions stay out of default specialty directory",
 );
@@ -484,6 +501,16 @@ assert(
     !vibeLabels.includes('date: "Date"') &&
     !vibeLabels.includes('date: "For two"'),
   "moment fallback label is With friends",
+);
+assert(
+  product.includes('ar: "طلبات السياره"') &&
+    product.includes('en: "Drive-through"') &&
+    !product.includes('ar: "درايف ثرو"'),
+  "Drive-through AR chip label is طلبات السياره",
+);
+assert(
+  vibeLabels.includes('"طلبات السياره": "Drive-through"'),
+  "vibe map translates طلبات السياره on EN cards",
 );
 
 const halfwayCard = read("components/meet-halfway-card.tsx");

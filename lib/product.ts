@@ -65,7 +65,7 @@ export const VIBE_CHIPS = [
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
   { id: "matcha", ar: "ماتشا", en: "Matcha", momentTag: "matcha" },
-  { id: "drive-through", ar: "درايف ثرو", en: "Drive-through", momentTag: "drive-through" },
+  { id: "drive-through", ar: "طلبات السياره", en: "Drive-through", momentTag: "drive-through" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
   { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
   { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },

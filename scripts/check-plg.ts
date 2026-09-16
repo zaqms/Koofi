@@ -355,8 +355,12 @@ assert(
   "Drive-through chip must resolve to drive-through",
 );
 assert(
+  parseIntent("طلبات السياره").moments.join(",") === "drive-through",
+  "طلبات السياره chip must resolve to drive-through",
+);
+assert(
   parseIntent("درايف ثرو").moments.join(",") === "drive-through",
-  "درايف ثرو chip must resolve to drive-through",
+  "legacy درايف ثرو still resolves to drive-through",
 );
 
 const LOCKED_POPULAR = [

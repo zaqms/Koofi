@@ -122,21 +122,23 @@ function ChipIcon({ id }: { id: string }) {
       );
     case "drive-through":
       return (
-        <Icon strokeWidth="1.5">
+        <Icon strokeWidth="0.9">
           {/* car + pickup cup */}
-          <path d="M4.8 5.6h5.4c.55 0 1 .35 1.15.85l.55 1.95H3.2l.5-1.95c.15-.5.6-.85 1.1-.85z" />
-          <rect x="2.9" y="8.4" width="9.4" height="5.2" rx="1.6" />
-          <path d="M2.9 10.2H1.85" />
-          <path d="M12.3 10.2h1.05" />
-          <ellipse cx="5.3" cy="11.2" rx="1.05" ry="0.7" />
-          <ellipse cx="9.9" cy="11.2" rx="1.05" ry="0.7" />
-          <path d="M5.2 13.6v1.85" />
-          <path d="M10 13.6v1.85" />
-          <path d="M20.4 18.8V6.6H15.9" />
-          <path d="M19.1 18.8h2.6" />
-          <rect x="14.85" y="7.9" width="4.5" height="5.2" rx="0.75" />
-          <path d="M16.05 10l.3 2.4h1.5l.3-2.4z" />
-          <path d="M15.85 10h2.3" />
+          <rect x="2.2" y="10.0" width="10.2" height="6.4" rx="1.9" />
+          <path d="M4.1 10.0 C4.55 7.85 5.85 6.55 7.3 6.55 C8.75 6.55 10.05 7.85 10.5 10.0" />
+          <path d="M4.1 10.0 H10.5" />
+          <path d="M2.2 11.7 H1.25 A0.75 0.75 0 0 0 1.25 13.2 H2.2" />
+          <path d="M12.4 11.7 H13.35 A0.75 0.75 0 0 1 13.35 13.2 H12.4" />
+          <path d="M4.35 12.95 H6.55" />
+          <path d="M8.05 12.95 H10.25" />
+          <path d="M4.85 16.4 V18.2" />
+          <path d="M9.75 16.4 V18.2" />
+          <path d="M21.2 18.55 V5.2 H14.0" />
+          <path d="M19.7 18.55 H22.7" />
+          <rect x="14.35" y="6.5" width="5.35" height="6.2" rx="1.15" />
+          <path d="M15.5 8.85 H18.55" />
+          <path d="M15.9 8.2 H18.15" />
+          <path d="M15.7 8.85 L16.1 11.95 H17.95 L18.35 8.85" />
         </Icon>
       );
     case "matcha":

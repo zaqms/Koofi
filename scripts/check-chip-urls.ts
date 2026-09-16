@@ -469,9 +469,11 @@ assert(
 assert(
   chips.includes('case "drive-through"') &&
     chips.includes("{/* car + pickup cup */}") &&
-    chips.includes('strokeWidth="1.5"') &&
-    chips.includes('d="M20.4 18.8V6.6H15.9"') &&
-    chips.includes('d="M16.05 10l.3 2.4h1.5l.3-2.4z"') &&
+    chips.includes('strokeWidth="0.9"') &&
+    chips.includes('d="M21.2 18.55 V5.2 H14.0"') &&
+    chips.includes('d="M15.7 8.85 L16.1 11.95 H17.95 L18.35 8.85"') &&
+    !chips.includes('d="M20.4 18.8V6.6H15.9"') &&
+    !chips.includes('d="M16.05 10l.3 2.4h1.5l.3-2.4z"') &&
     !chips.includes('d="M15 17.8V5.6H21"') &&
     !chips.includes('d="M17.45 9L17.7 11.55H19.9L20.15 9Z"') &&
     !chips.includes('d="M4.2 14.2h15.6"') &&
@@ -482,7 +484,7 @@ assert(
     !chips.includes("border-drive") &&
     !chips.includes('stroke="#1E1714"') &&
     chips.includes('stroke="currentColor"'),
-  "Drive-through uses latest Design car+pickup-cup at stroke 1.5",
+  "Drive-through uses Design redo car+Gamma-post+cup at stroke 0.9",
 );
 assert(
   !listDriveThroughDirectoryShops().some(

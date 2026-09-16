@@ -117,8 +117,17 @@ function ChipIcon({ id }: { id: string }) {
     case "matcha":
       return (
         <Icon>
-          <path d="M12.4 4.8c3.2 2.1 5.1 5.8 4.4 9.4-.7 3.6-3.5 6.2-6.4 6.8-2.9-.6-5.7-3.2-6.4-6.8-.7-3.6 1.2-7.3 4.4-9.4 1.3-.8 2.7-.8 4 0z" />
-          <path d="M10.8 6.6c.4 3.4.5 6.8.2 10.4" />
+          {/* chawan + chasen */}
+          <ellipse cx="9" cy="9.25" rx="6" ry="1.55" />
+          <path d="M3 9.25c.25 4.85 2.45 8.05 6 8.05s5.75-3.2 6-8.05" />
+          <path d="M6.15 9.4c1.15-.6 2.35.4 3.45-.15" />
+          <path d="M6.15 17.2c0 1.15.4 1.7 1.25 1.7" />
+          <path d="M11.85 17.2c0 1.15-.4 1.7-1.25 1.7" />
+          <path d="M16.05 13.15c0-4 1.2-6.25 2.7-6.25s2.7 2.25 2.7 6.25" />
+          <path d="M17.2 13.15V8.35" />
+          <path d="M18.6 13.15V8.35" />
+          <rect x="17.05" y="12.95" width="2.95" height="6.1" rx="1.2" />
+          <path d="M16.05 18.7c0 .8.45 1.2 1.15 1.2" />
         </Icon>
       );
     case "nearby":
@@ -154,6 +163,7 @@ function ChipIcon({ id }: { id: string }) {
   }
 }
 
+/** Shared vibe surface only — Paper/white + Ink stroke, selected dusty bean. No per-chip color. */
 function vibeChipClass(selected: boolean): string {
   return selected
     ? "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-2 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"

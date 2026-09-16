@@ -5,8 +5,41 @@ import { ContactUs } from "@/components/contact-us";
 import { FaqList } from "@/components/faq-list";
 import { copy } from "@/lib/copy";
 import { aboutFaqs, faqHeading } from "@/lib/faq";
-import { aboutPath, feedbackPath, homePath } from "@/lib/product";
+import { aboutPath, feedbackPath, homePath, LOCKED_ABOUT } from "@/lib/product";
 import type { Language } from "@/lib/types";
+
+function AboutMarks({ text }: { text: string }) {
+  const parts = text.split(/(\*[^*]+\*)/g);
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.startsWith("*") && part.endsWith("*") && part.length > 2 ? (
+          <em key={index}>{part.slice(1, -1)}</em>
+        ) : (
+          <span key={index}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
+
+function AboutLockedCopy({ language }: { language: Language }) {
+  const blocks = LOCKED_ABOUT.markdown[language].trim().split(/\n{2,}/);
+  return (
+    <>
+      {blocks.map((block, index) => (
+        <p key={index} className="mt-3 text-sm leading-7">
+          {block.split("\n").map((line, lineIndex, lines) => (
+            <span key={lineIndex}>
+              <AboutMarks text={line} />
+              {lineIndex < lines.length - 1 ? <br /> : null}
+            </span>
+          ))}
+        </p>
+      ))}
+    </>
+  );
+}
 
 type AboutPageViewProps = {
   language: Language;
@@ -34,11 +67,7 @@ export function AboutPageView({ language }: AboutPageViewProps) {
 
       <article className="mt-8 rounded-2xl border border-line bg-foam px-4 py-5">
         <h1 className="text-base font-semibold">{copy.about[language]}</h1>
-        <p className="mt-3 text-sm leading-7">{copy.aboutLead[language]}</p>
-        {language === "ar" ? (
-          <p className="mt-3 text-sm leading-7">{copy.aboutBody.ar}</p>
-        ) : null}
-        <p className="mt-3 text-sm leading-7">{copy.aboutNote[language]}</p>
+        <AboutLockedCopy language={language} />
         <p className="mt-4">
           <Link
             href={feedbackPath(language)}

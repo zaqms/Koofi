@@ -389,15 +389,30 @@ assert(
 );
 assert(
   chips.includes('case "matcha"') &&
-    chips.includes("M12.4 4.8c3.2") &&
+    chips.includes("{/* chawan + chasen */}") &&
+    chips.includes('<ellipse cx="9"') &&
+    !chips.includes("M12.4 4.8c3.2") &&
+    chips.includes('strokeWidth="1.55"') &&
+    chips.includes("className=\"size-7 shrink-0\"") &&
     !chips.includes("bg-matcha") &&
     !chips.includes("text-matcha") &&
     !chips.includes("border-matcha") &&
-    !chips.includes("vibeChipClass(chip.id"),
-  "Matcha chip keeps the leaf and uses sibling foam/bean tokens",
+    !chips.includes("vibeChipClass(chip.id") &&
+    !chips.includes("vibeChipClass(id"),
+  "Matcha keeps the chawan+chasen icon and sibling vibe tokens",
 );
 assert(
-  !read("app/globals.css").includes("--matcha"),
+  chips.includes("border-line bg-foam") &&
+    chips.includes("text-ink") &&
+    chips.includes("border-bean bg-bean") &&
+    chips.includes("text-foam") &&
+    (chips.match(/border-line bg-foam/g)?.length ?? 0) === 1 &&
+    (chips.match(/border-bean bg-bean/g)?.length ?? 0) === 1,
+  "vibe chips share Paper/white + Ink unselected and dusty-bean selected",
+);
+assert(
+  !read("app/globals.css").includes("--matcha") &&
+    !read("app/globals.css").includes("--color-matcha"),
   "no special Matcha color tokens",
 );
 assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");

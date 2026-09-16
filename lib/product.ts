@@ -339,19 +339,58 @@ export const LOCKED_FEEDBACK = {
   },
 } as const;
 
-/** Locked About copy. Spoken Riyadh/Najdi on AR. Do not polish or expand. */
+/** Locked About body. Amjad 2026-09-16. Do not polish or expand. Brand Wain. */
 export const LOCKED_ABOUT = {
   lead: {
-    ar: "وين سوّاها واحد في الرياض يحب القهوة، ويحب الذكاء الاصطناعي بعد.",
-    en: "wain.lol is made by a coffee lover who lives in Riyadh, and apparently loves AI too. The whole site is built by AI. No human sat and coded it.",
+    ar: "بدأت من سؤال نقوله كل يوم: وين؟",
+    en: "It started with a question we ask all the time: Wain — “Where?”",
   },
-  /** Second AR paragraph only. EN lead stays one block — Amjad did not send EN. */
-  body: {
-    ar: "الموقع كله سوّاه الذكاء الاصطناعي، محد برمجه بيده.",
-  },
-  note: {
-    ar: "إذا فيه شيء مو ضابط، تواصل معنا تحت.",
-    en: "If something’s off, please contact us below!",
+  markdown: {
+    ar: `*بدأت من سؤال نقوله كل يوم: وين؟*
+
+وين نروح؟
+وين القهوة الزينة؟
+وين مكان جديد نجربه؟
+
+القهوة بالنسبة لنا دايم كانت أكثر من مجرد مشروب. عليها نجتمع، نسولف مع أصحابنا، نغيّر جو، نشتغل، نحتفل، وأحيانًا بس نطلع من البيت.
+
+ومع كثرة القهاوي في الرياض، صار اختيار القهوة المناسبة أصعب.
+
+ومن هنا سوّينا *وين*.
+
+وين فكرة سعودية بدأت في الرياض، انبنت على يد ناس يحبون القهوة ويعيشون ثقافتها. هدفنا بسيط: نسهّل عليك اختيار قهوتك الجاية سواء تبي مكان هادي، قهوة قريبة منك، مكان جديد يستاهل التجربة، أو قهوة بالنص بينك وبين خويك.
+
+لا تضيع وقتك وأنت تدور،
+ولا تحتار بين مئات الخيارات.
+
+بس قل لنا وش تدور عليه، وإحنا نجاوبك على سؤال:
+
+*وين القهوة اليوم؟*
+
+صُنع في السعودية. لعشّاق القهوة. ☕🇸🇦`,
+    en: `*It started with a question we ask all the time: Wain — “Where?”*
+
+Where should we go?
+Where’s the good coffee?
+Where’s somewhere new?
+
+Coffee has always been more than just a drink to us. It’s how we catch up, meet friends, take a break, work, celebrate, and sometimes just get out of the house.
+
+But with so many cafés around Riyadh, somehow finding the right one became harder than it should be.
+
+So we built Wain.
+
+A Saudi-made coffee discovery platform, built in Riyadh by people who genuinely love coffee and the culture around it. We’re here to make choosing your next café simpler — whether you want somewhere quiet, somewhere close, a new spot worth trying, or a place halfway between you and a friend.
+
+No endless searching. No hundreds of options to choose from.
+
+Just tell us what you’re looking for, and we’ll help you figure out where to head next.
+
+Or, as we say it:
+
+*وين القهوة اليوم؟*
+
+Made in Saudi. Built for coffee people. ☕🇸🇦`,
   },
 } as const;
 

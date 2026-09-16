@@ -54,6 +54,7 @@ import {
   districtPath,
   homePath,
   isOffHomeChipId,
+  isStaticDirectoryChip,
   vibeChipLabel,
 } from "@/lib/product";
 import { copyShareText, sharePackPacket } from "@/lib/share-pack";
@@ -1361,7 +1362,7 @@ export function Chat({
   }
 
   function openRoutedChip(chipId: string) {
-    if (chipId === "popular") {
+    if (isStaticDirectoryChip(chipId)) {
       setMeetHalfwayOpen(false);
       return;
     }
@@ -1413,7 +1414,7 @@ export function Chat({
 
   useEffect(() => {
     if (halfwayInvite || halfwayInviteExpired) return;
-    if (!selectedChipId || selectedChipId === "popular") return;
+    if (!selectedChipId || isStaticDirectoryChip(selectedChipId)) return;
     if (chipOpen?.chipId === selectedChipId && chipOpen.picks.length > 0) {
       routedChipOpenedRef.current = selectedChipId;
       return;

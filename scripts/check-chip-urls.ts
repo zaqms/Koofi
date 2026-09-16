@@ -32,6 +32,7 @@ import {
   chipDirectoryMoment,
   chipIdFromCoffeeShopSlug,
   chipSharePath,
+  isStaticDirectoryChip,
   coffeeShopChipPath,
   coffeeShopChipSlugForId,
   halfwayInvitePath,
@@ -499,9 +500,15 @@ assert(
   "chip-open is not gated on the 4×2 home set",
 );
 assert(
-  chat.includes("chipId === \"popular\"") || chat.includes('chipId === "popular"'),
-  "popular still does not post to /api/chat",
+  chat.includes("isStaticDirectoryChip") &&
+    !chat.includes('chipId === "popular"') &&
+    !chat.includes("selectedChipId === \"popular\""),
+  "Most Popular and Matcha are static directory chips — no ask→3",
 );
+assert(isStaticDirectoryChip("popular"), "popular is a static directory chip");
+assert(isStaticDirectoryChip("matcha"), "matcha is a static directory chip");
+assert(!isStaticDirectoryChip("quiet"), "quiet stays off-home three-pick");
+assert(!isStaticDirectoryChip("coffee"), "coffee still opens chat");
 assert(!/Soft Places/i.test(chat), "no Soft Places analytics or UI in chat");
 
 const nextConfig = read("next.config.ts");

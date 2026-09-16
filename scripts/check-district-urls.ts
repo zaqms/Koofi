@@ -3097,9 +3097,9 @@ assert(
 );
 assert(
   readFileSync(join(process.cwd(), "components/chat.tsx"), "utf8").includes(
-    'chipId === "popular"',
+    "isStaticDirectoryChip",
   ),
-  "chat must not post Most Popular to /api/chat",
+  "chat must not post Most Popular or Matcha to /api/chat",
 );
 assert(
   vibeChips.includes("selectedId"),

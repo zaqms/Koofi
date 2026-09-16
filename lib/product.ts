@@ -118,6 +118,21 @@ export function isHomeChipId(id: string): id is HomeChipId {
   return (HOME_CHIP_IDS as readonly string[]).includes(id);
 }
 
+/**
+ * Static directory chips. Most Popular + Matcha navigate to a full list
+ * page. They must not open the ask→3 agent flow. Quiet / other off-home
+ * chips keep three-pick restore.
+ */
+export const STATIC_DIRECTORY_CHIP_IDS = ["popular", "matcha"] as const;
+
+export function isStaticDirectoryChip(
+  id: string | null | undefined,
+): boolean {
+  return Boolean(
+    id && (STATIC_DIRECTORY_CHIP_IDS as readonly string[]).includes(id),
+  );
+}
+
 export type OffHomeChipId = (typeof OFF_HOME_CHIP_IDS)[number];
 
 export function isOffHomeChipId(id: string): id is OffHomeChipId {

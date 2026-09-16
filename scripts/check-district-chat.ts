@@ -1,4 +1,4 @@
-import { listRealShops } from "../lib/catalog";
+import { listDiscoveryShops, listRealShops } from "../lib/catalog";
 import {
   dictionaryCoversLiveDistricts,
   dictionaryDistrictIds,
@@ -25,6 +25,7 @@ function assert(cond: unknown, message: string): asserts cond {
 }
 
 const catalog = listRealShops();
+const discovery = listDiscoveryShops();
 const catalogIds = new Set(catalog.map((shop) => shop.id));
 
 const coverage = dictionaryCoversLiveDistricts();
@@ -136,7 +137,7 @@ function assertDistrictTop3(
   const result = pickCafes({ text: ask, language });
   const expected = dedupeSameBrand(
     rankInDistrict(
-      catalog.filter((shop) => shop.neighborhood === district),
+      discovery.filter((shop) => shop.neighborhood === district),
       district,
     ),
   )
@@ -275,6 +276,37 @@ assert(extractPrimaryDistrict("Al Mathar") === "al-mathar", "Al Mathar");
 assert(extractPrimaryDistrict("التعاون") === "at-taawun", "التعاون");
 assert(extractPrimaryDistrict("At Taawun") === "at-taawun", "At Taawun");
 assert(extractPrimaryDistrict("taawun") === "at-taawun", "taawun");
+assert(extractPrimaryDistrict("المرسلات") === "al-mursalat", "المرسلات");
+assert(extractPrimaryDistrict("Al Mursalat") === "al-mursalat", "Al Mursalat");
+assert(extractPrimaryDistrict("المربع") === "al-murabba", "المربع");
+assert(extractPrimaryDistrict("Al Murabba") === "al-murabba", "Al Murabba");
+assert(extractPrimaryDistrict("السلام") === "as-salam", "السلام");
+assert(extractPrimaryDistrict("As Salam") === "as-salam", "As Salam");
+assert(extractPrimaryDistrict("غبيرة") === "ghubairah", "غبيرة");
+assert(extractPrimaryDistrict("Ghubairah") === "ghubairah", "Ghubairah");
+assert(extractPrimaryDistrict("الوشام") === "al-wisham", "الوشام");
+assert(extractPrimaryDistrict("Al Wisham") === "al-wisham", "Al Wisham");
+assert(extractPrimaryDistrict("بدر") === "badr", "بدر");
+assert(extractPrimaryDistrict("Badr") === "badr", "Badr");
+assert(extractPrimaryDistrict("العزيزية") === "al-aziziyah", "العزيزية");
+assert(extractPrimaryDistrict("الحزم") === "al-hazm", "الحزم");
+assert(extractPrimaryDistrict("الأندلس") === "al-andalus", "الأندلس");
+assert(extractPrimaryDistrict("الخليج") === "al-khaleej", "الخليج");
+assert(extractPrimaryDistrict("النسيم الغربي") === "an-nasim-al-gharbi", "النسيم الغربي");
+assert(extractPrimaryDistrict("الرمال") === "ar-rimal", "الرمال");
+assert(extractPrimaryDistrict("الجنادرية") === "al-janadriyyah", "الجنادرية");
+assert(extractPrimaryDistrict("نمار") === "namar", "نمار");
+assert(extractPrimaryDistrict("Namar") === "namar", "Namar");
+assert(extractPrimaryDistrict("kkia") === "kkia", "kkia");
+assert(extractPrimaryDistrict("مطار الملك خالد") === "kkia", "مطار الملك خالد");
+assert(extractPrimaryDistrict("الجزيرة") === "al-jazirah", "الجزيرة");
+assert(extractPrimaryDistrict("Al Jazirah") === "al-jazirah", "Al Jazirah");
+assert(extractPrimaryDistrict("النسيم") === "an-nasim", "النسيم");
+assert(extractPrimaryDistrict("An Nasim") === "an-nasim", "An Nasim");
+assert(extractPrimaryDistrict("شبرا") === "shubra", "شبرا");
+assert(extractPrimaryDistrict("منفوحة") === "manfuha", "منفوحة");
+assert(extractPrimaryDistrict("طويق") === "tuwaiq", "طويق");
+assert(extractPrimaryDistrict("السويدي") === "as-suwaidi", "السويدي");
 assert(extractPrimaryDistrict("jax") === "diriyah", "jax alias is diriyah");
 assert(extractPrimaryDistrict("جاكس") === "diriyah", "جاكس alias is diriyah");
 assertDistrictTop3("المروج", "ar", "al-muruj");

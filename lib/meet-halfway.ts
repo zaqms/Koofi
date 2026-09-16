@@ -1,4 +1,4 @@
-import { listRealShops } from "./catalog";
+import { listDiscoveryShops, listRealShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
 import { rankByPopularity, rankInDistrict } from "./district-rank";
@@ -144,7 +144,7 @@ export function halfwayCandidatePool(input: {
   locations: readonly HalfwayLocation[];
   shops?: readonly Shop[];
 }): Shop[] {
-  const shops = input.shops ?? listRealShops();
+  const shops = input.shops ?? listDiscoveryShops();
   const { locations } = input;
   if (locations.length < 2) return [];
 

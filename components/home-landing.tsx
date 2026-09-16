@@ -7,7 +7,11 @@ import { ShopDirectory } from "@/components/shop-directory";
 import { ShopClaimProvider } from "@/components/shop-claim-provider";
 import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
-import { listDirectoryShops } from "@/lib/catalog";
+import {
+  listDirectoryShops,
+  listDirectoryShopsForDistrict,
+  listDriveThroughDirectoryShops,
+} from "@/lib/catalog";
 import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
 import { restoreOffHomeChipOpen } from "@/lib/chip-open";
@@ -66,7 +70,15 @@ export function HomeLanding({
   const directory = (
     <ShopDirectory
       language={language}
-      shops={popular ? listPopularDirectoryShops() : listDirectoryShops()}
+      shops={
+        popular
+          ? listPopularDirectoryShops()
+          : pageChipId === "drive-through"
+            ? listDriveThroughDirectoryShops()
+            : district
+              ? listDirectoryShopsForDistrict(district)
+              : listDirectoryShops()
+      }
       district={district}
       listing={listing}
       moment={chipMoment}

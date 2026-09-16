@@ -19,7 +19,7 @@ import {
   popularNeighborhoodIds,
   sortNeighborhoodRows,
 } from "../lib/browse-neighborhoods";
-import { listDirectoryShops, listRealShops } from "../lib/catalog";
+import { listBrowseDirectoryShops, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { directoryNeighborhoods } from "../lib/directory";
 import { extractPrimaryDistrict } from "../lib/district-dictionary";
@@ -142,7 +142,7 @@ assert(
   "AR التخصصي",
 );
 
-const shops = listDirectoryShops();
+const shops = listBrowseDirectoryShops();
 const rowsEn = listNeighborhoodRows("en", shops);
 const rowsAr = listNeighborhoodRows("ar", shops);
 const live = directoryNeighborhoods(shops);
@@ -304,7 +304,26 @@ assert(
   az.some((row) => row.id === "at-taawun"),
   "A–Z includes at-taawun",
 );
-assert(az.length === 45, "A–Z is the 45 live catalog districts");
+assert(
+  az.some((row) => row.id === "al-mursalat"),
+  "A–Z includes al-mursalat",
+);
+assert(
+  az.some((row) => row.id === "al-murabba"),
+  "A–Z includes al-murabba",
+);
+assert(az.some((row) => row.id === "as-salam"), "A–Z includes as-salam");
+assert(az.some((row) => row.id === "badr"), "A–Z includes badr");
+assert(az.some((row) => row.id === "al-janadriyyah"), "A–Z includes al-janadriyyah");
+assert(az.some((row) => row.id === "namar"), "A–Z includes namar");
+assert(az.some((row) => row.id === "kkia"), "A–Z includes kkia");
+assert(az.some((row) => row.id === "al-jazirah"), "A–Z includes al-jazirah");
+assert(az.some((row) => row.id === "an-nasim"), "A–Z includes an-nasim");
+assert(az.some((row) => row.id === "shubra"), "A–Z includes shubra");
+assert(az.some((row) => row.id === "manfuha"), "A–Z includes manfuha");
+assert(az.some((row) => row.id === "tuwaiq"), "A–Z includes tuwaiq");
+assert(az.some((row) => row.id === "as-suwaidi"), "A–Z includes as-suwaidi");
+assert(az.length === 66, "A–Z is the 66 catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

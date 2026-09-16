@@ -1,4 +1,4 @@
-import { listRealShops } from "./catalog";
+import { listDiscoveryShops } from "./catalog";
 import { shopToChatPick } from "./chat-pick";
 import { haversineKm } from "./distance";
 import { officialShopCoords } from "./place-coords";
@@ -36,7 +36,7 @@ export function nearbyChatPicks(input: {
   language: Language;
 }): ChatPick[] {
   const shops = pickNearestShops(
-    listRealShops(),
+    listDiscoveryShops(),
     input.origin,
     input.beenIds ?? [],
   );

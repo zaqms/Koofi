@@ -176,6 +176,8 @@ assertNamedFirst("جزوة", "ar", (id) => id.startsWith("jazwa-"));
 assertNamedFirst("nosound", "en", (id) => id.startsWith("nosound-"));
 assertNamedFirst("نوساوند", "ar", (id) => id.startsWith("nosound-"));
 assertNamedFirst("percent", "en", (id) => id === "percent-arabica-hittin");
+assertNamedFirst("قهوة سلام", "ar", (id) => id === "salam-cafe-al-malqa");
+assertNamedFirst("Salam Cafe", "en", (id) => id === "salam-cafe-al-malqa");
 
 const breehantPack = pickCafes({ text: "breehant", language: "en" });
 assert(
@@ -268,8 +270,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 275,
-  `popularity map should have 275 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 343,
+  `popularity map should have 343 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
@@ -347,6 +349,14 @@ assert(
 assert(
   parseIntent("ماتشا").moments.join(",") === "matcha",
   "ماتشا chip must resolve to matcha",
+);
+assert(
+  parseIntent("Drive-through").moments.join(",") === "drive-through",
+  "Drive-through chip must resolve to drive-through",
+);
+assert(
+  parseIntent("درايف ثرو").moments.join(",") === "drive-through",
+  "درايف ثرو chip must resolve to drive-through",
 );
 
 const LOCKED_POPULAR = [

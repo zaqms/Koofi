@@ -4,6 +4,7 @@ import {
   filterDirectoryShops,
   getShop,
   listDirectoryShops,
+  listDiscoveryShops,
   listRealShops,
 } from "../lib/catalog";
 import {
@@ -58,7 +59,10 @@ function readRepo(path: string): string {
 }
 
 const shops = listPublicShops();
-assert(shops.length === listRealShops().length, "public list is real shops only");
+assert(
+  shops.length === listDiscoveryShops().length,
+  "public list is the specialty discovery catalog",
+);
 assert(shops.length > 0, "catalog is not empty");
 
 const sample = getShop("ik-coffee-downtown");

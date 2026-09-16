@@ -16,6 +16,7 @@ import {
 import {
   directoryNeighborhoods,
   filterDirectoryShops,
+  filterDirectoryShopsByMoment,
 } from "../lib/directory";
 import { neighborhoodLabel } from "../lib/neighborhoods";
 import { parseIntent } from "../lib/parse-intent";
@@ -28,6 +29,7 @@ import {
 import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "../lib/landing-experiment";
 import {
   categoryDistrictPath,
+  chipDirectoryMoment,
   districtPath,
   filterPutsDirectoryFirst,
   homePath,
@@ -1244,6 +1246,31 @@ const MALAZ_REFILL = {
       parseIntent(ask).neighborhoods.includes("al-mathar"),
       `parseIntent(${ask}) should hit al-mathar`,
     );
+  }
+}
+
+{
+  assert(chipDirectoryMoment("matcha") === "matcha", "matcha chip filters matcha tags");
+  assert(chipDirectoryMoment("popular") === null, "popular chip is not a moment filter");
+  assert(chipDirectoryMoment("nearby") === null, "nearby chip is not a moment filter");
+  const matchaRows = filterDirectoryShopsByMoment(shops, "matcha");
+  assert(matchaRows.length === 19, `Matcha directory is 19 tagged shops, got ${matchaRows.length}`);
+  assert(
+    matchaRows.every((shop) => shop.momentTags.includes("matcha")),
+    "Matcha directory is matcha-tagged only",
+  );
+  const harvestLogos: Record<string, string> = {
+    "house-of-matcha-al-mohammadiyah": "/logos/house-of-matcha-al-mohammadiyah.webp",
+    "house-of-matcha-sulimaniyah": "/logos/house-of-matcha-sulimaniyah.webp",
+    "the-matcha-bar-olaya": "/logos/the-matcha-bar-olaya.jpg",
+    "with-heart-diriyah": "/logos/with-heart-diriyah.jpg",
+    "opinion-al-mathar": "/logos/opinion-al-mathar.png",
+    "opinion-hittin": "/logos/opinion-hittin.png",
+  };
+  for (const [id, logoUrl] of Object.entries(harvestLogos)) {
+    const shop = matchaRows.find((row) => row.id === id);
+    assert(shop, `${id} is on the Matcha directory`);
+    assert(shop.logoUrl === logoUrl, `${id} keeps the harvested mark`);
   }
 }
 
@@ -3139,7 +3166,7 @@ assert(
   readFileSync(
     join(process.cwd(), "components/shop-directory.tsx"),
     "utf8",
-  ).includes("{district || popular ? ("),
+  ).includes("{district || popular || vibe ? ("),
   "home drops the old district wrap",
 );
 assert(
@@ -3148,12 +3175,21 @@ assert(
   "most-popular landing selects the popular vibe chip",
 );
 assert(
+  homeLanding.includes("chipDirectoryMoment") &&
+    homeLanding.includes("moment={chipMoment}"),
+  "chip share URLs filter the directory by moment tag",
+);
+assert(
   filterPutsDirectoryFirst("popular", null),
   "Most Popular puts the ranked list above New this week",
 );
 assert(
   filterPutsDirectoryFirst(null, "hittin"),
   "district filter puts the directory above New this week",
+);
+assert(
+  filterPutsDirectoryFirst(null, null, "matcha"),
+  "Matcha chip puts the tagged list above New this week",
 );
 assert(
   !filterPutsDirectoryFirst(null, null),

@@ -6,6 +6,8 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { listDirectoryShops } from "../lib/catalog";
+import { filterDirectoryShopsByMoment } from "../lib/directory";
 import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
 import {
@@ -27,6 +29,7 @@ import {
   NEARBY_CHIP,
   OFF_HOME_CHIP_IDS,
   VIBE_CHIPS,
+  chipDirectoryMoment,
   chipIdFromCoffeeShopSlug,
   chipSharePath,
   coffeeShopChipPath,
@@ -347,9 +350,11 @@ assert(
   categoryAr.includes("isCoffeeShopChipSlug") &&
     categoryAr.includes("chipIdFromCoffeeShopSlug") &&
     categoryAr.includes("selectedChipId={chipId}") &&
+    categoryAr.includes("dynamicParams = true") &&
     categoryEn.includes("isCoffeeShopChipSlug") &&
     categoryEn.includes("chipIdFromCoffeeShopSlug") &&
-    categoryEn.includes("selectedChipId={chipId}"),
+    categoryEn.includes("selectedChipId={chipId}") &&
+    categoryEn.includes("dynamicParams = true"),
   "directory category routes open vibe/nearby chips",
 );
 
@@ -386,6 +391,11 @@ assert(
     chips.includes("bg-matcha") &&
     chips.includes("text-matcha-ink"),
   "Matcha chip has mint/sage fill + forest leaf",
+);
+assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");
+assert(
+  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 19,
+  "Matcha route directory is the 19 tagged shops",
 );
 
 const product = read("lib/product.ts");
@@ -451,6 +461,12 @@ const landing = read("components/home-landing.tsx");
 assert(
   landing.includes("pageChipId") && landing.includes("selectedChipId={pageChipId}"),
   "HomeLanding forwards the route chip to Chat",
+);
+assert(
+  landing.includes("chipDirectoryMoment") &&
+    landing.includes("moment={chipMoment}") &&
+    landing.includes("chipId={chipMoment ? pageChipId : null}"),
+  "chip share URLs filter ShopDirectory to that moment tag",
 );
 assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),

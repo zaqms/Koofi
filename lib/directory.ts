@@ -29,3 +29,12 @@ export function filterDirectoryShops(
   if (!district) return shops;
   return shops.filter((shop) => shop.neighborhood === district);
 }
+
+/** Chip share URLs keep only shops tagged with that vibe moment. */
+export function filterDirectoryShopsByMoment(
+  shops: DirectoryShop[],
+  moment: MomentTag | null,
+): DirectoryShop[] {
+  if (!moment) return shops;
+  return shops.filter((shop) => shop.momentTags.includes(moment));
+}

@@ -54,7 +54,7 @@ export function NeighborhoodsPageView({
   const origin = originFromVisitor(visitor);
   const userPickedSort = useRef(false);
   const [query, setQuery] = useState("");
-  const [sort, setSort] = useState<NeighborhoodSort>("popular");
+  const [sort, setSort] = useState<NeighborhoodSort>("az");
 
   useEffect(() => {
     if (userPickedSort.current) return;

@@ -527,12 +527,26 @@ export function mostPopularHeading(language: Language): string {
   return MOST_POPULAR_HEADING[language];
 }
 
-/** Filtered directory (Most Popular or a district) sits above New this week. */
+/**
+ * Moment tag that filters the shop directory on a chip share URL.
+ * Popular / Nearby / بيننا stay unfiltered here — they have their own pages.
+ */
+export function chipDirectoryMoment(
+  chipId: string | null | undefined,
+): MomentTag | null {
+  if (!chipId || chipId === "popular" || chipId === NEARBY_CHIP.id) return null;
+  const chip = VIBE_CHIPS.find((row) => row.id === chipId);
+  if (!chip || chip.momentTag === "popular") return null;
+  return chip.momentTag;
+}
+
+/** Filtered directory (Most Popular, a district, or a chip moment) sits above New this week. */
 export function filterPutsDirectoryFirst(
   listing: "popular" | null | undefined,
   district: NeighborhoodId | null | undefined,
+  moment?: MomentTag | null,
 ): boolean {
-  return listing === "popular" || Boolean(district);
+  return listing === "popular" || Boolean(district) || Boolean(moment);
 }
 
 export function legacyDistrictPath(

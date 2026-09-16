@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { isAddShopIntent } from "@/lib/add-shop-intent";
 import { copy } from "@/lib/copy";
 import { isOffTopicAsk } from "@/lib/off-topic-intent";
@@ -7,6 +8,8 @@ import {
   freezeHalfwayInviteResults,
   readHalfwayInviteSession,
 } from "@/lib/halfway-invite-store";
+import { pinsMidpoint } from "@/lib/halfway-results-payload";
+import { notifyHalfwayResults } from "@/lib/halfway-results-webhook";
 import {
   isMeetHalfwayChipAsk,
   meetHalfwayReply,
@@ -146,6 +149,19 @@ export async function POST(request: Request) {
       } catch {
         // Overlay freeze is best-effort; the in-memory three still render.
       }
+    }
+
+    if (picks.length > 0) {
+      const midpoint = pinsMidpoint(locations.map((row) => row.pin));
+      after(async () => {
+        await notifyHalfwayResults({
+          locale: landing,
+          picks,
+          sessionId,
+          midpoint,
+          source: sessionId ? "invite" : "local",
+        });
+      });
     }
 
     recordLearnAsk({

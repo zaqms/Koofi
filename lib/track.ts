@@ -1,5 +1,9 @@
+import {
+  halfwayResultCafesFromPicks,
+  type HalfwayResultCafe,
+} from "./halfway-results-payload";
 import type { ViralShareChannel } from "./tonight";
-import type { City, Language } from "./types";
+import type { ChatPick, City, Language, Pin } from "./types";
 
 export type { ViralShareChannel } from "./tonight";
 
@@ -79,6 +83,8 @@ export type AnalyticsParams = {
   method?: MeetHalfwayPinMethod;
   count?: number;
   page?: number;
+  /** Additive بيننا results cafés for GTM Preview / later tags. Not a GTM webhook. */
+  cafes?: HalfwayResultCafe[];
 };
 
 const DEDUPE_MS = 400;
@@ -164,6 +170,25 @@ export function districtMatchParams(input: {
   const district_slug = input.district_slug.trim();
   if (!district_slug) return null;
   return { district_slug, locale: input.locale };
+}
+
+export function meetHalfwayResultsParams(input: {
+  locale: Language;
+  source: MeetHalfwayResultSource;
+  picks: readonly ChatPick[];
+  packId?: string;
+  midpoint?: Pin | null;
+}): AnalyticsParams {
+  return {
+    locale: input.locale,
+    count: input.picks.length,
+    source: input.source,
+    ...(input.packId ? { pack_id: input.packId } : {}),
+    cafes: halfwayResultCafesFromPicks({
+      picks: input.picks,
+      midpoint: input.midpoint,
+    }),
+  };
 }
 
 export function trackDistrictMatch(input: {

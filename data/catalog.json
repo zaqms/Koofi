@@ -3459,6 +3459,51 @@
       "logoUrl": "/logos/scout-coffee-al-qirawan.jpg",
       "popularityIndex": 40,
       "example": false
+    },
+    {
+      "id": "white-roastery-al-wadi",
+      "nameAr": "وايت روستري",
+      "nameEn": "White Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-wadi",
+      "neighborhoodAr": "الوادي",
+      "vibeTags": ["محمصة", "قهوة"],
+      "momentTags": ["roaster", "qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd4c59b8a753:0x815af97d607e977",
+      "pin": { "lat": 24.7957457, "lng": 46.6983637 },
+      "logoUrl": "/logos/white-roastery-al-wadi.jpg",
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "parole-cafe-al-wadi",
+      "nameAr": "بارولي كافيه",
+      "nameEn": "Parole Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-wadi",
+      "neighborhoodAr": "الوادي",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0080281c31:0xa85df2eb14e5e64",
+      "pin": { "lat": 24.7862841, "lng": 46.703205 },
+      "logoUrl": "/logos/parole-cafe-al-wadi.jpg",
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "wama-coffee-al-wadi",
+      "nameAr": "قهوة واما",
+      "nameEn": "Wama Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-wadi",
+      "neighborhoodAr": "الوادي",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd005e122c09:0x53d74736856dba32",
+      "pin": { "lat": 24.7947623, "lng": 46.6874763 },
+      "logoUrl": "/logos/wama-coffee-al-wadi.jpg",
+      "popularityIndex": 40,
+      "example": false
     }
   ]
 }

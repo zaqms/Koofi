@@ -130,8 +130,9 @@ assert(areas.includes("al-aqiq"), "directory includes al-aqiq");
 assert(areas.includes("al-ghadeer"), "directory includes al-ghadeer");
 assert(areas.includes("al-arid"), "directory includes al-arid");
 assert(areas.includes("al-qirawan"), "directory includes al-qirawan");
-assert(areas.length === 39, `expected 39 districts, got ${areas.length}`);
-assert(listRealShops().length === 240, `catalog 201→240, got ${listRealShops().length}`);
+assert(areas.includes("al-wadi"), "directory includes al-wadi");
+assert(areas.length === 40, `expected 40 districts, got ${areas.length}`);
+assert(listRealShops().length === 243, `catalog 240→243, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1023,6 +1024,51 @@ const WAVE1_DISTRICTS: {
   },
 ];
 
+const WADI_REFILL = {
+  id: "al-wadi" as const,
+  ar: "الوادي",
+  en: "Al Wadi",
+  shops: [
+    "white-roastery-al-wadi",
+    "parole-cafe-al-wadi",
+    "wama-coffee-al-wadi",
+  ],
+};
+
+{
+  const rows = filterDirectoryShops(shops, WADI_REFILL.id);
+  assert(rows.length === 3, `al-wadi has 3 shops, got ${rows.length}`);
+  assert(
+    rows.every((shop) => shop.neighborhood === "al-wadi"),
+    "al-wadi filter stays in district",
+  );
+  for (const id of WADI_REFILL.shops) {
+    assert(rows.some((shop) => shop.id === id), `al-wadi includes ${id}`);
+  }
+  assert(
+    neighborhoodLabel("al-wadi", "ar") === WADI_REFILL.ar,
+    "al-wadi Arabic label",
+  );
+  assert(
+    neighborhoodLabel("al-wadi", "en") === WADI_REFILL.en,
+    "al-wadi English label",
+  );
+  assert(
+    districtPath("al-wadi", "ar") === "/coffee-shops/al-wadi",
+    "AR al-wadi coffee-shops path",
+  );
+  assert(
+    districtPath("al-wadi", "en") === "/en/coffee-shops/al-wadi",
+    "EN al-wadi coffee-shops path",
+  );
+  for (const ask of ["الوادي", "وادي", "wadi", "al wadi", "al-wadi", "Al Wadi"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-wadi"),
+      `parseIntent(${ask}) should hit al-wadi`,
+    );
+  }
+}
+
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);
   const expected = district.id === "al-takhassusi" ? 7 : 8;
@@ -1182,7 +1228,8 @@ const scoutPack: {
     | "al-aqiq"
     | "al-ghadeer"
     | "al-arid"
-    | "al-qirawan";
+    | "al-qirawan"
+    | "al-wadi";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -2264,6 +2311,33 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/scout-coffee-al-qirawan.jpg",
     pin: { lat: 24.8238569, lng: 46.5987508 },
+  },
+  {
+    id: "white-roastery-al-wadi",
+    hex: "0x3e2efd4c59b8a753:0x815af97d607e977",
+    neighborhood: "al-wadi",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/white-roastery-al-wadi.jpg",
+    pin: { lat: 24.7957457, lng: 46.6983637 },
+  },
+  {
+    id: "parole-cafe-al-wadi",
+    hex: "0x3e2efd0080281c31:0xa85df2eb14e5e64",
+    neighborhood: "al-wadi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/parole-cafe-al-wadi.jpg",
+    pin: { lat: 24.7862841, lng: 46.703205 },
+  },
+  {
+    id: "wama-coffee-al-wadi",
+    hex: "0x3e2efd005e122c09:0x53d74736856dba32",
+    neighborhood: "al-wadi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/wama-coffee-al-wadi.jpg",
+    pin: { lat: 24.7947623, lng: 46.6874763 },
   },
 ];
 

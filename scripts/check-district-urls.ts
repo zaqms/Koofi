@@ -75,6 +75,7 @@ assert(resolveDistrictSlug("al-wadi") === "al-wadi", "al-wadi resolves");
 assert(resolveDistrictSlug("al-mohammadiyah") === "al-mohammadiyah", "al-mohammadiyah resolves");
 assert(resolveDistrictSlug("al-muruj") === "al-muruj", "al-muruj resolves");
 assert(resolveDistrictSlug("al-malaz") === "al-malaz", "al-malaz resolves");
+assert(resolveDistrictSlug("al-mathar") === "al-mathar", "al-mathar resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -135,8 +136,9 @@ assert(areas.includes("al-wadi"), "directory includes al-wadi");
 assert(areas.includes("al-muruj"), "directory includes al-muruj");
 assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
 assert(areas.includes("al-malaz"), "directory includes al-malaz");
-assert(areas.length === 43, `expected 43 districts, got ${areas.length}`);
-assert(listRealShops().length === 255, `catalog 240→255, got ${listRealShops().length}`);
+assert(areas.includes("al-mathar"), "directory includes al-mathar");
+assert(areas.length === 44, `expected 44 districts, got ${areas.length}`);
+assert(listRealShops().length === 269, `catalog 255→269, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -839,10 +841,14 @@ assert(
 );
 
 const nada = filterDirectoryShops(shops, "an-nada");
-assert(nada.length === 1, `an-nada has 1 shop, got ${nada.length}`);
+assert(nada.length === 2, `an-nada has 2 shops, got ${nada.length}`);
 assert(
   nada.some((shop) => shop.id === "brew92-an-nada"),
   "an-nada includes brew92-an-nada",
+);
+assert(
+  nada.some((shop) => shop.id === "somatcha-an-nada"),
+  "an-nada includes somatcha-an-nada",
 );
 assert(neighborhoodLabel("an-nada", "ar") === "الندى", "an-nada Arabic label");
 assert(neighborhoodLabel("an-nada", "en") === "An Nada", "an-nada English label");
@@ -994,6 +1000,7 @@ const WAVE1_DISTRICTS: {
       "brsk-al-ghadeer",
       "drive-al-ghadeer",
       "ghandoura-al-ghadeer",
+      "iota-al-ghadeer",
     ],
   },
   {
@@ -1082,12 +1089,14 @@ const MURUJ_REFILL = {
     "parka-coffee-al-muruj",
     "terra-cafe-al-muruj",
     "rabka-al-muruj",
+    "quokka-coffee-al-muruj",
+    "some-coffee-bar-al-muruj",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 4, `al-muruj has 4 shops, got ${rows.length}`);
+  assert(rows.length === 6, `al-muruj has 6 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1128,12 +1137,13 @@ const MOH_REFILL = {
     "unique-drip-al-mohammadiyah",
     "hjeen-roasters-al-mohammadiyah",
     "hekaya-tale-al-mohammadiyah",
+    "house-of-matcha-al-mohammadiyah",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MOH_REFILL.id);
-  assert(rows.length === 3, `al-mohammadiyah has 3 shops, got ${rows.length}`);
+  assert(rows.length === 4, `al-mohammadiyah has 4 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-mohammadiyah"),
     "al-mohammadiyah filter stays in district",
@@ -1216,9 +1226,30 @@ const MALAZ_REFILL = {
   }
 }
 
+{
+  const rows = filterDirectoryShops(shops, "al-mathar");
+  assert(rows.length === 1, `al-mathar has 1 shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "opinion-al-mathar"),
+    "al-mathar includes opinion-al-mathar",
+  );
+  assert(neighborhoodLabel("al-mathar", "ar") === "المعذر", "al-mathar Arabic label");
+  assert(neighborhoodLabel("al-mathar", "en") === "Al Mathar", "al-mathar English label");
+  assert(
+    districtPath("al-mathar", "ar") === "/coffee-shops/al-mathar",
+    "AR al-mathar coffee-shops path",
+  );
+  for (const ask of ["المعذر", "معذر", "mathar", "al mathar", "al-mathar", "Al Mathar"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-mathar"),
+      `parseIntent(${ask}) should hit al-mathar`,
+    );
+  }
+}
+
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);
-  const expected = district.id === "al-takhassusi" ? 7 : 8;
+  const expected = district.shops.length;
   assert(
     rows.length === expected,
     `${district.id} has ${expected} shops, got ${rows.length}`,
@@ -1286,8 +1317,20 @@ assertDistinctPlaceHex(
   "File Coffee",
 );
 assertDistinctPlaceHex(
-  ["kultura-al-rayyan", "kultura-al-ghadeer"],
+  ["kultura-al-rayyan", "kultura-al-ghadeer", "kultura-hittin", "kultura-al-malqa"],
   "Kultúra",
+);
+assertDistinctPlaceHex(
+  ["house-of-matcha-al-mohammadiyah", "house-of-matcha-sulimaniyah"],
+  "House of Matcha",
+);
+assertDistinctPlaceHex(
+  ["opinion-al-mathar", "opinion-hittin"],
+  "Opinion",
+);
+assertDistinctPlaceHex(
+  ["quokka-coffee-al-muruj", "quokka-coffee-ghirnatah"],
+  "Quokka Coffee",
 );
 assertDistinctPlaceHex(
   ["drip-olaya", "drip-al-hamra", "drip-al-ghadeer", "drip-al-qirawan"],
@@ -1392,7 +1435,13 @@ const scoutPack: {
     | "al-muruj"
     | "al-mohammadiyah"
     | "al-malaz"
-    | "sulimaniyah";
+    | "sulimaniyah"
+    | "olaya"
+    | "diriyah"
+    | "hittin"
+    | "al-malqa"
+    | "ghirnatah"
+    | "al-mathar";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -1652,7 +1701,7 @@ const scoutPack: {
     hex: "0x3e2f01c71ac623a3:0x7c502c31b04d0292",
     neighborhood: "al-hamra",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "matcha"],
     logoUrl: "/logos/rimthan-coffee-mark.png",
     pin: { lat: 24.776146, lng: 46.7756026 },
   },
@@ -1925,7 +1974,7 @@ const scoutPack: {
     hex: "0x3e2f0116f2a31b83:0xbcef7ac8735bbfd1",
     neighborhood: "al-rayyan",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "matcha"],
   },
   {
     id: "da-nonna-al-rayyan",
@@ -2272,7 +2321,7 @@ const scoutPack: {
     hex: "0x3e2ee3f9efcb182d:0xa81767965e896e7a",
     neighborhood: "al-ghadeer",
     vibe: ["قهوة"],
-    moments: ["qahwa"],
+    moments: ["qahwa", "matcha"],
     logoUrl: "/logos/kultura-al-ghadeer.jpg",
   },
   {
@@ -2618,6 +2667,114 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/canto-malaz-mark.png",
     pin: { lat: 24.6614598, lng: 46.7443033 },
+  },
+  {
+    id: "house-of-matcha-al-mohammadiyah",
+    hex: "0x3e2f1dff7a822ea1:0x8da1607501bf0e7a",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+  },
+  {
+    id: "house-of-matcha-sulimaniyah",
+    hex: "0x3e2f03cc8803eac7:0x5b8677386f9a894e",
+    neighborhood: "sulimaniyah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+  },
+  {
+    id: "somatcha-an-nada",
+    hex: "0x3e2efdbd42c9ba8d:0x384a8731bf901bab",
+    neighborhood: "an-nada",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/somatcha-an-nada.jpg",
+  },
+  {
+    id: "the-matcha-bar-olaya",
+    hex: "0x3e2f034e019ea32d:0x8d43d3deac74089d",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+  },
+  {
+    id: "with-heart-diriyah",
+    hex: "0x3e2ee1006cf2209b:0xf3841da23256fe4b",
+    neighborhood: "diriyah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+  },
+  {
+    id: "kuro-sulimaniyah",
+    hex: "0x3e2f03eee2fbbb01:0x8cd39c2698b8e773",
+    neighborhood: "sulimaniyah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/kuro-sulimaniyah.png",
+  },
+  {
+    id: "opinion-al-mathar",
+    hex: "0x3e2f1d6cdc2c21b1:0xf7da8c11431eb292",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/opinion-al-mathar.jpg",
+  },
+  {
+    id: "opinion-hittin",
+    hex: "0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/opinion-hittin.jpg",
+  },
+  {
+    id: "kultura-hittin",
+    hex: "0x3e2ee32fcfefa59f:0x231ad463648767e7",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/kultura-hittin.jpg",
+  },
+  {
+    id: "kultura-al-malqa",
+    hex: "0x3e2ee7a9c0d733a7:0xd2cc3fb5ae36a108",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/kultura-al-malqa.jpg",
+  },
+  {
+    id: "quokka-coffee-al-muruj",
+    hex: "0x3e2ee3c250d09213:0xd7b461011cda0655",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/quokka-coffee-al-muruj.png",
+  },
+  {
+    id: "quokka-coffee-ghirnatah",
+    hex: "0x3e2eff0005bd450d:0x558e7e8ad5e5be61",
+    neighborhood: "ghirnatah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/quokka-coffee-ghirnatah.png",
+  },
+  {
+    id: "iota-al-ghadeer",
+    hex: "0x3e2ee3210b6fff2b:0xfc195ee361241e01",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/iota-al-ghadeer.jpg",
+  },
+  {
+    id: "some-coffee-bar-al-muruj",
+    hex: "0x3e2ee34e93f6959d:0x43af7bfdcdbd32b7",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/some-coffee-bar-al-muruj.png",
   },
 ];
 

@@ -64,6 +64,7 @@ export const VIBE_CHIPS = [
   { id: "popular", ar: "الأكثر شعبية", en: "Most Popular", momentTag: "popular" },
   { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
   { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
+  { id: "matcha", ar: "ماتشا", en: "Matcha", momentTag: "matcha" },
   { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
   { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
   { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },
@@ -88,14 +89,15 @@ export const NEARBY_CHIP = {
 
 /**
  * P0 home chip chrome is 4×2 only (RTL R→L in this array order).
- * Off-home ids keep their URLs: roaster, specialty, study, late.
+ * Matcha sits 4th on the top row (Ajz/Amjad 16 Sep 2026).
+ * Off-home ids keep their URLs: roaster, specialty, study, late, quiet.
  * بيننا is a utility card above this grid — not a tile.
  */
 export const HOME_CHIP_IDS = [
   "popular",
   "coffee",
   "pastry",
-  "quiet",
+  "matcha",
   "nearby",
   "outdoor",
   "date",
@@ -109,6 +111,7 @@ export const OFF_HOME_CHIP_IDS = [
   "specialty",
   "study",
   "late",
+  "quiet",
 ] as const;
 
 export function isHomeChipId(id: string): id is HomeChipId {
@@ -415,6 +418,7 @@ export const COFFEE_SHOP_CHIP_SLUGS = [
   "nearby",
   "coffee",
   "pastry",
+  "matcha",
   "roaster",
   "specialty",
   "quiet",

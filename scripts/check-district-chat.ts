@@ -34,7 +34,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 43, `expected 43 live districts, got ${live.length}`);
+assert(live.length === 44, `expected 44 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -270,6 +270,10 @@ assertDistrictTop3("الملز", "ar", "al-malaz");
 assertDistrictTop3("Al Malaz", "en", "al-malaz");
 assert(extractPrimaryDistrict("الملز") === "al-malaz", "الملز");
 assert(extractPrimaryDistrict("Al Malaz") === "al-malaz", "Al Malaz");
+assert(extractPrimaryDistrict("المعذر") === "al-mathar", "المعذر");
+assert(extractPrimaryDistrict("Al Mathar") === "al-mathar", "Al Mathar");
+assert(extractPrimaryDistrict("jax") === "diriyah", "jax alias is diriyah");
+assert(extractPrimaryDistrict("جاكس") === "diriyah", "جاكس alias is diriyah");
 assertDistrictTop3("المروج", "ar", "al-muruj");
 assertDistrictTop3("Al Muruj", "en", "al-muruj");
 

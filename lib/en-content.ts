@@ -215,6 +215,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-mohammadiyah": ["olaya", "sulimaniyah", "al-masif", "king-fahd"],
   "al-muruj": ["al-yasmin", "al-nakheel", "al-rabi", "as-sahafah"],
   "al-malaz": ["sulimaniyah", "olaya", "al-rabwah", "al-mughrizat"],
+  "al-mathar": ["olaya", "sulimaniyah", "al-takhassusi", "king-fahd"],
 };
 
 type DistrictLead = {

@@ -176,7 +176,7 @@ for (const row of rowsEn) {
     `${row.id} count matches catalog`,
   );
   if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
-    const expected = row.id === "al-takhassusi" ? 7 : 8;
+    const expected = row.id === "al-takhassusi" ? 7 : row.id === "al-ghadeer" ? 9 : 8;
     assert(
       row.cafeCount === expected,
       `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
@@ -188,13 +188,13 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 4,
-      `${row.id} Muruj refill has 4 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 6,
+      `${row.id} Muruj refill has 6 cafes, got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 3,
-      `${row.id} Mohammadiyah refill has 3 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 4,
+      `${row.id} Mohammadiyah refill has 4 cafes, got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(

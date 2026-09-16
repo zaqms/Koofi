@@ -64,6 +64,7 @@ const LOCKED_CHIP_PATHS = {
   late: { ar: "/coffee-shops/late", en: "/en/coffee-shops/late" },
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
   date: { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
+  matcha: { ar: "/coffee-shops/matcha", en: "/en/coffee-shops/matcha" },
 } as const;
 
 for (const [chipId, paths] of Object.entries(LOCKED_CHIP_PATHS)) {
@@ -133,7 +134,7 @@ assert(
   !vibeIds.includes("meet-halfway"),
   "بيننا is not a Soft Places vibe chip",
 );
-assert(VIBE_CHIPS.length === 11, "Soft Places stay parked — 11 vibe chips");
+assert(VIBE_CHIPS.length === 12, "Soft Places stay parked — 12 vibe chips");
 assert(NEARBY_CHIP.id === "nearby", "nearby chip id stays nearby");
 assert(NEARBY_CHIP.ar === "قريب مني", "nearby AR display is قريب مني");
 assert(MEET_HALFWAY_CHIP.id === "meet-halfway", "بيننا chip id stays");
@@ -148,11 +149,11 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,quiet,nearby,outdoor,date,work",
-  "P0 home 4×2 RTL order is locked",
+    "popular,coffee,pastry,matcha,nearby,outdoor,date,work",
+  "P0 home 4×2 RTL order is locked — Matcha 4th on the top row",
 );
 assert(
-  OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late",
+  OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",
   "off-home chip ids stay shareable",
 );
 assert(homeSurfaceChips().length === 8, "home chrome is 4×2 — eight chips");
@@ -166,7 +167,7 @@ assert(
   OFF_HOME_CHIP_IDS.every((id) => isOffHomeChipId(id)) &&
     !isOffHomeChipId("coffee") &&
     !isOffHomeChipId("popular"),
-  "off-home helper matches only the four share URLs",
+  "off-home helper matches only the shareable off-home URLs",
 );
 for (const language of ["ar", "en"] as const) {
   for (const id of OFF_HOME_CHIP_IDS) {
@@ -200,7 +201,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   popular: "الأكثر شعبية",
   coffee: "أفضل قهوة",
   pastry: "قهوة وحلى",
-  quiet: "هادي ورايق",
+  matcha: "ماتشا",
   work: "للشغل",
   date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
@@ -217,7 +218,7 @@ const LOCKED_HOME_LABELS_EN: Record<string, string> = {
   popular: "Most Popular",
   coffee: "Best Coffee",
   pastry: "Coffee and sweets",
-  quiet: "Cozy and Quiet",
+  matcha: "Matcha",
   work: "Best for Work",
   date: "With friends",
   outdoor: "Outdoor seating",
@@ -379,6 +380,12 @@ assert(
     !chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
     !/heart|romance|💕|❤|couple|hand-hold/i.test(chips),
   "date chip is two heads with a gap — no overlap or romance",
+);
+assert(
+  chips.includes('case "matcha"') &&
+    chips.includes("bg-matcha") &&
+    chips.includes("text-matcha-ink"),
+  "Matcha chip has mint/sage fill + forest leaf",
 );
 
 const product = read("lib/product.ts");

@@ -268,8 +268,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 255,
-  `popularity map should have 255 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 269,
+  `popularity map should have 269 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
@@ -339,6 +339,14 @@ assert(
 assert(
   parseIntent("لموعد").moments.join(",") === "date",
   "old AR date label still maps to date",
+);
+assert(
+  parseIntent("Matcha").moments.join(",") === "matcha",
+  "Matcha chip must resolve to matcha",
+);
+assert(
+  parseIntent("ماتشا").moments.join(",") === "matcha",
+  "ماتشا chip must resolve to matcha",
 );
 
 const LOCKED_POPULAR = [

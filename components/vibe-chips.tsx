@@ -114,6 +114,13 @@ function ChipIcon({ id }: { id: string }) {
           <path d="M14 18.8c.45-2.2 1.85-3.45 3.2-3.45s2.75 1.25 3.2 3.45" />
         </Icon>
       );
+    case "matcha":
+      return (
+        <Icon>
+          <path d="M12.4 4.8c3.2 2.1 5.1 5.8 4.4 9.4-.7 3.6-3.5 6.2-6.4 6.8-2.9-.6-5.7-3.2-6.4-6.8-.7-3.6 1.2-7.3 4.4-9.4 1.3-.8 2.7-.8 4 0z" />
+          <path d="M10.8 6.6c.4 3.4.5 6.8.2 10.4" />
+        </Icon>
+      );
     case "nearby":
       return (
         <Icon>
@@ -147,7 +154,12 @@ function ChipIcon({ id }: { id: string }) {
   }
 }
 
-function vibeChipClass(selected: boolean): string {
+function vibeChipClass(id: string, selected: boolean): string {
+  if (id === "matcha") {
+    return selected
+      ? "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-matcha-deep bg-matcha-deep px-1 py-2 text-matcha hover:border-matcha-ink hover:bg-matcha-ink aria-disabled:pointer-events-none aria-disabled:opacity-50"
+      : "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-matcha-line bg-matcha px-1 py-2 text-matcha-ink hover:border-matcha-deep/40 hover:bg-matcha aria-disabled:pointer-events-none aria-disabled:opacity-50";
+  }
   return selected
     ? "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-2 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
     : "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
@@ -170,7 +182,7 @@ export function VibeChips({
       {CHIPS.map((chip) => {
         const label = vibeChipLabel(chip, language);
         const selected = selectedId === chip.id;
-        const className = vibeChipClass(selected);
+        const className = vibeChipClass(chip.id, selected);
         const onChipClick = (
           event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
         ) => {

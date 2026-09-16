@@ -152,6 +152,12 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   somatcha: ["سو ماتشا", "so matcha"],
   "the-matcha-bar-olaya": ["ذا ماتشا بار"],
   "with-heart-diriyah": ["ويث هارت"],
+  "remis-matcha-club-hittin": ["ريمي"],
+  "okawa-cafe-al-malqa": ["اوكاوا"],
+  "re-matcha-al-hamra": ["ري ماتشا"],
+  "flow-matcha-at-taawun": ["فلو"],
+  "hokkaido-al-hamra": ["هوكايدو"],
+  "happyland-matcha-diriyah": ["هابي لاند"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

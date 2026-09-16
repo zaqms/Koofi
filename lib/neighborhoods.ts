@@ -709,6 +709,24 @@ export const NEIGHBORHOODS: Record<
       "Al Mathar",
     ],
   },
+  "at-taawun": {
+    id: "at-taawun",
+    ar: "التعاون",
+    en: "At Taawun",
+    aliases: [
+      "التعاون",
+      "تعاون",
+      "taawun",
+      "taawoun",
+      "at taawun",
+      "at-taawun",
+      "al taawun",
+      "al-taawun",
+      "attaawun",
+      "At Taawun",
+      "Al Taawun",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

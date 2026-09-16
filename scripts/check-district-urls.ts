@@ -78,6 +78,7 @@ assert(resolveDistrictSlug("al-mohammadiyah") === "al-mohammadiyah", "al-mohamma
 assert(resolveDistrictSlug("al-muruj") === "al-muruj", "al-muruj resolves");
 assert(resolveDistrictSlug("al-malaz") === "al-malaz", "al-malaz resolves");
 assert(resolveDistrictSlug("al-mathar") === "al-mathar", "al-mathar resolves");
+assert(resolveDistrictSlug("at-taawun") === "at-taawun", "at-taawun resolves");
 assert(resolveDistrictSlug("al-yarmuk") === null, "al-yarmuk is not the catalog slug");
 assert(resolveDistrictSlug("al-nahda") === null, "al-nahda is not the catalog slug");
 assert(resolveDistrictSlug("not-a-hood") === null, "unknown slug is null");
@@ -139,8 +140,9 @@ assert(areas.includes("al-muruj"), "directory includes al-muruj");
 assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
 assert(areas.includes("al-malaz"), "directory includes al-malaz");
 assert(areas.includes("al-mathar"), "directory includes al-mathar");
-assert(areas.length === 44, `expected 44 districts, got ${areas.length}`);
-assert(listRealShops().length === 269, `catalog 255→269, got ${listRealShops().length}`);
+assert(areas.includes("at-taawun"), "directory includes at-taawun");
+assert(areas.length === 45, `expected 45 districts, got ${areas.length}`);
+assert(listRealShops().length === 275, `catalog 269→275, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -425,7 +427,7 @@ assert(
 );
 
 const hamra = filterDirectoryShops(shops, "al-hamra");
-assert(hamra.length === 10, `al-hamra has 10 shops, got ${hamra.length}`);
+assert(hamra.length === 12, `al-hamra has 12 shops, got ${hamra.length}`);
 assert(
   hamra.every((shop) => shop.neighborhood === "al-hamra"),
   "al-hamra filter stays in district",
@@ -441,6 +443,8 @@ for (const id of [
   "drip-al-hamra",
   "coffee-address-al-hamra",
   "glint-al-hamra",
+  "re-matcha-al-hamra",
+  "hokkaido-al-hamra",
 ]) {
   assert(
     hamra.some((shop) => shop.id === id),
@@ -1250,11 +1254,39 @@ const MALAZ_REFILL = {
 }
 
 {
+  const rows = filterDirectoryShops(shops, "at-taawun");
+  assert(rows.length === 1, `at-taawun has 1 shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "flow-matcha-at-taawun"),
+    "at-taawun includes flow-matcha-at-taawun",
+  );
+  assert(neighborhoodLabel("at-taawun", "ar") === "التعاون", "at-taawun Arabic label");
+  assert(neighborhoodLabel("at-taawun", "en") === "At Taawun", "at-taawun English label");
+  assert(
+    districtPath("at-taawun", "ar") === "/coffee-shops/at-taawun",
+    "AR at-taawun coffee-shops path",
+  );
+  for (const ask of [
+    "التعاون",
+    "تعاون",
+    "taawun",
+    "at taawun",
+    "at-taawun",
+    "At Taawun",
+  ]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("at-taawun"),
+      `parseIntent(${ask}) should hit at-taawun`,
+    );
+  }
+}
+
+{
   assert(chipDirectoryMoment("matcha") === "matcha", "matcha chip filters matcha tags");
   assert(chipDirectoryMoment("popular") === null, "popular chip is not a moment filter");
   assert(chipDirectoryMoment("nearby") === null, "nearby chip is not a moment filter");
   const matchaRows = filterDirectoryShopsByMoment(shops, "matcha");
-  assert(matchaRows.length === 19, `Matcha directory is 19 tagged shops, got ${matchaRows.length}`);
+  assert(matchaRows.length === 25, `Matcha directory is 25 tagged shops, got ${matchaRows.length}`);
   assert(
     matchaRows.every((shop) => shop.momentTags.includes("matcha")),
     "Matcha directory is matcha-tagged only",
@@ -1266,6 +1298,12 @@ const MALAZ_REFILL = {
     "with-heart-diriyah": "/logos/with-heart-diriyah.jpg",
     "opinion-al-mathar": "/logos/opinion-al-mathar.png",
     "opinion-hittin": "/logos/opinion-hittin.png",
+    "remis-matcha-club-hittin": "/logos/remis-matcha-club-hittin.png",
+    "okawa-cafe-al-malqa": "/logos/okawa-cafe-al-malqa.jpg",
+    "re-matcha-al-hamra": "/logos/re-matcha-al-hamra.jpg",
+    "flow-matcha-at-taawun": "/logos/flow-matcha-at-taawun.jpg",
+    "hokkaido-al-hamra": "/logos/hokkaido-al-hamra.png",
+    "happyland-matcha-diriyah": "/logos/happyland-matcha-diriyah.jpg",
   };
   for (const [id, logoUrl] of Object.entries(harvestLogos)) {
     const shop = matchaRows.find((row) => row.id === id);
@@ -1468,7 +1506,8 @@ const scoutPack: {
     | "hittin"
     | "al-malqa"
     | "ghirnatah"
-    | "al-mathar";
+    | "al-mathar"
+    | "at-taawun";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -2806,6 +2845,54 @@ const scoutPack: {
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
     logoUrl: "/logos/some-coffee-bar-al-muruj.png",
+  },
+  {
+    id: "remis-matcha-club-hittin",
+    hex: "0x3e2ee300100e2ae9:0xce0fbc0df4ab9e0c",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/remis-matcha-club-hittin.png",
+  },
+  {
+    id: "okawa-cafe-al-malqa",
+    hex: "0x3e2ee30071d04773:0x211dc03644ad451",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/okawa-cafe-al-malqa.jpg",
+  },
+  {
+    id: "re-matcha-al-hamra",
+    hex: "0x3e2ee3006ddedd6b:0x8443a773ddde2819",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/re-matcha-al-hamra.jpg",
+  },
+  {
+    id: "flow-matcha-at-taawun",
+    hex: "0x3e2efd005e670709:0x7a663d77fd1c55",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/flow-matcha-at-taawun.jpg",
+  },
+  {
+    id: "hokkaido-al-hamra",
+    hex: "0x3e2eff0009c4195f:0xc18c64fb62ad5fd2",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/hokkaido-al-hamra.png",
+  },
+  {
+    id: "happyland-matcha-diriyah",
+    hex: "0x3e2ee166b1d2df13:0xea2fc2bb49df5296",
+    neighborhood: "diriyah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/happyland-matcha-diriyah.jpg",
   },
 ];
 

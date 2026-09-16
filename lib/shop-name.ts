@@ -147,6 +147,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "percent-arabica": ["percent", "arabica", "%", "ارابيكا"],
   "btw-olaya": ["btw"],
   "one-gram-sulimaniyah": ["one gram"],
+  "sand-clock": ["ساعة الرمل"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

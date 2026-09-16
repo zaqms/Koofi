@@ -34,7 +34,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 40, `expected 40 live districts, got ${live.length}`);
+assert(live.length === 41, `expected 41 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -260,6 +260,8 @@ assertDistrictTop3("الوادي", "ar", "al-wadi");
 assertDistrictTop3("Al Wadi", "en", "al-wadi");
 assert(extractPrimaryDistrict("الوادي") === "al-wadi", "الوادي");
 assert(extractPrimaryDistrict("Al Wadi") === "al-wadi", "Al Wadi");
+assert(extractPrimaryDistrict("المروج") === "al-muruj", "المروج");
+assert(extractPrimaryDistrict("Al Muruj") === "al-muruj", "Al Muruj");
 
 const woods = pickCafes({ text: "woods", language: "en" });
 assert(woods.picks[0]?.shop.id.startsWith("woods-"), "named shop path stays");

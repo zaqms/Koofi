@@ -107,9 +107,9 @@ const WAVE1_CATALOG_DISTRICTS = [
   "al-qirawan",
 ] as const;
 const WADI_REFILL_DISTRICTS = ["al-wadi"] as const;
+const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const SCOUT_GAP_DISTRICTS = [
   "al-mohammadiyah",
-  "al-muruj",
   "al-malaz",
 ] as const;
 
@@ -186,6 +186,11 @@ for (const row of rowsEn) {
     assert(
       row.cafeCount === 3,
       `${row.id} Wadi refill has 3 cafes, got ${row.cafeCount}`,
+    );
+  } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
+    assert(
+      row.cafeCount === 1,
+      `${row.id} Muruj refill has 1 cafe, got ${row.cafeCount}`,
     );
   } else if ((SCOUT_GAP_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);

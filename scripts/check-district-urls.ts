@@ -31,6 +31,7 @@ import {
   districtPath,
   filterPutsDirectoryFirst,
   homePath,
+  LEGACY_SHOP_REDIRECTS,
   legacyDistrictPath,
   MOST_POPULAR_EN_ALIAS_PATH,
   MOST_POPULAR_HEADING,
@@ -131,8 +132,9 @@ assert(areas.includes("al-ghadeer"), "directory includes al-ghadeer");
 assert(areas.includes("al-arid"), "directory includes al-arid");
 assert(areas.includes("al-qirawan"), "directory includes al-qirawan");
 assert(areas.includes("al-wadi"), "directory includes al-wadi");
-assert(areas.length === 40, `expected 40 districts, got ${areas.length}`);
-assert(listRealShops().length === 243, `catalog 240→243, got ${listRealShops().length}`);
+assert(areas.includes("al-muruj"), "directory includes al-muruj");
+assert(areas.length === 41, `expected 41 districts, got ${areas.length}`);
+assert(listRealShops().length === 244, `catalog 240→244, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1069,6 +1071,48 @@ const WADI_REFILL = {
   }
 }
 
+const MURUJ_REFILL = {
+  id: "al-muruj" as const,
+  ar: "المروج",
+  en: "Al Muruj",
+  shops: ["sand-clock-al-muruj"],
+};
+
+{
+  const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
+  assert(rows.length === 1, `al-muruj has 1 shop, got ${rows.length}`);
+  assert(
+    rows.every((shop) => shop.neighborhood === "al-muruj"),
+    "al-muruj filter stays in district",
+  );
+  for (const id of MURUJ_REFILL.shops) {
+    assert(rows.some((shop) => shop.id === id), `al-muruj includes ${id}`);
+  }
+  assert(
+    neighborhoodLabel("al-muruj", "ar") === MURUJ_REFILL.ar,
+    "al-muruj Arabic label",
+  );
+  assert(
+    neighborhoodLabel("al-muruj", "en") === MURUJ_REFILL.en,
+    "al-muruj English label",
+  );
+  assert(
+    districtPath("al-muruj", "ar") === "/coffee-shops/al-muruj",
+    "AR al-muruj coffee-shops path",
+  );
+  assert(
+    !getShop("sand-clock-al-muruj")?.nameEn.toLowerCase().includes("wurud") &&
+      !getShop("sand-clock-as-sulimaniyah")?.neighborhood.includes("wurud"),
+    "Sand Clock has no invented Wurud row",
+  );
+  for (const ask of ["المروج", "مروج", "muruj", "al muruj", "al-muruj", "Al Muruj"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-muruj"),
+      `parseIntent(${ask}) should hit al-muruj`,
+    );
+  }
+}
+
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);
   const expected = district.id === "al-takhassusi" ? 7 : 8;
@@ -1184,6 +1228,10 @@ assertDistinctPlaceHex(
   ["caf-lab-al-narjis", "caf-lab-al-qirawan"],
   "CAF LAB",
 );
+assertDistinctPlaceHex(
+  ["sand-clock-al-muruj", "sand-clock-as-sulimaniyah"],
+  "Sand Clock",
+);
 
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
@@ -1229,7 +1277,9 @@ const scoutPack: {
     | "al-ghadeer"
     | "al-arid"
     | "al-qirawan"
-    | "al-wadi";
+    | "al-wadi"
+    | "al-muruj"
+    | "sulimaniyah";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -2339,6 +2389,24 @@ const scoutPack: {
     logoUrl: "/logos/wama-coffee-al-wadi.jpg",
     pin: { lat: 24.7947623, lng: 46.6874763 },
   },
+  {
+    id: "sand-clock-al-muruj",
+    hex: "0x3e2ee364e66ca44d:0xf72c965ec8ab1103",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa", "work", "pastry", "quiet"],
+    logoUrl: "/logos/sand-clock-brand.png",
+    pin: { lat: 24.75671, lng: 46.65923 },
+  },
+  {
+    id: "sand-clock-as-sulimaniyah",
+    hex: "0x3e2f030007019d37:0xa01a5c275f012543",
+    neighborhood: "sulimaniyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa", "work", "pastry", "quiet"],
+    logoUrl: "/logos/sand-clock-brand.png",
+    pin: { lat: 24.71364, lng: 46.68369 },
+  },
 ];
 
 for (const row of scoutPack) {
@@ -2377,6 +2445,39 @@ for (const row of scoutPack) {
     `${row.id} momentTags`,
   );
 }
+
+assert(
+  !getShop("sand-clock-sulimaniyah"),
+  "old sand-clock-sulimaniyah id is retired (Muruj hex moved)",
+);
+assert(
+  getShop("sand-clock-al-muruj")?.mapsShareUrl?.includes(
+    "0x3e2ee364e66ca44d:0xf72c965ec8ab1103",
+  ),
+  "Muruj row keeps the original catalog hex",
+);
+assert(
+  LEGACY_SHOP_REDIRECTS.some(
+    (row) =>
+      row.source === "/c/sand-clock-sulimaniyah" &&
+      row.destination === "/c/sand-clock-al-muruj" &&
+      row.statusCode === 308,
+  ),
+  "old AR card slug 308s to sand-clock-al-muruj",
+);
+assert(
+  LEGACY_SHOP_REDIRECTS.some(
+    (row) =>
+      row.source === "/en/c/sand-clock-sulimaniyah" &&
+      row.destination === "/en/c/sand-clock-al-muruj" &&
+      row.statusCode === 308,
+  ),
+  "old EN card slug 308s to sand-clock-al-muruj",
+);
+assert(
+  !listRealShops().some((shop) => shop.neighborhood === "al-wurud" && /sand.?clock|ساعة الرمل|ساند كلوك/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)),
+  "do not invent a Sand Clock Wurud row",
+);
 
 const malqaAr = neighborhoodLabel("al-malqa", "ar");
 const ghirEn = neighborhoodLabel("ghirnatah", "en");

@@ -16,6 +16,7 @@ import {
   HALFWAY_LANDING_PATH,
   HOME_CHIP_IDS,
   LEGACY_CHIP_REDIRECTS,
+  LEGACY_SHOP_REDIRECTS,
   LEGACY_DATE_CHIP_SLUGS,
   LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
@@ -500,6 +501,18 @@ assert(
 assert(
   nextConfig.includes("LEGACY_CHIP_REDIRECTS"),
   "old date slug redirects are wired in next.config",
+);
+assert(
+  nextConfig.includes("LEGACY_SHOP_REDIRECTS"),
+  "retired cafe-card ids 308 through next.config",
+);
+assert(
+  LEGACY_SHOP_REDIRECTS.some(
+    (row) =>
+      row.source === "/c/sand-clock-sulimaniyah" &&
+      row.destination === "/c/sand-clock-al-muruj",
+  ),
+  "sand-clock-sulimaniyah card 308s to al-muruj",
 );
 
 const hero = read("components/home-hero.tsx");

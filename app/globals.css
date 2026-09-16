@@ -15,10 +15,6 @@
   --gold-deep: #8d6b38;
   --passport-wash: #f3ead8;
   --blush: #e3c4b8;
-  --matcha: #e7efe4;
-  --matcha-line: #c5d4c0;
-  --matcha-deep: #1f3d2a;
-  --matcha-ink: #1b2e22;
 }
 
 @theme inline {
@@ -36,10 +32,6 @@
   --color-gold-deep: var(--gold-deep);
   --color-passport-wash: var(--passport-wash);
   --color-blush: var(--blush);
-  --color-matcha: var(--matcha);
-  --color-matcha-line: var(--matcha-line);
-  --color-matcha-deep: var(--matcha-deep);
-  --color-matcha-ink: var(--matcha-ink);
   --font-sans: var(--font-koofi);
   --font-serif: var(--font-passport), "Times New Roman", serif;
 }

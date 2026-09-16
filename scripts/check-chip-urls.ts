@@ -389,9 +389,16 @@ assert(
 );
 assert(
   chips.includes('case "matcha"') &&
-    chips.includes("bg-matcha") &&
-    chips.includes("text-matcha-ink"),
-  "Matcha chip has mint/sage fill + forest leaf",
+    chips.includes("M12.4 4.8c3.2") &&
+    !chips.includes("bg-matcha") &&
+    !chips.includes("text-matcha") &&
+    !chips.includes("border-matcha") &&
+    !chips.includes("vibeChipClass(chip.id"),
+  "Matcha chip keeps the leaf and uses sibling foam/bean tokens",
+);
+assert(
+  !read("app/globals.css").includes("--matcha"),
+  "no special Matcha color tokens",
 );
 assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");
 assert(

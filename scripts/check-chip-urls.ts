@@ -6,7 +6,12 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { listDirectoryShops, listDriveThroughDirectoryShops } from "../lib/catalog";
+import {
+  isDriveThroughLane,
+  listDirectoryShops,
+  listDriveThroughDirectoryShops,
+  listRealShops,
+} from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
 import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
@@ -210,7 +215,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   coffee: "أفضل قهوة",
   pastry: "قهوة وحلى",
   matcha: "ماتشا",
-  "drive-through": "درايف ثرو",
+  "drive-through": "طلبات السياره",
   work: "للشغل",
   date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
@@ -441,15 +446,36 @@ assert(
   "Drive-through directory is drive-through-tagged only",
 );
 assert(
+  listDriveThroughDirectoryShops().every(
+    (shop) => !shop.vibeTags.includes("درايف ثرو"),
+  ),
+  "DT cards dropped legacy درايف ثرو vibe tag",
+);
+assert(
+  listRealShops()
+    .filter(isDriveThroughLane)
+    .every((shop) => shop.vibeTags.includes("طلبات السياره")),
+  "DT-lane cards show طلبات السياره",
+);
+assert(
+  listDriveThroughDirectoryShops().find((shop) => shop.id === "a-plus-as-salam")
+    ?.nameAr === "اي بلس درايف ثرو",
+  "A PLUS cafe name stays اي بلس درايف ثرو",
+);
+assert(
   !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-wadi"),
   "DT-lane additions stay out of default specialty directory",
 );
 assert(
   chips.includes('case "drive-through"') &&
+    chips.includes('d="M4.2 14.2h15.6"') &&
+    chips.includes('cx="8.2" cy="16.4"') &&
+    !chips.includes("{/* cup at window */}") &&
+    !chips.includes('<rect x="3.2" y="3.8" width="10.2" height="16.4" rx="1.4" />') &&
     !chips.includes("bg-drive") &&
     !chips.includes("text-drive") &&
     !chips.includes("border-drive"),
-  "Drive-through uses sibling vibe tokens — no special color",
+  "Drive-through keeps the live car icon — A/B/C rejected; sibling tokens only",
 );
 
 const product = read("lib/product.ts");
@@ -484,6 +510,16 @@ assert(
     !vibeLabels.includes('date: "Date"') &&
     !vibeLabels.includes('date: "For two"'),
   "moment fallback label is With friends",
+);
+assert(
+  product.includes('ar: "طلبات السياره"') &&
+    product.includes('en: "Drive-through"') &&
+    !product.includes('ar: "درايف ثرو"'),
+  "Drive-through AR chip label is طلبات السياره",
+);
+assert(
+  vibeLabels.includes('"طلبات السياره": "Drive-through"'),
+  "vibe map translates طلبات السياره on EN cards",
 );
 
 const halfwayCard = read("components/meet-halfway-card.tsx");

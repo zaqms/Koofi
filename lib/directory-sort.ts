@@ -4,9 +4,19 @@ import { haversineKm } from "./distance";
 import { shopDisplayName } from "./product";
 import type { Language, Pin } from "./types";
 
-/** Matcha results sort — reused on Drive-through results only. */
+/** Shared Matcha + Drive-through results sort. */
 export const DIRECTORY_RESULT_SORTS = ["nearby", "new", "az"] as const;
 export type DirectoryResultSort = (typeof DIRECTORY_RESULT_SORTS)[number];
+
+export const DIRECTORY_RESULT_SORT_CHIPS = ["matcha", "drive-through"] as const;
+
+export function isDirectoryResultSortChip(
+  chipId: string | null | undefined,
+): boolean {
+  return (
+    chipId === "matcha" || chipId === "drive-through"
+  );
+}
 
 export const DIRECTORY_SORT_COPY: Record<
   DirectoryResultSort,
@@ -39,9 +49,21 @@ function compareShopName(
 }
 
 /**
+ * Nearby only distance-sorts when a visitor origin exists.
+ * Without location, Nearby must not silently clone A–Z — it uses
+ * catalog-added order (same as New) until geo is ready.
+ */
+export function effectiveDirectorySort(
+  sort: DirectoryResultSort,
+  origin: Pin | null,
+): DirectoryResultSort {
+  if (sort === "nearby" && !origin) return "new";
+  return sort;
+}
+
+/**
  * Display sort only. Does not filter the list.
- * Nearby falls back to A–Z when no origin. New is catalog-added order
- * (later catalog index first), not store opening date.
+ * New is catalog-added order (later catalog index first), not store opening date.
  */
 export function sortDirectoryShops(
   shops: readonly DirectoryShop[],
@@ -50,7 +72,8 @@ export function sortDirectoryShops(
   language: Language,
 ): DirectoryShop[] {
   const rows = [...shops];
-  if (sort === "new") {
+  const resolved = effectiveDirectorySort(sort, origin);
+  if (resolved === "new") {
     return rows.sort((a, b) => {
       if (b.catalogIndex !== a.catalogIndex) {
         return b.catalogIndex - a.catalogIndex;
@@ -58,7 +81,7 @@ export function sortDirectoryShops(
       return compareShopName(a, b, language);
     });
   }
-  if (sort === "az" || (sort === "nearby" && !origin)) {
+  if (resolved === "az") {
     return rows.sort((a, b) => compareShopName(a, b, language));
   }
   return rows.sort((a, b) => {

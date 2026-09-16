@@ -354,6 +354,10 @@ export const copy = {
     ar: "ترتيب القائمة",
     en: "Sort results",
   },
+  directorySortNearbyHint: {
+    ar: "الأقرب يحتاج موقعك.",
+    en: "Nearby needs your location.",
+  },
   neighborhoodsEmpty: {
     ar: "ما فيه حي بهالاسم.",
     en: "No neighborhoods match.",

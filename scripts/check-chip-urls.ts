@@ -583,10 +583,9 @@ assert(
 );
 const directory = read("components/shop-directory.tsx");
 assert(
-  directory.includes('chipId === "drive-through"') &&
-    directory.includes("DirectoryResultSortPills") &&
-    !directory.includes('chipId === "matcha"'),
-  "sort pills are Drive-through results only — Matcha list stays as-is",
+  directory.includes("isDirectoryResultSortChip") &&
+    directory.includes("DirectoryResultSortPills"),
+  "Matcha and Drive-through results share the same sort pills",
 );
 assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),

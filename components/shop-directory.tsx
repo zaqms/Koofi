@@ -17,6 +17,7 @@ import {
   categoryDistrictHeading,
 } from "@/lib/directory-category";
 import {
+  isDirectoryResultSortChip,
   sortDirectoryShops,
   type DirectoryResultSort,
 } from "@/lib/directory-sort";
@@ -72,12 +73,21 @@ export function ShopDirectory({
   const vibe = chipId
     ? VIBE_CHIPS.find((chip) => chip.id === chipId)
     : undefined;
-  const resultSort = chipId === "drive-through";
+  const resultSort = isDirectoryResultSortChip(chipId);
   const visitor = usePeekVisitorLocation();
   const origin = originFromVisitor(visitor);
+  const nearbyAvailable = visitor.status === "ready";
   const [userSort, setUserSort] = useState<DirectoryResultSort | null>(null);
+  const requested: DirectoryResultSort =
+    userSort ?? (resultSort && nearbyAvailable ? "nearby" : "new");
+  const waitingForNearby =
+    requested === "nearby" && visitor.status === "pending";
   const sort: DirectoryResultSort =
-    userSort ?? (resultSort && visitor.status === "ready" ? "nearby" : "az");
+    requested === "nearby" && !nearbyAvailable ? "new" : requested;
+  const selectedSort: DirectoryResultSort = waitingForNearby
+    ? "nearby"
+    : sort;
+  const showNearbyHint = resultSort && requested === "nearby" && !nearbyAvailable;
 
   const areas = directoryNeighborhoods(shops);
   const filtered = useMemo(
@@ -203,8 +213,10 @@ export function ShopDirectory({
       {resultSort ? (
         <DirectoryResultSortPills
           language={language}
-          sort={sort}
+          sort={selectedSort}
           onPick={pickSort}
+          nearbyAvailable={nearbyAvailable}
+          showNearbyHint={showNearbyHint}
         />
       ) : null}
 

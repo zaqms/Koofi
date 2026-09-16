@@ -9,6 +9,8 @@ import { filterDirectoryShopsByMoment } from "../lib/directory";
 import {
   DIRECTORY_RESULT_SORTS,
   DIRECTORY_SORT_COPY,
+  effectiveDirectorySort,
+  isDirectoryResultSortChip,
   sortDirectoryShops,
 } from "../lib/directory-sort";
 import { shopDisplayName } from "../lib/product";
@@ -31,9 +33,15 @@ assert(copy.directorySortNew.en === "New", "EN New");
 assert(copy.directorySortNew.ar === "الأحدث", "AR New uses existing الأحدث");
 assert(copy.neighborhoodsSortAz.en === "A–Z", "EN A–Z");
 assert(copy.neighborhoodsSortAz.ar === "أ–ي", "AR A–Z reuses أ–ي");
+assert(copy.directorySortNearbyHint.en === "Nearby needs your location.", "EN geo hint");
+assert(copy.directorySortNearbyHint.ar === "الأقرب يحتاج موقعك.", "AR geo hint");
 assert(DIRECTORY_SORT_COPY.nearby === copy.neighborhoodsSortNearby, "Nearby reuses copy");
 assert(DIRECTORY_SORT_COPY.az === copy.neighborhoodsSortAz, "A–Z reuses copy");
 assert(DIRECTORY_SORT_COPY.new === copy.directorySortNew, "New copy is directorySortNew");
+assert(isDirectoryResultSortChip("matcha"), "Matcha results get the shared sorter");
+assert(isDirectoryResultSortChip("drive-through"), "DT results get the shared sorter");
+assert(!isDirectoryResultSortChip("popular"), "Most Popular stays unsorted");
+assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();
 assert(dt.length === 78, `DT directory stays 78 shops, got ${dt.length}`);
@@ -90,33 +98,59 @@ assert(
 const origin: Pin = { lat: 24.753476, lng: 46.6906575 };
 const nearby = sortDirectoryShops(dt, "nearby", origin, "en");
 assert(nearby[0]?.id === "camel-step-al-mursalat", "Nearby ASC from a DT pin");
+assert(
+  effectiveDirectorySort("nearby", origin) === "nearby",
+  "Nearby stays Nearby when location is ready",
+);
+assert(
+  effectiveDirectorySort("nearby", null) === "new",
+  "Nearby without location is catalog order, not A–Z",
+);
+
 const nearbyNoOrigin = sortDirectoryShops(dt, "nearby", null, "en");
 assert(
-  nearbyNoOrigin[0]?.id === azEn[0]?.id,
-  "Nearby without location falls back to A–Z",
+  nearbyNoOrigin.slice(0, 5).map((shop) => shop.id).join(",") ===
+    newSorted.slice(0, 5).map((shop) => shop.id).join(","),
+  "Nearby without geo uses New/catalog order",
+);
+assert(
+  nearbyNoOrigin.slice(0, 5).map((shop) => shop.id).join(",") !==
+    azEn.slice(0, 5).map((shop) => shop.id).join(","),
+  "Nearby without geo must not silently equal A–Z first-five",
+);
+assert(
+  nearby.slice(0, 5).map((shop) => shop.id).join(",") !==
+    azEn.slice(0, 5).map((shop) => shop.id).join(","),
+  "Nearby with geo first-five differs from A–Z",
 );
 
 const matcha = filterDirectoryShopsByMoment(listDirectoryShops(), "matcha");
 assert(matcha.length === 25, "Matcha list content stays 25 tagged shops");
-const matchaDefault = matcha.map((shop) => shop.id);
+const matchaAz = sortDirectoryShops(matcha, "az", null, "en");
+const matchaNearbyNoGeo = sortDirectoryShops(matcha, "nearby", null, "en");
+const matchaNew = sortDirectoryShops(matcha, "new", null, "en");
 assert(
-  matchaDefault.join(",") ===
-    filterDirectoryShopsByMoment(listDirectoryShops(), "matcha")
-      .map((shop) => shop.id)
-      .join(","),
-  "Matcha directory order is untouched",
+  matchaNearbyNoGeo.slice(0, 5).map((shop) => shop.id).join(",") !==
+    matchaAz.slice(0, 5).map((shop) => shop.id).join(","),
+  "Matcha Nearby without geo first-five differs from A–Z",
+);
+assert(
+  matchaNearbyNoGeo[0]?.id === matchaNew[0]?.id,
+  "Matcha Nearby without geo matches New",
 );
 
 const directory = read("components/shop-directory.tsx");
 assert(
-  directory.includes('chipId === "drive-through"') &&
+  directory.includes("isDirectoryResultSortChip") &&
     directory.includes("DirectoryResultSortPills") &&
     directory.includes("sortDirectoryShops"),
-  "Drive-through results mount the Matcha sort pills",
+  "Matcha and Drive-through mount the same sort pills",
 );
 assert(
-  !directory.includes('chipId === "matcha"'),
-  "Matcha results do not enable this sort",
+  directory.includes("nearbyAvailable") &&
+    directory.includes("showNearbyHint") &&
+    directory.includes("requestVisitorLocation"),
+  "Nearby is honest when geolocation is missing",
 );
 assert(
   directory.includes("filterDirectoryShopsByMoment") &&
@@ -133,7 +167,13 @@ assert(pills.includes("bg-bean") && pills.includes("text-foam"), "selected terra
 assert(pills.includes("bg-paper") && pills.includes("border-line"), "inactive Paper");
 assert(pills.includes("h-8 rounded-full") && pills.includes("text-[13px]"), "pill type");
 assert(pills.includes("flex flex-wrap gap-2"), "pill spacing");
-assert(pills.includes("DIRECTORY_SORT_COPY"), "pills reuse Matcha copy");
+assert(pills.includes("DIRECTORY_SORT_COPY"), "pills reuse shared copy");
+assert(
+  pills.includes("nearbyAvailable") &&
+    pills.includes("data-nearby-blocked") &&
+    pills.includes("data-directory-sort-nearby-hint"),
+  "Nearby without geo is blocked and labeled",
+);
 
 const landing = read("components/home-landing.tsx");
 assert(
@@ -152,6 +192,10 @@ assert(
     chips.includes("{/* car + pickup cup */}") &&
     chips.includes('viewBox="0 0 512 512"'),
   "DT home icon is unchanged",
+);
+assert(
+  chips.includes('case "matcha"') && chips.includes("{/* chawan + chasen */}"),
+  "Matcha home icon is unchanged",
 );
 assert(
   !/Soft Places/i.test(directory) && !/Soft Places/i.test(pills),

@@ -392,7 +392,6 @@ assert(
   chips.includes('case "date"') &&
     chips.includes('<circle cx="6.8" cy="7.8" r="2.4" />') &&
     chips.includes('<circle cx="17.2" cy="7.8" r="2.4" />') &&
-    !chips.includes('a2.5 2.5 0 0 1 0 5') &&
     !chips.includes('<circle cx="9" cy="8" r="2.65" />') &&
     !chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
     !/heart|romance|💕|❤|couple|hand-hold/i.test(chips),
@@ -468,10 +467,18 @@ assert(
 );
 assert(
   chips.includes('case "drive-through"') &&
+    chips.includes("{/* cup at window */}") &&
+    chips.includes('<rect x="3.2" y="3.8" width="10.2" height="16.4" rx="1.4" />') &&
+    chips.includes('d="M9.4 11.4h6.4a2.5 2.5 0 0 1 0 5H9.4"') &&
+    !chips.includes('d="M4.2 14.2h15.6"') &&
+    !chips.includes('cx="8.2" cy="16.4"') &&
     !chips.includes("bg-drive") &&
     !chips.includes("text-drive") &&
-    !chips.includes("border-drive"),
-  "Drive-through uses sibling vibe tokens — no special color",
+    !chips.includes("border-drive") &&
+    !chips.includes('stroke="#1E1714"') &&
+    chips.includes('stroke="currentColor"') &&
+    chips.includes('strokeWidth="1.55"'),
+  "Drive-through uses Option A cup-at-window and sibling vibe tokens",
 );
 
 const product = read("lib/product.ts");

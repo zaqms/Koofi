@@ -99,6 +99,19 @@ const NEW_POPULAR_DISTRICTS = [
   "al-muruj",
   "al-malaz",
 ] as const;
+const WAVE1_CATALOG_DISTRICTS = [
+  "al-takhassusi",
+  "al-aqiq",
+  "al-ghadeer",
+  "al-arid",
+  "al-qirawan",
+] as const;
+const SCOUT_GAP_DISTRICTS = [
+  "al-wadi",
+  "al-mohammadiyah",
+  "al-muruj",
+  "al-malaz",
+] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "Al Sulaymaniyah",
@@ -163,7 +176,9 @@ for (const row of rowsEn) {
     row.cafeCount === neighborhoodCafeCount(row.id, shops),
     `${row.id} count matches catalog`,
   );
-  if ((NEW_POPULAR_DISTRICTS as readonly string[]).includes(row.id)) {
+  if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
+    assert(row.cafeCount === 8, `${row.id} Wave 1 catalog has 8 cafes, got ${row.cafeCount}`);
+  } else if ((SCOUT_GAP_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);
   } else {
     assert(row.cafeCount > 0, `${row.id} has at least one cafe`);

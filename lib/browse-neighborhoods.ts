@@ -248,25 +248,17 @@ export function listNeighborhoodRows(
   shops: readonly DirectoryShop[],
   city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
+  void city;
   return NEIGHBORHOOD_IDS.map((id) => ({
     id,
     href: districtPath(id, language),
     label: browseNeighborhoodLabel(id, language),
     cafeCount: neighborhoodCafeCount(id, shops),
     centroid: neighborhoodCentroidFromShops(id, shops),
-  })).sort((a, b) => comparePopular(a, b, language, city));
+  }));
 }
 
-function comparePopular(
-  a: NeighborhoodRow,
-  b: NeighborhoodRow,
-  language: Language,
-  city: City = DEFAULT_BROWSE_CITY,
-): number {
-  const rankA = popularRank(a.id, city);
-  const rankB = popularRank(b.id, city);
-  if (rankA !== rankB) return rankA - rankB;
-  if (b.cafeCount !== a.cafeCount) return b.cafeCount - a.cafeCount;
+function compareAz(a: NeighborhoodRow, b: NeighborhoodRow, language: Language): number {
   return a.label.localeCompare(b.label, language === "ar" ? "ar" : "en");
 }
 
@@ -275,25 +267,26 @@ export function sortNeighborhoodRows(
   sort: NeighborhoodSort,
   origin: Pin | null,
   language: Language,
+  city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
+  if (sort === "popular") {
+    return [...rows]
+      .filter((row) => popularRank(row.id, city) < popularNeighborhoodIds(city).length)
+      .sort((a, b) => popularRank(a.id, city) - popularRank(b.id, city));
+  }
   const copy = [...rows];
-  if (sort === "az") {
-    return copy.sort((a, b) =>
-      a.label.localeCompare(b.label, language === "ar" ? "ar" : "en"),
-    );
+  if (sort === "az" || (sort === "nearby" && !origin)) {
+    return copy.sort((a, b) => compareAz(a, b, language));
   }
-  if (sort === "nearby" && origin) {
-    return copy.sort((a, b) => {
-      const da = neighborhoodDistanceKm(a, origin);
-      const db = neighborhoodDistanceKm(b, origin);
-      if (da == null && db == null) return comparePopular(a, b, language);
-      if (da == null) return 1;
-      if (db == null) return -1;
-      if (da !== db) return da - db;
-      return comparePopular(a, b, language);
-    });
-  }
-  return copy.sort((a, b) => comparePopular(a, b, language));
+  return copy.sort((a, b) => {
+    const da = neighborhoodDistanceKm(a, origin);
+    const db = neighborhoodDistanceKm(b, origin);
+    if (da == null && db == null) return compareAz(a, b, language);
+    if (da == null) return 1;
+    if (db == null) return -1;
+    if (da !== db) return da - db;
+    return compareAz(a, b, language);
+  });
 }
 
 export function filterNeighborhoodRows(

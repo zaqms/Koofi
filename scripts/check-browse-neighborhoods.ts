@@ -186,25 +186,33 @@ for (const row of rowsAr) {
   );
 }
 
+const popularEn = sortNeighborhoodRows(rowsEn, "popular", null, "en");
+const popularAr = sortNeighborhoodRows(rowsAr, "popular", null, "ar");
+assert(popularEn.length === 29, "Popular is exactly Amjad's 29 districts");
+assert(popularAr.length === 29, "AR Popular is exactly Amjad's 29 districts");
 assert(
-  rowsEn
-    .slice(0, RIYADH_POPULAR_NEIGHBORHOODS.length)
-    .map((row) => row.id)
-    .join(",") === AMJAD_POPULAR,
-  "default view-all Popular follows Amjad's locked order",
+  popularEn.map((row) => row.id).join(",") === AMJAD_POPULAR,
+  "Popular follows Amjad's locked order with no unranked tail",
 );
 assert(
-  rowsAr
-    .slice(0, RIYADH_POPULAR_NEIGHBORHOODS.length)
-    .map((row) => row.id)
-    .join(",") === AMJAD_POPULAR,
+  popularAr.map((row) => row.id).join(",") === AMJAD_POPULAR,
   "AR Popular uses the same locked ids",
 );
-assert(rowsEn[0]?.id === "hittin", "Popular lead is Hittin");
-assert(rowsEn[2]?.id === "al-takhassusi", "Popular #3 is Al Takhassusi");
-assert(rowsEn[5]?.id === "al-nakheel", "Popular #6 is An Nakheel");
-assert(rowsEn[16]?.id === "diplomatic-quarter", "Popular #17 is Diplomatic Quarter");
-assert(rowsEn[28]?.id === "al-wurud", "Popular #29 is Al Wurud");
+assert(
+  popularEn.every((row) =>
+    (RIYADH_POPULAR_NEIGHBORHOODS as readonly NeighborhoodId[]).includes(row.id),
+  ),
+  "Popular contains no unranked districts",
+);
+assert(popularEn[0]?.id === "hittin", "Popular lead is Hittin");
+assert(popularEn[2]?.id === "al-takhassusi", "Popular #3 is Al Takhassusi");
+assert(popularEn[5]?.id === "al-nakheel", "Popular #6 is An Nakheel");
+assert(popularEn[16]?.id === "diplomatic-quarter", "Popular #17 is Diplomatic Quarter");
+assert(popularEn[28]?.id === "al-wurud", "Popular #29 is Al Wurud");
+assert(
+  !popularEn.some((row) => row.id === "kafd" || row.id === "king-fahd"),
+  "unranked districts stay out of Popular",
+);
 
 const az = sortNeighborhoodRows(rowsEn, "az", null, "en");
 assert(
@@ -215,19 +223,36 @@ assert(
   }),
   "A–Z sort is alphabetical",
 );
-
-const popularFallback = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
+assert(az.length === rowsEn.length, "A–Z still lists every catalog district");
 assert(
-  popularFallback[0]?.id === rowsEn[0]?.id,
-  "Nearby without a real origin falls back to Popular",
+  az.some((row) => row.id === "kafd"),
+  "unranked districts remain on A–Z",
 );
 
-const withCentroid = rowsEn.find((row) => row.centroid);
+const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
+assert(
+  nearbyNoOrigin.map((row) => row.id).join(",") ===
+    az.map((row) => row.id).join(","),
+  "Nearby without a real origin is A–Z, not Popular",
+);
+assert(
+  nearbyNoOrigin.slice(0, 5).map((row) => row.id).join(",") !==
+    popularEn.slice(0, 5).map((row) => row.id).join(","),
+  "Nearby first five must not copy Popular first five",
+);
+
+const withCentroid = rowsEn.find((row) => row.id === "al-hamra" && row.centroid) ??
+  rowsEn.find((row) => row.centroid);
 if (withCentroid?.centroid) {
   const far = { lat: withCentroid.centroid.lat + 0.4, lng: withCentroid.centroid.lng };
   const nearby = sortNeighborhoodRows(rowsEn, "nearby", withCentroid.centroid, "en");
   const farSort = sortNeighborhoodRows(rowsEn, "nearby", far, "en");
   assert(nearby[0]?.id === withCentroid.id, "Nearby sort uses real centroids");
+  assert(
+    nearby.slice(0, 5).map((row) => row.id).join(",") !==
+      popularEn.slice(0, 5).map((row) => row.id).join(","),
+    "real Nearby first five must not copy Popular",
+  );
   assert(
     neighborhoodDistanceKm(withCentroid, withCentroid.centroid) === 0,
     "distance at the centroid is zero",
@@ -406,6 +431,10 @@ assert(viewAll.includes("neighborhoodCafeCountLabel"), "view-all uses real count
 assert(viewAll.includes("data-neighborhood-sorts"), "view-all has sort pills");
 assert(viewAll.includes("nearby"), "Nearby sort exists");
 assert(viewAll.includes("usePeekVisitorLocation"), "Nearby uses real visitor location");
+assert(
+  viewAll.includes("sortNeighborhoodRows(filtered, sort, origin, language, city)"),
+  "view-all Popular filter is city-keyed",
+);
 assert(viewAll.includes("formatDistanceKm"), "distance is formatted from real km");
 assert(!viewAll.includes("NeighborhoodIcon"), "view-all rows have no icons");
 assert(!/Koofi/i.test(viewAll), "view-all must not say Koofi");

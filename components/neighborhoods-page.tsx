@@ -73,8 +73,8 @@ export function NeighborhoodsPageView({
     [rows, query],
   );
   const visible = useMemo(
-    () => sortNeighborhoodRows(filtered, sort, origin, language),
-    [filtered, sort, origin, language],
+    () => sortNeighborhoodRows(filtered, sort, origin, language, city),
+    [filtered, sort, origin, language, city],
   );
 
   function pickSort(next: NeighborhoodSort) {

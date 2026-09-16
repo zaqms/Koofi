@@ -83,8 +83,12 @@ export type AnalyticsParams = {
   method?: MeetHalfwayPinMethod;
   count?: number;
   page?: number;
-  /** Additive بيننا results cafés for GTM Preview / later tags. Not a GTM webhook. */
+  /** Additive بيننا results cafés for GTM Preview / a GTM webhook tag. */
   cafes?: HalfwayResultCafe[];
+  /** Same `/h/{id}` token as pack_id — GTM-friendly alias. */
+  session_id?: string;
+  /** Same `/h/{id}` token as pack_id — GTM-friendly alias. */
+  invite_id?: string;
 };
 
 const DEDUPE_MS = 400;
@@ -183,7 +187,13 @@ export function meetHalfwayResultsParams(input: {
     locale: input.locale,
     count: input.picks.length,
     source: input.source,
-    ...(input.packId ? { pack_id: input.packId } : {}),
+    ...(input.packId
+      ? {
+          pack_id: input.packId,
+          session_id: input.packId,
+          invite_id: input.packId,
+        }
+      : {}),
     cafes: halfwayResultCafesFromPicks({
       picks: input.picks,
       midpoint: input.midpoint,

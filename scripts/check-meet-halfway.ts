@@ -1043,6 +1043,7 @@ assert(layer.count === 3, "dataLayer keeps count");
 assert(layer.source === "local", "dataLayer keeps source");
 assert(Array.isArray(layer.cafes) && layer.cafes.length === 3, "dataLayer cafes");
 assert(layer.pack_id == null, "local run omits pack_id");
+assert(layer.session_id == null && layer.invite_id == null, "local run omits session aliases");
 
 const invited = meetHalfwayResultsParams({
   locale: "en",
@@ -1052,6 +1053,8 @@ const invited = meetHalfwayResultsParams({
   midpoint,
 });
 assert(invited.pack_id === "session-token", "invite dataLayer adds pack_id");
+assert(invited.session_id === "session-token", "GTM session_id alias");
+assert(invited.invite_id === "session-token", "GTM invite_id alias");
 assert(invited.source === "invite", "invite source unchanged");
 
 const hookBody = halfwayResultsWebhookBody({

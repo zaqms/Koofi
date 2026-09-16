@@ -266,6 +266,8 @@ assertDistrictTop3("المحمدية", "ar", "al-mohammadiyah");
 assertDistrictTop3("Al Mohammadiyah", "en", "al-mohammadiyah");
 assert(extractPrimaryDistrict("المحمدية") === "al-mohammadiyah", "المحمدية");
 assert(extractPrimaryDistrict("Al Mohammadiyah") === "al-mohammadiyah", "Al Mohammadiyah");
+assertDistrictTop3("الملز", "ar", "al-malaz");
+assertDistrictTop3("Al Malaz", "en", "al-malaz");
 assert(extractPrimaryDistrict("الملز") === "al-malaz", "الملز");
 assert(extractPrimaryDistrict("Al Malaz") === "al-malaz", "Al Malaz");
 assertDistrictTop3("المروج", "ar", "al-muruj");

@@ -3624,7 +3624,63 @@
       "logoUrl": "/logos/lasani-cafe-al-malaz.png",
       "popularityIndex": 40,
       "example": false
+    },
+    {
+      "id": "golden-pot-al-malaz",
+      "nameAr": "الركوة الذهبية",
+      "nameEn": "Golden Pot",
+      "city": "riyadh",
+      "neighborhood": "al-malaz",
+      "neighborhoodAr": "الملز",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f059ab00b237f:0x8a38691d19c4d1d4",
+      "pin": { "lat": 24.6615963, "lng": 46.7267526 },
+      "logoUrl": "/logos/golden-pot-al-malaz.jpg",
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "walnut-wood-coffee-al-malaz",
+      "nameAr": "قهوة خشب الجوز",
+      "nameEn": "Walnut Wood Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-malaz",
+      "neighborhoodAr": "الملز",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f05ba44347f55:0xb1841f0e5664d80a",
+      "pin": { "lat": 24.6663848, "lng": 46.7242422 },
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "hazzah-coffee-al-malaz",
+      "nameAr": "حزّة",
+      "nameEn": "Hazzah Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-malaz",
+      "neighborhoodAr": "الملز",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f05bb7d55715d:0x13592f76325f0de2",
+      "pin": { "lat": 24.6700884, "lng": 46.7389702 },
+      "popularityIndex": 40,
+      "example": false
+    },
+    {
+      "id": "canto-al-malaz",
+      "nameAr": "كانتو",
+      "nameEn": "Canto",
+      "city": "riyadh",
+      "neighborhood": "al-malaz",
+      "neighborhoodAr": "الملز",
+      "vibeTags": ["قهوة"],
+      "momentTags": ["qahwa"],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f05114535986d:0xbb8d0dee4e12d7fe",
+      "pin": { "lat": 24.6614598, "lng": 46.7443033 },
+      "popularityIndex": 40,
+      "example": false
     }
-
   ]
 }

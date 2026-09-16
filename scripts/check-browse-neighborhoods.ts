@@ -198,8 +198,8 @@ for (const row of rowsEn) {
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 1,
-      `${row.id} Malaz refill has 1 cafe, got ${row.cafeCount}`,
+      row.cafeCount === 5,
+      `${row.id} Malaz refill has 5 cafes, got ${row.cafeCount}`,
     );
   } else if ((SCOUT_GAP_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);

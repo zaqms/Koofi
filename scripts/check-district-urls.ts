@@ -136,7 +136,7 @@ assert(areas.includes("al-muruj"), "directory includes al-muruj");
 assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
 assert(areas.includes("al-malaz"), "directory includes al-malaz");
 assert(areas.length === 43, `expected 43 districts, got ${areas.length}`);
-assert(listRealShops().length === 251, `catalog 240→251, got ${listRealShops().length}`);
+assert(listRealShops().length === 255, `catalog 240→255, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1173,12 +1173,22 @@ const MALAZ_REFILL = {
   id: "al-malaz" as const,
   ar: "الملز",
   en: "Al Malaz",
-  shops: ["lasani-cafe-al-malaz"],
+  shops: [
+    "lasani-cafe-al-malaz",
+    "golden-pot-al-malaz",
+    "walnut-wood-coffee-al-malaz",
+    "hazzah-coffee-al-malaz",
+    "canto-al-malaz",
+  ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MALAZ_REFILL.id);
-  assert(rows.length === 1, `al-malaz has 1 shop, got ${rows.length}`);
+  assert(rows.length === 5, `al-malaz has 5 shops, got ${rows.length}`);
+  assert(
+    rows.filter((shop) => shop.id === "lasani-cafe-al-malaz").length === 1,
+    "Lasani stays a single Malaz row",
+  );
   assert(
     rows.every((shop) => shop.neighborhood === "al-malaz"),
     "al-malaz filter stays in district",
@@ -2572,6 +2582,39 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/lasani-cafe-al-malaz.png",
     pin: { lat: 24.6664954, lng: 46.7225849 },
+  },
+  {
+    id: "golden-pot-al-malaz",
+    hex: "0x3e2f059ab00b237f:0x8a38691d19c4d1d4",
+    neighborhood: "al-malaz",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/golden-pot-al-malaz.jpg",
+    pin: { lat: 24.6615963, lng: 46.7267526 },
+  },
+  {
+    id: "walnut-wood-coffee-al-malaz",
+    hex: "0x3e2f05ba44347f55:0xb1841f0e5664d80a",
+    neighborhood: "al-malaz",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6663848, lng: 46.7242422 },
+  },
+  {
+    id: "hazzah-coffee-al-malaz",
+    hex: "0x3e2f05bb7d55715d:0x13592f76325f0de2",
+    neighborhood: "al-malaz",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6700884, lng: 46.7389702 },
+  },
+  {
+    id: "canto-al-malaz",
+    hex: "0x3e2f05114535986d:0xbb8d0dee4e12d7fe",
+    neighborhood: "al-malaz",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6614598, lng: 46.7443033 },
   },
 ];
 

@@ -162,8 +162,8 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,drive-through,nearby,outdoor,date,work",
-  "P0 home order is locked — Matcha 4th, Drive-through after Matcha",
+    "popular,coffee,pastry,matcha,nearby,outdoor,date,work,drive-through",
+  "P0 home order is locked — Matcha 4th, Drive-through 9th after Work",
 );
 assert(
   OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",
@@ -215,7 +215,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   coffee: "أفضل قهوة",
   pastry: "قهوة وحلى",
   matcha: "ماتشا",
-  "drive-through": "طلبات السياره",
+  "drive-through": "طلبات السيارة",
   work: "للشغل",
   date: "مع الأصحاب",
   outdoor: "جلسات خارجية",
@@ -454,8 +454,8 @@ assert(
 assert(
   listRealShops()
     .filter(isDriveThroughLane)
-    .every((shop) => shop.vibeTags.includes("طلبات السياره")),
-  "DT-lane cards show طلبات السياره",
+    .every((shop) => shop.vibeTags.includes("طلبات السيارة")),
+  "DT-lane cards show طلبات السيارة",
 );
 assert(
   listDriveThroughDirectoryShops().find((shop) => shop.id === "a-plus-as-salam")
@@ -468,14 +468,27 @@ assert(
 );
 assert(
   chips.includes('case "drive-through"') &&
-    chips.includes('d="M4.2 14.2h15.6"') &&
-    chips.includes('cx="8.2" cy="16.4"') &&
+    chips.includes("{/* car + pickup cup */}") &&
+    chips.includes('d="M15 17.8V5.6H21"') &&
+    chips.includes('d="M17.45 9L17.7 11.55H19.9L20.15 9Z"') &&
+    !chips.includes('d="M4.2 14.2h15.6"') &&
     !chips.includes("{/* cup at window */}") &&
     !chips.includes('<rect x="3.2" y="3.8" width="10.2" height="16.4" rx="1.4" />') &&
     !chips.includes("bg-drive") &&
     !chips.includes("text-drive") &&
-    !chips.includes("border-drive"),
-  "Drive-through keeps the live car icon — A/B/C rejected; sibling tokens only",
+    !chips.includes("border-drive") &&
+    !chips.includes('stroke="#1E1714"') &&
+    chips.includes('stroke="currentColor"'),
+  "Drive-through uses Amjad car+pickup-cup and sibling vibe tokens",
+);
+assert(
+  !listDriveThroughDirectoryShops().some(
+    (shop) => shop.id === "camel-step-hittin",
+  ) &&
+    listDriveThroughDirectoryShops().some(
+      (shop) => shop.id === "camel-step-al-mursalat",
+    ),
+  "DT directory is branch-tagged only — Camel Step Hittin stays out",
 );
 
 const product = read("lib/product.ts");
@@ -512,14 +525,15 @@ assert(
   "moment fallback label is With friends",
 );
 assert(
-  product.includes('ar: "طلبات السياره"') &&
+  product.includes('ar: "طلبات السيارة"') &&
     product.includes('en: "Drive-through"') &&
-    !product.includes('ar: "درايف ثرو"'),
-  "Drive-through AR chip label is طلبات السياره",
+    !product.includes('ar: "درايف ثرو"') &&
+    !product.includes('ar: "طلبات السياره"'),
+  "Drive-through AR chip label is طلبات السيارة",
 );
 assert(
-  vibeLabels.includes('"طلبات السياره": "Drive-through"'),
-  "vibe map translates طلبات السياره on EN cards",
+  vibeLabels.includes('"طلبات السيارة": "Drive-through"'),
+  "vibe map translates طلبات السيارة on EN cards",
 );
 
 const halfwayCard = read("components/meet-halfway-card.tsx");

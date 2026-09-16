@@ -355,8 +355,12 @@ assert(
   "Drive-through chip must resolve to drive-through",
 );
 assert(
+  parseIntent("طلبات السيارة").moments.join(",") === "drive-through",
+  "طلبات السيارة chip must resolve to drive-through",
+);
+assert(
   parseIntent("طلبات السياره").moments.join(",") === "drive-through",
-  "طلبات السياره chip must resolve to drive-through",
+  "legacy طلبات السياره still resolves to drive-through",
 );
 assert(
   parseIntent("درايف ثرو").moments.join(",") === "drive-through",

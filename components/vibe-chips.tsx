@@ -117,11 +117,21 @@ function ChipIcon({ id }: { id: string }) {
     case "drive-through":
       return (
         <Icon>
-          <path d="M4.2 14.2h15.6" />
-          <path d="M6 14.2 7.4 9.4A1.6 1.6 0 0 1 8.9 8.2h6.2a1.6 1.6 0 0 1 1.5 1.2L18 14.2" />
-          <circle cx="8.2" cy="16.4" r="1.35" />
-          <circle cx="15.8" cy="16.4" r="1.35" />
-          <path d="M9.2 11.2h5.6" />
+          {/* car + pickup cup */}
+          <path d="M4.6 8.4C4.9 7.2 5.8 6.4 7.2 6.4H8.6C10 6.4 10.9 7.2 11.2 8.4L11.8 12.6H3.9Z" />
+          <path d="M4.35 9.6H3.2" />
+          <path d="M11.45 9.6H12.6" />
+          <path d="M5.1 11.6H6.4" />
+          <path d="M9.3 11.6H10.6" />
+          <path d="M4.2 12.6H11.6" />
+          <rect x="4.5" y="13" width="2" height="1.35" rx="0.5" />
+          <rect x="9.2" y="13" width="2" height="1.35" rx="0.5" />
+          <path d="M15 17.8V5.6H21" />
+          <path d="M13.6 17.8H16.4" />
+          <rect x="16.2" y="7.4" width="5.2" height="5.2" rx="0.85" />
+          <path d="M17.45 9L17.7 11.55H19.9L20.15 9Z" />
+          <path d="M17.25 9H20.35" />
+          <path d="M17.75 10.15H19.85" />
         </Icon>
       );
     case "matcha":

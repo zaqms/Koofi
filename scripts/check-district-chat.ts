@@ -34,7 +34,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 34, `expected 34 live districts, got ${live.length}`);
+assert(live.length === 39, `expected 39 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -236,6 +236,26 @@ assert(extractPrimaryDistrict("السفارات") === "diplomatic-quarter", "ا�
 assert(extractPrimaryDistrict("الملك فهد") === "king-fahd", "الملك فهد");
 assert(extractPrimaryDistrict("King Fahd") === "king-fahd", "King Fahd");
 assert(extractPrimaryDistrict("king fahd") === "king-fahd", "king fahd");
+assertDistrictTop3("التخصصي", "ar", "al-takhassusi");
+assertDistrictTop3("Al Takhassusi", "en", "al-takhassusi");
+assert(extractPrimaryDistrict("التخصصي") === "al-takhassusi", "التخصصي");
+assert(extractPrimaryDistrict("Al Takhassusi") === "al-takhassusi", "Al Takhassusi");
+assertDistrictTop3("العقيق", "ar", "al-aqiq");
+assertDistrictTop3("Al Aqiq", "en", "al-aqiq");
+assert(extractPrimaryDistrict("العقيق") === "al-aqiq", "العقيق");
+assert(extractPrimaryDistrict("Al Aqiq") === "al-aqiq", "Al Aqiq");
+assertDistrictTop3("الغدير", "ar", "al-ghadeer");
+assertDistrictTop3("Al Ghadeer", "en", "al-ghadeer");
+assert(extractPrimaryDistrict("الغدير") === "al-ghadeer", "الغدير");
+assert(extractPrimaryDistrict("Al Ghadeer") === "al-ghadeer", "Al Ghadeer");
+assertDistrictTop3("العارض", "ar", "al-arid");
+assertDistrictTop3("Al Arid", "en", "al-arid");
+assert(extractPrimaryDistrict("العارض") === "al-arid", "العارض");
+assert(extractPrimaryDistrict("Al Arid") === "al-arid", "Al Arid");
+assertDistrictTop3("القيروان", "ar", "al-qirawan");
+assertDistrictTop3("Al Qirawan", "en", "al-qirawan");
+assert(extractPrimaryDistrict("القيروان") === "al-qirawan", "القيروان");
+assert(extractPrimaryDistrict("Al Qirawan") === "al-qirawan", "Al Qirawan");
 
 const woods = pickCafes({ text: "woods", language: "en" });
 assert(woods.picks[0]?.shop.id.startsWith("woods-"), "named shop path stays");

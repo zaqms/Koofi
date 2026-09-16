@@ -125,8 +125,13 @@ assert(areas.includes("al-munsiyah"), "directory includes al-munsiyah");
 assert(areas.includes("an-nada"), "directory includes an-nada");
 assert(areas.includes("diplomatic-quarter"), "directory includes diplomatic-quarter");
 assert(areas.includes("king-fahd"), "directory includes king-fahd");
-assert(areas.length === 34, `expected 34 districts, got ${areas.length}`);
-assert(listRealShops().length === 201, `catalog 197→201, got ${listRealShops().length}`);
+assert(areas.includes("al-takhassusi"), "directory includes al-takhassusi");
+assert(areas.includes("al-aqiq"), "directory includes al-aqiq");
+assert(areas.includes("al-ghadeer"), "directory includes al-ghadeer");
+assert(areas.includes("al-arid"), "directory includes al-arid");
+assert(areas.includes("al-qirawan"), "directory includes al-qirawan");
+assert(areas.length === 39, `expected 39 districts, got ${areas.length}`);
+assert(listRealShops().length === 240, `catalog 201→240, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -931,6 +936,209 @@ for (const ask of ["الملك فهد", "حي الملك فهد", "king fahd", "
   );
 }
 
+const WAVE1_DISTRICTS: {
+  id:
+    | "al-takhassusi"
+    | "al-aqiq"
+    | "al-ghadeer"
+    | "al-arid"
+    | "al-qirawan";
+  ar: string;
+  en: string;
+  shops: string[];
+}[] = [
+  {
+    id: "al-takhassusi",
+    ar: "التخصصي",
+    en: "Al Takhassusi",
+    shops: [
+      "kernel-al-takhassusi",
+      "percent-arabica-the-zone-al-takhassusi",
+      "idmi-nakheel-takhassusi",
+      "groovy-al-takhassusi",
+      "dust-and-verse-al-takhassusi",
+      "somo-al-takhassusi",
+      "glim-al-takhassusi",
+    ],
+  },
+  {
+    id: "al-aqiq",
+    ar: "العقيق",
+    en: "Al Aqiq",
+    shops: [
+      "sculpture-al-aqiq",
+      "ashjar-cafe-al-aqiq",
+      "shovel-al-aqiq",
+      "out-of-line-al-aqiq",
+      "camel-step-al-aqiq",
+      "scarf-al-aqiq",
+      "the-coffee-kingdom-al-aqiq",
+      "file-coffee-al-aqiq",
+    ],
+  },
+  {
+    id: "al-ghadeer",
+    ar: "الغدير",
+    en: "Al Ghadeer",
+    shops: [
+      "kultura-al-ghadeer",
+      "tad-coffee-al-ghadeer",
+      "ulica-al-ghadeer",
+      "drip-al-ghadeer",
+      "blumen-al-ghadeer",
+      "brsk-al-ghadeer",
+      "drive-al-ghadeer",
+      "ghandoura-al-ghadeer",
+    ],
+  },
+  {
+    id: "al-arid",
+    ar: "العارض",
+    en: "Al Arid",
+    shops: [
+      "acres-al-arid",
+      "kicksters-lab-al-arid",
+      "shovel-al-arid",
+      "archi-al-arid",
+      "drive-al-arid",
+      "roasting-house-al-arid",
+      "coffee-address-al-arid",
+      "shiro-al-arid",
+    ],
+  },
+  {
+    id: "al-qirawan",
+    ar: "القيروان",
+    en: "Al Qirawan",
+    shops: [
+      "cypress-al-qirawan",
+      "3bean-al-qirawan",
+      "ashjar-cafe-al-qirawan",
+      "drip-al-qirawan",
+      "coffee-side-al-qirawan",
+      "caf-lab-al-qirawan",
+      "drive-al-qirawan",
+      "scout-coffee-al-qirawan",
+    ],
+  },
+];
+
+for (const district of WAVE1_DISTRICTS) {
+  const rows = filterDirectoryShops(shops, district.id);
+  const expected = district.id === "al-takhassusi" ? 7 : 8;
+  assert(
+    rows.length === expected,
+    `${district.id} has ${expected} shops, got ${rows.length}`,
+  );
+  assert(
+    rows.every((shop) => shop.neighborhood === district.id),
+    `${district.id} filter stays in district`,
+  );
+  for (const id of district.shops) {
+    assert(
+      rows.some((shop) => shop.id === id),
+      `${district.id} includes ${id}`,
+    );
+  }
+  assert(
+    neighborhoodLabel(district.id, "ar") === district.ar,
+    `${district.id} Arabic label`,
+  );
+  assert(
+    neighborhoodLabel(district.id, "en") === district.en,
+    `${district.id} English label`,
+  );
+  assert(
+    districtPath(district.id, "ar") === `/coffee-shops/${district.id}`,
+    `AR ${district.id} coffee-shops path`,
+  );
+  assert(
+    districtPath(district.id, "en") === `/en/coffee-shops/${district.id}`,
+    `EN ${district.id} coffee-shops path`,
+  );
+}
+
+function assertDistinctPlaceHex(ids: string[], label: string) {
+  const hrefs = ids.map((id) => {
+    const shop = getShop(id);
+    assert(shop, `${id} is a distinct catalog shop`);
+    assert(shop.mapsShareUrl, `${id} has official place hex`);
+    return shop.mapsShareUrl;
+  });
+  assert(new Set(hrefs).size === hrefs.length, `${label} brand twins keep distinct hexes`);
+}
+
+assertDistinctPlaceHex(
+  ["percent-arabica-hittin", "percent-arabica-the-zone-al-takhassusi"],
+  "% Arabica",
+);
+assertDistinctPlaceHex(
+  ["idmi-olaya", "idmi-al-yasmin", "idmi-nakheel-takhassusi"],
+  "IDMI",
+);
+assertDistinctPlaceHex(
+  ["ashjar-cafe-ar-rabi", "ashjar-cafe-al-aqiq", "ashjar-cafe-al-qirawan"],
+  "Ashjar",
+);
+assertDistinctPlaceHex(
+  ["shovel-al-yasmin", "shovel-al-aqiq", "shovel-al-arid"],
+  "Shovel",
+);
+assertDistinctPlaceHex(
+  ["camel-step-hittin", "camel-step-al-rahmaniyyah", "camel-step-al-aqiq"],
+  "Camel Step",
+);
+assertDistinctPlaceHex(
+  ["file-coffee-ghirnatah", "file-coffee-al-aqiq"],
+  "File Coffee",
+);
+assertDistinctPlaceHex(
+  ["kultura-al-rayyan", "kultura-al-ghadeer"],
+  "Kultúra",
+);
+assertDistinctPlaceHex(
+  ["drip-olaya", "drip-al-hamra", "drip-al-ghadeer", "drip-al-qirawan"],
+  "Drip",
+);
+assertDistinctPlaceHex(
+  ["blumen-al-safa", "blumen-al-ghadeer"],
+  "Blumen",
+);
+assertDistinctPlaceHex(
+  ["ghandoura-an-nazhah", "ghandoura-al-ghadeer"],
+  "Ghandoura",
+);
+assertDistinctPlaceHex(
+  ["drive-al-ghadeer", "drive-al-arid", "drive-al-qirawan"],
+  "Drive Coffee",
+);
+assertDistinctPlaceHex(
+  ["kicksters-al-malqa", "kicksters-lab-al-arid"],
+  "Kicksters",
+);
+assertDistinctPlaceHex(
+  ["archi-al-narjis", "archi-al-arid"],
+  "ARCHI",
+);
+assertDistinctPlaceHex(
+  ["roasting-house-al-yasmin", "roasting-house-al-masif", "roasting-house-al-arid"],
+  "Roasting House",
+);
+assertDistinctPlaceHex(
+  [
+    "coffee-address-al-hamra",
+    "coffee-address-al-yarmouk",
+    "coffee-address-al-nahdah",
+    "coffee-address-al-munsiyah",
+    "coffee-address-al-arid",
+  ],
+  "Coffee Address",
+);
+assertDistinctPlaceHex(
+  ["caf-lab-al-narjis", "caf-lab-al-qirawan"],
+  "CAF LAB",
+);
+
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
     "brew92-an-nada,ashjar-cafe-ar-rabi,jazean-diplomatic-quarter,markab-king-fahd",
@@ -969,7 +1177,12 @@ const scoutPack: {
     | "an-nada"
     | "al-rabi"
     | "diplomatic-quarter"
-    | "king-fahd";
+    | "king-fahd"
+    | "al-takhassusi"
+    | "al-aqiq"
+    | "al-ghadeer"
+    | "al-arid"
+    | "al-qirawan";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -1720,6 +1933,337 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/markab-king-fahd.jpg",
     pin: { lat: 24.7376542, lng: 46.6633059 },
+  },
+  {
+    id: "kernel-al-takhassusi",
+    hex: "0x3e2ee3601e4fa885:0x1f8cbed341f62a18",
+    neighborhood: "al-takhassusi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/kernel-al-takhassusi.jpg",
+  },
+  {
+    id: "percent-arabica-the-zone-al-takhassusi",
+    hex: "0x3e2f1d1c6b289117:0x527881c3e12eddba",
+    neighborhood: "al-takhassusi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/percent-arabica-the-zone-al-takhassusi.jpg",
+  },
+  {
+    id: "idmi-nakheel-takhassusi",
+    hex: "0x3e2ee30019bc1745:0x224a0ace7b458e3c",
+    neighborhood: "al-takhassusi",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/idmi-nakheel-takhassusi.png",
+    pin: { lat: 24.7416327, lng: 46.6453441 },
+  },
+  {
+    id: "groovy-al-takhassusi",
+    hex: "0x3e2ee3934bcf3d21:0x9ae62a9e1b9587f7",
+    neighborhood: "al-takhassusi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/groovy-al-takhassusi.jpg",
+  },
+  {
+    id: "dust-and-verse-al-takhassusi",
+    hex: "0x3e2f03ad54c60f81:0x294b74ccebfd0c8d",
+    neighborhood: "al-takhassusi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/dust-and-verse-al-takhassusi.jpg",
+    pin: { lat: 24.6872518, lng: 46.6739168 },
+  },
+  {
+    id: "somo-al-takhassusi",
+    hex: "0x3e2f1d0008ce3c83:0xa8e94e0f1bfb929b",
+    neighborhood: "al-takhassusi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/somo-al-takhassusi.jpg",
+  },
+  {
+    id: "glim-al-takhassusi",
+    hex: "0x3e2f1d0075b7160f:0xa1bedaec0badf986",
+    neighborhood: "al-takhassusi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/glim-al-takhassusi.jpg",
+    pin: { lat: 24.712996, lng: 46.6609346 },
+  },
+  {
+    id: "sculpture-al-aqiq",
+    hex: "0x3e2ee383bb1713f7:0x3a9e3135e98be6c9",
+    neighborhood: "al-aqiq",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/sculpture-al-aqiq.jpg",
+  },
+  {
+    id: "ashjar-cafe-al-aqiq",
+    hex: "0x3e2ee38db0a63301:0xba5d889af803c0a",
+    neighborhood: "al-aqiq",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/ashjar-cafe-al-aqiq.png",
+  },
+  {
+    id: "shovel-al-aqiq",
+    hex: "0x3e2ee3b974bb7f33:0x1f130924f0566fce",
+    neighborhood: "al-aqiq",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/shovel-al-aqiq.jpg",
+  },
+  {
+    id: "out-of-line-al-aqiq",
+    hex: "0x3e2ee371efc108ab:0xfffacb4af3830520",
+    neighborhood: "al-aqiq",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/out-of-line-al-aqiq.jpg",
+  },
+  {
+    id: "camel-step-al-aqiq",
+    hex: "0x3e2ee328730a5219:0x4f0d1eb822dd2d8d",
+    neighborhood: "al-aqiq",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/camel-step-al-aqiq.jpg",
+  },
+  {
+    id: "scarf-al-aqiq",
+    hex: "0x3e2ee300741b08ff:0xc58d28584f15cb02",
+    neighborhood: "al-aqiq",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/scarf-al-aqiq.jpg",
+  },
+  {
+    id: "the-coffee-kingdom-al-aqiq",
+    hex: "0x3e2ee311440571b5:0x4e012f88748be562",
+    neighborhood: "al-aqiq",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/the-coffee-kingdom-al-aqiq.png",
+  },
+  {
+    id: "file-coffee-al-aqiq",
+    hex: "0x3e2ee32fc78236b1:0xbf5069a213ca2514",
+    neighborhood: "al-aqiq",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/file-coffee-al-aqiq.png",
+  },
+  {
+    id: "kultura-al-ghadeer",
+    hex: "0x3e2ee3f9efcb182d:0xa81767965e896e7a",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/kultura-al-ghadeer.jpg",
+  },
+  {
+    id: "tad-coffee-al-ghadeer",
+    hex: "0x3e2ee390542f4ad3:0xd1f13a566b07ba8a",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tad-coffee-al-ghadeer.jpg",
+  },
+  {
+    id: "ulica-al-ghadeer",
+    hex: "0x3e2ee3bd0ad3f463:0x8d3dee05263debed",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ulica-al-ghadeer.jpg",
+  },
+  {
+    id: "drip-al-ghadeer",
+    hex: "0x3e2ee33c0aa921d7:0x853fb7054e5e0a7b",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drip-al-ghadeer.jpg",
+  },
+  {
+    id: "blumen-al-ghadeer",
+    hex: "0x3e2ee32d61c11661:0xca3685111ed18584",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/blumen-al-ghadeer.jpg",
+  },
+  {
+    id: "brsk-al-ghadeer",
+    hex: "0x3e2ee3e6292a7867:0x5aa2eb3170848f9f",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/brsk-al-ghadeer.jpg",
+  },
+  {
+    id: "drive-al-ghadeer",
+    hex: "0x3e2ee3007631ac4b:0x22a7ddce0ec9d709",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drive-al-ghadeer.jpg",
+  },
+  {
+    id: "ghandoura-al-ghadeer",
+    hex: "0x3e2ee3bd696afbef:0x111ece2b1f294089",
+    neighborhood: "al-ghadeer",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ghandoura-al-ghadeer.png",
+  },
+  {
+    id: "acres-al-arid",
+    hex: "0x3e2ee5d8adeaecd1:0xd80c1f753eed0176",
+    neighborhood: "al-arid",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/acres-al-arid.jpg",
+    pin: { lat: 24.829435, lng: 46.6168957 },
+  },
+  {
+    id: "kicksters-lab-al-arid",
+    hex: "0x3e2eef004378c7f9:0xf86efcebf2b37349",
+    neighborhood: "al-arid",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/kicksters-lab-al-arid.jpg",
+    pin: { lat: 24.9057371, lng: 46.6021245 },
+  },
+  {
+    id: "shovel-al-arid",
+    hex: "0x3e2ee5e231686103:0x6a3d8ab7a14d5023",
+    neighborhood: "al-arid",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/shovel-al-arid.jpg",
+    pin: { lat: 24.8345725, lng: 46.6105639 },
+  },
+  {
+    id: "archi-al-arid",
+    hex: "0x3e2ee50039c8b73d:0xfc743b6081b43408",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/archi-al-arid.jpg",
+    pin: { lat: 24.8775403, lng: 46.6353921 },
+  },
+  {
+    id: "drive-al-arid",
+    hex: "0x3e2eef0056ddc7d1:0xfb336407ddf0d6fd",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drive-al-arid.jpg",
+    pin: { lat: 24.8989508, lng: 46.6184764 },
+  },
+  {
+    id: "roasting-house-al-arid",
+    hex: "0x3e2eefd495ce4b2d:0x54605d59e8df0a6e",
+    neighborhood: "al-arid",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/roasting-house-al-arid.png",
+    pin: { lat: 24.897402, lng: 46.6157352 },
+  },
+  {
+    id: "coffee-address-al-arid",
+    hex: "0x3e2eef0015c62295:0xf26e879a068bc59f",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-al-arid.png",
+    pin: { lat: 24.8897609, lng: 46.6075216 },
+  },
+  {
+    id: "shiro-al-arid",
+    hex: "0x3e2ee5c1d655ba27:0x91382f61b79eba27",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/shiro-al-arid.png",
+    pin: { lat: 24.8719327, lng: 46.638051 },
+  },
+  {
+    id: "cypress-al-qirawan",
+    hex: "0x3e2ee5d9e9b1c0a1:0xe8bdd1987c8ee36a",
+    neighborhood: "al-qirawan",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/cypress-al-qirawan.jpg",
+    pin: { lat: 24.8324769, lng: 46.6047769 },
+  },
+  {
+    id: "3bean-al-qirawan",
+    hex: "0x3e2ee78c85905ec9:0xfc3a19f12086466e",
+    neighborhood: "al-qirawan",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/3bean-al-qirawan.jpg",
+    pin: { lat: 24.8250502, lng: 46.5651313 },
+  },
+  {
+    id: "ashjar-cafe-al-qirawan",
+    hex: "0x3e2ee70016ffdc11:0xea1ee22b9b23dfc0",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ashjar-cafe-al-qirawan.jpg",
+    pin: { lat: 24.8287476, lng: 46.5927257 },
+  },
+  {
+    id: "drip-al-qirawan",
+    hex: "0x3e2ee5111caa997b:0x8cbb29d5c588f88a",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drip-al-qirawan.jpg",
+    pin: { lat: 24.8233431, lng: 46.5935748 },
+  },
+  {
+    id: "coffee-side-al-qirawan",
+    hex: "0x3e2ee560f5286efd:0x842ef5bde02cb7a1",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-side-al-qirawan.jpg",
+    pin: { lat: 24.8452215, lng: 46.6008157 },
+  },
+  {
+    id: "caf-lab-al-qirawan",
+    hex: "0x3e2ee7c283f1c827:0x7e5fbcf57fcdb504",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/caf-lab-al-qirawan.jpg",
+    pin: { lat: 24.829002, lng: 46.5708462 },
+  },
+  {
+    id: "drive-al-qirawan",
+    hex: "0x3e2ee5005d3f77b3:0x3ddaaa1f8ffdf657",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drive-al-qirawan.jpg",
+    pin: { lat: 24.8458534, lng: 46.6049121 },
+  },
+  {
+    id: "scout-coffee-al-qirawan",
+    hex: "0x3e2ee577a4d07853:0x96391b83d246d30b",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/scout-coffee-al-qirawan.jpg",
+    pin: { lat: 24.8238569, lng: 46.5987508 },
   },
 ];
 

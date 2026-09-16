@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   getShop,
@@ -1412,6 +1412,38 @@ const MALAZ_REFILL = {
     listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
     "kkia includes open dr.CAFE, not closed A PLUS",
   );
+  const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
+  assert(drcafe.length === 19, `19 dr.CAFE rows, got ${drcafe.length}`);
+  assert(
+    drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
+    "all 19 dr.CAFE rows use the official mark",
+  );
+  assert(
+    getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",
+    "Threes al-yasmin uses threes-mark",
+  );
+  assert(
+    getShop("three-sulimaniyah")?.logoUrl === "/logos/three-mark.png",
+    "Three sulimaniyah uses three-mark",
+  );
+  assert(
+    getShop("threes-al-yasmin")?.logoUrl !== getShop("three-sulimaniyah")?.logoUrl,
+    "Threes and Three stay distinct marks",
+  );
+  for (const id of ["24cafe-al-wadi", "24cafe-al-yasmin", "24cafe-al-rabi"]) {
+    assert(
+      getShop(id)?.logoUrl === "/logos/24cafe-mark.png",
+      `${id} uses the official 24Cafe mark`,
+    );
+  }
+  for (const file of [
+    "public/logos/drcafe-mark.png",
+    "public/logos/threes-mark.png",
+    "public/logos/24cafe-mark.png",
+    "public/logos/three-mark.png",
+  ]) {
+    assert(existsSync(join(process.cwd(), file)), `missing ${file}`);
+  }
   assert(
     !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-malaz"),
     "DT-lane Java Malaz stays out of specialty directory",

@@ -3975,6 +3975,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0012b7901b:0xcb15d3c12a7ec8f3",
+      "logoUrl": "/logos/24cafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -3989,6 +3990,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50b9302e8eb:0xfe85ed42001b7870",
+      "logoUrl": "/logos/24cafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4004,6 +4006,7 @@
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/24Cafe/@24.6701725,46.7515967,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0540dff98b35:0x9e465db31bcc0796!8m2!3d24.6701725!4d46.7515967!16s%2Fg%2F11yzw2z27_",
       "pin": { "lat": 24.6701725, "lng": 46.7515967 },
+      "logoUrl": "/logos/24cafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4348,6 +4351,7 @@
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/Three/@24.6932006,46.6857419,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03535b0a45d1:0xe8d9d98bac19e3b2!8m2!3d24.6932006!4d46.6857419!16s%2Fg%2F11w2rmqbdb",
       "pin": { "lat": 24.6932006, "lng": 46.6857419 },
+      "logoUrl": "/logos/three-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4362,6 +4366,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee5006b37ddf7:0xdd33d76f69752d40",
+      "logoUrl": "/logos/threes-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4705,6 +4710,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fe76bdfb701:0x928c99cfc2d87be2",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4719,6 +4725,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03791bc4b859:0x1b964057f60fabad",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4733,6 +4740,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0052067454f3:0xa856dfa409d9ff29",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4747,6 +4755,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0e41a7dd61af:0xd8692919b993047a",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4761,6 +4770,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efb04fb343b3f:0x52a38463347ab11c",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4775,6 +4785,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fa19d0adb9a3b:0x9f4ad21c462110a3",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4789,6 +4800,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f06e25cee8377:0x9df991d46f20952",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4803,6 +4815,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f08ded355923b:0xc4bc656b1e447b13",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4817,6 +4830,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd05adeb83e5:0x969915ad21e01c84",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4831,6 +4845,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd05b15a0823:0x451777b9e0fff348",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4845,6 +4860,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0092559b0727:0x9df0d7386f767cd2",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4859,6 +4875,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efda2ac7732ab:0xf6e431cfe1736bf2",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4873,6 +4890,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f8aa2b64d2f:0xfcfad1512bf4804a",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4887,6 +4905,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fe284e5df7d:0x7d5dbfd4cb376ee8",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4901,6 +4920,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03c7ad55c98f:0xab1d4d63141eb7db",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4915,6 +4935,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f23d8f7793ff7:0xcd9dc3308cf0a8b5",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4929,6 +4950,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03188dc9c7c3:0x6f4363ded7db4c2a",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4943,6 +4965,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d603358c3c5:0xe25266bdde4d5e0c",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false
@@ -4957,6 +4980,7 @@
       "vibeTags": ["درايف ثرو"],
       "momentTags": ["drive-through"],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11001901a3f5:0xaf74b1bb8db394a2",
+      "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "example": false

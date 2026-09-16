@@ -20,6 +20,7 @@ const VIBE_EN: Record<string, string> = {
   جلسة: "Seating",
   هواء: "Airy",
   دراسة: "Study",
+  "طلبات السيارة": "Drive-through",
   "طلبات السياره": "Drive-through",
   "درايف ثرو": "Drive-through",
 };

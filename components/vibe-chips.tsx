@@ -23,14 +23,20 @@ type VibeChipsProps = {
 
 const CHIPS = homeSurfaceChips();
 
-function Icon({ children }: { children: ReactNode }) {
+function Icon({
+  children,
+  strokeWidth = "1.55",
+}: {
+  children: ReactNode;
+  strokeWidth?: string;
+}) {
   return (
     <svg
       aria-hidden
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.55"
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       className="size-7 shrink-0"
@@ -116,13 +122,34 @@ function ChipIcon({ id }: { id: string }) {
       );
     case "drive-through":
       return (
-        <Icon>
-          <path d="M4.2 14.2h15.6" />
-          <path d="M6 14.2 7.4 9.4A1.6 1.6 0 0 1 8.9 8.2h6.2a1.6 1.6 0 0 1 1.5 1.2L18 14.2" />
-          <circle cx="8.2" cy="16.4" r="1.35" />
-          <circle cx="15.8" cy="16.4" r="1.35" />
-          <path d="M9.2 11.2h5.6" />
-        </Icon>
+        <svg
+          aria-hidden
+          viewBox="0 0 512 512"
+          fill="none"
+          className="size-7 shrink-0"
+        >
+          {/* car + pickup cup */}
+          <g
+            stroke="currentColor"
+            strokeWidth="18"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M82 294h22l25-59c6-14 19-23 34-23h88c15 0 28 9 34 23l25 59h22" />
+            <path d="M104 294h206c15 0 28 12 28 28v52c0 13-10 23-23 23H99c-13 0-23-10-23-23v-52c0-16 13-28 28-28z" />
+            <path d="M129 294l22-52h112l22 52" />
+            <path d="M92 294H75c-10 0-18-8-18-18s8-18 18-18h29" />
+            <path d="M322 294h17c10 0 18-8 18-18s-8-18-18-18h-29" />
+            <path d="M104 397v25h34v-25M276 397v25h34v-25" />
+            <path d="M112 338l28 5M274 343l28-5" />
+            <path d="M330 398h119" />
+            <path d="M414 398V145c0-15-12-27-27-27H278" />
+            <path d="M278 118h-56c-11 0-20-9-20-20s9-20 20-20h192c15 0 27 12 27 27v293" />
+            <rect x="326" y="181" width="88" height="135" rx="18" />
+            <path d="M352 223h39l8 17h-55l8-17z" />
+            <path d="M349 240l8 48h30l8-48" />
+          </g>
+        </svg>
       );
     case "matcha":
       return (

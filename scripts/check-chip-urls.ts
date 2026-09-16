@@ -417,8 +417,8 @@ assert(
 );
 assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");
 assert(
-  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 19,
-  "Matcha route directory is the 19 tagged shops",
+  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 25,
+  "Matcha route directory is the 25 tagged shops",
 );
 
 const product = read("lib/product.ts");

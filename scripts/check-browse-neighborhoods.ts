@@ -258,8 +258,24 @@ assert(
   "AR Popular tail includes المعذر",
 );
 assert(
+  popularEn.some((row) => row.id === "at-taawun"),
+  "Popular tail includes live at-taawun",
+);
+assert(
+  popularAr.some((row) => row.id === "at-taawun"),
+  "AR Popular tail includes التعاون",
+);
+assert(
   rowsEn.some((row) => row.id === "al-mathar"),
   "view-all rows include al-mathar",
+);
+assert(
+  rowsEn.some((row) => row.id === "at-taawun"),
+  "view-all rows include at-taawun",
+);
+assert(
+  rowsAr.some((row) => row.label === "التعاون"),
+  "AR view-all label is التعاون",
 );
 assert(
   rowsAr.some((row) => row.label === "المعذر"),
@@ -284,7 +300,11 @@ assert(
   az.some((row) => row.id === "al-mathar"),
   "A–Z includes al-mathar",
 );
-assert(az.length === 44, "A–Z is the 44 live catalog districts");
+assert(
+  az.some((row) => row.id === "at-taawun"),
+  "A–Z includes at-taawun",
+);
+assert(az.length === 45, "A–Z is the 45 live catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(
@@ -359,6 +379,14 @@ assert(
 assert(
   filterNeighborhoodRows(rowsAr, "المعذر").some((row) => row.id === "al-mathar"),
   "search finds المعذر",
+);
+assert(
+  filterNeighborhoodRows(rowsEn, "taawun").some((row) => row.id === "at-taawun"),
+  "search finds At Taawun",
+);
+assert(
+  filterNeighborhoodRows(rowsAr, "التعاون").some((row) => row.id === "at-taawun"),
+  "search finds التعاون",
 );
 assert(
   filterNeighborhoodRows(rowsEn, "zzzz-not-a-hood").length === 0,

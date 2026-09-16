@@ -51,6 +51,7 @@ const DARK_LOGO_PATHS = new Set([
   "/logos/coffee-zam-al-yarmouk.png",
   "/logos/kuro-sulimaniyah.png",
   "/logos/the-matcha-bar-olaya.jpg",
+  "/logos/remis-matcha-club-hittin.png",
 ]);
 
 export function ShopVisual({

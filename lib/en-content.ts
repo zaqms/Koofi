@@ -216,6 +216,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-muruj": ["al-yasmin", "al-nakheel", "al-rabi", "as-sahafah"],
   "al-malaz": ["sulimaniyah", "olaya", "al-rabwah", "al-mughrizat"],
   "al-mathar": ["olaya", "sulimaniyah", "al-takhassusi", "king-fahd"],
+  "at-taawun": ["olaya", "al-mughrizat", "al-wurud", "al-rabwah"],
 };
 
 type DistrictLead = {
@@ -406,18 +407,18 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   "al-hamra": {
-    lead: `Al Hamra (الحمراء) sits on Riyadh’s east belt — same side of town as Ghirnatah and Qurtubah. This page is the Al Hamra set on wain.lol: ten cafes we’ve actually added, each with a Maps pin.
+    lead: `Al Hamra (الحمراء) sits on Riyadh’s east belt — same side of town as Ghirnatah and Qurtubah. This page is the Al Hamra set on wain.lol: twelve cafes we’ve actually added, each with a Maps pin.
 
 A few names on this list are [SERENE COFFEE ROASTERY](/en/c/serene-coffee-roastery), [Rimthan + Coffee](/en/c/rimthan-coffee-al-hamra), and [Harf coffee](/en/c/harf-coffee-al-hamra). They’re here with the rest. We don’t rank them.
 
-Ten cards is the whole set for now. Open a card if a name fits. Skip it if it doesn’t.`,
+Twelve cards is the whole set for now. Open a card if a name fits. Skip it if it doesn’t.`,
     hereIntro: `There are **{count}** cafes from Al Hamra on the catalog today:`,
     hereOutro: `Pick a name, open the card, and use **Take me there** when you want the pin.`,
     nearbyIntro: `If Al Hamra isn’t the stop, these east-Riyadh lists are next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Hamra. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ten cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
+    meta: "Twelve cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
   },
   "al-yarmouk": {
     lead: `Al Yarmouk (اليرموك) sits out on Riyadh’s east side toward the Eastern Ring. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmouk set on wain.lol.
@@ -557,6 +558,18 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in King Fahd on wain.lol — a Riyadh district list including Markab, with a Maps link.",
+  },
+  "at-taawun": {
+    lead: `At Taawun (التعاون) sits between Olaya and Al Mughrizat — a mid-north Riyadh حي of its own. This page is the At Taawun set on wain.lol so far.
+
+[FLOW MATCHA](/en/c/flow-matcha-at-taawun) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from At Taawun on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If At Taawun isn’t the stop, these mid-north lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like At Taawun. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in At Taawun on wain.lol — a Riyadh neighborhood list including FLOW MATCHA, with a Maps link.",
   },
 };
 

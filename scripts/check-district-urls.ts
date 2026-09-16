@@ -133,8 +133,10 @@ assert(areas.includes("al-arid"), "directory includes al-arid");
 assert(areas.includes("al-qirawan"), "directory includes al-qirawan");
 assert(areas.includes("al-wadi"), "directory includes al-wadi");
 assert(areas.includes("al-muruj"), "directory includes al-muruj");
-assert(areas.length === 41, `expected 41 districts, got ${areas.length}`);
-assert(listRealShops().length === 244, `catalog 240→244, got ${listRealShops().length}`);
+assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
+assert(areas.includes("al-malaz"), "directory includes al-malaz");
+assert(areas.length === 43, `expected 43 districts, got ${areas.length}`);
+assert(listRealShops().length === 251, `catalog 240→251, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1075,12 +1077,17 @@ const MURUJ_REFILL = {
   id: "al-muruj" as const,
   ar: "المروج",
   en: "Al Muruj",
-  shops: ["sand-clock-al-muruj"],
+  shops: [
+    "sand-clock-al-muruj",
+    "parka-coffee-al-muruj",
+    "terra-cafe-al-muruj",
+    "rabka-al-muruj",
+  ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 1, `al-muruj has 1 shop, got ${rows.length}`);
+  assert(rows.length === 4, `al-muruj has 4 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1109,6 +1116,92 @@ const MURUJ_REFILL = {
     assert(
       parseIntent(ask).neighborhoods.includes("al-muruj"),
       `parseIntent(${ask}) should hit al-muruj`,
+    );
+  }
+}
+
+const MOH_REFILL = {
+  id: "al-mohammadiyah" as const,
+  ar: "المحمدية",
+  en: "Al Mohammadiyah",
+  shops: [
+    "unique-drip-al-mohammadiyah",
+    "hjeen-roasters-al-mohammadiyah",
+    "hekaya-tale-al-mohammadiyah",
+  ],
+};
+
+{
+  const rows = filterDirectoryShops(shops, MOH_REFILL.id);
+  assert(rows.length === 3, `al-mohammadiyah has 3 shops, got ${rows.length}`);
+  assert(
+    rows.every((shop) => shop.neighborhood === "al-mohammadiyah"),
+    "al-mohammadiyah filter stays in district",
+  );
+  for (const id of MOH_REFILL.shops) {
+    assert(rows.some((shop) => shop.id === id), `al-mohammadiyah includes ${id}`);
+  }
+  assert(
+    neighborhoodLabel("al-mohammadiyah", "ar") === MOH_REFILL.ar,
+    "al-mohammadiyah Arabic label",
+  );
+  assert(
+    neighborhoodLabel("al-mohammadiyah", "en") === MOH_REFILL.en,
+    "al-mohammadiyah English label",
+  );
+  assert(
+    districtPath("al-mohammadiyah", "ar") === "/coffee-shops/al-mohammadiyah",
+    "AR al-mohammadiyah coffee-shops path",
+  );
+  for (const ask of [
+    "المحمدية",
+    "محمدية",
+    "mohammadiyah",
+    "muhammadiyah",
+    "al mohammadiyah",
+    "al-mohammadiyah",
+    "Al Mohammadiyah",
+  ]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-mohammadiyah"),
+      `parseIntent(${ask}) should hit al-mohammadiyah`,
+    );
+  }
+}
+
+const MALAZ_REFILL = {
+  id: "al-malaz" as const,
+  ar: "الملز",
+  en: "Al Malaz",
+  shops: ["lasani-cafe-al-malaz"],
+};
+
+{
+  const rows = filterDirectoryShops(shops, MALAZ_REFILL.id);
+  assert(rows.length === 1, `al-malaz has 1 shop, got ${rows.length}`);
+  assert(
+    rows.every((shop) => shop.neighborhood === "al-malaz"),
+    "al-malaz filter stays in district",
+  );
+  for (const id of MALAZ_REFILL.shops) {
+    assert(rows.some((shop) => shop.id === id), `al-malaz includes ${id}`);
+  }
+  assert(
+    neighborhoodLabel("al-malaz", "ar") === MALAZ_REFILL.ar,
+    "al-malaz Arabic label",
+  );
+  assert(
+    neighborhoodLabel("al-malaz", "en") === MALAZ_REFILL.en,
+    "al-malaz English label",
+  );
+  assert(
+    districtPath("al-malaz", "ar") === "/coffee-shops/al-malaz",
+    "AR al-malaz coffee-shops path",
+  );
+  for (const ask of ["الملز", "ملز", "malaz", "al malaz", "al-malaz", "Al Malaz"]) {
+    assert(
+      parseIntent(ask).neighborhoods.includes("al-malaz"),
+      `parseIntent(${ask}) should hit al-malaz`,
     );
   }
 }
@@ -1232,6 +1325,14 @@ assertDistinctPlaceHex(
   ["sand-clock-al-muruj", "sand-clock-as-sulimaniyah"],
   "Sand Clock",
 );
+assertDistinctPlaceHex(
+  [
+    "hjeen-roaster-factory-al-yasmin",
+    "hjeen-roaster-al-narjis",
+    "hjeen-roasters-al-mohammadiyah",
+  ],
+  "Hjeen",
+);
 
 assert(
   NEW_THIS_WEEK_IDS.join(",") ===
@@ -1279,6 +1380,8 @@ const scoutPack: {
     | "al-qirawan"
     | "al-wadi"
     | "al-muruj"
+    | "al-mohammadiyah"
+    | "al-malaz"
     | "sulimaniyah";
   vibe: string[];
   moments: string[];
@@ -2406,6 +2509,69 @@ const scoutPack: {
     moments: ["qahwa", "work", "pastry", "quiet"],
     logoUrl: "/logos/sand-clock-brand.png",
     pin: { lat: 24.71364, lng: 46.68369 },
+  },
+  {
+    id: "unique-drip-al-mohammadiyah",
+    hex: "0x3e2f1df25f5b36c5:0xce078fe5af016279",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/unique-drip-al-mohammadiyah.jpg",
+    pin: { lat: 24.7290199, lng: 46.6419338 },
+  },
+  {
+    id: "hjeen-roasters-al-mohammadiyah",
+    hex: "0x3e2f1d0022a32015:0xa1e8c8e53a423eef",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/hjeen-roasters-al-mohammadiyah.png",
+    pin: { lat: 24.7339154, lng: 46.6509835 },
+  },
+  {
+    id: "hekaya-tale-al-mohammadiyah",
+    hex: "0x3e2ee3c785340ba3:0x1040610befd3aaef",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/hekaya-tale-al-mohammadiyah.png",
+    pin: { lat: 24.7236533, lng: 46.645624 },
+  },
+  {
+    id: "parka-coffee-al-muruj",
+    hex: "0x3e2efd5f75620101:0x325697b79b162377",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/parka-coffee-al-muruj.jpg",
+    pin: { lat: 24.7525344, lng: 46.6737331 },
+  },
+  {
+    id: "terra-cafe-al-muruj",
+    hex: "0x3e2ee3000bf1c16f:0x78be0f665472ab19",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/terra-cafe-al-muruj.jpg",
+    pin: { lat: 24.7578883, lng: 46.6524653 },
+  },
+  {
+    id: "rabka-al-muruj",
+    hex: "0x3e2ee325fa09f273:0x7a10503f421bc047",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rabka-al-muruj.jpg",
+    pin: { lat: 24.7554029, lng: 46.6562724 },
+  },
+  {
+    id: "lasani-cafe-al-malaz",
+    hex: "0x3e2f052858ee6daf:0x72a92946ed638cb1",
+    neighborhood: "al-malaz",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/lasani-cafe-al-malaz.png",
+    pin: { lat: 24.6664954, lng: 46.7225849 },
   },
 ];
 

@@ -108,10 +108,9 @@ const WAVE1_CATALOG_DISTRICTS = [
 ] as const;
 const WADI_REFILL_DISTRICTS = ["al-wadi"] as const;
 const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
-const SCOUT_GAP_DISTRICTS = [
-  "al-mohammadiyah",
-  "al-malaz",
-] as const;
+const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
+const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
+const SCOUT_GAP_DISTRICTS = [] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "Al Sulaymaniyah",
@@ -189,8 +188,18 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
+      row.cafeCount === 4,
+      `${row.id} Muruj refill has 4 cafes, got ${row.cafeCount}`,
+    );
+  } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
+    assert(
+      row.cafeCount === 3,
+      `${row.id} Mohammadiyah refill has 3 cafes, got ${row.cafeCount}`,
+    );
+  } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
+    assert(
       row.cafeCount === 1,
-      `${row.id} Muruj refill has 1 cafe, got ${row.cafeCount}`,
+      `${row.id} Malaz refill has 1 cafe, got ${row.cafeCount}`,
     );
   } else if ((SCOUT_GAP_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);

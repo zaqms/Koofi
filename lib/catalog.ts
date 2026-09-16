@@ -63,7 +63,12 @@ function neighborhoodOrder(id: NeighborhoodId): number {
   return index === -1 ? NEIGHBORHOOD_IDS.length : index;
 }
 
+function catalogAddedIndexById(): Map<string, number> {
+  return new Map(listRealShops().map((shop, index) => [shop.id, index]));
+}
+
 function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
+  const added = catalogAddedIndexById();
   return shops
     .slice()
     .sort((a, b) => {
@@ -84,6 +89,7 @@ function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
         mapsHref: shopMapsHref(shop),
         photoUrl: shop.photoUrl,
         logoUrl: shop.logoUrl,
+        catalogIndex: added.get(shop.id) ?? -1,
         ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
       };
     });

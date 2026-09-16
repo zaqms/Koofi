@@ -1,8 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
+import { DirectoryResultSortPills } from "@/components/directory-result-sort";
 import {
   directoryNeighborhoods,
   filterDirectoryShops,
@@ -14,6 +16,11 @@ import {
   COFFEE_SHOPS_CATEGORY,
   categoryDistrictHeading,
 } from "@/lib/directory-category";
+import {
+  isDirectoryResultSortChip,
+  sortDirectoryShops,
+  type DirectoryResultSort,
+} from "@/lib/directory-sort";
 import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
 import {
   districtPath,
@@ -24,7 +31,11 @@ import {
   vibeChipLabel,
 } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
-import type { Language, MomentTag, NeighborhoodId } from "@/lib/types";
+import type { Language, MomentTag, NeighborhoodId, Pin } from "@/lib/types";
+import {
+  requestVisitorLocation,
+  usePeekVisitorLocation,
+} from "@/lib/visitor-location";
 
 const POPULAR_CHIP = VIBE_CHIPS.find((chip) => chip.id === "popular") ?? {
   id: "popular",
@@ -42,6 +53,13 @@ type ShopDirectoryProps = {
   intro?: ReactNode;
 };
 
+function originFromVisitor(
+  visitor: ReturnType<typeof usePeekVisitorLocation>,
+): Pin | null {
+  if (visitor.status !== "ready") return null;
+  return { lat: visitor.lat, lng: visitor.lng };
+}
+
 export function ShopDirectory({
   language,
   shops,
@@ -55,12 +73,52 @@ export function ShopDirectory({
   const vibe = chipId
     ? VIBE_CHIPS.find((chip) => chip.id === chipId)
     : undefined;
+  const resultSort = isDirectoryResultSortChip(chipId);
+  const visitor = usePeekVisitorLocation();
+  const origin = originFromVisitor(visitor);
+  const nearbyAvailable = visitor.status === "ready";
+  const [userSort, setUserSort] = useState<DirectoryResultSort | null>(null);
+  const requested: DirectoryResultSort =
+    userSort ?? (resultSort && nearbyAvailable ? "nearby" : "new");
+  const waitingForNearby =
+    requested === "nearby" && visitor.status === "pending";
+  const sort: DirectoryResultSort =
+    requested === "nearby" && !nearbyAvailable ? "new" : requested;
+  const selectedSort: DirectoryResultSort = waitingForNearby
+    ? "nearby"
+    : sort;
+  const showNearbyHint = resultSort && requested === "nearby" && !nearbyAvailable;
+
   const areas = directoryNeighborhoods(shops);
-  const visible = popular
-    ? shops
-    : moment
-      ? filterDirectoryShopsByMoment(shops, moment)
-      : filterDirectoryShops(shops, district);
+  const filtered = useMemo(
+    () =>
+      popular
+        ? shops
+        : moment
+          ? filterDirectoryShopsByMoment(shops, moment)
+          : filterDirectoryShops(shops, district),
+    [popular, shops, moment, district],
+  );
+  const visible = useMemo(
+    () =>
+      resultSort
+        ? sortDirectoryShops(filtered, sort, origin, language)
+        : filtered,
+    [resultSort, filtered, sort, origin, language],
+  );
+
+  function pickSort(next: DirectoryResultSort) {
+    setUserSort(next);
+    trackEvent(
+      "directory_sort",
+      { sort: next, locale: language, chip_id: chipId ?? undefined },
+      { dedupeKey: `directory_sort:${chipId}:${language}:${next}` },
+    );
+    if (next === "nearby" && visitor.status !== "ready") {
+      void requestVisitorLocation({ retry: true });
+    }
+  }
+
   const heading = popular
     ? mostPopularHeading(language)
     : district
@@ -150,6 +208,16 @@ export function ShopDirectory({
           );
         })}
       </div>
+      ) : null}
+
+      {resultSort ? (
+        <DirectoryResultSortPills
+          language={language}
+          sort={selectedSort}
+          onPick={pickSort}
+          nearbyAvailable={nearbyAvailable}
+          showNearbyHint={showNearbyHint}
+        />
       ) : null}
 
       <ul className="mt-4 grid gap-2">

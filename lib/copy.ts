@@ -346,6 +346,18 @@ export const copy = {
     ar: "أ–ي",
     en: "A–Z",
   },
+  directorySortNew: {
+    ar: "الأحدث",
+    en: "New",
+  },
+  directorySortLabel: {
+    ar: "ترتيب القائمة",
+    en: "Sort results",
+  },
+  directorySortNearbyHint: {
+    ar: "الأقرب يحتاج موقعك.",
+    en: "Nearby needs your location.",
+  },
   neighborhoodsEmpty: {
     ar: "ما فيه حي بهالاسم.",
     en: "No neighborhoods match.",

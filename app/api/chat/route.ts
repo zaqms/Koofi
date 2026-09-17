@@ -159,6 +159,7 @@ export async function POST(request: Request) {
           picks,
           sessionId,
           midpoint,
+          locations,
           source: sessionId ? "invite" : "local",
         });
       });

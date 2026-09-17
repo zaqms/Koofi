@@ -1,4 +1,5 @@
 import { haversineKm } from "./distance";
+import { mapsHref } from "./public-url";
 import type { ChatPick, Language, Pin } from "./types";
 
 /** One café on a بيننا results screen — dataLayer + server webhook share this shape. */
@@ -9,6 +10,26 @@ export type HalfwayResultCafe = {
   maps_url: string;
   distance_km?: number;
 };
+
+/** Host / friend pin on the server webhook only — not the GTM dataLayer. */
+export type HalfwayResultPinRole = "host" | "guest";
+
+export type HalfwayResultPin = {
+  role: HalfwayResultPinRole;
+  label_ar: string;
+  label_en: string;
+  maps_url: string;
+  lat: number;
+  lng: number;
+};
+
+/** Email labels. UI copy stays موقعي / صاحبك; this is Amjad's results mail. */
+export const HALFWAY_RESULT_PIN_LABELS = {
+  host: { ar: "موضعي", en: "My pin" },
+  guest: { ar: "صديقي", en: "Friend pin" },
+} as const;
+
+const PIN_ROLES: readonly HalfwayResultPinRole[] = ["host", "guest"];
 
 export type HalfwayResultCafeInput = {
   nameAr: string;
@@ -100,4 +121,38 @@ export function halfwayResultCafesFromPicks(input: {
     picks: input.picks.map(cafeInputFromChatPick),
     midpoint: input.midpoint,
   });
+}
+
+/**
+ * Original two pins at results time: index 0 host, index 1 friend.
+ * District-only rows (no lat/lng) are omitted. Extra N-pin rows stay out.
+ */
+export function halfwayResultPins(
+  locations: readonly { pin?: Pin | null }[] | null | undefined,
+): HalfwayResultPin[] {
+  if (!locations) return [];
+  const pins: HalfwayResultPin[] = [];
+  const limit = Math.min(locations.length, PIN_ROLES.length);
+  for (let index = 0; index < limit; index += 1) {
+    const pin = locations[index]?.pin;
+    if (
+      !pin ||
+      !Number.isFinite(pin.lat) ||
+      !Number.isFinite(pin.lng)
+    ) {
+      continue;
+    }
+    const role = PIN_ROLES[index];
+    if (!role) continue;
+    const labels = HALFWAY_RESULT_PIN_LABELS[role];
+    pins.push({
+      role,
+      label_ar: labels.ar,
+      label_en: labels.en,
+      maps_url: mapsHref(pin.lat, pin.lng),
+      lat: pin.lat,
+      lng: pin.lng,
+    });
+  }
+  return pins;
 }

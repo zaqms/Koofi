@@ -1,6 +1,12 @@
 import { ENV_KEYS, readEnv } from "./env";
-import { halfwayResultCafesFromPicks } from "./halfway-results-payload";
-import type { HalfwayResultCafe } from "./halfway-results-payload";
+import {
+  halfwayResultCafesFromPicks,
+  halfwayResultPins,
+} from "./halfway-results-payload";
+import type {
+  HalfwayResultCafe,
+  HalfwayResultPin,
+} from "./halfway-results-payload";
 import type { ChatPick, Language, Pin } from "./types";
 
 type HalfwayResultSource = "local" | "invite";
@@ -19,6 +25,9 @@ export type HalfwayResultsWebhookBody = {
   count: number;
   source?: HalfwayResultSource;
   cafes: HalfwayResultCafe[];
+  pins?: HalfwayResultPin[];
+  host_pin?: HalfwayResultPin;
+  guest_pin?: HalfwayResultPin;
 };
 
 export function halfwayResultsWebhookBody(input: {
@@ -26,9 +35,13 @@ export function halfwayResultsWebhookBody(input: {
   picks: readonly ChatPick[];
   sessionId?: string | null;
   midpoint?: Pin | null;
+  locations?: readonly { pin?: Pin | null }[] | null;
   source?: HalfwayResultSource;
 }): HalfwayResultsWebhookBody {
   const session_id = input.sessionId?.trim() || undefined;
+  const pins = halfwayResultPins(input.locations);
+  const host_pin = pins.find((pin) => pin.role === "host");
+  const guest_pin = pins.find((pin) => pin.role === "guest");
   return {
     event: "meet_halfway_results",
     notify_email: HALFWAY_RESULTS_NOTIFY_EMAIL,
@@ -40,6 +53,9 @@ export function halfwayResultsWebhookBody(input: {
       picks: input.picks,
       midpoint: input.midpoint,
     }),
+    ...(pins.length > 0 ? { pins } : {}),
+    ...(host_pin ? { host_pin } : {}),
+    ...(guest_pin ? { guest_pin } : {}),
   };
 }
 
@@ -52,6 +68,7 @@ export async function notifyHalfwayResults(input: {
   picks: readonly ChatPick[];
   sessionId?: string | null;
   midpoint?: Pin | null;
+  locations?: readonly { pin?: Pin | null }[] | null;
   source?: HalfwayResultSource;
 }): Promise<"sent" | "skipped" | "failed"> {
   if (input.picks.length === 0) return "skipped";
@@ -66,6 +83,7 @@ export async function notifyHalfwayResults(input: {
         session_id: body.session_id ?? null,
         count: body.count,
         cafes: body.cafes.map((cafe) => cafe.name_en),
+        pins: body.pins?.map((pin) => pin.role) ?? [],
       }),
     );
     return "skipped";

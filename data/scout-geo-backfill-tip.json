@@ -1,0 +1,620 @@
+[
+  {
+    "id": "good-neighbor-olaya",
+    "lat": 24.6919511,
+    "lng": 46.68446609999999,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03fcd238f7e5:0x42c413083e9df746"
+  },
+  {
+    "id": "urth-caffe-tahlia-sulimaniyah",
+    "lat": 24.6937175,
+    "lng": 46.6775955,
+    "mapsShareUrl": "https://www.google.com/maps/place/Urth+Caff%C3%A9+Tahlia/data=!4m2!3m1!1s0x3e2f032fc5c206a7:0xcb8c06ef088e6811"
+  },
+  {
+    "id": "rimthan-coffee-al-hamra",
+    "lat": 24.776146,
+    "lng": 46.7756026,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01c71ac623a3:0x7c502c31b04d0292"
+  },
+  {
+    "id": "coffee-address-al-arid",
+    "lat": 24.8897609,
+    "lng": 46.6075216,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eef0015c62295:0xf26e879a068bc59f"
+  },
+  {
+    "id": "coffee-address-al-hamra",
+    "lat": 24.7826536,
+    "lng": 46.7494331,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efffcecbb3509:0x6fc42bb33821c4f2"
+  },
+  {
+    "id": "coffee-address-al-munsiyah",
+    "lat": 24.8245625,
+    "lng": 46.7499375,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff00786d8df5:0xd0ff3a2c456c840c"
+  },
+  {
+    "id": "coffee-address-al-nahdah",
+    "lat": 24.7613807,
+    "lng": 46.8114104,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f012a3960ff87:0x2996eb4bdb39a559"
+  },
+  {
+    "id": "coffee-address-al-yarmouk",
+    "lat": 24.8155525,
+    "lng": 46.7783003,
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff9a4651eac7:0x5fd092bea9a44569"
+  },
+  {
+    "id": "serene-coffee-roastery",
+    "lat": 24.7829655,
+    "lng": 46.7586255,
+    "mapsShareUrl": "https://maps.app.goo.gl/re5jixF2UCDCYPRX7"
+  },
+  {
+    "id": "drive-al-arid",
+    "lat": 24.8989508,
+    "lng": 46.6184764,
+    "mapsShareUrl": "https://maps.app.goo.gl/7nNjYDZEGvm4pf3Q9"
+  },
+  {
+    "id": "drive-al-qirawan",
+    "lat": 24.8458534,
+    "lng": 46.6049121,
+    "mapsShareUrl": "https://maps.app.goo.gl/x9jezho9JKX6mADM8"
+  },
+  {
+    "id": "24cafe-ar-rabi",
+    "lat": 24.6701725,
+    "lng": 46.7515967,
+    "mapsShareUrl": "https://www.google.com/maps/place/24Cafe/@24.6701725,46.7515967,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0540dff98b35:0x9e465db31bcc0796!8m2!3d24.6701725!4d46.7515967!16s%2Fg%2F11yzw2z27_"
+  },
+  {
+    "id": "camel-step-al-mursalat",
+    "lat": 24.753476,
+    "lng": 46.6906575,
+    "mapsShareUrl": "https://www.google.com/maps/place/Camel+Step/@24.753476,46.6906575,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd006d04e08d:0xe64ff13c73835ec1!8m2!3d24.753476!4d46.6906575!16s%2Fg%2F11w22t8jts"
+  },
+  {
+    "id": "camel-step-diriyah",
+    "lat": 24.7465392,
+    "lng": 46.5367696,
+    "mapsShareUrl": "https://www.google.com/maps/place/Camel+Step/@24.7465392,46.5367696,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee1816bda2b39:0xf4e714f72c515dfe!8m2!3d24.7465392!4d46.5367696!16s%2Fg%2F11vszt_s8t"
+  },
+  {
+    "id": "coffee-address-al-murabba",
+    "lat": 24.667167,
+    "lng": 46.701167,
+    "mapsShareUrl": "https://www.google.com/maps/place/Coffee+Address+%7C+%D8%B9%D9%86%D9%88%D8%A7%D9%86+%D8%A7%D9%84%D9%82%D9%87%D9%88%D8%A9%E2%80%AD/@24.667167,46.701167,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0531e32f0181:0x511490758e3f040e!8m2!3d24.667167!4d46.701167!16s%2Fg%2F11z4s4ytkz"
+  },
+  {
+    "id": "coffee-address-ar-rabwah",
+    "lat": 24.7009464,
+    "lng": 46.7703652,
+    "mapsShareUrl": "https://www.google.com/maps/place/Coffee+Address+%7C+%D8%B9%D9%86%D9%88%D8%A7%D9%86+%D8%A7%D9%84%D9%82%D9%87%D9%88%D8%A9%E2%80%AD/@24.7009464,46.7703652,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f07003cc046cb:0xe8deaf2f79452d26!8m2!3d24.7009464!4d46.7703652!16s%2Fg%2F11whdp58cg"
+  },
+  {
+    "id": "java-cafe-al-manar",
+    "lat": 24.7299424,
+    "lng": 46.7877878,
+    "mapsShareUrl": "https://www.google.com/maps/place/Java+Cafe/@24.7299424,46.7877878,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f019b842c723f:0x49453cb4c4545d2!8m2!3d24.7299424!4d46.7877878!16s%2Fg%2F11k9rnnj6g"
+  },
+  {
+    "id": "java-cafe-ar-rabi",
+    "lat": 24.5606913,
+    "lng": 46.7068814,
+    "mapsShareUrl": "https://www.google.com/maps/place/Java+cafe/@24.5606913,46.7068814,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0f6d010e8553:0x7c5051346d9cb657!8m2!3d24.5606913!4d46.7068814!16s%2Fg%2F11krpz3dtq"
+  },
+  {
+    "id": "java-cafe-ar-rawabi",
+    "lat": 24.6866798,
+    "lng": 46.7768069,
+    "mapsShareUrl": "https://www.google.com/maps/place/Java+Cafe/@24.6866798,46.7768069,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f07e1cc4e7d73:0x4d5387958cac6b11!8m2!3d24.6866798!4d46.7768069!16s%2Fg%2F11lmf_0j6k"
+  },
+  {
+    "id": "three-as-sulaymaniyah",
+    "lat": 24.6932006,
+    "lng": 46.6857419,
+    "mapsShareUrl": "https://www.google.com/maps/place/Three/@24.6932006,46.6857419,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03535b0a45d1:0xe8d9d98bac19e3b2!8m2!3d24.6932006!4d46.6857419!16s%2Fg%2F11w2rmqbdb"
+  },
+  {
+    "id": "wave-cafe-ar-rabi",
+    "lat": 24.7794558,
+    "lng": 46.7639987,
+    "mapsShareUrl": "https://www.google.com/maps/place/Wave+cafe/@24.7794558,46.7639987,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2eff1ab3ca4111:0x46ed1734dc0969a!8m2!3d24.7794558!4d46.7639987!16s%2Fg%2F11ppx0jhh2"
+  },
+  {
+    "id": "arabica-cafe-ghubairah",
+    "lat": 24.6284375,
+    "lng": 46.7395625,
+    "mapsShareUrl": "https://www.google.com/maps/place/Arabica+Cafe/@24.6284375,46.7395625,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f05e5c3807617:0xa66e2166b48b2d3f!8m2!3d24.6284375!4d46.7395625!16s%2Fg%2F11f31f1lpz"
+  },
+  {
+    "id": "arabica-coffee-al-wisham",
+    "lat": 24.6371904,
+    "lng": 46.6931136,
+    "mapsShareUrl": "https://www.google.com/maps/place/Arabica+coffee/@24.6371904,46.6931136,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f04e1c48ccfa9:0xdd89e06d218798ae!8m2!3d24.6371904!4d46.6931136!16s%2Fg%2F11g8742hn7"
+  },
+  {
+    "id": "coffee-address-al-muruj",
+    "lat": 24.754773,
+    "lng": 46.66365,
+    "mapsShareUrl": "https://www.google.com/maps/place/address+cafe/@24.754773,46.66365,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3201a86f6c1:0x5fb4ef3770847e83!8m2!3d24.754773!4d46.66365!16s%2Fg%2F11h3kpwvjk?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=c993478d-1534-4152-9865-0ab57ba038f0"
+  },
+  {
+    "id": "24cafe-al-wadi",
+    "lat": 24.7817078,
+    "lng": 46.6845777,
+    "mapsShareUrl": "https://www.google.com/maps/place/24Cafe/@24.7817078,46.6845777,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd0012b7901b:0xcb15d3c12a7ec8f3!8m2!3d24.7817078!4d46.6845777!16s%2Fg%2F11zcdldv6q?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=5484ae18-e82b-463f-87b6-8a89dfa1b3ce"
+  },
+  {
+    "id": "24cafe-al-yasmin",
+    "lat": 24.824307,
+    "lng": 46.6566615,
+    "mapsShareUrl": "https://www.google.com/maps/place/24Cafe/@24.824307,46.6566615,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee50b9302e8eb:0xfe85ed42001b7870!8m2!3d24.824307!4d46.6566615!16s%2Fg%2F11pzdxcct3?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=ff978869-98e4-458c-b5a4-86de5ea56d66"
+  },
+  {
+    "id": "java-cafe-al-wadi",
+    "lat": 24.7826863,
+    "lng": 46.6973658,
+    "mapsShareUrl": "https://www.google.com/maps/place/Java+Cafe/@24.7826863,46.6973658,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd1afa40335f:0x553954bb689cd13c!8m2!3d24.7826863!4d46.6973658!16s%2Fg%2F1pp2vf1vb?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=e0f21434-b2aa-4ccf-9c11-50688d0fb6f1"
+  },
+  {
+    "id": "meeting-caffeine-ar-rabi",
+    "lat": 24.7406508,
+    "lng": 46.672003,
+    "mapsShareUrl": "https://www.google.com/maps/place/MEETING+CAFFEINE/@24.7406508,46.672003,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f037a130ef8f7:0x697082682fe8a89b!8m2!3d24.7406508!4d46.672003!16s%2Fg%2F11tj2n2b3g?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=33995163-8b39-4ba8-a0d3-925b99124200"
+  },
+  {
+    "id": "coffee-address-al-malaz",
+    "lat": 24.6620663,
+    "lng": 46.729598,
+    "mapsShareUrl": "https://www.google.com/maps/place/Coffee+Address+%7C+%D8%B9%D9%86%D9%88%D8%A7%D9%86+%D8%A7%D9%84%D9%82%D9%87%D9%88%D8%A9%E2%80%AD/@24.126613,45.081137,5z/data=!3m1!4b1!4m6!3m5!1s0x3e2f050053f417cd:0x655ebe64fe121fa!8m2!3d24.6620663!4d46.729598!16s%2Fg%2F11vssgtt6l?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=624cb586-ee01-4776-8c2b-8240412af8fd"
+  },
+  {
+    "id": "a-plus-drive-thru-as-salam",
+    "lat": 24.700983,
+    "lng": 46.8038171,
+    "mapsShareUrl": "https://www.google.com/maps/place/A+PLUS+%7C+Drive+thru/@24.700983,46.8038171,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0710c6cd3d7b:0x79deb14d56573531!8m2!3d24.700983!4d46.8038171!16s%2Fg%2F11sqh9jmn1?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=18f41ea2-7f04-4cd8-88fa-7b7422c0c772"
+  },
+  {
+    "id": "agrio-ar-rabi",
+    "lat": 24.7558116,
+    "lng": 46.6580097,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%A7%D9%82%D8%B1%D9%8A%D9%88+-+AGRIO%E2%80%AD/@24.7558116,46.6580097,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3000fff285d:0xb8eba5e82d1e0610!8m2!3d24.7558116!4d46.6580097!16s%2Fg%2F11yz50bwff?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=9df75c5f-6a8b-4263-87e4-ef34092ff26c"
+  },
+  {
+    "id": "java-cafe-al-malaz",
+    "lat": 24.6595032,
+    "lng": 46.7231852,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AC%D8%A7%D9%81%D8%A7+%D9%83%D8%A7%D9%81%D9%8A%D9%87+Java+Cafe%E2%80%AD/@24.126613,45.081137,5z/data=!3m1!4b1!4m6!3m5!1s0x3e2f04442e5d5387:0xe6adf7d5a9f6c9db!8m2!3d24.6595032!4d46.7231852!16s%2Fg%2F11bw_67nw5?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=d241dde9-11d7-4401-a05a-089159e03df7"
+  },
+  {
+    "id": "coffee-address-ar-rabi",
+    "lat": 24.793066,
+    "lng": 46.675466,
+    "mapsShareUrl": "https://www.google.com/maps/place/Coffee+Address+%7C+%D8%B9%D9%86%D9%88%D8%A7%D9%86+%D8%A7%D9%84%D9%82%D9%87%D9%88%D8%A9%E2%80%AD/@24.793066,46.675466,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efdb12553cbcd:0xaebb5b364509f0c0!8m2!3d24.793066!4d46.675466!16s%2Fg%2F11yyghq1c2?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=6554d2cf-170f-4729-afba-2ede9b7acb67"
+  },
+  {
+    "id": "threes-al-yasmin",
+    "lat": 24.8214588,
+    "lng": 46.6200968,
+    "mapsShareUrl": "https://www.google.com/maps/place/Threes/@24.8214588,46.6200968,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5006b37ddf7:0xdd33d76f69752d40!8m2!3d24.8214588!4d46.6200968!16s%2Fg%2F11y27c2v6x?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=1d087f11-6619-4989-96d6-511caad2d573"
+  },
+  {
+    "id": "moroccan-taste-al-muruj",
+    "lat": 24.7513115,
+    "lng": 46.6566172,
+    "mapsShareUrl": "https://www.google.com/maps/place/Moroccan+Taste/@24.7513115,46.6566172,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3042acd9c41:0x47065b2906ae5f5c!8m2!3d24.7513115!4d46.6566172!16s%2Fg%2F11kpjgybfr?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=0c608d55-14e7-42bd-8b2c-a5a9bf4e667f"
+  },
+  {
+    "id": "n5-caffe-ar-rabi",
+    "lat": 24.5577425,
+    "lng": 46.5348198,
+    "mapsShareUrl": "https://www.google.com/maps/place/N5+Caffe+%7C+%D8%A7%D9%86+%D9%81%D8%A7%D9%8A%D9%81+%D9%83%D8%A7%D9%81%D9%8A%D9%87%E2%80%AD/@24.5577425,46.5348198,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f19bb781f0d1d:0xd80e9e25085e3bf!8m2!3d24.5577425!4d46.5348198!16s%2Fg%2F11wmw7s0xp?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=778c29b7-726e-412f-8765-9815fab7e120"
+  },
+  {
+    "id": "mezaj-al-malaz",
+    "lat": 24.6631437,
+    "lng": 46.7305834,
+    "mapsShareUrl": "https://www.google.com/maps/place/MEZAJ/@24.126613,45.081137,5z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0592929759a7:0xfe04c42b64c03742!8m2!3d24.6631437!4d46.7305834!16s%2Fg%2F11n0pfscb2?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=1da163ee-e286-41b3-bdac-2d8f5eba45a9"
+  },
+  {
+    "id": "mezaj-maghrebi-al-wadi",
+    "lat": 24.790487,
+    "lng": 46.7009481,
+    "mapsShareUrl": "https://www.google.com/maps/place/Mezaj+Maghrebi/@24.126613,45.081137,5z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd02eafc2e93:0x1277b14b7e9c55ed!8m2!3d24.790487!4d46.7009481!16s%2Fg%2F11c4t6nsnn?entry=tts&g_ep=EgoyMDI2MDkxNC4wIPu8ASoASAFQAw%3D%3D&skid=20e76193-ec82-453e-afe7-ad61219dd882"
+  },
+  {
+    "id": "drive-coffee-al-aziziyah",
+    "lat": 24.5710152,
+    "lng": 46.77071,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A+%7C+DRIVE+COFFEE%E2%80%AD/@24.5710152,46.77071,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f090039040fbf:0x3442fdc0f56cedb4!8m2!3d24.5710152!4d46.77071!16s%2Fg%2F11ynbqwt0v?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=8ebe47e9-6798-4b1b-b4e0-8e021e01f890"
+  },
+  {
+    "id": "n5-caffe-ar-rabi",
+    "lat": 24.8199129,
+    "lng": 46.8292505,
+    "mapsShareUrl": "https://www.google.com/maps/place/N5+Caffe+%7C+%D8%A7%D9%86+%D9%81%D8%A7%D9%8A%D9%81+%D9%83%D8%A7%D9%81%D9%8A%D9%87%E2%80%AD/@24.8199129,46.8292505,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2e5590bd7a29bf:0xf3d43257286f5446!8m2!3d24.8199129!4d46.8292505!16s%2Fg%2F11wqdqhhjv?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=619a697f-bde7-4890-9aa5-653ba852c67a"
+  },
+  {
+    "id": "ulica-al-ghadeer",
+    "lat": 24.7660308,
+    "lng": 46.6579549,
+    "mapsShareUrl": "https://www.google.com/maps/place/ULICA+SPECIALTY+COFFEE/@24.7660308,46.6579549,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3bd0ad3f463:0x8d3dee05263debed!8m2!3d24.7660308!4d46.6579549!16s%2Fg%2F11pz8j5l7k?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=427f63c0-f65b-495b-ab65-a587b385ccb6"
+  },
+  {
+    "id": "sol-olas-al-ghadeer",
+    "lat": 24.7665264,
+    "lng": 46.6487736,
+    "mapsShareUrl": "https://www.google.com/maps/place/SOL+OLAS/@24.7665264,46.6487736,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3d552ada9d3:0x596c164eb7ef9675!8m2!3d24.7665264!4d46.6487736!16s%2Fg%2F11rrtwlgf3?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=48ed7ad0-ff9e-48d1-9bf1-e39643f3cbc0"
+  },
+  {
+    "id": "drive-coffee-badr",
+    "lat": 24.5640625,
+    "lng": 46.7178125,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A+%7C+DRIVE+COFFEE%E2%80%AD/@24.5640625,46.7178125,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0f7d093e89ad:0x25634e4237928efe!8m2!3d24.5640625!4d46.7178125!16s%2Fg%2F11ssd6zj7m?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=5413c14a-5a35-4da3-bce9-af8002c6eb8b"
+  },
+  {
+    "id": "drive-coffee-al-hazm",
+    "lat": 24.5383997,
+    "lng": 46.6542387,
+    "mapsShareUrl": "https://www.google.com/maps/place/DRIVE+COFFEE/@24.5383997,46.6542387,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f11006ee73071:0x6ac1ed1f9c42da4a!8m2!3d24.5383997!4d46.6542387!16s%2Fg%2F11z8vsg_zq?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=ad338cc9-fa37-43ac-9918-c54fa3ca570b"
+  },
+  {
+    "id": "drive-coffee-al-andalus",
+    "lat": 24.7458387,
+    "lng": 46.7981238,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A+%7C+DRIVE+COFFEE%E2%80%AD/@24.7458387,46.7981238,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f010060d8ffc3:0x5fb35dec54089a48!8m2!3d24.7458387!4d46.7981238!16s%2Fg%2F11wb89ry1k?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=25cdeecc-426c-496c-831f-7001531cd723"
+  },
+  {
+    "id": "drive-coffee-an-nasim-al-gharbi",
+    "lat": 24.7338849,
+    "lng": 46.803268,
+    "mapsShareUrl": "https://www.google.com/maps/place/Drive+Coffee/@24.7338849,46.803268,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f010068e50f15:0xdaae116aad4b79ad!8m2!3d24.7338849!4d46.803268!16s%2Fg%2F11y_tmmgw9?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=0a2dd1e1-ea5e-4658-beaf-5772dc8f88ae"
+  },
+  {
+    "id": "drive-coffee-al-yasmin",
+    "lat": 24.809641,
+    "lng": 46.6576632,
+    "mapsShareUrl": "https://www.google.com/maps/place/Drive+coffee/@24.809641,46.6576632,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3005d8dc955:0xd52930e780f1a55c!8m2!3d24.809641!4d46.6576632!16s%2Fg%2F11nqxjnkst?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=25ffd676-fe9a-4deb-97c0-8e68eeb32e8b"
+  },
+  {
+    "id": "badr",
+    "lat": 24.5222259,
+    "lng": 46.6874514,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.5222259,46.6874514,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0f001887555b:0xeea0e18c273e881f!8m2!3d24.5222259!4d46.6874514!16s%2Fg%2F11mkqw65g8?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=47ce4689-d8cc-44fa-acda-57b93709bc59"
+  },
+  {
+    "id": "drive-coffee-ar-rimal",
+    "lat": 24.9274174,
+    "lng": 46.824623,
+    "mapsShareUrl": "https://www.google.com/maps/place/Drive+Coffee/@24.9274174,46.824623,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ef9002b269119:0x68698a697541607d!8m2!3d24.9274174!4d46.824623!16s%2Fg%2F11y_tlmzr7?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=fd5ef41e-1079-4c18-bd05-5d4cce3c7c2c"
+  },
+  {
+    "id": "drive-al-ghadeer",
+    "lat": 24.7718293,
+    "lng": 46.6523613,
+    "mapsShareUrl": "https://www.google.com/maps/place/Drive+Coffee/@24.7718293,46.6523613,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3007631ac4b:0x22a7ddce0ec9d709!8m2!3d24.7718293!4d46.6523613!16s%2Fg%2F11yv8xl1zz?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=1cc57a00-7545-4e70-88fd-5df5c8d8feea"
+  },
+  {
+    "id": "drive-coffee-al-khaleej",
+    "lat": 24.7819433,
+    "lng": 46.8130301,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A+%7C+DRIVE+COFFEE%E2%80%AD/@24.7819433,46.8130301,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f01004769df7d:0xfb56f6756c523dac!8m2!3d24.7819433!4d46.8130301!16s%2Fg%2F11w7xkh6r7?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=2cfbc6cb-2bcf-44ea-9fcd-891cf10ac106"
+  },
+  {
+    "id": "drive-coffee-al-qirawan",
+    "lat": 24.8298297,
+    "lng": 46.5755058,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A+Drive+coffee%E2%80%AD/@24.8298297,46.5755058,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee7000f67c713:0x87b0608ff8dcbc50!8m2!3d24.8298297!4d46.5755058!16s%2Fg%2F11ymfllxr0?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=e8e4a2f5-d976-4cf9-a1cd-5ee9437639cb"
+  },
+  {
+    "id": "as-sahafah",
+    "lat": 24.8122922,
+    "lng": 46.6282987,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.8122922,46.6282987,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee50058d3a89f:0x57c1ed8a3852218d!8m2!3d24.8122922!4d46.6282987!16s%2Fg%2F11mt2zvpg0?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=27ee5bde-3283-4034-9b2d-b63b7ad7448a"
+  },
+  {
+    "id": "an-nakheel",
+    "lat": 24.7300452,
+    "lng": 46.6083778,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.7300452,46.6083778,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee3000519787f:0xd54d0d43ff709a3d!8m2!3d24.7300452!4d46.6083778!16s%2Fg%2F11yzph910k?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=7179e9ac-ebb4-4667-9074-32436a39686d"
+  },
+  {
+    "id": "al-janadriyyah",
+    "lat": 24.8392682,
+    "lng": 46.8740119,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.8392682,46.8740119,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2e5500720fb481:0xfeb986d1f94e48d3!8m2!3d24.8392682!4d46.8740119!16s%2Fg%2F11mz0nmtj2?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=310f030f-2429-4b69-9901-f1418809b614"
+  },
+  {
+    "id": "ar-rabi",
+    "lat": 24.7979995,
+    "lng": 46.7158477,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.7979995,46.7158477,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd00295eb7b9:0x36afe2294fa030d9!8m2!3d24.7979995!4d46.7158477!16s%2Fg%2F11yr_y_c6n?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=d62ad278-328e-4fa2-ae54-fde58e357382"
+  },
+  {
+    "id": "ar-rabi",
+    "lat": 24.4858894,
+    "lng": 46.6231185,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.4858894,46.6231185,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f1300167fbf8d:0x6ed04938a9e8579b!8m2!3d24.4858894!4d46.6231185!16s%2Fg%2F11yts3sbst?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=0c8547d6-0d49-4fcc-af02-dbc3408b2e82"
+  },
+  {
+    "id": "ar-rabi",
+    "lat": 24.7749556,
+    "lng": 46.6189615,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.7749556,46.6189615,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee300687e921b:0xfbb84f91addbaec4!8m2!3d24.7749556!4d46.6189615!16s%2Fg%2F11yvq0q20b?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=03cf8add-846f-4562-a3ca-c90f17a3a153"
+  },
+  {
+    "id": "dr-cafe-namar-manual-brew",
+    "lat": 24.5742199,
+    "lng": 46.6768453,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.+CAFE+Namar+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D9%86%D9%85%D8%A7%D8%B1+%7C+Manual+Brew%E2%80%AD/@24.5742199,46.6768453,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0fe76bdfb701:0x928c99cfc2d87be2!8m2!3d24.5742199!4d46.6768453!16s%2Fg%2F1ptxzwbyr?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=9ac04fa7-8c7e-4b32-a075-df3210c4d956"
+  },
+  {
+    "id": "ar-rabi",
+    "lat": 24.7605159,
+    "lng": 46.6946035,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.7605159,46.6946035,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd0068ece6e9:0xbea4e4d5d6e09cfe!8m2!3d24.7605159!4d46.6946035!16s%2Fg%2F11ytqtcggd?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=a384816b-a4b9-4e44-9ee0-c718eaa03a28"
+  },
+  {
+    "id": "dr-cafe-badr-al-shifa-drive-thru",
+    "lat": 24.5435077,
+    "lng": 46.6926935,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Badr,+Al+Shifa+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A8%D8%AF%D8%B1%D8%8C+%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1+%7C+Drive+Thru%E2%80%AD/@24.5435077,46.6926935,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0e41a7dd61af:0xd8692919b993047a!8m2!3d24.5435077!4d46.6926935!16s%2Fg%2F1q5blqz0c?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=8d08d77a-c911-4528-8bdb-a7eddf6a8b6a"
+  },
+  {
+    "id": "ar-rabi",
+    "lat": 24.6113129,
+    "lng": 46.7073688,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF%D8%B1%D8%A7%D9%8A%D9%81+%D9%83%D9%88%D9%81%D9%8A%E2%80%AD/@24.6113129,46.7073688,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f050021927b9b:0x7064ee41e76f63aa!8m2!3d24.6113129!4d46.7073688!16s%2Fg%2F11zgvvw5dq?entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=348f8fa3-02c0-4fde-8ad5-852f4b29b2d9"
+  },
+  {
+    "id": "dr-cafe-al-jazira-ex-15-15-drive-thru-al-jazirah",
+    "lat": 24.6817172,
+    "lng": 46.7851377,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+AL+Jazira+Ex.15+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D9%85%D8%AE%D8%B1%D8%AC+15+%D8%A7%D9%84%D8%AC%D8%B2%D9%8A%D8%B1%D8%A9+%7C+Drive+Thru%E2%80%AD/@24.6817172,46.7851377,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f06e25cee8377:0x9df991d46f20952!8m2!3d24.6817172!4d46.7851377!16s%2Fg%2F11clg7xptp?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=47f7fe96-e8d9-495b-82a2-6b038046e740"
+  },
+  {
+    "id": "dr-cafe-an-nahdah-drive-thru",
+    "lat": 24.756872,
+    "lng": 46.7909808,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+An+Nahdah+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A7%D9%84%D9%86%D9%87%D8%B6%D8%A9+%7C+Drive+Thru%E2%80%AD/@24.756872,46.7909808,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0052067454f3:0xa856dfa409d9ff29!8m2!3d24.756872!4d46.7909808!16s%2Fg%2F11gbky2fxg?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=9e23b6e1-4175-4c34-88b7-d3edc97ac459"
+  },
+  {
+    "id": "dr-cafe-al-azizah-manual-brew-drive-thru-al-aziziyah",
+    "lat": 24.5875376,
+    "lng": 46.7623424,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.+CAFE+Al+Azizah+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A7%D9%84%D8%B9%D8%B2%D9%8A%D8%B2%D9%8A%D8%A9+%7C+Manual+Brew+%7C+Drive+Thru%E2%80%AD/@24.5875376,46.7623424,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f08ded355923b:0xc4bc656b1e447b13!8m2!3d24.5875376!4d46.7623424!16s%2Fg%2F1q62k3sdk?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=a2693985-ac77-452b-b00c-f28da780142a"
+  },
+  {
+    "id": "dr-cafe-makkah-rd-as-sulimaniyah",
+    "lat": 24.6855165,
+    "lng": 46.7062272,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.+CAFE+Makkah+Rd+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A7%D9%84%D8%B3%D9%84%D9%8A%D9%85%D8%A7%D9%86%D9%8A%D8%A9+%D8%B7%D8%B1%D9%8A%D9%82+%D9%85%D9%83%D8%A9+%D8%A7%D9%84%D9%85%D9%83%D8%B1%D9%85%D8%A9%E2%80%AD/@24.6855165,46.7062272,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03791bc4b859:0x1b964057f60fabad!8m2!3d24.6855165!4d46.7062272!16s%2Fg%2F11b6dwfrwj?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=7336968d-b364-46c7-a9e2-7c0dc8962b97"
+  },
+  {
+    "id": "dr-cafe-sasco-kkia-rod-drive-thru",
+    "lat": 24.8475657,
+    "lng": 46.7336267,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+SASCO+KKIA+ROD+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B7%D8%B1%D9%8A%D9%82+%D9%85%D8%B7%D8%A7%D8%B1+%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6+%D8%B3%D8%A7%D8%B3%D9%83%D9%88+%7C+Drive+Thru%E2%80%AD/@24.8475657,46.7336267,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efb04fb343b3f:0x52a38463347ab11c!8m2!3d24.8475657!4d46.7336267!16s%2Fg%2F11hdj2b4p5?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=20ddc3c8-a905-4178-a06c-16b76121c094"
+  },
+  {
+    "id": "an-nasim",
+    "lat": 24.7458764,
+    "lng": 46.8463864,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF.+%D9%83%D9%8A%D9%81%E2%80%AD/@24.7458764,46.8463864,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd05adeb83e5:0x969915ad21e01c84!8m2!3d24.7458764!4d46.8463864!16s%2Fg%2F11by_dcxt6?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=e7d929f8-7b20-40b9-82d4-fdfdc29d3c4a"
+  },
+  {
+    "id": "dr-cafe-souq-sharq-drive-thru-al-jazirah",
+    "lat": 24.6570831,
+    "lng": 46.7907504,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Souq+Sharq+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B3%D9%88%D9%82+%D8%B4%D8%B1%D9%82+%7C+Drive+Thru%E2%80%AD/@24.6570831,46.7907504,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2fa19d0adb9a3b:0x9f4ad21c462110a3!8m2!3d24.6570831!4d46.7907504!16s%2Fg%2F1ptyfby03?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=ddd81a46-a087-4d8e-8bc3-d38d928eac26"
+  },
+  {
+    "id": "dr-cafe-al-wadi-drive-thru",
+    "lat": 24.7848771,
+    "lng": 46.7025429,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Al+Wadi+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A7%D9%84%D9%88%D8%A7%D8%AF%D9%8A+%7C+Drive+Thru%E2%80%AD/@24.7848771,46.7025429,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd05b15a0823:0x451777b9e0fff348!8m2!3d24.7848771!4d46.7025429!16s%2Fg%2F11byyd16ng?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=5a83de37-cfaa-4585-8dbc-012c87888eb0"
+  },
+  {
+    "id": "dr-cafe-thoumamah-rd-drive-thru-al-munsiyah",
+    "lat": 24.8340945,
+    "lng": 46.7346627,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Thoumamah+Rd+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B7%D8%B1%D9%8A%D9%82+%D8%A7%D9%84%D8%AB%D9%85%D8%A7%D9%85%D8%A9+%7C+Drive+Thru%E2%80%AD/@24.8340945,46.7346627,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efda2ac7732ab:0xf6e431cfe1736bf2!8m2!3d24.8340945!4d46.7346627!16s%2Fg%2F11g4lp1yqn?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=b8174937-50d8-48b0-b689-c65cf5a1ef76"
+  },
+  {
+    "id": "dr-cafe-al-haraj-drive-thru-manfuha",
+    "lat": 24.5941235,
+    "lng": 46.7356199,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Al+Haraj+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A7%D9%84%D8%AD%D8%B1%D8%A7%D8%AC+%7C+Drive+Thru%E2%80%AD/@24.5941235,46.7356199,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0fe284e5df7d:0x7d5dbfd4cb376ee8!8m2!3d24.5941235!4d46.7356199!16s%2Fg%2F11j48l6456?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=8b65e47e-d2c1-416f-8808-64258f8ce5f8"
+  },
+  {
+    "id": "dr-cafe-an-naseem-gharbi-drive-thru-an-nasim-al-gharbi",
+    "lat": 24.74208,
+    "lng": 46.8084238,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+An+Naseem+Gharbi+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%A7%D9%84%D9%86%D8%B3%D9%8A%D9%85+%D8%A7%D9%84%D8%BA%D8%B1%D8%A8%D9%8A+%7C+Drive+Thru%E2%80%AD/@24.74208,46.8084238,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0092559b0727:0x9df0d7386f767cd2!8m2!3d24.74208!4d46.8084238!16s%2Fg%2F11c0vkc30z?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=87664783-3ebb-4be2-8896-7d4c7f3fd26c"
+  },
+  {
+    "id": "dr-cafe-dabbab-street-manual-brew-drive-thru-as-sulimaniyah",
+    "lat": 24.7012987,
+    "lng": 46.7047431,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Dabbab+Street+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B7%D8%B1%D9%8A%D9%82+%D8%A7%D9%84%D8%B6%D8%A8%D8%A7%D8%A8,+%D8%A7%D9%84%D8%B3%D9%84%D9%8A%D9%85%D8%A7%D9%86%D9%8A%D8%A9%7C+Manual+Brew+%7C+Drive+Thru%E2%80%AD/@24.7012987,46.7047431,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03c7ad55c98f:0xab1d4d63141eb7db!8m2!3d24.7012987!4d46.7047431!16s%2Fg%2F11y7fvs3x3?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=0eb6dbb9-03ee-4134-b3bb-62ffc9eab479"
+  },
+  {
+    "id": "dr-cafe-fuelax-station-manual-brew-drive-thru-tuwaiq",
+    "lat": 24.5550754,
+    "lng": 46.4918045,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Fuelax+Station+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B7%D8%B1%D9%8A%D9%82+%D8%AC%D8%AF%D8%A9+%D8%A7%D9%84%D8%B3%D8%B1%D9%8A%D8%B9+%7C+Manual+Brew+%7C+Drive+Thru%E2%80%AD/@24.5550754,46.4918045,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f23d8f7793ff7:0xcd9dc3308cf0a8b5!8m2!3d24.5550754!4d46.4918045!16s%2Fg%2F11wxhcn5d_?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=a7de6053-57bd-4ec7-81a8-683c6b4d91ce"
+  },
+  {
+    "id": "dr-cafe-shubra-drive-thru",
+    "lat": 24.5728836,
+    "lng": 46.6723594,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Shubra+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B4%D8%A8%D8%B1%D8%A7+%7C+Drive+Thru%E2%80%AD/@24.5728836,46.6723594,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f0f8aa2b64d2f:0xfcfad1512bf4804a!8m2!3d24.5728836!4d46.6723594!16s%2Fg%2F11lgd6jcs2?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=28027846-217e-4197-9b40-e2cd11be7c08"
+  },
+  {
+    "id": "dr-cafe-tahliah-street-manual-brew-al-mathar",
+    "lat": 24.6884683,
+    "lng": 46.6655579,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+Tahliah+Street+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D8%B4%D8%A7%D8%B1%D8%B9+%D8%A7%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D8%A9+%7C+Manual+Brew%E2%80%AD/@24.6884683,46.6655579,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f1d603358c3c5:0xe25266bdde4d5e0c!8m2!3d24.6884683!4d46.6655579!16s%2Fg%2F11xt6j2_z3?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=817e05cb-c1f4-4cdd-acd4-dfcf9e1f9714"
+  },
+  {
+    "id": "dr-cafe-kssc-manual-brew-drive-thru-al-maghrazat",
+    "lat": 24.7555574,
+    "lng": 46.7301157,
+    "mapsShareUrl": "https://www.google.com/maps/place/dr.CAFE+KSSC+%7C+%D8%AF.%D9%83%D9%8A%D9%81+%D9%85%D8%B1%D9%83%D8%B2+%D8%A7%D9%84%D9%85%D9%84%D9%83+%D8%B3%D9%84%D9%85%D8%A7%D9%86+%D8%A7%D9%84%D8%A7%D8%AC%D8%AA%D9%85%D8%A7%D8%B9%D9%8A+%7C+Manual+Brew+%7C+Drive+Thru%E2%80%AD/@24.7555574,46.7301157,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03188dc9c7c3:0x6f4363ded7db4c2a!8m2!3d24.7555574!4d46.7301157!16s%2Fg%2F11x2kgc967?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=7ce868ef-dbf7-44ac-a7b4-3d35edface35"
+  },
+  {
+    "id": "as-suwaidi",
+    "lat": 24.5818563,
+    "lng": 46.657982,
+    "mapsShareUrl": "https://www.google.com/maps/place/%D8%AF.%D9%83%D9%8A%D9%81%E2%80%AD/@24.5818563,46.657982,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f11001901a3f5:0xaf74b1bb8db394a2!8m2!3d24.5818563!4d46.657982!16s%2Fg%2F11z7pqwl34?authuser=0&entry=tts&g_ep=EgoyMDI2MDkxMy4wIPu8ASoASAFQAw%3D%3D&skid=f9550725-2ccc-4efa-9f56-9fff6837bee6"
+  },
+  {
+    "id": "kultura-hittin",
+    "lat": 24.7685385,
+    "lng": 46.6142444,
+    "mapsShareUrl": "https://www.google.com/maps?cid=2529567664075401191"
+  },
+  {
+    "id": "opinion-hittin",
+    "lat": 24.7712573,
+    "lng": 46.5939557,
+    "mapsShareUrl": "https://www.google.com/maps/place/Opinion+%7C+%D8%A7%D9%88%D8%A8%D9%86%D9%8A%D9%88%D9%86%E2%80%AD/@24.7712573,46.5939557,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb!8m2!3d24.7712573!4d46.5939557!16s%2Fg%2F11zg_xzphg?entry=ttu&g_ep=EgoyMDI2MDkxNC4wIKXMDSoASAFQAw%3D%3D"
+  },
+  {
+    "id": "remis-matcha-club-hittin",
+    "lat": 24.759081,
+    "lng": 46.6009269,
+    "mapsShareUrl": "https://www.google.com/maps?cid=14848293264589299212"
+  },
+  {
+    "id": "kultura-al-malqa",
+    "lat": 24.7964815,
+    "lng": 46.5861574,
+    "mapsShareUrl": "https://www.google.com/maps?cid=15189585692758286600"
+  },
+  {
+    "id": "okawa-cafe-al-malqa",
+    "lat": 24.7937069,
+    "lng": 46.609608,
+    "mapsShareUrl": "https://www.google.com/maps?cid=149142169805575249"
+  },
+  {
+    "id": "the-matcha-bar-olaya",
+    "lat": 24.6970065,
+    "lng": 46.6822155,
+    "mapsShareUrl": "https://www.google.com/maps?cid=10179212536116938909"
+  },
+  {
+    "id": "house-of-matcha-sulimaniyah",
+    "lat": 24.7069755,
+    "lng": 46.7069307,
+    "mapsShareUrl": "https://www.google.com/maps?cid=6595089788604942670"
+  },
+  {
+    "id": "kuro-sulimaniyah",
+    "lat": 24.7068552,
+    "lng": 46.7068575,
+    "mapsShareUrl": "https://www.google.com/maps?cid=10147626074980804467"
+  },
+  {
+    "id": "happyland-matcha-diriyah",
+    "lat": 24.7471773,
+    "lng": 46.5366976,
+    "mapsShareUrl": "https://www.google.com/maps?cid=16874920438434583190"
+  },
+  {
+    "id": "with-heart-diriyah",
+    "lat": 24.7448391,
+    "lng": 46.5378339,
+    "mapsShareUrl": "https://www.google.com/maps?cid=17547182630608764491"
+  },
+  {
+    "id": "quokka-coffee-ghirnatah",
+    "lat": 24.7982152,
+    "lng": 46.7505865,
+    "mapsShareUrl": "https://www.google.com/maps?cid=6165004074675977825"
+  },
+  {
+    "id": "hokkaido-al-hamra",
+    "lat": 24.787066,
+    "lng": 46.7681377,
+    "mapsShareUrl": "https://www.google.com/maps?cid=13946633176914681810"
+  },
+  {
+    "id": "re-matcha-al-hamra",
+    "lat": 24.7697085,
+    "lng": 46.751547,
+    "mapsShareUrl": "https://www.google.com/maps?cid=9530645352531503129"
+  },
+  {
+    "id": "kultura-al-rayyan",
+    "lat": 24.7101855,
+    "lng": 46.7762359,
+    "mapsShareUrl": "https://www.google.com/maps?cid=13614235199911739345"
+  },
+  {
+    "id": "somatcha-an-nada",
+    "lat": 24.804065,
+    "lng": 46.6743529,
+    "mapsShareUrl": "https://www.google.com/maps?cid=4056203062137592747"
+  },
+  {
+    "id": "iota-al-ghadeer",
+    "lat": 24.7723996,
+    "lng": 46.6524455,
+    "mapsShareUrl": "https://www.google.com/maps?cid=18165654902655950337"
+  },
+  {
+    "id": "kultura-al-ghadeer",
+    "lat": 24.7705458,
+    "lng": 46.6481165,
+    "mapsShareUrl": "https://www.google.com/maps?cid=12112263618365058682"
+  },
+  {
+    "id": "house-of-matcha-al-mohammadiyah",
+    "lat": 24.7253683,
+    "lng": 46.6536774,
+    "mapsShareUrl": "https://www.google.com/maps?cid=10205544286254993018"
+  },
+  {
+    "id": "quokka-coffee-al-muruj",
+    "lat": 24.7616583,
+    "lng": 46.6579173,
+    "mapsShareUrl": "https://www.google.com/maps?cid=15543154871369336405"
+  },
+  {
+    "id": "some-coffee-bar-al-muruj",
+    "lat": 24.7551905,
+    "lng": 46.669332,
+    "mapsShareUrl": "https://www.google.com/maps?cid=4877253251474207415"
+  },
+  {
+    "id": "opinion-al-mathar",
+    "lat": 24.6894778,
+    "lng": 46.6687313,
+    "mapsShareUrl": "https://www.google.com/maps?cid=17859741278059541138"
+  },
+  {
+    "id": "flow-matcha-at-taawun",
+    "lat": 24.7789549,
+    "lng": 46.7062602,
+    "mapsShareUrl": "https://www.google.com/maps?cid=34452361350814805"
+  },
+  {
+    "id": "coffee-address-al-wadi",
+    "lat": 24.781097,
+    "lng": 46.685081,
+    "mapsShareUrl": "https://www.google.com/maps?cid=10283018521272773527"
+  },
+  {
+    "id": "java-cafe-al-muruj",
+    "lat": 24.7468207,
+    "lng": 46.6549384,
+    "mapsShareUrl": "https://www.google.com/maps?cid=8768634649308190022"
+  }
+]

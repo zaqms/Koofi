@@ -224,7 +224,12 @@ const kmDisplay = shopDistanceDisplay({
   coords: { lat: 24.753476, lng: 46.6906575 },
   language: "ar",
 });
-assert(kmDisplay.kind === "km" && kmDisplay.label.includes("كم"), "ready geo + pin → km");
+assert(
+  kmDisplay.kind === "km" &&
+    kmDisplay.label.includes("كم") &&
+    kmDisplay.km < 80,
+  "ready geo + pin → city-scale km",
+);
 assert(
   shopDistanceDisplay({
     origin: originForLabel,
@@ -299,7 +304,8 @@ assert(
   card.includes("ShopDistance") &&
     distanceUi.includes("shopDistanceDisplay") &&
     distanceUi.includes('data-shop-distance="missing"') &&
-    distanceUi.includes('data-shop-distance="km"'),
+    distanceUi.includes('data-shop-distance="km"') &&
+    distanceUi.includes("data-shop-distance-km"),
   "Matcha + DT cards share one distance slot with km or fallback",
 );
 assert(

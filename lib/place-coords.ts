@@ -19,6 +19,22 @@ function asPin(lat: number, lng: number): Pin | null {
   return { lat, lng };
 }
 
+/**
+ * Greater Riyadh place geometry only.
+ * Rejects swapped lat/lng (46.7N, 24.7E is Romania), radian-as-degree
+ * leftovers (~0.43, 0.81), and any non-Riyadh garbage.
+ */
+export function isRiyadhPlacePin(pin: Pin | null | undefined): pin is Pin {
+  if (!pin) return false;
+  if (!Number.isFinite(pin.lat) || !Number.isFinite(pin.lng)) return false;
+  return (
+    pin.lat >= 23.2 &&
+    pin.lat <= 26.8 &&
+    pin.lng >= 45.3 &&
+    pin.lng <= 48.5
+  );
+}
+
 export function isOfficialMapsPlaceUrl(url: string | undefined): boolean {
   if (!url) return false;
   try {
@@ -47,11 +63,12 @@ export function officialShopCoords(
   shop: Pick<Shop, "pin" | "mapsShareUrl">,
 ): Pin | null {
   const fromPlaceUrl = coordsFromMapsShareUrl(shop.mapsShareUrl);
-  if (fromPlaceUrl) return fromPlaceUrl;
-  if (isOfficialMapsPlaceUrl(shop.mapsShareUrl) && shop.pin) {
-    return asPin(shop.pin.lat, shop.pin.lng);
-  }
-  return null;
+  const raw =
+    fromPlaceUrl ??
+    (isOfficialMapsPlaceUrl(shop.mapsShareUrl) && shop.pin
+      ? asPin(shop.pin.lat, shop.pin.lng)
+      : null);
+  return isRiyadhPlacePin(raw) ? raw : null;
 }
 
 /** Official `/maps/place/` shop with no usable !3d/!4d or official-place pin. */

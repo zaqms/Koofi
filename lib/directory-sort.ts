@@ -1,6 +1,7 @@
 import type { DirectoryShop } from "./directory";
 import { copy } from "./copy";
 import { haversineKm } from "./distance";
+import { isRiyadhPlacePin } from "./place-coords";
 import { shopDisplayName } from "./product";
 import type { Language, Pin } from "./types";
 
@@ -32,8 +33,10 @@ export function shopDistanceKm(
   origin: Pin | null,
 ): number | null {
   if (!origin || shop.lat == null || shop.lng == null) return null;
-  const km = haversineKm(origin, { lat: shop.lat, lng: shop.lng });
-  return Number.isFinite(km) ? km : null;
+  const coords = { lat: shop.lat, lng: shop.lng };
+  if (!isRiyadhPlacePin(coords)) return null;
+  const km = haversineKm(origin, coords);
+  return Number.isFinite(km) && km >= 0 ? km : null;
 }
 
 function compareShopName(

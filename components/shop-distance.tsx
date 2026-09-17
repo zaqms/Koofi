@@ -33,7 +33,7 @@ export function ShopDistance({ coords, language }: ShopDistanceProps) {
   }
 
   return (
-    <span dir="ltr" data-shop-distance="km">
+    <span dir="ltr" data-shop-distance="km" data-shop-distance-km={display.km.toFixed(3)}>
       {" · "}
       {display.label}
     </span>

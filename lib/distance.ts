@@ -1,6 +1,7 @@
 import type { Language, Pin } from "./types";
 
-const EARTH_KM = 6371;
+/** Mean Earth radius in kilometers — never meters, or 11 km becomes ~11,000 km. */
+export const EARTH_RADIUS_KM = 6371;
 
 function toRad(degrees: number): number {
   return (degrees * Math.PI) / 180;
@@ -13,7 +14,7 @@ export function haversineKm(from: Pin, to: Pin): number {
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos(toRad(from.lat)) * Math.cos(toRad(to.lat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * EARTH_KM * Math.asin(Math.min(1, Math.sqrt(a)));
+  return 2 * EARTH_RADIUS_KM * Math.asin(Math.min(1, Math.sqrt(a)));
 }
 
 /** Display-only. Arabic `1.2 كم`, English `1.2 km`. */

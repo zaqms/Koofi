@@ -5,6 +5,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  getShop,
   listDirectoryShops,
   listDriveThroughDirectoryShops,
 } from "../lib/catalog";
@@ -16,8 +17,15 @@ import {
   haversineKm,
 } from "../lib/distance";
 import { foldOfficialPlacePins } from "../lib/fold-official-place-pins";
-import { isRiyadhPlacePin, officialShopCoords } from "../lib/place-coords";
-import { shopDistanceDisplay } from "../lib/shop-distance-label";
+import {
+  isRiyadhPlacePin,
+  isUsableVisitorOrigin,
+  officialShopCoords,
+} from "../lib/place-coords";
+import {
+  MAX_NEARBY_DISPLAY_KM,
+  shopDistanceDisplay,
+} from "../lib/shop-distance-label";
 import type { Pin, Shop } from "../lib/types";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -125,6 +133,69 @@ assert(
 );
 
 assert(
+  shopDistanceDisplay({
+    origin: { lat: Number.NaN, lng: 46.6753 },
+    coords: GOOD_NEIGHBOR,
+    language: "en",
+  }).kind === "missing",
+  "NaN visitor lat → fallback, not km",
+);
+
+const nullIsland = shopDistanceDisplay({
+  origin: { lat: 0, lng: 0 },
+  coords: GOOD_NEIGHBOR,
+  language: "en",
+});
+assert(
+  !isUsableVisitorOrigin({ lat: 0, lng: 0 }),
+  "Null Island is not a usable visitor origin",
+);
+assert(
+  nullIsland.kind === "missing" &&
+    nullIsland.label === "Location unavailable",
+  "user 0,0 + Riyadh shop → fallback, not ~12k km",
+);
+assert(
+  !("km" in nullIsland) ||
+    (nullIsland.kind === "missing" && !nullIsland.label.includes("118")),
+  "Null Island must not paint 11,8xx km",
+);
+
+const atlanta = shopDistanceDisplay({
+  origin: { lat: 33.749, lng: -84.388 },
+  coords: GOOD_NEIGHBOR,
+  language: "ar",
+});
+assert(
+  atlanta.kind === "missing" && atlanta.label === "موقع غير متاح",
+  "non-KSA visitor geo → AR fallback, not 11,800 km",
+);
+
+const swappedUser = shopDistanceDisplay({
+  origin: SWAPPED,
+  coords: GOOD_NEIGHBOR,
+  language: "en",
+});
+assert(
+  swappedUser.kind === "missing",
+  "swapped visitor origin is fallback, not Romania-scale km",
+);
+
+assert(
+  MAX_NEARBY_DISPLAY_KM === 200,
+  "Nearby display cap stays city-scale (200 km)",
+);
+const jeddah = shopDistanceDisplay({
+  origin: { lat: 21.4858, lng: 39.1925 },
+  coords: GOOD_NEIGHBOR,
+  language: "en",
+});
+assert(
+  jeddah.kind === "missing" && jeddah.label === "Location unavailable",
+  "absurd computed km (Jeddah→Riyadh) → fallback",
+);
+
+assert(
   shopDistanceDisplay({ origin: null, coords: GOOD_NEIGHBOR, language: "en" })
     .kind === "hidden",
   "no visitor geo still hides the slot (list hint covers it)",
@@ -164,7 +235,7 @@ assert(
 );
 
 const cidOnly: Shop = {
-  id: "kultura-hittin",
+  id: "kultura-hittin-fold-fixture",
   nameAr: "كولتورا",
   nameEn: "Kultúra",
   city: "riyadh",
@@ -176,10 +247,10 @@ const cidOnly: Shop = {
     "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32fcfefa59f:0x231ad463648767e7",
   example: false,
 };
-assert(!officialShopCoords(cidOnly), "CID-only Matcha row has no usable pin yet");
+assert(!officialShopCoords(cidOnly), "CID-only fixture has no usable pin yet");
 const folded = foldOfficialPlacePins(
   [cidOnly],
-  [{ id: "kultura-hittin", pin: GOOD_NEIGHBOR }],
+  [{ id: "kultura-hittin-fold-fixture", pin: GOOD_NEIGHBOR }],
 );
 assert(folded.applied.length === 1, "Scout pack can add pin.lat/lng only");
 assert(
@@ -187,24 +258,96 @@ assert(
   "folded official pin unlocks Nearby km",
 );
 assert(
-  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin", pin: SWAPPED }])
+  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin-fold-fixture", pin: SWAPPED }])
     .applied.length === 0,
   "fold rejects swapped / non-Riyadh garbage",
 );
 assert(
-  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin" }]).applied.length ===
+  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin-fold-fixture", pin: SWAPPED }])
+    .rejected.some((row) => row.id === "kultura-hittin-fold-fixture" && row.reason === "non-riyadh"),
+  "fold lists swapped pins as rejected, not written",
+);
+assert(
+  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin-fold-fixture" }]).applied.length ===
     0,
   "fold never invents lat/lng when the pack has none",
 );
 const alreadyPinned = foldOfficialPlacePins(
   [{ ...cidOnly, pin: GOOD_NEIGHBOR }],
-  [{ id: "kultura-hittin", pin: CAMEL_STEP }],
+  [{ id: "kultura-hittin-fold-fixture", pin: CAMEL_STEP }],
 );
 assert(
   alreadyPinned.applied.length === 0 &&
     alreadyPinned.shops[0]?.pin?.lat === GOOD_NEIGHBOR.lat,
   "fold is addition-only — does not overwrite an existing official pin",
 );
+
+const dupDriveA: Shop = {
+  ...cidOnly,
+  id: "drive-al-rabi",
+  mapsShareUrl:
+    "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd00295eb7b9:0x36afe2294fa030d9",
+};
+const dupDriveB: Shop = {
+  ...cidOnly,
+  id: "drive-al-rabi-2",
+  mapsShareUrl:
+    "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1300167fbf8d:0x6ed04938a9e8579b",
+};
+const dupFold = foldOfficialPlacePins(
+  [dupDriveA, dupDriveB],
+  [
+    {
+      id: "ar-rabi",
+      lat: 24.7979995,
+      lng: 46.7158477,
+      mapsShareUrl:
+        "https://www.google.com/maps/place/x/@24.7979995,46.7158477,17z/data=!4m6!3m5!1s0x3e2efd00295eb7b9:0x36afe2294fa030d9",
+    },
+    {
+      id: "ar-rabi",
+      lat: 24.4858894,
+      lng: 46.6231185,
+      mapsShareUrl:
+        "https://www.google.com/maps/place/x/@24.4858894,46.6231185,17z/data=!4m6!3m5!1s0x3e2f1300167fbf8d:0x6ed04938a9e8579b",
+    },
+  ],
+);
+assert(
+  dupFold.applied.map((row) => row.id).sort().join(",") ===
+    "drive-al-rabi,drive-al-rabi-2",
+  "duplicate pack ids resolve via official placeHex, not the sloppy Scout id",
+);
+
+const malazViewport = foldOfficialPlacePins(
+  [cidOnly],
+  [
+    {
+      id: "kultura-hittin-fold-fixture",
+      lat: 24.126613,
+      lng: 45.081137,
+    },
+  ],
+);
+assert(
+  malazViewport.applied.length === 0 &&
+    malazViewport.rejected.some((row) => row.reason === "non-riyadh"),
+  "24.13N, 45.08E viewport garbage is rejected — prefer fallback over a bad pin",
+);
+
+for (const id of [
+  "coffee-address-al-malaz",
+  "java-cafe-al-malaz",
+  "mezaj-al-malaz",
+  "mezaj-maghrebi-al-wadi",
+]) {
+  const pin = getShop(id)?.pin;
+  assert(pin && isRiyadhPlacePin(pin), `${id} folded pin stays in Riyadh`);
+  assert(
+    pin.lat > 24.4 && pin.lng > 46.4,
+    `${id} did not take the 24.13N/45.08E viewport`,
+  );
+}
 
 const foldScript = readFileSync(
   join(process.cwd(), "scripts/fold-official-place-pins.ts"),

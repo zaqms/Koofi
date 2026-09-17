@@ -35,6 +35,50 @@ export function isRiyadhPlacePin(pin: Pin | null | undefined): pin is Pin {
   );
 }
 
+/**
+ * Visitor origin for Nearby math. Do not trust the browser blindly.
+ * Rejects Null Island (0,0), NaN, swapped Riyadh, and non-KSA.
+ */
+export function isUsableVisitorOrigin(pin: Pin | null | undefined): pin is Pin {
+  if (!pin) return false;
+  if (!Number.isFinite(pin.lat) || !Number.isFinite(pin.lng)) return false;
+  if (Math.abs(pin.lat) < 0.5 && Math.abs(pin.lng) < 0.5) return false;
+  if (
+    pin.lat >= 45.3 &&
+    pin.lat <= 48.5 &&
+    pin.lng >= 23.2 &&
+    pin.lng <= 26.8
+  ) {
+    return false;
+  }
+  return (
+    pin.lat >= 16 &&
+    pin.lat <= 32.5 &&
+    pin.lng >= 34.4 &&
+    pin.lng <= 55.8
+  );
+}
+
+/** Official Maps place identity: `1s0x…:0x…` and/or `cid=`. */
+export function placeIdentityKeys(url: string | undefined): string[] {
+  if (!url) return [];
+  const keys = new Set<string>();
+  const hex = url.match(/1s(0x[0-9a-fA-F]+):(0x[0-9a-fA-F]+)/i);
+  if (hex?.[1] && hex[2]) {
+    const left = hex[1].toLowerCase();
+    const right = hex[2].toLowerCase();
+    keys.add(`${left}:${right}`);
+    try {
+      keys.add(`cid:${BigInt(right).toString()}`);
+    } catch {
+      // ignore malformed hex
+    }
+  }
+  const cid = url.match(/[?&]cid=(\d+)/);
+  if (cid?.[1]) keys.add(`cid:${cid[1]}`);
+  return [...keys];
+}
+
 export function isOfficialMapsPlaceUrl(url: string | undefined): boolean {
   if (!url) return false;
   try {

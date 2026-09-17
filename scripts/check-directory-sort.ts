@@ -165,8 +165,9 @@ assert(
 assert(
   directory.includes("nearbyAvailable") &&
     directory.includes("showNearbyHint") &&
-    directory.includes("requestVisitorLocation"),
-  "Nearby is honest when geolocation is missing",
+    directory.includes("requestVisitorLocation") &&
+    directory.includes("isUsableVisitorOrigin"),
+  "Nearby is honest when geolocation is missing or non-KSA",
 );
 assert(
   directory.includes("filterDirectoryShopsByMoment") &&
@@ -261,6 +262,14 @@ assert(
   missingEn.kind === "missing" && missingEn.label === "Location unavailable",
   "ready geo + no pin → EN fallback, not silent omit",
 );
+assert(
+  shopDistanceDisplay({
+    origin: { lat: 0, lng: 0 },
+    coords: { lat: 24.753476, lng: 46.6906575 },
+    language: "en",
+  }).kind === "missing",
+  "Null Island visitor + shop pin → fallback, not ~12k km",
+);
 
 const byId = new Map(listRealShops().map((shop) => [shop.id, shop]));
 function missingCoordRows(rows: typeof matcha) {
@@ -269,33 +278,27 @@ function missingCoordRows(rows: typeof matcha) {
 
 const matchaMissing = missingCoordRows(matcha);
 const dtMissing = missingCoordRows(dt);
-assert(matchaMissing.length === 22, `Matcha coord gap is 22 CID-only rows, got ${matchaMissing.length}`);
-assert(dtMissing.length === 58, `DT coord gap is 58 CID-only rows, got ${dtMissing.length}`);
+assert(matchaMissing.length === 0, `Matcha CID-only gap should be folded, got ${matchaMissing.length}`);
+assert(dtMissing.length === 0, `DT CID-only gap should be folded, got ${dtMissing.length}`);
 assert(
-  matcha.filter((shop) => shop.lat != null).map((shop) => shop.id).sort().join(",") ===
-    "good-neighbor-olaya,rimthan-coffee-al-hamra,urth-caffe-tahlia-sulimaniyah",
-  "only three Matcha rows already have official pins",
+  matcha.every((shop) => shop.lat != null && shop.lng != null),
+  "every Matcha directory row has official Riyadh lat/lng after Scout fold",
+);
+assert(
+  dt.every((shop) => shop.lat != null && shop.lng != null),
+  "every DT directory row has official Riyadh lat/lng after Scout fold",
 );
 
-for (const row of [...matchaMissing, ...dtMissing]) {
+for (const row of [...matcha, ...dt]) {
   const shop = byId.get(row.id);
   assert(shop, `${row.id} is in the live catalog`);
   assert(
     isOfficialMapsPlaceUrl(shop.mapsShareUrl),
     `${row.id} is an official /maps/place/ URL`,
   );
-  assert(
-    !coordsFromMapsShareUrl(shop.mapsShareUrl),
-    `${row.id} has no !3d!4d on the place URL`,
-  );
-  assert(!shop.pin, `${row.id} has no catalog pin`);
-  assert(!officialShopCoords(shop), `${row.id} officialShopCoords stays null`);
-  assert(shopDistanceKm(row, origin) == null, `${row.id} cannot compute km`);
-  assert(
-    shopDistanceDisplay({ origin, coords: null, language: "ar" }).kind ===
-      "missing",
-    `${row.id} Nearby slot falls back instead of omitting`,
-  );
+  assert(officialShopCoords(shop), `${row.id} officialShopCoords is usable`);
+  const km = shopDistanceKm(row, origin);
+  assert(km != null && km < 80, `${row.id} Nearby km from Riyadh pin is city-scale, got ${km}`);
 }
 
 const card = read("components/directory-card.tsx");
@@ -314,11 +317,5 @@ assert(
 );
 
 console.log("check-directory-sort: ok");
-console.log(
-  "matcha-without-coords:",
-  matchaMissing.map((shop) => `${shop.id} (${shop.nameEn})`).join(", "),
-);
-console.log(
-  "dt-without-coords:",
-  dtMissing.map((shop) => `${shop.id} (${shop.nameEn})`).join(", "),
-);
+console.log("matcha-without-coords:", matchaMissing.length);
+console.log("dt-without-coords:", dtMissing.length);

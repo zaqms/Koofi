@@ -31,6 +31,7 @@ import {
   vibeChipLabel,
 } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
+import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import type { Language, MomentTag, NeighborhoodId, Pin } from "@/lib/types";
 import {
   requestVisitorLocation,
@@ -57,7 +58,8 @@ function originFromVisitor(
   visitor: ReturnType<typeof usePeekVisitorLocation>,
 ): Pin | null {
   if (visitor.status !== "ready") return null;
-  return { lat: visitor.lat, lng: visitor.lng };
+  const pin = { lat: visitor.lat, lng: visitor.lng };
+  return isUsableVisitorOrigin(pin) ? pin : null;
 }
 
 export function ShopDirectory({
@@ -76,7 +78,7 @@ export function ShopDirectory({
   const resultSort = isDirectoryResultSortChip(chipId);
   const visitor = usePeekVisitorLocation();
   const origin = originFromVisitor(visitor);
-  const nearbyAvailable = visitor.status === "ready";
+  const nearbyAvailable = origin != null;
   const [userSort, setUserSort] = useState<DirectoryResultSort | null>(null);
   const requested: DirectoryResultSort =
     userSort ?? (resultSort && nearbyAvailable ? "nearby" : "new");

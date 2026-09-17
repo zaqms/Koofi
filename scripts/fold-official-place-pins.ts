@@ -23,12 +23,16 @@ if (!packPath) {
 const catalog = catalogFile as CatalogFile;
 const raw = JSON.parse(readFileSync(packPath, "utf8")) as unknown;
 const pack = (Array.isArray(raw) ? raw : []) as OfficialPlacePinPackRow[];
-const { shops, applied, skipped } = foldOfficialPlacePins(catalog.shops, pack);
+const { shops, applied, skipped, rejected } = foldOfficialPlacePins(
+  catalog.shops,
+  pack,
+);
 
 if (applied.length === 0) {
   console.log("fold-official-place-pins: no addition-only pins applied", {
     packRows: pack.length,
     skipped: skipped.length,
+    rejected: rejected.map((row) => `${row.id}:${row.reason}`),
   });
   process.exit(0);
 }
@@ -41,4 +45,7 @@ writeFileSync(
 console.log("fold-official-place-pins: applied", applied.length, {
   ids: applied.map((row) => row.id),
   skipped: skipped.length,
+  rejected: rejected
+    .filter((row) => row.reason !== "already-pinned")
+    .map((row) => `${row.id}:${row.reason}`),
 });

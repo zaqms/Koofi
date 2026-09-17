@@ -358,6 +358,10 @@ export const copy = {
     ar: "الأقرب يحتاج موقعك.",
     en: "Nearby needs your location.",
   },
+  directoryDistanceUnavailable: {
+    ar: "موقع غير متاح",
+    en: "Location unavailable",
+  },
   neighborhoodsEmpty: {
     ar: "ما فيه حي بهالاسم.",
     en: "No neighborhoods match.",

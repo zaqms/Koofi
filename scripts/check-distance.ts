@@ -15,9 +15,10 @@ import {
   formatDistanceKm,
   haversineKm,
 } from "../lib/distance";
+import { foldOfficialPlacePins } from "../lib/fold-official-place-pins";
 import { isRiyadhPlacePin, officialShopCoords } from "../lib/place-coords";
 import { shopDistanceDisplay } from "../lib/shop-distance-label";
-import type { Pin } from "../lib/types";
+import type { Pin, Shop } from "../lib/types";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -160,6 +161,60 @@ assert(
 assert(
   riyadhReady.kind === "km" && riyadhReady.km * 1000 !== riyadhReady.km,
   "display km is not the meter figure",
+);
+
+const cidOnly: Shop = {
+  id: "kultura-hittin",
+  nameAr: "كولتورا",
+  nameEn: "Kultúra",
+  city: "riyadh",
+  neighborhood: "hittin",
+  neighborhoodAr: "حطين",
+  vibeTags: ["قهوة"],
+  momentTags: ["matcha"],
+  mapsShareUrl:
+    "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32fcfefa59f:0x231ad463648767e7",
+  example: false,
+};
+assert(!officialShopCoords(cidOnly), "CID-only Matcha row has no usable pin yet");
+const folded = foldOfficialPlacePins(
+  [cidOnly],
+  [{ id: "kultura-hittin", pin: GOOD_NEIGHBOR }],
+);
+assert(folded.applied.length === 1, "Scout pack can add pin.lat/lng only");
+assert(
+  officialShopCoords(folded.shops[0]!) != null,
+  "folded official pin unlocks Nearby km",
+);
+assert(
+  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin", pin: SWAPPED }])
+    .applied.length === 0,
+  "fold rejects swapped / non-Riyadh garbage",
+);
+assert(
+  foldOfficialPlacePins([cidOnly], [{ id: "kultura-hittin" }]).applied.length ===
+    0,
+  "fold never invents lat/lng when the pack has none",
+);
+const alreadyPinned = foldOfficialPlacePins(
+  [{ ...cidOnly, pin: GOOD_NEIGHBOR }],
+  [{ id: "kultura-hittin", pin: CAMEL_STEP }],
+);
+assert(
+  alreadyPinned.applied.length === 0 &&
+    alreadyPinned.shops[0]?.pin?.lat === GOOD_NEIGHBOR.lat,
+  "fold is addition-only — does not overwrite an existing official pin",
+);
+
+const foldScript = readFileSync(
+  join(process.cwd(), "scripts/fold-official-place-pins.ts"),
+  "utf8",
+);
+assert(
+  foldScript.includes("waiting for a Scout pack") &&
+    foldScript.includes("Never invents lat/lng") &&
+    foldScript.includes("Soft Places parked"),
+  "CLI hook stays no-op until a Scout pack path is passed",
 );
 
 console.log("check-distance: ok", {

@@ -1,0 +1,482 @@
+[
+  {
+    "id": "kultura-hittin",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32fcfefa59f:0x231ad463648767e7",
+    "placeHex": "0x3e2ee32fcfefa59f:0x231ad463648767e7"
+  },
+  {
+    "id": "opinion-hittin",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb",
+    "placeHex": "0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb"
+  },
+  {
+    "id": "remis-matcha-club-hittin",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee300100e2ae9:0xce0fbc0df4ab9e0c",
+    "placeHex": "0x3e2ee300100e2ae9:0xce0fbc0df4ab9e0c"
+  },
+  {
+    "id": "kultura-al-malqa",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7a9c0d733a7:0xd2cc3fb5ae36a108",
+    "placeHex": "0x3e2ee7a9c0d733a7:0xd2cc3fb5ae36a108"
+  },
+  {
+    "id": "okawa-cafe-al-malqa",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30071d04773:0x211dc03644ad451",
+    "placeHex": "0x3e2ee30071d04773:0x211dc03644ad451"
+  },
+  {
+    "id": "the-matcha-bar-olaya",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f034e019ea32d:0x8d43d3deac74089d",
+    "placeHex": "0x3e2f034e019ea32d:0x8d43d3deac74089d"
+  },
+  {
+    "id": "house-of-matcha-sulimaniyah",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03cc8803eac7:0x5b8677386f9a894e",
+    "placeHex": "0x3e2f03cc8803eac7:0x5b8677386f9a894e"
+  },
+  {
+    "id": "kuro-sulimaniyah",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03eee2fbbb01:0x8cd39c2698b8e773",
+    "placeHex": "0x3e2f03eee2fbbb01:0x8cd39c2698b8e773"
+  },
+  {
+    "id": "happyland-matcha-diriyah",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee166b1d2df13:0xea2fc2bb49df5296",
+    "placeHex": "0x3e2ee166b1d2df13:0xea2fc2bb49df5296"
+  },
+  {
+    "id": "with-heart-diriyah",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1006cf2209b:0xf3841da23256fe4b",
+    "placeHex": "0x3e2ee1006cf2209b:0xf3841da23256fe4b"
+  },
+  {
+    "id": "quokka-coffee-ghirnatah",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff0005bd450d:0x558e7e8ad5e5be61",
+    "placeHex": "0x3e2eff0005bd450d:0x558e7e8ad5e5be61"
+  },
+  {
+    "id": "hokkaido-al-hamra",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff0009c4195f:0xc18c64fb62ad5fd2",
+    "placeHex": "0x3e2eff0009c4195f:0xc18c64fb62ad5fd2"
+  },
+  {
+    "id": "re-matcha-al-hamra",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3006ddedd6b:0x8443a773ddde2819",
+    "placeHex": "0x3e2ee3006ddedd6b:0x8443a773ddde2819"
+  },
+  {
+    "id": "kultura-al-rayyan",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0116f2a31b83:0xbcef7ac8735bbfd1",
+    "placeHex": "0x3e2f0116f2a31b83:0xbcef7ac8735bbfd1"
+  },
+  {
+    "id": "somatcha-an-nada",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdbd42c9ba8d:0x384a8731bf901bab",
+    "placeHex": "0x3e2efdbd42c9ba8d:0x384a8731bf901bab"
+  },
+  {
+    "id": "iota-al-ghadeer",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3210b6fff2b:0xfc195ee361241e01",
+    "placeHex": "0x3e2ee3210b6fff2b:0xfc195ee361241e01"
+  },
+  {
+    "id": "kultura-al-ghadeer",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3f9efcb182d:0xa81767965e896e7a",
+    "placeHex": "0x3e2ee3f9efcb182d:0xa81767965e896e7a"
+  },
+  {
+    "id": "house-of-matcha-al-mohammadiyah",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dff7a822ea1:0x8da1607501bf0e7a",
+    "placeHex": "0x3e2f1dff7a822ea1:0x8da1607501bf0e7a"
+  },
+  {
+    "id": "quokka-coffee-al-muruj",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3c250d09213:0xd7b461011cda0655",
+    "placeHex": "0x3e2ee3c250d09213:0xd7b461011cda0655"
+  },
+  {
+    "id": "some-coffee-bar-al-muruj",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee34e93f6959d:0x43af7bfdcdbd32b7",
+    "placeHex": "0x3e2ee34e93f6959d:0x43af7bfdcdbd32b7"
+  },
+  {
+    "id": "opinion-al-mathar",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d6cdc2c21b1:0xf7da8c11431eb292",
+    "placeHex": "0x3e2f1d6cdc2c21b1:0xf7da8c11431eb292"
+  },
+  {
+    "id": "flow-matcha-at-taawun",
+    "lane": "matcha",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd005e670709:0x7a663d77fd1c55",
+    "placeHex": "0x3e2efd005e670709:0x7a663d77fd1c55"
+  },
+  {
+    "id": "drive-al-nakheel",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3000519787f:0xd54d0d43ff709a3d",
+    "placeHex": "0x3e2ee3000519787f:0xd54d0d43ff709a3d"
+  },
+  {
+    "id": "24cafe-al-yasmin",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50b9302e8eb:0xfe85ed42001b7870",
+    "placeHex": "0x3e2ee50b9302e8eb:0xfe85ed42001b7870"
+  },
+  {
+    "id": "drive-al-yasmin",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3005d8dc955:0xd52930e780f1a55c",
+    "placeHex": "0x3e2ee3005d8dc955:0xd52930e780f1a55c"
+  },
+  {
+    "id": "threes-al-yasmin",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee5006b37ddf7:0xdd33d76f69752d40",
+    "placeHex": "0x3e2ee5006b37ddf7:0xdd33d76f69752d40"
+  },
+  {
+    "id": "drcafe-sulimaniyah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03791bc4b859:0x1b964057f60fabad",
+    "placeHex": "0x3e2f03791bc4b859:0x1b964057f60fabad"
+  },
+  {
+    "id": "drcafe-sulimaniyah-2",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03c7ad55c98f:0xab1d4d63141eb7db",
+    "placeHex": "0x3e2f03c7ad55c98f:0xab1d4d63141eb7db"
+  },
+  {
+    "id": "agrio-al-rabi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3000fff285d:0xb8eba5e82d1e0610",
+    "placeHex": "0x3e2ee3000fff285d:0xb8eba5e82d1e0610"
+  },
+  {
+    "id": "coffee-address-al-rabi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdb12553cbcd:0xaebb5b364509f0c0",
+    "placeHex": "0x3e2efdb12553cbcd:0xaebb5b364509f0c0"
+  },
+  {
+    "id": "drive-al-rabi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd00295eb7b9:0x36afe2294fa030d9",
+    "placeHex": "0x3e2efd00295eb7b9:0x36afe2294fa030d9"
+  },
+  {
+    "id": "drive-al-rabi-2",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1300167fbf8d:0x6ed04938a9e8579b",
+    "placeHex": "0x3e2f1300167fbf8d:0x6ed04938a9e8579b"
+  },
+  {
+    "id": "drive-al-rabi-3",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f050021927b9b:0x7064ee41e76f63aa",
+    "placeHex": "0x3e2f050021927b9b:0x7064ee41e76f63aa"
+  },
+  {
+    "id": "drive-al-rabi-4",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0068ece6e9:0xbea4e4d5d6e09cfe",
+    "placeHex": "0x3e2efd0068ece6e9:0xbea4e4d5d6e09cfe"
+  },
+  {
+    "id": "drive-al-rabi-5",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee300687e921b:0xfbb84f91addbaec4",
+    "placeHex": "0x3e2ee300687e921b:0xfbb84f91addbaec4"
+  },
+  {
+    "id": "meeting-caffeine-al-rabi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f037a130ef8f7:0x697082682fe8a89b",
+    "placeHex": "0x3e2f037a130ef8f7:0x697082682fe8a89b"
+  },
+  {
+    "id": "n5-caffe-al-rabi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e5590bd7a29bf:0xf3d43257286f5446",
+    "placeHex": "0x3e2e5590bd7a29bf:0xf3d43257286f5446"
+  },
+  {
+    "id": "n5-caffe-al-rabi-2",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f19bb781f0d1d:0xd80e9e25085e3bf",
+    "placeHex": "0x3e2f19bb781f0d1d:0xd80e9e25085e3bf"
+  },
+  {
+    "id": "drive-as-sahafah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50058d3a89f:0x57c1ed8a3852218d",
+    "placeHex": "0x3e2ee50058d3a89f:0x57c1ed8a3852218d"
+  },
+  {
+    "id": "drcafe-al-mughrizat",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03188dc9c7c3:0x6f4363ded7db4c2a",
+    "placeHex": "0x3e2f03188dc9c7c3:0x6f4363ded7db4c2a"
+  },
+  {
+    "id": "drcafe-al-nahdah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0052067454f3:0xa856dfa409d9ff29",
+    "placeHex": "0x3e2f0052067454f3:0xa856dfa409d9ff29"
+  },
+  {
+    "id": "drcafe-al-munsiyah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efda2ac7732ab:0xf6e431cfe1736bf2",
+    "placeHex": "0x3e2efda2ac7732ab:0xf6e431cfe1736bf2"
+  },
+  {
+    "id": "drive-al-ghadeer",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3007631ac4b:0x22a7ddce0ec9d709",
+    "placeHex": "0x3e2ee3007631ac4b:0x22a7ddce0ec9d709"
+  },
+  {
+    "id": "sol-olas-al-ghadeer",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3d552ada9d3:0x596c164eb7ef9675",
+    "placeHex": "0x3e2ee3d552ada9d3:0x596c164eb7ef9675"
+  },
+  {
+    "id": "ulica-al-ghadeer",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3bd0ad3f463:0x8d3dee05263debed",
+    "placeHex": "0x3e2ee3bd0ad3f463:0x8d3dee05263debed"
+  },
+  {
+    "id": "drive-al-qirawan-2",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7000f67c713:0x87b0608ff8dcbc50",
+    "placeHex": "0x3e2ee7000f67c713:0x87b0608ff8dcbc50"
+  },
+  {
+    "id": "24cafe-al-wadi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0012b7901b:0xcb15d3c12a7ec8f3",
+    "placeHex": "0x3e2efd0012b7901b:0xcb15d3c12a7ec8f3"
+  },
+  {
+    "id": "coffee-address-al-wadi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd23ff0bd2c3:0x8eb49edd0339eb97",
+    "placeHex": "0x3e2efd23ff0bd2c3:0x8eb49edd0339eb97"
+  },
+  {
+    "id": "drcafe-al-wadi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd05b15a0823:0x451777b9e0fff348",
+    "placeHex": "0x3e2efd05b15a0823:0x451777b9e0fff348"
+  },
+  {
+    "id": "java-cafe-al-wadi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd1afa40335f:0x553954bb689cd13c",
+    "placeHex": "0x3e2efd1afa40335f:0x553954bb689cd13c"
+  },
+  {
+    "id": "mezaj-maghrebi-al-wadi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd02eafc2e93:0x1277b14b7e9c55ed",
+    "placeHex": "0x3e2efd02eafc2e93:0x1277b14b7e9c55ed"
+  },
+  {
+    "id": "coffee-address-al-muruj",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3201a86f6c1:0x5fb4ef3770847e83",
+    "placeHex": "0x3e2ee3201a86f6c1:0x5fb4ef3770847e83"
+  },
+  {
+    "id": "java-cafe-al-muruj",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee2a34b228cb9:0x79b072c15d325546",
+    "placeHex": "0x3e2ee2a34b228cb9:0x79b072c15d325546"
+  },
+  {
+    "id": "moroccan-taste-al-muruj",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3042acd9c41:0x47065b2906ae5f5c",
+    "placeHex": "0x3e2ee3042acd9c41:0x47065b2906ae5f5c"
+  },
+  {
+    "id": "coffee-address-al-malaz",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f050053f417cd:0x655ebe64fe121fa",
+    "placeHex": "0x3e2f050053f417cd:0x655ebe64fe121fa"
+  },
+  {
+    "id": "java-cafe-al-malaz",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f04442e5d5387:0xe6adf7d5a9f6c9db",
+    "placeHex": "0x3e2f04442e5d5387:0xe6adf7d5a9f6c9db"
+  },
+  {
+    "id": "mezaj-al-malaz",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0592929759a7:0xfe04c42b64c03742",
+    "placeHex": "0x3e2f0592929759a7:0xfe04c42b64c03742"
+  },
+  {
+    "id": "drcafe-al-mathar",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d603358c3c5:0xe25266bdde4d5e0c",
+    "placeHex": "0x3e2f1d603358c3c5:0xe25266bdde4d5e0c"
+  },
+  {
+    "id": "a-plus-as-salam",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0710c6cd3d7b:0x79deb14d56573531",
+    "placeHex": "0x3e2f0710c6cd3d7b:0x79deb14d56573531"
+  },
+  {
+    "id": "drcafe-badr",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0e41a7dd61af:0xd8692919b993047a",
+    "placeHex": "0x3e2f0e41a7dd61af:0xd8692919b993047a"
+  },
+  {
+    "id": "drive-badr",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f7d093e89ad:0x25634e4237928efe",
+    "placeHex": "0x3e2f0f7d093e89ad:0x25634e4237928efe"
+  },
+  {
+    "id": "drive-badr-2",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f001887555b:0xeea0e18c273e881f",
+    "placeHex": "0x3e2f0f001887555b:0xeea0e18c273e881f"
+  },
+  {
+    "id": "drcafe-al-aziziyah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f08ded355923b:0xc4bc656b1e447b13",
+    "placeHex": "0x3e2f08ded355923b:0xc4bc656b1e447b13"
+  },
+  {
+    "id": "drive-al-aziziyah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f090039040fbf:0x3442fdc0f56cedb4",
+    "placeHex": "0x3e2f090039040fbf:0x3442fdc0f56cedb4"
+  },
+  {
+    "id": "drive-al-hazm",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11006ee73071:0x6ac1ed1f9c42da4a",
+    "placeHex": "0x3e2f11006ee73071:0x6ac1ed1f9c42da4a"
+  },
+  {
+    "id": "drive-al-andalus",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010060d8ffc3:0x5fb35dec54089a48",
+    "placeHex": "0x3e2f010060d8ffc3:0x5fb35dec54089a48"
+  },
+  {
+    "id": "drive-al-khaleej",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01004769df7d:0xfb56f6756c523dac",
+    "placeHex": "0x3e2f01004769df7d:0xfb56f6756c523dac"
+  },
+  {
+    "id": "drcafe-an-nasim-al-gharbi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0092559b0727:0x9df0d7386f767cd2",
+    "placeHex": "0x3e2f0092559b0727:0x9df0d7386f767cd2"
+  },
+  {
+    "id": "drive-an-nasim-al-gharbi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010068e50f15:0xdaae116aad4b79ad",
+    "placeHex": "0x3e2f010068e50f15:0xdaae116aad4b79ad"
+  },
+  {
+    "id": "drive-ar-rimal",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ef9002b269119:0x68698a697541607d",
+    "placeHex": "0x3e2ef9002b269119:0x68698a697541607d"
+  },
+  {
+    "id": "drive-al-janadriyyah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e5500720fb481:0xfeb986d1f94e48d3",
+    "placeHex": "0x3e2e5500720fb481:0xfeb986d1f94e48d3"
+  },
+  {
+    "id": "drcafe-namar",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fe76bdfb701:0x928c99cfc2d87be2",
+    "placeHex": "0x3e2f0fe76bdfb701:0x928c99cfc2d87be2"
+  },
+  {
+    "id": "drcafe-kkia",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efb04fb343b3f:0x52a38463347ab11c",
+    "placeHex": "0x3e2efb04fb343b3f:0x52a38463347ab11c"
+  },
+  {
+    "id": "drcafe-al-jazirah",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fa19d0adb9a3b:0x9f4ad21c462110a3",
+    "placeHex": "0x3e2fa19d0adb9a3b:0x9f4ad21c462110a3"
+  },
+  {
+    "id": "drcafe-al-jazirah-2",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f06e25cee8377:0x9df991d46f20952",
+    "placeHex": "0x3e2f06e25cee8377:0x9df991d46f20952"
+  },
+  {
+    "id": "drcafe-an-nasim",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd05adeb83e5:0x969915ad21e01c84",
+    "placeHex": "0x3e2efd05adeb83e5:0x969915ad21e01c84"
+  },
+  {
+    "id": "drcafe-shubra",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f8aa2b64d2f:0xfcfad1512bf4804a",
+    "placeHex": "0x3e2f0f8aa2b64d2f:0xfcfad1512bf4804a"
+  },
+  {
+    "id": "drcafe-manfuha",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fe284e5df7d:0x7d5dbfd4cb376ee8",
+    "placeHex": "0x3e2f0fe284e5df7d:0x7d5dbfd4cb376ee8"
+  },
+  {
+    "id": "drcafe-tuwaiq",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f23d8f7793ff7:0xcd9dc3308cf0a8b5",
+    "placeHex": "0x3e2f23d8f7793ff7:0xcd9dc3308cf0a8b5"
+  },
+  {
+    "id": "drcafe-as-suwaidi",
+    "lane": "drive-through",
+    "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11001901a3f5:0xaf74b1bb8db394a2",
+    "placeHex": "0x3e2f11001901a3f5:0xaf74b1bb8db394a2"
+  }
+]

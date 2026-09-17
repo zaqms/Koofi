@@ -138,6 +138,7 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `RESEND_API_KEY` | No | Optional. If set, claim submit emails `CLAIM_ALERT_TO` via Resend. If empty, email is stubbed and the server logs `wain_claim`. |
 | `CLAIM_APPROVE_TOKEN` | No | Optional shared secret for `/ops/claims`. Mint / revoke owner edit links for verified shops. If empty, ops 404s. Never commit a real token. Do not auto-send WhatsApp. Preview try-path only — do not set this on Production from this work. |
 | `BLOB_READ_WRITE_TOKEN` | No | Vercel Blob token for owner Passport photo upload (`POST /api/owner/photos`). Auto-injected when a Blob store is linked to the Vercel project. Preview needs a linked Blob store (or this token) for phone upload. URL fields still work if empty. Never commit a real token. |
+| `HALFWAY_RESULTS_WEBHOOK_KEY` | No | Optional Bearer for the server-side Cursor Grok Bot webhook that emails **aj@cali.sa** the بيننا three. Set on the Vercel project (Preview + Production). If empty, picks still render and the server logs `wain_halfway_results_webhook_stub`. Never `NEXT_PUBLIC_`. Never commit the key. |
 
 Do not commit secrets.
 
@@ -191,7 +192,7 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `meet_halfway_invite_share` | اعزم خويك share fired | `locale`, `pack_id` (invite token) |
 | `meet_halfway_invite_open` | Guest opens `/h/{token}` | `locale`, `pack_id`, `source`=`invite` |
 | `meet_halfway_invite_joined` | Host sees the guest pin (poll), including when the overlay already has frozen picks | `locale`, `pack_id`, `source`=`invite` |
-| `meet_halfway_results` | ثلاث قهاوي بينكم (or leftover 1–2) shown | `locale`, `count`, `source` (`local` / `invite`) |
+| `meet_halfway_results` | ثلاث قهاوي بينكم (or leftover 1–2) shown | **Keep** `locale`, `count`, `source` (`local` / `invite`). **Additive:** `cafes[]` (`name_ar`, `name_en`, `district`, `maps_url`, optional `distance_km`); `pack_id` plus GTM aliases `session_id` / `invite_id` when an `/h/{id}` session exists. Do not send lat/lng. Optional server webhook below — if a GTM webhook tag is live, leave `HALFWAY_RESULTS_WEBHOOK_KEY` unset to avoid a second mail. |
 | `meet_halfway_refresh` | غيرها tapped | `locale`, `page` (2 = first غيرها) |
 | `meet_halfway_empty` | ما في أكثر بهالمنطقة shown | `locale`, `source` (`local` / `invite`) |
 | `meet_halfway_results_share` | شارك النتائج / Share results tapped (same `/h/{id}`) | `locale`, `pack_id` |
@@ -253,10 +254,61 @@ Same `dataLayer` helper as `chip_tap` / `maps_click`. Do **not** send lat/lng. R
 
 In container **GTM-W3TM4552**:
 
-1. **Variables** → Data Layer Variable for any that are missing: `DL - which` (`which`), `DL - method` (`method`), `DL - count` (`count`), `DL - page` (`page`), `DL - source` (`source`), `DL - pack_id` (`pack_id`), `DL - locale` (`locale`).
+1. **Variables** → Data Layer Variable for any that are missing: `DL - which` (`which`), `DL - method` (`method`), `DL - count` (`count`), `DL - page` (`page`), `DL - source` (`source`), `DL - pack_id` (`pack_id`), `DL - locale` (`locale`). For a `meet_halfway_results` webhook tag, also `DL - session_id` (`session_id`), `DL - invite_id` (`invite_id`), `DL - cafes` (`cafes`).
 2. **Triggers** → Custom Event (All Custom Events) for each of `meet_halfway_open`, `meet_halfway_pin`, `meet_halfway_invite_share`, `meet_halfway_invite_open`, `meet_halfway_results`, `meet_halfway_refresh`, `meet_halfway_empty`. Keep those seven. Optionally clone the same pattern for additive `meet_halfway_invite_joined` (host poll sees B's pin) and the persistent-session four: `meet_halfway_results_share`, `meet_halfway_start_new`, `meet_halfway_restore`, `meet_halfway_expired` — do not rename or drop the v7 seven. No freeze event: first compute still fires `meet_halfway_results`; a later return fires `meet_halfway_restore`.
-3. **Tags** → **Google Analytics: GA4 Event** per name (`GA4 - meet_halfway_open`, …) → Measurement ID `G-EFZZET02TT` → Event Name matches the dataLayer `event` → pass the params from the table above.
+3. **Tags** → **Google Analytics: GA4 Event** per name (`GA4 - meet_halfway_open`, …) → Measurement ID `G-EFZZET02TT` → Event Name matches the dataLayer `event` → pass the params from the table above (`locale`, `count`, `source` on `meet_halfway_results`). This tip does **not** publish a GTM webhook tag. If Ajz wires a Bearer POST on **CE - meet_halfway_results**, map `locale`, `session_id` / `invite_id`, and `cafes`. Do **not** map `cafes` into GA4 (nested).
 4. Preview: tap **بيننا**, set pins (`موقعي` and a paste), **اعزم خويك**, open `/h/{id}?from=wa` on a second phone/tab and drop B's pin. A's screen should cue **صاحبك دبّس.** / **Your friend dropped their pin.** then show the three without a manual refresh. Then **غيرها** until **ما في أكثر بهالمنطقة**. Confirm `chip_tap` still fires on the chip, `maps_click` still fires on card Maps, and the seven `meet_halfway_*` events fire once each as listed. Publish the container.
+
+GTM-preferred `meet_halfway_results` dataLayer (existing keys kept; `session_id` / `invite_id` / `cafes` additive):
+
+```json
+{
+  "event": "meet_halfway_results",
+  "locale": "ar",
+  "count": 3,
+  "source": "invite",
+  "pack_id": "optional-/h/-token",
+  "session_id": "optional-/h/-token",
+  "invite_id": "optional-/h/-token",
+  "cafes": [
+    {
+      "name_ar": "…",
+      "name_en": "…",
+      "district": "حطين",
+      "maps_url": "https://maps.app.goo.gl/…",
+      "distance_km": 1.2
+    }
+  ]
+}
+```
+
+### بيننا results email (optional server webhook)
+
+When `/api/chat` **computes** بيننا picks (first page or غيرها), the Node route fire-and-forgets a POST to the Cursor Grok Bot webhook. Frozen restore / host poll paint does not send a second mail. The Bearer stays in `HALFWAY_RESULTS_WEBHOOK_KEY` on Vercel — never in the client bundle.
+
+Body field names (exact):
+
+```json
+{
+  "event": "meet_halfway_results",
+  "notify_email": "aj@cali.sa",
+  "locale": "ar",
+  "session_id": "optional-/h/-token",
+  "count": 3,
+  "source": "local",
+  "cafes": [
+    {
+      "name_ar": "…",
+      "name_en": "…",
+      "district": "حطين",
+      "maps_url": "https://maps.app.goo.gl/…",
+      "distance_km": 1.2
+    }
+  ]
+}
+```
+
+`distance_km` is omitted when pin or café coords are missing. `session_id` is omitted on a local two-pin run with no `/h/{id}`. `notify_email` is locked to **aj@cali.sa** (not amjad@cali.sa). The same `cafes[]` + `session_id` / `invite_id` land on the dataLayer so a GTM Custom Event webhook can map them without a Custom HTML tag in this tip.
 
 In GA4 register `which`, `method`, `count`, `page`, and `source` as event-scoped custom dimensions if Explorations need them.
 

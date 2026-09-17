@@ -51,6 +51,7 @@ import {
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
   locationsCentroid,
+  meetHalfwayChatPicks,
   restoreHalfwayPicks,
 } from "../lib/meet-halfway";
 import { neighborhoodCentroid } from "../lib/neighborhood-tight";
@@ -61,6 +62,17 @@ import {
   halfwayInvitePath,
   halfwayPath,
 } from "../lib/product";
+import {
+  halfwayResultCafesFromPicks,
+  pinsMidpoint,
+} from "../lib/halfway-results-payload";
+import {
+  HALFWAY_RESULTS_NOTIFY_EMAIL,
+  HALFWAY_RESULTS_WEBHOOK_URL,
+  halfwayResultsWebhookBody,
+  notifyHalfwayResults,
+} from "../lib/halfway-results-webhook";
+import { meetHalfwayResultsParams } from "../lib/track";
 import { decideVisitorLocationPeek } from "../lib/visitor-location-peek";
 
 const SHOPS = listRealShops();
@@ -971,5 +983,175 @@ assert(
   !track.includes("lat?:") && !track.includes("lng?:"),
   "dataLayer params do not accept pin coordinates",
 );
+assert(
+  track.includes("cafes?: HalfwayResultCafe[]") &&
+    track.includes("meetHalfwayResultsParams"),
+  "meet_halfway_results params stay additive with cafes[]",
+);
+assert(
+  chatUi.includes("meetHalfwayResultsParams") &&
+    chatUi.includes("trackMeetHalfwayResults") &&
+    !chatUi.includes("halfway-results-webhook") &&
+    !chatUi.includes("HALFWAY_RESULTS_WEBHOOK_KEY") &&
+    !chatUi.includes("api2.cursor.sh"),
+  "client results push is enriched; webhook key/url never enter chat.tsx",
+);
+assert(
+  chat.includes("notifyHalfwayResults") &&
+    chat.includes("after(") &&
+    !chat.includes("HALFWAY_RESULTS_WEBHOOK_KEY"),
+  "chat API fire-and-forgets the server webhook after a fresh compute",
+);
 
-console.log("meet-halfway pin-first lock ok");
+const resultPicks = meetHalfwayChatPicks({
+  locations: two,
+  language: "ar",
+});
+assert(resultPicks.length === 3, "fixture three for payload");
+const midpoint = locationsCentroid(two, SHOPS);
+const cafes = halfwayResultCafesFromPicks({
+  picks: resultPicks,
+  midpoint,
+});
+assert(cafes.length === 3, "payload has three cafes");
+const firstCafe = cafes[0];
+if (!firstCafe) fail("first cafe");
+assert(typeof firstCafe.name_ar === "string" && firstCafe.name_ar.length > 0, "name_ar");
+assert(typeof firstCafe.name_en === "string" && firstCafe.name_en.length > 0, "name_en");
+assert(typeof firstCafe.district === "string" && firstCafe.district.length > 0, "district");
+assert(
+  typeof firstCafe.maps_url === "string" && firstCafe.maps_url.startsWith("http"),
+  "maps_url is a Maps link",
+);
+assert(
+  firstCafe.distance_km == null || typeof firstCafe.distance_km === "number",
+  "distance_km optional number",
+);
+assert(
+  !("lat" in firstCafe) && !("lng" in firstCafe) && !("reviewSnippet" in firstCafe),
+  "payload omits coords and Soft Places blurbs",
+);
+
+const layer = meetHalfwayResultsParams({
+  locale: "ar",
+  source: "local",
+  picks: resultPicks,
+  midpoint,
+});
+assert(layer.locale === "ar", "dataLayer keeps locale");
+assert(layer.count === 3, "dataLayer keeps count");
+assert(layer.source === "local", "dataLayer keeps source");
+assert(Array.isArray(layer.cafes) && layer.cafes.length === 3, "dataLayer cafes");
+assert(layer.pack_id == null, "local run omits pack_id");
+assert(layer.session_id == null && layer.invite_id == null, "local run omits session aliases");
+
+const invited = meetHalfwayResultsParams({
+  locale: "en",
+  source: "invite",
+  picks: resultPicks,
+  packId: "session-token",
+  midpoint,
+});
+assert(invited.pack_id === "session-token", "invite dataLayer adds pack_id");
+assert(invited.session_id === "session-token", "GTM session_id alias");
+assert(invited.invite_id === "session-token", "GTM invite_id alias");
+assert(invited.source === "invite", "invite source unchanged");
+
+const hookBody = halfwayResultsWebhookBody({
+  locale: "ar",
+  picks: resultPicks,
+  sessionId: "session-token",
+  midpoint,
+  source: "invite",
+});
+assert(hookBody.event === "meet_halfway_results", "webhook event name");
+assert(hookBody.notify_email === "aj@cali.sa", "Amjad locked inbox");
+assert(
+  HALFWAY_RESULTS_NOTIFY_EMAIL === "aj@cali.sa" &&
+    !HALFWAY_RESULTS_NOTIFY_EMAIL.startsWith("amjad@"),
+  "not amjad@cali.sa",
+);
+assert(hookBody.locale === "ar", "webhook locale");
+assert(hookBody.session_id === "session-token", "webhook session_id");
+assert(hookBody.count === 3, "webhook count");
+assert(hookBody.cafes.length === 3, "webhook cafes");
+assert(
+  HALFWAY_RESULTS_NOTIFY_EMAIL === "aj@cali.sa" &&
+    HALFWAY_RESULTS_WEBHOOK_URL.includes("api2.cursor.sh/automations/webhook/"),
+  "locked notify email + Cursor webhook host",
+);
+
+const envFile = readFileSync(join(repoRoot, "lib/env.ts"), "utf8");
+const envExample = readFileSync(join(repoRoot, ".env.example"), "utf8");
+assert(
+  envFile.includes("HALFWAY_RESULTS_WEBHOOK_KEY") &&
+    envExample.includes("HALFWAY_RESULTS_WEBHOOK_KEY") &&
+    !envExample.includes("NEXT_PUBLIC_HALFWAY"),
+  "Vercel env name is documented and not public",
+);
+
+assert(
+  pinsMidpoint([]) === null &&
+    pinsMidpoint([{ lat: 24.76, lng: 46.6 }, { lat: 24.78, lng: 46.62 }]) != null,
+  "midpoint helper is pin-only",
+);
+
+void (async () => {
+  const previousFetch = globalThis.fetch;
+  const previousKey = process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
+  const sent: Array<{ url: string; auth: string | null; body: unknown }> = [];
+  globalThis.fetch = (async (url: string | URL, init?: RequestInit) => {
+    sent.push({
+      url: String(url),
+      auth:
+        init?.headers && typeof init.headers === "object" && "Authorization" in init.headers
+          ? String((init.headers as Record<string, string>).Authorization)
+          : null,
+      body: init?.body ? JSON.parse(String(init.body)) : null,
+    });
+    return new Response("ok", { status: 200 });
+  }) as typeof fetch;
+  try {
+    delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
+    const skipped = await notifyHalfwayResults({
+      locale: "ar",
+      picks: resultPicks,
+      midpoint,
+      source: "local",
+    });
+    assert(skipped === "skipped", "missing key stubs");
+    assert(sent.length === 0, "stub does not POST");
+
+    process.env.HALFWAY_RESULTS_WEBHOOK_KEY = "test-halfway-webhook-key";
+    const posted = await notifyHalfwayResults({
+      locale: "en",
+      picks: resultPicks,
+      sessionId: "session-token",
+      midpoint,
+      source: "invite",
+    });
+    assert(posted === "sent", "Bearer POST reports sent");
+    assert(sent.length === 1, "one webhook POST");
+    const call = sent[0];
+    if (!call) fail("webhook call");
+    assert(call.url === HALFWAY_RESULTS_WEBHOOK_URL, "POST hits the Cursor webhook");
+    assert(call.auth === "Bearer test-halfway-webhook-key", "Authorization Bearer from env");
+    const postedBody = call.body as {
+      notify_email?: string;
+      cafes?: unknown[];
+      event?: string;
+    };
+    assert(postedBody.event === "meet_halfway_results", "POST body event");
+    assert(postedBody.notify_email === "aj@cali.sa", "POST body inbox");
+    assert(
+      Array.isArray(postedBody.cafes) && postedBody.cafes.length === 3,
+      "POST body cafes",
+    );
+  } finally {
+    globalThis.fetch = previousFetch;
+    if (previousKey === undefined) delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
+    else process.env.HALFWAY_RESULTS_WEBHOOK_KEY = previousKey;
+  }
+
+  console.log("meet-halfway pin-first lock ok");
+})();

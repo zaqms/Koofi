@@ -11,6 +11,7 @@ import {
   formatHalfwayPlaceLabel,
   pinFromHalfwayInput,
 } from "@/lib/halfway-place";
+import { pinsMidpoint } from "@/lib/halfway-results-payload";
 import { HomeHero } from "@/components/home-hero";
 import { MeetHalfwayCard } from "@/components/meet-halfway-card";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
@@ -59,6 +60,7 @@ import {
 } from "@/lib/product";
 import { copyShareText, sharePackPacket } from "@/lib/share-pack";
 import {
+  meetHalfwayResultsParams,
   trackChatQuery,
   trackDistrictMatch,
   trackEvent,
@@ -184,6 +186,36 @@ function overlayPins(rows: HalfwayPinInput[] | undefined): HalfwayPinInput[] {
 function halfwayIdFromPath(): string | undefined {
   const match = window.location.pathname.match(/\/h\/([^/]+)/);
   return match?.[1] ? decodeURIComponent(match[1]) : undefined;
+}
+
+function halfwayResultsMidpoint(
+  rows: HalfwayPinInput[] | undefined,
+): Pin | null {
+  return pinsMidpoint((rows ?? []).map((row) => pinFromHalfwayInput(row)));
+}
+
+function trackMeetHalfwayResults(input: {
+  locale: Language;
+  source: MeetHalfwayResultSource;
+  picks: ChatPick[];
+  packId?: string;
+  locations?: HalfwayPinInput[];
+}): void {
+  trackEvent(
+    "meet_halfway_results",
+    meetHalfwayResultsParams({
+      locale: input.locale,
+      source: input.source,
+      picks: input.picks,
+      packId: input.packId,
+      midpoint: halfwayResultsMidpoint(input.locations),
+    }),
+    {
+      dedupeKey: `meet_halfway_results:${input.source}:${input.picks
+        .map((pick) => pick.id)
+        .join(",")}`,
+    },
+  );
 }
 
 function trackHalfwayRestore(input: {
@@ -738,19 +770,13 @@ export function Chat({
           const source =
             halfway?.source ?? (halfwayInvite ? "invite" : "local");
           if (result.data.picks.length > 0) {
-            trackEvent(
-              "meet_halfway_results",
-              {
-                locale: result.data.language,
-                count: result.data.picks.length,
-                source,
-              },
-              {
-                dedupeKey: `meet_halfway_results:${source}:${result.data.picks
-                  .map((pick) => pick.id)
-                  .join(",")}`,
-              },
-            );
+            trackMeetHalfwayResults({
+              locale: result.data.language,
+              source,
+              picks: result.data.picks,
+              packId: halfwayInvite?.id ?? halfwayWaitingId ?? undefined,
+              locations: halfway?.locations,
+            });
           } else {
             trackEvent(
               "meet_halfway_empty",
@@ -1273,19 +1299,13 @@ export function Chat({
         );
       }
       halfwayJoinSeenRef.current = true;
-      trackEvent(
-        "meet_halfway_results",
-        {
-          locale: landing,
-          count: picks.length,
-          source: "invite",
-        },
-        {
-          dedupeKey: `meet_halfway_results:invite:${picks
-            .map((pick) => pick.id)
-            .join(",")}`,
-        },
-      );
+      trackMeetHalfwayResults({
+        locale: landing,
+        source: "invite",
+        picks,
+        packId,
+        locations: input.locations,
+      });
     } else {
       trackHalfwayRestore({
         id: packId,

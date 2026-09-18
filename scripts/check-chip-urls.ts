@@ -1,6 +1,6 @@
 /**
  * Ajz-locked dedicated chip URLs (12 Sep 2026).
- * 15 Sep: date chip public slug is `with-friends`
+ * 18 Sep: with-friends chip id matches the public slug
  * (old `/date` and `/for-two` 308). Soft Places stays parked.
  * Do not rename other paths.
  */
@@ -72,7 +72,7 @@ const LOCKED_CHIP_PATHS = {
   study: { ar: "/coffee-shops/study", en: "/en/coffee-shops/study" },
   late: { ar: "/coffee-shops/late", en: "/en/coffee-shops/late" },
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
-  date: { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
+  "with-friends": { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
   matcha: { ar: "/coffee-shops/matcha", en: "/en/coffee-shops/matcha" },
   "drive-through": {
     ar: "/coffee-shops/drive-through",
@@ -162,7 +162,7 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,nearby,outdoor,date,work,drive-through",
+    "popular,coffee,pastry,matcha,nearby,outdoor,with-friends,work,drive-through",
   "P0 home order is locked — Matcha 4th, Drive-through 9th after Work",
 );
 assert(
@@ -217,7 +217,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   matcha: "ماتشا",
   "drive-through": "طلبات السيارة",
   work: "للشغل",
-  date: "مع الأصحاب",
+  "with-friends": "مع الأصحاب",
   outdoor: "جلسات خارجية",
   nearby: "قريب مني",
 };
@@ -235,7 +235,7 @@ const LOCKED_HOME_LABELS_EN: Record<string, string> = {
   matcha: "Matcha",
   "drive-through": "Drive-through",
   work: "Best for Work",
-  date: "With friends",
+  "with-friends": "With friends",
   outdoor: "Outdoor seating",
   nearby: "Nearby",
 };
@@ -246,22 +246,22 @@ for (const chip of homeSurfaceChips()) {
   );
 }
 
-assert(DATE_CHIP_ID === "date", "catalog filter key stays date");
+assert(DATE_CHIP_ID === "with-friends", "catalog filter key is with-friends");
 assert(
   DATE_CHIP_PUBLIC_SLUG === "with-friends",
-  "public date slug is with-friends",
+  "public with-friends slug matches the chip id",
 );
 assert(
-  LEGACY_DATE_CHIP_SLUGS.join(",") === "date,for-two",
-  "old public slugs stay date and for-two",
+  LEGACY_DATE_CHIP_SLUGS.join(",") === "date,for-two,good-for-a-date",
+  "old public slugs stay date, for-two, and good-for-a-date",
 );
 assert(
   coffeeShopChipSlugForId(DATE_CHIP_ID) === DATE_CHIP_PUBLIC_SLUG,
-  "date id maps to with-friends slug",
+  "with-friends id maps to with-friends slug",
 );
 assert(
   chipIdFromCoffeeShopSlug(DATE_CHIP_PUBLIC_SLUG) === DATE_CHIP_ID,
-  "with-friends slug maps back to date id",
+  "with-friends slug maps back to with-friends id",
 );
 for (const slug of LEGACY_DATE_CHIP_SLUGS) {
   assert(
@@ -278,9 +278,9 @@ assert(
   "with-friends must not collide with a district",
 );
 assert(
-  LEGACY_CHIP_REDIRECTS.length === 4 &&
+  LEGACY_CHIP_REDIRECTS.length === 6 &&
     LEGACY_CHIP_REDIRECTS.every((row) => row.statusCode === 308),
-  "old date and for-two URLs 308 to with-friends",
+  "old dating URLs 308 to with-friends",
 );
 assert(
   LEGACY_CHIP_REDIRECTS[0]?.source === "/coffee-shops/date" &&
@@ -301,6 +301,16 @@ assert(
   LEGACY_CHIP_REDIRECTS[3]?.source === "/en/coffee-shops/for-two" &&
     LEGACY_CHIP_REDIRECTS[3]?.destination === "/en/coffee-shops/with-friends",
   "EN for-two → with-friends",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[4]?.source === "/coffee-shops/good-for-a-date" &&
+    LEGACY_CHIP_REDIRECTS[4]?.destination === "/coffee-shops/with-friends",
+  "AR good-for-a-date → with-friends",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[5]?.source === "/en/coffee-shops/good-for-a-date" &&
+    LEGACY_CHIP_REDIRECTS[5]?.destination === "/en/coffee-shops/with-friends",
+  "EN good-for-a-date → with-friends",
 );
 
 const staticParams = categoryListingStaticParams();
@@ -389,14 +399,14 @@ assert(
   "Soft Places chips stay parked",
 );
 assert(
-  chips.includes('case "date"') &&
+  chips.includes('case "with-friends"') &&
     chips.includes('<circle cx="6.8" cy="7.8" r="2.4" />') &&
     chips.includes('<circle cx="17.2" cy="7.8" r="2.4" />') &&
     !chips.includes('a2.5 2.5 0 0 1 0 5') &&
     !chips.includes('<circle cx="9" cy="8" r="2.65" />') &&
     !chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
     !/heart|romance|💕|❤|couple|hand-hold/i.test(chips),
-  "date chip is two heads with a gap — no overlap or romance",
+  "with-friends chip is two heads with a gap — no overlap or romance",
 );
 assert(
   chips.includes('case "matcha"') &&
@@ -538,7 +548,7 @@ assert(
   "why-lines use With friends / مع الأصحاب",
 );
 assert(
-  vibeLabels.includes('date: "With friends"') &&
+  vibeLabels.includes('"with-friends": "With friends"') &&
     !vibeLabels.includes('date: "Date"') &&
     !vibeLabels.includes('date: "For two"'),
   "moment fallback label is With friends",
@@ -596,6 +606,32 @@ assert(
   directory.includes("isDirectoryResultSortChip") &&
     directory.includes("DirectoryResultSortPills"),
   "Matcha and Drive-through results share the same sort pills",
+);
+assert(
+  directory.includes("`wain-chip-${vibe.id}`") &&
+    !directory.includes("koofi-chip-") &&
+    !directory.includes("chip-date"),
+  "chip heading id is wain-chip-{id}, never *-chip-date",
+);
+assert(
+  !listRealShops().some((shop) =>
+    (shop.momentTags as readonly string[]).includes("date"),
+  ),
+  "catalog moment tags have no date leftover",
+);
+assert(
+  chipDirectoryMoment("with-friends") === "with-friends",
+  "with-friends slug filters with-friends tags",
+);
+const parseIntent = read("lib/parse-intent.ts");
+assert(
+  !parseIntent.includes("لموعد") &&
+    !parseIntent.includes("مواعدة") &&
+    !parseIntent.includes("dating") &&
+    !parseIntent.includes("good for a date") &&
+    !parseIntent.includes("for two") &&
+    !parseIntent.includes('"date"'),
+  "parse-intent dropped dating aliases",
 );
 assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),

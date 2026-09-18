@@ -36,7 +36,7 @@ const MOMENT_EN: Record<MomentTag, string> = {
   pastry: "Pastry",
   study: "Study",
   outdoor: "Outdoor",
-  date: "With friends",
+  "with-friends": "With friends",
   matcha: "Matcha",
   "drive-through": "Drive-through",
 };

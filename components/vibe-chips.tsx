@@ -111,7 +111,7 @@ function ChipIcon({ id }: { id: string }) {
           <path d="M12 3.6v2.2M12 18.2v2.2M3.6 12h2.2M18.2 12h2.2M6.2 6.2l1.5 1.5M16.3 16.3l1.5 1.5M17.8 6.2 16.3 7.7M7.7 16.3 6.2 17.8" />
         </Icon>
       );
-    case "date":
+    case "with-friends":
       return (
         <Icon>
           <circle cx="6.8" cy="7.8" r="2.4" />

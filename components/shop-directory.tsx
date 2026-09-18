@@ -133,7 +133,7 @@ export function ShopDirectory({
     : district
       ? "koofi-district"
       : vibe
-        ? `koofi-chip-${vibe.id}`
+        ? `wain-chip-${vibe.id}`
         : "koofi-directory";
 
   return (

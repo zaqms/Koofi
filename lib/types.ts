@@ -82,7 +82,7 @@ export const MOMENT_TAGS = [
   "pastry",
   "study",
   "outdoor",
-  "date",
+  "with-friends",
   "matcha",
   "drive-through",
 ] as const;

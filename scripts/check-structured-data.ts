@@ -188,6 +188,38 @@ assert(
   "sitemap lists EN most-popular",
 );
 assert(
+  sitemap.includes("https://wain.lol/coffee-shops/with-friends<"),
+  "sitemap lists AR with-friends",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/coffee-shops/with-friends<"),
+  "sitemap lists EN with-friends",
+);
+assert(
+  sitemap.includes("https://wain.lol/coffee-shops/matcha<"),
+  "sitemap lists AR matcha",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/coffee-shops/matcha<"),
+  "sitemap lists EN matcha",
+);
+assert(
+  sitemap.includes("https://wain.lol/coffee-shops/drive-through<"),
+  "sitemap lists AR drive-through",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/coffee-shops/drive-through<"),
+  "sitemap lists EN drive-through",
+);
+assert(
+  !sitemap.includes("good-for-a-date") &&
+    !sitemap.includes("/coffee-shops/for-two") &&
+    !sitemap.includes("/coffee-shops/date<") &&
+    !sitemap.includes("/en/coffee-shops/date<") &&
+    !sitemap.includes("soft-places"),
+  "sitemap excludes dating and Soft Places slugs",
+);
+assert(
   sitemap.includes("https://wain.lol/neighborhoods<"),
   "sitemap lists AR neighborhoods index",
 );

@@ -319,28 +319,28 @@ assert(
   "أفضل قهوة chip must stay qahwa",
 );
 assert(
-  parseIntent("With friends").moments.join(",") === "date",
-  "With friends chip must resolve to date",
+  parseIntent("With friends").moments.join(",") === "with-friends",
+  "With friends chip must resolve to with-friends",
 );
 assert(
-  parseIntent("مع الأصحاب").moments.join(",") === "date",
-  "مع الأصحاب chip must resolve to date",
+  parseIntent("مع الأصحاب").moments.join(",") === "with-friends",
+  "مع الأصحاب chip must resolve to with-friends",
 );
 assert(
-  parseIntent("For two").moments.join(",") === "date",
-  "For two alias still maps to date",
+  !parseIntent("For two").moments.includes("with-friends"),
+  "For two is not a live friends alias",
 );
 assert(
-  parseIntent("لاثنين").moments.join(",") === "date",
-  "لاثنين alias still maps to date",
+  !parseIntent("لاثنين").moments.includes("with-friends"),
+  "لاثنين is not a live friends alias",
 );
 assert(
-  parseIntent("Good for a date").moments.join(",") === "date",
-  "old EN date label still maps to date",
+  parseIntent("Good for a date").moments.join(",") === "",
+  "old EN dating label is not a live moment",
 );
 assert(
-  parseIntent("لموعد").moments.join(",") === "date",
-  "old AR date label still maps to date",
+  parseIntent("لموعد").moments.join(",") === "",
+  "old AR dating label is not a live moment",
 );
 assert(
   parseIntent("Matcha").moments.join(",") === "matcha",

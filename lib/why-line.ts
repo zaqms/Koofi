@@ -7,7 +7,7 @@ const WHY_MOMENTS = [
   "outdoor",
   "late",
   "pastry",
-  "date",
+  "with-friends",
   "work",
   "study",
   "quiet",
@@ -33,7 +33,7 @@ const WHY_LINES: Record<WhyMoment, Record<Language, readonly [string, string]>> 
       ar: ["للمعجنات مع القهوة", "إذا تبي معجنات"],
       en: ["Pastry with the coffee", "If you want pastry"],
     },
-    date: {
+    "with-friends": {
       ar: ["مع الأصحاب هادي", "مع الأصحاب، مو زحمة"],
       en: ["A quiet sit with friends", "With friends, not the rush"],
     },

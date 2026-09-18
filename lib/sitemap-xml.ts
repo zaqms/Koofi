@@ -2,6 +2,8 @@ import { listRealShops } from "./catalog";
 import {
   aboutPath,
   cardPath,
+  coffeeShopChipPath,
+  COFFEE_SHOP_CHIP_SLUGS,
   districtPath,
   feedbackPath,
   homePath,
@@ -61,6 +63,10 @@ function sitemapPaths(): string[] {
   }
 
   paths.push(mostPopularPath("ar"), mostPopularPath("en"));
+
+  for (const slug of COFFEE_SHOP_CHIP_SLUGS) {
+    paths.push(coffeeShopChipPath(slug, "ar"), coffeeShopChipPath(slug, "en"));
+  }
 
   return paths;
 }

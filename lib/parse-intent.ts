@@ -131,16 +131,13 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "patio",
     "terrace",
   ],
-  date: [
-    "مناسب لموعد",
-    "لموعد",
-    "موعد",
-    "ديت",
-    "date",
-    "dating",
-    "good for a date",
-    "for two",
-    "لاثنين",
+  "with-friends": [
+    "قعدة أصحاب",
+    "قعدة اصحاب",
+    "مع أصحاب",
+    "مع اصحاب",
+    "with friends",
+    "hang with friends",
   ],
   matcha: [
     "ماتشا",
@@ -176,7 +173,10 @@ const MOMENT_ALIASES: Record<MomentTag, string[]> = {
   pastry: [...chipAliases("pastry"), ...EXTRA_ALIASES.pastry],
   study: [...chipAliases("study"), ...EXTRA_ALIASES.study],
   outdoor: [...chipAliases("outdoor"), ...EXTRA_ALIASES.outdoor],
-  date: [...chipAliases("date"), ...EXTRA_ALIASES.date],
+  "with-friends": [
+    ...chipAliases("with-friends"),
+    ...EXTRA_ALIASES["with-friends"],
+  ],
   matcha: [...chipAliases("matcha"), ...EXTRA_ALIASES.matcha],
   "drive-through": [
     ...chipAliases("drive-through"),

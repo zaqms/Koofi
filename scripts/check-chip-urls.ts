@@ -1,8 +1,8 @@
 /**
  * Ajz-locked dedicated chip URLs (12 Sep 2026).
- * 15 Sep: date chip public slug is `with-friends`
- * (old `/date` and `/for-two` 308). Soft Places stays parked.
- * Do not rename other paths.
+ * Friends vibe id + public slug are `with-friends`.
+ * Retired dating slugs (`/date`, `/for-two`, `/good-for-a-date`) 308.
+ * Soft Places stays parked. Do not rename other paths.
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -17,14 +17,13 @@ import { categoryListingStaticParams } from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
 import {
   COFFEE_SHOP_CHIP_SLUGS,
-  DATE_CHIP_ID,
-  DATE_CHIP_PUBLIC_SLUG,
+  WITH_FRIENDS_CHIP_ID,
   HALFWAY_INVITE_PATH_PREFIX,
   HALFWAY_LANDING_PATH,
   HOME_CHIP_IDS,
   LEGACY_CHIP_REDIRECTS,
   LEGACY_SHOP_REDIRECTS,
-  LEGACY_DATE_CHIP_SLUGS,
+  LEGACY_DATING_CHIP_SLUGS,
   LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
   LOCKED_OPENER_EN,
@@ -72,7 +71,7 @@ const LOCKED_CHIP_PATHS = {
   study: { ar: "/coffee-shops/study", en: "/en/coffee-shops/study" },
   late: { ar: "/coffee-shops/late", en: "/en/coffee-shops/late" },
   outdoor: { ar: "/coffee-shops/outdoor", en: "/en/coffee-shops/outdoor" },
-  date: { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
+  "with-friends": { ar: "/coffee-shops/with-friends", en: "/en/coffee-shops/with-friends" },
   matcha: { ar: "/coffee-shops/matcha", en: "/en/coffee-shops/matcha" },
   "drive-through": {
     ar: "/coffee-shops/drive-through",
@@ -162,7 +161,7 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,nearby,outdoor,date,work,drive-through",
+    "popular,coffee,pastry,matcha,nearby,outdoor,with-friends,work,drive-through",
   "P0 home order is locked — Matcha 4th, Drive-through 9th after Work",
 );
 assert(
@@ -217,7 +216,7 @@ const LOCKED_HOME_LABELS: Record<string, string> = {
   matcha: "ماتشا",
   "drive-through": "طلبات السيارة",
   work: "للشغل",
-  date: "مع الأصحاب",
+  "with-friends": "مع الأصحاب",
   outdoor: "جلسات خارجية",
   nearby: "قريب مني",
 };
@@ -235,7 +234,7 @@ const LOCKED_HOME_LABELS_EN: Record<string, string> = {
   matcha: "Matcha",
   "drive-through": "Drive-through",
   work: "Best for Work",
-  date: "With friends",
+  "with-friends": "With friends",
   outdoor: "Outdoor seating",
   nearby: "Nearby",
 };
@@ -246,41 +245,55 @@ for (const chip of homeSurfaceChips()) {
   );
 }
 
-assert(DATE_CHIP_ID === "date", "catalog filter key stays date");
 assert(
-  DATE_CHIP_PUBLIC_SLUG === "with-friends",
-  "public date slug is with-friends",
+  WITH_FRIENDS_CHIP_ID === "with-friends",
+  "catalog filter key is with-friends",
 );
 assert(
-  LEGACY_DATE_CHIP_SLUGS.join(",") === "date,for-two",
-  "old public slugs stay date and for-two",
+  LEGACY_DATING_CHIP_SLUGS.join(",") === "date,for-two,good-for-a-date",
+  "retired dating slugs stay date, for-two, and good-for-a-date",
 );
 assert(
-  coffeeShopChipSlugForId(DATE_CHIP_ID) === DATE_CHIP_PUBLIC_SLUG,
-  "date id maps to with-friends slug",
+  coffeeShopChipSlugForId(WITH_FRIENDS_CHIP_ID) === WITH_FRIENDS_CHIP_ID,
+  "with-friends id maps to with-friends slug",
 );
 assert(
-  chipIdFromCoffeeShopSlug(DATE_CHIP_PUBLIC_SLUG) === DATE_CHIP_ID,
-  "with-friends slug maps back to date id",
+  chipIdFromCoffeeShopSlug(WITH_FRIENDS_CHIP_ID) === WITH_FRIENDS_CHIP_ID,
+  "with-friends slug maps back to with-friends id",
 );
-for (const slug of LEGACY_DATE_CHIP_SLUGS) {
+for (const slug of LEGACY_DATING_CHIP_SLUGS) {
   assert(
     !isCoffeeShopChipSlug(slug),
     `legacy ${slug} slug is not a live coffee-shops path`,
   );
 }
 assert(
-  isCoffeeShopChipSlug(DATE_CHIP_PUBLIC_SLUG),
+  isCoffeeShopChipSlug(WITH_FRIENDS_CHIP_ID),
   "with-friends is a live coffee-shops slug",
 );
 assert(
-  !isNeighborhoodId(DATE_CHIP_PUBLIC_SLUG),
+  !isNeighborhoodId(WITH_FRIENDS_CHIP_ID),
   "with-friends must not collide with a district",
 );
 assert(
-  LEGACY_CHIP_REDIRECTS.length === 4 &&
+  chipDirectoryMoment("with-friends") === "with-friends",
+  "with-friends slug filters with-friends tags",
+);
+assert(
+  filterDirectoryShopsByMoment(listDirectoryShops(), "with-friends").length ===
+    6,
+  "with-friends directory is the 6 tagged shops",
+);
+assert(
+  listRealShops().every(
+    (shop) => !(shop.momentTags as string[]).includes("date"),
+  ),
+  "catalog momentTags have no date vibe",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS.length === 6 &&
     LEGACY_CHIP_REDIRECTS.every((row) => row.statusCode === 308),
-  "old date and for-two URLs 308 to with-friends",
+  "retired dating URLs 308 to with-friends",
 );
 assert(
   LEGACY_CHIP_REDIRECTS[0]?.source === "/coffee-shops/date" &&
@@ -302,6 +315,16 @@ assert(
     LEGACY_CHIP_REDIRECTS[3]?.destination === "/en/coffee-shops/with-friends",
   "EN for-two → with-friends",
 );
+assert(
+  LEGACY_CHIP_REDIRECTS[4]?.source === "/coffee-shops/good-for-a-date" &&
+    LEGACY_CHIP_REDIRECTS[4]?.destination === "/coffee-shops/with-friends",
+  "AR good-for-a-date → with-friends",
+);
+assert(
+  LEGACY_CHIP_REDIRECTS[5]?.source === "/en/coffee-shops/good-for-a-date" &&
+    LEGACY_CHIP_REDIRECTS[5]?.destination === "/en/coffee-shops/with-friends",
+  "EN good-for-a-date → with-friends",
+);
 
 const staticParams = categoryListingStaticParams();
 for (const slug of ["most-popular", ...COFFEE_SHOP_CHIP_SLUGS]) {
@@ -316,7 +339,7 @@ assert(
   !staticParams.some((row) => row.slug === "meet-halfway"),
   "meet-halfway is not a coffee-shops slug",
 );
-for (const slug of LEGACY_DATE_CHIP_SLUGS) {
+for (const slug of LEGACY_DATING_CHIP_SLUGS) {
   assert(
     !staticParams.some((row) => row.slug === slug),
     `legacy ${slug} slug is not a generated coffee-shops page`,
@@ -389,14 +412,15 @@ assert(
   "Soft Places chips stay parked",
 );
 assert(
-  chips.includes('case "date"') &&
+  chips.includes('case "with-friends"') &&
+    !chips.includes('case "date"') &&
     chips.includes('<circle cx="6.8" cy="7.8" r="2.4" />') &&
     chips.includes('<circle cx="17.2" cy="7.8" r="2.4" />') &&
     !chips.includes('a2.5 2.5 0 0 1 0 5') &&
     !chips.includes('<circle cx="9" cy="8" r="2.65" />') &&
     !chips.includes('<circle cx="12" cy="8" r="3.1" />') &&
     !/heart|romance|💕|❤|couple|hand-hold/i.test(chips),
-  "date chip is two heads with a gap — no overlap or romance",
+  "with-friends chip is two heads with a gap — no overlap or romance",
 );
 assert(
   chips.includes('case "matcha"') &&
@@ -513,6 +537,15 @@ assert(
 const product = read("lib/product.ts");
 const why = read("lib/why-line.ts");
 const vibeLabels = read("lib/vibe-labels.ts");
+const parseIntentSrc = read("lib/parse-intent.ts");
+assert(
+  !parseIntentSrc.includes("لموعد") &&
+    !parseIntentSrc.includes("dating") &&
+    !parseIntentSrc.includes("good for a date") &&
+    !parseIntentSrc.includes('"for two"') &&
+    parseIntentSrc.includes('"with-friends"'),
+  "chat aliases dropped dating copy",
+);
 assert(
   !product.includes("Good for a date") &&
     !product.includes("لموعد") &&
@@ -538,9 +571,10 @@ assert(
   "why-lines use With friends / مع الأصحاب",
 );
 assert(
-  vibeLabels.includes('date: "With friends"') &&
+  vibeLabels.includes('"with-friends": "With friends"') &&
     !vibeLabels.includes('date: "Date"') &&
-    !vibeLabels.includes('date: "For two"'),
+    !vibeLabels.includes('date: "For two"') &&
+    !vibeLabels.includes('date: "With friends"'),
   "moment fallback label is With friends",
 );
 assert(
@@ -596,6 +630,11 @@ assert(
   directory.includes("isDirectoryResultSortChip") &&
     directory.includes("DirectoryResultSortPills"),
   "Matcha and Drive-through results share the same sort pills",
+);
+assert(
+  directory.includes("`koofi-chip-${vibe.id}`") &&
+    !directory.includes("koofi-chip-date"),
+  "chip heading id follows vibe.id — no koofi-chip-date",
 );
 assert(
   landing.includes('? "popular"') && landing.includes("chipSharePath"),
@@ -662,7 +701,7 @@ assert(
 );
 assert(
   nextConfig.includes("LEGACY_CHIP_REDIRECTS"),
-  "old date slug redirects are wired in next.config",
+  "retired dating slug redirects are wired in next.config",
 );
 assert(
   nextConfig.includes("LEGACY_SHOP_REDIRECTS"),

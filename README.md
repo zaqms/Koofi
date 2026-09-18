@@ -304,11 +304,45 @@ Body field names (exact):
       "maps_url": "https://maps.app.goo.gl/…",
       "distance_km": 1.2
     }
-  ]
+  ],
+  "pins": [
+    {
+      "role": "host",
+      "label_ar": "موضعي",
+      "label_en": "My pin",
+      "maps_url": "https://maps.google.com/?q=24.76,46.67",
+      "lat": 24.76,
+      "lng": 46.67
+    },
+    {
+      "role": "guest",
+      "label_ar": "صديقي",
+      "label_en": "Friend pin",
+      "maps_url": "https://maps.google.com/?q=24.71,46.62",
+      "lat": 24.71,
+      "lng": 46.62
+    }
+  ],
+  "host_pin": {
+    "role": "host",
+    "label_ar": "موضعي",
+    "label_en": "My pin",
+    "maps_url": "https://maps.google.com/?q=24.76,46.67",
+    "lat": 24.76,
+    "lng": 46.67
+  },
+  "guest_pin": {
+    "role": "guest",
+    "label_ar": "صديقي",
+    "label_en": "Friend pin",
+    "maps_url": "https://maps.google.com/?q=24.71,46.62",
+    "lat": 24.71,
+    "lng": 46.62
+  }
 }
 ```
 
-`distance_km` is omitted when pin or café coords are missing. `session_id` is omitted on a local two-pin run with no `/h/{id}`. `notify_email` is locked to **aj@cali.sa** (not amjad@cali.sa). The same `cafes[]` + `session_id` / `invite_id` land on the dataLayer so a GTM Custom Event webhook can map them without a Custom HTML tag in this tip.
+`distance_km` is omitted when pin or café coords are missing. `session_id` is omitted on a local two-pin run with no `/h/{id}`. `notify_email` is locked to **aj@cali.sa** (not amjad@cali.sa). `pins[]` / `host_pin` / `guest_pin` are **server webhook only** (lat/lng + Maps links for Amjad's mail). Do not map them onto the GTM dataLayer. Café field names are unchanged. The same `cafes[]` + `session_id` / `invite_id` land on the dataLayer so a GTM Custom Event webhook can map them without a Custom HTML tag in this tip.
 
 In GA4 register `which`, `method`, `count`, `page`, and `source` as event-scoped custom dimensions if Explorations need them.
 

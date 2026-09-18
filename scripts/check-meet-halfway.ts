@@ -63,7 +63,9 @@ import {
   halfwayPath,
 } from "../lib/product";
 import {
+  HALFWAY_RESULT_PIN_LABELS,
   halfwayResultCafesFromPicks,
+  halfwayResultPins,
   pinsMidpoint,
 } from "../lib/halfway-results-payload";
 import {
@@ -984,6 +986,12 @@ assert(
   "dataLayer params do not accept pin coordinates",
 );
 assert(
+  !track.includes("host_pin") &&
+    !track.includes("guest_pin") &&
+    !track.includes("pins?:"),
+  "dataLayer stay pin-free; pins are server webhook only",
+);
+assert(
   track.includes("cafes?: HalfwayResultCafe[]") &&
     track.includes("meetHalfwayResultsParams"),
   "meet_halfway_results params stay additive with cafes[]",
@@ -999,6 +1007,7 @@ assert(
 assert(
   chat.includes("notifyHalfwayResults") &&
     chat.includes("after(") &&
+    /notifyHalfwayResults\(\{[\s\S]*?\blocations,/.test(chat) &&
     !chat.includes("HALFWAY_RESULTS_WEBHOOK_KEY"),
   "chat API fire-and-forgets the server webhook after a fresh compute",
 );
@@ -1062,6 +1071,7 @@ const hookBody = halfwayResultsWebhookBody({
   picks: resultPicks,
   sessionId: "session-token",
   midpoint,
+  locations: two,
   source: "invite",
 });
 assert(hookBody.event === "meet_halfway_results", "webhook event name");
@@ -1075,6 +1085,62 @@ assert(hookBody.locale === "ar", "webhook locale");
 assert(hookBody.session_id === "session-token", "webhook session_id");
 assert(hookBody.count === 3, "webhook count");
 assert(hookBody.cafes.length === 3, "webhook cafes");
+assert(
+  hookBody.cafes[0] &&
+    !("lat" in hookBody.cafes[0]) &&
+    !("lng" in hookBody.cafes[0]),
+  "café objects stay coord-free",
+);
+const builtPins = halfwayResultPins(two);
+assert(builtPins.length === 2, "payload helper emits host + friend");
+assert(
+  Array.isArray(hookBody.pins) && hookBody.pins.length === 2,
+  "webhook pins[] is host + friend",
+);
+const hookHost = hookBody.host_pin;
+const hookGuest = hookBody.guest_pin;
+if (!hookHost || !hookGuest) fail("named host_pin + guest_pin");
+assert(hookHost.role === "host", "host role");
+assert(hookGuest.role === "guest", "guest role");
+assert(
+  hookHost.label_ar === HALFWAY_RESULT_PIN_LABELS.host.ar &&
+    hookHost.label_en === HALFWAY_RESULT_PIN_LABELS.host.en &&
+    hookHost.label_ar === "موضعي" &&
+    hookHost.label_en === "My pin",
+  "host AR/EN labels",
+);
+assert(
+  hookGuest.label_ar === HALFWAY_RESULT_PIN_LABELS.guest.ar &&
+    hookGuest.label_en === HALFWAY_RESULT_PIN_LABELS.guest.en &&
+    hookGuest.label_ar === "صديقي" &&
+    hookGuest.label_en === "Friend pin",
+  "guest AR/EN labels",
+);
+assert(
+  hookHost.lat === two[0]?.pin.lat &&
+    hookHost.lng === two[0]?.pin.lng &&
+    hookGuest.lat === two[1]?.pin.lat &&
+    hookGuest.lng === two[1]?.pin.lng,
+  "pin latlng matches resolved locations",
+);
+assert(
+  hookHost.maps_url.startsWith("https://maps.google.com/?q=") &&
+    hookGuest.maps_url.startsWith("https://maps.google.com/?q="),
+  "pin maps_url is a Maps link",
+);
+const noLocations = halfwayResultsWebhookBody({
+  locale: "ar",
+  picks: resultPicks,
+  midpoint,
+  source: "local",
+});
+assert(
+  noLocations.pins == null &&
+    noLocations.host_pin == null &&
+    noLocations.guest_pin == null &&
+    noLocations.cafes.length === 3,
+  "pins are omitted when locations are not passed; cafes stay",
+);
 assert(
   HALFWAY_RESULTS_NOTIFY_EMAIL === "aj@cali.sa" &&
     HALFWAY_RESULTS_WEBHOOK_URL.includes("api2.cursor.sh/automations/webhook/"),
@@ -1128,6 +1194,7 @@ void (async () => {
       picks: resultPicks,
       sessionId: "session-token",
       midpoint,
+      locations: two,
       source: "invite",
     });
     assert(posted === "sent", "Bearer POST reports sent");
@@ -1140,6 +1207,9 @@ void (async () => {
       notify_email?: string;
       cafes?: unknown[];
       event?: string;
+      pins?: unknown[];
+      host_pin?: { role?: string };
+      guest_pin?: { role?: string };
     };
     assert(postedBody.event === "meet_halfway_results", "POST body event");
     assert(postedBody.notify_email === "aj@cali.sa", "POST body inbox");
@@ -1147,6 +1217,12 @@ void (async () => {
       Array.isArray(postedBody.cafes) && postedBody.cafes.length === 3,
       "POST body cafes",
     );
+    assert(
+      Array.isArray(postedBody.pins) && postedBody.pins.length === 2,
+      "POST body pins",
+    );
+    assert(postedBody.host_pin?.role === "host", "POST body host_pin");
+    assert(postedBody.guest_pin?.role === "guest", "POST body guest_pin");
   } finally {
     globalThis.fetch = previousFetch;
     if (previousKey === undefined) delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;

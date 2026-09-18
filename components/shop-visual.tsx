@@ -8,7 +8,7 @@ type ShopVisualProps = {
   nameEn: string;
   photoUrl?: string;
   logoUrl?: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 };
 
 const DARK_LOGO_PATHS = new Set([
@@ -72,7 +72,8 @@ export function ShopVisual({
       ? "bg-ink"
       : "bg-foam"
     : "bg-paper-deep text-bean";
-  const sizeClass = size === "md" ? "size-12" : "size-11";
+  const sizeClass =
+    size === "lg" ? "size-14" : size === "md" ? "size-12" : "size-11";
 
   return (
     <div

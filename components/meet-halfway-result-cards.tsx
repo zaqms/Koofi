@@ -88,7 +88,7 @@ export function MeetHalfwayResultCards({
         return (
           <li
             key={pick.id}
-            className="relative rounded-2xl border border-line bg-foam px-3 py-2.5 has-[[data-pick-card-link]:focus-visible]:ring-2 has-[[data-pick-card-link]:focus-visible]:ring-bean"
+            className="relative rounded-2xl border border-line bg-foam px-3 py-3 has-[[data-pick-card-link]:focus-visible]:ring-2 has-[[data-pick-card-link]:focus-visible]:ring-bean"
           >
             <div className="flex items-start gap-2.5">
               <ShopVisual
@@ -96,7 +96,7 @@ export function MeetHalfwayResultCards({
                 nameEn={pick.nameEn}
                 photoUrl={pick.photoUrl}
                 logoUrl={pick.logoUrl}
-                size="md"
+                size="lg"
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-2">
@@ -115,28 +115,27 @@ export function MeetHalfwayResultCards({
                   </p>
                 ) : null}
                 {pick.why ? (
-                  <p className="mt-0.5 line-clamp-2 text-xs leading-4 text-ink">
+                  <p className="mt-0.5 line-clamp-2 text-xs leading-5 text-ink">
                     {pick.why}
                   </p>
                 ) : null}
+                {tags.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-paper-deep px-2 py-0.5 text-[11px] leading-4 text-ink-soft"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
-              <span className="mt-1 shrink-0" aria-hidden>
-                <ChevronIcon />
-              </span>
-            </div>
-
-            <div className="mt-2 flex items-end justify-between gap-3">
-              <div className="flex min-w-0 flex-wrap gap-1">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-paper-deep px-2 py-0.5 text-[11px] leading-4 text-ink-soft"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
+              <div className="flex shrink-0 flex-col items-end gap-2 pt-0.5">
+                <span aria-hidden>
+                  <ChevronIcon />
+                </span>
                 <MapsLink
                   href={pick.mapsHref}
                   shopId={pick.id}
@@ -153,7 +152,6 @@ export function MeetHalfwayResultCards({
                   <MapPinIcon className="size-3.5" />
                   {copy.meetHalfwayOpenMaps[language]}
                 </MapsLink>
-                <span aria-hidden className="h-3 w-px bg-line" />
                 <button
                   type="button"
                   className="relative z-10 inline-flex items-center gap-1 text-[11px] leading-4 text-ink-soft hover:text-ink"

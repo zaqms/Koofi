@@ -2,13 +2,6 @@ import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server
 import { trackAICrawlerRequest } from "@datafast/ai-crawl";
 import { LOCALE_HEADER, localeFromPathname } from "@/lib/locale";
 
-/**
- * Next.js proxy matcher. /sitemap.xml is the committed public file — skip it
- * so Googlebot/GSC never wait on a cold middleware invoke (or a DataFast throw).
- */
-export const PROXY_MATCHER =
-  "/((?!api|_next/static|_next/image|favicon.ico|sitemap\\.xml).*)";
-
 /** Server-side DataFast AI crawler tracking. Separate from the browser script in layout. */
 export function proxy(request: NextRequest, event: NextFetchEvent) {
   try {
@@ -26,6 +19,8 @@ export function proxy(request: NextRequest, event: NextFetchEvent) {
 }
 
 export const config = {
-  // Skip API/static/favicon and the CDN sitemap. robots.txt + llms.txt stay trackable.
-  matcher: [PROXY_MATCHER],
+  // Skip API/static/favicon and the CDN sitemap. Next requires a static
+  // matcher string — do not extract it to a const. robots.txt + llms.txt
+  // stay trackable. /sitemap.xml is public/sitemap.xml (no cold proxy).
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap\\.xml).*)"],
 };

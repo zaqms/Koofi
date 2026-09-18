@@ -317,9 +317,9 @@ assert(
 
 const proxySource = readRepo("proxy.ts");
 const proxyMatcherLiteral = proxySource.match(
-  /export const PROXY_MATCHER =\s*"([^"]+)"/,
+  /matcher:\s*\[\s*"([^"]+)"\s*\]/,
 )?.[1];
-assert(proxyMatcherLiteral, "proxy exports PROXY_MATCHER");
+assert(proxyMatcherLiteral, "proxy config.matcher is a static string");
 assert(
   /sitemap/.test(proxyMatcherLiteral),
   "proxy matcher skips /sitemap.xml so the first Googlebot hit is the static file",

@@ -99,8 +99,8 @@ export function MeetHalfwayResultCards({
                 size="lg"
               />
               <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="truncate text-[15px] font-semibold leading-5 text-ink">
+                <div className="flex items-start gap-2">
+                  <h3 className="min-w-0 flex-1 truncate text-[15px] font-semibold leading-5 text-ink">
                     {name}
                   </h3>
                   {index === 0 ? (
@@ -108,6 +108,9 @@ export function MeetHalfwayResultCards({
                       {copy.meetHalfwayBestMatch[language]}
                     </span>
                   ) : null}
+                  <span className="mt-0.5 shrink-0" aria-hidden>
+                    <ChevronIcon />
+                  </span>
                 </div>
                 {meta ? (
                   <p className="mt-0.5 truncate text-[11px] leading-4 text-ink-soft">
@@ -119,8 +122,8 @@ export function MeetHalfwayResultCards({
                     {pick.why}
                   </p>
                 ) : null}
-                {tags.length > 0 ? (
-                  <div className="mt-2 flex flex-wrap gap-1">
+                <div className="mt-2 flex items-end justify-between gap-3">
+                  <div className="flex min-w-0 flex-wrap gap-1">
                     {tags.map((tag) => (
                       <span
                         key={tag}
@@ -130,47 +133,45 @@ export function MeetHalfwayResultCards({
                       </span>
                     ))}
                   </div>
-                ) : null}
-              </div>
-              <div className="flex shrink-0 flex-col items-end gap-2 pt-0.5">
-                <span aria-hidden>
-                  <ChevronIcon />
-                </span>
-                <MapsLink
-                  href={pick.mapsHref}
-                  shopId={pick.id}
-                  locale={language}
-                  source="pack"
-                  className="relative z-10 inline-flex items-center gap-1 text-[11px] leading-4 text-ink-soft hover:text-ink"
-                  aria-label={copy.meetHalfwayOpenMaps[language]}
-                  title={copy.meetHalfwayOpenMaps[language]}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    postLearnMaps({ shopId: pick.id, pickIndex: index });
-                  }}
-                >
-                  <MapPinIcon className="size-3.5" />
-                  {copy.meetHalfwayOpenMaps[language]}
-                </MapsLink>
-                <button
-                  type="button"
-                  className="relative z-10 inline-flex items-center gap-1 text-[11px] leading-4 text-ink-soft hover:text-ink"
-                  aria-pressed={marked}
-                  aria-label={
-                    marked
-                      ? copy.meetHalfwaySaved[language]
-                      : copy.meetHalfwaySave[language]
-                  }
-                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                    event.stopPropagation();
-                    saved.toggle(pick.id);
-                  }}
-                >
-                  <BookmarkIcon filled={marked} />
-                  {marked
-                    ? copy.meetHalfwaySaved[language]
-                    : copy.meetHalfwaySave[language]}
-                </button>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <MapsLink
+                      href={pick.mapsHref}
+                      shopId={pick.id}
+                      locale={language}
+                      source="pack"
+                      className="relative z-10 inline-flex items-center gap-1 text-[11px] leading-4 text-ink-soft hover:text-ink"
+                      aria-label={copy.meetHalfwayOpenMaps[language]}
+                      title={copy.meetHalfwayOpenMaps[language]}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        postLearnMaps({ shopId: pick.id, pickIndex: index });
+                      }}
+                    >
+                      <MapPinIcon className="size-3.5" />
+                      {copy.meetHalfwayOpenMaps[language]}
+                    </MapsLink>
+                    <span aria-hidden className="h-3 w-px bg-line" />
+                    <button
+                      type="button"
+                      className="relative z-10 inline-flex items-center gap-1 text-[11px] leading-4 text-ink-soft hover:text-ink"
+                      aria-pressed={marked}
+                      aria-label={
+                        marked
+                          ? copy.meetHalfwaySaved[language]
+                          : copy.meetHalfwaySave[language]
+                      }
+                      onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                        event.stopPropagation();
+                        saved.toggle(pick.id);
+                      }}
+                    >
+                      <BookmarkIcon filled={marked} />
+                      {marked
+                        ? copy.meetHalfwaySaved[language]
+                        : copy.meetHalfwaySave[language]}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 

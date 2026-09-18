@@ -835,8 +835,15 @@ assert(
     chatUi.includes('surface="thread"') &&
     chatUi.includes("typeof message.halfwayMore === \"boolean\"") &&
     chatUi.includes("!showHalfwayResults") &&
-    chatUi.includes("<MeetHalfwayResultCards"),
-  "new بيننا results chrome is screen-only; home/directory thread keeps quiet غيرها",
+    chatUi.includes("<MeetHalfwayResultCards") &&
+    chatUi.includes("data-halfway-results") &&
+    chatUi.includes("`halfway-local:${landing}`") &&
+    chatUi.includes("`chat:${landing}:${selectedChipId ?? \"home\"}`") &&
+    chatUi.includes("meetHalfwayOpen &&") &&
+    chatUi.includes("!sessionExpired") &&
+    chatUi.includes("const halfwaySurface =") &&
+    !chatUi.includes("Boolean(halfwayPicker) && Boolean(halfwayResult"),
+  "new بيننا results chrome is screen-only; home/directory keep a separate thread",
 );
 const homeLanding = readFileSync(
   join(repoRoot, "components/home-landing.tsx"),
@@ -854,6 +861,15 @@ assert(
     !districtPage.includes("MeetHalfwayFeedback") &&
     !districtPage.includes("meetHalfwayMoreTitle"),
   "home + district do not mount the بيننا results chrome",
+);
+const homePage = readFileSync(join(repoRoot, "app/page.tsx"), "utf8");
+const homePageEn = readFileSync(join(repoRoot, "app/en/page.tsx"), "utf8");
+assert(
+  homePage.includes("<HomeLanding language=\"ar\" />") &&
+    !homePage.includes("meet-halfway") &&
+    homePageEn.includes("<HomeLanding language=\"en\" />") &&
+    !homePageEn.includes("meet-halfway"),
+  "AR/EN home routes stay the directory landing, not بيننا results",
 );
 const pickList = readFileSync(join(repoRoot, "components/pick-list.tsx"), "utf8");
 const resultCards = readFileSync(

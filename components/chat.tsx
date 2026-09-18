@@ -405,13 +405,19 @@ export function Chat({
   chipOpen,
 }: ChatProps) {
   const router = useRouter();
+  // Home / directory / district must not inherit a leftover بيننا thread.
+  // Results chrome is invited (`/h/{id}`) or local `/halfway` only.
   const threadKey = halfwayInvite
     ? `halfway:${halfwayInvite.id}`
     : restore
       ? `pack:${restore.packId}`
       : chipOpen
         ? `chip:${landing}:${chipOpen.chipId}`
-        : landing;
+        : selectedChipId === MEET_HALFWAY_CHIP.id
+          ? `halfway-local:${landing}`
+          : `chat:${landing}:${selectedChipId ?? "home"}`;
+  const halfwaySurface =
+    Boolean(halfwayInvite) || selectedChipId === MEET_HALFWAY_CHIP.id;
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [startFresh] = useState(() => consumeHalfwayFresh());
   const [sessionExpired, setSessionExpired] = useState(halfwayInviteExpired);
@@ -445,7 +451,10 @@ export function Chat({
   const [pickedChipId, setPickedChipId] = useState<string | null>(() => {
     if (halfwayInvite) return MEET_HALFWAY_CHIP.id;
     if (selectedChipId) return selectedChipId;
-    if (threads[threadKey]?.halfwayWaitingId || sessionHostWait()) {
+    if (
+      halfwaySurface &&
+      (threads[threadKey]?.halfwayWaitingId || sessionHostWait())
+    ) {
       return MEET_HALFWAY_CHIP.id;
     }
     return null;
@@ -454,13 +463,14 @@ export function Chat({
     () =>
       startFresh ||
       (Boolean(halfwayInvite) && !halfwayInviteExpired) ||
-      Boolean(threads[threadKey]?.halfwayWaitingId) ||
-      Boolean(sessionHostWait(halfwayInvite)) ||
+      (halfwaySurface && Boolean(threads[threadKey]?.halfwayWaitingId)) ||
+      (halfwaySurface && Boolean(sessionHostWait(halfwayInvite))) ||
       (selectedChipId === MEET_HALFWAY_CHIP.id && !halfwayInviteExpired),
   );
   const [halfwayWaitingId, setHalfwayWaitingId] = useState<string | null>(
     () => {
       if (halfwayInvite?.picks?.length) return null;
+      if (!halfwaySurface) return null;
       return (
         threads[threadKey]?.halfwayWaitingId ??
         sessionHostWait(halfwayInvite)?.id ??
@@ -470,15 +480,18 @@ export function Chat({
   );
   const [halfwayWaitingMe, setHalfwayWaitingMe] = useState<Pin | null>(
     () =>
-      threads[threadKey]?.halfwayWaitingMe ??
-      sessionHostWait(halfwayInvite)?.me ??
-      null,
+      halfwaySurface
+        ? (threads[threadKey]?.halfwayWaitingMe ??
+          sessionHostWait(halfwayInvite)?.me ??
+          null)
+        : null,
   );
   const [halfwayFriendPin, setHalfwayFriendPin] = useState<Pin | null>(null);
   const [halfwayJoined, setHalfwayJoined] = useState(
     () => Boolean(halfwayInvite?.joined || halfwayInvite?.picks?.length),
   );
   const [halfwayWaitingUi, setHalfwayWaitingUi] = useState(() => {
+    if (!halfwaySurface) return false;
     if (halfwayInvite?.picks?.length || halfwayInviteExpired) return false;
     if (threads[threadKey]?.halfwayWaitingId) return true;
     return Boolean(sessionHostWait(halfwayInvite));
@@ -1538,7 +1551,9 @@ export function Chat({
     />
   ) : null;
   const showHalfwayResults =
-    Boolean(halfwayPicker) && Boolean(halfwayResult?.picks?.length);
+    meetHalfwayOpen &&
+    !sessionExpired &&
+    Boolean(halfwayResult?.picks?.length);
   const showHalfwaySetup = Boolean(halfwayPicker) && !showHalfwayResults;
   const resultLocations =
     halfwayResult?.halfwayLocations ?? halfwayLocationsRef.current;
@@ -1626,6 +1641,7 @@ export function Chat({
       {showHalfwayResults && halfwayResult?.picks ? (
         <div
           ref={listRef}
+          data-halfway-results=""
           className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4"
           aria-live="polite"
         >

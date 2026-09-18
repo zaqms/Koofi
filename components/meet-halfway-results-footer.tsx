@@ -89,13 +89,13 @@ export function MeetHalfwayResultsFooter({
           type="button"
           disabled={disabled}
           onClick={onMore}
-          className="flex w-full flex-col items-center rounded-2xl border border-line bg-foam px-3 py-3 text-center disabled:opacity-50"
+          className="flex w-full flex-col items-center rounded-2xl bg-paper px-3 py-3.5 text-center disabled:opacity-50"
         >
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-ink">
+          <span className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink">
             <RefreshIcon />
             {copy.meetHalfwayMoreTitle[language]}
           </span>
-          <span className="mt-0.5 text-[11px] leading-4 text-ink-soft">
+          <span className="mt-1 text-[11px] leading-4 text-ink-soft">
             {copy.meetHalfwayMoreSub[language]}
           </span>
         </button>

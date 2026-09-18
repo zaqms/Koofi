@@ -9,6 +9,8 @@ import type { Language } from "@/lib/types";
 type MeetHalfwayResultsFooterProps = {
   language: Language;
   kind: HalfwayResultsFooterKind;
+  /** First-class بيننا results only. Thread/home keeps the quiet غيرها line. */
+  surface?: "screen" | "thread";
   disabled?: boolean;
   resetKey?: string;
   packId?: string;
@@ -49,6 +51,7 @@ function RefreshIcon() {
 export function MeetHalfwayResultsFooter({
   language,
   kind,
+  surface = "thread",
   disabled,
   resetKey,
   packId,
@@ -56,35 +59,52 @@ export function MeetHalfwayResultsFooter({
   onShareResults,
   onStartNew,
 }: MeetHalfwayResultsFooterProps) {
-  const more = (
-    <div className="grid gap-2">
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={onMore}
-        className="flex w-full flex-col items-center rounded-2xl border border-line bg-foam px-3 py-3 text-center disabled:opacity-50"
-      >
-        <span className="inline-flex items-center gap-1.5 text-sm font-medium text-ink">
-          <RefreshIcon />
-          {copy.meetHalfwayMoreTitle[language]}
-        </span>
-        <span className="mt-0.5 text-[11px] leading-4 text-ink-soft">
-          {copy.meetHalfwayMoreSub[language]}
-        </span>
-      </button>
-      {kind === "exhausted" ? (
-        <p className="text-center text-xs leading-5 text-ink-soft">
+  if (surface !== "screen") {
+    if (kind === "more") {
+      return (
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={onMore}
+          className="inline-flex h-10 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink disabled:opacity-50"
+        >
+          {copy.meetHalfwayMore[language]}
+        </button>
+      );
+    }
+    if (kind === "exhausted") {
+      return (
+        <p className="text-xs leading-5 text-ink-soft">
           {copy.meetHalfwayNoMore[language]}
         </p>
-      ) : null}
-    </div>
-  );
-
-  if (!onShareResults && !onStartNew && !resetKey) return more;
+      );
+    }
+    return null;
+  }
 
   return (
     <div className="grid gap-3">
-      {more}
+      <div className="grid gap-2">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={onMore}
+          className="flex w-full flex-col items-center rounded-2xl border border-line bg-foam px-3 py-3 text-center disabled:opacity-50"
+        >
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-ink">
+            <RefreshIcon />
+            {copy.meetHalfwayMoreTitle[language]}
+          </span>
+          <span className="mt-0.5 text-[11px] leading-4 text-ink-soft">
+            {copy.meetHalfwayMoreSub[language]}
+          </span>
+        </button>
+        {kind === "exhausted" ? (
+          <p className="text-center text-xs leading-5 text-ink-soft">
+            {copy.meetHalfwayNoMore[language]}
+          </p>
+        ) : null}
+      </div>
       {resetKey ? (
         <MeetHalfwayFeedback
           language={language}

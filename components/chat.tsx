@@ -1651,6 +1651,7 @@ export function Chat({
           {!busy ? (
             <MeetHalfwayResultsFooter
               language={landing}
+              surface="screen"
               kind={halfwayResultsFooterKind({
                 halfwayMore: halfwayResult.halfwayMore,
                 paged: halfwayResult.halfwayPaged,
@@ -1803,9 +1804,13 @@ export function Chat({
                   mapsSource="pack"
                 />
               ) : null}
-              {index === messages.length - 1 && !busy ? (
+              {index === messages.length - 1 &&
+              !busy &&
+              typeof message.halfwayMore === "boolean" &&
+              !showHalfwayResults ? (
                 <MeetHalfwayResultsFooter
                   language={landing}
+                  surface="thread"
                   kind={halfwayResultsFooterKind({
                     halfwayMore: message.halfwayMore,
                     paged: message.halfwayPaged,

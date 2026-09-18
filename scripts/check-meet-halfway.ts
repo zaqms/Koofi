@@ -821,12 +821,39 @@ assert(
     chatUi.includes("onStartNew") &&
     resultsFooter.includes("meetHalfwayMoreTitle") &&
     resultsFooter.includes("meetHalfwayMoreSub") &&
+    resultsFooter.includes('surface !== "screen"') &&
+    resultsFooter.includes("meetHalfwayMore") &&
     resultsFooter.includes("MeetHalfwayFeedback") &&
     resultsFooter.includes("meetHalfwayNoMore") &&
     resultsFooter.includes("meetHalfwayShareResults") &&
     resultsFooter.includes("meetHalfwayStartNew") &&
     !resultsFooter.includes("Save for later"),
   "local two-pin and /h/ guest share one بيننا results footer; Share results + Start a new Halfway",
+);
+assert(
+  chatUi.includes('surface="screen"') &&
+    chatUi.includes('surface="thread"') &&
+    chatUi.includes("typeof message.halfwayMore === \"boolean\"") &&
+    chatUi.includes("!showHalfwayResults") &&
+    chatUi.includes("<MeetHalfwayResultCards"),
+  "new بيننا results chrome is screen-only; home/directory thread keeps quiet غيرها",
+);
+const homeLanding = readFileSync(
+  join(repoRoot, "components/home-landing.tsx"),
+  "utf8",
+);
+const districtPage = readFileSync(
+  join(repoRoot, "components/district-page.tsx"),
+  "utf8",
+);
+assert(
+  !homeLanding.includes("MeetHalfwayResultCards") &&
+    !homeLanding.includes("MeetHalfwayFeedback") &&
+    !homeLanding.includes("meetHalfwayMoreTitle") &&
+    !districtPage.includes("MeetHalfwayResultCards") &&
+    !districtPage.includes("MeetHalfwayFeedback") &&
+    !districtPage.includes("meetHalfwayMoreTitle"),
+  "home + district do not mount the بيننا results chrome",
 );
 const pickList = readFileSync(join(repoRoot, "components/pick-list.tsx"), "utf8");
 const resultCards = readFileSync(

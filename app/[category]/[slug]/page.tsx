@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { DistrictPage } from "@/components/district-page";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
@@ -73,7 +74,7 @@ export default async function CategoryDistrictPage({
   return (
     <>
       <JsonLd data={districtItemListJsonLd(district, "ar")} />
-      <HomeLanding language="ar" district={district} />
+      <DistrictPage language="ar" district={district} />
     </>
   );
 }

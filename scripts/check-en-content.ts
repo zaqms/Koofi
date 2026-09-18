@@ -307,7 +307,7 @@ assert(
   "EN cafe OG image route",
 );
 assert(
-  readRepo("components/home-landing.tsx").includes("DistrictEnBody"),
+  readRepo("components/district-page.tsx").includes("DistrictEnBody"),
   "district body is wired",
 );
 const shopDirectory = readRepo("components/shop-directory.tsx");
@@ -318,7 +318,7 @@ assert(
   "district SEO body renders after cafe cards",
 );
 assert(
-  !readRepo("components/home-landing.tsx").includes(
+  !readRepo("components/district-page.tsx").includes(
     'language === "en" && district',
   ),
   "AR district body is wired for both locales",

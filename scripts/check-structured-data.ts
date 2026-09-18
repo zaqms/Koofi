@@ -302,6 +302,38 @@ assert(
   nextConfig.includes('value: "inline"'),
   "sitemap Content-Disposition is inline so GSC can read it",
 );
+assert(
+  nextConfig.includes("s-maxage=3600"),
+  "sitemap Cache-Control stays long (s-maxage=3600)",
+);
+assert(
+  !/sitemapindex|sitemap-0\.xml/i.test(staticSitemap),
+  "canonical sitemap is a urlset — no index pointing at missing sitemap-0",
+);
+assert(
+  !existsSync(join(process.cwd(), "app/sitemap.xml/route.ts")),
+  "no app/sitemap.xml route handler that can SSR-timeout",
+);
+
+const proxySource = readRepo("proxy.ts");
+const proxyMatcherLiteral = proxySource.match(
+  /matcher:\s*\[\s*"([^"]+)"\s*\]/,
+)?.[1];
+assert(proxyMatcherLiteral, "proxy config.matcher is a static string");
+assert(
+  /sitemap/.test(proxyMatcherLiteral),
+  "proxy matcher skips /sitemap.xml so the first Googlebot hit is the static file",
+);
+const proxyMatcher = JSON.parse(`"${proxyMatcherLiteral}"`) as string;
+const proxyMatcherRe = new RegExp(`^${proxyMatcher}$`);
+assert(
+  proxyMatcherRe.test("/en") && proxyMatcherRe.test("/robots.txt"),
+  "proxy still matches pages and robots.txt",
+);
+assert(
+  !proxyMatcherRe.test("/sitemap.xml"),
+  "proxy matcher must not run on /sitemap.xml",
+);
 
 const cafeCard = readRepo("components/cafe-card.tsx");
 assert(

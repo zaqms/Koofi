@@ -634,7 +634,7 @@ assert(
   "parse-intent dropped dating aliases",
 );
 assert(
-  landing.includes('? "popular"') && landing.includes("chipSharePath"),
+  landing.includes(': "popular"') && landing.includes("chipSharePath"),
   "most-popular still selects popular and locale-switches on that path",
 );
 assert(

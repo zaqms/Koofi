@@ -3465,7 +3465,7 @@ assert(
   "home drops the old district wrap",
 );
 assert(
-  homeLanding.includes('? "popular"') &&
+  homeLanding.includes(': "popular"') &&
     homeLanding.includes("selectedChipId={pageChipId}"),
   "most-popular landing selects the popular vibe chip",
 );
@@ -3500,6 +3500,29 @@ assert(
     chatSource.includes("selectedChipId === undefined") &&
     chatSource.includes("pickedChipId"),
   "chat forwards selectedChipId to vibe chips",
+);
+
+const arDistrictRoute = readFileSync(
+  join(process.cwd(), "app/[category]/[slug]/page.tsx"),
+  "utf8",
+);
+const enDistrictRoute = readFileSync(
+  join(process.cwd(), "app/en/[category]/[slug]/page.tsx"),
+  "utf8",
+);
+assert(
+  arDistrictRoute.includes("DistrictPage") &&
+    arDistrictRoute.includes("<DistrictPage language=\"ar\" district={district} />"),
+  "AR coffee-shops/{slug} uses DistrictPage",
+);
+assert(
+  enDistrictRoute.includes("DistrictPage") &&
+    enDistrictRoute.includes("<DistrictPage language=\"en\" district={district} />"),
+  "EN coffee-shops/{slug} uses DistrictPage",
+);
+assert(
+  !homeLanding.includes("district") && !homeLanding.includes("DistrictEnBody"),
+  "HomeLanding is no longer the district template",
 );
 
 console.log(`check-district-urls: ok (${areas.length} districts)`);

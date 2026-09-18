@@ -9,7 +9,7 @@ export function MapPinIcon({ className }: MapPinIconProps) {
       viewBox="0 0 24 24"
       width="18"
       height="18"
-      className={className}
+      className={className ?? "size-[18px]"}
       aria-hidden
     >
       <path

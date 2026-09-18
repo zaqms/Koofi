@@ -42,7 +42,8 @@ export type AnalyticsEventName =
   | "meet_halfway_results_share"
   | "meet_halfway_start_new"
   | "meet_halfway_restore"
-  | "meet_halfway_expired";
+  | "meet_halfway_expired"
+  | "meet_halfway_feedback";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing" | "halfway";
@@ -55,6 +56,12 @@ export type MeetHalfwayPinWhich = "a" | "b" | "self";
 export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
 export type MeetHalfwayResultSource = "local" | "invite";
 export type MeetHalfwayStartSource = "results" | "expired";
+export type MeetHalfwayFeedbackHelpful = "yes" | "no";
+export type MeetHalfwayFeedbackReason =
+  | "too_far"
+  | "vibe"
+  | "more_options"
+  | "other";
 
 export type AnalyticsParams = {
   locale?: Language;
@@ -91,6 +98,10 @@ export type AnalyticsParams = {
   session_id?: string;
   /** Same `/h/{id}` token as pack_id — GTM-friendly alias. */
   invite_id?: string;
+  /** بيننا results feedback — yes / no only, no free-text. */
+  helpful?: MeetHalfwayFeedbackHelpful;
+  /** Optional chip after Not really. */
+  reason?: MeetHalfwayFeedbackReason;
 };
 
 const DEDUPE_MS = 400;

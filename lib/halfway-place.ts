@@ -1,6 +1,6 @@
 import { listDiscoveryShops } from "./catalog";
 import { copy } from "./copy";
-import { haversineKm } from "./distance";
+import { formatDistanceKm, haversineKm } from "./distance";
 import { neighborhoodCentroid } from "./neighborhood-tight";
 import { neighborhoodLabel } from "./neighborhoods";
 import { NEIGHBORHOOD_IDS, type Language, type NeighborhoodId, type Pin } from "./types";
@@ -52,6 +52,34 @@ export function estimateDriveMinutes(from: Pin, to: Pin): number {
 export function formatDriveMinutes(minutes: number, language: Language): string {
   if (!Number.isFinite(minutes) || minutes <= 0) return "";
   return language === "ar" ? `${minutes} د` : `${minutes} min`;
+}
+
+/** Both submitted areas — AR uses a bullet, EN a middot. Never coordinates. */
+export function formatHalfwayLocationLine(
+  me: Pin | null | undefined,
+  friend: Pin | null | undefined,
+  language: Language,
+): string {
+  const labels = [
+    formatHalfwayPlaceLabel(me, language),
+    formatHalfwayPlaceLabel(friend, language),
+  ].filter((label, index, rows) => Boolean(label) && rows.indexOf(label) === index);
+  return labels.join(language === "ar" ? " • " : " · ");
+}
+
+/** Compact card meta: `10 km · Al Rihaniyah` / `10 كم · الرمانية`. */
+export function formatHalfwayShopMeta(
+  neighborhood: string,
+  shop: Pin | null | undefined,
+  origin: Pin | null | undefined,
+  language: Language,
+): string {
+  const area = neighborhood.trim();
+  if (!shop || !origin) return area;
+  const km = haversineKm(origin, shop);
+  const distance = formatDistanceKm(km, language);
+  if (!distance) return area;
+  return area ? `${distance} · ${area}` : distance;
 }
 
 export function pinFromHalfwayInput(row: {

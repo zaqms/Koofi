@@ -8,6 +8,7 @@ type ShopVisualProps = {
   nameEn: string;
   photoUrl?: string;
   logoUrl?: string;
+  size?: "sm" | "md";
 };
 
 const DARK_LOGO_PATHS = new Set([
@@ -59,6 +60,7 @@ export function ShopVisual({
   nameEn,
   photoUrl,
   logoUrl,
+  size = "sm",
 }: ShopVisualProps) {
   const mark = shopMarkLetters(nameEn, nameAr);
   const [photoFailed, setPhotoFailed] = useState(false);
@@ -70,10 +72,11 @@ export function ShopVisual({
       ? "bg-ink"
       : "bg-foam"
     : "bg-paper-deep text-bean";
+  const sizeClass = size === "md" ? "size-12" : "size-11";
 
   return (
     <div
-      className={`relative size-11 shrink-0 overflow-hidden rounded-xl ${tileClass}`}
+      className={`relative ${sizeClass} shrink-0 overflow-hidden rounded-xl ${tileClass}`}
     >
       {showLogo ? (
         // Catalog logoUrl only. next/image needs a known host; local /logos files stay on <img>.

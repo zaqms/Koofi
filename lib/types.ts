@@ -136,6 +136,8 @@ export type ChatPick = {
   reviewSnippet?: string;
   lat?: number;
   lng?: number;
+  /** 1–2 catalog vibe labels for بيننا result cards. */
+  tags?: string[];
 };
 
 export type ShopSuggestion = {

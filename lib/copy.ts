@@ -166,16 +166,24 @@ export const copy = {
     en: "Maps pin",
   },
   meetHalfwayFairSub: {
-    ar: "عادلة للوقت والمسافة",
-    en: "Balanced for time and distance",
+    ar: "مسافة عادلة، وقعدة أحلى.",
+    en: "A fair distance, a better meet-up.",
   },
   meetHalfwayBestMatch: {
-    ar: "الأنسب",
-    en: "Best match",
+    ar: "الأكثر مناسبة",
+    en: "Top Match",
   },
   meetHalfwayOpenMaps: {
     ar: "افتح في ماب",
     en: "Open in Maps",
+  },
+  meetHalfwaySave: {
+    ar: "احفظ",
+    en: "Save",
+  },
+  meetHalfwaySaved: {
+    ar: "محفوظ",
+    en: "Saved",
   },
   meetHalfwayBadPin: {
     ar: "ما قدرت أقرأ الدبوس. حط رابط مشاركة قوقل ماب.",
@@ -190,8 +198,8 @@ export const copy = {
     en: "Location is off on this phone. Paste a Google Maps link below.",
   },
   meetHalfwayThree: {
-    ar: "ثلاث قهاوي بينكم",
-    en: "Three cafes between you",
+    ar: "3 قهاوي بينكم",
+    en: "3 cafés between you",
   },
   meetHalfwayEmpty: {
     ar: "ما في أكثر بهالمنطقة",
@@ -233,9 +241,65 @@ export const copy = {
     ar: "غيرها",
     en: "Others",
   },
+  meetHalfwayMoreTitle: {
+    ar: "اعرض 3 قهاوي مختلفة",
+    en: "Show 3 different cafés",
+  },
+  meetHalfwayMoreSub: {
+    ar: "خلنا نطلع لك ترشيحات جديدة",
+    en: "Get a new set of recommendations",
+  },
   meetHalfwayNoMore: {
     ar: "ما في أكثر بهالمنطقة",
     en: "That's all in this area.",
+  },
+  meetHalfwayFeedbackTitle: {
+    ar: "هل النتائج كانت مناسبة؟",
+    en: "Were these results helpful?",
+  },
+  meetHalfwayFeedbackSub: {
+    ar: "ملاحظتك تساعدنا نحسن بيننا.",
+    en: "Your feedback helps us improve.",
+  },
+  meetHalfwayFeedbackYes: {
+    ar: "نعم",
+    en: "Yes",
+  },
+  meetHalfwayFeedbackNo: {
+    ar: "مو مرّة",
+    en: "Not really",
+  },
+  meetHalfwayFeedbackThanksYes: {
+    ar: "شكراً على ملاحظتك!",
+    en: "Thanks for the feedback!",
+  },
+  meetHalfwayFeedbackThanksNo: {
+    ar: "شكراً — كذا تساعدنا نحسن بيننا.",
+    en: "Thanks — this helps us improve Halfway.",
+  },
+  meetHalfwayFeedbackWhy: {
+    ar: "وش اللي نقدر نحسّنه؟",
+    en: "What could be better?",
+  },
+  meetHalfwayFeedbackTooFar: {
+    ar: "بعيدة",
+    en: "Too far",
+  },
+  meetHalfwayFeedbackVibe: {
+    ar: "مو جوي",
+    en: "Not my vibe",
+  },
+  meetHalfwayFeedbackMoreOptions: {
+    ar: "أبي خيارات أكثر",
+    en: "Need more options",
+  },
+  meetHalfwayFeedbackOther: {
+    ar: "شي ثاني",
+    en: "Something else",
+  },
+  meetHalfwayFeedbackTellMore: {
+    ar: "قل لنا أكثر",
+    en: "Tell us more",
   },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {

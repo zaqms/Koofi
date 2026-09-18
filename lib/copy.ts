@@ -177,14 +177,6 @@ export const copy = {
     ar: "افتح في ماب",
     en: "Open in Maps",
   },
-  meetHalfwaySave: {
-    ar: "احفظ",
-    en: "Save",
-  },
-  meetHalfwaySaved: {
-    ar: "محفوظ",
-    en: "Saved",
-  },
   meetHalfwayBadPin: {
     ar: "ما قدرت أقرأ الدبوس. حط رابط مشاركة قوقل ماب.",
     en: "Couldn't read that pin. Paste a Google Maps share link.",

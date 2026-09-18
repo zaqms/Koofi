@@ -137,8 +137,8 @@ assert(
     copy.includes("Were these results helpful?") &&
     copy.includes("مو مرّة") &&
     copy.includes("Not really") &&
-    copy.includes("احفظ") &&
-    copy.includes('"Save"') &&
+    !copy.includes("meetHalfwaySave") &&
+    !copy.includes("meetHalfwaySaved") &&
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
     copy.includes("اعزم خويك") &&
@@ -883,11 +883,13 @@ const feedbackUi = readFileSync(
 assert(
   resultCards.includes("meetHalfwayBestMatch") &&
     resultCards.includes("meetHalfwayOpenMaps") &&
-    resultCards.includes("meetHalfwaySave") &&
     resultCards.includes("formatHalfwayShopMeta") &&
-    resultCards.includes("useSavedShopIds") &&
-    resultCards.includes("rtl:rotate-180"),
-  "بيننا result cards keep Maps, Save, Top Match, and RTL chevron",
+    resultCards.includes("rtl:rotate-180") &&
+    !resultCards.includes("meetHalfwaySave") &&
+    !resultCards.includes("useSavedShopIds") &&
+    !resultCards.includes("BookmarkIcon") &&
+    !resultCards.includes("احفظ"),
+  "بيننا result cards keep Maps, Top Match, and RTL chevron — no Save without login",
 );
 assert(
   feedbackUi.includes("meet_halfway_feedback") &&

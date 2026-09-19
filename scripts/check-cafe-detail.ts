@@ -114,7 +114,7 @@ assert(detail.includes("SHOW_DETAIL_FAVORITE"), "heart is flagged");
 assert(detail.includes("{SHOW_DETAIL_FAVORITE ?"), "heart is not rendered while parked");
 assert(detail.includes("size=\"listing\""), "floating logo uses listing treatment");
 assert(detail.includes("start-1 -bottom-8"), "logo overlaps hero start edge");
-assert(detail.includes("rounded-[10px]"), "overlay controls are rounded squares");
+assert(detail.includes("rounded-[8px]"), "overlay controls are rounded squares");
 assert(detail.includes("rtl:scale-x-[-1]"), "back + chevron flip with RTL");
 assert(detail.includes("copy.takeMeThere"), "Maps label is locked product copy");
 assert(!detail.includes("خذني"), "do not use the mock’s خذني له");

@@ -41,10 +41,10 @@ type CafeDetailProps = {
 };
 
 const heroSquareClass =
-  "inline-flex size-10 items-center justify-center rounded-[10px] bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider";
+  "inline-flex size-11 items-center justify-center rounded-[8px] bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider";
 
 const actionClass =
-  "inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[14px] border border-wain-divider bg-foam px-3 text-sm font-medium text-ink hover:border-bean";
+  "inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[12px] border border-wain-divider bg-foam px-3 text-sm font-medium text-ink hover:border-bean";
 
 export function CafeDetail({
   shop,
@@ -200,7 +200,7 @@ function CafeDetailHero({
   return (
     <div
       data-cafe-detail-hero=""
-      className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-wain-warm-cream touch-pan-y"
+      className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-wain-warm-cream ring-1 ring-wain-divider touch-pan-y"
       onPointerDown={(event) => {
         startX.current = event.clientX;
       }}

@@ -45,7 +45,7 @@ export function ShareListingButton({
         onClick={() => {
           void onShare();
         }}
-        className="inline-flex size-10 items-center justify-center rounded-[10px] bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider"
+        className="inline-flex size-11 items-center justify-center rounded-[8px] bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider"
         lang={language}
         translate="no"
         aria-label={copy.listingShare[language]}
@@ -65,7 +65,7 @@ export function ShareListingButton({
         onClick={() => {
           void onShare();
         }}
-        className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[14px] border border-wain-divider bg-foam px-3 text-sm font-medium text-ink hover:border-bean"
+        className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[12px] border border-wain-divider bg-foam px-3 text-sm font-medium text-ink hover:border-bean"
         lang={language}
         translate="no"
         aria-label={copy.listingShare[language]}

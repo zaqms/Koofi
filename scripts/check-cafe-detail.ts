@@ -2,9 +2,10 @@
  * Approved cafe detail lock (Passport /c/[id], 19 Sep 2026).
  * Wain Paper language. Soft Places parked. Heart parked.
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS,
   cafeDetailDescription,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
@@ -76,14 +77,28 @@ assert(
 );
 
 assert(
-  cafeDetailHeroPhotos({}).length === 0,
-  "no invented hero when catalog has no photoUrl",
+  cafeDetailHeroPhotos({ id: "camel-step-hittin" }).length === 0,
+  "no invented hero on other Camel Step rows",
 );
 assert(
-  cafeDetailHeroPhotos({ photoUrl: "/photos/camel.jpg" }).join(",") ===
-    "/photos/camel.jpg",
-  "catalog photoUrl is the only hero frame",
+  cafeDetailHeroPhotos({ id: "percent-arabica-hittin", photoUrl: "/photos/x.jpg" }).join(
+    ",",
+  ) === "/photos/x.jpg",
+  "other shops still use catalog photoUrl only",
 );
+assert(
+  cafeDetailHeroPhotos({ id: "camel-step-al-rahmaniyyah" }).join(",") ===
+    CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS.join(","),
+  "Rahmaniyyah Camel Step has the 3 sample hero slides",
+);
+assert(
+  CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS.length === 3,
+  "sample carousel is 1/3",
+);
+for (const src of CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS) {
+  assert(src.startsWith("/cafe-heroes/camel-step-al-rahmaniyyah/"), `${src} is shop-scoped`);
+  assert(existsSync(join("public", src.slice(1))), `${src} is on disk`);
+}
 assert(cafeDetailDescription({ id: "camel-step-al-rahmaniyyah" }) === null, "no AI description");
 assert(
   cafeDetailHoursStatus({ id: "camel-step-al-rahmaniyyah", hours: "Open daily" }, "en") ===
@@ -161,7 +176,9 @@ const tonight = read("lib/tonight.ts");
 assert(tonight.includes("SHOW_DETAIL_FAVORITE = false"), "favorite flag defaults false");
 
 const helper = read("lib/cafe-detail.ts");
-assert(helper.includes("photoUrl"), "heroes are catalog photos only");
+assert(helper.includes("photoUrl"), "other shops still read catalog photoUrl");
+assert(helper.includes("camel-step-al-rahmaniyyah"), "sample heroes are this shop only");
+assert(!helper.includes("camel-step-hittin"), "do not invent Hittin Camel Step photos");
 assert(!helper.includes("logoUrl"), "logos are not stretched into the hero");
 assert(!/Soft Places/i.test(helper), "Soft Places parked on helpers");
 assert(!/\bween\b/i.test(helper), "never ween");

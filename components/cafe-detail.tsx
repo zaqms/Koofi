@@ -241,7 +241,7 @@ function CafeDetailHero({
 
       {photos.length > 0 ? (
         <p
-          className="absolute bottom-3 end-3 rounded-full bg-ink/55 px-2 py-0.5 text-[11px] leading-4 text-foam"
+          className="absolute bottom-3 end-3 z-10 rounded-full bg-ink/55 px-2 py-0.5 text-[11px] leading-4 text-foam"
           dir="ltr"
         >
           {index + 1}/{photos.length}

@@ -53,10 +53,12 @@ assert(
 
 const cafePage = readFileSync("components/cafe-card-page.tsx", "utf8");
 const cafePassport = readFileSync("components/cafe-passport-card.tsx", "utf8");
+const cafePresence = readFileSync("components/cafe-presence-row.tsx", "utf8");
 const cafeRoute = readFileSync("app/c/[id]/page.tsx", "utf8");
 const cafeRouteEn = readFileSync("app/en/c/[id]/page.tsx", "utf8");
 assert(cafePage.includes("ShopUpvoteProvider"), "card page shares upvote provider");
-assert(cafePassport.includes("DirectoryUpvote"), "Passport footer reuses directory ▲");
+assert(cafePassport.includes("CafePresenceRow"), "Passport footer reuses directory like");
+assert(cafePresence.includes("DirectoryUpvote"), "presence row renders like control");
 for (const [name, source] of [
   ["c/[id]", cafeRoute],
   ["en/c/[id]", cafeRouteEn],
@@ -68,7 +70,22 @@ for (const [name, source] of [
 }
 
 const directoryCard = readFileSync("components/directory-card.tsx", "utf8");
-assert(directoryCard.includes("DirectoryUpvote"), "directory rows render ▲");
+assert(directoryCard.includes("DirectoryUpvote"), "directory rows render like control");
+
+const upvote = readFileSync("components/directory-upvote.tsx", "utf8");
+assert(!upvote.includes("▲"), "like control has no triangle glyph");
+assert(!upvote.includes("👍"), "like control is SVG, not emoji");
+assert(upvote.includes("ThumbsUpIcon"), "like control uses thumb-up icon");
+assert(upvote.includes("count >= 1"), "count hidden when zero");
+assert(upvote.includes("copy.shopUpvote[language]"), "accessible name stays أعجبني / Upvote");
+assert(
+  /aria-label=\{accessibleName\}/.test(upvote),
+  "aria-label uses like copy, not a new metric",
+);
+
+const icon = readFileSync("components/thumbs-up-icon.tsx", "utf8");
+assert(icon.includes("aria-hidden"), "thumb icon is decorative");
+assert(icon.includes('strokeWidth="1.75"'), "thumb matches Wain stroke");
 
 const picker = readFileSync("lib/picker.ts", "utf8");
 assert(!picker.includes("upvote"), "picker must not read upvotes");

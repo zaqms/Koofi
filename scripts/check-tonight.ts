@@ -328,17 +328,17 @@ assert(!viral.includes("line: inviteLine"), "invite must not bake copy onto the 
 assert(!viral.includes("line={inviteLine}"), "invite preview is Tonight framing");
 
 const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
-assert(passport.includes("CafePresenceRow"), "Passport has ▲ · share · وين؟ · Maps row");
+assert(passport.includes("CafePresenceRow"), "Passport has like · share · وين؟ · Maps row");
 assert(!passport.includes("ShareListingButton"), "Passport listing share lives in the presence row");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
-assert(thin.includes("CafePresenceRow"), "thin card has ▲ · share · وين؟ · Maps row");
+assert(thin.includes("CafePresenceRow"), "thin card has like · share · وين؟ · Maps row");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here stays quiet");
 assert(!thin.includes("ShareListingButton"), "thin listing share lives in the presence row");
 
 const presence = readFileSync("components/cafe-presence-row.tsx", "utf8");
-assert(presence.includes("DirectoryUpvote"), "row has ▲");
+assert(presence.includes("DirectoryUpvote"), "row has like control");
 assert(presence.includes("ShareListingButton"), "row has compact listing share");
 assert(presence.includes("ViralShareActions"), "row has وين؟ invite");
 assert(presence.includes("takeMeThere"), "row Maps is ودّني هناك");

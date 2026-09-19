@@ -17,7 +17,7 @@ type CafePresenceRowProps = {
 };
 
 /**
- * Locked cafe actions: compact ▲, listing-share icon, wider gold وين؟,
+ * Locked cafe actions: compact like, listing-share icon, wider gold وين؟,
  * Maps hugging its label. No X / Stories / Snap grid.
  */
 export function CafePresenceRow({

@@ -18,7 +18,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
-- Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, vibe tags. Unclaimed shops stay a thin card. Verified shops unlock the richer Passport card (owner photos, brewing/note, owner-supplied hours only, thin offer, optional phone/IG, share, shared ▲ upvote, Maps CTA). Do not invent hours. Do not ask people to share a Koofi URL.
+- Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, vibe tags. Unclaimed shops stay a thin card. Verified shops unlock the richer Passport card (owner photos, brewing/note, owner-supplied hours only, thin offer, optional phone/IG, share, shared like, Maps CTA). Do not invent hours. Do not ask people to share a Koofi URL.
 - **وين؟ / wain?** is the primary share on Passport and thin cards. Prefill `وين؟ أنا بـ {name}` / `wain? I'm at {name}` + `/c/{id}?from=tonight`. Share sends a photo-forward 9:16 image (full-bleed `passport.photos[0]` or logo, `wain.lol` watermark) **and** that copy together. If Web Share cannot attach a file, we download the image and copy the text. The PNG embeds the hero from disk so Preview SSO cannot strip the photo. Invite copy stays on the share text — never baked onto the card. Tracked as `invite_open` / `invite_share`.
 - **بطاقة الليلة / Tonight’s card** is parked (`SHOW_TONIGHT_CARD = false`). Code and `tonight_*` events stay wired but are not user-facing.
 - Each pick card has a small 44px letter mark from the shop name (IK, WO, …). A `photoUrl` is shown only if Amjad sets one. Do not scrape Maps photos.
@@ -181,8 +181,8 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `share_listing` | Share one shop | `shop_id`, `locale`, `source` |
 | `share_inbound` | Restore URL with `from=wa` | `kind`, `from`, optional `pack_id` / `shop_id` |
 | `feedback_add` / `feedback_vote` | Ideas board | `locale` only |
-| `cafe_upvote` | Directory-list ▲ on a shop | `shop_id`, `locale` |
-| `cafe_unvote` | Directory-list ▲ undo on a shop | `shop_id`, `locale` |
+| `cafe_upvote` | Directory-list like on a shop | `shop_id`, `locale` |
+| `cafe_unvote` | Directory-list like undo on a shop | `shop_id`, `locale` |
 | `tonight_card_open` | Tonight’s card composer opened (parked — unused while `SHOW_TONIGHT_CARD` is false) | `shop_id`, `locale` |
 | `tonight_card_mint` | Tonight card image generated (parked) | `shop_id`, `locale` |
 | `tonight_card_share` | Tonight card share fired (parked) | `shop_id`, `locale`, `channel` (`system` / `x` / `ig` / `snap` / `download` / `copy`) |
@@ -378,13 +378,13 @@ Arabic: **ما فيه أفكار للحين. اكتب وحدة تحت.**
 
 ## Directory upvotes
 
-Product Hunt–style ▲ + count on directory list rows (home list, district pages, and New this week because those rows are `DirectoryCard`) and on the **verified Passport cafe card**. Same Neon `shop_upvotes` + `wain_vid` — one count. Unclaimed thin cards stay without ▲.
+Thumb-up like (`أعجبني` / `Upvote`) + count on directory list rows (home list, district pages, and New this week because those rows are `DirectoryCard`) and on cafe detail (Passport + thin via `CafePresenceRow`). Same Neon `shop_upvotes` + `wain_vid` — one count. Count is hidden at 0; the thumb alone is enough.
 
 Social proof only. Counts do **not** reorder chat three-picks, the directory, New this week, or district filters. Owners cannot buy rank. No downvotes, stars, or comments. Been here stays a separate localStorage mark on cafe cards.
 
 Vote model: toggle upvote. Cookie voter `wain_vid` (same as /feedback). First tap adds a receipt and +1. Second tap deletes that receipt and −1 (never below 0). Same action twice is idempotent — count does not double. Same Neon `DATABASE_URL` (`shop_upvotes` + `shop_vote_receipts`). On Vercel without it, vote returns `503` / `no_storage`. Local `next dev` may use memory.
 
-Visitor copy is short: ▲ + count, `أعجبني` / `Upvote`. Optional `cafe_upvote` / `cafe_unvote` dataLayer events send `shop_id` + `locale` only.
+Visitor copy is short: thumb-up + count when ≥ 1, `أعجبني` / `Upvote`. Optional `cafe_upvote` / `cafe_unvote` dataLayer events send `shop_id` + `locale` only.
 
 ## Owner claim (interim WhatsApp chat)
 
@@ -400,7 +400,7 @@ Cloud API OTP (`/api/claims/otp` submit) stays parked — visitors claim over Wh
 
 Owner fields come from `shop_claims.passport` when present: photos, brewing/note, hours (owner-supplied only — **never invent hours**), thin offer, optional phone/IG. Platform still owns name, district, and the Maps pin. Claim does not reorder picks or the directory.
 
-Verified / معتمد is a small pill on the Passport card and on directory rows (one `GET /api/claims` list of verified ids). Shared ▲ upvote on the Passport footer reuses `ShopUpvoteProvider`.
+Verified / معتمد is a small pill on the Passport card and on directory rows (one `GET /api/claims` list of verified ids). Shared like control on the Passport footer reuses `ShopUpvoteProvider`.
 
 ### Preview fixture (not production)
 

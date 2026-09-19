@@ -16,6 +16,7 @@ import {
   tonightDistrict,
   tonightImagePath,
   tonightShareText,
+  SHOW_INVITE_CTA,
   SHOW_TONIGHT_CARD,
 } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
@@ -125,30 +126,36 @@ export function ViralShareActions({
       ? "inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam"
       : "inline-flex min-h-11 w-full items-center justify-center rounded-2xl border border-gold bg-passport-wash px-3 text-sm text-gold-deep hover:bg-foam";
 
+  const showViralCtas = SHOW_TONIGHT_CARD || SHOW_INVITE_CTA;
+
   return (
     <>
-      <div className="flex min-w-0 flex-1 items-center">
-        {SHOW_TONIGHT_CARD ? (
-          <button
-            type="button"
-            className={tonightClass}
-            onClick={openTonight}
-            lang={language}
-          >
-            {copy.tonightCard[language]}
-          </button>
-        ) : null}
-        <button
-          type="button"
-          className={inviteClass}
-          onClick={() => {
-            void handleInviteClick();
-          }}
-          lang={language}
-        >
-          {copy.inviteCta[language]}
-        </button>
-      </div>
+      {showViralCtas ? (
+        <div className="flex min-w-0 flex-1 items-center">
+          {SHOW_TONIGHT_CARD ? (
+            <button
+              type="button"
+              className={tonightClass}
+              onClick={openTonight}
+              lang={language}
+            >
+              {copy.tonightCard[language]}
+            </button>
+          ) : null}
+          {SHOW_INVITE_CTA ? (
+            <button
+              type="button"
+              className={inviteClass}
+              onClick={() => {
+                void handleInviteClick();
+              }}
+              lang={language}
+            >
+              {copy.inviteCta[language]}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       {SHOW_TONIGHT_CARD && sheet === "tonight" ? (
         <TonightSheet
           shop={shop}
@@ -158,7 +165,7 @@ export function ViralShareActions({
           onClose={() => setSheet(null)}
         />
       ) : null}
-      {sheet === "invite" ? (
+      {SHOW_INVITE_CTA && sheet === "invite" ? (
         <InviteSheet
           shop={shop}
           language={language}

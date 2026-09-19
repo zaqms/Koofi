@@ -22,6 +22,7 @@ import {
   tonightDistrict,
   tonightFilename,
   tonightHeroForShop,
+  SHOW_INVITE_CTA,
   SHOW_TONIGHT_CARD,
   tonightImagePath,
   tonightShareText,
@@ -74,6 +75,7 @@ assert(
   "canShare false forces download+copy",
 );
 assert(SHOW_TONIGHT_CARD === false, "بطاقة الليلة is parked from cafe cards");
+assert(SHOW_INVITE_CTA === false, "وين؟ / wain? CTA is parked from cafe cards");
 assert(copy.tonightCard.ar === "بطاقة الليلة", "parked AR tonight label stays");
 assert(copy.tonightCard.en === "Tonight’s card", "parked EN tonight label stays");
 assert(copy.tonightEyebrow.ar === "الليلة", "AR ephemeral eyebrow");
@@ -294,10 +296,12 @@ for (const file of files) {
 
 const viral = readFileSync("components/viral-share.tsx", "utf8");
 assert(viral.includes("SHOW_TONIGHT_CARD"), "بطاقة الليلة is gated");
+assert(viral.includes("SHOW_INVITE_CTA"), "وين؟ CTA is gated");
+assert(viral.includes("{SHOW_INVITE_CTA ?"), "invite button is not rendered while parked");
 assert(viral.includes("tonight_card_open"), "tonight_* stays wired while parked");
 assert(viral.includes("tonight_card_mint"), "mint fires tonight_card_mint");
 assert(viral.includes("tonight_card_share"), "share fires tonight_card_share");
-assert(viral.includes("invite_open"), "invite sheet fires invite_open");
+assert(viral.includes("invite_open"), "invite sheet stays wired while parked");
 assert(viral.includes("invite_share"), "invite share is separate");
 assert(viral.includes("navigator.share"), "Web Share API");
 assert(viral.includes("canShareImageAndText"), "share requires image+text");
@@ -328,19 +332,23 @@ assert(!viral.includes("line: inviteLine"), "invite must not bake copy onto the 
 assert(!viral.includes("line={inviteLine}"), "invite preview is Tonight framing");
 
 const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
-assert(passport.includes("CafePresenceRow"), "Passport has like · share · وين؟ · Maps row");
+assert(passport.includes("CafePresenceRow"), "Passport has like · share · Maps row");
 assert(!passport.includes("ShareListingButton"), "Passport listing share lives in the presence row");
+assert(!passport.includes("inviteCta"), "Passport does not render وين؟ copy");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
-assert(thin.includes("CafePresenceRow"), "thin card has like · share · وين؟ · Maps row");
+assert(thin.includes("CafePresenceRow"), "thin card has like · share · Maps row");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here stays quiet");
 assert(!thin.includes("ShareListingButton"), "thin listing share lives in the presence row");
+assert(!thin.includes("inviteCta"), "thin does not render وين؟ copy");
 
 const presence = readFileSync("components/cafe-presence-row.tsx", "utf8");
 assert(presence.includes("DirectoryUpvote"), "row has like control");
 assert(presence.includes("ShareListingButton"), "row has compact listing share");
-assert(presence.includes("ViralShareActions"), "row has وين؟ invite");
+assert(presence.includes("ViralShareActions"), "row still mounts parked وين؟ invite");
+assert(presence.includes("SHOW_INVITE_CTA"), "وين؟ CTA is flagged off the row");
+assert(!presence.includes("inviteCta"), "row does not hardcode وين؟ copy");
 assert(presence.includes("takeMeThere"), "row Maps is ودّني هناك");
 assert(presence.includes("compact"), "listing share is icon-only");
 assert(presence.includes('source="card"'), "listing share is the card path");

@@ -17,8 +17,11 @@ export const TONIGHT_IMAGE_SIZE = { width: 1080, height: 1920 } as const;
 export const TONIGHT_WATERMARK = "wain.lol";
 export const TONIGHT_WATERMARK_PX = 42;
 
-/** Parked. بطاقة الليلة stays in code; cafe cards lead with وين؟ / wain? */
+/** Parked. بطاقة الليلة stays in code; flip to show the mint sheet again. */
 export const SHOW_TONIGHT_CARD = false;
+
+/** Parked until share-tonight strategy is locked. Invite sheet + mint stay in code. */
+export const SHOW_INVITE_CTA = false;
 
 export const VIRAL_SHARE_CHANNELS = [
   "system",

@@ -370,6 +370,30 @@ export const copy = {
     ar: "الحي",
     en: "Neighborhood",
   },
+  detailStatus: {
+    ar: "الحالة",
+    en: "Status",
+  },
+  detailVibe: {
+    ar: "التصنيف",
+    en: "Vibe",
+  },
+  detailSeeAll: {
+    ar: "عرض الكل",
+    en: "See all",
+  },
+  detailOpenNow: {
+    ar: "مفتوح الآن",
+    en: "Open now",
+  },
+  detailClosedNow: {
+    ar: "مغلق",
+    en: "Closed",
+  },
+  detailFavorite: {
+    ar: "مفضلة",
+    en: "Favorite",
+  },
   newThisWeek: {
     ar: "جديد هالأسبوع",
     en: "New this week",
@@ -673,6 +697,11 @@ export const copy = {
   },
   takeMeThere: {
     ar: "ودّني هناك",
+    en: "Take me there",
+  },
+  /** Public /c/[id] detail Maps CTA. Other surfaces keep takeMeThere. */
+  detailTakeMeThere: {
+    ar: "خذني له",
     en: "Take me there",
   },
   nowPouring: {

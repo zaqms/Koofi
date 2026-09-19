@@ -4,6 +4,7 @@ import Link from "next/link";
 type EnRichTextProps = {
   markdown: string;
   skipHeadingLevel1?: boolean;
+  className?: string;
 };
 
 function EnLink({ href, children }: { href: string; children: ReactNode }) {
@@ -79,6 +80,7 @@ function isList(block: string): boolean {
 export function EnRichText({
   markdown,
   skipHeadingLevel1 = false,
+  className = "space-y-3 text-sm leading-6 text-ink",
 }: EnRichTextProps) {
   const items = blocks(markdown)
     .map((block) => {
@@ -118,5 +120,5 @@ export function EnRichText({
     })
     .filter(Boolean);
 
-  return <div className="space-y-3 text-sm leading-6 text-ink">{items}</div>;
+  return <div className={className}>{items}</div>;
 }

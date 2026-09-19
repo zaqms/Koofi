@@ -2,28 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { CafeClaimFooter } from "@/components/cafe-claim-footer";
+import { CafeDetail } from "@/components/cafe-detail";
 import {
   CafePassportCard,
   type PassportSocial,
 } from "@/components/cafe-passport-card";
 import { CardBeen } from "@/components/card-been";
-import { CafePresenceRow } from "@/components/cafe-presence-row";
-import { ShopDistance } from "@/components/shop-distance";
-import { ShopVisual } from "@/components/shop-visual";
 import {
   emptyPassport,
   preferPassportUi,
   type ClaimStatus,
   type PassportOwnerFields,
 } from "@/lib/claims-types";
-import { copy } from "@/lib/copy";
-import { neighborhoodLabel } from "@/lib/neighborhoods";
-import { SHOW_BEEN_HERE } from "@/lib/tonight";
+import type { DirectoryShop } from "@/lib/directory";
 import { woodsPassportFixture } from "@/lib/passport-preview";
-import { officialShopCoords } from "@/lib/place-coords";
-import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
+import { SHOW_BEEN_HERE } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
-import { vibeLine } from "@/lib/vibe-labels";
 
 type CafeCardProps = {
   shop: Shop;
@@ -33,6 +27,7 @@ type CafeCardProps = {
   backHref?: string;
   localeHref?: string;
   social?: PassportSocial | null;
+  siblings?: DirectoryShop[];
 };
 
 type ClaimPayload = {
@@ -50,6 +45,7 @@ export function CafeCard({
   backHref = "/",
   localeHref,
   social = null,
+  siblings = [],
 }: CafeCardProps) {
   const [status, setStatus] = useState<ClaimStatus>(
     previewPassport ? "verified" : "none",
@@ -110,7 +106,13 @@ export function CafeCard({
   }
 
   return (
-    <ThinCafeCard shop={shop} language={language} status={status} />
+    <ThinCafeCard
+      shop={shop}
+      language={language}
+      status={status}
+      backHref={backHref}
+      siblings={siblings}
+    />
   );
 }
 
@@ -118,85 +120,29 @@ function ThinCafeCard({
   shop,
   language,
   status,
+  backHref,
+  siblings,
 }: {
   shop: Shop;
   language: Language;
   status: ClaimStatus;
+  backHref: string;
+  siblings: DirectoryShop[];
 }) {
-  const site = shop.officialSite?.trim();
-  const primary = shopDisplayName(shop, language);
-  const dir = language === "ar" ? "rtl" : "ltr";
-  const area =
-    language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
-  const vibe = vibeLine(shop, language);
-  const coords = officialShopCoords(shop);
-
   return (
-    <article
-      className="mt-4 rounded-[28px] border border-line bg-foam p-5 shadow-[0_12px_40px_rgba(28,20,16,0.06)]"
-      dir={dir}
-      lang={language}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-start gap-3" dir="ltr">
-          <ShopVisual
-            nameAr={shop.nameAr}
-            nameEn={shop.nameEn}
-            photoUrl={shop.photoUrl}
-            logoUrl={shop.logoUrl}
-          />
-          <div className="min-w-0 flex-1" dir={dir}>
-            <h1 className="text-2xl font-semibold leading-tight">{primary}</h1>
-          </div>
-        </div>
-        {isExampleShop(shop) ? (
-          <span className="rounded-full bg-paper-deep px-2.5 py-1 text-xs text-ink-soft">
-            {exampleBadge(language)}
-          </span>
-        ) : null}
-      </div>
-
-      {isExampleShop(shop) ? (
-        <p className="mt-3 text-sm leading-6 text-ink-soft">
-          {copy.exampleNote[language]}
-        </p>
+    <div>
+      <CafeDetail
+        shop={shop}
+        language={language}
+        backHref={backHref}
+        siblings={siblings}
+      />
+      {SHOW_BEEN_HERE ? (
+        <CardBeen shopId={shop.id} language={language} />
       ) : null}
-
-      <dl className="mt-5 space-y-3 text-sm leading-6">
-        <div>
-          <dt className="text-xs text-ink-soft">{copy.neighborhood[language]}</dt>
-          <dd>
-            {area}
-            <ShopDistance coords={coords} language={language} />
-          </dd>
-        </div>
-        <div>
-          <dt className="text-xs text-ink-soft">{copy.vibe[language]}</dt>
-          <dd>{vibe}</dd>
-        </div>
-      </dl>
-
-      <div className="mt-5 flex flex-col gap-2">
-        <CafePresenceRow
-          shop={shop}
-          language={language}
-          photo={shop.photoUrl ?? shop.logoUrl ?? null}
-          variant="thin"
-        />
-        {site ? (
-          <a
-            href={site}
-            className="rounded-2xl border border-line px-4 py-3 text-center text-sm hover:border-bean"
-            rel="noreferrer"
-          >
-            {copy.site[language]}
-          </a>
-        ) : null}
-        {SHOW_BEEN_HERE ? (
-          <CardBeen shopId={shop.id} language={language} />
-        ) : null}
+      <div className="sr-only">
+        <CafeClaimFooter shop={shop} language={language} status={status} />
       </div>
-      <CafeClaimFooter shop={shop} language={language} status={status} />
-    </article>
+    </div>
   );
 }

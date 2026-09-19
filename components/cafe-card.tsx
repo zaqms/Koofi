@@ -18,6 +18,7 @@ import {
 } from "@/lib/claims-types";
 import { copy } from "@/lib/copy";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
+import { SHOW_BEEN_HERE } from "@/lib/tonight";
 import { woodsPassportFixture } from "@/lib/passport-preview";
 import { officialShopCoords } from "@/lib/place-coords";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
@@ -191,7 +192,9 @@ function ThinCafeCard({
             {copy.site[language]}
           </a>
         ) : null}
-        <CardBeen shopId={shop.id} language={language} />
+        {SHOW_BEEN_HERE ? (
+          <CardBeen shopId={shop.id} language={language} />
+        ) : null}
       </div>
       <CafeClaimFooter shop={shop} language={language} status={status} />
     </article>

@@ -1292,7 +1292,13 @@ assert(
     pickList.includes('className="relative z-10"') &&
     pickList.includes("relative z-10 inline-flex") &&
     beenButton.includes("stopPropagation"),
-  "whole result tile opens the cafe card; Maps and Been here stay nested controls",
+  "whole result tile opens the cafe card; Maps and parked Been here stay nested controls",
+);
+assert(
+  pickList.includes("SHOW_BEEN_HERE") &&
+    pickList.includes("{SHOW_BEEN_HERE ?") &&
+    beenButton.includes("if (!SHOW_BEEN_HERE) return null"),
+  "Been here on list cards is parked behind SHOW_BEEN_HERE",
 );
 assert(
   chatUi.includes("joinHalfwayInvite") &&

@@ -17,7 +17,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Riyadh only. Neighborhoods: Hittin (حطين), Al Malqa (الملقا), Al Nakheel (النخيل), Al Yasmin (الياسمين), Olaya (العليا), Sulimaniyah (السليمانية), Al Wurud (الورود), Al Rabwah (الربوة), Al Rabi (الربيع), Al Masif (المصيف), Al Rahmaniyyah (الرحمانية).
 - Arabic in (Gulf / Saudi casual). Reply in the language they used. English if they switch. RTL-first.
 - Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
-- **Been here** on the web (`localStorage`) so we stop offering that place as new.
+- **كنت هنا / Been here** cafe-card control is parked (`SHOW_BEEN_HERE = false`). Copy, `localStorage` mark, and picker “not as new” logic stay wired but the control is not user-facing. Flip the flag to show it again.
 - Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, vibe tags. Unclaimed shops stay a thin card. Verified shops unlock the richer Passport card (owner photos, brewing/note, owner-supplied hours only, thin offer, optional phone/IG, share, shared like, Maps CTA). Do not invent hours. Do not ask people to share a Koofi URL.
 - **وين؟ / wain?** cafe-card CTA is parked (`SHOW_INVITE_CTA = false`) until share-tonight strategy is locked. Invite sheet, mint, and `invite_*` events stay wired but are not user-facing. Prefill stays `وين؟ أنا بـ {name}` / `wain? I'm at {name}` + `/c/{id}?from=tonight`. Spoken **وين** in Arabic copy elsewhere is fine. Listing share + Maps stay on the card.
 - **بطاقة الليلة / Tonight’s card** is parked (`SHOW_TONIGHT_CARD = false`). Code and `tonight_*` events stay wired but are not user-facing.
@@ -380,7 +380,7 @@ Arabic: **ما فيه أفكار للحين. اكتب وحدة تحت.**
 
 Thumb-up like (`أعجبني` / `Upvote`) + count on directory list rows (home list, district pages, and New this week because those rows are `DirectoryCard`) and on cafe detail (Passport + thin via `CafePresenceRow`). Same Neon `shop_upvotes` + `wain_vid` — one count. Count is hidden at 0; the thumb alone is enough.
 
-Social proof only. Counts do **not** reorder chat three-picks, the directory, New this week, or district filters. Owners cannot buy rank. No downvotes, stars, or comments. Been here stays a separate localStorage mark on cafe cards.
+Social proof only. Counts do **not** reorder chat three-picks, the directory, New this week, or district filters. Owners cannot buy rank. No downvotes, stars, or comments. Been here stays a separate parked localStorage mark on cafe cards (`SHOW_BEEN_HERE`).
 
 Vote model: toggle upvote. Cookie voter `wain_vid` (same as /feedback). First tap adds a receipt and +1. Second tap deletes that receipt and −1 (never below 0). Same action twice is idempotent — count does not double. Same Neon `DATABASE_URL` (`shop_upvotes` + `shop_vote_receipts`). On Vercel without it, vote returns `503` / `no_storage`. Local `next dev` may use memory.
 

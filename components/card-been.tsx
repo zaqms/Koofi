@@ -2,6 +2,7 @@
 
 import { BeenButton } from "@/components/been-button";
 import { useBeenIds } from "@/lib/been";
+import { SHOW_BEEN_HERE } from "@/lib/tonight";
 import type { Language } from "@/lib/types";
 
 type CardBeenProps = {
@@ -11,6 +12,7 @@ type CardBeenProps = {
 
 export function CardBeen({ shopId, language = "ar" }: CardBeenProps) {
   const been = useBeenIds();
+  if (!SHOW_BEEN_HERE) return null;
 
   return (
     <div className="pt-1">

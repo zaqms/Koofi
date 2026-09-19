@@ -2,6 +2,7 @@
 
 import type { MouseEvent } from "react";
 import { copy } from "@/lib/copy";
+import { SHOW_BEEN_HERE } from "@/lib/tonight";
 import type { Language } from "@/lib/types";
 
 type BeenButtonProps = {
@@ -17,6 +18,8 @@ export function BeenButton({
   onMark,
   className,
 }: BeenButtonProps) {
+  if (!SHOW_BEEN_HERE) return null;
+
   if (marked) {
     return (
       <span className={["text-xs text-ink-soft", className].filter(Boolean).join(" ")}>

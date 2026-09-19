@@ -218,10 +218,9 @@ export function comingSoonHeading(
 export function comingSoonBody(
   language: Language,
   city: CityId,
-  liveCity: City = DEFAULT_LIVE_CITY,
+  _liveCity: City = DEFAULT_LIVE_CITY,
 ): string {
   const name = cityLabel(city, language);
-  const live = cityLabel(liveCity, language);
   return language === "ar"
     ? `وين بعد ما انفتحت في ${name}. القائمة هناك لسا جاية — ما نعرض أحياء مدينة ثانية مكانها.`
     : `wain.lol isn’t in ${name} yet. The catalog there is still coming — we won’t show another city’s districts here.`;

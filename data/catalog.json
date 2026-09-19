@@ -4458,8 +4458,8 @@
       "placeId": "ChIJ71ockjoBLz4R38YZnJDX3Jk",
       "dineIn": true,
       "outdoorSeating": false,
-      "pickupOnly": false,
-      "baynanaEligible": true,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {

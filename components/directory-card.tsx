@@ -13,15 +13,25 @@ import { listingCardTags } from "@/lib/listing-tags";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, shopDisplayName } from "@/lib/product";
 import { shopDistanceDisplay } from "@/lib/shop-distance-label";
+import type { MapsClickSource } from "@/lib/track";
 import type { Language } from "@/lib/types";
 import { useVisitorLocation } from "@/lib/visitor-location";
 
 type DirectoryCardProps = {
   shop: DirectoryShop;
   language: Language;
+  mapsSource?: MapsClickSource;
+  badge?: string | null;
+  onMapsClick?: () => void;
 };
 
-export function DirectoryCard({ shop, language }: DirectoryCardProps) {
+export function DirectoryCard({
+  shop,
+  language,
+  mapsSource = "list",
+  badge = null,
+  onMapsClick,
+}: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
   const area =
     language === "ar"
@@ -51,6 +61,11 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
             size="listing"
           />
           <div className="min-w-0 flex-1 py-0.5">
+            {badge ? (
+              <p className="mb-1 inline-flex rounded-full bg-wain-warm-cream px-2 py-0.5 text-[11px] leading-4 text-wain-soft-taupe">
+                {badge}
+              </p>
+            ) : null}
             <h3 className="text-lg font-semibold leading-tight break-words">
               {name}
             </h3>
@@ -79,10 +94,18 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
             href={shop.mapsHref}
             shopId={shop.id}
             locale={language}
-            source="list"
+            source={mapsSource}
             className={listingActionClassName}
             aria-label={copy.listingMap[language]}
             title={copy.listingMap[language]}
+            onClick={
+              onMapsClick
+                ? (event) => {
+                    event.stopPropagation();
+                    onMapsClick();
+                  }
+                : undefined
+            }
           >
             <ListingActionFace label={copy.listingMap[language]}>
               <MapPinIcon className="size-5" />

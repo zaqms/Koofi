@@ -83,7 +83,8 @@ assert(card.includes("listingCardTags"), "pills come from listing tags helper");
 assert(card.includes("listingLocationOrder"), "location order is locale-aware");
 assert(card.includes("shopDistanceDisplay"), "km uses the existing distance helper");
 assert(card.includes("ShareListingButton"), "share stays the existing listing packet");
-assert(card.includes('source="list"'), "Maps + share stay on the list path");
+assert(card.includes("source={mapsSource}"), "Maps hop keeps pack vs list vs card");
+assert(card.includes('source="list"'), "listing share stays the list packet");
 assert(card.includes("MapsLink"), "Map opens cafe Maps");
 assert(card.includes("ListingActionFace"), "Map + Share share square chrome");
 assert(card.includes("rounded-[var(--radius-card)]"), "radius.card token");
@@ -100,7 +101,8 @@ assert(!card.includes("inviteCta"), "no وين؟ copy on listing");
 assert(!/Soft Places/i.test(card), "Soft Places parked");
 assert(!/ween/i.test(card), "never romanize وين as ween");
 assert(!card.includes("هيتين"), "never هيتين");
-assert(!card.includes("meet-halfway"), "do not force Halfway onto listing");
+assert(!card.includes("meet-halfway"), "do not force Halfway copy into the shared card");
+assert(card.includes("badge"), "optional Top Match stays a generic badge slot");
 
 const tags = read("lib/listing-tags.ts");
 assert(tags.includes("discoveryCategoryLabel"), "second pill can use the registry");
@@ -130,13 +132,31 @@ const week = read("components/new-this-week.tsx");
 assert(week.includes("DirectoryCard"), "New this week uses the same listing card");
 
 const halfway = read("components/meet-halfway-result-cards.tsx");
-assert(
-  !halfway.includes("DirectoryCard"),
-  "بيننا result cards stay on their own component",
-);
+assert(halfway.includes("DirectoryCard"), "بيننا results use the shared listing card");
+assert(halfway.includes("directoryShopFromPick"), "بيننا maps picks onto DirectoryShop");
+assert(halfway.includes("meetHalfwayBestMatch"), "first بيننا card may show Top Match");
+assert(!halfway.includes("ChevronIcon"), "بيننا listing has no arrows");
+assert(!halfway.includes("cardLink"), "بيننا listing has no بطاقة المكان");
+assert(!halfway.includes("pick.why"), "بيننا listing has no AI blurb inside the card");
 
 const pickList = read("components/pick-list.tsx");
-assert(!pickList.includes("DirectoryCard"), "chat three-picks stay PickList");
+assert(pickList.includes("DirectoryCard"), "chat three-picks use the shared listing card");
+assert(pickList.includes("directoryShopFromPick"), "chat maps picks onto DirectoryShop");
+assert(!pickList.includes("cardLink"), "chat listing has no بطاقة المكان");
+assert(!pickList.includes("pick.why"), "chat listing has no AI blurb inside the card");
+
+const adapter = read("lib/listing-shop.ts");
+assert(
+  adapter.includes("export function directoryShopFromPick"),
+  "one pick → listing adapter, not per-surface cards",
+);
+assert(adapter.includes("vibeTags: pick.vibeTags"), "picks carry catalog vibe tags");
+assert(adapter.includes("momentTags: pick.momentTags"), "picks carry catalog moment tags");
+
+const chatPick = read("lib/chat-pick.ts");
+assert(chatPick.includes("neighborhood: shop.neighborhood"), "ChatPick keeps district id");
+assert(chatPick.includes("vibeTags: shop.vibeTags"), "ChatPick keeps vibe tags for listing pills");
+assert(chatPick.includes("momentTags: shop.momentTags"), "ChatPick keeps moment tags for listing pills");
 
 const passport = read("components/cafe-passport-card.tsx");
 assert(!passport.includes("DirectoryCard"), "Passport chrome is not the listing card");

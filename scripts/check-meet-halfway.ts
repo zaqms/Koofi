@@ -1264,15 +1264,17 @@ const feedbackUi = readFileSync(
   "utf8",
 );
 assert(
-  resultCards.includes("meetHalfwayBestMatch") &&
-    resultCards.includes("meetHalfwayOpenMaps") &&
-    resultCards.includes("formatHalfwayShopMeta") &&
-    resultCards.includes("rtl:rotate-180") &&
+  resultCards.includes("DirectoryCard") &&
+    resultCards.includes("meetHalfwayBestMatch") &&
+    resultCards.includes("directoryShopFromPick") &&
+    !resultCards.includes("ChevronIcon") &&
+    !resultCards.includes("rtl:rotate-180") &&
+    !resultCards.includes("cardLink") &&
     !resultCards.includes("meetHalfwaySave") &&
     !resultCards.includes("useSavedShopIds") &&
     !resultCards.includes("BookmarkIcon") &&
     !resultCards.includes("احفظ"),
-  "بيننا result cards keep Maps, Top Match, and RTL chevron — no Save without login",
+  "بيننا result cards reuse DirectoryCard + subtle Top Match — no chevron, no Save",
 );
 assert(
   feedbackUi.includes("meet_halfway_feedback") &&
@@ -1286,21 +1288,19 @@ assert(
   "results feedback fires meet_halfway_feedback on Yes, No, and No-reason",
 );
 assert(
-  pickList.includes("meetHalfwayBestMatch") &&
-    pickList.includes("meetHalfwayOpenMaps") &&
-    pickList.includes("HalfwayDriveTimes"),
-  "thread pick list still has Maps and fair-for-both extras",
+  pickList.includes("DirectoryCard") &&
+    pickList.includes("directoryShopFromPick") &&
+    !pickList.includes("cardLink") &&
+    !pickList.includes("pick.why"),
+  "thread three-picks reuse DirectoryCard; blurbs stay outside the card",
 );
 const beenButton = readFileSync(join(repoRoot, "components/been-button.tsx"), "utf8");
 assert(
-  pickList.includes("after:absolute") &&
-    pickList.includes("after:inset-0") &&
-    pickList.includes("pick.cardPath") &&
-    pickList.includes("stopPropagation") &&
-    pickList.includes('className="relative z-10"') &&
-    pickList.includes("relative z-10 inline-flex") &&
+  pickList.includes("DirectoryCard") &&
+    pickList.includes("onMapsClick") &&
+    pickList.includes("postLearnMaps") &&
     beenButton.includes("stopPropagation"),
-  "whole result tile opens the cafe card; Maps and parked Been here stay nested controls",
+  "listing card opens the cafe; Maps learn + parked Been here stay wired",
 );
 assert(
   pickList.includes("SHOW_BEEN_HERE") &&
@@ -1742,10 +1742,17 @@ assert(
     !emailMapsRoute.includes("searchParams.get('url')"),
   "email Maps hop 302s from shop id or latlng — no open url=",
 );
+const listingCard = readFileSync(
+  join(repoRoot, "components/directory-card.tsx"),
+  "utf8",
+);
 assert(
-  resultCards.includes("href={pick.mapsHref}") &&
+  resultCards.includes("DirectoryCard") &&
+    listingCard.includes("href={shop.mapsHref}") &&
     !resultCards.includes("emailMapsHref") &&
-    !resultCards.includes(EMAIL_MAPS_PATH),
+    !resultCards.includes(EMAIL_MAPS_PATH) &&
+    !listingCard.includes("emailMapsHref") &&
+    !listingCard.includes(EMAIL_MAPS_PATH),
   "product بيننا Maps buttons stay on catalog hrefs",
 );
 const noLocations = halfwayResultsWebhookBody({

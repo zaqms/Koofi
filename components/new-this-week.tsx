@@ -24,7 +24,7 @@ export function NewThisWeek({ language, shops }: NewThisWeekProps) {
       <p className="mt-1 text-xs leading-5 text-ink-soft">
         {copy.newThisWeekHint[language]}
       </p>
-      <ul className="mt-4 grid gap-2">
+      <ul className="mt-4 grid gap-3">
         {shops.map((shop) => (
           <DirectoryCard key={shop.id} shop={shop} language={language} />
         ))}

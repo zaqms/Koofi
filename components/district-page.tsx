@@ -3,8 +3,6 @@ import { DocumentLocale } from "@/components/document-locale";
 import { DistrictEnBody } from "@/components/district-en-body";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
-import { ShopClaimProvider } from "@/components/shop-claim-provider";
-import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { listDirectoryShopsForDistrict } from "@/lib/catalog";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
@@ -39,17 +37,13 @@ export function DistrictPage({ language, district }: DistrictPageProps) {
         localeHref={districtPath(district, other)}
         selectedChipId={null}
       />
-      <ShopUpvoteProvider>
-        <ShopClaimProvider>
-          <ShopDirectory
-            language={language}
-            shops={shops}
-            district={district}
-            intro={<DistrictEnBody district={district} language={language} />}
-          />
-          <NewThisWeek language={language} shops={listNewThisWeekShops()} />
-        </ShopClaimProvider>
-      </ShopUpvoteProvider>
+      <ShopDirectory
+        language={language}
+        shops={shops}
+        district={district}
+        intro={<DistrictEnBody district={district} language={language} />}
+      />
+      <NewThisWeek language={language} shops={listNewThisWeekShops()} />
       <SiteFooter language={language} />
     </main>
   );

@@ -148,7 +148,11 @@ export type ChatPick = {
   id: string;
   nameAr: string;
   nameEn: string;
+  neighborhood: NeighborhoodId;
+  neighborhoodAr: string;
   neighborhoodLabel: string;
+  vibeTags: string[];
+  momentTags: MomentTag[];
   example: boolean;
   why: string;
   mapsHref: string;
@@ -160,7 +164,7 @@ export type ChatPick = {
   reviewSnippet?: string;
   lat?: number;
   lng?: number;
-  /** 1–2 catalog vibe labels for بيننا result cards. */
+  /** 1–2 catalog vibe labels. Listing cards recompute via listingCardTags. */
   tags?: string[];
 };
 

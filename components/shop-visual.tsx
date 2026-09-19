@@ -8,7 +8,7 @@ type ShopVisualProps = {
   nameEn: string;
   photoUrl?: string;
   logoUrl?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "listing";
 };
 
 const DARK_LOGO_PATHS = new Set([
@@ -67,17 +67,29 @@ export function ShopVisual({
   const [logoFailed, setLogoFailed] = useState(false);
   const showLogo = Boolean(logoUrl) && !logoFailed;
   const showPhoto = !showLogo && Boolean(photoUrl) && !photoFailed;
+  const listing = size === "listing";
   const tileClass = showLogo
     ? DARK_LOGO_PATHS.has(logoUrl ?? "")
       ? "bg-ink"
-      : "bg-foam"
-    : "bg-paper-deep text-bean";
+      : listing
+        ? "bg-wain-warm-cream"
+        : "bg-foam"
+    : listing
+      ? "bg-wain-warm-cream text-bean"
+      : "bg-paper-deep text-bean";
   const sizeClass =
-    size === "lg" ? "size-14" : size === "md" ? "size-12" : "size-11";
+    listing
+      ? "size-20"
+      : size === "lg"
+        ? "size-14"
+        : size === "md"
+          ? "size-12"
+          : "size-11";
+  const radiusClass = listing ? "rounded-[16px]" : "rounded-xl";
 
   return (
     <div
-      className={`relative ${sizeClass} shrink-0 overflow-hidden rounded-xl ${tileClass}`}
+      className={`relative ${sizeClass} shrink-0 overflow-hidden ${radiusClass} ${tileClass}`}
     >
       {showLogo ? (
         // Catalog logoUrl only. next/image needs a known host; local /logos files stay on <img>.
@@ -85,9 +97,13 @@ export function ShopVisual({
         <img
           src={logoUrl}
           alt=""
-          width={44}
-          height={44}
-          className="size-full object-contain p-px"
+          width={listing ? 80 : 44}
+          height={listing ? 80 : 44}
+          className={
+            listing
+              ? "size-full object-contain p-1.5"
+              : "size-full object-contain p-px"
+          }
           onError={() => setLogoFailed(true)}
         />
       ) : showPhoto ? (

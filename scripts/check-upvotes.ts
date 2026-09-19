@@ -70,7 +70,14 @@ for (const [name, source] of [
 }
 
 const directoryCard = readFileSync("components/directory-card.tsx", "utf8");
-assert(directoryCard.includes("DirectoryUpvote"), "directory rows render like control");
+assert(
+  !directoryCard.includes("DirectoryUpvote"),
+  "approved listing card has no like / upvote",
+);
+assert(
+  !directoryCard.includes("shopUpvote"),
+  "listing card does not use upvote copy",
+);
 
 const upvote = readFileSync("components/directory-upvote.tsx", "utf8");
 assert(!upvote.includes("▲"), "like control has no triangle glyph");

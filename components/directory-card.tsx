@@ -1,90 +1,179 @@
 "use client";
 
 import Link from "next/link";
-import { DirectoryUpvote } from "@/components/directory-upvote";
+import { ListingActionFace, listingActionClassName } from "@/components/listing-action";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
 import { ShareListingButton } from "@/components/share-listing-button";
-import { ShopDistance } from "@/components/shop-distance";
-import { useShopClaim } from "@/components/shop-claim-provider";
 import { ShopVisual } from "@/components/shop-visual";
-import { VerifiedBadge } from "@/components/verified-badge";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
+import { listingLocationOrder } from "@/lib/listing-location";
+import { listingCardTags } from "@/lib/listing-tags";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, shopDisplayName } from "@/lib/product";
+import { shopDistanceDisplay } from "@/lib/shop-distance-label";
+import type { MapsClickSource } from "@/lib/track";
 import type { Language } from "@/lib/types";
-import { vibeLine } from "@/lib/vibe-labels";
+import { useVisitorLocation } from "@/lib/visitor-location";
 
 type DirectoryCardProps = {
   shop: DirectoryShop;
   language: Language;
+  mapsSource?: MapsClickSource;
+  badge?: string | null;
+  onMapsClick?: () => void;
 };
 
-export function DirectoryCard({ shop, language }: DirectoryCardProps) {
+export function DirectoryCard({
+  shop,
+  language,
+  mapsSource = "list",
+  badge = null,
+  onMapsClick,
+}: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
-  const area = language === "ar" ? shop.neighborhoodAr : neighborhoodLabel(shop.neighborhood, "en");
-  const vibe = vibeLine(shop, language);
+  const area =
+    language === "ar"
+      ? shop.neighborhoodAr
+      : neighborhoodLabel(shop.neighborhood, "en");
+  const tags = listingCardTags(shop, language);
   const href = cardPath(shop.id, language);
-  const verified = useShopClaim().isVerified(shop.id);
+  const dir = language === "ar" ? "rtl" : "ltr";
 
   return (
-    <li className="rounded-2xl border border-line bg-foam px-3 py-3">
-      <div className="flex items-start gap-2" dir="ltr">
+    <li
+      data-listing-card=""
+      className="rounded-[var(--radius-card)] border border-wain-divider bg-wain-paper px-3.5 py-3.5 shadow-[0_2px_8px_rgba(30,23,20,0.05)]"
+      dir={dir}
+      lang={language}
+    >
+      <div className="flex items-center gap-3">
         <Link
           href={href}
-          className="flex min-h-16 min-w-0 flex-1 items-start gap-3 rounded-xl outline-none hover:bg-paper-deep/70 focus-visible:ring-2 focus-visible:ring-bean"
-          dir="ltr"
+          className="flex min-w-0 flex-1 items-center gap-3 rounded-xl outline-none hover:bg-wain-warm-cream/60 focus-visible:ring-2 focus-visible:ring-bean"
         >
           <ShopVisual
             nameAr={shop.nameAr}
             nameEn={shop.nameEn}
             photoUrl={shop.photoUrl}
             logoUrl={shop.logoUrl}
+            size="listing"
           />
-          <div
-            className="min-w-0 flex-1 py-0.5"
-            dir={language === "ar" ? "rtl" : "ltr"}
-          >
-            <h3 className="flex flex-wrap items-center gap-1.5 text-lg font-semibold leading-tight">
-              <span>{name}</span>
-              {verified ? <VerifiedBadge language={language} size="list" /> : null}
-            </h3>
-            <p className="text-[11px] leading-4 text-ink-soft">
-              {area}
-              <ShopDistance
-                coords={
-                  shop.lat != null && shop.lng != null
-                    ? { lat: shop.lat, lng: shop.lng }
-                    : null
-                }
-                language={language}
-              />
-            </p>
-            {vibe ? (
-              <p className="mt-1 truncate text-sm leading-5">{vibe}</p>
+          <div className="min-w-0 flex-1 py-0.5">
+            {badge ? (
+              <p className="mb-1 inline-flex rounded-full bg-wain-warm-cream px-2 py-0.5 text-[11px] leading-4 text-wain-soft-taupe">
+                {badge}
+              </p>
             ) : null}
-            <p className="mt-1 text-xs text-bean underline-offset-2">
-              {copy.cardLink[language]}
-            </p>
+            <h3 className="text-lg font-semibold leading-tight break-words">
+              {name}
+            </h3>
+            <ListingLocation
+              language={language}
+              neighborhood={area}
+              lat={shop.lat}
+              lng={shop.lng}
+            />
+            {tags.length > 0 ? (
+              <ul className="mt-1.5 flex flex-wrap gap-1">
+                {tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-full bg-wain-warm-cream px-2 py-0.5 text-[11px] leading-4 text-ink"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
         </Link>
-        <DirectoryUpvote shopId={shop.id} language={language} />
-      </div>
-      <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
-        <MapsLink
-          href={shop.mapsHref}
-          shopId={shop.id}
-          locale={language}
-          source="list"
-          className="inline-flex size-8 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
-          aria-label={copy.maps[language]}
-          title={copy.maps[language]}
-        >
-          <MapPinIcon />
-        </MapsLink>
-        <ShareListingButton shop={shop} language={language} source="list" />
+        <div className="flex shrink-0 items-start gap-2">
+          <MapsLink
+            href={shop.mapsHref}
+            shopId={shop.id}
+            locale={language}
+            source={mapsSource}
+            className={listingActionClassName}
+            aria-label={copy.listingMap[language]}
+            title={copy.listingMap[language]}
+            onClick={
+              onMapsClick
+                ? (event) => {
+                    event.stopPropagation();
+                    onMapsClick();
+                  }
+                : undefined
+            }
+          >
+            <ListingActionFace label={copy.listingMap[language]}>
+              <MapPinIcon className="size-5" />
+            </ListingActionFace>
+          </MapsLink>
+          <ShareListingButton
+            shop={shop}
+            language={language}
+            source="list"
+            variant="listing"
+          />
+        </div>
       </div>
     </li>
+  );
+}
+
+function ListingLocation({
+  language,
+  neighborhood,
+  lat,
+  lng,
+}: {
+  language: Language;
+  neighborhood: string;
+  lat?: number;
+  lng?: number;
+}) {
+  const visitor = useVisitorLocation();
+  const origin =
+    visitor.status === "ready"
+      ? { lat: visitor.lat, lng: visitor.lng }
+      : null;
+  const display = shopDistanceDisplay({
+    origin,
+    coords: lat != null && lng != null ? { lat, lng } : null,
+    language,
+  });
+  const order = listingLocationOrder(language);
+  const distance =
+    display.kind === "hidden" ? null : (
+      <span
+        dir="ltr"
+        data-shop-distance={display.kind}
+        {...(display.kind === "km"
+          ? { "data-shop-distance-km": display.km.toFixed(3) }
+          : {})}
+      >
+        {display.label}
+      </span>
+    );
+
+  return (
+    <p className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[12px] leading-4 text-wain-soft-taupe">
+      <MapPinIcon className="size-3.5 shrink-0" />
+      {distance && order === "distance-first" ? (
+        <>
+          {distance}
+          <span aria-hidden>{"·"}</span>
+        </>
+      ) : null}
+      <span className="min-w-0 break-words">{neighborhood}</span>
+      {distance && order === "neighborhood-first" ? (
+        <>
+          <span aria-hidden>{"·"}</span>
+          {distance}
+        </>
+      ) : null}
+    </p>
   );
 }

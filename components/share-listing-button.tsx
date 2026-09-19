@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ListingActionFace, listingActionClassName } from "@/components/listing-action";
 import { ShareIcon } from "@/components/share-icon";
 import { copy } from "@/lib/copy";
 import { listingPacketForShop, sharePackPacket } from "@/lib/share-pack";
@@ -12,7 +13,7 @@ type ShareListingButtonProps = {
   language: Language;
   source: ListingShareSource;
   compact?: boolean;
-  variant?: "default" | "passport" | "ghost";
+  variant?: "default" | "passport" | "ghost" | "listing";
 };
 
 export function ShareListingButton({
@@ -35,6 +36,30 @@ export function ShareListingButton({
     );
     const result = await sharePackPacket(packet.text);
     setCopied(result === "copied");
+  }
+
+  if (variant === "listing") {
+    return (
+      <div className="inline-flex shrink-0 flex-col items-center">
+        <button
+          type="button"
+          onClick={() => {
+            void onShare();
+          }}
+          className={listingActionClassName}
+          lang={language}
+          translate="no"
+          aria-label={copy.listingShare[language]}
+        >
+          <ListingActionFace label={copy.listingShare[language]}>
+            <ShareIcon className="size-5" />
+          </ListingActionFace>
+        </button>
+        {copied ? (
+          <p className="sr-only">{copy.packetCopied[language]}</p>
+        ) : null}
+      </div>
+    );
   }
 
   return (

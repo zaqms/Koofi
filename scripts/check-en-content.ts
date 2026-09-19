@@ -311,7 +311,7 @@ assert(
   "district body is wired",
 );
 const shopDirectory = readRepo("components/shop-directory.tsx");
-const cafeListMarkup = '<ul className="mt-4 grid gap-2">';
+const cafeListMarkup = '<ul className="mt-4 grid gap-3">';
 assert(shopDirectory.includes(cafeListMarkup), "directory renders cafe cards");
 assert(
   shopDirectory.indexOf(cafeListMarkup) < shopDirectory.lastIndexOf("{intro}"),

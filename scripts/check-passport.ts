@@ -171,8 +171,8 @@ assert(!/ON TONIGHT/i.test(passportCard), "Soft Places badge parked");
 assert(!/من الثلاث اللي الليلة/.test(passportCard), "AR Soft Places badge parked");
 
 const list = readFileSync("components/directory-card.tsx", "utf8");
-assert(list.includes("VerifiedBadge"), "list can show معتمد");
-assert(list.includes("useShopClaim"), "list reads verified ids");
+assert(!list.includes("VerifiedBadge"), "approved listing card has no معتمد pill");
+assert(!list.includes("useShopClaim"), "listing card does not fetch claim badges");
 
 const page = readFileSync("components/cafe-card-page.tsx", "utf8");
 assert(page.includes("ShopUpvoteProvider"), "card page wraps upvote provider");

@@ -303,8 +303,12 @@ for (const row of [...matcha, ...dt]) {
 
 const card = read("components/directory-card.tsx");
 const distanceUi = read("components/shop-distance.tsx");
+const distanceLabel = read("lib/shop-distance-label.ts");
 assert(
-  card.includes("ShopDistance") &&
+  card.includes("shopDistanceDisplay") &&
+    card.includes('data-shop-distance={display.kind}') &&
+    card.includes("data-shop-distance-km") &&
+    distanceLabel.includes("shopDistanceDisplay") &&
     distanceUi.includes("shopDistanceDisplay") &&
     distanceUi.includes('data-shop-distance="missing"') &&
     distanceUi.includes('data-shop-distance="km"') &&

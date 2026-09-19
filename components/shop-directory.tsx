@@ -11,6 +11,8 @@ import {
   filterDirectoryShopsByMoment,
   type DirectoryShop,
 } from "@/lib/directory";
+import { directoryHintForCity } from "@/lib/cities";
+import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
 import {
   COFFEE_SHOPS_CATEGORY,
@@ -65,6 +67,7 @@ export function ShopDirectory({
   chipId = null,
   intro = null,
 }: ShopDirectoryProps) {
+  const { liveCity } = useCity();
   const popular = listing === "popular";
   const vibe = chipId ? getDiscoveryCategory(chipId) : undefined;
   const resultSort = isDirectoryResultSortChip(chipId);
@@ -146,7 +149,7 @@ export function ShopDirectory({
       )}
       {intro ? null : (
         <p className="mt-1 text-xs leading-5 text-ink-soft">
-          {copy.directoryHint[language]}
+          {directoryHintForCity(language, liveCity)}
         </p>
       )}
 

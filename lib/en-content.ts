@@ -1,4 +1,6 @@
 import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
+import { cityLabel } from "./cities";
+import { districtCity } from "./district-city";
 import { filterDirectoryShops } from "./directory";
 import { neighborhoodLabel } from "./neighborhoods";
 import { cardPath, districtPath, PRODUCT_NAME } from "./product";
@@ -903,12 +905,12 @@ const CNI_BLURBS: Record<string, string> = {
 };
 
 const CAFE_OPENERS = [
-  (name: string, district: string) =>
-    `**${name}** is on the wain.lol list for ${district} in Riyadh.`,
+  (name: string, district: string, city: string) =>
+    `**${name}** is on the wain.lol list for ${district} in ${city}.`,
   (name: string, district: string) =>
     `If you’re looking up **${name}** in ${district}, this is the card we have on wain.lol.`,
-  (name: string, district: string) =>
-    `This is the **${name}** page on wain.lol — one of the ${district} places on the Riyadh list.`,
+  (name: string, district: string, city: string) =>
+    `This is the **${name}** page on wain.lol — one of the ${district} places on the ${city} list.`,
   (name: string, district: string) =>
     `${district} has **${name}** on our catalog. The card is here if you want the Maps pin.`,
 ] as const;
@@ -966,13 +968,14 @@ function fillCount(template: string, count: number): string {
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
   const name = neighborhoodLabel(district, "en");
+  const cityName = cityLabel(districtCity(district), "en");
   return {
-    lead: `${name} is one of the Riyadh neighborhoods on wain.lol. This page is the ${name} places we’ve added to the catalog so far.`,
+    lead: `${name} is one of the ${cityName} neighborhoods on wain.lol. This page is the ${name} places we’ve added to the catalog so far.`,
     hereIntro: `There are **{count}** cafes from ${name} on the list right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
+    about: `wain.lol is a small ${cityName} coffee guide. Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
-Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
+${cityName} only for now. Missing a place you like? Send a Maps link from the site.`,
   };
 }
 
@@ -1068,13 +1071,14 @@ export function cafeEnMeta(shop: Pick<Shop, "id" | "nameEn" | "neighborhood">): 
 
 function defaultCafeBlurb(shop: Shop): string {
   const district = neighborhoodLabel(shop.neighborhood, "en");
+  const cityName = cityLabel(shop.city, "en");
   const opener = CAFE_OPENERS[variantIndex(shop.id, CAFE_OPENERS.length)];
   const vibe = vibeLabels(shop, "en").filter((label) => label !== "Outdoor");
   const vibeLine =
     vibe.length > 0 && vibe[0] !== "Coffee"
       ? ` Catalog tags on the card: ${vibe.join(", ")}.`
       : "";
-  return `${opener(shop.nameEn, district)}${vibeLine} If you want the rest of that neighborhood, the district page is linked below.`;
+  return `${opener(shop.nameEn, district, cityName)}${vibeLine} If you want the rest of that neighborhood, the district page is linked below.`;
 }
 
 function cafeSiblingsMarkdown(shop: Shop): string {

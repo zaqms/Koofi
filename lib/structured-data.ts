@@ -1,4 +1,6 @@
 import { getShop, listDirectoryShops, listRealShops } from "./catalog";
+import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
+import { districtCity } from "./district-city";
 import { coffeeShopsInDistrict } from "./directory-category";
 import { EN_CONTENT_DATE_MODIFIED } from "./en-content";
 import { listPopularPublicShops } from "./most-popular";
@@ -183,7 +185,10 @@ export function listPublicShops(): Shop[] {
 }
 
 export function publicShopsInDistrict(district: NeighborhoodId): Shop[] {
-  return listPublicShops().filter((shop) => shop.neighborhood === district);
+  const city = districtCity(district);
+  return listPublicShops().filter(
+    (shop) => shop.neighborhood === district && shop.city === city,
+  );
 }
 
 export function shopCanonicalUrl(id: string, language: Language): string {
@@ -265,7 +270,7 @@ export function shopJsonLd(
     address: {
       "@type": "PostalAddress",
       addressLocality: locality,
-      addressRegion: language === "ar" ? "الرياض" : "Riyadh",
+      addressRegion: cityLabel(shop.city, language),
       addressCountry: "SA",
     },
     ...(sameAs.length ? { sameAs } : {}),
@@ -351,7 +356,7 @@ export function publicShopsItemList(): ItemListJsonLd {
   return {
     "@context": SCHEMA_CONTEXT,
     "@type": "ItemList",
-    name: `${PRODUCT_NAME} curated Riyadh coffee shops`,
+    name: `${PRODUCT_NAME} curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops`,
     url: publicShopsApiUrl(),
     numberOfItems: shops.length,
     itemListElement: shops.map((shop, index) => ({
@@ -416,9 +421,9 @@ export function buildLlmsTxt(): string {
   return [
     `# ${PRODUCT_NAME}`,
     "",
-    `> Curated Riyadh coffee shops (${count}). Public catalog for people and agents.`,
+    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${count}). Public catalog for people and agents.`,
     "",
-    `${PRODUCT_NAME} is a Riyadh coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
+    `${PRODUCT_NAME} is a ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
     "",
     "## Machine-readable catalog",
     "",

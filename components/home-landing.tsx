@@ -1,5 +1,6 @@
 import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { Chat } from "@/components/chat";
+import { CityDiscovery } from "@/components/city-discovery";
 import { DocumentLocale } from "@/components/document-locale";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
@@ -79,22 +80,24 @@ export function HomeLanding({
         selectedChipId={pageChipId}
         chipOpen={chipOpen}
       />
-      {bareHome ? <BrowseNeighborhoods language={language} /> : null}
-      <ShopUpvoteProvider>
-        <ShopClaimProvider>
-          {filterPutsDirectoryFirst(listing, null, chipMoment) ? (
-            <>
-              {directory}
-              {week}
-            </>
-          ) : (
-            <>
-              {week}
-              {directory}
-            </>
-          )}
-        </ShopClaimProvider>
-      </ShopUpvoteProvider>
+      <CityDiscovery>
+        {bareHome ? <BrowseNeighborhoods language={language} /> : null}
+        <ShopUpvoteProvider>
+          <ShopClaimProvider>
+            {filterPutsDirectoryFirst(listing, null, chipMoment) ? (
+              <>
+                {directory}
+                {week}
+              </>
+            ) : (
+              <>
+                {week}
+                {directory}
+              </>
+            )}
+          </ShopClaimProvider>
+        </ShopUpvoteProvider>
+      </CityDiscovery>
       <SiteFooter language={language} />
     </main>
   );

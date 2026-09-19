@@ -1,7 +1,9 @@
+import { DEFAULT_LIVE_CITY } from "./cities";
+import { districtCity } from "./district-city";
 import { detectLanguage } from "./language";
 import { NEIGHBORHOODS } from "./neighborhoods";
 import { VIBE_CHIPS } from "./product";
-import type { Intent, MomentTag, NeighborhoodId } from "./types";
+import type { City, Intent, MomentTag, NeighborhoodId } from "./types";
 
 const EXTRA_ALIASES: Record<MomentTag, string[]> = {
   work: [
@@ -246,12 +248,16 @@ function isAvoidedMention(haystack: string, alias: string): boolean {
   return AVOID_MARKERS.some((marker) => before.includes(marker));
 }
 
-export function parseIntent(raw: string): Intent {
+export function parseIntent(
+  raw: string,
+  city: City = DEFAULT_LIVE_CITY,
+): Intent {
   const haystack = normalize(raw);
   const neighborhoods: NeighborhoodId[] = [];
   const avoidedNeighborhoods: NeighborhoodId[] = [];
 
   for (const place of Object.values(NEIGHBORHOODS)) {
+    if (districtCity(place.id) !== city) continue;
     const hit = place.aliases.find((alias) => includesAlias(haystack, alias));
     if (!hit) continue;
     if (isAvoidedMention(haystack, hit)) {

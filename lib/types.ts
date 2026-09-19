@@ -1,3 +1,4 @@
+/** Catalog / shop.city field. Coming-soon cities live in `lib/cities.ts`. */
 export const CITIES = ["riyadh"] as const;
 export type City = (typeof CITIES)[number];
 

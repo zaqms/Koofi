@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { CitySelector } from "@/components/city-selector";
+import { ComingSoonCity } from "@/components/coming-soon-city";
 import { DocumentLocale } from "@/components/document-locale";
+import { useCity } from "@/lib/city-context";
 import {
   DEFAULT_BROWSE_CITY,
   NEIGHBORHOOD_SORTS,
@@ -49,6 +52,7 @@ export function NeighborhoodsPageView({
   rows,
   city = DEFAULT_BROWSE_CITY,
 }: NeighborhoodsPageViewProps) {
+  const { cityId, isLive } = useCity();
   const other: Language = language === "ar" ? "en" : "ar";
   const visitor = usePeekVisitorLocation();
   const origin = originFromVisitor(visitor);
@@ -128,13 +132,20 @@ export function NeighborhoodsPageView({
             {copy.neighborhoodsIndexHint[language]}
           </p>
         </div>
-        <Link
-          href={neighborhoodsPath(other)}
-          className="inline-flex h-9 shrink-0 items-center text-xs text-ink-soft underline-offset-2 hover:underline"
-        >
-          {copy.switchLanguage[language]}
-        </Link>
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          <CitySelector language={language} />
+          <Link
+            href={neighborhoodsPath(other)}
+            className="inline-flex h-8 items-center text-xs text-ink-soft underline-offset-2 hover:underline"
+          >
+            {copy.switchLanguage[language]}
+          </Link>
+        </div>
       </header>
+
+      {isLive ? null : <ComingSoonCity language={language} city={cityId} />}
+      {isLive ? (
+      <>
 
       <label className="sr-only" htmlFor="neighborhood-search">
         {copy.neighborhoodsSearch[language]}
@@ -260,6 +271,8 @@ export function NeighborhoodsPageView({
           })}
         </ul>
       )}
+      </>
+      ) : null}
     </main>
   );
 }

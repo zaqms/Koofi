@@ -4,6 +4,8 @@ import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
+import { CityProvider } from "@/lib/city-context";
+import { cityLabel, DEFAULT_LIVE_CITY } from "@/lib/cities";
 import {
   PRODUCT_NAME,
   PUBLIC_SITE_URL,
@@ -28,7 +30,7 @@ const passportSerif = Source_Serif_4({
   display: "swap",
 });
 
-const description = "وين القهوة الحين — ثلاث قهاوي، وسبب لكل وحدة. الرياض.";
+const description = `وين القهوة الحين — ثلاث قهاوي، وسبب لكل وحدة. ${cityLabel(DEFAULT_LIVE_CITY, "ar")}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(PUBLIC_SITE_URL),
@@ -81,7 +83,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        {children}
+        <CityProvider>{children}</CityProvider>
         <Analytics />
       </body>
       <Script

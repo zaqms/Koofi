@@ -1,14 +1,18 @@
+import {
+  CITY_LABEL,
+  DEFAULT_BROWSE_CITY,
+  cityLabel,
+  neighborhoodsIndexHeadingForCity,
+  neighborhoodsIndexHintForCity,
+} from "./cities";
+import { districtsInCity } from "./district-city";
 import type { DirectoryShop } from "./directory";
 import { haversineKm } from "./distance";
 import { NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
 import { districtPath, neighborhoodsPath, PRODUCT_NAME } from "./product";
-import { NEIGHBORHOOD_IDS, type City, type Language, type NeighborhoodId, type Pin } from "./types";
+import type { City, Language, NeighborhoodId, Pin } from "./types";
 
-export const DEFAULT_BROWSE_CITY: City = "riyadh";
-
-export const CITY_LABEL: Record<City, Record<Language, string>> = {
-  riyadh: { ar: "الرياض", en: "Riyadh" },
-};
+export { CITY_LABEL, DEFAULT_BROWSE_CITY, cityLabel };
 
 /**
  * City-keyed featured strip. Riyadh is live; add a Jeddah key when that
@@ -271,8 +275,7 @@ export function listNeighborhoodRows(
   shops: readonly DirectoryShop[],
   city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
-  void city;
-  return NEIGHBORHOOD_IDS.map((id) => ({
+  return districtsInCity(city).map((id) => ({
     id,
     href: districtPath(id, language),
     label: browseNeighborhoodLabel(id, language),
@@ -345,8 +348,7 @@ export function neighborhoodsIndexHeading(
   language: Language,
   city: City = DEFAULT_BROWSE_CITY,
 ): string {
-  const cityName = CITY_LABEL[city][language];
-  return language === "ar" ? `أحياء ${cityName}` : `${cityName} Neighborhoods`;
+  return neighborhoodsIndexHeadingForCity(language, city);
 }
 
 export function neighborhoodsIndexTitle(
@@ -356,10 +358,11 @@ export function neighborhoodsIndexTitle(
   return `${neighborhoodsIndexHeading(language, city)} · ${PRODUCT_NAME}`;
 }
 
-export function neighborhoodsIndexDescription(language: Language): string {
-  return language === "ar"
-    ? "استكشف القهاوي في الرياض."
-    : "Explore coffee spots across Riyadh.";
+export function neighborhoodsIndexDescription(
+  language: Language,
+  city: City = DEFAULT_BROWSE_CITY,
+): string {
+  return neighborhoodsIndexHintForCity(language, city);
 }
 
 export function neighborhoodsIndexUrl(language: Language): string {

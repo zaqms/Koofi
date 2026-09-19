@@ -4,6 +4,7 @@ import {
   isAllowedMapsHost,
   parseHttpUrl,
 } from "./maps-url";
+import { cityLabel } from "./cities";
 import { neighborhoodLabel } from "./neighborhoods";
 import { isOfficialMapsPlaceUrl } from "./place-coords";
 import { isExampleShop } from "./product";
@@ -90,7 +91,7 @@ async function findPlaceIdFromText(shop: Shop): Promise<string | undefined> {
   const key = placesKey();
   if (!key) return undefined;
 
-  const input = `${shop.nameEn} ${neighborhoodLabel(shop.neighborhood, "en")} Riyadh`;
+  const input = `${shop.nameEn} ${neighborhoodLabel(shop.neighborhood, "en")} ${cityLabel(shop.city, "en")}`;
   const url = new URL(
     "https://maps.googleapis.com/maps/api/place/findplacefromtext/json",
   );

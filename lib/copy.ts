@@ -1,5 +1,13 @@
 import type { OwnerTokenError } from "./claims-types";
 import {
+  browseNeighborhoodsHintForCity,
+  cityLabel,
+  DEFAULT_LIVE_CITY,
+  directoryHintForCity,
+  neighborhoodsIndexHeadingForCity,
+  neighborhoodsIndexHintForCity,
+} from "./cities";
+import {
   EXAMPLE_BADGE,
   LOCKED_ABOUT,
   LOCKED_CONTACT,
@@ -65,9 +73,21 @@ export const copy = {
     ar: "رابط قوقل ماب…",
     en: "A Google Maps link…",
   },
-  cityOnly: {
-    ar: "الرياض بس",
-    en: "Riyadh only",
+  inCity: {
+    ar: `في ${cityLabel(DEFAULT_LIVE_CITY, "ar")}`,
+    en: `in ${cityLabel(DEFAULT_LIVE_CITY, "en")}`,
+  },
+  moreCities: {
+    ar: "مدن ثانية",
+    en: "More cities",
+  },
+  comingSoon: {
+    ar: "قريبًا",
+    en: "Coming soon",
+  },
+  changeCity: {
+    ar: "غيّر المدينة",
+    en: "Change city",
   },
   placeholder: {
     ar: "حي، أو قعدة شغل، أو قهوة متأخرة…",
@@ -98,8 +118,8 @@ export const copy = {
     en: "I don't have a cafe for that on the list yet. The real list is still coming.",
   },
   offTopic: {
-    ar: `أنا هنا للقهوة في الرياض. ${LOCKED_OPENER}`,
-    en: `We're here for coffee in Riyadh. ${LOCKED_OPENER_EN}`,
+    ar: `أنا هنا للقهوة في ${cityLabel(DEFAULT_LIVE_CITY, "ar")}. ${LOCKED_OPENER}`,
+    en: `We're here for coffee in ${cityLabel(DEFAULT_LIVE_CITY, "en")}. ${LOCKED_OPENER_EN}`,
   },
   nearbyNeedsLocation: {
     ar: `قريب يحتاج موقعك. ${LOCKED_OPENER}`,
@@ -158,8 +178,8 @@ export const copy = {
     en: "Close",
   },
   meetHalfwayCity: {
-    ar: "الرياض",
-    en: "Riyadh",
+    ar: cityLabel(DEFAULT_LIVE_CITY, "ar"),
+    en: cityLabel(DEFAULT_LIVE_CITY, "en"),
   },
   meetHalfwayMapsPin: {
     ar: "دبوس قوقل ماب",
@@ -299,8 +319,8 @@ export const copy = {
   },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
-    ar: "محل تجريبي — مو قهوة حقيقية في الرياض.",
-    en: "A demo shop — not a real Riyadh cafe.",
+    ar: `محل تجريبي — مو قهوة حقيقية في ${cityLabel(DEFAULT_LIVE_CITY, "ar")}.`,
+    en: `A demo shop — not a real ${cityLabel(DEFAULT_LIVE_CITY, "en")} cafe.`,
   },
   beenHere: {
     ar: "كنت هنا",
@@ -363,8 +383,8 @@ export const copy = {
     en: "The list",
   },
   directoryHint: {
-    ar: "قهوة نحبها في الرياض.",
-    en: "Cafes we like in Riyadh.",
+    ar: directoryHintForCity("ar"),
+    en: directoryHintForCity("en"),
   },
   allDistricts: {
     ar: "كل الأحياء",
@@ -375,20 +395,20 @@ export const copy = {
     en: "Browse by Neighborhood",
   },
   browseNeighborhoodsHint: {
-    ar: "اكتشف القهاوي حولك، حي بحي.",
-    en: "Coffee around Riyadh, neighborhood by neighborhood.",
+    ar: browseNeighborhoodsHintForCity("ar"),
+    en: browseNeighborhoodsHintForCity("en"),
   },
   viewAllNeighborhoods: {
     ar: "عرض الكل",
     en: "View all",
   },
   neighborhoodsIndex: {
-    ar: "أحياء الرياض",
-    en: "Riyadh Neighborhoods",
+    ar: neighborhoodsIndexHeadingForCity("ar"),
+    en: neighborhoodsIndexHeadingForCity("en"),
   },
   neighborhoodsIndexHint: {
-    ar: "استكشف القهاوي في الرياض.",
-    en: "Explore coffee spots across Riyadh.",
+    ar: neighborhoodsIndexHintForCity("ar"),
+    en: neighborhoodsIndexHintForCity("en"),
   },
   neighborhoodsSearch: {
     ar: "ابحث عن الأحياء...",

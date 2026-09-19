@@ -1,4 +1,5 @@
 import { listDiscoveryShops, listRealShops } from "./catalog";
+import { DEFAULT_LIVE_CITY } from "./cities";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
 import {
@@ -26,6 +27,7 @@ import { dedupeSameBrand } from "./shop-brand";
 import { matchCatalogShops } from "./shop-name";
 import type {
   ChatPick,
+  City,
   Language,
   MomentTag,
   NeighborhoodId,
@@ -227,8 +229,10 @@ export function pickCafes(input: {
   text: string;
   beenIds?: string[];
   language?: Language;
+  city?: City;
 }): PickResult {
-  const intent = parseIntent(input.text);
+  const city = input.city ?? DEFAULT_LIVE_CITY;
+  const intent = parseIntent(input.text, city);
   const language = input.language ?? intent.language;
   if (isMeetHalfwayChipAsk(input.text)) {
     return {
@@ -242,17 +246,17 @@ export function pickCafes(input: {
   }
   const been = new Set((input.beenIds ?? []).filter(Boolean));
   const avoided = new Set(intent.avoidedNeighborhoods);
-  const catalog = listDiscoveryShops();
+  const catalog = listDiscoveryShops(city);
   const named = preferAskedNeighborhood(
-    matchCatalogShops(input.text, listRealShops()),
+    matchCatalogShops(input.text, listRealShops(city)),
     intent.neighborhoods,
   );
   const citywide = catalog.filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
   );
-  const matchedDistrict = extractPrimaryDistrict(input.text);
+  const matchedDistrict = extractPrimaryDistrict(input.text, city);
 
-  if (matchedDistrict && (named.length === 0 || isExactDistrictAsk(input.text))) {
+  if (matchedDistrict && (named.length === 0 || isExactDistrictAsk(input.text, city))) {
     const inDistrict = citywide.filter(
       (shop) => shop.neighborhood === matchedDistrict,
     );

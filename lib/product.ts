@@ -1,3 +1,4 @@
+import { mostPopularHeadingForCity } from "./cities";
 import {
   COFFEE_SHOPS_CATEGORY,
   type DirectoryCategoryId,
@@ -193,7 +194,7 @@ export function aboutPath(language: Language = "ar"): string {
   return language === "en" ? "/en/about" : "/about";
 }
 
-/** Full Riyadh neighborhood index (view-all). City is Riyadh only. */
+/** Full neighborhood index (view-all). Live city catalog only — no city URL path. */
 export const NEIGHBORHOODS_PATH = "/neighborhoods";
 
 export function neighborhoodsPath(language: Language = "ar"): string {
@@ -356,8 +357,8 @@ export const MOST_POPULAR_EN_ALIAS_PATH = "/en/most-popular-cafes-in-riyadh";
  * `Coffee shops in {district}` — citywide popular stays one short line.
  */
 export const MOST_POPULAR_HEADING = {
-  ar: "أشهر القهاوي في الرياض",
-  en: "Most popular coffee shops in Riyadh",
+  ar: mostPopularHeadingForCity("ar"),
+  en: mostPopularHeadingForCity("en"),
 } as const;
 
 export function isMostPopularSlug(slug: string): boolean {

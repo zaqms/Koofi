@@ -1,9 +1,11 @@
 import { listDirectoryShops } from "./catalog";
+import { DEFAULT_LIVE_CITY } from "./cities";
 import { directoryNeighborhoods } from "./directory";
+import { districtCity } from "./district-city";
 import { NEIGHBORHOODS, isNeighborhoodId } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
 import { districtPath } from "./product";
-import type { Language, NeighborhoodId } from "./types";
+import type { City, Language, NeighborhoodId } from "./types";
 
 /**
  * Live catalog districts only. Izdihar / الازدهار is not a live حي —
@@ -52,17 +54,25 @@ function placeAliases(id: NeighborhoodId): string[] {
 }
 
 /** True when the whole ask is a district label, not a shop name that contains one. */
-export function isExactDistrictAsk(raw: string): boolean {
+export function isExactDistrictAsk(
+  raw: string,
+  city: City = DEFAULT_LIVE_CITY,
+): boolean {
   const haystack = normalize(raw);
   if (!haystack) return false;
-  return dictionaryDistrictIds().some((id) =>
-    placeAliases(id).some((alias) => normalize(alias) === haystack),
-  );
+  return dictionaryDistrictIds()
+    .filter((id) => districtCity(id) === city)
+    .some((id) =>
+      placeAliases(id).some((alias) => normalize(alias) === haystack),
+    );
 }
 
 /** First district named in the ask (EN / AR / alias / typo). */
-export function extractPrimaryDistrict(raw: string): NeighborhoodId | null {
-  const { neighborhoods } = parseIntent(raw);
+export function extractPrimaryDistrict(
+  raw: string,
+  city: City = DEFAULT_LIVE_CITY,
+): NeighborhoodId | null {
+  const { neighborhoods } = parseIntent(raw, city);
   if (neighborhoods.length === 0) return null;
   if (neighborhoods.length === 1) return neighborhoods[0] ?? null;
 

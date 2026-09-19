@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getShop } from "./catalog";
+import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { neighborhoodLabel } from "./neighborhoods";
 import { PRODUCT_NAME, shopDisplayName } from "./product";
 import type { Language, Shop } from "./types";
@@ -59,9 +60,7 @@ export async function cafeOpenGraphImage(
     ? language === "ar"
       ? shop.neighborhoodAr
       : neighborhoodLabel(shop.neighborhood, "en")
-    : language === "ar"
-      ? "الرياض"
-      : "Riyadh";
+    : cityLabel(DEFAULT_LIVE_CITY, language);
   const image = shop ? shopImageDataUri(shop) : null;
   const dir = language === "en" ? "ltr" : "rtl";
 

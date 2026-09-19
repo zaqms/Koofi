@@ -13,7 +13,7 @@ type ShareListingButtonProps = {
   language: Language;
   source: ListingShareSource;
   compact?: boolean;
-  variant?: "default" | "passport" | "ghost" | "listing";
+  variant?: "default" | "passport" | "ghost" | "listing" | "hero";
 };
 
 export function ShareListingButton({
@@ -36,6 +36,26 @@ export function ShareListingButton({
     );
     const result = await sharePackPacket(packet.text);
     setCopied(result === "copied");
+  }
+
+  if (variant === "hero") {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          void onShare();
+        }}
+        className="inline-flex size-11 items-center justify-center rounded-full bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider"
+        lang={language}
+        translate="no"
+        aria-label={copy.listingShare[language]}
+      >
+        <ShareIcon className="size-5" />
+        {copied ? (
+          <span className="sr-only">{copy.packetCopied[language]}</span>
+        ) : null}
+      </button>
+    );
   }
 
   if (variant === "listing") {

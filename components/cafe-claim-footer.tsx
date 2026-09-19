@@ -52,7 +52,7 @@ export function CafeClaimFooter({
   const showCta = status === "none";
 
   return (
-    <footer className="mt-5 border-t border-line pt-3 text-xs text-ink-soft">
+    <footer className="border-t border-wain-divider pt-3 text-[11px] text-wain-soft-taupe">
       <p dir="ltr">{copy.listedOn[language]}</p>
       {showCta ? (
         <p className="mt-1.5">

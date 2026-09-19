@@ -164,6 +164,12 @@ assert(!passport.includes("DirectoryCard"), "Passport chrome is not the listing 
 const thin = read("components/cafe-card.tsx");
 assert(!thin.includes("DirectoryCard"), "thin /c/[id] card is not the listing card");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here stays parked on the thin card");
+assert(thin.includes("CafeDetail"), "thin /c/[id] uses the approved detail layout");
+
+const cafeDetail = read("components/cafe-detail.tsx");
+assert(!cafeDetail.includes("DirectoryCard"), "detail chrome is not the listing card");
+assert(cafeDetail.includes("listingCardTags"), "detail pills reuse listing tags");
+assert(cafeDetail.includes("size=\"listing\""), "detail logo uses listing treatment");
 
 const home = read("components/home-landing.tsx");
 const district = read("components/district-page.tsx");

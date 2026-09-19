@@ -286,6 +286,8 @@ const files = [
   "components/viral-share.tsx",
   "components/cafe-presence-row.tsx",
   "components/cafe-card.tsx",
+  "components/cafe-detail.tsx",
+  "lib/cafe-detail.ts",
   "components/card-been.tsx",
   "components/been-button.tsx",
   "components/pick-list.tsx",
@@ -348,14 +350,20 @@ assert(!passport.includes("beenHere"), "Passport does not render Been here copy"
 assert(!passport.includes("كنت هنا"), "Passport has no كنت هنا");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
-assert(thin.includes("CafePresenceRow"), "thin card has like · share · Maps row");
+assert(thin.includes("CafeDetail"), "thin card uses the approved detail layout");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
 assert(thin.includes("CardBeen"), "Been here component stays in code");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here is flagged off the thin card");
 assert(thin.includes("{SHOW_BEEN_HERE ?"), "Been here is not rendered while parked");
-assert(!thin.includes("ShareListingButton"), "thin listing share lives in the presence row");
+assert(!thin.includes("CafePresenceRow"), "thin Maps + Share live on the detail, not presence");
 assert(!thin.includes("inviteCta"), "thin does not render وين؟ copy");
 assert(!thin.includes("beenHere"), "thin does not hardcode Been here copy");
+
+const detail = readFileSync("components/cafe-detail.tsx", "utf8");
+assert(detail.includes("ShareListingButton"), "detail share stays the listing packet");
+assert(detail.includes("copy.takeMeThere"), "detail Maps CTA stays ودّني هناك / Take me there");
+assert(detail.includes("SHOW_DETAIL_FAVORITE"), "hero heart is flagged");
+assert(detail.includes("{SHOW_DETAIL_FAVORITE ?"), "hero heart is not rendered while parked");
 
 const cardBeen = readFileSync("components/card-been.tsx", "utf8");
 assert(cardBeen.includes("SHOW_BEEN_HERE"), "CardBeen is gated");

@@ -120,6 +120,8 @@ assert(!/koofi/i.test(copy.takeMeThere.ar + copy.takeMeThere.en), "CTA is not Ko
 
 const files = [
   "components/cafe-card.tsx",
+  "components/cafe-detail.tsx",
+  "lib/cafe-detail.ts",
   "components/cafe-passport-card.tsx",
   "components/cafe-presence-row.tsx",
   "components/card-been.tsx",

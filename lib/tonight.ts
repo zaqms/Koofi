@@ -26,6 +26,12 @@ export const SHOW_INVITE_CTA = false;
 /** Parked. كنت هنا / Been here stays in code; flip to show the cafe-card control again. */
 export const SHOW_BEEN_HERE = false;
 
+/**
+ * Parked. Hero heart on /c/[id] maps to the existing like/upvote when flipped.
+ * No save-account or dead Favorite while this is false.
+ */
+export const SHOW_DETAIL_FAVORITE = false;
+
 export const VIRAL_SHARE_CHANNELS = [
   "system",
   "x",

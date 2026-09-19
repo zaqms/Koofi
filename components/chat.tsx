@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
+import { CitySelector } from "@/components/city-selector";
+import { ComingSoonCity } from "@/components/coming-soon-city";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
 import { MeetHalfwayResultCards } from "@/components/meet-halfway-result-cards";
@@ -20,6 +22,7 @@ import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import type { ChipOpenRestore } from "@/lib/chip-open";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { useBeenIds } from "@/lib/been";
+import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
 import {
   COFFEE_SHOPS_CATEGORY,
@@ -403,6 +406,7 @@ export function Chat({
   chipOpen,
 }: ChatProps) {
   const router = useRouter();
+  const { cityId, isComingSoon } = useCity();
   // Home / directory / district must not inherit a leftover بيننا thread.
   // Results chrome is invited (`/h/{id}`) or local `/halfway` only.
   const threadKey = halfwayInvite
@@ -941,6 +945,7 @@ export function Chat({
               landing,
               via,
               session: readLearnSession(),
+              city: cityId,
             }),
           });
 
@@ -1288,6 +1293,7 @@ export function Chat({
               landing,
               via: "chip",
               session: readLearnSession(),
+              city: cityId,
             }),
           });
 
@@ -1513,7 +1519,7 @@ export function Chat({
   const halfwayResult = lastHalfwayResult(messages);
   // بيننا first-class screens (invite / waiting / results). Ask composer +
   // أضف قهوة come back on close.
-  const showAskComposer = !meetHalfwayOpen && !sessionExpired;
+  const showAskComposer = !meetHalfwayOpen && !sessionExpired && !isComingSoon;
   const isHalfwayHost = Boolean(sessionHostWait(halfwayInvite));
   const halfwayGuest = Boolean(halfwayInvite) && !isHalfwayHost;
   const halfwayPicker = meetHalfwayOpen && !sessionExpired ? (
@@ -1613,6 +1619,7 @@ export function Chat({
               onClick={startOver}
             />
             <div className="flex items-center gap-3">
+              {meetHalfwayOpen ? null : <CitySelector language={landing} />}
               {restore && !meetHalfwayOpen ? null : (
                 <Link
                   href={localeHref ?? (landing === "ar" ? "/en" : "/")}
@@ -1638,7 +1645,9 @@ export function Chat({
         )}
       </header>
 
-      {showHalfwayResults && halfwayResult?.picks ? (
+      {isComingSoon && !showHalfwayResults && !sessionExpired ? (
+        <ComingSoonCity language={landing} city={cityId} />
+      ) : showHalfwayResults && halfwayResult?.picks ? (
         <div
           ref={listRef}
           data-halfway-results=""

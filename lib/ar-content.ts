@@ -6,6 +6,8 @@ import {
   siblingShops,
 } from "./en-content";
 import { listDirectoryShops } from "./catalog";
+import { cityLabel } from "./cities";
+import { districtCity } from "./district-city";
 import { neighborhoodLabel } from "./neighborhoods";
 import { cardPath, districtPath, PRODUCT_NAME, shopDisplayName } from "./product";
 import type { NeighborhoodId, Shop } from "./types";
@@ -793,12 +795,12 @@ const CNI_BLURBS_AR: Record<string, string> = {
 };
 
 const CAFE_OPENERS_AR = [
-  (name: string, district: string) =>
-    `**${name}** موجودة بقائمة wain.lol لحي ${district} بالرياض.`,
+  (name: string, district: string, city: string) =>
+    `**${name}** موجودة بقائمة wain.lol لحي ${district} ب${city}.`,
   (name: string, district: string) =>
     `إذا تدور **${name}** بـ${district}، هذي البطاقة اللي عندنا على wain.lol.`,
-  (name: string, district: string) =>
-    `هذي صفحة **${name}** على wain.lol — من أماكن ${district} بقائمة الرياض.`,
+  (name: string, district: string, city: string) =>
+    `هذي صفحة **${name}** على wain.lol — من أماكن ${district} بقائمة ${city}.`,
   (name: string, district: string) =>
     `${district} فيها **${name}** بالكتالوج. البطاقة هنا إذا تبي دبوس الخريطة.`,
 ] as const;
@@ -838,13 +840,14 @@ function fillCount(template: string, count: number): string {
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
   const name = neighborhoodLabel(district, "ar");
+  const cityName = cityLabel(districtCity(district), "ar");
   return {
-    lead: `${name} من أحياء الرياض على wain.lol. هذي الصفحة أماكن ${name} اللي ضفناها للكتالوج للحين.`,
+    lead: `${name} من أحياء ${cityName} على wain.lol. هذي الصفحة أماكن ${name} اللي ضفناها للكتالوج للحين.`,
     hereIntro: `فيه **{count}** قهاوي من ${name} بالقائمة الحين:`,
     hereOutro: `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`,
-    about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي. [عن وين](/about).
+    about: `wain.lol دليل قهوة صغير في ${cityName}. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي. [عن وين](/about).
 
-الرياض بس للحين. ناقصك مكان تحبه؟ ارمي رابط قوقل ماب من الموقع.`,
+${cityName} بس للحين. ناقصك مكان تحبه؟ ارمي رابط قوقل ماب من الموقع.`,
   };
 }
 
@@ -930,7 +933,7 @@ export function cafeArTitle(
   shop: Pick<Shop, "id" | "nameAr" | "nameEn" | "neighborhood" | "neighborhoodAr">,
 ): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE_AR.title;
-  return `${shopDisplayName(shop, "ar")} · ${shop.neighborhoodAr} · الرياض · ${PRODUCT_NAME}`;
+  return `${shopDisplayName(shop, "ar")} · ${shop.neighborhoodAr} · ${cityLabel(districtCity(shop.neighborhood), "ar")} · ${PRODUCT_NAME}`;
 }
 
 export function cafeArMeta(
@@ -959,7 +962,7 @@ function defaultCafeBlurb(shop: Shop): string {
     vibe.length > 0 && vibe[0] !== "قهوة"
       ? ` وسوم الكتالوج على البطاقة: ${vibe.join("، ")}.`
       : "";
-  return `${opener(name, district)}${vibeLine} ${extra} الرياض بس للحين. إذا تبي باقي الحي، صفحة الحي مربوطة تحت.`;
+  return `${opener(name, district, cityLabel(shop.city, "ar"))}${vibeLine} ${extra} ${cityLabel(shop.city, "ar")} بس للحين. إذا تبي باقي الحي، صفحة الحي مربوطة تحت.`;
 }
 
 function cafeSiblingsMarkdown(shop: Shop): string {

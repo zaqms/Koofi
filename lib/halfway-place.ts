@@ -1,9 +1,10 @@
 import { listDiscoveryShops } from "./catalog";
-import { copy } from "./copy";
+import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
+import { districtsInCity } from "./district-city";
 import { formatDistanceKm, haversineKm } from "./distance";
 import { neighborhoodCentroid } from "./neighborhood-tight";
 import { neighborhoodLabel } from "./neighborhoods";
-import { NEIGHBORHOOD_IDS, type Language, type NeighborhoodId, type Pin } from "./types";
+import type { City, Language, NeighborhoodId, Pin } from "./types";
 
 /** Catalog حي snap for labels only — never shown as lat,lng. */
 const PLACE_SNAP_KM = 8;
@@ -18,9 +19,10 @@ export function nearestNeighborhoodFromPin(
   pin: Pin,
   shops = listDiscoveryShops(),
   maxKm = PLACE_SNAP_KM,
+  city: City = DEFAULT_LIVE_CITY,
 ): NeighborhoodId | null {
   let best: { id: NeighborhoodId; km: number } | null = null;
-  for (const id of NEIGHBORHOOD_IDS) {
+  for (const id of districtsInCity(city)) {
     const center = neighborhoodCentroid(id, shops);
     if (!center) continue;
     const km = haversineKm(pin, center);
@@ -34,13 +36,14 @@ export function nearestNeighborhoodFromPin(
 export function formatHalfwayPlaceLabel(
   pin: Pin | null | undefined,
   language: Language,
+  city: City = DEFAULT_LIVE_CITY,
 ): string {
-  const city = copy.meetHalfwayCity[language];
-  if (!pin) return city;
-  const id = nearestNeighborhoodFromPin(pin);
-  if (!id) return city;
+  const cityName = cityLabel(city, language);
+  if (!pin) return cityName;
+  const id = nearestNeighborhoodFromPin(pin, listDiscoveryShops(city), PLACE_SNAP_KM, city);
+  if (!id) return cityName;
   const area = neighborhoodLabel(id, language);
-  return language === "ar" ? `${area}، ${city}` : `${area}, ${city}`;
+  return language === "ar" ? `${area}، ${cityName}` : `${area}, ${cityName}`;
 }
 
 export function estimateDriveMinutes(from: Pin, to: Pin): number {

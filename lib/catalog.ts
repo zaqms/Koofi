@@ -1,9 +1,11 @@
 import catalogFile from "../data/catalog.json";
 import popularityIndexFile from "../data/popularity-index.json";
+import { DEFAULT_LIVE_CITY } from "./cities";
+import { districtCity } from "./district-city";
 import { officialShopCoords } from "./place-coords";
 import { isExampleShop } from "./product";
 import { shopMapsHref } from "./public-url";
-import { NEIGHBORHOOD_IDS, type CatalogFile, type NeighborhoodId, type Shop } from "./types";
+import { NEIGHBORHOOD_IDS, type CatalogFile, type City, type NeighborhoodId, type Shop } from "./types";
 import type { DirectoryShop } from "./directory";
 
 export type { DirectoryShop } from "./directory";
@@ -22,9 +24,9 @@ function withBakedPopularity(shop: Shop): Shop {
   return { ...shop, popularityIndex };
 }
 
-export function listShops(): Shop[] {
+export function listShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
   return catalog.shops
-    .filter((shop) => shop.city === "riyadh")
+    .filter((shop) => shop.city === city)
     .map(withBakedPopularity);
 }
 
@@ -39,8 +41,8 @@ export function shopCardNumber(id: string): string {
   return String(index + 1).padStart(2, "0");
 }
 
-export function listRealShops(): Shop[] {
-  return listShops().filter((shop) => !isExampleShop(shop));
+export function listRealShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
+  return listShops(city).filter((shop) => !isExampleShop(shop));
 }
 
 export function isDriveThroughLane(
@@ -50,8 +52,8 @@ export function isDriveThroughLane(
 }
 
 /** Default specialty discovery — excludes Drive-through-lane additions. */
-export function listDiscoveryShops(): Shop[] {
-  return listRealShops().filter((shop) => !isDriveThroughLane(shop));
+export function listDiscoveryShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
+  return listRealShops(city).filter((shop) => !isDriveThroughLane(shop));
 }
 
 export function realShopCount(): number {
@@ -96,12 +98,12 @@ function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
 }
 
 /** Specialty directory used by default home, districts with specialty shops, chips. */
-export function listDirectoryShops(): DirectoryShop[] {
-  return toDirectoryShops(listDiscoveryShops());
+export function listDirectoryShops(city: City = DEFAULT_LIVE_CITY): DirectoryShop[] {
+  return toDirectoryShops(listDiscoveryShops(city));
 }
 
-export function listAllDirectoryShops(): DirectoryShop[] {
-  return toDirectoryShops(listRealShops());
+export function listAllDirectoryShops(city: City = DEFAULT_LIVE_CITY): DirectoryShop[] {
+  return toDirectoryShops(listRealShops(city));
 }
 
 /** Unified Drive-through directory — specialty TAG rows + DT-lane additions. */
@@ -118,21 +120,24 @@ export function listDriveThroughDirectoryShops(): DirectoryShop[] {
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,
 ): DirectoryShop[] {
-  const specialty = listDirectoryShops().filter(
+  const city = districtCity(district);
+  const specialty = listDirectoryShops(city).filter(
     (shop) => shop.neighborhood === district,
   );
   if (specialty.length > 0) return specialty;
-  return listAllDirectoryShops().filter((shop) => shop.neighborhood === district);
+  return listAllDirectoryShops(city).filter((shop) => shop.neighborhood === district);
 }
 
 /**
  * Neighborhood index: specialty catalog plus DT-lane shops that live in
  * districts with no specialty rows.
  */
-export function listBrowseDirectoryShops(): DirectoryShop[] {
-  const specialty = listDirectoryShops();
+export function listBrowseDirectoryShops(
+  city: City = DEFAULT_LIVE_CITY,
+): DirectoryShop[] {
+  const specialty = listDirectoryShops(city);
   const specialtyDistricts = new Set(specialty.map((shop) => shop.neighborhood));
-  const extra = listAllDirectoryShops().filter(
+  const extra = listAllDirectoryShops(city).filter(
     (shop) => !specialtyDistricts.has(shop.neighborhood),
   );
   return [...specialty, ...extra];

@@ -1,5 +1,12 @@
 import { after } from "next/server";
 import { isAddShopIntent } from "@/lib/add-shop-intent";
+import {
+  comingSoonBody,
+  comingSoonLiveHint,
+  isComingSoonCity,
+  parseCatalogCity,
+  parseCityId,
+} from "@/lib/cities";
 import { copy } from "@/lib/copy";
 import { isOffTopicAsk } from "@/lib/off-topic-intent";
 import { recordLearnAsk } from "@/lib/learn";
@@ -38,6 +45,7 @@ type ChatRequest = {
   session?: string;
   halfway?: unknown;
   halfwayMore?: boolean;
+  city?: string;
 };
 
 function landingLanguage(value: unknown): Language {
@@ -54,6 +62,16 @@ export async function POST(request: Request) {
   }
 
   const landing = landingLanguage(body.landing);
+  const requestedCity = parseCityId(body.city);
+  if (requestedCity && isComingSoonCity(requestedCity)) {
+    return Response.json({
+      language: landing,
+      reply: `${comingSoonBody(landing, requestedCity)} ${comingSoonLiveHint(landing)}`,
+      thinCatalog: false,
+      picks: [],
+    });
+  }
+  const city = parseCatalogCity(body.city);
   const halfwayRows = parseHalfwayPinInputs(body.halfway);
   const text = typeof body.text === "string" ? body.text.trim() : "";
   if (!text && !halfwayRows) {
@@ -231,7 +249,12 @@ export async function POST(request: Request) {
     });
   }
 
-  const result = pickCafes({ text, beenIds, language: landing });
+  const result = pickCafes({
+    text,
+    beenIds,
+    language: landing,
+    ...(city ? { city } : {}),
+  });
   const [picks, reply] = await Promise.all([
     toChatPicksWithPlaces(result),
     speakForPicks({ userText: text, landing, result }),

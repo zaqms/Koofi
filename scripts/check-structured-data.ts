@@ -502,8 +502,23 @@ assert(
   "About EN covers three picks + Maps",
 );
 assert(
-  aboutAr.some((item) => item.a.includes("الرياض بس")),
-  "About AR says Riyadh only",
+  aboutAr.some(
+    (item) =>
+      item.a.includes("فاتحين في") &&
+      item.a.includes("الرياض") &&
+      item.a.includes("جدة") &&
+      item.a.includes("الدمام"),
+  ),
+  "About AR names the live city and coming-soon cities",
+);
+assert(
+  aboutEn.some(
+    (item) =>
+      /live in Riyadh/i.test(item.a) &&
+      /Jeddah/i.test(item.a) &&
+      /Dammam/i.test(item.a),
+  ),
+  "About EN names the live city and coming-soon cities",
 );
 assert(
   aboutAr.some((item) => item.a.includes("قوقل ماب")),

@@ -1,3 +1,4 @@
+import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { neighborhoodLabel } from "./neighborhoods";
 import { aboutPath, districtPath, PUBLIC_SITE_URL } from "./product";
 import { SCHEMA_CONTEXT } from "./structured-data";
@@ -28,15 +29,15 @@ export function aboutFaqs(language: Language): FaqItem[] {
     return [
       {
         q: "وش هو wain.lol؟",
-        a: "دليل قهوة في الرياض. تسأل، يعطيك ثلاث قهاوي وسبب لكل وحدة.",
+        a: `دليل قهوة في ${cityLabel(DEFAULT_LIVE_CITY, "ar")}. تسأل، يعطيك ثلاث قهاوي وسبب لكل وحدة.`,
       },
       {
         q: "كيف يطلع الثلاث؟",
         a: "تكتب حي أو جو، أو تضغط شيب. يطلع لك ثلاث من القائمة، وكل وحدة عليها خريطة قوقل. ما نرتّب بالنجوم.",
       },
       {
-        q: "الرياض بس ولا فيه مدن ثانية؟",
-        a: "الرياض بس. باقي المملكة بعد ما انفتحت.",
+        q: "فاتحين في أي مدن؟",
+        a: `فاتحين في ${cityLabel(DEFAULT_LIVE_CITY, "ar")}. جدة والدمام جايين قريب.`,
       },
       {
         q: "كيف أضيف قهوة؟",
@@ -56,15 +57,15 @@ export function aboutFaqs(language: Language): FaqItem[] {
   return [
     {
       q: "What is wain.lol?",
-      a: "A Riyadh coffee guide. You ask, it gives you three cafes and a reason for each.",
+      a: `A ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. You ask, it gives you three cafes and a reason for each.`,
     },
     {
       q: "How do the picks work?",
       a: "Type a neighborhood or a vibe, or tap a chip. You get three from the list, each with a Google Maps pin. We don't rank by stars.",
     },
     {
-      q: "Is it only Riyadh?",
-      a: "Yes. Riyadh only. Nowhere else in KSA yet.",
+      q: "Which cities are you in?",
+      a: `We’re live in ${cityLabel(DEFAULT_LIVE_CITY, "en")}. Jeddah and Dammam are coming soon.`,
     },
     {
       q: "How do I add a cafe?",

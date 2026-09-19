@@ -521,18 +521,23 @@ assert(
 );
 
 const product = read("lib/product.ts");
+const registry = read("lib/discovery-categories.ts");
 const why = read("lib/why-line.ts");
 const vibeLabels = read("lib/vibe-labels.ts");
 assert(
   !product.includes("Good for a date") &&
     !product.includes("لموعد") &&
     !product.includes('"For two"') &&
-    !product.includes('"لاثنين"'),
-  "product chip labels dropped date / For two",
+    !product.includes('"لاثنين"') &&
+    !registry.includes("Good for a date") &&
+    !registry.includes("لموعد") &&
+    !registry.includes('"For two"') &&
+    !registry.includes('"لاثنين"'),
+  "product + registry chip labels dropped date / For two",
 );
 assert(
-  product.includes("With friends") && product.includes("مع الأصحاب"),
-  "product chip labels are With friends / مع الأصحاب",
+  registry.includes("With friends") && registry.includes("مع الأصحاب"),
+  "registry chip labels are With friends / مع الأصحاب",
 );
 assert(
   !why.includes("Good for a date") &&
@@ -554,10 +559,11 @@ assert(
   "moment fallback label is With friends",
 );
 assert(
-  product.includes('ar: "طلبات السيارة"') &&
-    product.includes('en: "Drive-through"') &&
-    !product.includes('ar: "درايف ثرو"') &&
-    !product.includes('ar: "طلبات السياره"'),
+  registry.includes('ar: "طلبات السيارة"') &&
+    registry.includes('en: "Drive-through"') &&
+    !registry.includes('ar: "درايف ثرو"') &&
+    !registry.includes('ar: "طلبات السياره"') &&
+    !product.includes('ar: "درايف ثرو"'),
   "Drive-through AR chip label is طلبات السيارة",
 );
 assert(

@@ -17,6 +17,7 @@ import {
   chipSharePath,
   chipDirectoryMoment,
   filterPutsDirectoryFirst,
+  isDriveThroughDirectoryChip,
   isOffHomeChipId,
   mostPopularPath,
 } from "@/lib/product";
@@ -58,7 +59,7 @@ export function HomeLanding({
       shops={
         popular
           ? listPopularDirectoryShops()
-          : pageChipId === "drive-through"
+          : isDriveThroughDirectoryChip(pageChipId)
             ? listDriveThroughDirectoryShops()
             : listDirectoryShops()
       }

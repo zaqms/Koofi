@@ -3,12 +3,11 @@ import { copy } from "./copy";
 import { pageAlternates } from "./locale";
 import {
   MEET_HALFWAY_CHIP,
-  NEARBY_CHIP,
   PRODUCT_NAME,
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
-  VIBE_CHIPS,
   chipSharePath,
+  discoveryCategoryLabel,
   vibeChipLabel,
 } from "./product";
 import type { Language } from "./types";
@@ -17,11 +16,7 @@ function chipLabel(chipId: string, language: Language): string {
   if (chipId === MEET_HALFWAY_CHIP.id) {
     return vibeChipLabel(MEET_HALFWAY_CHIP, language);
   }
-  if (chipId === NEARBY_CHIP.id) {
-    return vibeChipLabel(NEARBY_CHIP, language);
-  }
-  const vibe = VIBE_CHIPS.find((chip) => chip.id === chipId);
-  return vibe ? vibeChipLabel(vibe, language) : PRODUCT_NAME;
+  return discoveryCategoryLabel(chipId, language) ?? PRODUCT_NAME;
 }
 
 /** Thin share metadata. Chip label + locked opener. No Soft Places copy. */

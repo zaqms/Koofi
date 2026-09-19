@@ -2,8 +2,9 @@ import type { MouseEvent, ReactNode } from "react";
 import Link from "next/link";
 import { copy } from "@/lib/copy";
 import {
-  homeSurfaceChips,
   chipSharePath,
+  getDiscoveryCategory,
+  homeSurfaceChips,
   vibeChipLabel,
 } from "@/lib/product";
 import type { Language } from "@/lib/types";
@@ -258,7 +259,7 @@ export function VibeChips({
             onClick={onChipClick}
             className={className}
           >
-            <ChipIcon id={chip.id} />
+            <ChipIcon id={getDiscoveryCategory(chip.id)?.icon ?? chip.id} />
             <span className="line-clamp-2 text-center text-[11px] leading-tight">
               {label}
             </span>

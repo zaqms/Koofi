@@ -1,6 +1,6 @@
 import { headingForPicks, pickCafes, toChatPicks } from "./picker";
 import {
-  VIBE_CHIPS,
+  getDiscoveryCategory,
   isOffHomeChipId,
   vibeChipLabel,
 } from "./product";
@@ -25,9 +25,9 @@ export function restoreOffHomeChipOpen(
   language: Language,
 ): ChipOpenRestore | null {
   if (!isOffHomeChipId(chipId)) return null;
-  const chip = VIBE_CHIPS.find((row) => row.id === chipId);
+  const chip = getDiscoveryCategory(chipId);
   if (!chip) return null;
-  const ask = vibeChipLabel(chip, language);
+  const ask = vibeChipLabel(chip.label, language);
   const result = pickCafes({ text: ask, language });
   const picks = toChatPicks(result);
   if (picks.length === 0) return null;

@@ -28,7 +28,7 @@ export function ComingSoonCity({ language, city }: ComingSoonCityProps) {
       data-coming-soon-city={city}
       aria-labelledby="coming-soon-city"
     >
-      <p className="text-[11px] font-medium tracking-wide text-ink-soft uppercase">
+      <p className="text-[11px] font-medium tracking-wide text-ink-soft" dir="ltr">
         wain.lol
       </p>
       <h2

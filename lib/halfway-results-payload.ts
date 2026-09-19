@@ -1,5 +1,5 @@
 import { haversineKm } from "./distance";
-import { mapsHref } from "./public-url";
+import { emailMapsHref } from "./email-maps-href";
 import type { ChatPick, Language, Pin } from "./types";
 
 /** One café on a بيننا results screen — dataLayer + server webhook share this shape. */
@@ -149,7 +149,7 @@ export function halfwayResultPins(
       role,
       label_ar: labels.ar,
       label_en: labels.en,
-      maps_url: mapsHref(pin.lat, pin.lng),
+      maps_url: emailMapsHref({ lat: pin.lat, lng: pin.lng }),
       lat: pin.lat,
       lng: pin.lng,
     });

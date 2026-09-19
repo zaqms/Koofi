@@ -1,3 +1,4 @@
+import { emailMapsHref } from "./email-maps-href";
 import { ENV_KEYS, readEnv } from "./env";
 import {
   halfwayResultCafesFromPicks,
@@ -8,6 +9,13 @@ import type {
   HalfwayResultPin,
 } from "./halfway-results-payload";
 import type { ChatPick, Language, Pin } from "./types";
+
+function emailCafeMapsUrl(pick: ChatPick): string {
+  return emailMapsHref({
+    existing: pick.mapsHref,
+    shopId: pick.id,
+  });
+}
 
 type HalfwayResultSource = "local" | "invite";
 
@@ -52,6 +60,9 @@ export function halfwayResultsWebhookBody(input: {
     cafes: halfwayResultCafesFromPicks({
       picks: input.picks,
       midpoint: input.midpoint,
+    }).map((cafe, index) => {
+      const pick = input.picks[index];
+      return pick ? { ...cafe, maps_url: emailCafeMapsUrl(pick) } : cafe;
     }),
     ...(pins.length > 0 ? { pins } : {}),
     ...(host_pin ? { host_pin } : {}),

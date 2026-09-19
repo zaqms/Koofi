@@ -10,8 +10,16 @@ import type { Shop } from "../lib/types";
 import {
   extractMapsPreviewHref,
   extractMapsUrl,
+  isMapsShortlink,
   isMapsUrl,
 } from "../lib/maps-url";
+import {
+  EMAIL_MAPS_PATH,
+  emailMapsHref,
+  emailMapsPinHref,
+  emailMapsShopHref,
+  isRawGoogleMapsHref,
+} from "../lib/email-maps-href";
 import {
   parseSharedPin,
   looksLikeSharedPin,
@@ -1576,6 +1584,10 @@ assert(
   "maps_url is a Maps link",
 );
 assert(
+  firstCafe.maps_url === resultPicks[0]?.mapsHref,
+  "shared café helper keeps catalog Maps href for dataLayer",
+);
+assert(
   firstCafe.distance_km == null || typeof firstCafe.distance_km === "number",
   "distance_km optional number",
 );
@@ -1667,9 +1679,74 @@ assert(
   "pin latlng matches resolved locations",
 );
 assert(
-  hookHost.maps_url.startsWith("https://maps.google.com/?q=") &&
-    hookGuest.maps_url.startsWith("https://maps.google.com/?q="),
-  "pin maps_url is a Maps link",
+  hookHost.maps_url === emailMapsPinHref(hookHost.lat, hookHost.lng) &&
+    hookGuest.maps_url === emailMapsPinHref(hookGuest.lat, hookGuest.lng) &&
+    hookHost.maps_url.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}?lat=`) &&
+    !isRawGoogleMapsHref(hookHost.maps_url) &&
+    !isRawGoogleMapsHref(hookGuest.maps_url),
+  "email pin maps_url is a first-party wain.lol hop",
+);
+const hookCafe = hookBody.cafes[0];
+const firstPick = resultPicks[0];
+if (!hookCafe || !firstPick) fail("webhook cafe + pick");
+assert(
+  isMapsShortlink(firstPick.mapsHref)
+    ? hookCafe.maps_url === firstPick.mapsHref
+    : hookCafe.maps_url === emailMapsShopHref(firstPick.id),
+  "email café maps_url prefers shortlink else /go/maps?shop=",
+);
+assert(
+  !isRawGoogleMapsHref(hookCafe.maps_url),
+  "email café maps_url is not raw google.com/maps",
+);
+assert(
+  layer.cafes?.[0]?.maps_url === firstPick.mapsHref,
+  "GTM dataLayer café maps_url stays the product Maps href",
+);
+assert(
+  SHOPS.filter((shop) => shop.mapsShareUrl && isMapsShortlink(shop.mapsShareUrl))
+    .length === 0,
+  "catalog has no maps.app.goo.gl shortlinks — email uses /go/maps hop",
+);
+assert(
+  emailMapsHref({
+    existing: "https://maps.app.goo.gl/WrfesXqL3DGLUx7c6",
+    shopId: "camel-step-olaya",
+  }) === "https://maps.app.goo.gl/WrfesXqL3DGLUx7c6",
+  "email prefers an existing Maps shortlink",
+);
+assert(
+  emailMapsHref({
+    existing: "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f:0x1",
+    shopId: "camel-step-olaya",
+  }) === emailMapsShopHref("camel-step-olaya"),
+  "email rewrites raw google.com/maps café hrefs",
+);
+assert(
+  isMapsShortlink("https://maps.app.goo.gl/abc") &&
+    !isMapsShortlink("https://www.google.com/maps/place/Foo") &&
+    !isMapsShortlink("https://maps.google.com/?q=24.76,46.67"),
+  "shortlink detector is goo.gl only",
+);
+const emailMapsRoute = readFileSync(
+  join(repoRoot, "app/go/maps/route.ts"),
+  "utf8",
+);
+assert(
+  emailMapsRoute.includes("shopMapsHref") &&
+    emailMapsRoute.includes("mapsHref") &&
+    emailMapsRoute.includes("getShop") &&
+    emailMapsRoute.includes("latRaw") &&
+    emailMapsRoute.includes("lngRaw") &&
+    !emailMapsRoute.includes("searchParams.get(\"url\")") &&
+    !emailMapsRoute.includes("searchParams.get('url')"),
+  "email Maps hop 302s from shop id or latlng — no open url=",
+);
+assert(
+  resultCards.includes("href={pick.mapsHref}") &&
+    !resultCards.includes("emailMapsHref") &&
+    !resultCards.includes(EMAIL_MAPS_PATH),
+  "product بيننا Maps buttons stay on catalog hrefs",
 );
 const noLocations = halfwayResultsWebhookBody({
   locale: "ar",
@@ -1748,11 +1825,11 @@ void (async () => {
     assert(call.auth === "Bearer test-halfway-webhook-key", "Authorization Bearer from env");
     const postedBody = call.body as {
       notify_email?: string;
-      cafes?: unknown[];
+      cafes?: Array<{ maps_url?: string }>;
       event?: string;
-      pins?: unknown[];
-      host_pin?: { role?: string };
-      guest_pin?: { role?: string };
+      pins?: Array<{ maps_url?: string }>;
+      host_pin?: { role?: string; maps_url?: string };
+      guest_pin?: { role?: string; maps_url?: string };
     };
     assert(postedBody.event === "meet_halfway_results", "POST body event");
     assert(postedBody.notify_email === "aj@cali.sa", "POST body inbox");
@@ -1766,6 +1843,50 @@ void (async () => {
     );
     assert(postedBody.host_pin?.role === "host", "POST body host_pin");
     assert(postedBody.guest_pin?.role === "guest", "POST body guest_pin");
+    const postedCafes = postedBody.cafes;
+    const postedPins = postedBody.pins;
+    const postedHostPin = postedBody.host_pin;
+    const postedGuestPin = postedBody.guest_pin;
+    if (!postedCafes || !postedPins || !postedHostPin || !postedGuestPin) {
+      fail("POST body maps hrefs");
+    }
+    assert(
+      postedCafes.every(
+        (cafe) =>
+          typeof cafe.maps_url === "string" && !isRawGoogleMapsHref(cafe.maps_url),
+      ) &&
+        postedPins.every(
+          (pin) =>
+            typeof pin.maps_url === "string" && !isRawGoogleMapsHref(pin.maps_url),
+        ) &&
+        postedHostPin.maps_url?.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}`) &&
+        postedGuestPin.maps_url?.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}`),
+      "POSTed email hrefs stay off raw google.com/maps",
+    );
+
+    const { GET: emailMapsGet } = await import("../app/go/maps/route");
+    const shopHop = await emailMapsGet(
+      new Request("https://wain.lol/go/maps?shop=hekaya-tale-al-mohammadiyah"),
+    );
+    const pinHop = await emailMapsGet(
+      new Request("https://wain.lol/go/maps?lat=24.76&lng=46.67"),
+    );
+    const emptyHop = await emailMapsGet(new Request("https://wain.lol/go/maps"));
+    const missingShop = await emailMapsGet(
+      new Request("https://wain.lol/go/maps?shop=not-a-real-shop"),
+    );
+    assert(
+      shopHop.status === 302 &&
+        shopHop.headers.get("location") ===
+          "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3c785340ba3:0x1040610befd3aaef",
+      "shop hop 302s onto catalog mapsShareUrl",
+    );
+    assert(
+      pinHop.status === 302 &&
+        pinHop.headers.get("location") === "https://maps.google.com/?q=24.76,46.67",
+      "pin hop 302s onto Maps latlng",
+    );
+    assert(emptyHop.status === 404 && missingShop.status === 404, "bare /go/maps is 404");
   } finally {
     globalThis.fetch = previousFetch;
     if (previousKey === undefined) delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;

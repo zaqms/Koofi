@@ -137,6 +137,12 @@ assert(detail.includes("<CafeDetailFavorite"), "hero keeps the Favorite control"
 assert(detail.includes("size=\"listing\""), "floating logo uses listing treatment");
 assert(detail.includes("start-1 -bottom-8"), "logo overlaps hero start edge");
 assert(detail.includes("rounded-full"), "hero overlays match the circular mock chrome");
+assert(detail.includes("absolute bottom-3 end-3"), "1/N sits at the inline-end");
+assert(detail.includes('<span dir="ltr">'), "1/N numerals stay LTR inside the pill");
+assert(
+  !/<p\b[^>]*\bend-3\b[^>]*\bdir="ltr"/.test(detail),
+  "do not set dir=ltr on the positioned 1/N pill",
+);
 assert(detail.includes("rtl:scale-x-[-1]"), "back + chevron flip with RTL");
 assert(detail.includes("copy.detailTakeMeThere"), "Maps label is the detail lock");
 assert(detail.includes("w-full"), "Take me there is the single wide CTA");

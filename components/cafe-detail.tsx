@@ -242,11 +242,10 @@ function CafeDetailHero({
       </div>
 
       {photos.length > 0 ? (
-        <p
-          className="absolute bottom-3 end-3 z-10 rounded-full bg-ink/55 px-2 py-0.5 text-[11px] leading-4 text-foam"
-          dir="ltr"
-        >
-          {index + 1}/{photos.length}
+        <p className="absolute bottom-3 end-3 z-20 rounded-full bg-ink/70 px-2 py-0.5 text-[11px] leading-4 text-foam">
+          <span dir="ltr">
+            {index + 1}/{photos.length}
+          </span>
         </p>
       ) : null}
     </div>

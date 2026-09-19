@@ -546,10 +546,8 @@ assert(
 );
 assert(
   HALFWAY_DENY_SHOP_IDS.includes("kapu-cafe-al-nahdah") &&
-    !(HALFWAY_DENY_SHOP_IDS as readonly string[]).includes(
-      "shafel-roastery-al-nahdah",
-    ) &&
-    isHalfwayEligible(
+    HALFWAY_DENY_SHOP_IDS.includes("shafel-roastery-al-nahdah") &&
+    !isHalfwayEligible(
       fixtureShop({
         id: "shafel-roastery-al-nahdah",
         dineIn: true,
@@ -574,7 +572,7 @@ assert(
         pickupOnly: true,
       }),
     ),
-  "Scout: Shafel Nahdah is sit-down; Kapu + pickupOnly stay out even if dineIn",
+  "Amjad: Shafel + Kapu Nahdah stay out of بيننا even if Scout sit-down",
 );
 
 const midway = { lat: 24.72, lng: 46.64 };
@@ -800,11 +798,10 @@ assert(
   "Kapu Nahdah is Scout pickup-only with the corrected place id",
 );
 assert(
-  shafel?.dineIn === true &&
-    shafel.pickupOnly === false &&
-    shafel.baynanaEligible === true &&
-    isHalfwayEligible(shafel),
-  "Shafel Nahdah is Scout sit-down eligible",
+  shafel?.pickupOnly === true &&
+    shafel.baynanaEligible === false &&
+    !isHalfwayEligible(shafel),
+  "Shafel Nahdah is Amjad deny / pickup-ineligible",
 );
 assert(
   getUp?.baynanaEligible === null &&

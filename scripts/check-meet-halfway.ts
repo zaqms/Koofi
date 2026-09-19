@@ -1843,17 +1843,24 @@ void (async () => {
     );
     assert(postedBody.host_pin?.role === "host", "POST body host_pin");
     assert(postedBody.guest_pin?.role === "guest", "POST body guest_pin");
+    const postedCafes = postedBody.cafes;
+    const postedPins = postedBody.pins;
+    const postedHostPin = postedBody.host_pin;
+    const postedGuestPin = postedBody.guest_pin;
+    if (!postedCafes || !postedPins || !postedHostPin || !postedGuestPin) {
+      fail("POST body maps hrefs");
+    }
     assert(
-      postedBody.cafes.every(
+      postedCafes.every(
         (cafe) =>
           typeof cafe.maps_url === "string" && !isRawGoogleMapsHref(cafe.maps_url),
       ) &&
-        postedBody.pins.every(
+        postedPins.every(
           (pin) =>
             typeof pin.maps_url === "string" && !isRawGoogleMapsHref(pin.maps_url),
         ) &&
-        postedBody.host_pin.maps_url?.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}`) &&
-        postedBody.guest_pin.maps_url?.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}`),
+        postedHostPin.maps_url?.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}`) &&
+        postedGuestPin.maps_url?.startsWith(`https://wain.lol${EMAIL_MAPS_PATH}`),
       "POSTed email hrefs stay off raw google.com/maps",
     );
 

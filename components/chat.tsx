@@ -1166,7 +1166,9 @@ export function Chat({
   async function copyHalfwayInvite(me: HalfwayPinInput): Promise<boolean> {
     const created = await ensureHalfwayInvite(me);
     if (!created) return false;
-    return copyShareText(created.url);
+    return copyShareText(
+      halfwayInviteShareText({ language: landing, url: created.url }),
+    );
   }
 
   async function joinHalfwayInvite(row: HalfwayPinInput | undefined) {
@@ -1674,6 +1676,14 @@ export function Chat({
               })}
               resetKey={halfwayResult.picks.map((pick) => pick.id).join(",")}
               packId={halfwayInvite?.id ?? halfwayWaitingId ?? undefined}
+              feedbackSource={
+                halfwayInvite?.id || halfwayWaitingId
+                  ? halfwayGuest
+                    ? "guest"
+                    : "host"
+                  : "local"
+              }
+              cafeCount={halfwayResult.picks.length}
               onMore={() => {
                 const locations =
                   halfwayResult.halfwayLocations ?? halfwayLocationsRef.current;

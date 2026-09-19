@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { copy } from "@/lib/copy";
 import {
+  meetHalfwayFeedbackParams,
   trackEvent,
   type MeetHalfwayFeedbackReason,
+  type MeetHalfwayFeedbackSource,
 } from "@/lib/track";
 import type { Language } from "@/lib/types";
 
@@ -12,6 +14,8 @@ type MeetHalfwayFeedbackProps = {
   language: Language;
   resetKey: string;
   packId?: string;
+  source?: MeetHalfwayFeedbackSource;
+  count?: number;
 };
 
 const REASONS: {
@@ -53,6 +57,8 @@ export function MeetHalfwayFeedback({
   language,
   resetKey,
   packId,
+  source,
+  count,
 }: MeetHalfwayFeedbackProps) {
   const [choice, setChoice] = useState<"yes" | "no" | null>(null);
   const [reason, setReason] = useState<MeetHalfwayFeedbackReason | null>(null);
@@ -64,19 +70,22 @@ export function MeetHalfwayFeedback({
     setNote("");
   }, [resetKey]);
 
-  function fire(helpful: "yes" | "no", nextReason?: MeetHalfwayFeedbackReason) {
+  function fire(
+    feedback: "yes" | "no",
+    feedback_reason?: MeetHalfwayFeedbackReason,
+  ) {
     trackEvent(
       "meet_halfway_feedback",
-      {
+      meetHalfwayFeedbackParams({
         locale: language,
-        helpful,
-        ...(nextReason ? { reason: nextReason } : {}),
-        ...(packId
-          ? { pack_id: packId, session_id: packId, invite_id: packId }
-          : {}),
-      },
+        feedback,
+        feedback_reason,
+        source,
+        count,
+        packId,
+      }),
       {
-        dedupeKey: `meet_halfway_feedback:${resetKey}:${helpful}:${nextReason ?? ""}`,
+        dedupeKey: `meet_halfway_feedback:${resetKey}:${feedback}:${feedback_reason ?? ""}`,
       },
     );
   }
@@ -88,8 +97,9 @@ export function MeetHalfwayFeedback({
   }
 
   function onNo() {
-    if (choice === "yes") return;
+    if (choice) return;
     setChoice("no");
+    fire("no");
   }
 
   function onReason(next: MeetHalfwayFeedbackReason) {

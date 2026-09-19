@@ -4,6 +4,7 @@ import { MeetHalfwayFeedback } from "@/components/meet-halfway-feedback";
 import { ShareIcon } from "@/components/share-icon";
 import { copy } from "@/lib/copy";
 import type { HalfwayResultsFooterKind } from "@/lib/meet-halfway";
+import type { MeetHalfwayFeedbackSource } from "@/lib/track";
 import type { Language } from "@/lib/types";
 
 type MeetHalfwayResultsFooterProps = {
@@ -14,6 +15,8 @@ type MeetHalfwayResultsFooterProps = {
   disabled?: boolean;
   resetKey?: string;
   packId?: string;
+  feedbackSource?: MeetHalfwayFeedbackSource;
+  cafeCount?: number;
   onMore: () => void;
   onShareResults?: () => void;
   onStartNew?: () => void;
@@ -55,6 +58,8 @@ export function MeetHalfwayResultsFooter({
   disabled,
   resetKey,
   packId,
+  feedbackSource,
+  cafeCount,
   onMore,
   onShareResults,
   onStartNew,
@@ -110,6 +115,8 @@ export function MeetHalfwayResultsFooter({
           language={language}
           resetKey={resetKey}
           packId={packId}
+          source={feedbackSource}
+          count={cafeCount}
         />
       ) : null}
       {onShareResults ? (

@@ -76,7 +76,10 @@ import {
   halfwayResultsWebhookBody,
   notifyHalfwayResults,
 } from "../lib/halfway-results-webhook";
-import { meetHalfwayResultsParams } from "../lib/track";
+import {
+  meetHalfwayFeedbackParams,
+  meetHalfwayResultsParams,
+} from "../lib/track";
 import { decideVisitorLocationPeek } from "../lib/visitor-location-peek";
 
 const SHOPS = listRealShops();
@@ -142,6 +145,12 @@ assert(
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
     copy.includes("اعزم خويك") &&
+    copy.includes("بيننا — شارك موقعك مع خويك، ونلقى لكم قهوة بالنص.") &&
+    copy.includes(
+      "Halfway — Share your location with your friend, and we’ll find you a café in the middle.",
+    ) &&
+    !copy.includes("بيننا — اعزم خويك. أنا هنا. وين أنت؟") &&
+    !copy.includes("Halfway — I'm here. Where are you?") &&
     copy.includes("غيرها") &&
     copy.includes("ما في أكثر بهالمنطقة") &&
     copy.includes("صاحبك دبّس.") &&
@@ -567,16 +576,26 @@ const inviteText = halfwayInviteShareText({
   url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
 });
 assert(
-  inviteText.includes("بيننا") &&
-    inviteText.includes("اعزم خويك") &&
+  inviteText.startsWith("بيننا — شارك موقعك مع خويك، ونلقى لكم قهوة بالنص.") &&
     inviteText.includes("wain.lol/h/") &&
     inviteText.includes("from=wa") &&
     inviteText.includes("utm_source=invite") &&
     inviteText.includes("utm_medium=share") &&
+    !inviteText.includes("اعزم خويك. أنا هنا") &&
     !inviteText.includes("maps.google") &&
     !inviteText.includes("ادعُ صاحبك") &&
     !inviteText.includes("ادع صاحبك"),
-  "invite packet is وين؟-family share text, not a Maps dump",
+  "invite packet is Amjad’s locked بيننا share line + /h/{id}",
+);
+const inviteTextEn = halfwayInviteShareText({
+  language: "en",
+  url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
+});
+assert(
+  inviteTextEn.startsWith(
+    "Halfway — Share your location with your friend, and we’ll find you a café in the middle.",
+  ) && inviteTextEn.includes("wain.lol/h/"),
+  "EN invite packet is the locked Halfway share line + /h/{id}",
 );
 const expired = inspectHalfwayInviteId(
   inviteId,
@@ -800,6 +819,11 @@ assert(
   "invite uses the same system share family; host replace onto /h/{id}; results share is not Save for later",
 );
 assert(
+  (chatUi.match(/halfwayInviteShareText\(\{\s*language: landing, url: created\.url \}\)/g) ?? [])
+    .length >= 2,
+  "اعزم خويك share sheet and انسخ الرابط both use the locked invite packet",
+);
+assert(
   chatUi.includes("halfwayInvitePath(created.id, landing)") &&
     chatUi.includes("localeHref") &&
     chatUi.includes("copy.switchLanguage[landing]"),
@@ -893,11 +917,14 @@ assert(
 );
 assert(
   feedbackUi.includes("meet_halfway_feedback") &&
-    feedbackUi.includes('helpful: "yes"') &&
+    feedbackUi.includes('fire("yes")') &&
+    feedbackUi.includes('fire("no")') &&
+    feedbackUi.includes("fire(\"no\", next)") &&
     feedbackUi.includes("too_far") &&
+    feedbackUi.includes("meetHalfwayFeedbackParams") &&
     feedbackUi.includes("meetHalfwayFeedbackTellMore") &&
     !feedbackUi.includes("dataLayer"),
-  "results feedback fires meet_halfway_feedback yes/no + reason on the existing dataLayer helper",
+  "results feedback fires meet_halfway_feedback on Yes, No, and No-reason",
 );
 assert(
   pickList.includes("meetHalfwayBestMatch") &&
@@ -1094,9 +1121,41 @@ for (const name of persistentEvents) {
 }
 assert(
   track.includes('"meet_halfway_feedback"') &&
-    track.includes("helpful?: MeetHalfwayFeedbackHelpful") &&
+    track.includes("feedback?: MeetHalfwayFeedbackHelpful") &&
+    track.includes("feedback_reason?: MeetHalfwayFeedbackReason") &&
+    track.includes("meetHalfwayFeedbackParams") &&
     feedbackUi.includes("meet_halfway_feedback"),
   "meet_halfway_feedback stays on the existing dataLayer helper",
+);
+const yesLayer = meetHalfwayFeedbackParams({
+  locale: "en",
+  feedback: "yes",
+  source: "host",
+  count: 3,
+  packId: "session-token",
+});
+assert(
+  yesLayer.feedback === "yes" &&
+    yesLayer.helpful === "yes" &&
+    yesLayer.source === "host" &&
+    yesLayer.count === 3 &&
+    yesLayer.pack_id === "session-token" &&
+    yesLayer.feedback_reason == null,
+  "Yes push is meet_halfway_feedback + feedback=yes",
+);
+const noReasonLayer = meetHalfwayFeedbackParams({
+  locale: "ar",
+  feedback: "no",
+  feedback_reason: "too_far",
+  source: "guest",
+  count: 3,
+});
+assert(
+  noReasonLayer.feedback === "no" &&
+    noReasonLayer.feedback_reason === "too_far" &&
+    noReasonLayer.reason === "too_far" &&
+    noReasonLayer.source === "guest",
+  "No-reason push keeps a stable English chip id",
 );
 assert(
   !track.includes('"meet_halfway_freeze"') &&

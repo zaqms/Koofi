@@ -185,11 +185,7 @@ export function halfwayInviteShareText(input: {
   language: Language;
   url: string;
 }): string {
-  const line =
-    input.language === "ar"
-      ? "بيننا — اعزم خويك. أنا هنا. وين أنت؟"
-      : "Halfway — I'm here. Where are you?";
-  return `${line}\n\n${input.url}`;
+  return `${copy.meetHalfwayInviteShare[input.language]}\n\n${input.url}`;
 }
 
 /** Same `/h/{id}` as the invite — never a `/p/` pack. */

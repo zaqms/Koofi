@@ -201,6 +201,10 @@ export const copy = {
     ar: "اعزم خويك",
     en: "Invite your friend",
   },
+  meetHalfwayInviteShare: {
+    ar: "بيننا — شارك موقعك مع خويك، ونلقى لكم قهوة بالنص.",
+    en: "Halfway — Share your location with your friend, and we’ll find you a café in the middle.",
+  },
   meetHalfwayInviteHint: {
     ar: "أرسل الرابط — صاحبك يدبس من جواله.",
     en: "Send the link — your friend drops their pin on their phone.",

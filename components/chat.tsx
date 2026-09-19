@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
+import { MapPinIcon } from "@/components/map-pin-icon";
 import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
+import { MeetHalfwayResultCards } from "@/components/meet-halfway-result-cards";
 import { MeetHalfwayResultsFooter } from "@/components/meet-halfway-results-footer";
 import { PickList, type ChatPick } from "@/components/pick-list";
 import {
-  formatHalfwayPlaceLabel,
+  formatHalfwayLocationLine,
   pinFromHalfwayInput,
 } from "@/lib/halfway-place";
 import { pinsMidpoint } from "@/lib/halfway-results-payload";
@@ -403,13 +405,19 @@ export function Chat({
   chipOpen,
 }: ChatProps) {
   const router = useRouter();
+  // Home / directory / district must not inherit a leftover بيننا thread.
+  // Results chrome is invited (`/h/{id}`) or local `/halfway` only.
   const threadKey = halfwayInvite
     ? `halfway:${halfwayInvite.id}`
     : restore
       ? `pack:${restore.packId}`
       : chipOpen
         ? `chip:${landing}:${chipOpen.chipId}`
-        : landing;
+        : selectedChipId === MEET_HALFWAY_CHIP.id
+          ? `halfway-local:${landing}`
+          : `chat:${landing}:${selectedChipId ?? "home"}`;
+  const halfwaySurface =
+    Boolean(halfwayInvite) || selectedChipId === MEET_HALFWAY_CHIP.id;
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [startFresh] = useState(() => consumeHalfwayFresh());
   const [sessionExpired, setSessionExpired] = useState(halfwayInviteExpired);
@@ -443,7 +451,10 @@ export function Chat({
   const [pickedChipId, setPickedChipId] = useState<string | null>(() => {
     if (halfwayInvite) return MEET_HALFWAY_CHIP.id;
     if (selectedChipId) return selectedChipId;
-    if (threads[threadKey]?.halfwayWaitingId || sessionHostWait()) {
+    if (
+      halfwaySurface &&
+      (threads[threadKey]?.halfwayWaitingId || sessionHostWait())
+    ) {
       return MEET_HALFWAY_CHIP.id;
     }
     return null;
@@ -452,13 +463,14 @@ export function Chat({
     () =>
       startFresh ||
       (Boolean(halfwayInvite) && !halfwayInviteExpired) ||
-      Boolean(threads[threadKey]?.halfwayWaitingId) ||
-      Boolean(sessionHostWait(halfwayInvite)) ||
+      (halfwaySurface && Boolean(threads[threadKey]?.halfwayWaitingId)) ||
+      (halfwaySurface && Boolean(sessionHostWait(halfwayInvite))) ||
       (selectedChipId === MEET_HALFWAY_CHIP.id && !halfwayInviteExpired),
   );
   const [halfwayWaitingId, setHalfwayWaitingId] = useState<string | null>(
     () => {
       if (halfwayInvite?.picks?.length) return null;
+      if (!halfwaySurface) return null;
       return (
         threads[threadKey]?.halfwayWaitingId ??
         sessionHostWait(halfwayInvite)?.id ??
@@ -468,15 +480,18 @@ export function Chat({
   );
   const [halfwayWaitingMe, setHalfwayWaitingMe] = useState<Pin | null>(
     () =>
-      threads[threadKey]?.halfwayWaitingMe ??
-      sessionHostWait(halfwayInvite)?.me ??
-      null,
+      halfwaySurface
+        ? (threads[threadKey]?.halfwayWaitingMe ??
+          sessionHostWait(halfwayInvite)?.me ??
+          null)
+        : null,
   );
   const [halfwayFriendPin, setHalfwayFriendPin] = useState<Pin | null>(null);
   const [halfwayJoined, setHalfwayJoined] = useState(
     () => Boolean(halfwayInvite?.joined || halfwayInvite?.picks?.length),
   );
   const [halfwayWaitingUi, setHalfwayWaitingUi] = useState(() => {
+    if (!halfwaySurface) return false;
     if (halfwayInvite?.picks?.length || halfwayInviteExpired) return false;
     if (threads[threadKey]?.halfwayWaitingId) return true;
     return Boolean(sessionHostWait(halfwayInvite));
@@ -499,6 +514,7 @@ export function Chat({
       locations: HalfwayPinInput[],
       options?: {
         more?: boolean;
+        reroll?: boolean;
         joined?: boolean;
         source?: MeetHalfwayResultSource;
       },
@@ -1150,7 +1166,9 @@ export function Chat({
   async function copyHalfwayInvite(me: HalfwayPinInput): Promise<boolean> {
     const created = await ensureHalfwayInvite(me);
     if (!created) return false;
-    return copyShareText(created.url);
+    return copyShareText(
+      halfwayInviteShareText({ language: landing, url: created.url }),
+    );
   }
 
   async function joinHalfwayInvite(row: HalfwayPinInput | undefined) {
@@ -1176,16 +1194,28 @@ export function Chat({
     locations: HalfwayPinInput[],
     options?: {
       more?: boolean;
+      reroll?: boolean;
       joined?: boolean;
       source?: MeetHalfwayResultSource;
     },
   ) {
     if (inFlightRef.current) return;
     const more = Boolean(options?.more);
+    const reroll = Boolean(options?.reroll);
+    const paging = more && !reroll;
     setHalfwayWaitingId(null);
     clearHalfwayWaiting();
     sendMeetHalfwayRef.current = sendMeetHalfway;
-    if (!more) {
+    if (reroll) {
+      halfwayLocationsRef.current = locations;
+      halfwayShownRef.current = [];
+      halfwayPageRef.current += 1;
+      trackEvent(
+        "meet_halfway_refresh",
+        { locale: landing, page: halfwayPageRef.current },
+        { dedupeKey: `meet_halfway_refresh:${halfwayPageRef.current}` },
+      );
+    } else if (!more) {
       halfwayLocationsRef.current = locations;
       halfwayShownRef.current = [];
       halfwayPageRef.current = 1;
@@ -1198,15 +1228,16 @@ export function Chat({
       );
     }
 
-    const ask = more
-      ? copy.meetHalfwayMore[landing]
-      : meetHalfwayAskLabel(landing);
+    const ask =
+      more || reroll
+        ? copy.meetHalfwayMoreTitle[landing]
+        : meetHalfwayAskLabel(landing);
     trackChatQuery({ text: ask, locale: landing, via: "chip" });
 
     inFlightRef.current = true;
     setAwaitingMaps(false);
     setBusy(true);
-    if (!more) {
+    if (!more && !reroll) {
       const userMessage: UserMessage = {
         id: crypto.randomUUID(),
         role: "user",
@@ -1223,7 +1254,7 @@ export function Chat({
       });
     }
 
-    const shownIds = more
+    const shownIds = paging
       ? Array.from(
           new Set([
             ...halfwayShownRef.current,
@@ -1237,7 +1268,7 @@ export function Chat({
       applied: false,
       halfway: {
         locations,
-        more,
+        more: more || reroll,
         joined: options?.joined,
         source: options?.source,
       },
@@ -1252,8 +1283,8 @@ export function Chat({
                 locations,
                 id: halfwayInvite?.id ?? halfwayWaitingId ?? undefined,
               },
-              halfwayMore: more || undefined,
-              beenIds: more
+              halfwayMore: paging || undefined,
+              beenIds: paging
                 ? Array.from(new Set([...shownIds, ...been.ids]))
                 : been.ids,
               landing,
@@ -1522,7 +1553,9 @@ export function Chat({
     />
   ) : null;
   const showHalfwayResults =
-    Boolean(halfwayPicker) && Boolean(halfwayResult?.picks?.length);
+    meetHalfwayOpen &&
+    !sessionExpired &&
+    Boolean(halfwayResult?.picks?.length);
   const showHalfwaySetup = Boolean(halfwayPicker) && !showHalfwayResults;
   const resultLocations =
     halfwayResult?.halfwayLocations ?? halfwayLocationsRef.current;
@@ -1530,6 +1563,12 @@ export function Chat({
     pinFromHalfwayInput(resultLocations?.[0]) ?? halfwayWaitingMe;
   const resultFriend =
     pinFromHalfwayInput(resultLocations?.[1]) ?? halfwayFriendPin;
+  const resultOrigin = pinsMidpoint([resultMe, resultFriend]);
+  const resultLocationLine = formatHalfwayLocationLine(
+    resultMe,
+    resultFriend,
+    landing,
+  );
 
   return (
     <div
@@ -1542,22 +1581,9 @@ export function Chat({
       lang={landing}
     >
       <header className="shrink-0 px-4 py-3">
-        <div className="flex items-center justify-between gap-3">
-          <BrandHomeLink
-            language={landing}
-            className="text-lg font-semibold"
-            onClick={startOver}
-          />
-          <div className="flex items-center gap-3">
-            {restore && !meetHalfwayOpen ? null : (
-              <Link
-                href={localeHref ?? (landing === "ar" ? "/en" : "/")}
-                className="text-xs text-ink-soft underline-offset-2 hover:underline"
-              >
-                {copy.switchLanguage[landing]}
-              </Link>
-            )}
-            {meetHalfwayOpen ? (
+        {showHalfwayResults ? (
+          <div className="flex items-center justify-between gap-3" dir="ltr">
+            <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => setMeetHalfwayOpen(false)}
@@ -1568,54 +1594,105 @@ export function Chat({
                   ×
                 </span>
               </button>
-            ) : null}
+              <Link
+                href={localeHref ?? (landing === "ar" ? "/en" : "/")}
+                className="px-1 text-xs text-ink-soft underline-offset-2 hover:underline"
+              >
+                {copy.switchLanguage[landing]}
+              </Link>
+            </div>
+            <BrandHomeLink
+              language={landing}
+              className="items-end text-lg font-semibold"
+              onClick={startOver}
+            />
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
+            <BrandHomeLink
+              language={landing}
+              className="text-lg font-semibold"
+              onClick={startOver}
+            />
+            <div className="flex items-center gap-3">
+              {restore && !meetHalfwayOpen ? null : (
+                <Link
+                  href={localeHref ?? (landing === "ar" ? "/en" : "/")}
+                  className="text-xs text-ink-soft underline-offset-2 hover:underline"
+                >
+                  {copy.switchLanguage[landing]}
+                </Link>
+              )}
+              {meetHalfwayOpen ? (
+                <button
+                  type="button"
+                  onClick={() => setMeetHalfwayOpen(false)}
+                  className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
+                  aria-label={copy.meetHalfwayClose[landing]}
+                >
+                  <span aria-hidden className="text-lg leading-none">
+                    ×
+                  </span>
+                </button>
+              ) : null}
+            </div>
+          </div>
+        )}
       </header>
 
       {showHalfwayResults && halfwayResult?.picks ? (
         <div
           ref={listRef}
+          data-halfway-results=""
           className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4"
           aria-live="polite"
         >
-          <div className="space-y-1.5 text-start">
-            <h1 className="text-xl font-semibold leading-7 text-ink">
+          <div className="space-y-1.5 text-center">
+            <h1 className="text-[1.65rem] font-semibold tracking-tight text-ink">
               {copy.meetHalfwayThree[landing]}
             </h1>
-            <p className="text-xs leading-5 text-ink-soft">
+            <p className="text-sm leading-6 text-ink-soft">
               {copy.meetHalfwayFairSub[landing]}
             </p>
-            <p className="text-[11px] leading-4 text-ink-soft">
-              {[
-                formatHalfwayPlaceLabel(resultMe, landing),
-                formatHalfwayPlaceLabel(resultFriend, landing),
-              ]
-                .filter((label, index, rows) => rows.indexOf(label) === index)
-                .join(landing === "ar" ? " · " : " · ")}
-            </p>
+            {resultLocationLine ? (
+              <p className="inline-flex items-center justify-center gap-1 text-[11px] leading-4 text-ink-soft">
+                <MapPinIcon className="size-3.5 shrink-0" />
+                <span>{resultLocationLine}</span>
+              </p>
+            ) : null}
           </div>
-          <PickList
+          <MeetHalfwayResultCards
             picks={halfwayResult.picks}
-            language={halfwayResult.language}
-            uiLanguage={landing}
-            beenIds={been.ids}
-            onBeen={been.mark}
-            ask={meetHalfwayAskLabel(landing)}
-            mapsSource="pack"
-            halfway={{ me: resultMe, friend: resultFriend }}
+            language={landing}
+            origin={resultOrigin}
           />
           {!busy ? (
             <MeetHalfwayResultsFooter
               language={landing}
+              surface="screen"
               kind={halfwayResultsFooterKind({
                 halfwayMore: halfwayResult.halfwayMore,
                 paged: halfwayResult.halfwayPaged,
               })}
+              resetKey={halfwayResult.picks.map((pick) => pick.id).join(",")}
+              packId={halfwayInvite?.id ?? halfwayWaitingId ?? undefined}
+              feedbackSource={
+                halfwayInvite?.id || halfwayWaitingId
+                  ? halfwayGuest
+                    ? "guest"
+                    : "host"
+                  : "local"
+              }
+              cafeCount={halfwayResult.picks.length}
               onMore={() => {
                 const locations =
                   halfwayResult.halfwayLocations ?? halfwayLocationsRef.current;
-                if (locations) sendMeetHalfway(locations, { more: true });
+                if (!locations) return;
+                if (halfwayResult.halfwayMore !== false) {
+                  sendMeetHalfway(locations, { more: true });
+                  return;
+                }
+                sendMeetHalfway(locations, { reroll: true });
               }}
               onShareResults={
                 halfwayInvite?.id || halfwayWaitingId
@@ -1753,9 +1830,13 @@ export function Chat({
                   mapsSource="pack"
                 />
               ) : null}
-              {index === messages.length - 1 && !busy ? (
+              {index === messages.length - 1 &&
+              !busy &&
+              typeof message.halfwayMore === "boolean" &&
+              !showHalfwayResults ? (
                 <MeetHalfwayResultsFooter
                   language={landing}
+                  surface="thread"
                   kind={halfwayResultsFooterKind({
                     halfwayMore: message.halfwayMore,
                     paged: message.halfwayPaged,
@@ -1763,7 +1844,12 @@ export function Chat({
                   onMore={() => {
                     const locations =
                       message.halfwayLocations ?? halfwayLocationsRef.current;
-                    if (locations) sendMeetHalfway(locations, { more: true });
+                    if (!locations) return;
+                    if (message.halfwayMore !== false) {
+                      sendMeetHalfway(locations, { more: true });
+                      return;
+                    }
+                    sendMeetHalfway(locations, { reroll: true });
                   }}
                 />
               ) : null}

@@ -35,7 +35,9 @@ import { mergeHalfwayInviteSessionForTest } from "../lib/halfway-invite-store";
 import { parseHalfwayWaiting } from "../lib/halfway-waiting";
 import {
   estimateDriveMinutes,
+  formatHalfwayLocationLine,
   formatHalfwayPlaceLabel,
+  formatHalfwayShopMeta,
   nearestNeighborhoodFromPin,
 } from "../lib/halfway-place";
 import {
@@ -74,7 +76,10 @@ import {
   halfwayResultsWebhookBody,
   notifyHalfwayResults,
 } from "../lib/halfway-results-webhook";
-import { meetHalfwayResultsParams } from "../lib/track";
+import {
+  meetHalfwayFeedbackParams,
+  meetHalfwayResultsParams,
+} from "../lib/track";
 import { decideVisitorLocationPeek } from "../lib/visitor-location-peek";
 
 const SHOPS = listRealShops();
@@ -123,11 +128,29 @@ assert(
 const copy = readFileSync(join(repoRoot, "lib/copy.ts"), "utf8");
 assert(
   copy.includes("meetHalfwayThree") &&
-    copy.includes("ثلاث قهاوي بينكم") &&
-    copy.includes("Three cafes between you") &&
+    copy.includes("3 قهاوي بينكم") &&
+    copy.includes("3 cafés between you") &&
+    copy.includes("مسافة عادلة، وقعدة أحلى.") &&
+    copy.includes("A fair distance, a better meet-up.") &&
+    copy.includes("الأكثر مناسبة") &&
+    copy.includes("Top Match") &&
+    copy.includes("اعرض 3 قهاوي مختلفة") &&
+    copy.includes("Show 3 different cafés") &&
+    copy.includes("هل النتائج كانت مناسبة؟") &&
+    copy.includes("Were these results helpful?") &&
+    copy.includes("مو مرّة") &&
+    copy.includes("Not really") &&
+    !copy.includes("meetHalfwaySave") &&
+    !copy.includes("meetHalfwaySaved") &&
     copy.includes("أنت وين؟") &&
     copy.includes("موقعي") &&
     copy.includes("اعزم خويك") &&
+    copy.includes("بيننا — شارك موقعك مع خويك، ونلقى لكم قهوة بالنص.") &&
+    copy.includes(
+      "Halfway — Share your location with your friend, and we’ll find you a café in the middle.",
+    ) &&
+    !copy.includes("بيننا — اعزم خويك. أنا هنا. وين أنت؟") &&
+    !copy.includes("Halfway — I'm here. Where are you?") &&
     copy.includes("غيرها") &&
     copy.includes("ما في أكثر بهالمنطقة") &&
     copy.includes("صاحبك دبّس.") &&
@@ -187,12 +210,12 @@ assert(
   "exhausted بيننا is not the thin-catalog disclaimer",
 );
 assert(
-  meetHalfwayReply({ shopCount: 3, language: "ar" }) === "ثلاث قهاوي بينكم",
-  "full page stays ثلاث قهاوي بينكم",
+  meetHalfwayReply({ shopCount: 3, language: "ar" }) === "3 قهاوي بينكم",
+  "full page stays 3 قهاوي بينكم",
 );
 assert(
-  meetHalfwayReply({ shopCount: 3, language: "en" }) === "Three cafes between you",
-  "EN full page stays Three cafes between you",
+  meetHalfwayReply({ shopCount: 3, language: "en" }) === "3 cafés between you",
+  "EN full page stays 3 cafés between you",
 );
 assert(
   halfwayResultsFooterKind({ halfwayMore: true, paged: false }) === "more",
@@ -457,6 +480,38 @@ assert(
     !formatHalfwayPlaceLabel(hittinCenter, "ar").includes(","),
   "place label is حي + الرياض, never هيتين or lat,lng",
 );
+const malqaCenter = neighborhoodCentroid("al-malqa", SHOPS);
+assert(malqaCenter !== null, "Al Malqa centroid exists");
+assert(
+  formatHalfwayLocationLine(hittinCenter, malqaCenter, "en") ===
+    "Hittin, Riyadh · Al Malqa, Riyadh" &&
+    formatHalfwayLocationLine(hittinCenter, malqaCenter, "ar") ===
+      "حطين، الرياض • الملقا، الرياض" &&
+    formatHalfwayLocationLine(hittinCenter, hittinCenter, "en") ===
+      "Hittin, Riyadh",
+  "results location line names both submitted areas",
+);
+assert(
+  formatHalfwayShopMeta(
+    "Al Rihaniyah",
+    { lat: 24.75, lng: 46.62 },
+    { lat: 24.75, lng: 46.62 },
+    "en",
+  ).includes("Al Rihaniyah") &&
+    formatHalfwayShopMeta(
+      "الرمانية",
+      { lat: 24.75, lng: 46.62 },
+      { lat: 24.8, lng: 46.7 },
+      "ar",
+    ).includes("كم") &&
+    formatHalfwayShopMeta(
+      "الرمانية",
+      { lat: 24.75, lng: 46.62 },
+      { lat: 24.8, lng: 46.7 },
+      "ar",
+    ).includes("الرمانية"),
+  "result card meta is km · neighborhood",
+);
 assert(
   estimateDriveMinutes(
     { lat: 24.761, lng: 46.604 },
@@ -521,16 +576,26 @@ const inviteText = halfwayInviteShareText({
   url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
 });
 assert(
-  inviteText.includes("بيننا") &&
-    inviteText.includes("اعزم خويك") &&
+  inviteText.startsWith("بيننا — شارك موقعك مع خويك، ونلقى لكم قهوة بالنص.") &&
     inviteText.includes("wain.lol/h/") &&
     inviteText.includes("from=wa") &&
     inviteText.includes("utm_source=invite") &&
     inviteText.includes("utm_medium=share") &&
+    !inviteText.includes("اعزم خويك. أنا هنا") &&
     !inviteText.includes("maps.google") &&
     !inviteText.includes("ادعُ صاحبك") &&
     !inviteText.includes("ادع صاحبك"),
-  "invite packet is وين؟-family share text, not a Maps dump",
+  "invite packet is Amjad’s locked بيننا share line + /h/{id}",
+);
+const inviteTextEn = halfwayInviteShareText({
+  language: "en",
+  url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
+});
+assert(
+  inviteTextEn.startsWith(
+    "Halfway — Share your location with your friend, and we’ll find you a café in the middle.",
+  ) && inviteTextEn.includes("wain.lol/h/"),
+  "EN invite packet is the locked Halfway share line + /h/{id}",
 );
 const expired = inspectHalfwayInviteId(
   inviteId,
@@ -558,7 +623,7 @@ const resultsShare = halfwayResultsShareText({
   url: `https://wain.lol${halfwayInviteSharePath(inviteId)}`,
 });
 assert(
-  resultsShare.includes("ثلاث قهاوي بينكم") &&
+  resultsShare.includes("3 قهاوي بينكم") &&
     resultsShare.includes("wain.lol/h/") &&
     resultsShare.includes("from=wa") &&
     resultsShare.includes("utm_source=invite") &&
@@ -754,6 +819,11 @@ assert(
   "invite uses the same system share family; host replace onto /h/{id}; results share is not Save for later",
 );
 assert(
+  (chatUi.match(/halfwayInviteShareText\(\{\s*language: landing, url: created\.url \}\)/g) ?? [])
+    .length >= 2,
+  "اعزم خويك share sheet and انسخ الرابط both use the locked invite packet",
+);
+assert(
   chatUi.includes("halfwayInvitePath(created.id, landing)") &&
     chatUi.includes("localeHref") &&
     chatUi.includes("copy.switchLanguage[landing]"),
@@ -767,22 +837,100 @@ assert(
 );
 assert(
   chatUi.includes("MeetHalfwayResultsFooter") &&
+    chatUi.includes("MeetHalfwayResultCards") &&
+    chatUi.includes("formatHalfwayLocationLine") &&
+    chatUi.includes("reroll: true") &&
     chatUi.includes("halfwayResultsFooterKind") &&
     chatUi.includes("onShareResults") &&
     chatUi.includes("onStartNew") &&
+    resultsFooter.includes("meetHalfwayMoreTitle") &&
+    resultsFooter.includes("meetHalfwayMoreSub") &&
+    resultsFooter.includes('surface !== "screen"') &&
     resultsFooter.includes("meetHalfwayMore") &&
+    resultsFooter.includes("MeetHalfwayFeedback") &&
     resultsFooter.includes("meetHalfwayNoMore") &&
     resultsFooter.includes("meetHalfwayShareResults") &&
     resultsFooter.includes("meetHalfwayStartNew") &&
     !resultsFooter.includes("Save for later"),
   "local two-pin and /h/ guest share one بيننا results footer; Share results + Start a new Halfway",
 );
+assert(
+  chatUi.includes('surface="screen"') &&
+    chatUi.includes('surface="thread"') &&
+    chatUi.includes("typeof message.halfwayMore === \"boolean\"") &&
+    chatUi.includes("!showHalfwayResults") &&
+    chatUi.includes("<MeetHalfwayResultCards") &&
+    chatUi.includes("data-halfway-results") &&
+    chatUi.includes("`halfway-local:${landing}`") &&
+    chatUi.includes("`chat:${landing}:${selectedChipId ?? \"home\"}`") &&
+    chatUi.includes("meetHalfwayOpen &&") &&
+    chatUi.includes("!sessionExpired") &&
+    chatUi.includes("const halfwaySurface =") &&
+    !chatUi.includes("Boolean(halfwayPicker) && Boolean(halfwayResult"),
+  "new بيننا results chrome is screen-only; home/directory keep a separate thread",
+);
+const homeLanding = readFileSync(
+  join(repoRoot, "components/home-landing.tsx"),
+  "utf8",
+);
+const districtPage = readFileSync(
+  join(repoRoot, "components/district-page.tsx"),
+  "utf8",
+);
+assert(
+  !homeLanding.includes("MeetHalfwayResultCards") &&
+    !homeLanding.includes("MeetHalfwayFeedback") &&
+    !homeLanding.includes("meetHalfwayMoreTitle") &&
+    !districtPage.includes("MeetHalfwayResultCards") &&
+    !districtPage.includes("MeetHalfwayFeedback") &&
+    !districtPage.includes("meetHalfwayMoreTitle"),
+  "home + district do not mount the بيننا results chrome",
+);
+const homePage = readFileSync(join(repoRoot, "app/page.tsx"), "utf8");
+const homePageEn = readFileSync(join(repoRoot, "app/en/page.tsx"), "utf8");
+assert(
+  homePage.includes("<HomeLanding language=\"ar\" />") &&
+    !homePage.includes("meet-halfway") &&
+    homePageEn.includes("<HomeLanding language=\"en\" />") &&
+    !homePageEn.includes("meet-halfway"),
+  "AR/EN home routes stay the directory landing, not بيننا results",
+);
 const pickList = readFileSync(join(repoRoot, "components/pick-list.tsx"), "utf8");
+const resultCards = readFileSync(
+  join(repoRoot, "components/meet-halfway-result-cards.tsx"),
+  "utf8",
+);
+const feedbackUi = readFileSync(
+  join(repoRoot, "components/meet-halfway-feedback.tsx"),
+  "utf8",
+);
+assert(
+  resultCards.includes("meetHalfwayBestMatch") &&
+    resultCards.includes("meetHalfwayOpenMaps") &&
+    resultCards.includes("formatHalfwayShopMeta") &&
+    resultCards.includes("rtl:rotate-180") &&
+    !resultCards.includes("meetHalfwaySave") &&
+    !resultCards.includes("useSavedShopIds") &&
+    !resultCards.includes("BookmarkIcon") &&
+    !resultCards.includes("احفظ"),
+  "بيننا result cards keep Maps, Top Match, and RTL chevron — no Save without login",
+);
+assert(
+  feedbackUi.includes("meet_halfway_feedback") &&
+    feedbackUi.includes('fire("yes")') &&
+    feedbackUi.includes('fire("no")') &&
+    feedbackUi.includes("fire(\"no\", next)") &&
+    feedbackUi.includes("too_far") &&
+    feedbackUi.includes("meetHalfwayFeedbackParams") &&
+    feedbackUi.includes("meetHalfwayFeedbackTellMore") &&
+    !feedbackUi.includes("dataLayer"),
+  "results feedback fires meet_halfway_feedback on Yes, No, and No-reason",
+);
 assert(
   pickList.includes("meetHalfwayBestMatch") &&
     pickList.includes("meetHalfwayOpenMaps") &&
     pickList.includes("HalfwayDriveTimes"),
-  "results cards keep Maps and add fair-for-both extras",
+  "thread pick list still has Maps and fair-for-both extras",
 );
 const beenButton = readFileSync(join(repoRoot, "components/been-button.tsx"), "utf8");
 assert(
@@ -801,7 +949,7 @@ assert(
     chatUi.includes("halfwayLocations") &&
     chatUi.includes("halfway: {") &&
     chatUi.includes("locations,") &&
-    chatUi.includes("more,") &&
+    chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
     chatUi.includes("auto: !halfwayInvite && !meetHalfwayOpen"),
   "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
@@ -971,6 +1119,44 @@ for (const name of persistentEvents) {
     `${name} fires from chat for persistent session`,
   );
 }
+assert(
+  track.includes('"meet_halfway_feedback"') &&
+    track.includes("feedback?: MeetHalfwayFeedbackHelpful") &&
+    track.includes("feedback_reason?: MeetHalfwayFeedbackReason") &&
+    track.includes("meetHalfwayFeedbackParams") &&
+    feedbackUi.includes("meet_halfway_feedback"),
+  "meet_halfway_feedback stays on the existing dataLayer helper",
+);
+const yesLayer = meetHalfwayFeedbackParams({
+  locale: "en",
+  feedback: "yes",
+  source: "host",
+  count: 3,
+  packId: "session-token",
+});
+assert(
+  yesLayer.feedback === "yes" &&
+    yesLayer.helpful === "yes" &&
+    yesLayer.source === "host" &&
+    yesLayer.count === 3 &&
+    yesLayer.pack_id === "session-token" &&
+    yesLayer.feedback_reason == null,
+  "Yes push is meet_halfway_feedback + feedback=yes",
+);
+const noReasonLayer = meetHalfwayFeedbackParams({
+  locale: "ar",
+  feedback: "no",
+  feedback_reason: "too_far",
+  source: "guest",
+  count: 3,
+});
+assert(
+  noReasonLayer.feedback === "no" &&
+    noReasonLayer.feedback_reason === "too_far" &&
+    noReasonLayer.reason === "too_far" &&
+    noReasonLayer.source === "guest",
+  "No-reason push keeps a stable English chip id",
+);
 assert(
   !track.includes('"meet_halfway_freeze"') &&
     !chatUi.includes('"meet_halfway_freeze"'),

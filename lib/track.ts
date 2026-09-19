@@ -42,7 +42,8 @@ export type AnalyticsEventName =
   | "meet_halfway_results_share"
   | "meet_halfway_start_new"
   | "meet_halfway_restore"
-  | "meet_halfway_expired";
+  | "meet_halfway_expired"
+  | "meet_halfway_feedback";
 
 export type MapsClickSource = "pack" | "list" | "card";
 export type ShareInboundKind = "pack" | "listing" | "halfway";
@@ -55,6 +56,13 @@ export type MeetHalfwayPinWhich = "a" | "b" | "self";
 export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
 export type MeetHalfwayResultSource = "local" | "invite";
 export type MeetHalfwayStartSource = "results" | "expired";
+export type MeetHalfwayFeedbackSource = "local" | "invite" | "host" | "guest";
+export type MeetHalfwayFeedbackHelpful = "yes" | "no";
+export type MeetHalfwayFeedbackReason =
+  | "too_far"
+  | "vibe"
+  | "more_options"
+  | "other";
 
 export type AnalyticsParams = {
   locale?: Language;
@@ -68,6 +76,7 @@ export type AnalyticsParams = {
     | ListingShareSource
     | MeetHalfwayResultSource
     | MeetHalfwayStartSource
+    | MeetHalfwayFeedbackSource
     | DistrictSelectSource;
   city?: City;
   sort?: NeighborhoodsSortId | DirectorySortId;
@@ -91,6 +100,14 @@ export type AnalyticsParams = {
   session_id?: string;
   /** Same `/h/{id}` token as pack_id — GTM-friendly alias. */
   invite_id?: string;
+  /** بيننا results feedback — yes / no. GTM/GA4 primary. */
+  feedback?: MeetHalfwayFeedbackHelpful;
+  /** Stable English chip id after Not really. */
+  feedback_reason?: MeetHalfwayFeedbackReason;
+  /** Alias of feedback — keep for existing GTM Preview notes. */
+  helpful?: MeetHalfwayFeedbackHelpful;
+  /** Alias of feedback_reason. */
+  reason?: MeetHalfwayFeedbackReason;
 };
 
 const DEDUPE_MS = 400;
@@ -176,6 +193,36 @@ export function districtMatchParams(input: {
   const district_slug = input.district_slug.trim();
   if (!district_slug) return null;
   return { district_slug, locale: input.locale };
+}
+
+export function meetHalfwayFeedbackParams(input: {
+  locale: Language;
+  feedback: MeetHalfwayFeedbackHelpful;
+  feedback_reason?: MeetHalfwayFeedbackReason;
+  source?: MeetHalfwayFeedbackSource;
+  count?: number;
+  packId?: string;
+}): AnalyticsParams {
+  return {
+    locale: input.locale,
+    feedback: input.feedback,
+    helpful: input.feedback,
+    ...(input.feedback_reason
+      ? {
+          feedback_reason: input.feedback_reason,
+          reason: input.feedback_reason,
+        }
+      : {}),
+    ...(input.source ? { source: input.source } : {}),
+    ...(typeof input.count === "number" ? { count: input.count } : {}),
+    ...(input.packId
+      ? {
+          pack_id: input.packId,
+          session_id: input.packId,
+          invite_id: input.packId,
+        }
+      : {}),
+  };
 }
 
 export function meetHalfwayResultsParams(input: {

@@ -1,3 +1,4 @@
+import { copy } from "./copy";
 import { halfwayInvitePath, halfwayInviteSharePath } from "./product";
 import type { Language, Pin } from "./types";
 
@@ -184,11 +185,7 @@ export function halfwayInviteShareText(input: {
   language: Language;
   url: string;
 }): string {
-  const line =
-    input.language === "ar"
-      ? "بيننا — اعزم خويك. أنا هنا. وين أنت؟"
-      : "Halfway — I'm here. Where are you?";
-  return `${line}\n\n${input.url}`;
+  return `${copy.meetHalfwayInviteShare[input.language]}\n\n${input.url}`;
 }
 
 /** Same `/h/{id}` as the invite — never a `/p/` pack. */
@@ -196,9 +193,7 @@ export function halfwayResultsShareText(input: {
   language: Language;
   url: string;
 }): string {
-  const line =
-    input.language === "ar" ? "ثلاث قهاوي بينكم" : "Three cafes between you";
-  return `${line}\n\n${input.url}`;
+  return `${copy.meetHalfwayThree[input.language]}\n\n${input.url}`;
 }
 
 export { halfwayInvitePath, halfwayInviteSharePath };

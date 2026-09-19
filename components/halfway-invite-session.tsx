@@ -1,6 +1,7 @@
 import { Chat } from "@/components/chat";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
+import { copy } from "@/lib/copy";
 import { parseHalfwayInviteToken } from "@/lib/halfway-invite";
 import { resolveHalfwayInviteSession } from "@/lib/halfway-invite-store";
 import {
@@ -37,9 +38,7 @@ export async function halfwayInviteMetadata(input: HalfwayInviteSessionInput) {
         ? "This Halfway expired"
         : "هالجولة انتهت"
       : resolved.ok && resolved.session.shopIds.length > 0
-        ? locale === "en"
-          ? "Three cafes between you"
-          : "ثلاث قهاوي بينكم"
+        ? copy.meetHalfwayThree[locale]
         : locale === "en"
           ? "Halfway — drop your pin"
           : "بيننا — دبّس موقعك";

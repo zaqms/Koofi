@@ -77,17 +77,18 @@ export function mergeHalfwayPlaceAndScoutAttrs(
   places: HalfwayPlaceAttrFold | undefined,
   scout: HalfwayPlaceAttrFold | undefined,
 ): Omit<HalfwayPlaceAttrFold, "id"> {
-  const base = places ?? {
+  const base: Omit<HalfwayPlaceAttrFold, "id"> = places ?? {
     dineIn: null,
     outdoorSeating: null,
     pickupOnly: null,
   };
+  const placeId = scout?.placeId ?? base.placeId;
   if (!scout) {
     return {
       dineIn: base.dineIn,
       outdoorSeating: base.outdoorSeating,
       pickupOnly: base.pickupOnly ?? null,
-      ...(base.placeId ? { placeId: base.placeId } : {}),
+      ...(placeId ? { placeId } : {}),
     };
   }
   return {
@@ -95,9 +96,7 @@ export function mergeHalfwayPlaceAndScoutAttrs(
     outdoorSeating: scout.outdoorSeating,
     pickupOnly: scout.pickupOnly,
     baynanaEligible: scout.baynanaEligible ?? null,
-    ...(scout.placeId || base.placeId
-      ? { placeId: scout.placeId ?? base.placeId }
-      : {}),
+    ...(placeId ? { placeId } : {}),
   };
 }
 

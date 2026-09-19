@@ -24,11 +24,11 @@ import {
 import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
 import {
   districtPath,
+  discoveryCategoryLabel,
+  getDiscoveryCategory,
   homePath,
   mostPopularHeading,
   mostPopularPath,
-  VIBE_CHIPS,
-  vibeChipLabel,
 } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
@@ -37,12 +37,6 @@ import {
   requestVisitorLocation,
   usePeekVisitorLocation,
 } from "@/lib/visitor-location";
-
-const POPULAR_CHIP = VIBE_CHIPS.find((chip) => chip.id === "popular") ?? {
-  id: "popular",
-  ar: "الأكثر شعبية",
-  en: "Most Popular",
-};
 
 type ShopDirectoryProps = {
   language: Language;
@@ -72,9 +66,7 @@ export function ShopDirectory({
   intro = null,
 }: ShopDirectoryProps) {
   const popular = listing === "popular";
-  const vibe = chipId
-    ? VIBE_CHIPS.find((chip) => chip.id === chipId)
-    : undefined;
+  const vibe = chipId ? getDiscoveryCategory(chipId) : undefined;
   const resultSort = isDirectoryResultSortChip(chipId);
   const visitor = usePeekVisitorLocation();
   const origin = originFromVisitor(visitor);
@@ -126,7 +118,7 @@ export function ShopDirectory({
     : district
       ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
       : vibe
-        ? vibeChipLabel(vibe, language)
+        ? discoveryCategoryLabel(vibe.id, language) ?? copy.directory[language]
         : copy.directory[language];
   const headingId = popular
     ? "most-popular"
@@ -178,7 +170,7 @@ export function ShopDirectory({
           aria-current={popular ? "page" : undefined}
           className={chipClass(popular)}
         >
-          {vibeChipLabel(POPULAR_CHIP, language)}
+          {discoveryCategoryLabel("popular", language)}
         </Link>
         {areas.map((id) => {
           const selected = district === id;

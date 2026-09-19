@@ -53,7 +53,7 @@ import { nearbyChatPicks } from "@/lib/nearby";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
-  VIBE_CHIPS,
+  discoveryCategoryLabel,
   districtPath,
   homePath,
   isOffHomeChipId,
@@ -379,12 +379,10 @@ function chipOpenMessages(open: ChipOpenRestore, landing: Language): Message[] {
 }
 
 function liveChipLabel(chipId: string, language: Language): string | null {
-  if (chipId === NEARBY_CHIP.id) return vibeChipLabel(NEARBY_CHIP, language);
   if (chipId === MEET_HALFWAY_CHIP.id) {
     return vibeChipLabel(MEET_HALFWAY_CHIP, language);
   }
-  const vibe = VIBE_CHIPS.find((chip) => chip.id === chipId);
-  return vibe ? vibeChipLabel(vibe, language) : null;
+  return discoveryCategoryLabel(chipId, language);
 }
 
 function askBeforePicks(messages: Message[], index: number): string {

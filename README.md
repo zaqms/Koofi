@@ -34,7 +34,7 @@ The catalog is a local editorial file: [`data/catalog.json`](data/catalog.json).
 
 Schema per shop: `id`, `nameAr`, `nameEn`, `city`, `neighborhood`, `neighborhoodAr`, `vibeTags`, `momentTags` (`work` / `friend` / `qahwa` / `roaster` / `quiet` / `late` / `popular` / `pastry` / `study` / `outdoor` / `with-friends`), optional `officialSite`, optional `pin`, optional `hours`, optional `mapsShareUrl`, optional `photoUrl`, optional `logoUrl`, optional baked `popularityIndex` (Most Popular chip only; source map in [`data/popularity-index.json`](data/popularity-index.json)), and `example`. `shopMapsHref` prefers `mapsShareUrl`, then pin, then a name search. Leave `photoUrl` / `logoUrl` empty unless there is a legal photo. Never hotlink a scraped Maps CDN URL.
 
-The locked openers, home support, 4×2 home subset, and chip list live in [`lib/product.ts`](lib/product.ts) (`LOCKED_OPENER` on `/`, `LOCKED_OPENER_EN` on `/en`, `LOCKED_HOME_SUPPORT`, `HOME_CHIP_IDS`, `VIBE_CHIPS`). The coffee chip maps onto `qahwa`. Chat UI and copy import those; do not duplicate the opener strings or the chip labels.
+The locked openers and home support live in [`lib/product.ts`](lib/product.ts) (`LOCKED_OPENER` on `/`, `LOCKED_OPENER_EN` on `/en`, `LOCKED_HOME_SUPPORT`). Discovery categories (ids, EN/AR labels, icons, eligibility, home rank, sort) live in [`lib/discovery-categories.ts`](lib/discovery-categories.ts). `HOME_CHIP_IDS` and `VIBE_CHIPS` are derived views — do not duplicate chip labels on a page. The coffee chip maps onto `qahwa`.
 
 **Real shops come from Amjad as Maps pins.** This repo does not invent real Riyadh cafe names and does not scrape Google, Instagram, Snap, TikTok, or review sites. Do not write ratings into `catalog.json`. Hours and official claims stay empty until there is a legal source. Do not invent coordinates for a real shop when `mapsShareUrl` is present.
 
@@ -97,6 +97,7 @@ Connect ChatGPT / Claude / Gemini / Perplexity / Cursor with Streamable HTTP to 
 
 ```bash
 npx tsx scripts/check-structured-data.ts
+npx tsx scripts/check-discovery-categories.ts
 npx tsx scripts/check-claims.ts
 npx tsx scripts/check-owner-edit.ts
 npx tsx scripts/check-passport.ts

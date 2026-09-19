@@ -473,9 +473,11 @@ assert(
 );
 
 const product = readRepo("lib/product.ts");
-assert(product.includes('en: "With friends"'), "home chip label is With friends");
-assert(product.includes('ar: "مع الأصحاب"'), "AR home chip label is مع الأصحاب");
-assert(!product.includes("Good for a date"), "date chip label is gone");
+const registry = readRepo("lib/discovery-categories.ts");
+assert(registry.includes('en: "With friends"'), "home chip label is With friends");
+assert(registry.includes('ar: "مع الأصحاب"'), "AR home chip label is مع الأصحاب");
+assert(!product.includes("Good for a date"), "date chip label is gone from product");
+assert(!registry.includes("Good for a date"), "date chip label is gone from registry");
 
 const directory = readRepo("components/shop-directory.tsx");
 assert(

@@ -3,22 +3,18 @@ import { copy } from "./copy";
 import { haversineKm } from "./distance";
 import { isRiyadhPlacePin, isUsableVisitorOrigin } from "./place-coords";
 import { MAX_NEARBY_DISPLAY_KM } from "./shop-distance-label";
-import { shopDisplayName } from "./product";
+import {
+  DIRECTORY_RESULT_SORT_CHIPS,
+  isDirectoryResultSortChip,
+  shopDisplayName,
+} from "./product";
 import type { Language, Pin } from "./types";
+
+export { DIRECTORY_RESULT_SORT_CHIPS, isDirectoryResultSortChip };
 
 /** Shared Matcha + Drive-through results sort. */
 export const DIRECTORY_RESULT_SORTS = ["nearby", "new", "az"] as const;
 export type DirectoryResultSort = (typeof DIRECTORY_RESULT_SORTS)[number];
-
-export const DIRECTORY_RESULT_SORT_CHIPS = ["matcha", "drive-through"] as const;
-
-export function isDirectoryResultSortChip(
-  chipId: string | null | undefined,
-): boolean {
-  return (
-    chipId === "matcha" || chipId === "drive-through"
-  );
-}
 
 export const DIRECTORY_SORT_COPY: Record<
   DirectoryResultSort,

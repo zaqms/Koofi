@@ -3,6 +3,42 @@ import {
   type DirectoryCategoryId,
 } from "./directory-category";
 import type { Language, MomentTag, NeighborhoodId } from "./types";
+import {
+  coffeeShopChipSlugForId,
+  type CoffeeShopChipSlug,
+} from "./discovery-categories";
+
+export {
+  COFFEE_SHOP_CHIP_SLUGS,
+  DIRECTORY_RESULT_SORT_CHIPS,
+  DISCOVERY_CATEGORIES,
+  HOME_CHIP_IDS,
+  NEARBY_CHIP,
+  OFF_HOME_CHIP_IDS,
+  STATIC_DIRECTORY_CHIP_IDS,
+  VIBE_CHIPS,
+  chipDirectoryMoment,
+  chipIdFromCoffeeShopSlug,
+  coffeeShopChipSlugForId,
+  discoveryCategoryLabel,
+  getDiscoveryCategory,
+  homeSurfaceChips,
+  isCoffeeShopChipSlug,
+  isDirectoryResultSortChip,
+  isDriveThroughDirectoryChip,
+  isHomeChipId,
+  isOffHomeChipId,
+  isStaticDirectoryChip,
+  vibeChipLabel,
+  type CoffeeShopChipSlug,
+  type DiscoveryCategory,
+  type DiscoveryCategoryId,
+  type HomeChipId,
+  type HomeSurfaceChip,
+  type OffHomeChipId,
+  type VibeChip,
+  type VibeChipId,
+} from "./discovery-categories";
 
 /** Public host visitors see. Also the Latin brand. Lowercase with the dot. */
 export const PUBLIC_SITE_HOST = "wain.lol";
@@ -45,122 +81,6 @@ export const LOCKED_HOME_SUPPORT = {
   en: "Pick a vibe, or let us find you a place in the middle.",
 } as const;
 
-export type VibeChip = {
-  id: string;
-  ar: string;
-  en: string;
-  momentTag: MomentTag;
-};
-
-/**
- * Locked vibe chips under the opener. Arabic is the default label.
- * The coffee chip maps onto `qahwa` so picker scoring stays consistent.
- * The popular chip (`الأكثر شعبية` / Most Popular) ranks the full catalog
- * by baked `popularityIndex` DESC — it does not require a `popular` momentTag.
- * AR display labels are the P0 home set. Chip ids match public slugs.
- * Soft Places parked.
- */
-export const VIBE_CHIPS = [
-  { id: "popular", ar: "الأكثر شعبية", en: "Most Popular", momentTag: "popular" },
-  { id: "coffee", ar: "أفضل قهوة", en: "Best Coffee", momentTag: "qahwa" },
-  { id: "pastry", ar: "قهوة وحلى", en: "Coffee and sweets", momentTag: "pastry" },
-  { id: "matcha", ar: "ماتشا", en: "Matcha", momentTag: "matcha" },
-  { id: "drive-through", ar: "طلبات السيارة", en: "Drive-through", momentTag: "drive-through" },
-  { id: "roaster", ar: "أفضل محامص", en: "Best Roasteries", momentTag: "roaster" },
-  { id: "specialty", ar: "قهوة مختصة", en: "Specialty coffee", momentTag: "roaster" },
-  { id: "quiet", ar: "هادي ورايق", en: "Cozy and Quiet", momentTag: "quiet" },
-  { id: "work", ar: "للشغل", en: "Best for Work", momentTag: "work" },
-  { id: "study", ar: "قعدة مذاكرة", en: "Best for Studies", momentTag: "study" },
-  { id: "late", ar: "مفتوح لآخر الليل", en: "Open late", momentTag: "late" },
-  { id: "outdoor", ar: "جلسات خارجية", en: "Outdoor seating", momentTag: "outdoor" },
-  { id: "with-friends", ar: "مع الأصحاب", en: "With friends", momentTag: "with-friends" },
-] as const satisfies readonly VibeChip[];
-
-export type VibeChipId = (typeof VIBE_CHIPS)[number]["id"];
-
-/**
- * Extra chip after the locked vibe row. Not a moment tag — Nearby
- * sorts client-side by official-place haversine only.
- */
-export const NEARBY_CHIP = {
-  id: "nearby",
-  ar: "قريب مني",
-  en: "Nearby",
-} as const;
-
-/**
- * P0 home chip chrome is 4 columns (RTL R→L in this array order).
- * Matcha sits 4th on the top row (Ajz/Amjad 16 Sep 2026).
- * Drive-through is 9th, after Best for Work / للشغل (Amjad PRD 16 Sep 2026).
- * Off-home ids keep their URLs: roaster, specialty, study, late, quiet.
- * بيننا is a utility card above this grid — not a tile.
- */
-export const HOME_CHIP_IDS = [
-  "popular",
-  "coffee",
-  "pastry",
-  "matcha",
-  "nearby",
-  "outdoor",
-  "with-friends",
-  "work",
-  "drive-through",
-] as const;
-
-export type HomeChipId = (typeof HOME_CHIP_IDS)[number];
-
-export const OFF_HOME_CHIP_IDS = [
-  "roaster",
-  "specialty",
-  "study",
-  "late",
-  "quiet",
-] as const;
-
-export function isHomeChipId(id: string): id is HomeChipId {
-  return (HOME_CHIP_IDS as readonly string[]).includes(id);
-}
-
-/**
- * Static directory chips. Most Popular + Matcha + Drive-through navigate
- * to a full list page. They must not open the ask→3 agent flow. Quiet /
- * other off-home chips keep three-pick restore.
- */
-export const STATIC_DIRECTORY_CHIP_IDS = [
-  "popular",
-  "matcha",
-  "drive-through",
-] as const;
-
-export function isStaticDirectoryChip(
-  id: string | null | undefined,
-): boolean {
-  return Boolean(
-    id && (STATIC_DIRECTORY_CHIP_IDS as readonly string[]).includes(id),
-  );
-}
-
-export type OffHomeChipId = (typeof OFF_HOME_CHIP_IDS)[number];
-
-export function isOffHomeChipId(id: string): id is OffHomeChipId {
-  return (OFF_HOME_CHIP_IDS as readonly string[]).includes(id);
-}
-
-export type HomeSurfaceChip =
-  | (typeof VIBE_CHIPS)[number]
-  | typeof NEARBY_CHIP;
-
-export function homeSurfaceChips(): readonly HomeSurfaceChip[] {
-  return HOME_CHIP_IDS.map((id) => {
-    if (id === NEARBY_CHIP.id) return NEARBY_CHIP;
-    const vibe = VIBE_CHIPS.find((chip) => chip.id === id);
-    if (!vibe) {
-      throw new Error(`home chip missing: ${id}`);
-    }
-    return vibe;
-  });
-}
-
 /**
  * Meet Halfway (`بيننا`). Not a vibe / Soft Places chip.
  * v1 UI is one share URL `/h/{id}` (EN twin `/en/h/{id}`): invite → waiting → results (two people);
@@ -184,13 +104,6 @@ export const MEET_HALFWAY_HOME_ART = {
   width: 1177,
   height: 447,
 } as const;
-
-export function vibeChipLabel(
-  chip: Pick<VibeChip, "ar" | "en">,
-  language: Language,
-): string {
-  return language === "ar" ? chip.ar : chip.en;
-}
 
 /** Catalog flag. Live shops are `false`. Do not use `true` to fill chips or picks. */
 export const EXAMPLE_FLAG = "example" as const;
@@ -469,30 +382,6 @@ export function halfwayPath(language: Language = "ar"): string {
     : HALFWAY_LANDING_PATH;
 }
 
-/**
- * Ajz-locked coffee-shops slugs for nearby + vibe chips.
- * `popular` stays `most-popular`. `meet-halfway` stays `/halfway`.
- * With-friends chip id and public slug are the same (`with-friends`).
- * Other slugs stay. Soft Places stays parked.
- */
-export const COFFEE_SHOP_CHIP_SLUGS = [
-  "nearby",
-  "coffee",
-  "pastry",
-  "matcha",
-  "drive-through",
-  "roaster",
-  "specialty",
-  "quiet",
-  "work",
-  "study",
-  "late",
-  "outdoor",
-  "with-friends",
-] as const;
-
-export type CoffeeShopChipSlug = (typeof COFFEE_SHOP_CHIP_SLUGS)[number];
-
 /** Catalog / home-grid id. Same as the public coffee-shops slug. */
 export const DATE_CHIP_ID = "with-friends";
 
@@ -547,26 +436,6 @@ export const LEGACY_SHOP_REDIRECTS = [
   },
 ] as const;
 
-export function isCoffeeShopChipSlug(
-  slug: string,
-): slug is CoffeeShopChipSlug {
-  return (COFFEE_SHOP_CHIP_SLUGS as readonly string[]).includes(slug);
-}
-
-/** Public slug for a live chip id. Live ids match slugs. */
-export function coffeeShopChipSlugForId(
-  chipId: string,
-): CoffeeShopChipSlug | null {
-  if (isCoffeeShopChipSlug(chipId)) return chipId;
-  return null;
-}
-
-/** Route slug → chip id. Live slugs match ids. */
-export function chipIdFromCoffeeShopSlug(slug: string): string | null {
-  if (isCoffeeShopChipSlug(slug)) return slug;
-  return null;
-}
-
 export function coffeeShopChipPath(
   slug: CoffeeShopChipSlug,
   language: Language = "ar",
@@ -589,19 +458,6 @@ export function chipSharePath(
 
 export function mostPopularHeading(language: Language): string {
   return MOST_POPULAR_HEADING[language];
-}
-
-/**
- * Moment tag that filters the shop directory on a chip share URL.
- * Popular / Nearby / بيننا stay unfiltered here — they have their own pages.
- */
-export function chipDirectoryMoment(
-  chipId: string | null | undefined,
-): MomentTag | null {
-  if (!chipId || chipId === "popular" || chipId === NEARBY_CHIP.id) return null;
-  const chip = VIBE_CHIPS.find((row) => row.id === chipId);
-  if (!chip || chip.momentTag === "popular") return null;
-  return chip.momentTag;
 }
 
 /** Filtered directory (Most Popular, a district, or a chip moment) sits above New this week. */

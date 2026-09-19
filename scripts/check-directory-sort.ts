@@ -194,7 +194,7 @@ assert(
 
 const landing = read("components/home-landing.tsx");
 assert(
-  landing.includes('pageChipId === "drive-through"') &&
+  landing.includes("isDriveThroughDirectoryChip(pageChipId)") &&
     landing.includes("listDriveThroughDirectoryShops()"),
   "DT landing still uses the branch-level DT directory",
 );

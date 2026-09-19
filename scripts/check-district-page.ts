@@ -38,6 +38,7 @@ const sortPills = read("components/directory-result-sort.tsx");
 const arRoute = read("app/[category]/[slug]/page.tsx");
 const enRoute = read("app/en/[category]/[slug]/page.tsx");
 const product = read("lib/product.ts");
+const registry = read("lib/discovery-categories.ts");
 
 assert(existsSync("components/district-page.tsx"), "shared DistrictPage exists");
 assert(
@@ -163,6 +164,7 @@ assert(
 assert(DATE_CHIP_ID === "with-friends", "dating scrub stays with-friends");
 assert(DATE_CHIP_PUBLIC_SLUG === "with-friends", "public slug stays with-friends");
 assert(!product.includes("Good for a date"), "do not revive Good for a date");
+assert(!registry.includes("Good for a date"), "registry does not revive Good for a date");
 assert(districtPage.includes("Soft Places stays parked"), "Soft Places stays parked");
 assert(!districtPage.includes("ثلاث الليلة"), "no Soft Places badge on district page");
 assert(!homeLanding.includes("Good for a date"), "home landing keeps the dating scrub");

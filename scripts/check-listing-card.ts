@@ -76,6 +76,7 @@ assert(copy.listingShare.ar === "مشاركة", "listing مشاركة label");
 
 const card = read("components/directory-card.tsx");
 assert(card.includes("export function DirectoryCard"), "shared listing card");
+assert(card.includes('data-listing-card=""'), "listing card has a stable hook");
 assert(card.includes('dir={dir}'), "card sets document direction");
 assert(card.includes('language === "ar" ? "rtl" : "ltr"'), "true RTL, not flipped LTR");
 assert(card.includes("listingCardTags"), "pills come from listing tags helper");

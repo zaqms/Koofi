@@ -47,6 +47,14 @@ export function isMapsUrl(value: string): boolean {
   return true;
 }
 
+/** `maps.app.goo.gl` / `goo.gl` share links — safe in Gmail hrefs. */
+export function isMapsShortlink(value: string): boolean {
+  const url = parseHttpUrl(value);
+  if (!url || !isMapsUrl(value)) return false;
+  const host = url.host.toLowerCase();
+  return host === "maps.app.goo.gl" || host === "goo.gl";
+}
+
 export function extractMapsUrl(text: string): string | null {
   const trimmed = text.trim();
   if (isMapsUrl(trimmed)) return parseHttpUrl(trimmed)?.toString() ?? trimmed;

@@ -118,6 +118,29 @@ export type Shop = {
    * directory only. They stay out of default specialty discovery.
    */
   catalogLane?: "drive-through";
+  /**
+   * Dine-in for بيننا. Scout verdict wins over Places.
+   * `null` / missing = unresolved — fail-closed. Not a Soft Places vibe.
+   */
+  dineIn?: boolean | null;
+  /**
+   * Outdoor seating. Scout wins over Places. Sit-down for بيننا when
+   * `true`, even if `dineIn` is false.
+   */
+  outdoorSeating?: boolean | null;
+  /**
+   * Scout pickup-only. Always excludes from بيننا, even if `dineIn` is true.
+   * `null` / missing = not asserted (drive-through tags still exclude).
+   */
+  pickupOnly?: boolean | null;
+  /**
+   * Scout `baynana_eligible` when a manual verdict exists.
+   * `true` / `false` after the drive-through / pickup-only gate.
+   * `null` / missing = fall through to dine-in / outdoor (fail-closed).
+   */
+  baynanaEligible?: boolean | null;
+  /** Google Places id (`ChIJ…`). Scout `correct_place_id` wins on rematch. */
+  placeId?: string;
   example: boolean;
 };
 

@@ -3,6 +3,7 @@ import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
 import { rankByPopularity, rankInDistrict } from "./district-rank";
 import { haversineKm } from "./distance";
+import { filterHalfwayEligible } from "./halfway-eligibility";
 import { neighborhoodCentroid } from "./neighborhood-tight";
 import { officialShopCoords } from "./place-coords";
 import { MEET_HALFWAY_CHIP } from "./product";
@@ -19,6 +20,11 @@ import { uniqueWhyLines } from "./why-line";
  * Core ranking is `locations: Location[]` (N≥2). Midpoint is the
  * centroid of the resolved pins (or district centroids when a row
  * has no pin). Do not hard-code a pair-only algorithm.
+ *
+ * Sit-down eligibility (Amjad LOCKED 19 Sep 2026) filters the candidate
+ * pool BEFORE midpoint-distance ranking. Drive-through / pickup-only and
+ * null attrs are fail-closed. A leftover thinner than 3 is returned as-is
+ * — ineligible shops are never re-opened to fill. Soft Places parked.
  *
  * v1 UI is one `/h/{id}` URL: invite → waiting → results (two people).
  * First-page shop_ids freeze on the overlay so refresh does not reshuffle.
@@ -139,12 +145,16 @@ export async function resolveHalfwayLocations(
 /**
  * Full Most Popular list for the midpoint band (or snap pool) used by
  * بيننا. `غيرها` pages this same set — do not re-expand after skips.
+ *
+ * Eligibility runs first. Distance bands and Most Popular only see
+ * sit-down shops. If fewer than 3 remain after the filter, return
+ * that leftover — do not re-open ineligible rows to fill.
  */
 export function halfwayCandidatePool(input: {
   locations: readonly HalfwayLocation[];
   shops?: readonly Shop[];
 }): Shop[] {
-  const shops = input.shops ?? listDiscoveryShops();
+  const shops = filterHalfwayEligible(input.shops ?? listDiscoveryShops());
   const { locations } = input;
   if (locations.length < 2) return [];
 
@@ -204,7 +214,8 @@ export function halfwayCandidatePool(input: {
 /**
  * Live-catalog shops in a band around the N-location centroid, ranked
  * with locked Most Popular (`popularityIndex`). Never invents shops.
- * `beenIds` skips cafes already shown this session (`غيرها`).
+ * Eligibility already dropped drive-through / unsure rows. `beenIds`
+ * skips cafes already shown this session (`غيرها`).
  */
 export function pickHalfwayShops(input: {
   locations: readonly HalfwayLocation[];

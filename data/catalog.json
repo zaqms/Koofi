@@ -25,6 +25,10 @@
       },
       "logoUrl": "/logos/ik-coffee-downtown.jpg",
       "popularityIndex": 63.7,
+      "placeId": "ChIJoUYKBoUDLz4RsVh1QXnfpIo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -54,6 +58,10 @@
       },
       "logoUrl": "/logos/woods-olaya.jpg",
       "popularityIndex": 89.1,
+      "placeId": "ChIJLbkCFlgDLz4RnTOlP8wH6mA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -79,6 +87,10 @@
       },
       "logoUrl": "/logos/cafu-olaya.jpg",
       "popularityIndex": 60.7,
+      "placeId": "ChIJIUvnEgADLz4RQNm2YYy-SeU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -102,6 +114,10 @@
       },
       "logoUrl": "/logos/one-gram-sulimaniyah.jpg",
       "popularityIndex": 48.1,
+      "placeId": "ChIJ82qbdwADLz4Rfx23hDu6_Iw",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -123,6 +139,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/Joe+Barrel+Coffee/@38.9979465,-105.550863,6z/data=!3m1!4b1!4m6!3m5!1s0x3e2f034f1e2720db:0x20aaab526ce8309c!8m2!3d24.7194802!4d46.6725255!16s%2Fg%2F11yl0pqp7h",
       "logoUrl": "/logos/joe-barrel-al-wurud.jpg",
       "popularityIndex": 46.3,
+      "placeId": "ChIJ2yAnHk8DLz4RnDDobFKrqiA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -149,6 +169,10 @@
       },
       "logoUrl": "/logos/btw-olaya.jpg",
       "popularityIndex": 65.6,
+      "placeId": "ChIJX7yQ_RkDLz4RF4mf7HtqS84",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -173,6 +197,10 @@
       },
       "logoUrl": "/logos/breehant-al-yasmin.jpg",
       "popularityIndex": 70.6,
+      "placeId": "ChIJ1aDdbQAdLz4RVXmER-MCays",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -201,6 +229,10 @@
       },
       "logoUrl": "/logos/coyard-sulimaniyah.jpg",
       "popularityIndex": 80.1,
+      "placeId": "ChIJ75dDmeICLz4Rz_qyoYhY3rc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -224,6 +256,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/Piccolo+Roasters/@24.7968428,46.6759907,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd7baeee3ff5:0x713420c80aa4054e!8m2!3d24.7968428!4d46.6759907!16s%2Fg%2F11pz4l0l38!18m1!1e1",
       "logoUrl": "/logos/piccolo-al-rabi.jpg",
       "popularityIndex": 61.9,
+      "placeId": "ChIJ9T_urnv9Lj4RTgWkCsggNHE",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -244,6 +280,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/%D8%A8%D9%8A%D8%AA+%D8%A7%D9%84%D8%AA%D8%AD%D9%85%D9%8A%D8%B5+%D8%A7%D9%84%D9%85%D8%B5%D9%8A%D9%81+%7C+Roasting+House+Al+Massif%E2%80%AD/@24.7597911,46.6738626,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2efd4bbbe29009:0xd1c0a54f636cabec!8m2!3d24.7597911!4d46.6738626!16s%2Fg%2F1q6jhjxhk!18m1!1e1",
       "logoUrl": "/logos/roasting-house.png",
       "popularityIndex": 83,
+      "placeId": "ChIJCZDiu0v9Lj4R7KtsY0-lwNE",
+      "dineIn": false,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -268,6 +308,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/Camel+Step/@24.7104911,46.6676492,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f1d792944b807:0x65409f512448f2d9!8m2!3d24.7104911!4d46.6676492!16s%2Fg%2F11jly8v3yz!18m1!1e1",
       "logoUrl": "/logos/camel-step-hittin.jpg",
       "popularityIndex": 85,
+      "placeId": "ChIJB7hEKXkdLz4R2fJIJFGfQGU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -297,6 +341,10 @@
       },
       "logoUrl": "/logos/percent-arabica-hittin.jpg",
       "popularityIndex": 81.1,
+      "placeId": "ChIJp2fuYKjjLj4RSydpSuflfnU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -324,6 +372,10 @@
       },
       "logoUrl": "/logos/origin-the-lab-hittin.png",
       "popularityIndex": 77.3,
+      "placeId": "ChIJVweuysfjLj4RPS2pmZBo5mk",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -351,6 +403,10 @@
       },
       "logoUrl": "/logos/origin-coffee-roasters-hittin.png",
       "popularityIndex": 72.1,
+      "placeId": "ChIJ51Pu3-zhLj4Ry-wqP7jP9us",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -377,6 +433,10 @@
       },
       "logoUrl": "/logos/camel-step-hittin.jpg",
       "popularityIndex": 79.4,
+      "placeId": "ChIJc-uPzNHhLj4RrDI6wE0iyQY",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -403,6 +463,10 @@
       },
       "logoUrl": "/logos/tobys-estate-hittin.png",
       "popularityIndex": 66.7,
+      "placeId": "ChIJHRRHvYzjLj4RfO5imLFCk3E",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -432,6 +496,10 @@
       },
       "logoUrl": "/logos/noc-caffe-hittin.png",
       "popularityIndex": 53.2,
+      "placeId": "ChIJ6UXD0vDhLj4RmB1YhhXuXBA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -455,6 +523,10 @@
       },
       "logoUrl": "/logos/just-another-hittin.jpg",
       "popularityIndex": 56.1,
+      "placeId": "ChIJaX-KNADjLj4RFNXLXtc2pzk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -478,6 +550,10 @@
       },
       "logoUrl": "/logos/qamaria-hittin.webp",
       "popularityIndex": 64.6,
+      "placeId": "ChIJ9RV2fADjLj4R54bXP-20Vqo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -503,6 +579,10 @@
       },
       "logoUrl": "/logos/sors-hittin.png",
       "popularityIndex": 67.2,
+      "placeId": "ChIJg-fc-NHjLj4RpNeKU7h9UxI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -527,6 +607,10 @@
       },
       "logoUrl": "/logos/jorn-al-malqa.png",
       "popularityIndex": 76.7,
+      "placeId": "ChIJXQxac1XjLj4RkusgNzCm7j8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -552,6 +636,10 @@
       },
       "logoUrl": "/logos/kicksters-al-malqa.jpg",
       "popularityIndex": 75.2,
+      "placeId": "ChIJDc9vhyXlLj4RPsaFjEBAyqk",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -575,6 +663,10 @@
       },
       "logoUrl": "/logos/sohba-al-malqa.jpg",
       "popularityIndex": 61.4,
+      "placeId": "ChIJBV_IAt7lLj4RR0JleeIDhn0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -596,6 +688,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/Aim+%7C+Al+Malqa/@24.794855,46.625109,17z/data=!4m6!3m5!1s0x3e2ee321de3c683b:0x11458806c86fdb91!8m2!3d24.794855!4d46.625109!16s%2Fg%2F11sjvsrx89",
       "logoUrl": "/logos/aim-coffee-bar-al-malqa.jpg",
       "popularityIndex": 71.6,
+      "placeId": "ChIJO2g83iHjLj4RkdtvyAaIRRE",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -621,6 +717,10 @@
       },
       "logoUrl": "/logos/salam-cafe-al-malqa.jpg",
       "popularityIndex": 59.6,
+      "placeId": "ChIJu9PkdQDlLj4Rf1muMjVmwrM",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -646,6 +746,10 @@
       },
       "logoUrl": "/logos/nasj-al-malqa.jpg",
       "popularityIndex": 74.9,
+      "placeId": "ChIJKXmvT4nnLj4R6h25grff8oY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -673,6 +777,10 @@
       },
       "logoUrl": "/logos/namq-al-malqa.jpg",
       "popularityIndex": 97.5,
+      "placeId": "ChIJu1ZmnC7lLj4RG3a2K7c5lWQ",
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -698,6 +806,10 @@
       },
       "logoUrl": "/logos/elixir-bunn-al-nakheel.png",
       "popularityIndex": 84.9,
+      "placeId": "ChIJuelhFhPiLj4R-vbGiLH97Zo",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -722,6 +834,10 @@
       },
       "logoUrl": "/logos/peaks-digital-city-al-nakheel.jpg",
       "popularityIndex": 54.4,
+      "placeId": "ChIJUQFfWIDjLj4RhT0eKtNMeKs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -749,6 +865,10 @@
       },
       "logoUrl": "/logos/just-a-space-al-nakheel.jpg",
       "popularityIndex": 83,
+      "placeId": "ChIJ2wq6u37jLj4RJfYMWgjeRGI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -776,6 +896,10 @@
       },
       "logoUrl": "/logos/wee-al-nakheel.jpg",
       "popularityIndex": 74.5,
+      "placeId": "ChIJD1fl8PLjLj4RmPZvudqW1cg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -802,6 +926,10 @@
       },
       "logoUrl": "/logos/infuse-al-nakheel.jpg",
       "popularityIndex": 66.6,
+      "placeId": "ChIJa6jnjiTjLj4RQ781Q8THA3Y",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -825,6 +953,10 @@
       },
       "logoUrl": "/logos/ash-bloom-al-nakheel.jpg",
       "popularityIndex": 48.6,
+      "placeId": "ChIJswgca_PjLj4RR6pHkY5zFoQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -853,6 +985,10 @@
       },
       "logoUrl": "/logos/idmi-al-yasmin.jpg",
       "popularityIndex": 76.2,
+      "placeId": "ChIJx0VK1rPlLj4RRNTLKYCAq9Q",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -877,6 +1013,10 @@
       },
       "logoUrl": "/logos/breehant-al-yasmin.jpg",
       "popularityIndex": 91.8,
+      "placeId": "ChIJTWK9szLlLj4R5VAFiXeZY4g",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -905,6 +1045,10 @@
       },
       "logoUrl": "/logos/woods-al-yasmin.png",
       "popularityIndex": 87.9,
+      "placeId": "ChIJy-Lqbz_lLj4ROTFi07eSXnU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -929,6 +1073,11 @@
       },
       "logoUrl": "/logos/roasting-house.png",
       "popularityIndex": 68.1,
+      "placeId": "ChIJMwSfiUXlLj4Rnwiq3RN79V8",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -957,6 +1106,10 @@
       },
       "logoUrl": "/logos/eva-al-yasmin.jpg",
       "popularityIndex": 70.8,
+      "placeId": "ChIJrZX_AgDlLj4RCfChxTJoToM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -978,6 +1131,10 @@
         "lng": 46.658768
       },
       "popularityIndex": 39,
+      "placeId": "ChIJgfDIPADjLj4Roist1N0d1fY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1002,6 +1159,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/Shovel+Roastery/@24.8230966,46.6200885,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee5481d9d6db7:0x9ef3cb3b62ed91c5!8m2!3d24.8230966!4d46.6200885!16s%2Fg%2F11lsz9c1m7",
       "logoUrl": "/logos/shovel-al-yasmin.jpg",
       "popularityIndex": 79.1,
+      "placeId": "ChIJt22dHUjlLj4RxZHtYjvL854",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1025,6 +1186,10 @@
       "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Basementers+Roastery,+Al+Khayalah+Street,+Al+Yasmin,+Riyadh",
       "logoUrl": "/logos/basementers-al-yasmin.jpg",
       "popularityIndex": 67.4,
+      "placeId": "ChIJw3kT8A_lLj4RPkjxv-xvVZQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1049,6 +1214,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/Volume+Coffee+Roasters/@24.8277968,46.6397765,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee50170f71919:0xfa36e7a5ab0613d4!8m2!3d24.8277968!4d46.6397765!16s%2Fg%2F11t77tzlqt",
       "logoUrl": "/logos/volume-al-yasmin.jpg",
       "popularityIndex": 77.7,
+      "placeId": "ChIJGRn3cAHlLj4R1BMGq6XnNvo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1077,6 +1246,10 @@
       },
       "logoUrl": "/logos/idmi-al-yasmin.jpg",
       "popularityIndex": 83.1,
+      "placeId": "ChIJqzcL3YsDLz4R-EoAquZD6I8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1105,6 +1278,10 @@
       },
       "logoUrl": "/logos/qaf-olaya.jpg",
       "popularityIndex": 78.9,
+      "placeId": "ChIJmxIuQ83jLj4Rqk0WK9cN95s",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1133,6 +1310,10 @@
       },
       "logoUrl": "/logos/good-neighbor-olaya.jpg",
       "popularityIndex": 75.7,
+      "placeId": "ChIJ5fc40vwDLz4RRvedPggTxEI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1159,6 +1340,10 @@
       },
       "logoUrl": "/logos/first-series-olaya.png",
       "popularityIndex": 57.4,
+      "placeId": "ChIJMasuxoEDLz4RfhHsiQGwCAs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1186,6 +1371,10 @@
       },
       "logoUrl": "/logos/drip-olaya.jpg",
       "popularityIndex": 77.5,
+      "placeId": "ChIJW84Ocn4DLz4R_oTU77AQ8Vk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1212,6 +1401,10 @@
       },
       "logoUrl": "/logos/tobys-estate-hittin.png",
       "popularityIndex": 74.6,
+      "placeId": "ChIJzXA11zEDLz4Rywpgn5zncG8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1236,6 +1429,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%87%D8%AC%D9%8A%D9%86+%D8%A7%D9%84%D9%85%D8%B5%D9%86%D8%B9+%7C+Hjeen+Roaster+Factory%E2%80%AD/@24.8268768,46.6608931,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2ee583069ca879:0xed45bc40d859ef5c!8m2!3d24.8268768!4d46.6608931!16s%2Fg%2F11kgs41z_d",
       "logoUrl": "/logos/hjeen-roaster-factory-al-yasmin.jpg",
       "popularityIndex": 82,
+      "placeId": "ChIJeaicBoPlLj4RXO9Z2EC8Re0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1256,6 +1453,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/RoR+Coffee+Roasters+-+%D9%85%D8%AD%D9%85%D8%B5%D8%A9+%D9%88+%D9%85%D9%82%D9%87%D9%89+%D8%A7%D8%B1+%D8%A7%D9%88+%D8%A7%D8%B1%E2%80%AD/@24.8158858,46.6567797,17z/data=!3m1!4b1!4m6!3m5!1s0x3e2f070ca15a37d5:0xefef9f69ce376154!8m2!3d24.8158858!4d46.6567797!16s%2Fg%2F11qg9f3y63",
       "logoUrl": "/logos/ror-coffee-roasters-al-yasmin.jpg",
       "popularityIndex": 38.9,
+      "placeId": "ChIJ1TdaoQwHLz4RVGE3zmmf7-8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1280,6 +1481,10 @@
       },
       "logoUrl": "/logos/yamm-olaya.jpg",
       "popularityIndex": 74.7,
+      "placeId": "ChIJ6dcAmcEdLz4RGZwZGqKbVp8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1306,6 +1511,10 @@
       },
       "logoUrl": "/logos/brew-crew-sulimaniyah.jpg",
       "popularityIndex": 59.6,
+      "placeId": "ChIJ2UGMhEADLz4RzpMTWkDPWA8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1334,6 +1543,10 @@
       },
       "logoUrl": "/logos/urth-caffe-tahlia-sulimaniyah.jpg",
       "popularityIndex": 94.8,
+      "placeId": "ChIJpwbCxS8DLz4REWiOCO8GjMs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1356,6 +1569,10 @@
         "lng": 46.6957089
       },
       "popularityIndex": 57.4,
+      "placeId": "ChIJic2Xxs8DLz4RZ4xALOyeCZs",
+      "dineIn": null,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1382,6 +1599,10 @@
         "lng": 46.6986869
       },
       "popularityIndex": 70.2,
+      "placeId": "ChIJyb5Nin0DLz4R84E-hQQJnMk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1409,6 +1630,10 @@
       },
       "logoUrl": "/logos/dear-you-sulimaniyah.jpg",
       "popularityIndex": 68.5,
+      "placeId": "ChIJo4YhbK0DLz4Ry-v54UH2f_Y",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1434,6 +1659,10 @@
       },
       "logoUrl": "/logos/sand-clock-brand.png",
       "popularityIndex": 73.8,
+      "placeId": "ChIJTaRs5mTjLj4RAxGryF6WLPc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1459,6 +1688,10 @@
       },
       "logoUrl": "/logos/sand-clock-brand.png",
       "popularityIndex": 40,
+      "placeId": "ChIJN50BBwADLz4RQyUBXydcGqA",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1486,6 +1719,10 @@
       },
       "logoUrl": "/logos/sulalat-coffee-ar-rabwah.jpg",
       "popularityIndex": 89.8,
+      "placeId": "ChIJGeAI7T0FLz4R6APbAVTqukc",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1513,6 +1750,10 @@
       },
       "logoUrl": "/logos/carve-roastery-ar-rabwah.jpg",
       "popularityIndex": 79,
+      "placeId": "ChIJtXzCF6kHLz4R4OeW5iNZsVg",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1539,6 +1780,10 @@
       },
       "logoUrl": "/logos/yly-specialty-coffee-ar-rabwah.jpg",
       "popularityIndex": 47.4,
+      "placeId": "ChIJOaGCmo4HLz4RWoCxvJ-J5fk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1560,6 +1805,11 @@
         "lng": 46.769121
       },
       "popularityIndex": 54.2,
+      "placeId": "ChIJ2w45ulkHLz4RcYYkoir3wR8",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "baynanaEligible": null,
       "example": false
     },
     {
@@ -1581,6 +1831,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/CARVE+COFFEE+BAR/@40.0878355,-105.373568,8z/data=!3m1!4b1!4m6!3m5!1s0x3e2f03f29ecc644d:0x7dd172c26784c870!8m2!3d24.7143718!4d46.6767119!16s%2Fg%2F11kj234xlm",
       "popularityIndex": 71.6,
+      "placeId": "ChIJTWTMnvIDLz4RcMiEZ8Jy0X0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1603,6 +1857,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/EYA+Specialty+Coffee/@40.1723711,-105.0976375,8z/data=!3m1!4b1!4m6!3m5!1s0x3e2f039614f0eaf7:0xf5e98e2b356e7370!8m2!3d24.7321395!4d46.6776488!16s%2Fg%2F11vb7lsy36",
       "logoUrl": "/logos/eya-specialty-coffee-al-wurud.jpg",
       "popularityIndex": 69.3,
+      "placeId": "ChIJ9-rwFJYDLz4RcHNuNSuO6fU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1629,6 +1887,10 @@
       },
       "logoUrl": "/logos/the-gate-specialty-coffee-al-wurud.jpg",
       "popularityIndex": 42.5,
+      "placeId": "ChIJ050tGBsDLz4RO38u5BphxC4",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1655,6 +1917,10 @@
       },
       "logoUrl": "/logos/taim-specialty-coffee-as-sahafah.jpg",
       "popularityIndex": 69.5,
+      "placeId": "ChIJsymty_DlLj4RtdQ-2zW9Acg",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1680,6 +1946,10 @@
       },
       "logoUrl": "/logos/y97-specialty-coffee-as-sahafah.jpg",
       "popularityIndex": 66,
+      "placeId": "ChIJc4imk-blLj4R7dr8sHHpDYU",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1706,6 +1976,10 @@
       },
       "logoUrl": "/logos/hakwah-speciality-coffee-as-sahafah.jpg",
       "popularityIndex": 55.6,
+      "placeId": "ChIJiXqtwtjjLj4R3rONYqIsEa4",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1732,6 +2006,10 @@
       },
       "logoUrl": "/logos/tobys-estate-hittin.png",
       "popularityIndex": 72.3,
+      "placeId": "ChIJrYkZJVXjLj4Rx-nhN9HwaA4",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1758,6 +2036,10 @@
       },
       "logoUrl": "/logos/12-cups-roastery-and-cafe-kafd.jpg",
       "popularityIndex": 75.3,
+      "placeId": "ChIJBUCyZs7jLj4RMhgd1kkxV4I",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1783,6 +2065,10 @@
       },
       "logoUrl": "/logos/coffee-planet-kafd.jpg",
       "popularityIndex": 49.8,
+      "placeId": "ChIJ_WqHfgDjLj4RiTPlV_SYT_0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1807,6 +2093,10 @@
       },
       "logoUrl": "/logos/hal-alkeif-kafd.jpg",
       "popularityIndex": 30.8,
+      "placeId": "ChIJq3iLWQDjLj4Rn6W7PFh5boA",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1834,6 +2124,10 @@
       },
       "logoUrl": "/logos/draft-cafe-kafd.jpg",
       "popularityIndex": 60.2,
+      "placeId": "ChIJHxeUSyDjLj4RCE1b_FEOVQg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1860,6 +2154,10 @@
       },
       "logoUrl": "/logos/cafe-tale-kafd.jpg",
       "popularityIndex": 71.1,
+      "placeId": "ChIJZ14CdHDjLj4RjcZ37JauztY",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1886,6 +2184,10 @@
       },
       "logoUrl": "/logos/trieste-kafd.jpg",
       "popularityIndex": 72,
+      "placeId": "ChIJZUHgtmDjLj4RZbWQbguBnRs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1909,6 +2211,10 @@
       },
       "logoUrl": "/logos/origin-the-lab-hittin.png",
       "popularityIndex": 57.6,
+      "placeId": "ChIJP0FNHwDhLj4RykP0yZR-izg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1933,6 +2239,10 @@
       },
       "logoUrl": "/logos/archi-diriyah.jpg",
       "popularityIndex": 74.3,
+      "placeId": "ChIJU2WkbiXhLj4RT6ykBZ6zslc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1957,6 +2267,10 @@
       },
       "logoUrl": "/logos/archi-diriyah.jpg",
       "popularityIndex": 68.5,
+      "placeId": "ChIJUVU8dADhLj4R2mkQLlxBJ98",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1983,6 +2297,10 @@
       },
       "logoUrl": "/logos/kmr-diriyah.jpg",
       "popularityIndex": 55.1,
+      "placeId": "ChIJEyfuiaThLj4ReGR0OZznMXA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2006,6 +2324,10 @@
       },
       "logoUrl": "/logos/malfa-coffee-house-diriyah.jpg",
       "popularityIndex": 36.1,
+      "placeId": "ChIJOXciZ4DhLj4Rdmf-4HncyQc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2030,6 +2352,10 @@
       },
       "logoUrl": "/logos/offbrief-cafe-diriyah.jpg",
       "popularityIndex": 59.7,
+      "placeId": "ChIJi-6jfbvhLj4Rmyg_wfKwxbY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2054,6 +2380,10 @@
       },
       "logoUrl": "/logos/cosefan-diriyah.jpg",
       "popularityIndex": 68.9,
+      "placeId": "ChIJPfrMyIThLj4RAZ5ah0D4q0I",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2080,6 +2410,10 @@
       },
       "logoUrl": "/logos/khasib-al-bun-diriyah.jpg",
       "popularityIndex": 50.6,
+      "placeId": "ChIJy3OjYwDhLj4RbYv-olYJL7U",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2108,6 +2442,10 @@
       },
       "logoUrl": "/logos/dips-plus-diriyah.jpg",
       "popularityIndex": 74,
+      "placeId": "ChIJ23xbdAvhLj4RUf98kQi-LgM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2131,6 +2469,10 @@
         "lng": 46.521303
       },
       "popularityIndex": 43.8,
+      "placeId": "ChIJL60cZQDnLj4RtaEOLPeErPo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2157,6 +2499,10 @@
       },
       "logoUrl": "/logos/jazel-speciality-cafe-diriyah.jpg",
       "popularityIndex": 54.2,
+      "placeId": "ChIJ_23iHwXhLj4RUxAfJNZQXQU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2182,6 +2528,10 @@
       },
       "logoUrl": "/logos/repository-coffee-roasters-al-narjis.jpg",
       "popularityIndex": 72.7,
+      "placeId": "ChIJI_Yr4Bj7Lj4RuyPSyXDqn3k",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2207,6 +2557,10 @@
       },
       "logoUrl": "/logos/core-coffee-and-roastery-al-narjis.jpg",
       "popularityIndex": 73.5,
+      "placeId": "ChIJ0Rl5nqD9Lj4RdNPOmgESYXM",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2233,6 +2587,10 @@
       },
       "logoUrl": "/logos/hjeen-roaster-al-narjis.jpg",
       "popularityIndex": 75.1,
+      "placeId": "ChIJeV0uYhj7Lj4RKOA8c3Qmm_M",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2255,6 +2613,11 @@
       },
       "logoUrl": "/logos/kail-roastery-and-cafe-al-narjis.jpg",
       "popularityIndex": 51.7,
+      "placeId": "ChIJm84K26v7Lj4RWYzHu2weU_w",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -2280,6 +2643,10 @@
       },
       "logoUrl": "/logos/volume-coffee-roasters-al-narjis.jpg",
       "popularityIndex": 69.2,
+      "placeId": "ChIJ0xuko-L7Lj4RnCMD3lUHq74",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2306,6 +2673,10 @@
       },
       "logoUrl": "/logos/elixir-bunn-al-narjis.jpg",
       "popularityIndex": 73.8,
+      "placeId": "ChIJwefbQtHlLj4R5Kr5d7NHl-k",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2332,6 +2703,10 @@
       },
       "logoUrl": "/logos/melex-specialty-coffee-al-narjis.jpg",
       "popularityIndex": 50,
+      "placeId": "ChIJ71JdegDlLj4R7NUGfqzKT-0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2356,6 +2731,10 @@
       },
       "logoUrl": "/logos/nosound-al-narjis.jpg",
       "popularityIndex": 52.9,
+      "placeId": "ChIJ1cyvaf-rLz4R0TtD0h2K9Uc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2382,6 +2761,10 @@
       },
       "logoUrl": "/logos/aim-al-narjis.jpg",
       "popularityIndex": 67.4,
+      "placeId": "ChIJvS9kAgDlLj4REIfR0pivAU0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2405,6 +2788,10 @@
       },
       "logoUrl": "/logos/archi-al-narjis.jpg",
       "popularityIndex": 66.5,
+      "placeId": "ChIJx3spj8T9Lj4RkjDgEdM8sIQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2430,6 +2817,10 @@
       },
       "logoUrl": "/logos/caf-lab-al-narjis.jpg",
       "popularityIndex": 54.8,
+      "placeId": "ChIJUZjX0kTlLj4REDSY9Ss39mU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2452,6 +2843,10 @@
       },
       "logoUrl": "/logos/cred-al-mughrizat.jpg",
       "popularityIndex": 53.5,
+      "placeId": "ChIJgYhOJQf9Lj4Rl7mXTb80cWs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2472,6 +2867,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd44ce0317ed:0xe70019d08a235ec0",
       "logoUrl": "/logos/specialty-bean-ghirnatah.png",
       "popularityIndex": 63.3,
+      "placeId": "ChIJ7RcDzkT9Lj4RwF4jitAZAOc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2490,6 +2889,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd82bc3dfa81:0xe2d11f39f26b7f5",
       "logoUrl": "/logos/mkth-ghirnatah.jpg",
       "popularityIndex": 81.7,
+      "placeId": "ChIJgfo9vIL9Lj4R9bcmn_MRLQ4",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2507,6 +2910,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd459f8bb259:0xd8b32418d84b89ec",
       "popularityIndex": 37.7,
+      "placeId": "ChIJWbKLn0X9Lj4R7IlL2Bgks9g",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2525,6 +2932,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff61d2ae9141:0x31f18895ab1b535d",
       "logoUrl": "/logos/file-coffee-ghirnatah.png",
       "popularityIndex": 52,
+      "placeId": "ChIJQZGu0mH_Lj4RXVMbq5WI8TE",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -2542,6 +2954,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effbfb5e03783:0x7a26dffbf06775e5",
       "popularityIndex": 42.1,
+      "placeId": "ChIJgzfgtb__Lj4R5XVn8PvfJno",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2559,6 +2975,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd6101362bf7:0x5f25ab521bbf327",
       "popularityIndex": 39.5,
+      "placeId": "ChIJ9ys2AWH9Lj4RJ_O7IbVa8gU",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2577,6 +2997,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effcc20be29f5:0xd0883a18ee9a503",
       "logoUrl": "/logos/moff-ghirnatah.jpg",
       "popularityIndex": 47.3,
+      "placeId": "ChIJ9Sm-IMz_Lj4RA6XpjqGDCA0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2595,6 +3019,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b",
       "logoUrl": "/logos/semi-specialty-cafe-ghirnatah.jpg",
       "popularityIndex": 73,
+      "placeId": "ChIJhww8klj9Lj4RG8u2KCKMRV0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2613,6 +3041,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd3b20850645:0xfdc7a6eb6f2966eb",
       "logoUrl": "/logos/camel-step-granada-business.png",
       "popularityIndex": 63.4,
+      "placeId": "ChIJN9rp_l_lLj4Rcby8Ui4VBMU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2631,6 +3063,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd006f393f47:0x1825e4297e5756ee",
       "logoUrl": "/logos/archi-ghirnatah.jpg",
       "popularityIndex": 56.6,
+      "placeId": "ChIJRz85bwD9Lj4R7lZXfinkJRg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2653,6 +3089,10 @@
       },
       "logoUrl": "/logos/blumen-al-safa.jpg",
       "popularityIndex": 64.7,
+      "placeId": "ChIJnYNAcQAHLz4R0cdy_Bintrs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2670,6 +3110,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07006df6335f:0x3936438b95be1845",
       "popularityIndex": 62.2,
+      "placeId": "ChIJXzP2bQAHLz4RRRi-lYtDNjk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2687,6 +3131,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07002fb65bb5:0x1a082f7cedaa95ea",
       "popularityIndex": 58.2,
+      "placeId": "ChIJtVu2LwAHLz4R6pWq7XwvCBo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2704,6 +3152,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070018d65cb9:0x38816e21404c5020",
       "popularityIndex": 68.2,
+      "placeId": "ChIJuVzWGAAHLz4RIFBMQCFugTg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2721,6 +3173,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070007651d33:0xad1d729591d9f1d5",
       "popularityIndex": 68.8,
+      "placeId": "ChIJMx1lBwAHLz4R1fHZkZVyHa0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2739,6 +3195,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0402f4f629ff:0xd1e8b1467fc0cb1e",
       "logoUrl": "/logos/jazwa-specialty-coffee-ar-rabwah.jpg",
       "popularityIndex": 67.6,
+      "placeId": "ChIJ_yn29AIELz4RHsvAf0ax6NE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2756,6 +3216,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07a81f6a3c47:0x7f418c32999d69fa",
       "popularityIndex": 49.2,
+      "placeId": "ChIJ75cOyNsZLz4Ry8hievc1T9M",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2773,6 +3237,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0707e1c83ec9:0xfcb4b9ffcf765bad",
       "popularityIndex": 51,
+      "placeId": "ChIJyT7I4QcHLz4RrVt2z_-5tPw",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2790,6 +3258,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070043130767:0x38b2858e8499a030",
       "popularityIndex": 45.1,
+      "placeId": "ChIJZwcTQwAHLz4RMKCZhI6Fsjg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2807,6 +3279,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0796e16c8739:0x39d609ba67e96ce7",
       "popularityIndex": 45.1,
+      "placeId": "ChIJOYds4ZYHLz4R52zpZ7oJ1jk",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -2824,6 +3301,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070a205cfc67:0x6d57fb46f96a1623",
       "popularityIndex": 54.7,
+      "placeId": "ChIJZ_xcIAoHLz4RIxZq-Ub7V20",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2843,6 +3324,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01a96357c13d:0x63baca80617c33cb",
       "popularityIndex": 52.3,
+      "placeId": "ChIJPcFXY6kBLz4RyzN8YYDKumM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2860,6 +3345,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd4e25de6571:0x7cbe1e16720788e",
       "popularityIndex": 54.3,
+      "placeId": "ChIJcWXeJU79Lj4RjnggZ-Hhywc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2877,6 +3366,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0011e0f765:0x7017733f9730a468",
       "popularityIndex": 44.3,
+      "placeId": "ChIJZffgEQD9Lj4RaKQwlz9zF3A",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2895,6 +3388,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efda30ba6b329:0x6fbe069618b289cf",
       "popularityIndex": 12.2,
+      "placeId": "ChIJY-VCT6D9Lj4RyX-gU-tx594",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2912,6 +3409,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff5b8b2fe293:0x8add6fb3fc1cb262",
       "popularityIndex": 29.7,
+      "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2931,6 +3432,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efde0d2059f1d:0xfca400b51ca140cc",
       "popularityIndex": 79.6,
+      "placeId": "ChIJHZ8F0uD9Lj4RzEChHLUApPw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2950,6 +3455,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd7e48611c89:0x9f325ee903e4115c",
       "popularityIndex": 51.4,
+      "placeId": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2967,6 +3476,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff55ad144173:0x710215b462af3206",
       "popularityIndex": 66.6,
+      "placeId": "ChIJc0EUrVX_Lj4RBjKvYrQVAnE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2984,6 +3497,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd00234d31f9:0xd88d0f80e8a1b945",
       "popularityIndex": 45.1,
+      "placeId": "ChIJ-TFNIwD9Lj4RRbmh6IAPjdg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3001,6 +3518,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd1bf2459957:0x981f344c0bf6e54f",
       "popularityIndex": 54.3,
+      "placeId": "ChIJV5lF8hv9Lj4RT-X2C0w0H5g",
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3018,6 +3540,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
       "popularityIndex": 0,
+      "placeId": "ChIJuxUGuQ7_Lj4RvEdy7wqsXdQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3037,6 +3563,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdd75f5d246f:0xbefc1aa83961fc4b",
       "popularityIndex": 16.7,
+      "placeId": "ChIJbyRdX9f9Lj4RS_xhOaga_L4",
+      "dineIn": false,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3054,6 +3584,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdc31f8a623b:0xa28eba5077113625",
       "popularityIndex": 37.4,
+      "placeId": "ChIJO2KKH8P9Lj4RJTYRd1C6jqI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3071,6 +3605,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03001edf482d:0x452cfdab603f11",
       "popularityIndex": 20.1,
+      "placeId": "ChIJLUjfHgADLz4RET9gq_0sRQA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3089,6 +3627,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f030008ff9c71:0xd3396682f440e17d",
       "logoUrl": "/logos/wathba-an-nazhah.jpg",
       "popularityIndex": 55.6,
+      "placeId": "ChIJcZz_CAADLz4RfeFA9IJmOdM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3107,6 +3650,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f033f0365e563:0xfaac19beb89d288c",
       "logoUrl": "/logos/moraq-cafe-an-nazhah.jpg",
       "popularityIndex": 36.4,
+      "placeId": "ChIJY-VlAz8DLz4RjCiduL4ZrPo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3127,6 +3674,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0281cc40f547:0x58e3f0912f2540a8",
       "logoUrl": "/logos/november-coffee-an-nazhah.png",
       "popularityIndex": 80.1,
+      "placeId": "ChIJR_VAzIECLz4RqEAlL5Hw41g",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3147,6 +3698,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03a7d5bcbd33:0x9c823b52f06a5685",
       "logoUrl": "/logos/elite-cup-roasters-an-nazhah.png",
       "popularityIndex": 69.2,
+      "placeId": "ChIJM7281acDLz4RhVZq8FI7gpw",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3165,6 +3721,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03cdfb4cd1f1:0x94568f00fa650960",
       "logoUrl": "/logos/belong-an-nazhah.png",
       "popularityIndex": 80.9,
+      "placeId": "ChIJ8dFM-80DLz4RYAll-gCPVpQ",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3183,6 +3743,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03f28492750f:0x1197315cc9e08e93",
       "logoUrl": "/logos/desired-coffee-an-nazhah.jpg",
       "popularityIndex": 57.9,
+      "placeId": "ChIJD3WShPIDLz4Rk47gyVwxlxE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3201,6 +3765,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03eb18dbbea5:0xf8b637cafb780f46",
       "logoUrl": "/logos/cross-coffee-an-nazhah.jpg",
       "popularityIndex": 56.9,
+      "placeId": "ChIJpb7bGOsDLz4RRg94-8o3tvg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3219,6 +3787,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0300edb717c3:0x1265bf3bb80d0ae3",
       "logoUrl": "/logos/kraz-an-nazhah.jpg",
       "popularityIndex": 66.5,
+      "placeId": "ChIJwxe37QADLz4R4woNuDu_ZRI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3237,6 +3809,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03424178439d:0x9d0a63b8efe7b615",
       "logoUrl": "/logos/ghandoura-an-nazhah.png",
       "popularityIndex": 66,
+      "placeId": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3263,6 +3839,10 @@
       },
       "logoUrl": "/logos/serene-coffee-roastery.png",
       "popularityIndex": 56.4,
+      "placeId": "ChIJ64xp8br_Lj4RMcLUwkZYSdo",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3286,6 +3866,10 @@
       },
       "logoUrl": "/logos/rimthan-coffee-mark.png",
       "popularityIndex": 52.1,
+      "placeId": "ChIJoyPGGscBLz4RkgJNsDEsUHw",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3308,6 +3892,10 @@
       },
       "logoUrl": "/logos/mind-break.jpg",
       "popularityIndex": 47.8,
+      "placeId": "ChIJ845kug4BLz4RvnEwimqRL5Y",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3330,6 +3918,10 @@
       },
       "logoUrl": "/logos/jather.jpg",
       "popularityIndex": 50.3,
+      "placeId": "ChIJ4-_-WgADLz4RN6D40OQ2k_s",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3352,6 +3944,10 @@
       },
       "logoUrl": "/logos/harf-coffee.jpg",
       "popularityIndex": 48.6,
+      "placeId": "ChIJp3o_LAABLz4R-PfJ2Xx1zC4",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3374,6 +3970,10 @@
       },
       "logoUrl": "/logos/zeila.jpg",
       "popularityIndex": 44.2,
+      "placeId": "ChIJuYAxoh7_Lj4ReoBUZueYe2Q",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3398,6 +3998,10 @@
       },
       "logoUrl": "/logos/cord-cafe.jpg",
       "popularityIndex": 51.7,
+      "placeId": "ChIJXRAsLQD_Lj4R6a7KYir3pzs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3420,6 +4024,10 @@
       },
       "logoUrl": "/logos/drip-al-hamra.jpg",
       "popularityIndex": 46,
+      "placeId": "ChIJN3oZka3_Lj4RlwS7bu3s1_A",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3443,6 +4051,10 @@
       },
       "logoUrl": "/logos/coffee-address-mark.png",
       "popularityIndex": 49.4,
+      "placeId": "ChIJmQPhDP0BLz4R642u0qfHUls",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3465,6 +4077,10 @@
       },
       "logoUrl": "/logos/glint.jpg",
       "popularityIndex": 43.5,
+      "placeId": "ChIJ46ukI5__Lj4RQWRi9agRHqA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3489,6 +4105,10 @@
       },
       "logoUrl": "/logos/silo-cafe-al-yarmouk.png",
       "popularityIndex": 54.8,
+      "placeId": "ChIJfVLuBqX_Lj4RnV4CEilIwpo",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3511,6 +4131,10 @@
       },
       "logoUrl": "/logos/nosound-al-yarmouk.png",
       "popularityIndex": 51.2,
+      "placeId": "ChIJPdgxAMIBLz4R2OXfBa5cZkk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3533,6 +4157,11 @@
       },
       "logoUrl": "/logos/obo-speciality-al-yarmouk-ig.jpg",
       "popularityIndex": 45.6,
+      "placeId": "ChIJt8QREQD_Lj4RNEan94QUJHY",
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3557,6 +4186,11 @@
       },
       "logoUrl": "/logos/shafel-roastery-al-yarmouk.png",
       "popularityIndex": 53.4,
+      "placeId": "ChIJSQFlL8n_Lj4Rk0ZydGFZSeI",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -3580,6 +4214,10 @@
       },
       "logoUrl": "/logos/coffee-address-al-yarmouk.png",
       "popularityIndex": 48.3,
+      "placeId": "ChIJx-pRRpr_Lj4RaUWkqb6S0F8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3604,6 +4242,10 @@
       },
       "logoUrl": "/logos/aleel-roastery-al-yarmouk.png",
       "popularityIndex": 50.8,
+      "placeId": "ChIJjyQTZJL_Lj4RJQV26FDR_CQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3626,6 +4268,10 @@
       },
       "logoUrl": "/logos/bourbon-al-yarmouk.png",
       "popularityIndex": 47.1,
+      "placeId": "ChIJRZ1jjHn_Lj4R5bYYiLDOXzc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3648,6 +4294,10 @@
       },
       "logoUrl": "/logos/ratio-speciality-al-yarmouk.png",
       "popularityIndex": 52.4,
+      "placeId": "ChIJFxlOzfhVLj4R_mqZZq9EfLw",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3670,6 +4320,10 @@
       },
       "logoUrl": "/logos/coffee-zam-al-yarmouk.png",
       "popularityIndex": 46.9,
+      "placeId": "ChIJ-ySlIq7_Lj4RmaHpzahzFQY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3692,6 +4346,10 @@
       },
       "logoUrl": "/logos/nus-talqimah-al-yarmouk-ig.jpg",
       "popularityIndex": 42.7,
+      "placeId": "ChIJzfUSd7v_Lj4RJyW7Y1TXF_I",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3716,6 +4374,11 @@
       },
       "logoUrl": "/logos/kapu-cafe-al-nahdah.jpg",
       "popularityIndex": 54.2,
+      "placeId": "ChIJHZ3CbwCrLz4R9r0bYpDJLmo",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -3738,6 +4401,10 @@
       },
       "logoUrl": "/logos/dahal-specialty-al-nahdah.jpg",
       "popularityIndex": 44.1,
+      "placeId": "ChIJaVRqjQIBLz4RjU3QvqstvKA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3760,6 +4427,10 @@
       },
       "logoUrl": "/logos/ghazala-cafe-al-nahdah.jpg",
       "popularityIndex": 51.6,
+      "placeId": "ChIJl_84XocBLz4RUIdD7KGal8U",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3784,6 +4455,11 @@
       },
       "logoUrl": "/logos/shafel-roastery-al-nahdah.png",
       "popularityIndex": 52.7,
+      "placeId": "ChIJ71ockjoBLz4R38YZnJDX3Jk",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3805,6 +4481,11 @@
         "lng": 46.8151485
       },
       "popularityIndex": 50.1,
+      "placeId": "ChIJn8Af-m0BLz4RuzyVWRFA6lo",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -3827,6 +4508,10 @@
       },
       "logoUrl": "/logos/bon-ferro-al-nahdah.jpg",
       "popularityIndex": 43.3,
+      "placeId": "ChIJMY5USi0BLz4RcAL8th0VZS0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3850,6 +4535,10 @@
       },
       "logoUrl": "/logos/coffee-address-al-nahdah.png",
       "popularityIndex": 49.8,
+      "placeId": "ChIJgzeOOuYBLz4RHJVzrsLs9mM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3872,6 +4561,10 @@
       },
       "logoUrl": "/logos/chord-daily-coffee-al-nahdah-ig.jpg",
       "popularityIndex": 46.4,
+      "placeId": "ChIJR3KFdwABLz4RceCChbi2onk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3894,6 +4587,10 @@
       },
       "logoUrl": "/logos/taco-cup-al-nahdah-ig.jpg",
       "popularityIndex": 47.8,
+      "placeId": "ChIJEwRlue0BLz4RXPIHql79IiI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3915,6 +4612,10 @@
         "lng": 46.8175941
       },
       "popularityIndex": 45.2,
+      "placeId": "ChIJuUSJCgABLz4Rt-xRQEdmfK4",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3932,6 +4633,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01ccc13f3451:0xae3dda615e00c6b3",
       "popularityIndex": 40,
+      "placeId": "ChIJUTQ_wcwBLz4Rs8YAXmHaPa4",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3949,6 +4654,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01929b82eea1:0x89bad8d2f1573463",
       "popularityIndex": 40,
+      "placeId": "ChIJoe6Cm5IBLz4RYzRX8dLYuok",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3967,6 +4676,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0116f2a31b83:0xbcef7ac8735bbfd1",
       "popularityIndex": 40,
+      "placeId": "ChIJgxuj8hYBLz4R0b9bc8h677w",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7101855,
@@ -3988,6 +4701,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0100548ec795:0xa6bdf61330fe728d",
       "popularityIndex": 40,
+      "placeId": "ChIJlceOVAABLz4RjXL-MBP2vaY",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4007,6 +4724,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07725742b605:0x8836e0aca4b85d09",
       "popularityIndex": 40,
+      "placeId": "ChIJBbZCV3IHLz4RCV24pKzgNog",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4024,6 +4745,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010072319b5b:0xe1af295792ab646d",
       "popularityIndex": 40,
+      "placeId": "ChIJW5sxcgABLz4RbWSrklcpr-E",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4043,6 +4769,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0100484beb45:0x7c300df5671a0f8",
       "popularityIndex": 40,
+      "placeId": "ChIJRetLSAABLz4R-KBxVt8Awwc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4060,6 +4790,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f018daa5b6821:0xb89a892653598037",
       "popularityIndex": 40,
+      "placeId": "ChIJIWhbqo0BLz4RN4BZUyaJmrg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4077,6 +4811,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0167d7abda79:0x73d51f64c16cc56",
       "popularityIndex": 40,
+      "placeId": "ChIJedqr12cBLz4RVswWTPZRPQc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4094,6 +4832,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070d4dd944ed:0xc1e07e729b777b1d",
       "popularityIndex": 40,
+      "placeId": "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4111,6 +4854,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46",
       "popularityIndex": 40,
+      "placeId": "ChIJLz2JTwAHLz4RRuwZDBopO5o",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4130,6 +4877,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070062c5a10f:0x7cd84702e1e15833",
       "popularityIndex": 40,
+      "placeId": "ChIJD6HFYgAHLz4RM1jh4QJH2Hw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4147,6 +4899,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070047e03f6f:0x5bb80c4447e38ece",
       "popularityIndex": 40,
+      "placeId": "ChIJbz_gRwAHLz4Rzo7jR0QMuFs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4166,6 +4922,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fa90033b5a43b:0x210c2933359fdb69",
       "popularityIndex": 40,
+      "placeId": "ChIJO49dPOEDLz4RQsSAhSSj3XU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4183,6 +4943,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01e672a325cd:0x94bc2f1da36aedbf",
       "popularityIndex": 40,
+      "placeId": "ChIJzSWjcuYBLz4Rv-1qox0vvJQ",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4202,6 +4966,10 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010055c30fb3:0x85b9cfe71ec71819",
       "popularityIndex": 40,
+      "placeId": "ChIJsw_DVQABLz4RGRjHHufPuYU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4224,6 +4992,10 @@
       },
       "logoUrl": "/logos/serb-specialty-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJeRTdE4D_Lj4RyIN2BFaxVhA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4248,6 +5020,10 @@
       },
       "logoUrl": "/logos/roasting-stages-al-munsiyah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJP6wvelr_Lj4RZP5jOnaIgTk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4270,6 +5046,10 @@
       },
       "logoUrl": "/logos/eagle-coffee-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ3SuDtZvlLj4R_LWg76UiFcE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4294,6 +5074,10 @@
       },
       "logoUrl": "/logos/najd-roastery-al-munsiyah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4316,6 +5100,10 @@
       },
       "logoUrl": "/logos/cu-specialty-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJA8qH_LD_Lj4R_14sDVWPxYM",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4338,6 +5126,10 @@
       },
       "logoUrl": "/logos/45-degrees-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJC7CqX6f_Lj4RBcgTk7r2keI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4360,6 +5152,10 @@
       },
       "logoUrl": "/logos/true-side-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJoXjq-gD_Lj4Rm-keg7sX72o",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4383,6 +5179,11 @@
       },
       "logoUrl": "/logos/coffee-address-al-munsiyah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJ9Y1teAD_Lj4RDIRsRSw6_9A",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -4405,6 +5206,10 @@
       },
       "logoUrl": "/logos/das-mond-al-munsiyah-ig.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJYSeMhcH_Lj4RW1BHwauFRG0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4427,6 +5232,10 @@
       },
       "logoUrl": "/logos/anotherside-cafe-al-munsiyah.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJM-4-6YT_Lj4Rgjnmdx8v-zI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4451,6 +5260,10 @@
       },
       "logoUrl": "/logos/brew92-an-nada.png",
       "popularityIndex": 40,
+      "placeId": "ChIJGYQ7bf39Lj4Rglkjr6vSewI",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4473,6 +5286,10 @@
       },
       "logoUrl": "/logos/ashjar-cafe-ar-rabi.png",
       "popularityIndex": 40,
+      "placeId": "ChIJdzbExw_jLj4RFmi7rthGO1E",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4495,6 +5312,10 @@
       },
       "logoUrl": "/logos/jazean-diplomatic-quarter.png",
       "popularityIndex": 40,
+      "placeId": "ChIJK3BsP6UdLz4RTFCSz6lNp5M",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4517,6 +5338,10 @@
       },
       "logoUrl": "/logos/markab-king-fahd.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJg7ZEawAdLz4RcnjDpcXeoAI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4535,6 +5360,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3601e4fa885:0x1f8cbed341f62a18",
       "logoUrl": "/logos/kernel-al-takhassusi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJhahPHmDjLj4RGCr2QdO-jB8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4553,6 +5382,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d1c6b289117:0x527881c3e12eddba",
       "logoUrl": "/logos/percent-arabica-the-zone-al-takhassusi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJF5EoaxwdLz4Rut0u4cOBeFI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4577,6 +5410,10 @@
       },
       "logoUrl": "/logos/idmi-nakheel-takhassusi.png",
       "popularityIndex": 40,
+      "placeId": "ChIJqzcL3YsDLz4R-EoAquZD6I8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4595,6 +5432,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3934bcf3d21:0x9ae62a9e1b9587f7",
       "logoUrl": "/logos/groovy-al-takhassusi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJIT3PS5PjLj4R94eVG54q5po",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4617,6 +5458,10 @@
       },
       "logoUrl": "/logos/dust-and-verse-al-takhassusi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJgQ_GVK0DLz4RjQz968x0Syk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4635,6 +5480,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d0008ce3c83:0xa8e94e0f1bfb929b",
       "logoUrl": "/logos/somo-al-takhassusi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJgzzOCAAdLz4Rm5L7Gw9O6ag",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4657,6 +5506,10 @@
       },
       "logoUrl": "/logos/glim-al-takhassusi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJDxa3dQAdLz4RhvmtC-zavqE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4675,6 +5528,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee383bb1713f7:0x3a9e3135e98be6c9",
       "logoUrl": "/logos/sculpture-al-aqiq.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ9xMXu4PjLj4RyeaL6TUxnjo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4695,6 +5552,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee38db0a63301:0xba5d889af803c0a",
       "logoUrl": "/logos/ashjar-cafe-al-aqiq.png",
       "popularityIndex": 40,
+      "placeId": "ChIJATOmsI3jLj4RCjyAr4nYpQs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4715,6 +5576,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3b974bb7f33:0x1f130924f0566fce",
       "logoUrl": "/logos/shovel-al-aqiq.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJM3-7dLnjLj4Rzm9W8CQJEx8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4735,6 +5600,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee371efc108ab:0xfffacb4af3830520",
       "logoUrl": "/logos/out-of-line-al-aqiq.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJqwjB73HjLj4RIAWD80rL-v8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4753,6 +5622,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee328730a5219:0x4f0d1eb822dd2d8d",
       "logoUrl": "/logos/camel-step-al-aqiq.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJGVIKcyjjLj4RjS3dIrgeDU8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4771,6 +5644,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee300741b08ff:0xc58d28584f15cb02",
       "logoUrl": "/logos/scarf-al-aqiq.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ_wgbdADjLj4RAssVT1gojcU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4789,6 +5666,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee311440571b5:0x4e012f88748be562",
       "logoUrl": "/logos/the-coffee-kingdom-al-aqiq.png",
       "popularityIndex": 40,
+      "placeId": "ChIJtXEFRBHjLj4RYuWLdIgvAU4",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4807,6 +5688,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32fc78236b1:0xbf5069a213ca2514",
       "logoUrl": "/logos/file-coffee-al-aqiq.png",
       "popularityIndex": 40,
+      "placeId": "ChIJsTaCxy_jLj4RFCXKE6JpUL8",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4826,6 +5711,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3f9efcb182d:0xa81767965e896e7a",
       "logoUrl": "/logos/kultura-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJLRjL7_njLj4Rem6JXpZnF6g",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7705458,
@@ -4848,6 +5737,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee390542f4ad3:0xd1f13a566b07ba8a",
       "logoUrl": "/logos/tad-coffee-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ00ovVJDjLj4RiroHa1Y68dE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4867,6 +5760,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3bd0ad3f463:0x8d3dee05263debed",
       "logoUrl": "/logos/ulica-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJY_TTCr3jLj4R7es9JgXuPY0",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7660308,
@@ -4889,6 +5786,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee33c0aa921d7:0x853fb7054e5e0a7b",
       "logoUrl": "/logos/drip-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ1yGpCjzjLj4RewpeTgW3P4U",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4907,6 +5808,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32d61c11661:0xca3685111ed18584",
       "logoUrl": "/logos/blumen-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJYRbBYS3jLj4RhIXRHhGFNso",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4925,6 +5830,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3e6292a7867:0x5aa2eb3170848f9f",
       "logoUrl": "/logos/brsk-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJZ3gqKebjLj4Rn4-EcDHrolo",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4944,6 +5853,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3007631ac4b:0x22a7ddce0ec9d709",
       "logoUrl": "/logos/drive-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJS6wxdgDjLj4RCdfJDs7dpyI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7718293,
@@ -4966,6 +5879,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3bd696afbef:0x111ece2b1f294089",
       "logoUrl": "/logos/ghandoura-al-ghadeer.png",
       "popularityIndex": 40,
+      "placeId": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4990,6 +5907,10 @@
       },
       "logoUrl": "/logos/acres-al-arid.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ0ezqrdjlLj4RdgHtPnUfDNg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5014,6 +5935,11 @@
       },
       "logoUrl": "/logos/kicksters-lab-al-arid.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ-cd4QwDvLj4RSXOz8uv8bvg",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -5038,6 +5964,10 @@
       },
       "logoUrl": "/logos/shovel-al-arid.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJt22dHUjlLj4RxZHtYjvL854",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5060,6 +5990,10 @@
       },
       "logoUrl": "/logos/archi-al-arid.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJPbfIOQDlLj4RCDS0gWA7dPw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5083,6 +6017,10 @@
       },
       "logoUrl": "/logos/drive-al-arid.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5107,6 +6045,11 @@
       },
       "logoUrl": "/logos/roasting-house-al-arid.png",
       "popularityIndex": 40,
+      "placeId": "ChIJLUvOldTvLj4Rbgrf6FldYFQ",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -5130,6 +6073,11 @@
       },
       "logoUrl": "/logos/coffee-address-al-arid.png",
       "popularityIndex": 40,
+      "placeId": "ChIJlSLGFQDvLj4Rn8WLBpqHbvI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -5152,6 +6100,10 @@
       },
       "logoUrl": "/logos/shiro-al-arid.png",
       "popularityIndex": 40,
+      "placeId": "ChIJJ7pV1sHlLj4RJ7qet2EvOJE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5176,6 +6128,10 @@
       },
       "logoUrl": "/logos/cypress-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJocCx6dnlLj4RauOOfJjRveg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5200,6 +6156,10 @@
       },
       "logoUrl": "/logos/3bean-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJyV6QhYznLj4RbkaGIPEZOvw",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5222,6 +6182,10 @@
       },
       "logoUrl": "/logos/ashjar-cafe-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJEdz_FgDnLj4RwN8jmyviHuo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5244,6 +6208,10 @@
       },
       "logoUrl": "/logos/drip-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJe5mqHBHlLj4RiviIxdUpu4w",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5266,6 +6234,10 @@
       },
       "logoUrl": "/logos/coffee-side-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJ_W4o9WDlLj4Robcs4L31LoQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5288,6 +6260,10 @@
       },
       "logoUrl": "/logos/caf-lab-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJJ8jxg8LnLj4RBLXNf_W8X34",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5311,6 +6287,10 @@
       },
       "logoUrl": "/logos/drive-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5333,6 +6313,10 @@
       },
       "logoUrl": "/logos/scout-coffee-al-qirawan.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJU3jQpHflLj4RC9NG0oMbOZY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5357,6 +6341,10 @@
       },
       "logoUrl": "/logos/white-roastery-al-wadi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJU6e4WUz9Lj4Rd-kH1pevFQg",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5379,6 +6367,10 @@
       },
       "logoUrl": "/logos/parole-cafe-al-wadi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJMRwogAD9Lj4RZF5OsS7fhQo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5401,6 +6393,10 @@
       },
       "logoUrl": "/logos/wama-coffee-al-wadi.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJCSwSXgD9Lj4RMrpthTZH11M",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5423,6 +6419,10 @@
       },
       "logoUrl": "/logos/unique-drip-al-mohammadiyah.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJxTZbX_IdLz4ReWIBr-WPB84",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5447,6 +6447,10 @@
       },
       "logoUrl": "/logos/hjeen-roasters-al-mohammadiyah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJFSCjIgAdLz4R7z5COuXI6KE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5471,6 +6475,11 @@
       },
       "logoUrl": "/logos/hekaya-tale-al-mohammadiyah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJows0hcfjLj4R76rT7wthQBA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -5493,6 +6502,10 @@
       },
       "logoUrl": "/logos/parka-coffee-al-muruj.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJAQFidV_9Lj4RdyMWm7eXVjI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5515,6 +6528,10 @@
       },
       "logoUrl": "/logos/terra-cafe-al-muruj.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJb8HxCwDjLj4RGatyVGYPvng",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5537,6 +6554,10 @@
       },
       "logoUrl": "/logos/rabka-al-muruj.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJc_IJ-iXjLj4RR8AbQj9QEHo",
+      "dineIn": false,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5559,6 +6580,10 @@
       },
       "logoUrl": "/logos/lasani-cafe-al-malaz.png",
       "popularityIndex": 40,
+      "placeId": "ChIJr23uWCgFLz4RsYxj7UYpqXI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5581,6 +6606,10 @@
       },
       "logoUrl": "/logos/golden-pot-al-malaz.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJfyMLsJoFLz4R1NHEGR1pOIo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5603,6 +6632,10 @@
       },
       "logoUrl": "/logos/walnut-wood-malaz-mark.png",
       "popularityIndex": 40,
+      "placeId": "ChIJVX80RLoFLz4RCthkVg4fhLE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5625,6 +6658,10 @@
       },
       "logoUrl": "/logos/hazzah-malaz-mark.png",
       "popularityIndex": 40,
+      "placeId": "ChIJXXFVfbsFLz4R4g1fMnYvWRM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5647,6 +6684,10 @@
       },
       "logoUrl": "/logos/canto-malaz-mark.png",
       "popularityIndex": 40,
+      "placeId": "ChIJbZg1RREFLz4R_tcSTu4Njbs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5666,6 +6707,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dff7a822ea1:0x8da1607501bf0e7a",
       "logoUrl": "/logos/house-of-matcha-al-mohammadiyah.webp",
       "popularityIndex": 40,
+      "placeId": "ChIJoS6Cev8dLz4Reg6_AXVgoY0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7253683,
@@ -5689,6 +6734,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03cc8803eac7:0x5b8677386f9a894e",
       "logoUrl": "/logos/house-of-matcha-sulimaniyah.webp",
       "popularityIndex": 40,
+      "placeId": "ChIJx-oDiMwDLz4RTomabzh3hls",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7069755,
@@ -5712,6 +6761,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdbd42c9ba8d:0x384a8731bf901bab",
       "logoUrl": "/logos/somatcha-an-nada.png",
       "popularityIndex": 40,
+      "placeId": "ChIJjbrJQr39Lj4RqxuQvzGHSjg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.804065,
@@ -5735,6 +6788,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f034e019ea32d:0x8d43d3deac74089d",
       "logoUrl": "/logos/the-matcha-bar-olaya.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJLaOeAU4DLz4RnQh0rN7TQ40",
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false,
       "pin": {
         "lat": 24.6970065,
@@ -5758,6 +6816,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1006cf2209b:0xf3841da23256fe4b",
       "logoUrl": "/logos/with-heart-diriyah.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJmyDybADhLj4RS_5WMqIdhPM",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7448391,
@@ -5781,6 +6843,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03eee2fbbb01:0x8cd39c2698b8e773",
       "logoUrl": "/logos/kuro-sulimaniyah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJAbv74u4DLz4Rc-e4mCac04w",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7068552,
@@ -5804,6 +6870,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d6cdc2c21b1:0xf7da8c11431eb292",
       "logoUrl": "/logos/opinion-al-mathar.png",
       "popularityIndex": 40,
+      "placeId": "ChIJsSEs3GwdLz4RkrIeQxGM2vc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false,
       "pin": {
         "lat": 24.6894778,
@@ -5827,6 +6898,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb",
       "logoUrl": "/logos/opinion-hittin.png",
       "popularityIndex": 40,
+      "placeId": "ChIJed24-Q_jLj4Ry57c9ZIft5Q",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false,
       "pin": {
         "lat": 24.7712573,
@@ -5850,6 +6926,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32fcfefa59f:0x231ad463648767e7",
       "logoUrl": "/logos/kultura-hittin.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJn6Xvzy_jLj4R52eHZGPUGiM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7685385,
@@ -5873,6 +6953,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7a9c0d733a7:0xd2cc3fb5ae36a108",
       "logoUrl": "/logos/kultura-al-malqa.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJpzPXwKnnLj4RCKE2rrU_zNI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7964815,
@@ -5896,6 +6980,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3c250d09213:0xd7b461011cda0655",
       "logoUrl": "/logos/quokka-coffee-al-muruj.png",
       "popularityIndex": 40,
+      "placeId": "ChIJE5LQUMLjLj4RVQbaHAFhtNc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7616583,
@@ -5919,6 +7007,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff0005bd450d:0x558e7e8ad5e5be61",
       "logoUrl": "/logos/quokka-coffee-ghirnatah.png",
       "popularityIndex": 40,
+      "placeId": "ChIJDUW9BQD_Lj4RYb7l1Yp-jlU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7982152,
@@ -5942,6 +7034,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3210b6fff2b:0xfc195ee361241e01",
       "logoUrl": "/logos/iota-al-ghadeer.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJK_9vCyHjLj4RAR4kYeNeGfw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7723996,
@@ -5965,6 +7061,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee34e93f6959d:0x43af7bfdcdbd32b7",
       "logoUrl": "/logos/some-coffee-bar-al-muruj.png",
       "popularityIndex": 40,
+      "placeId": "ChIJnZX2k07jLj4RtzK9zf17r0M",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7551905,
@@ -5988,6 +7088,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee300100e2ae9:0xce0fbc0df4ab9e0c",
       "logoUrl": "/logos/remis-matcha-club-hittin.png",
       "popularityIndex": 40,
+      "placeId": "ChIJ6SoOEADjLj4RDJ6r9A28D84",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.759081,
@@ -6011,6 +7115,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30071d04773:0x211dc03644ad451",
       "logoUrl": "/logos/okawa-cafe-al-malqa.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJc0fQcQDjLj4RUdRKZAPcEQI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7937069,
@@ -6034,6 +7142,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3006ddedd6b:0x8443a773ddde2819",
       "logoUrl": "/logos/re-matcha-al-hamra.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJa93ebQDjLj4RGSje3XOnQ4Q",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7697085,
@@ -6057,6 +7169,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd005e670709:0x7a663d77fd1c55",
       "logoUrl": "/logos/flow-matcha-at-taawun.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJCQdnXgD9Lj4RVRz9dz1megA",
+      "dineIn": false,
+      "outdoorSeating": null,
+      "pickupOnly": true,
+      "baynanaEligible": null,
       "example": false,
       "pin": {
         "lat": 24.7789549,
@@ -6080,6 +7197,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff0009c4195f:0xc18c64fb62ad5fd2",
       "logoUrl": "/logos/hokkaido-al-hamra.png",
       "popularityIndex": 40,
+      "placeId": "ChIJXxnECQD_Lj4R0l-tYvtkjME",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.787066,
@@ -6103,6 +7224,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee166b1d2df13:0xea2fc2bb49df5296",
       "logoUrl": "/logos/happyland-matcha-diriyah.jpg",
       "popularityIndex": 40,
+      "placeId": "ChIJE9_SsWbhLj4RllLfSbvCL-o",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7471773,
@@ -6126,6 +7251,10 @@
       "logoUrl": "/logos/24cafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJG5C3EgD9Lj4R88h-KsHTFcs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7817078,
@@ -6149,6 +7278,10 @@
       "logoUrl": "/logos/24cafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ6-gCkwvlLj4RcHgbAELthf4",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.824307,
@@ -6176,6 +7309,10 @@
       "logoUrl": "/logos/24cafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJNYv530AFLz4RlgfMG7NdRp4",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6194,6 +7331,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3000fff285d:0xb8eba5e82d1e0610",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJXSj_DwDjLj4REAYeLeil67g",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7558116,
@@ -6220,6 +7361,10 @@
       },
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJjeAEbQD9Lj4RwV6DczzxT-Y",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6242,6 +7387,10 @@
       },
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJOSvaa4HhLj4R_l1RLPcU5_Q",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6261,6 +7410,10 @@
       "logoUrl": "/logos/coffee-address-wadi-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJzRf0UwAFLz4R-iHhT-brVQY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6620663,
@@ -6288,6 +7441,10 @@
       "logoUrl": "/logos/coffee-address-wadi-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJgQEv4zEFLz4RDgQ_jnWQFFE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6307,6 +7464,10 @@
       "logoUrl": "/logos/coffee-address-wadi-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJwfaGGiDjLj4Rg36EcDfvtF8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.754773,
@@ -6330,6 +7491,10 @@
       "logoUrl": "/logos/coffee-address-wadi-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJw9IL_yP9Lj4Rl-s5A92etI4",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.781097,
@@ -6353,6 +7518,10 @@
       "logoUrl": "/logos/coffee-address-wadi-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ10hvOwADLz4RR37FAPgPJfo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.793066,
@@ -6380,6 +7549,10 @@
       "logoUrl": "/logos/coffee-address-wadi-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJqz8Jqk0DLz4RtetmnkR5_ZA",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6399,6 +7572,10 @@
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJh1NdLkQELz4R28n2qdX3reY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6595032,
@@ -6426,6 +7603,10 @@
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJP3IshJsBLz4R0kVFTMtTlAQ",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6445,6 +7626,10 @@
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJuYwiS6PiLj4RRlUyXcFysHk",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7468207,
@@ -6468,6 +7653,10 @@
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJXzNA-hr9Lj4RPNGcaLtUOVU",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7826863,
@@ -6495,6 +7684,10 @@
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJqd-bBwDjLj4R2d50wDLTI7A",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6518,6 +7711,10 @@
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJc31OzOEHLz4REWusjJWHU00",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6536,6 +7733,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f037a130ef8f7:0x697082682fe8a89b",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ9_gOE3oDLz4Rm6joL2iCcGk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7406508,
@@ -6559,6 +7760,10 @@
       "logoUrl": "/logos/mezaj-malaz-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJp1mXkpIFLz4RQjfAZCvEBP4",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6631437,
@@ -6582,6 +7787,10 @@
       "logoUrl": "/logos/mezaj-wadi-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJky786gL9Lj4R7VWcfkuxdxI",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.790487,
@@ -6604,6 +7813,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3042acd9c41:0x47065b2906ae5f5c",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJQZzNKgTjLj4RXF-uBilbBkc",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7513115,
@@ -6626,6 +7839,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e5590bd7a29bf:0xf3d43257286f5446",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8199129,
@@ -6648,6 +7865,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f19bb781f0d1d:0xd80e9e25085e3bf",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5577425,
@@ -6670,6 +7891,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3d552ada9d3:0x596c164eb7ef9675",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ06mtUtXjLj4RdZbvt04WbFk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7665264,
@@ -6697,6 +7922,10 @@
       "logoUrl": "/logos/three-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ0UUKW1MDLz4RsuMZrIvZ2eg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6716,6 +7945,10 @@
       "logoUrl": "/logos/threes-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ9903awDlLj4RQC11aW_XM90",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8214588,
@@ -6742,6 +7975,10 @@
       },
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJEUHKsxr_Lj4RmpbATXPRbgQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6761,6 +7998,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7979995,
@@ -6784,6 +8026,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.4858894,
@@ -6807,6 +8054,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.6113129,
@@ -6830,6 +8082,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7605159,
@@ -6853,6 +8110,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7749556,
@@ -6875,6 +8137,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0710c6cd3d7b:0x79deb14d56573531",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJez3NxhAHLz4RMTVXVk2x3nk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.700983,
@@ -6901,6 +8167,11 @@
       },
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJF3aAw-UFLz4RPy2LtGYhbqY",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -6923,6 +8194,10 @@
       },
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJqc-MxOEELz4RrpiHIW3gid0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6942,6 +8217,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5640625,
@@ -6965,6 +8244,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJvw8EOQAJLz4RtO1s9cD9QjQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5710152,
@@ -6988,6 +8271,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJcTDnbgARLz4RStpCnB_twWo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5383997,
@@ -7011,6 +8298,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJw__YYAABLz4RSJoIVOxds18",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7458387,
@@ -7034,6 +8325,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJfd9pRwABLz4RrD1SbHX2Vvs",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7819433,
@@ -7057,6 +8353,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJDa8NbQCrLz4Rhy6A-Am2EHQ",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7338849,
@@ -7080,6 +8381,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.9274174,
@@ -7103,6 +8409,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8298297,
@@ -7126,6 +8436,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJVcmNXQDjLj4RXKXxgOcwKdU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.809641,
@@ -7149,6 +8463,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ4-ozXQDjLj4Rve97xjnbv88",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.8122922,
@@ -7172,6 +8491,10 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5222259,
@@ -7195,6 +8518,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7300452,
@@ -7218,6 +8546,11 @@
       "logoUrl": "/logos/drive-coffee-site.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJL2MLegBTLj4RDNtCfoYA_RQ",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.8392682,
@@ -7241,6 +8574,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJAbffa-cPLz4R4nvYws-ZjJI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5742199,
@@ -7264,6 +8601,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJL_yPwFEDLz4RmRHSeaCibK0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6855165,
@@ -7287,6 +8628,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ81R0BlIALz4RKf_ZCaTfVqg",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.756872,
@@ -7310,6 +8655,11 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJr2Hdp0EOLz4RegSTuRkpadg",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.5435077,
@@ -7333,6 +8683,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJgyGF8UjxLj4RqPeCEQa_Ca8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8475657,
@@ -7356,6 +8710,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJd4PuXOIGLz4RUgnyRh2Z3wk",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6570831,
@@ -7379,6 +8737,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJd4PuXOIGLz4RUgnyRh2Z3wk",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6817172,
@@ -7402,6 +8764,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJO5JV094ILz4RE3tEHmtlvMQ",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5875376,
@@ -7425,6 +8791,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJJwebVZIALz4R0nx2bzjX8J0",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7458764,
@@ -7448,6 +8818,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJIwhasQX9Lj4RSPP_4Ll3F0U",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7848771,
@@ -7471,6 +8845,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJJwebVZIALz4R0nx2bzjX8J0",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.74208,
@@ -7494,6 +8872,11 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJqzJ3rKL9Lj4R8mtz4c8x5PY",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.8340945,
@@ -7517,6 +8900,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJL022oooPLz4RSoD0K1HR-vw",
+      "dineIn": null,
+      "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5728836,
@@ -7540,6 +8927,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJHwOkiHkDLz4Rw9s3NxGe7fI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5941235,
@@ -7563,6 +8954,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJL_yPwFEDLz4RmRHSeaCibK0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7012987,
@@ -7586,6 +8981,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJ9z9599gjLz4RtajwjDDDnc0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5550754,
@@ -7609,6 +9008,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJJ7LT92j9Lj4RNZ1Q91EYNLk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7555574,
@@ -7632,6 +9035,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJHwOkiHkDLz4Rw9s3NxGe7fI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6884683,
@@ -7655,6 +9062,10 @@
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
+      "placeId": "ChIJC9-F2ogPLz4Rh0O4S3P3PDA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5818563,

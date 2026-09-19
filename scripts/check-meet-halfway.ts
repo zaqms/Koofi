@@ -4,8 +4,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { listRealShops } from "../lib/catalog";
+import { listDiscoveryShops, listRealShops } from "../lib/catalog";
 import { rankByPopularity } from "../lib/district-rank";
+import type { Shop } from "../lib/types";
 import {
   extractMapsPreviewHref,
   extractMapsUrl,
@@ -44,6 +45,17 @@ import {
   halfwayPinIsReady,
   halfwayPinSurface,
 } from "../lib/halfway-pin-ui";
+import {
+  foldHalfwayPlaceAndScoutAttrs,
+  foldHalfwayPlaceAttrs,
+  shopWithHalfwayPlaceAttrs,
+} from "../lib/fold-halfway-place-attrs";
+import {
+  filterHalfwayEligible,
+  HALFWAY_DENY_SHOP_IDS,
+  isHalfwayDenied,
+  isHalfwayEligible,
+} from "../lib/halfway-eligibility";
 import {
   meetHalfwayAskLabel,
   meetHalfwayReply,
@@ -305,6 +317,11 @@ assert(
   src.includes("rankByPopularity") && src.includes("locationsCentroid"),
   "reuse locked Most Popular + N-location centroid",
 );
+assert(
+  src.includes("filterHalfwayEligible(input.shops") &&
+    src.indexOf("filterHalfwayEligible(input.shops") < src.indexOf("withCoords"),
+  "sit-down eligibility filters the pool before midpoint-distance ranking",
+);
 assert(!src.includes("directoryNeighborhoods"), "district directory is not the UX");
 
 const pinA = parseSharedPin("24.761, 46.604");
@@ -409,6 +426,10 @@ assert(
   "live catalog only — never invent shops",
 );
 assert(
+  shops.every(isHalfwayEligible),
+  "first page is sit-down eligible only",
+);
+assert(
   shops.every((s) => shopMapsHref(s).startsWith("https://")),
   "Maps last click on every card",
 );
@@ -459,6 +480,339 @@ const samePin = pickHalfwayShops({
 });
 assert(samePin.length <= 3, "same pin twice still ≤3");
 assert(samePin.every((s) => SHOPS.some((c) => c.id === s.id)), "same pin still catalog");
+assert(samePin.every(isHalfwayEligible), "same pin still sit-down only");
+
+function fixtureShop(partial: Partial<Shop> & Pick<Shop, "id">): Shop {
+  return {
+    nameAr: partial.id,
+    nameEn: partial.id.replace(/-/g, ""),
+    city: "riyadh",
+    neighborhood: "olaya",
+    neighborhoodAr: "العليا",
+    vibeTags: ["قهوة"],
+    momentTags: ["qahwa"],
+    mapsShareUrl:
+      "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0385060a46a1:0x8aa4df79417558b1",
+    example: false,
+    dineIn: true,
+    outdoorSeating: true,
+    ...partial,
+  };
+}
+
+assert(
+  isHalfwayEligible(
+    fixtureShop({ id: "sit-down", dineIn: true, outdoorSeating: null }),
+  ) &&
+    isHalfwayEligible(
+      fixtureShop({ id: "patio-only", dineIn: false, outdoorSeating: true }),
+    ),
+  "dineIn or outdoorSeating true is sit-down",
+);
+assert(
+  !isHalfwayEligible(
+    fixtureShop({ id: "unsure", dineIn: null, outdoorSeating: null }),
+  ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "missing-attrs",
+        dineIn: undefined,
+        outdoorSeating: undefined,
+      }),
+    ) &&
+    !isHalfwayEligible(
+      fixtureShop({ id: "takeout-only", dineIn: false, outdoorSeating: false }),
+    ),
+  "null / missing / no-sit-down attrs fail closed",
+);
+assert(
+  !isHalfwayEligible(
+    fixtureShop({
+      id: "dt-but-dine-in",
+      dineIn: true,
+      outdoorSeating: true,
+      momentTags: ["drive-through", "qahwa"],
+    }),
+  ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "dt-lane",
+        dineIn: true,
+        catalogLane: "drive-through",
+        momentTags: ["qahwa"],
+      }),
+    ),
+  "drive-through tagged or DT-lane is always excluded, even if dineIn true",
+);
+assert(
+  HALFWAY_DENY_SHOP_IDS.includes("kapu-cafe-al-nahdah") &&
+    !(HALFWAY_DENY_SHOP_IDS as readonly string[]).includes(
+      "shafel-roastery-al-nahdah",
+    ) &&
+    isHalfwayEligible(
+      fixtureShop({
+        id: "shafel-roastery-al-nahdah",
+        dineIn: true,
+        outdoorSeating: false,
+        pickupOnly: false,
+        baynanaEligible: true,
+      }),
+    ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "kapu-cafe-al-nahdah",
+        dineIn: true,
+        outdoorSeating: true,
+        pickupOnly: true,
+      }),
+    ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "pickup-flag",
+        dineIn: true,
+        outdoorSeating: true,
+        pickupOnly: true,
+      }),
+    ),
+  "Scout: Shafel Nahdah is sit-down; Kapu + pickupOnly stay out even if dineIn",
+);
+
+const midway = { lat: 24.72, lng: 46.64 };
+const closeIneligible = fixtureShop({
+  id: "close-drive-through",
+  dineIn: true,
+  outdoorSeating: true,
+  momentTags: ["drive-through"],
+  pin: midway,
+  popularityIndex: 99,
+});
+const farEligible = [
+  fixtureShop({
+    id: "far-a",
+    pin: { lat: 24.73, lng: 46.65 },
+    popularityIndex: 80,
+  }),
+  fixtureShop({
+    id: "far-b",
+    pin: { lat: 24.71, lng: 46.63 },
+    popularityIndex: 70,
+  }),
+  fixtureShop({
+    id: "far-c",
+    pin: { lat: 24.725, lng: 46.655 },
+    popularityIndex: 60,
+  }),
+];
+const rankedFromMixed = pickHalfwayShops({
+  locations: [
+    { pin: { lat: 24.721, lng: 46.641 } },
+    { pin: { lat: 24.719, lng: 46.639 } },
+  ],
+  shops: [closeIneligible, ...farEligible],
+});
+assert(
+  rankedFromMixed.every((s) => s.id !== "close-drive-through") &&
+    rankedFromMixed.map((s) => s.id).join() === "far-a,far-b,far-c",
+  "closer drive-through is dropped before midpoint ranking",
+);
+
+const leftoverPool = pickHalfwayShops({
+  locations: [
+    { pin: { lat: 24.721, lng: 46.641 } },
+    { pin: { lat: 24.719, lng: 46.639 } },
+  ],
+  shops: [
+    closeIneligible,
+    fixtureShop({
+      id: "only-two-a",
+      pin: { lat: 24.73, lng: 46.65 },
+      popularityIndex: 50,
+    }),
+    fixtureShop({
+      id: "only-two-b",
+      pin: { lat: 24.71, lng: 46.63 },
+      popularityIndex: 40,
+    }),
+    fixtureShop({
+      id: "unsure-nearby",
+      dineIn: null,
+      outdoorSeating: null,
+      pin: midway,
+      popularityIndex: 90,
+    }),
+  ],
+});
+assert(
+  leftoverPool.map((s) => s.id).join() === "only-two-a,only-two-b",
+  "thinner than 3 returns leftover sit-down shops — does not refill with ineligible",
+);
+assert(
+  meetHalfwayReply({ shopCount: leftoverPool.length, language: "en" }) ===
+    "This is what I can suggest right now:",
+  "leftover <3 uses fewer-picks copy, not a fill",
+);
+
+const livePool = halfwayCandidatePool({ locations: two });
+assert(
+  livePool.every(isHalfwayEligible),
+  "production بيننا pool is sit-down only",
+);
+assert(
+  !livePool.some((s) => isHalfwayDenied(s.id)),
+  "deny-list shops never enter the live pool",
+);
+assert(
+  !livePool.some((s) => s.momentTags.includes("drive-through") || s.catalogLane === "drive-through"),
+  "drive-through tagged shops never enter the live pool",
+);
+assert(
+  livePool.length >= 3,
+  "Olaya midpoint still has at least 3 sit-down cafés",
+);
+assert(
+  filterHalfwayEligible(listDiscoveryShops()).length ===
+    listDiscoveryShops().filter(isHalfwayEligible).length,
+  "discovery filter is the same sit-down rule Halfway uses",
+);
+
+const folded = foldHalfwayPlaceAttrs(
+  [
+    fixtureShop({ id: "keep-me", dineIn: undefined, outdoorSeating: undefined }),
+    fixtureShop({ id: "no-row" }),
+  ],
+  [
+    {
+      id: "keep-me",
+      dine_in: true,
+      outdoor_seating: null,
+      place_id: "ChIJKeepMe",
+    },
+    { id: "invented-cafe", dine_in: true, outdoor_seating: true },
+  ],
+);
+assert(folded.shops.length === 2, "fold never invents catalog shops");
+assert(
+  folded.unmatched.includes("invented-cafe") && folded.applied.length === 1,
+  "backfill ids not in the catalog are ignored",
+);
+assert(
+  folded.shops[0]?.dineIn === true &&
+    folded.shops[0]?.outdoorSeating === null &&
+    folded.shops[0]?.placeId === "ChIJKeepMe" &&
+    folded.shops[1]?.dineIn === null &&
+    folded.shops[1]?.outdoorSeating === null,
+  "known attrs fold; missing rows stay null (fail-closed)",
+);
+assert(
+  shopWithHalfwayPlaceAttrs(fixtureShop({ id: "order" }), {
+    dineIn: true,
+    outdoorSeating: false,
+    pickupOnly: null,
+    placeId: "ChIJOrder",
+  }).example === false,
+  "attrs sit on the shop record, example flag unchanged",
+);
+
+const scoutFold = foldHalfwayPlaceAndScoutAttrs(
+  [
+    fixtureShop({
+      id: "places-then-scout",
+      dineIn: null,
+      outdoorSeating: null,
+    }),
+    fixtureShop({ id: "wrong-pin" }),
+    fixtureShop({ id: "unclear-shop" }),
+  ],
+  [
+    {
+      id: "places-then-scout",
+      dine_in: false,
+      outdoor_seating: null,
+      place_id: "ChIJPlacesOld",
+    },
+    { id: "wrong-pin", dine_in: true, place_id: "ChIJWrong" },
+    { id: "unclear-shop", dine_in: true, outdoor_seating: true },
+  ],
+  [
+    {
+      id: "places-then-scout",
+      dine_in: true,
+      outdoor_seating: false,
+      pickup_only: false,
+      baynana_eligible: true,
+      place_id: "ChIJPlacesOld",
+    },
+    {
+      id: "wrong-pin",
+      dine_in: true,
+      outdoor_seating: true,
+      pickup_only: false,
+      baynana_eligible: true,
+      wrong_place_match: true,
+      place_id: "ChIJWrong",
+      correct_place_id: "ChIJCorrect",
+    },
+    {
+      id: "unclear-shop",
+      dine_in: "unclear",
+      outdoor_seating: "unclear",
+      pickup_only: "unclear",
+      baynana_eligible: "unclear",
+    },
+    { id: "invented-scout", dine_in: true, baynana_eligible: true },
+  ],
+);
+assert(scoutFold.shops.length === 3, "Scout fold never invents catalog shops");
+assert(
+  scoutFold.unmatched.includes("invented-scout"),
+  "Scout ids not in the catalog are ignored",
+);
+assert(
+  scoutFold.shops[0]?.dineIn === true &&
+    scoutFold.shops[0]?.pickupOnly === false &&
+    scoutFold.shops[0]?.baynanaEligible === true &&
+    scoutFold.shops[0]?.placeId === "ChIJPlacesOld",
+  "Scout dine/pickup/baynana override Places",
+);
+assert(
+  scoutFold.shops[1]?.placeId === "ChIJCorrect" &&
+    scoutFold.shops[1]?.baynanaEligible === true,
+  "wrong_place_match stores Scout correct_place_id and baynana_eligible",
+);
+assert(
+  scoutFold.shops[2]?.dineIn === null &&
+    scoutFold.shops[2]?.outdoorSeating === null &&
+    scoutFold.shops[2]?.pickupOnly === null &&
+    scoutFold.shops[2]?.baynanaEligible === null &&
+    !isHalfwayEligible(scoutFold.shops[2]!),
+  "Scout unclear attrs fail closed",
+);
+
+const kapu = SHOPS.find((shop) => shop.id === "kapu-cafe-al-nahdah");
+const shafel = SHOPS.find((shop) => shop.id === "shafel-roastery-al-nahdah");
+const getUp = SHOPS.find((shop) => shop.id === "get-up-coffee-ar-rabwah");
+const flow = SHOPS.find((shop) => shop.id === "flow-matcha-at-taawun");
+assert(
+  kapu?.placeId === "ChIJHZ3CbwCrLz4R9r0bYpDJLmo" &&
+    kapu.pickupOnly === true &&
+    kapu.baynanaEligible === false &&
+    !isHalfwayEligible(kapu),
+  "Kapu Nahdah is Scout pickup-only with the corrected place id",
+);
+assert(
+  shafel?.dineIn === true &&
+    shafel.pickupOnly === false &&
+    shafel.baynanaEligible === true &&
+    isHalfwayEligible(shafel),
+  "Shafel Nahdah is Scout sit-down eligible",
+);
+assert(
+  getUp?.baynanaEligible === null &&
+    !isHalfwayEligible(getUp!) &&
+    flow?.pickupOnly === true &&
+    !isHalfwayEligible(flow),
+  "Get Up + FLOW Matcha stay fail-closed / pickup-only",
+);
 
 const mid = locationsCentroid(two, SHOPS);
 assert(mid && Number.isFinite(mid.lat) && Number.isFinite(mid.lng), "band around pin centroid");

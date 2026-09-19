@@ -6,23 +6,25 @@ import type { Language, Shop } from "@/lib/types";
 type CafeEnBlurbProps = {
   shop: Shop;
   language?: Language;
-  visuallyHidden?: boolean;
 };
 
 export function CafeEnBlurb({
   shop,
   language = "en",
-  visuallyHidden = false,
 }: CafeEnBlurbProps) {
   const markdown =
     language === "ar" ? cafeArMarkdown(shop) : cafeEnMarkdown(shop);
 
   return (
     <section
-      className={visuallyHidden ? "sr-only" : "mt-6"}
+      data-cafe-seo-essay=""
+      className="mt-8 text-wain-soft-taupe [&_a]:text-wain-soft-taupe [&_a]:underline [&_strong]:font-medium [&_strong]:text-wain-soft-taupe"
       aria-label={language === "ar" ? "عن وين" : "On wain"}
     >
-      <EnRichText markdown={markdown} />
+      <EnRichText
+        markdown={markdown}
+        className="space-y-3 text-[13px] leading-6 text-wain-soft-taupe"
+      />
     </section>
   );
 }

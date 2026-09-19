@@ -15,6 +15,9 @@ import { copy } from "../lib/copy";
 import { listingLocationOrder } from "../lib/listing-location";
 import { listingCardTags, MAX_LISTING_TAGS } from "../lib/listing-tags";
 import { neighborhoodLabel } from "../lib/neighborhoods";
+import { cafeArMarkdown } from "../lib/ar-content";
+import { cafeEnMarkdown } from "../lib/en-content";
+import { getShop } from "../lib/catalog";
 import { PRODUCT_NAME } from "../lib/product";
 import { SHOW_BEEN_HERE, SHOW_DETAIL_FAVORITE, SHOW_INVITE_CTA } from "../lib/tonight";
 
@@ -163,15 +166,40 @@ assert(!/Amjad|Ajz/i.test(detail), "detail must not name Amjad/Ajz");
 
 const page = read("components/cafe-card-page.tsx");
 assert(page.includes("bg-wain-paper"), "thin /c/[id] sits on Wain Paper");
-assert(page.includes("visuallyHidden"), "SEO blurb stays off-screen");
+assert(page.includes("<CafeEnBlurb"), "SEO essay stays in the main public flow");
+assert(!page.includes("visuallyHidden"), "SEO essay is not forced off-screen");
 assert(page.includes("listDirectoryShopsForDistrict"), "related is same-neighborhood catalog");
 assert(!page.includes("BrandHomeLink"), "old thin header is gone");
 assert(!page.includes("backToChat"), "old back-to-chat line is gone from the thin page");
 
 const blurb = read("components/cafe-en-blurb.tsx");
-assert(blurb.includes("sr-only"), "SEO body is visually hidden, not deleted");
+assert(blurb.includes('data-cafe-seo-essay=""'), "visible SEO body has a stable hook");
+assert(!blurb.includes("sr-only"), "SEO essay is not sr-only");
+assert(!blurb.includes("visuallyHidden"), "SEO essay has no hidden prop");
 assert(blurb.includes("cafeEnMarkdown"), "EN SEO markdown stays");
 assert(blurb.includes("cafeArMarkdown"), "AR SEO markdown stays");
+assert(blurb.includes("text-wain-soft-taupe"), "essay is quiet taupe under the rail");
+
+const hittin = getShop("camel-step-hittin");
+assert(hittin, "Hittin Camel Step is in the catalog");
+const enEssay = cafeEnMarkdown(hittin);
+const arEssay = cafeArMarkdown(hittin);
+assert(
+  enEssay.includes("Others on the same Hittin list:"),
+  "EN essay keeps the same-district sibling list",
+);
+assert(enEssay.includes("/c/percent-arabica-hittin"), "EN sibling links are catalog shops");
+assert(
+  arEssay.includes("الباقي بنفس قائمة حطين:"),
+  "AR essay keeps the same-district sibling list",
+);
+assert(arEssay.includes("/c/percent-arabica-hittin"), "AR sibling links are catalog shops");
+const rahmaniyyah = getShop("camel-step-al-rahmaniyyah");
+assert(rahmaniyyah, "Rahmaniyyah Camel Step is in the catalog");
+assert(
+  cafeEnMarkdown(rahmaniyyah).includes("/coffee-shops/al-rahmaniyyah"),
+  "solo-district essay still links the neighborhood page",
+);
 
 const thin = read("components/cafe-card.tsx");
 assert(thin.includes("CafeDetail"), "thin /c/[id] uses the approved detail");

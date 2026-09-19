@@ -72,7 +72,7 @@ export async function CafeCardPageView({
         />
       </ShopUpvoteProvider>
       {!passportPage ? (
-        <CafeEnBlurb shop={shop} language={language} visuallyHidden />
+        <CafeEnBlurb shop={shop} language={language} />
       ) : null}
       {passportPage ? null : (
         <p className="mt-6">

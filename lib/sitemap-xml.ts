@@ -19,7 +19,7 @@ export const SITEMAP_PATH = "/sitemap.xml" as const;
 /** Old Bing / GSC submit path. Redirects to SITEMAP_PATH. */
 export const LEGACY_SITEMAP_PATH = "/sitemap/sitemap.xml" as const;
 
-/** Build-time static file served at SITEMAP_PATH. */
+/** Committed Replit urlset served at SITEMAP_PATH. Do not regenerate at build. */
 export const PUBLIC_SITEMAP_FILE = "public/sitemap.xml" as const;
 
 /** GSC-safe lastmod. Date only — no ISO datetime / milliseconds. */
@@ -90,8 +90,8 @@ export function sitemapLastmodDate(date = new Date()): string {
 }
 
 /**
- * Hand-built urlset for public/sitemap.xml.
- * Catalog locs only. No xhtml/hreflang. Date-only lastmod.
+ * Catalog urlset helper for checks. Not the live public/sitemap.xml —
+ * that file is the committed Replit map and must win at build.
  */
 export function buildSitemapXml(lastmod = sitemapLastmodDate()): string {
   if (!SITEMAP_LASTMOD_PATTERN.test(lastmod)) {

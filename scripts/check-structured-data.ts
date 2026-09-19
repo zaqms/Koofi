@@ -18,9 +18,7 @@ import { districtPath, LOCKED_ABOUT, mostPopularPath } from "../lib/product";
 import {
   buildSitemapXml,
   LEGACY_SITEMAP_PATH,
-  listSitemapLocs,
   PUBLIC_SITEMAP_FILE,
-  SITEMAP_LASTMOD_PATTERN,
   SITEMAP_PATH,
   sitemapPublicUrl,
 } from "../lib/sitemap-xml";
@@ -162,12 +160,8 @@ assert(
 );
 
 const sitemap = buildSitemapXml("2026-09-04");
-const sitemapLocs = listSitemapLocs();
 const staticSitemap = readRepo(PUBLIC_SITEMAP_FILE);
 const staticLocs = [...staticSitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
-  (match) => match[1],
-);
-const staticLastmods = [...staticSitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map(
   (match) => match[1],
 );
 assert(sitemap.includes("https://wain.lol/llms.txt<"), "sitemap lists /llms.txt");
@@ -233,21 +227,29 @@ assert(
 );
 assert(!sitemap.includes("/n/"), "sitemap must not revive /n/");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");
+assert(staticLocs.length === 294, "committed Replit sitemap has 294 locs");
 assert(
-  staticLocs.join("\n") === sitemapLocs.join("\n"),
-  "public/sitemap.xml locs must match listSitemapLocs() — run npm run generate-sitemap",
+  staticLocs.every((loc) => loc.startsWith("https://wain.lol")),
+  "every committed sitemap loc is https://wain.lol",
 );
 assert(
-  staticLastmods.length === staticLocs.length,
-  "every static sitemap url has a lastmod",
+  new Set(staticLocs).size === staticLocs.length,
+  "committed sitemap locs are unique",
 );
 assert(
-  staticLastmods.every((lastmod) => SITEMAP_LASTMOD_PATTERN.test(lastmod)),
-  "static sitemap lastmod must be date-only YYYY-MM-DD",
+  staticSitemap.includes("https://wain.lol/coffee-shops/with-friends<") &&
+    staticSitemap.includes("https://wain.lol/coffee-shops/matcha<") &&
+    staticSitemap.includes("https://wain.lol/coffee-shops/drive-through<"),
+  "committed sitemap lists with-friends, matcha, and drive-through",
 );
 assert(
-  !/T\d{2}:\d{2}/.test(staticSitemap),
-  "static sitemap must not use ISO datetime lastmod",
+  !staticSitemap.includes("good-for-a-date") &&
+    !staticSitemap.includes("/coffee-shops/for-two") &&
+    !staticSitemap.includes("/coffee-shops/date<") &&
+    !staticSitemap.includes("/en/coffee-shops/date<") &&
+    !staticSitemap.includes("soft-places") &&
+    !staticSitemap.includes("chipId=date"),
+  "committed sitemap excludes dating and Soft Places slugs",
 );
 assert(
   !/xhtml|hreflang|xmlns:xhtml|rel="alternate"/i.test(staticSitemap),
@@ -273,12 +275,12 @@ assert(
   "app/sitemap.xml must not compete with public/sitemap.xml",
 );
 assert(
-  readRepo("scripts/generate-sitemap.ts").includes("buildSitemapXml"),
-  "generate-sitemap writes the catalog urlset",
+  !readRepo("scripts/generate-sitemap.ts").includes("buildSitemapXml"),
+  "generate-sitemap must not overwrite the Replit sitemap from the catalog",
 );
 assert(
   readRepo("package.json").includes("generate-sitemap.ts"),
-  "build regenerates public/sitemap.xml",
+  "prebuild still verifies the committed Replit sitemap",
 );
 
 const robots = readRepo("app/robots.ts");

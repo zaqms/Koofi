@@ -483,13 +483,15 @@ assert(samePin.every(isHalfwayEligible), "same pin still sit-down only");
 
 function fixtureShop(partial: Partial<Shop> & Pick<Shop, "id">): Shop {
   return {
-    nameAr: "مقهى تجريبي",
-    nameEn: "Fixture cafe",
+    nameAr: partial.id,
+    nameEn: partial.id.replace(/-/g, ""),
     city: "riyadh",
     neighborhood: "olaya",
     neighborhoodAr: "العليا",
     vibeTags: ["قهوة"],
     momentTags: ["qahwa"],
+    mapsShareUrl:
+      "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0385060a46a1:0x8aa4df79417558b1",
     example: false,
     dineIn: true,
     outdoorSeating: true,

@@ -22,6 +22,7 @@ import {
   tonightDistrict,
   tonightFilename,
   tonightHeroForShop,
+  SHOW_BEEN_HERE,
   SHOW_INVITE_CTA,
   SHOW_TONIGHT_CARD,
   tonightImagePath,
@@ -76,6 +77,7 @@ assert(
 );
 assert(SHOW_TONIGHT_CARD === false, "بطاقة الليلة is parked from cafe cards");
 assert(SHOW_INVITE_CTA === false, "وين؟ / wain? CTA is parked from cafe cards");
+assert(SHOW_BEEN_HERE === false, "كنت هنا / Been here is parked from cafe cards");
 assert(copy.tonightCard.ar === "بطاقة الليلة", "parked AR tonight label stays");
 assert(copy.tonightCard.en === "Tonight’s card", "parked EN tonight label stays");
 assert(copy.tonightEyebrow.ar === "الليلة", "AR ephemeral eyebrow");
@@ -90,7 +92,10 @@ assert(copy.tonightDownload.ar === "نزّل الصورة", "Najdi download");
 assert(copy.tonightEphemeral.ar === "هالليلة بس", "ephemeral AR frame");
 assert(copy.takeMeThere.ar === "ودّني هناك", "Maps CTA stays");
 assert(copy.ownThisCafe.ar === "تملك المقهى؟", "claim CTA stays");
-assert(copy.beenHere.ar === "كنت هنا", "Been here stays");
+assert(copy.beenHere.ar === "كنت هنا", "parked AR Been here label stays");
+assert(copy.beenHere.en === "Been here", "parked EN Been here label stays");
+assert(copy.beenMarked.ar === "ما راح أجيبها كجديدة", "parked AR marked label stays");
+assert(copy.beenMarked.en === "Won't offer this as new", "parked EN marked label stays");
 assert(copy.shopUpvote.ar === "أعجبني", "upvote stays");
 
 const arCopy = [
@@ -281,6 +286,9 @@ const files = [
   "components/viral-share.tsx",
   "components/cafe-presence-row.tsx",
   "components/cafe-card.tsx",
+  "components/card-been.tsx",
+  "components/been-button.tsx",
+  "components/pick-list.tsx",
   "components/cafe-passport-card.tsx",
   "app/c/[id]/tonight/image/route.tsx",
 ];
@@ -335,13 +343,35 @@ const passport = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passport.includes("CafePresenceRow"), "Passport has like · share · Maps row");
 assert(!passport.includes("ShareListingButton"), "Passport listing share lives in the presence row");
 assert(!passport.includes("inviteCta"), "Passport does not render وين؟ copy");
+assert(!passport.includes("CardBeen"), "Passport has no Been here control");
+assert(!passport.includes("beenHere"), "Passport does not render Been here copy");
+assert(!passport.includes("كنت هنا"), "Passport has no كنت هنا");
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
 assert(thin.includes("CafePresenceRow"), "thin card has like · share · Maps row");
 assert(thin.includes("CafeClaimFooter"), "Own this cafe stays");
-assert(thin.includes("CardBeen"), "Been here stays quiet");
+assert(thin.includes("CardBeen"), "Been here component stays in code");
+assert(thin.includes("SHOW_BEEN_HERE"), "Been here is flagged off the thin card");
+assert(thin.includes("{SHOW_BEEN_HERE ?"), "Been here is not rendered while parked");
 assert(!thin.includes("ShareListingButton"), "thin listing share lives in the presence row");
 assert(!thin.includes("inviteCta"), "thin does not render وين؟ copy");
+assert(!thin.includes("beenHere"), "thin does not hardcode Been here copy");
+
+const cardBeen = readFileSync("components/card-been.tsx", "utf8");
+assert(cardBeen.includes("SHOW_BEEN_HERE"), "CardBeen is gated");
+assert(cardBeen.includes("if (!SHOW_BEEN_HERE) return null"), "CardBeen hides while parked");
+assert(cardBeen.includes("useBeenIds"), "Been here localStorage stays wired");
+
+const beenButton = readFileSync("components/been-button.tsx", "utf8");
+assert(beenButton.includes("SHOW_BEEN_HERE"), "BeenButton is gated");
+assert(beenButton.includes("if (!SHOW_BEEN_HERE) return null"), "BeenButton hides while parked");
+assert(beenButton.includes("copy.beenHere"), "Been here label stays in code");
+assert(beenButton.includes("copy.beenMarked"), "marked label stays in code");
+
+const pickList = readFileSync("components/pick-list.tsx", "utf8");
+assert(pickList.includes("BeenButton"), "list cards keep Been here in code");
+assert(pickList.includes("SHOW_BEEN_HERE"), "list Been here is flagged off");
+assert(pickList.includes("{SHOW_BEEN_HERE ?"), "list Been here is not rendered while parked");
 
 const presence = readFileSync("components/cafe-presence-row.tsx", "utf8");
 assert(presence.includes("DirectoryUpvote"), "row has like control");

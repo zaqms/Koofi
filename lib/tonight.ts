@@ -23,6 +23,9 @@ export const SHOW_TONIGHT_CARD = false;
 /** Parked until share-tonight strategy is locked. Invite sheet + mint stay in code. */
 export const SHOW_INVITE_CTA = false;
 
+/** Parked. كنت هنا / Been here stays in code; flip to show the cafe-card control again. */
+export const SHOW_BEEN_HERE = false;
+
 export const VIRAL_SHARE_CHANNELS = [
   "system",
   "x",

@@ -10,6 +10,7 @@ import { ShopDistance } from "@/components/shop-distance";
 import { ShopVisual } from "@/components/shop-visual";
 import { copy } from "@/lib/copy";
 import { estimateDriveMinutes, formatDriveMinutes } from "@/lib/halfway-place";
+import { SHOW_BEEN_HERE } from "@/lib/tonight";
 import { postLearnMaps } from "@/lib/learn-session";
 import { exampleBadge, isExampleShop, shopDisplayName } from "@/lib/product";
 import { packIdForPicks } from "@/lib/share-pack";
@@ -176,12 +177,14 @@ export function PickList({
                 >
                   {copy.cardLink[language]}
                 </Link>
-                <BeenButton
-                  marked={beenIds.includes(pick.id)}
-                  language={language}
-                  className="relative z-10"
-                  onMark={() => onBeen(pick.id)}
-                />
+                {SHOW_BEEN_HERE ? (
+                  <BeenButton
+                    marked={beenIds.includes(pick.id)}
+                    language={language}
+                    className="relative z-10"
+                    onMark={() => onBeen(pick.id)}
+                  />
+                ) : null}
               </div>
             </li>
           );

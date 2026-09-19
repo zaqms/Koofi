@@ -122,6 +122,8 @@ const files = [
   "components/cafe-card.tsx",
   "components/cafe-passport-card.tsx",
   "components/cafe-presence-row.tsx",
+  "components/card-been.tsx",
+  "components/been-button.tsx",
   "components/cafe-card-page.tsx",
   "components/verified-badge.tsx",
   "components/shop-claim-provider.tsx",
@@ -145,6 +147,8 @@ const thin = readFileSync("components/cafe-card.tsx", "utf8");
 assert(thin.includes("CafeClaimFooter"), "unclaimed keeps WhatsApp footer");
 assert(thin.includes('previewPassport ? "verified"'), "preview can open Passport");
 assert(thin.includes("woodsPassportFixture"), "locale fixture on preview");
+assert(thin.includes("SHOW_BEEN_HERE"), "thin Been here is parked");
+assert(thin.includes("{SHOW_BEEN_HERE ?"), "thin Been here is not rendered while parked");
 
 const footer = readFileSync("components/cafe-claim-footer.tsx", "utf8");
 assert(footer.includes("shopClaimWhatsAppHref"), "footer still wa.me");
@@ -153,6 +157,9 @@ assert(footer.includes('status === "none"'), "CTA hidden when not none");
 
 const passportCard = readFileSync("components/cafe-passport-card.tsx", "utf8");
 assert(passportCard.includes("CafePresenceRow"), "Passport has like · share · Maps row");
+assert(!passportCard.includes("CardBeen"), "Passport has no Been here control");
+assert(!passportCard.includes("beenHere"), "Passport does not render Been here copy");
+assert(!passportCard.includes("كنت هنا"), "Passport has no كنت هنا");
 assert(passportCard.includes("VerifiedBadge"), "Passport has Verified");
 assert(passportCard.includes("reviewsTab"), "Passport has Reviews tab");
 assert(passportCard.includes("cardNo"), "Passport has CARD N° chrome");

@@ -4,8 +4,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { listRealShops } from "../lib/catalog";
+import { listDiscoveryShops, listRealShops } from "../lib/catalog";
 import { rankByPopularity } from "../lib/district-rank";
+import type { Shop } from "../lib/types";
 import {
   extractMapsPreviewHref,
   extractMapsUrl,
@@ -44,6 +45,16 @@ import {
   halfwayPinIsReady,
   halfwayPinSurface,
 } from "../lib/halfway-pin-ui";
+import {
+  foldHalfwayPlaceAttrs,
+  shopWithHalfwayPlaceAttrs,
+} from "../lib/fold-halfway-place-attrs";
+import {
+  filterHalfwayEligible,
+  HALFWAY_DENY_SHOP_IDS,
+  isHalfwayDenied,
+  isHalfwayEligible,
+} from "../lib/halfway-eligibility";
 import {
   meetHalfwayAskLabel,
   meetHalfwayReply,
@@ -305,6 +316,11 @@ assert(
   src.includes("rankByPopularity") && src.includes("locationsCentroid"),
   "reuse locked Most Popular + N-location centroid",
 );
+assert(
+  src.includes("filterHalfwayEligible(input.shops") &&
+    src.indexOf("filterHalfwayEligible(input.shops") < src.indexOf("withCoords"),
+  "sit-down eligibility filters the pool before midpoint-distance ranking",
+);
 assert(!src.includes("directoryNeighborhoods"), "district directory is not the UX");
 
 const pinA = parseSharedPin("24.761, 46.604");
@@ -409,6 +425,10 @@ assert(
   "live catalog only — never invent shops",
 );
 assert(
+  shops.every(isHalfwayEligible),
+  "first page is sit-down eligible only",
+);
+assert(
   shops.every((s) => shopMapsHref(s).startsWith("https://")),
   "Maps last click on every card",
 );
@@ -459,6 +479,222 @@ const samePin = pickHalfwayShops({
 });
 assert(samePin.length <= 3, "same pin twice still ≤3");
 assert(samePin.every((s) => SHOPS.some((c) => c.id === s.id)), "same pin still catalog");
+assert(samePin.every(isHalfwayEligible), "same pin still sit-down only");
+
+function fixtureShop(partial: Partial<Shop> & Pick<Shop, "id">): Shop {
+  return {
+    nameAr: "مقهى تجريبي",
+    nameEn: "Fixture cafe",
+    city: "riyadh",
+    neighborhood: "olaya",
+    neighborhoodAr: "العليا",
+    vibeTags: ["قهوة"],
+    momentTags: ["qahwa"],
+    example: false,
+    dineIn: true,
+    outdoorSeating: true,
+    ...partial,
+  };
+}
+
+assert(
+  isHalfwayEligible(
+    fixtureShop({ id: "sit-down", dineIn: true, outdoorSeating: null }),
+  ) &&
+    isHalfwayEligible(
+      fixtureShop({ id: "patio-only", dineIn: false, outdoorSeating: true }),
+    ),
+  "dineIn or outdoorSeating true is sit-down",
+);
+assert(
+  !isHalfwayEligible(
+    fixtureShop({ id: "unsure", dineIn: null, outdoorSeating: null }),
+  ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "missing-attrs",
+        dineIn: undefined,
+        outdoorSeating: undefined,
+      }),
+    ) &&
+    !isHalfwayEligible(
+      fixtureShop({ id: "takeout-only", dineIn: false, outdoorSeating: false }),
+    ),
+  "null / missing / no-sit-down attrs fail closed",
+);
+assert(
+  !isHalfwayEligible(
+    fixtureShop({
+      id: "dt-but-dine-in",
+      dineIn: true,
+      outdoorSeating: true,
+      momentTags: ["drive-through", "qahwa"],
+    }),
+  ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "dt-lane",
+        dineIn: true,
+        catalogLane: "drive-through",
+        momentTags: ["qahwa"],
+      }),
+    ),
+  "drive-through tagged or DT-lane is always excluded, even if dineIn true",
+);
+assert(
+  HALFWAY_DENY_SHOP_IDS.includes("kapu-cafe-al-nahdah") &&
+    HALFWAY_DENY_SHOP_IDS.includes("shafel-roastery-al-nahdah") &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "shafel-roastery-al-nahdah",
+        dineIn: true,
+        outdoorSeating: null,
+      }),
+    ) &&
+    !isHalfwayEligible(
+      fixtureShop({
+        id: "kapu-cafe-al-nahdah",
+        dineIn: true,
+        outdoorSeating: true,
+      }),
+    ),
+  "photo-flagged deny list stays out until Scout confirms",
+);
+
+const midway = { lat: 24.72, lng: 46.64 };
+const closeIneligible = fixtureShop({
+  id: "close-drive-through",
+  dineIn: true,
+  outdoorSeating: true,
+  momentTags: ["drive-through"],
+  pin: midway,
+  popularityIndex: 99,
+});
+const farEligible = [
+  fixtureShop({
+    id: "far-a",
+    pin: { lat: 24.73, lng: 46.65 },
+    popularityIndex: 80,
+  }),
+  fixtureShop({
+    id: "far-b",
+    pin: { lat: 24.71, lng: 46.63 },
+    popularityIndex: 70,
+  }),
+  fixtureShop({
+    id: "far-c",
+    pin: { lat: 24.725, lng: 46.655 },
+    popularityIndex: 60,
+  }),
+];
+const rankedFromMixed = pickHalfwayShops({
+  locations: [
+    { pin: { lat: 24.721, lng: 46.641 } },
+    { pin: { lat: 24.719, lng: 46.639 } },
+  ],
+  shops: [closeIneligible, ...farEligible],
+});
+assert(
+  rankedFromMixed.every((s) => s.id !== "close-drive-through") &&
+    rankedFromMixed.map((s) => s.id).join() === "far-a,far-b,far-c",
+  "closer drive-through is dropped before midpoint ranking",
+);
+
+const leftoverPool = pickHalfwayShops({
+  locations: [
+    { pin: { lat: 24.721, lng: 46.641 } },
+    { pin: { lat: 24.719, lng: 46.639 } },
+  ],
+  shops: [
+    closeIneligible,
+    fixtureShop({
+      id: "only-two-a",
+      pin: { lat: 24.73, lng: 46.65 },
+      popularityIndex: 50,
+    }),
+    fixtureShop({
+      id: "only-two-b",
+      pin: { lat: 24.71, lng: 46.63 },
+      popularityIndex: 40,
+    }),
+    fixtureShop({
+      id: "unsure-nearby",
+      dineIn: null,
+      outdoorSeating: null,
+      pin: midway,
+      popularityIndex: 90,
+    }),
+  ],
+});
+assert(
+  leftoverPool.map((s) => s.id).join() === "only-two-a,only-two-b",
+  "thinner than 3 returns leftover sit-down shops — does not refill with ineligible",
+);
+assert(
+  meetHalfwayReply({ shopCount: leftoverPool.length, language: "en" }) ===
+    "This is what I can suggest right now:",
+  "leftover <3 uses fewer-picks copy, not a fill",
+);
+
+const livePool = halfwayCandidatePool({ locations: two });
+assert(
+  livePool.every(isHalfwayEligible),
+  "production بيننا pool is sit-down only",
+);
+assert(
+  !livePool.some((s) => isHalfwayDenied(s.id)),
+  "deny-list shops never enter the live pool",
+);
+assert(
+  !livePool.some((s) => s.momentTags.includes("drive-through") || s.catalogLane === "drive-through"),
+  "drive-through tagged shops never enter the live pool",
+);
+assert(
+  livePool.length >= 3,
+  "Olaya midpoint still has at least 3 sit-down cafés",
+);
+assert(
+  filterHalfwayEligible(listDiscoveryShops()).length ===
+    listDiscoveryShops().filter(isHalfwayEligible).length,
+  "discovery filter is the same sit-down rule Halfway uses",
+);
+
+const folded = foldHalfwayPlaceAttrs(
+  [
+    fixtureShop({ id: "keep-me", dineIn: undefined, outdoorSeating: undefined }),
+    fixtureShop({ id: "no-row" }),
+  ],
+  [
+    {
+      id: "keep-me",
+      dine_in: true,
+      outdoor_seating: null,
+      place_id: "ChIJKeepMe",
+    },
+    { id: "invented-cafe", dine_in: true, outdoor_seating: true },
+  ],
+);
+assert(folded.shops.length === 2, "fold never invents catalog shops");
+assert(
+  folded.unmatched.includes("invented-cafe") && folded.applied.length === 1,
+  "backfill ids not in the catalog are ignored",
+);
+assert(
+  folded.shops[0]?.dineIn === true &&
+    folded.shops[0]?.outdoorSeating === null &&
+    folded.shops[0]?.placeId === "ChIJKeepMe" &&
+    folded.shops[1]?.dineIn === null &&
+    folded.shops[1]?.outdoorSeating === null,
+  "known attrs fold; missing rows stay null (fail-closed)",
+);
+assert(
+  shopWithHalfwayPlaceAttrs(fixtureShop({ id: "order" }), {
+    dineIn: true,
+    outdoorSeating: false,
+    placeId: "ChIJOrder",
+  }).example === false,
+  "attrs sit on the shop record, example flag unchanged",
+);
 
 const mid = locationsCentroid(two, SHOPS);
 assert(mid && Number.isFinite(mid.lat) && Number.isFinite(mid.lng), "band around pin centroid");

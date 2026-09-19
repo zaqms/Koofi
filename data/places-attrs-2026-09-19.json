@@ -1,0 +1,6254 @@
+{
+  "generated_at": "2026-09-19T12:03:01.485417+00:00",
+  "method": "places.googleapis.com v1 searchText",
+  "field_mask": "places.id,places.displayName,places.formattedAddress,places.location,places.dineIn,places.outdoorSeating,places.takeout,places.delivery,places.curbsidePickup",
+  "shops": [
+    {
+      "id": "ik-coffee-downtown",
+      "nameEn": "IK coffee Downtown",
+      "nameAr": "أي كي",
+      "neighborhood": "olaya",
+      "place_id": "ChIJoUYKBoUDLz4RsVh1QXnfpIo",
+      "place_name": "IK coffee Downtown",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "woods-olaya",
+      "nameEn": "WOODS Cafe and Roastery",
+      "nameAr": "مقهى ومحمصة وودز",
+      "neighborhood": "olaya",
+      "place_id": "ChIJLbkCFlgDLz4RnTOlP8wH6mA",
+      "place_name": "مقهى ومحمصة وودز (العليا) WOODS Cafe and Roastery (Olaya)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cafu-olaya",
+      "nameEn": "Cafu Cafe",
+      "nameAr": "كفو كافيه",
+      "neighborhood": "olaya",
+      "place_id": "ChIJIUvnEgADLz4RQNm2YYy-SeU",
+      "place_name": "كفو كافيه Cafu Cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "late",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "one-gram-sulimaniyah",
+      "nameEn": "ONE GRAM",
+      "nameAr": "ون جرام",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJ82qbdwADLz4Rfx23hDu6_Iw",
+      "place_name": "ONE GRAM",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "joe-barrel-al-wurud",
+      "nameEn": "Joe Barrel Coffee",
+      "nameAr": "جو بارل",
+      "neighborhood": "al-wurud",
+      "place_id": "ChIJ2yAnHk8DLz4RnDDobFKrqiA",
+      "place_name": "Joe Barrel Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "btw-olaya",
+      "nameEn": "By The Way",
+      "nameAr": "باي ذا واي",
+      "neighborhood": "olaya",
+      "place_id": "ChIJX7yQ_RkDLz4RF4mf7HtqS84",
+      "place_name": "By The Way (BTW)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "breehant-olaya",
+      "nameEn": "Breehant",
+      "nameAr": "بريهانت",
+      "neighborhood": "olaya",
+      "place_id": "ChIJ1aDdbQAdLz4RVXmER-MCays",
+      "place_name": "Breehant",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coyard-sulimaniyah",
+      "nameEn": "COYARD",
+      "nameAr": "كويارد",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJ75dDmeICLz4Rz_qyoYhY3rc",
+      "place_name": "COYARD - Alsulaymaniah | كويارد - السليمانية",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "piccolo-al-rabi",
+      "nameEn": "Piccolo Roasters",
+      "nameAr": "محامص بيكولو",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJ9T_urnv9Lj4RTgWkCsggNHE",
+      "place_name": "Piccolo Roasters",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "roasting-house-al-masif",
+      "nameEn": "Roasting House",
+      "nameAr": "بيت التحميص المصيف",
+      "neighborhood": "al-masif",
+      "place_id": "ChIJCZDiu0v9Lj4R7KtsY0-lwNE",
+      "place_name": "بيت التحميص المصيف | Roasting House Al Massif",
+      "dine_in": false,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "camel-step-al-rahmaniyyah",
+      "nameEn": "Camel Step",
+      "nameAr": "خطوة جمل",
+      "neighborhood": "al-rahmaniyyah",
+      "place_id": "ChIJB7hEKXkdLz4R2fJIJFGfQGU",
+      "place_name": "Camel Step",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "date",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "percent-arabica-hittin",
+      "nameEn": "% Arabica Riyadh Roastery",
+      "nameAr": "% أرابيكا",
+      "neighborhood": "hittin",
+      "place_id": "ChIJp2fuYKjjLj4RSydpSuflfnU",
+      "place_name": "% Arabica Roastery ‎",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "origin-the-lab-hittin",
+      "nameEn": "ORIGIN (The Lab)",
+      "nameAr": "أوريجن",
+      "neighborhood": "hittin",
+      "place_id": "ChIJVweuysfjLj4RPS2pmZBo5mk",
+      "place_name": "ORIGIN (The Lab)",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "origin-coffee-roasters-hittin",
+      "nameEn": "ORIGIN COFFEE ROASTERS",
+      "nameAr": "محمصة أوريجن",
+      "neighborhood": "hittin",
+      "place_id": "ChIJ51Pu3-zhLj4Ry-wqP7jP9us",
+      "place_name": "ORIGIN COFFEE ROASTERS",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "camel-step-hittin",
+      "nameEn": "Camel Step – Sport Boulevard Promenade",
+      "nameAr": "خطوة جمل",
+      "neighborhood": "hittin",
+      "place_id": "ChIJc-uPzNHhLj4RrDI6wE0iyQY",
+      "place_name": "Camel Step",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "tobys-estate-hittin",
+      "nameEn": "Toby's Estate (Boulevard)",
+      "nameAr": "توبيز استيت",
+      "neighborhood": "hittin",
+      "place_id": "ChIJHRRHvYzjLj4RfO5imLFCk3E",
+      "place_name": "Toby's Estate (Boulevard)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "noc-caffe-hittin",
+      "nameEn": "NOC Caffe and Roastry",
+      "nameAr": "نوك كافيه ومحمصة",
+      "neighborhood": "hittin",
+      "place_id": "ChIJ6UXD0vDhLj4RmB1YhhXuXBA",
+      "place_name": "NOC Caffe and Roastry",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "just-another-hittin",
+      "nameEn": "Just another",
+      "nameAr": "جست انذر",
+      "neighborhood": "hittin",
+      "place_id": "ChIJaX-KNADjLj4RFNXLXtc2pzk",
+      "place_name": "Just another | جست انذر",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "qamaria-hittin",
+      "nameEn": "Qamaria Yemeni Coffee Co.",
+      "nameAr": "قمرية",
+      "neighborhood": "hittin",
+      "place_id": "ChIJ9RV2fADjLj4R54bXP-20Vqo",
+      "place_name": "Qamaria Yemeni Coffee Co.",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sors-hittin",
+      "nameEn": "SORS",
+      "nameAr": "سورس",
+      "neighborhood": "hittin",
+      "place_id": "ChIJg-fc-NHjLj4RpNeKU7h9UxI",
+      "place_name": "سورس | SORS",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "pastry",
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "jorn-al-malqa",
+      "nameEn": "Jorn Coffee Roasters",
+      "nameAr": "محمصة جرن",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJXQxac1XjLj4RkusgNzCm7j8",
+      "place_name": "JORN COFFEE ROASTERS | محمصة جرن‏‏",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kicksters-al-malqa",
+      "nameEn": "Kicksters Coffee",
+      "nameAr": "كيكسترز",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJDc9vhyXlLj4RPsaFjEBAyqk",
+      "place_name": "Kicksters",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sohba-al-malqa",
+      "nameEn": "Sohba Coffee",
+      "nameAr": "قهوة صحبة",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJBV_IAt7lLj4RR0JleeIDhn0",
+      "place_name": "Sohba Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "friend"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "aim-coffee-bar-al-malqa",
+      "nameEn": "Aim Coffee Bar",
+      "nameAr": "قهوة ايم",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJO2g83iHjLj4RkdtvyAaIRRE",
+      "place_name": "Aim | Al Malqa",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "salam-cafe-al-malqa",
+      "nameEn": "Salam Cafe",
+      "nameAr": "قهوة سلام",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJu9PkdQDlLj4Rf1muMjVmwrM",
+      "place_name": "قهوة سلام",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "nasj-al-malqa",
+      "nameEn": "NASJ",
+      "nameAr": "قهوة نسج",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJKXmvT4nnLj4R6h25grff8oY",
+      "place_name": "NASJ | نسج الملقا",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "namq-al-malqa",
+      "nameEn": "Namq Cafe",
+      "nameAr": "نمق",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJu1ZmnC7lLj4RG3a2K7c5lWQ",
+      "place_name": "Namq cafe",
+      "dine_in": false,
+      "outdoor_seating": true,
+      "takeout": false,
+      "delivery": false,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "date",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "elixir-bunn-al-nakheel",
+      "nameEn": "Elixir Bunn",
+      "nameAr": "إكسير البن",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJuelhFhPiLj4R-vbGiLH97Zo",
+      "place_name": "Elixir Bunn Coffee Roasters",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "peaks-digital-city-al-nakheel",
+      "nameEn": "Peaks – Digital City",
+      "nameAr": "بيكس",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJUQFfWIDjLj4RhT0eKtNMeKs",
+      "place_name": "PEAKS DC",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "just-a-space-al-nakheel",
+      "nameEn": "Just A Space",
+      "nameAr": "جست ا سبيس",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJ2wq6u37jLj4RJfYMWgjeRGI",
+      "place_name": "Just A Space",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "wee-al-nakheel",
+      "nameEn": "Wee",
+      "nameAr": "ووي",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJD1fl8PLjLj4RmPZvudqW1cg",
+      "place_name": "Wee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "infuse-al-nakheel",
+      "nameEn": "Infuse",
+      "nameAr": "انفيوز",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJa6jnjiTjLj4RQ781Q8THA3Y",
+      "place_name": "INFUSE",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ash-bloom-al-nakheel",
+      "nameEn": "Ash Bloom",
+      "nameAr": "آش بلوم",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJswgca_PjLj4RR6pHkY5zFoQ",
+      "place_name": "Ash Bloom 无极",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "idmi-al-yasmin",
+      "nameEn": "IDMI Coffee Roasters",
+      "nameAr": "محمصة ادمي",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJx0VK1rPlLj4RRNTLKYCAq9Q",
+      "place_name": "IDMI Coffee Roasters",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "breehant-al-yasmin",
+      "nameEn": "Breehant Coffee Roastery",
+      "nameAr": "بريهانت",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJTWK9szLlLj4R5VAFiXeZY4g",
+      "place_name": "Breehant coffee roastery.",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "woods-al-yasmin",
+      "nameEn": "Woods Specialty Café & Roastery",
+      "nameAr": "مقهى ومحمصة وودز",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJy-Lqbz_lLj4ROTFi07eSXnU",
+      "place_name": "مقهى ومحمصة وودز (الياسمين) | (WOODS Cafe and Roastery (Al Yasmin",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "roasting-house-al-yasmin",
+      "nameEn": "Roasting House Alyasmin",
+      "nameAr": "بيت التحميص الياسمين",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJMwSfiUXlLj4Rnwiq3RN79V8",
+      "place_name": "بيت التحميص الياسمين | Roasting House Alyasmin",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "eva-al-yasmin",
+      "nameEn": "Eva Specialty Coffee Roasters",
+      "nameAr": "ايڤا محمصة ومقهى قهوة مختصة",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJrZX_AgDlLj4RCfChxTJoToM",
+      "place_name": "Eva Roasters And Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "qirat-al-yasmin",
+      "nameEn": "Qirat – Specialty Coffee",
+      "nameAr": "قيراط",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJgfDIPADjLj4Roist1N0d1fY",
+      "place_name": "Specialty coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "shovel-al-yasmin",
+      "nameEn": "Shovel Roastery",
+      "nameAr": "محمصة شفل",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJt22dHUjlLj4RxZHtYjvL854",
+      "place_name": "Shovel Roastery",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "basementers-al-yasmin",
+      "nameEn": "Basementers Roastery and Specialty Coffee",
+      "nameAr": "بيسمنترز محمصة وقهوة مختصة",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJw3kT8A_lLj4RPkjxv-xvVZQ",
+      "place_name": "Basementers Roastery and Specialty coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "volume-al-yasmin",
+      "nameEn": "Volume Coffee Roasters – Al Yasmin",
+      "nameAr": "فوليوم محمصة وقهوة",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJGRn3cAHlLj4R1BMGq6XnNvo",
+      "place_name": "Volume Coffee Roasters",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "idmi-olaya",
+      "nameEn": "IDMI Coffee Roasters (Al Olaya)",
+      "nameAr": "محمصة ادمي",
+      "neighborhood": "olaya",
+      "place_id": "ChIJqzcL3YsDLz4R-EoAquZD6I8",
+      "place_name": "IDMI COFFEE ROASTERS",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "qaf-olaya",
+      "nameEn": "Qaf Coffee Roasters",
+      "nameAr": "قاف",
+      "neighborhood": "olaya",
+      "place_id": "ChIJmxIuQ83jLj4Rqk0WK9cN95s",
+      "place_name": "Qaf Coffee Roasters - محمصة ومقهى قاف",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "good-neighbor-olaya",
+      "nameEn": "Good Neighbor",
+      "nameAr": "قهوة قود نيبر",
+      "neighborhood": "olaya",
+      "place_id": "ChIJ5fc40vwDLz4RRvedPggTxEI",
+      "place_name": "Good neighbor",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "date",
+        "quiet",
+        "matcha"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "first-series-olaya",
+      "nameEn": "First Series Coffee",
+      "nameAr": "مقهى السلسلة الاولى",
+      "neighborhood": "olaya",
+      "place_id": "ChIJMasuxoEDLz4RfhHsiQGwCAs",
+      "place_name": "First Series Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drip-olaya",
+      "nameEn": "Drip Coffee – Al Olaya",
+      "nameAr": "دريب كوفي",
+      "neighborhood": "olaya",
+      "place_id": "ChIJW84Ocn4DLz4R_oTU77AQ8Vk",
+      "place_name": "Drip",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "date",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "tobys-estate-olaya",
+      "nameEn": "Toby's Estate – Olaya Towers",
+      "nameAr": "توبيز استيت",
+      "neighborhood": "olaya",
+      "place_id": "ChIJzXA11zEDLz4Rywpgn5zncG8",
+      "place_name": "Toby's Estate (Olaya)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hjeen-roaster-factory-al-yasmin",
+      "nameEn": "Hjeen Roaster Factory",
+      "nameAr": "محمصة هجين المصنع",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJeaicBoPlLj4RXO9Z2EC8Re0",
+      "place_name": "محمصة هجين المصنع | Hjeen Roaster Factory",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ror-coffee-roasters-al-yasmin",
+      "nameEn": "RoR Coffee Roasters",
+      "nameAr": "محمصة و مقهى ار او ار",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJ1TdaoQwHLz4RVGE3zmmf7-8",
+      "place_name": "RoR Coffee Roasters - محمصة و مقهى ار او ار",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "yamm-olaya",
+      "nameEn": "Yamm Coffee Roasters",
+      "nameAr": "يَمّ محمصة وقهوة",
+      "neighborhood": "olaya",
+      "place_id": "ChIJ6dcAmcEdLz4RGZwZGqKbVp8",
+      "place_name": "يَمّ محمصة وقهوة | YAMM COFFEE ROASTERS",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "brew-crew-sulimaniyah",
+      "nameEn": "Brew Crew – As Sulimaniyah",
+      "nameAr": "برو كرو",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJ2UGMhEADLz4RzpMTWkDPWA8",
+      "place_name": "Brew Crew",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "urth-caffe-tahlia-sulimaniyah",
+      "nameEn": "Urth Caffé Tahlia",
+      "nameAr": "إيرث كافيه",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJpwbCxS8DLz4REWiOCO8GjMs",
+      "place_name": "Urth Caffé — Tahlia",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "late",
+        "pastry",
+        "outdoor",
+        "date",
+        "quiet",
+        "matcha"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sombrero-sulimaniyah",
+      "nameEn": "Sombrero",
+      "nameAr": "سومبريرو",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJic2Xxs8DLz4RZ4xALOyeCZs",
+      "place_name": "Sombrero",
+      "dine_in": null,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "outdoor"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "seven-beans-sulimaniyah",
+      "nameEn": "Seven Beans",
+      "nameAr": "سفن بينز",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJyb5Nin0DLz4R84E-hQQJnMk",
+      "place_name": "Seven Beans",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "dear-you-sulimaniyah",
+      "nameEn": "Dear You",
+      "nameAr": "دير يو",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJo4YhbK0DLz4Ry-v54UH2f_Y",
+      "place_name": "Dear You",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "quiet",
+        "work",
+        "qahwa",
+        "pastry",
+        "outdoor"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sand-clock-al-muruj",
+      "nameEn": "Sand Clock",
+      "nameAr": "ساند كلوك المروج",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJTaRs5mTjLj4RAxGryF6WLPc",
+      "place_name": "Sand clock",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sand-clock-as-sulimaniyah",
+      "nameEn": "Sand Clock",
+      "nameAr": "ساند كلوك السليمانية",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJN50BBwADLz4RQyUBXydcGqA",
+      "place_name": "ساند كلوك السليمانية",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sulalat-coffee-ar-rabwah",
+      "nameEn": "Sulalat",
+      "nameAr": "سلالات القهوة",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJGeAI7T0FLz4R6APbAVTqukc",
+      "place_name": "Sulalat Coffee",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "carve-roastery-ar-rabwah",
+      "nameEn": "Carve Roastery",
+      "nameAr": "محمصة كيرف",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJtXzCF6kHLz4R4OeW5iNZsVg",
+      "place_name": "محمصة كيرف للقهوة المختصة",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "yly-specialty-coffee-ar-rabwah",
+      "nameEn": "YLY",
+      "nameAr": "يلي",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJOaGCmo4HLz4RWoCxvJ-J5fk",
+      "place_name": "YLY Specialty Coffee | يلي قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "get-up-coffee-ar-rabwah",
+      "nameEn": "Get Up",
+      "nameAr": "قيت اب",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJ2w45ulkHLz4RcYYkoir3wR8",
+      "place_name": "Al Hussain Top Up",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "carve-coffee-bar-al-wurud",
+      "nameEn": "Carve Coffee Bar",
+      "nameAr": "قهوة كارڤ",
+      "neighborhood": "al-wurud",
+      "place_id": "ChIJTWTMnvIDLz4RcMiEZ8Jy0X0",
+      "place_name": "CARVE COFFEE BAR",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "eya-specialty-coffee-al-wurud",
+      "nameEn": "EYA Specialty Coffee",
+      "nameAr": "إيا",
+      "neighborhood": "al-wurud",
+      "place_id": "ChIJ9-rwFJYDLz4RcHNuNSuO6fU",
+      "place_name": "EYA Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "the-gate-specialty-coffee-al-wurud",
+      "nameEn": "The Gate Specialty Coffee",
+      "nameAr": "The Gate Specialty Coffee",
+      "neighborhood": "al-wurud",
+      "place_id": "ChIJ050tGBsDLz4RO38u5BphxC4",
+      "place_name": "The Gate Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "taim-specialty-coffee-as-sahafah",
+      "nameEn": "Taim Specialty Coffee",
+      "nameAr": "تَيْم",
+      "neighborhood": "as-sahafah",
+      "place_id": "ChIJsymty_DlLj4RtdQ-2zW9Acg",
+      "place_name": "Taim Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "y97-specialty-coffee-as-sahafah",
+      "nameEn": "Y97 Specialty Coffee",
+      "nameAr": "Y97",
+      "neighborhood": "as-sahafah",
+      "place_id": "ChIJc4imk-blLj4R7dr8sHHpDYU",
+      "place_name": "Y97 - Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hakwah-speciality-coffee-as-sahafah",
+      "nameEn": "Hakwah Speciality Coffee",
+      "nameAr": "حكوة",
+      "neighborhood": "as-sahafah",
+      "place_id": "ChIJiXqtwtjjLj4R3rONYqIsEa4",
+      "place_name": "Hakwah Speciality Coffee | حكوة للقهوة المختصة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "tobys-estate-kafd",
+      "nameEn": "Toby's Estate (KAFD)",
+      "nameAr": "توبيز استيت",
+      "neighborhood": "kafd",
+      "place_id": "ChIJrYkZJVXjLj4Rx-nhN9HwaA4",
+      "place_name": "Toby's Estate (KAFD)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "12-cups-roastery-and-cafe-kafd",
+      "nameEn": "12 Cups Roastery and Cafe",
+      "nameAr": "١٢ كوب",
+      "neighborhood": "kafd",
+      "place_id": "ChIJBUCyZs7jLj4RMhgd1kkxV4I",
+      "place_name": "12 Cups Roastery and Cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-planet-kafd",
+      "nameEn": "Coffee Planet",
+      "nameAr": "كوفي بلانيت",
+      "neighborhood": "kafd",
+      "place_id": "ChIJ_WqHfgDjLj4RiTPlV_SYT_0",
+      "place_name": "Coffee Planet كوفي بلانيت",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hal-alkeif-kafd",
+      "nameEn": "Hal Alkeif",
+      "nameAr": "هل الكيف",
+      "neighborhood": "kafd",
+      "place_id": "ChIJq3iLWQDjLj4Rn6W7PFh5boA",
+      "place_name": "Hal Alkeif - هل الكيف",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "draft-cafe-kafd",
+      "nameEn": "DRAFT Café",
+      "nameAr": "درافت",
+      "neighborhood": "kafd",
+      "place_id": "ChIJHxeUSyDjLj4RCE1b_FEOVQg",
+      "place_name": "DRAFT Café",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cafe-tale-kafd",
+      "nameEn": "Cafe Tale",
+      "nameAr": "كافي تيل",
+      "neighborhood": "kafd",
+      "place_id": "ChIJZ14CdHDjLj4RjcZ37JauztY",
+      "place_name": "Cafe Tale",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "trieste-kafd",
+      "nameEn": "Trieste",
+      "nameAr": "تريستي",
+      "neighborhood": "kafd",
+      "place_id": "ChIJZUHgtmDjLj4RZbWQbguBnRs",
+      "place_name": "Trieste - تريستي",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "origin-jax-diriyah",
+      "nameEn": "ORIGIN – JAX",
+      "nameAr": "أوريجن",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJP0FNHwDhLj4RykP0yZR-izg",
+      "place_name": "ORIGIN - JAX",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "archi-al-bujairi-diriyah",
+      "nameEn": "Archi",
+      "nameAr": "ارتشي",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJU2WkbiXhLj4RT6ykBZ6zslc",
+      "place_name": "Archi | ارتشي",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "archi-and-jax-diriyah",
+      "nameEn": "ARCHI & JAX",
+      "nameAr": "ارتشي",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJUVU8dADhLj4R2mkQLlxBJ98",
+      "place_name": "ARCHI & JAX",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": false,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kmr-diriyah",
+      "nameEn": "KMR",
+      "nameAr": "كُمر",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJEyfuiaThLj4ReGR0OZznMXA",
+      "place_name": "KMR",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "malfa-coffee-house-diriyah",
+      "nameEn": "Malfa coffee house",
+      "nameAr": "ملفى",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJOXciZ4DhLj4Rdmf-4HncyQc",
+      "place_name": "Samhaniya",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "offbrief-cafe-diriyah",
+      "nameEn": "OFFBRiEF Cafe",
+      "nameAr": "مقهى أوف بريف",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJi-6jfbvhLj4Rmyg_wfKwxbY",
+      "place_name": "OFFBRiEF Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cosefan-diriyah",
+      "nameEn": "Cosefan",
+      "nameAr": "كوزفن",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJPfrMyIThLj4RAZ5ah0D4q0I",
+      "place_name": "Cosefan",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "late",
+        "outdoor"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "khasib-al-bun-diriyah",
+      "nameEn": "Khasib Al Bun",
+      "nameAr": "خَصيب البُن",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJy3OjYwDhLj4RbYv-olYJL7U",
+      "place_name": "Aseeb (Zallal)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "dips-plus-diriyah",
+      "nameEn": "dips plus",
+      "nameAr": "دبس بلس",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJ23xbdAvhLj4RUf98kQi-LgM",
+      "place_name": "dips plus",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "late",
+        "pastry",
+        "outdoor",
+        "date",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sirius-speciality-coffee-diriyah",
+      "nameEn": "SIRIUS Speciality Coffee",
+      "nameAr": "SIRIUS Speciality Coffee",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJL60cZQDnLj4RtaEOLPeErPo",
+      "place_name": "SIRIUS Speciality Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "jazel-speciality-cafe-diriyah",
+      "nameEn": "Jazel speciality cafe",
+      "nameAr": "جازل",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJ_23iHwXhLj4RUxAfJNZQXQU",
+      "place_name": "Jazel speciality cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "repository-coffee-roasters-al-narjis",
+      "nameEn": "Repository Coffee Roasters",
+      "nameAr": "محمصة ريبوستري",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJI_Yr4Bj7Lj4RuyPSyXDqn3k",
+      "place_name": "Repository Coffee Roasters",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "core-coffee-and-roastery-al-narjis",
+      "nameEn": "CORE COFFEE & ROASTERY",
+      "nameAr": "كور قهوة ومحمصة",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJ0Rl5nqD9Lj4RdNPOmgESYXM",
+      "place_name": "CORE COFFEE & ROASTERY",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hjeen-roaster-al-narjis",
+      "nameEn": "Hjeen Roaster",
+      "nameAr": "هجين",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJeV0uYhj7Lj4RKOA8c3Qmm_M",
+      "place_name": "Hjeen Roaster",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kail-roastery-and-cafe-al-narjis",
+      "nameEn": "kail Roastery & cafe",
+      "nameAr": "محمصة ومقهى كيل",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJm84K26v7Lj4RWYzHu2weU_w",
+      "place_name": "kail Roastery & cafe محمصة ومقهى كيل",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "volume-coffee-roasters-al-narjis",
+      "nameEn": "Volume Coffee Roasters",
+      "nameAr": "فوليوم محمصة وقهوة",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJ0xuko-L7Lj4RnCMD3lUHq74",
+      "place_name": "Volume Coffee Roasters",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "elixir-bunn-al-narjis",
+      "nameEn": "Elixir Bunn Coffee Roasters",
+      "nameAr": "إكسير البُن",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJwefbQtHlLj4R5Kr5d7NHl-k",
+      "place_name": "Elixir Bunn Coffee Roasters",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "melex-specialty-coffee-al-narjis",
+      "nameEn": "Melex Specialty Coffee",
+      "nameAr": "ميليكس قهوة مختصه",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJ71JdegDlLj4R7NUGfqzKT-0",
+      "place_name": "Melex Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "nosound-al-narjis",
+      "nameEn": "NOSOUND",
+      "nameAr": "نوساوند",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJ1cyvaf-rLz4R0TtD0h2K9Uc",
+      "place_name": "نوساوند النرجس NOSOUND",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "pastry",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "aim-al-narjis",
+      "nameEn": "Aim",
+      "nameAr": "ايم",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJvS9kAgDlLj4REIfR0pivAU0",
+      "place_name": "Aim | Al Narjis",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "pastry",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "archi-al-narjis",
+      "nameEn": "Archi",
+      "nameAr": "ارتشي",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJx3spj8T9Lj4RkjDgEdM8sIQ",
+      "place_name": "Archi",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "caf-lab-al-narjis",
+      "nameEn": "CAF LAB",
+      "nameAr": "كاف لاب",
+      "neighborhood": "al-narjis",
+      "place_id": "ChIJUZjX0kTlLj4REDSY9Ss39mU",
+      "place_name": "CAF LAB | Al Narjis",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "work",
+        "outdoor",
+        "quiet"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cred-al-mughrizat",
+      "nameEn": "CRED",
+      "nameAr": "كريد",
+      "neighborhood": "al-mughrizat",
+      "place_id": "ChIJgYhOJQf9Lj4Rl7mXTb80cWs",
+      "place_name": "كريد | CRED",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "specialty-bean-ghirnatah",
+      "nameEn": "Specialty Bean Roastery",
+      "nameAr": "محمصة سبيشلتي بين",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJ7RcDzkT9Lj4RwF4jitAZAOc",
+      "place_name": "Specialty Bean Roastery | محمصة سبيشلتي بين",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "mkth-ghirnatah",
+      "nameEn": "Mkth",
+      "nameAr": "مكث",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJgfo9vIL9Lj4R9bcmn_MRLQ4",
+      "place_name": "Mkth",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "bind-specialty-coffee-ghirnatah",
+      "nameEn": "BIND Specialty Coffee",
+      "nameAr": "بايند قهوة مختصة",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJWbKLn0X9Lj4R7IlL2Bgks9g",
+      "place_name": "BIND Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "file-coffee-ghirnatah",
+      "nameEn": "File Coffee",
+      "nameAr": "فايل كافية",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJQZGu0mH_Lj4RXVMbq5WI8TE",
+      "place_name": "فايل كافية | File Coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sanva-specialty-coffee-ghirnatah",
+      "nameEn": "SANVA Specialty Coffee",
+      "nameAr": "سانفا قهوة مختصة",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJgzfgtb__Lj4R5XVn8PvfJno",
+      "place_name": "SANVA Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "jae-specialty-coffee-ghirnatah",
+      "nameEn": "JAE Specialty Coffee",
+      "nameAr": "جاي قهوة مختصة",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJ9ys2AWH9Lj4RJ_O7IbVa8gU",
+      "place_name": "JAE Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "moff-ghirnatah",
+      "nameEn": "Moff",
+      "nameAr": "موف",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJ9Sm-IMz_Lj4RA6XpjqGDCA0",
+      "place_name": "Moff | موف",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "semi-specialty-cafe-ghirnatah",
+      "nameEn": "Semi Specialty Cafe",
+      "nameAr": "سيمي قهوة مختصة",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJhww8klj9Lj4RG8u2KCKMRV0",
+      "place_name": "Semi Specialty Cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "camel-step-granada-business",
+      "nameEn": "Camel Step – Granada Business",
+      "nameAr": "خطوة جمل – غرناطة بزنس",
+      "neighborhood": "al-shohda",
+      "place_id": "ChIJN9rp_l_lLj4Rcby8Ui4VBMU",
+      "place_name": "Camel Step",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "archi-ghirnatah",
+      "nameEn": "Archi Granada",
+      "nameAr": "ارتشي غرناطة",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJRz85bwD9Lj4R7lZXfinkJRg",
+      "place_name": "Archi Granada | ارتشي",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "blumen-al-safa",
+      "nameEn": "Blumen Cafe",
+      "nameAr": "بلومن كافية",
+      "neighborhood": "al-safa",
+      "place_id": "ChIJnYNAcQAHLz4R0cdy_Bintrs",
+      "place_name": "Blumen",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hawaf-al-safa",
+      "nameEn": "Hawaf",
+      "nameAr": "حواف",
+      "neighborhood": "al-safa",
+      "place_id": "ChIJXzP2bQAHLz4RRRi-lYtDNjk",
+      "place_name": "Hawaf",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "recaf-al-safa",
+      "nameEn": "Recaf",
+      "nameAr": "ريكاف",
+      "neighborhood": "al-safa",
+      "place_id": "ChIJtVu2LwAHLz4R6pWq7XwvCBo",
+      "place_name": "ريكاف | Recaf",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "raslania-al-safa",
+      "nameEn": "RASLANIA",
+      "nameAr": "رسلانية",
+      "neighborhood": "al-safa",
+      "place_id": "ChIJuVzWGAAHLz4RIFBMQCFugTg",
+      "place_name": "رسلانية | RASLANIA",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "dyar-bakery-al-safa",
+      "nameEn": "DYAR bakery",
+      "nameAr": "ديار بيكري",
+      "neighborhood": "al-safa",
+      "place_id": "ChIJMx1lBwAHLz4R1fHZkZVyHa0",
+      "place_name": "DYAR bakery",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "jazwa-specialty-coffee-ar-rabwah",
+      "nameEn": "Jazwa Specialty Coffee",
+      "nameAr": "جزوة قهوة مختصة",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJ_yn29AIELz4RHsvAf0ax6NE",
+      "place_name": "جزوة قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "makhsousa-coffee-ar-rabwah",
+      "nameEn": "Makhsousa Coffee — Rabwah",
+      "nameAr": "مخصوصة للقهوة فرع الربوة",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJ75cOyNsZLz4Ry8hievc1T9M",
+      "place_name": "مخ قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "blog-coffee-ar-rabwah",
+      "nameEn": "BLOG coffee",
+      "nameAr": "بلوق كوفي",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJyT7I4QcHLz4RrVt2z_-5tPw",
+      "place_name": "BLOG coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "enzo-coffee-ar-rabwah",
+      "nameEn": "Enzo Coffee",
+      "nameAr": "إنزو كوفي",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJZwcTQwAHLz4RMKCZhI6Fsjg",
+      "place_name": "Enzo Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "window-coffee-ar-rabwah",
+      "nameEn": "window coffee",
+      "nameAr": "ويندو كوفي",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJOYds4ZYHLz4R52zpZ7oJ1jk",
+      "place_name": "window coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "b-cafe-ar-rabwah",
+      "nameEn": "B Cafe",
+      "nameAr": "بي كافيه",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJZ_xcIAoHLz4RIxZq-Ub7V20",
+      "place_name": "B Cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hai-coffee-roasters-al-rawdah",
+      "nameEn": "HAI Coffee & Roasters",
+      "nameAr": "مقهى ومحمصة حي",
+      "neighborhood": "al-rawdah",
+      "place_id": "ChIJPcFXY6kBLz4RyzN8YYDKumM",
+      "place_name": "HAI Coffee & Roasters",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffeehood-qurtubah",
+      "nameEn": "Coffeehood",
+      "nameAr": "كوفي هود",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJcWXeJU79Lj4RjnggZ-Hhywc",
+      "place_name": "Coffeehood - Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "obo-qurtubah",
+      "nameEn": "OBO",
+      "nameAr": "اوبو",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJZffgEQD9Lj4RaKQwlz9zF3A",
+      "place_name": "OBO Speciality Coffee | اوبو للقهوة المختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "lattio-lounge-qurtubah",
+      "nameEn": "Lattio Lounge",
+      "nameAr": "لاتيو لاونج",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJY-VCT6D9Lj4RyX-gU-tx594",
+      "place_name": "Luchos Lounge | لوتشوز لاونج",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "friend",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "n5-caffe-qurtubah",
+      "nameEn": "N5 Caffe",
+      "nameAr": "ان فايف",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
+      "place_name": "N5 Caffe | ان فايف قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cacti-roastery-qurtubah",
+      "nameEn": "Cacti Roastery",
+      "nameAr": "كاكتي",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJHZ8F0uD9Lj4RzEChHLUApPw",
+      "place_name": "Cacti Roastery",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "najd-roastery-qurtubah",
+      "nameEn": "Najd Roastery",
+      "nameAr": "محمصة نجد",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
+      "place_name": "محمصة نجد",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "najd-alathiah-qurtubah",
+      "nameEn": "Najd Alathiah",
+      "nameAr": "عذيّة",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJc0EUrVX_Lj4RBjKvYrQVAnE",
+      "place_name": "Najd Alathiah Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "klatch-qurtubah",
+      "nameEn": "Klatch Coffee",
+      "nameAr": "كلاتش كوفي",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJ-TFNIwD9Lj4RRbmh6IAPjdg",
+      "place_name": "Klatch Coffee SA - Al Qurtubah",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "nosound-qurtubah",
+      "nameEn": "NOSOUND",
+      "nameAr": "نوساوند",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJV5lF8hv9Lj4RT-X2C0w0H5g",
+      "place_name": "نوساوند قرطبة NOSOUND",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "vanilla-coffee-qurtubah",
+      "nameEn": "Vanilla Coffee",
+      "nameAr": "فانيلا كوفي",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJuxUGuQ7_Lj4RvEdy7wqsXdQ",
+      "place_name": "velvett coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "mill-coffee-qurtubah",
+      "nameEn": "Mill Coffee Roastery",
+      "nameAr": "محمصة ميل",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJbyRdX9f9Lj4RS_xhOaga_L4",
+      "place_name": "محمصة ميل للقهوة",
+      "dine_in": false,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cofen-qurtubah",
+      "nameEn": "Cofen",
+      "nameAr": "كوفن",
+      "neighborhood": "qurtubah",
+      "place_id": "ChIJO2KKH8P9Lj4RJTYRd1C6jqI",
+      "place_name": "كوفن قرطبة | Cofen",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "mud-speciality-coffee-an-nazhah",
+      "nameEn": "MUD Speciality Coffee",
+      "nameAr": "MUD",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJLUjfHgADLz4RET9gq_0sRQA",
+      "place_name": "MUD Speciality Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "wathba-an-nazhah",
+      "nameEn": "Wathba",
+      "nameAr": "وثبة",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJG-kuXgADLz4R85qqrTsXazU",
+      "place_name": "Alwathba Consulting",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "moraq-cafe-an-nazhah",
+      "nameEn": "Moraq Cafe",
+      "nameAr": "مورق",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJY-VlAz8DLz4RjCiduL4ZrPo",
+      "place_name": "Moraq Cafe | موراك قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "november-coffee-an-nazhah",
+      "nameEn": "November Coffee",
+      "nameAr": "محمصة نوفمبر",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJR_VAzIECLz4RqEAlL5Hw41g",
+      "place_name": "November Coffee",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "elite-cup-roasters-an-nazhah",
+      "nameEn": "Elite Cup Roasters",
+      "nameAr": "محمصة كوب النخبة",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJM7281acDLz4RhVZq8FI7gpw",
+      "place_name": "Elite Cup Roasters | محمصة كوب النخبة",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "belong-an-nazhah",
+      "nameEn": "BELONG",
+      "nameAr": "BELONG",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJ8dFM-80DLz4RYAll-gCPVpQ",
+      "place_name": "BELONG - ALNUZHA",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "desired-coffee-an-nazhah",
+      "nameEn": "DESIRED COFFEE",
+      "nameAr": "DESIRED COFFEE",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJD3WShPIDLz4Rk47gyVwxlxE",
+      "place_name": "DESIRED COFFEE",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cross-coffee-an-nazhah",
+      "nameEn": "Cross coffee",
+      "nameAr": "Cross",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJpb7bGOsDLz4RRg94-8o3tvg",
+      "place_name": "Cross coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kraz-an-nazhah",
+      "nameEn": "Kraz",
+      "nameAr": "كراز",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJwxe37QADLz4R4woNuDu_ZRI",
+      "place_name": "Kraz",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ghandoura-an-nazhah",
+      "nameEn": "Ghandoura",
+      "nameAr": "غندورة",
+      "neighborhood": "an-nazhah",
+      "place_id": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
+      "place_name": "Ghandoura",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "serene-coffee-roastery",
+      "nameEn": "SERENE COFFEE ROASTERY",
+      "nameAr": "محمصة سيرين",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJ64xp8br_Lj4RMcLUwkZYSdo",
+      "place_name": "SERENE COFFEE ROASTERY",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa",
+        "pastry",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "rimthan-coffee-al-hamra",
+      "nameEn": "Rimthan + Coffee",
+      "nameAr": "قهوة رمثان",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJoyPGGscBLz4RkgJNsDEsUHw",
+      "place_name": "Rimthan + Coffee | قهوة رمثان",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "matcha"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "mind-break-al-hamra",
+      "nameEn": "Mind Break",
+      "nameAr": "مايند بريك",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJ845kug4BLz4RvnEwimqRL5Y",
+      "place_name": "Mind Break | specialty coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "jather-al-hamra",
+      "nameEn": "Jather",
+      "nameAr": "جذر",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJ4-_-WgADLz4RN6D40OQ2k_s",
+      "place_name": "Jather",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "harf-coffee-al-hamra",
+      "nameEn": "Harf coffee",
+      "nameAr": "كوفي حرف",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJp3o_LAABLz4R-PfJ2Xx1zC4",
+      "place_name": "كوفي حرف - Harf coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "zeila-al-hamra",
+      "nameEn": "Zeila",
+      "nameAr": "زَيّلا",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJuYAxoh7_Lj4ReoBUZueYe2Q",
+      "place_name": "Zeila | زَيّلا",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cord-cafe-al-hamra",
+      "nameEn": "Cord Cafe",
+      "nameAr": "كورد قهوة يومية",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJXRAsLQD_Lj4R6a7KYir3pzs",
+      "place_name": "كورد قهوة يومية Cord Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drip-al-hamra",
+      "nameEn": "Drip",
+      "nameAr": "دريب",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJN3oZka3_Lj4RlwS7bu3s1_A",
+      "place_name": "Drip",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-hamra",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة (البشور)",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJmQPhDP0BLz4R642u0qfHUls",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "glint-al-hamra",
+      "nameEn": "Glint",
+      "nameAr": "جلينت",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJ46ukI5__Lj4RQWRi9agRHqA",
+      "place_name": "Glint",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "silo-cafe-al-yarmouk",
+      "nameEn": "Silo Cafe",
+      "nameAr": "سايلو محمصة وقهوة مختصة",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJfVLuBqX_Lj4RnV4CEilIwpo",
+      "place_name": "سايلو محمصة و قهوة مختصة | Silo Cafe",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "nosound-al-yarmouk",
+      "nameEn": "NOSOUND",
+      "nameAr": "نوساوند",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJPdgxAMIBLz4R2OXfBa5cZkk",
+      "place_name": "NOSOUND نوساوند اشبلياء",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "obo-speciality-al-yarmouk",
+      "nameEn": "OBO Speciality Coffee",
+      "nameAr": "اوبو للقهوة المختصة",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJt8QREQD_Lj4RNEan94QUJHY",
+      "place_name": "OBO Speciality Coffee | اوبو للقهوة المختصة",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "shafel-roastery-al-yarmouk",
+      "nameEn": "Shafel Coffee Roastery",
+      "nameAr": "محمصة قهوة شفل",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJSQFlL8n_Lj4Rk0ZydGFZSeI",
+      "place_name": "محمصة قهوة شفل | اليرموك",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-yarmouk",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJx-pRRpr_Lj4RaUWkqb6S0F8",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "aleel-roastery-al-yarmouk",
+      "nameEn": "Aleel Roastery",
+      "nameAr": "محمصة أليل",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJjyQTZJL_Lj4RJQV26FDR_CQ",
+      "place_name": "Aleel Roastery",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "bourbon-al-yarmouk",
+      "nameEn": "Bourbon Speciality Coffee",
+      "nameAr": "بوربون للقهوة المختصة",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJRZ1jjHn_Lj4R5bYYiLDOXzc",
+      "place_name": "Bourbon Speciality Coffee and Roastry",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ratio-speciality-al-yarmouk",
+      "nameEn": "RATIO Speciality Coffee",
+      "nameAr": "ريشيو",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJFxlOzfhVLj4R_mqZZq9EfLw",
+      "place_name": "RATIO Speciality Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-zam-al-yarmouk",
+      "nameEn": "COFFEE ZAM",
+      "nameAr": "زام البن",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJ-ySlIq7_Lj4RmaHpzahzFQY",
+      "place_name": "زام البن COFFEE ZAM",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "nus-talqimah-al-yarmouk",
+      "nameEn": "Nus Talqimah",
+      "nameAr": "نص تلقيمة",
+      "neighborhood": "al-yarmouk",
+      "place_id": "ChIJzfUSd7v_Lj4RJyW7Y1TXF_I",
+      "place_name": "نص تلقيمة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kapu-cafe-al-nahdah",
+      "nameEn": "Kapu Cafe",
+      "nameAr": "كابو محمصة وقهوة",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJ4RniBYIBLz4RMC2ze6F8FVs",
+      "place_name": "كابو | محمصة وقهوة - الخليج",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "dahal-specialty-al-nahdah",
+      "nameEn": "Dahal Specialty Coffee",
+      "nameAr": "ضحل قهوة مختصة",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJaVRqjQIBLz4RjU3QvqstvKA",
+      "place_name": "حال Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ghazala-cafe-al-nahdah",
+      "nameEn": "Ghazala Cafe",
+      "nameAr": "غزالة كافيه",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJl_84XocBLz4RUIdD7KGal8U",
+      "place_name": "غزالة كافيه | قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "shafel-roastery-al-nahdah",
+      "nameEn": "Shafel Coffee Roastery",
+      "nameAr": "محمصة قهوة شفل",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJ71ockjoBLz4R38YZnJDX3Jk",
+      "place_name": "محمصة قهوة شفل - فرع النهضة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "half-ten-al-nahdah",
+      "nameEn": "Half Ten",
+      "nameAr": "هاف تن",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJn8Af-m0BLz4RuzyVWRFA6lo",
+      "place_name": "Half Ten | هاف تن",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "bon-ferro-al-nahdah",
+      "nameEn": "Bon Ferro Specialty Coffee",
+      "nameAr": "بون فيرو قهوة مختصة",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJMY5USi0BLz4RcAL8th0VZS0",
+      "place_name": "بون فيرو قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-nahdah",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJgzeOOuYBLz4RHJVzrsLs9mM",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "chord-daily-coffee-al-nahdah",
+      "nameEn": "Chord Daily Coffee",
+      "nameAr": "كورد قهوة يومية",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJR3KFdwABLz4RceCChbi2onk",
+      "place_name": "كورد - قهوة يومية | chord - daily coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "taco-cup-al-nahdah",
+      "nameEn": "TACO CUP",
+      "nameAr": "تاكو كب قهوة مختصة",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJEwRlue0BLz4RXPIHql79IiI",
+      "place_name": "تاكو كب قهوة مختصة | TACO CUP",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "awj-cafe-al-nahdah",
+      "nameEn": "Awj Cafe",
+      "nameAr": "اوج كافيه",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJuUSJCgABLz4Rt-xRQEdmfK4",
+      "place_name": "اوج كافيه",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "vase-coffee-al-manar",
+      "nameEn": "VASE Coffee",
+      "nameAr": "ڤازا",
+      "neighborhood": "al-manar",
+      "place_id": "ChIJUTQ_wcwBLz4Rs8YAXmHaPa4",
+      "place_name": "VASE Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "recaf-al-manar",
+      "nameEn": "Recaf I",
+      "nameAr": "ريكاف",
+      "neighborhood": "al-manar",
+      "place_id": "ChIJoe6Cm5IBLz4RYzRX8dLYuok",
+      "place_name": "Recaf I ريكاف",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kultura-al-rayyan",
+      "nameEn": "Kultúra",
+      "nameAr": "كولتورا",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJgxuj8hYBLz4R0b9bc8h677w",
+      "place_name": "Kultúra",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "matcha"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "da-nonna-al-rayyan",
+      "nameEn": "DA NONNA ALRAYAN",
+      "nameAr": "دا نونا",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJlceOVAABLz4RjXL-MBP2vaY",
+      "place_name": "DA NONNA ALRAYAN",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "amber-speciality-al-rayyan",
+      "nameEn": "Amber Speciality Coffee & Roastery",
+      "nameAr": "أمبر",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJBbZCV3IHLz4RCV24pKzgNog",
+      "place_name": "Amber Speciality Coffee & Roastery",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "floated-al-rayyan",
+      "nameEn": "FLOATED",
+      "nameAr": "فلوتد",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJW5sxcgABLz4RbWSrklcpr-E",
+      "place_name": "فلوتد FLOATED",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sica-al-rayyan",
+      "nameEn": "sica",
+      "nameAr": "سيكا",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJRetLSAABLz4R-KBxVt8Awwc",
+      "place_name": "محمصة سيكا الريان - sica",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "fabrica-de-cafe-al-rayyan",
+      "nameEn": "Fabrica De Cafe",
+      "nameAr": "فابريكا",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJIWhbqo0BLz4RN4BZUyaJmrg",
+      "place_name": "Fabrica De Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "78-specialty-coffee-al-rayyan",
+      "nameEn": "78 Specialty Coffee",
+      "nameAr": "٧٨",
+      "neighborhood": "al-rayyan",
+      "place_id": "ChIJedqr12cBLz4RVswWTPZRPQc",
+      "place_name": "78 Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "the-it-al-rawabi",
+      "nameEn": "THE IT",
+      "nameAr": "THE IT",
+      "neighborhood": "al-rawabi",
+      "place_id": "ChIJ0dpXHSQHLz4RRf-E-5yFDc8",
+      "place_name": "Ar Rawabi",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "essert-al-rawabi",
+      "nameEn": "Essert",
+      "nameAr": "إسرت",
+      "neighborhood": "al-rawabi",
+      "place_id": "ChIJLz2JTwAHLz4RRuwZDBopO5o",
+      "place_name": "Essert",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "rukyah-al-fayha",
+      "nameEn": "Rukyah",
+      "nameAr": "ركية",
+      "neighborhood": "al-fayha",
+      "place_id": "ChIJXwlCbnsGLz4RAfgGBjPLqGY",
+      "place_name": "Dar ul Ruqya al-Sharia",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "roof-coffee-al-fayha",
+      "nameEn": "Roof coffee",
+      "nameAr": "قهوة رووف",
+      "neighborhood": "al-fayha",
+      "place_id": "ChIJbz_gRwAHLz4Rzo7jR0QMuFs",
+      "place_name": "قهوة رووف - Roof coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "maqha-mahamasa-al-raqban",
+      "nameEn": "Cafe & Roastery",
+      "nameAr": "مقهى ومحمصة",
+      "neighborhood": "al-raqban",
+      "place_id": "ChIJO49dPOEDLz4RQsSAhSSj3XU",
+      "place_name": "GOAT by REEHAM Roasters Berlin",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "on-al-rawdah",
+      "nameEn": "ON",
+      "nameAr": "أون",
+      "neighborhood": "al-rawdah",
+      "place_id": "ChIJzSWjcuYBLz4Rv-1qox0vvJQ",
+      "place_name": "ON",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "steam-roastery-al-rawdah",
+      "nameEn": "Steam Roastery",
+      "nameAr": "ستيم",
+      "neighborhood": "al-rawdah",
+      "place_id": "ChIJsw_DVQABLz4RGRjHHufPuYU",
+      "place_name": "Steam Roastery",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "serb-specialty-al-munsiyah",
+      "nameEn": "Serb Specialty Coffee",
+      "nameAr": "شرب قهوة مختصة",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJeRTdE4D_Lj4RyIN2BFaxVhA",
+      "place_name": "serb specialty coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "roasting-stages-al-munsiyah",
+      "nameEn": "Roasting Stages",
+      "nameAr": "مراحل التحميص",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJP6wvelr_Lj4RZP5jOnaIgTk",
+      "place_name": "مراحل التحميص Roasting Stages",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "eagle-coffee-al-munsiyah",
+      "nameEn": "Eagle Coffee",
+      "nameAr": "ايجل كوفي",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJ3SuDtZvlLj4R_LWg76UiFcE",
+      "place_name": "ايجل كوفي | قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "najd-roastery-al-munsiyah",
+      "nameEn": "Najd Roastery",
+      "nameAr": "محمصة وقهوة نجد",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
+      "place_name": "محمصة نجد",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cu-specialty-al-munsiyah",
+      "nameEn": "CU Specialty Coffee",
+      "nameAr": "سي يو كافيه",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJA8qH_LD_Lj4R_14sDVWPxYM",
+      "place_name": "سي يو كافيه - CU Specialty coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "45-degrees-al-munsiyah",
+      "nameEn": "45 Degrees Coffee",
+      "nameAr": "45 درجة",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJC7CqX6f_Lj4RBcgTk7r2keI",
+      "place_name": "45 Degrees Coffee Shop - Almunasia",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "true-side-al-munsiyah",
+      "nameEn": "TRUE SIDE",
+      "nameAr": "ترو سايد",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJoXjq-gD_Lj4Rm-keg7sX72o",
+      "place_name": "ترو سايد | TRUE SIDE",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-munsiyah",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJ9Y1teAD_Lj4RDIRsRSw6_9A",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "das-mond-al-munsiyah",
+      "nameEn": "Das Mond Café",
+      "nameAr": "داس موند",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJYSeMhcH_Lj4RW1BHwauFRG0",
+      "place_name": "Das Mond Café",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "anotherside-cafe-al-munsiyah",
+      "nameEn": "ANOTHERSIDE Cafe",
+      "nameAr": "أنذرسايد",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJM-4-6YT_Lj4Rgjnmdx8v-zI",
+      "place_name": "ANOTHERSIDE CAFE | أنذرسايد",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "brew92-an-nada",
+      "nameEn": "Brew 92 - Al Nada",
+      "nameAr": "برو92",
+      "neighborhood": "an-nada",
+      "place_id": "ChIJGYQ7bf39Lj4Rglkjr6vSewI",
+      "place_name": "Brew 92 - Al Nada",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ashjar-cafe-ar-rabi",
+      "nameEn": "Ashjar cafe",
+      "nameAr": "أشجار كافيه",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJdzbExw_jLj4RFmi7rthGO1E",
+      "place_name": "Ashjar cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "jazean-diplomatic-quarter",
+      "nameEn": "Jazean DQ",
+      "nameAr": "جازين",
+      "neighborhood": "diplomatic-quarter",
+      "place_id": "ChIJK3BsP6UdLz4RTFCSz6lNp5M",
+      "place_name": "Jazean DQ",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "markab-king-fahd",
+      "nameEn": "Markab",
+      "nameAr": "مركب",
+      "neighborhood": "king-fahd",
+      "place_id": "ChIJg7ZEawAdLz4RcnjDpcXeoAI",
+      "place_name": "Markab - مركب",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kernel-al-takhassusi",
+      "nameEn": "KERNEL",
+      "nameAr": "كرنل",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJhahPHmDjLj4RGCr2QdO-jB8",
+      "place_name": "KERNEL",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "percent-arabica-the-zone-al-takhassusi",
+      "nameEn": "% Arabica Riyadh The Zone",
+      "nameAr": "% أرابيكا ذا زون",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJF5EoaxwdLz4Rut0u4cOBeFI",
+      "place_name": "% Arabica Riyadh The Zone",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "idmi-nakheel-takhassusi",
+      "nameEn": "IDMI Coffee — Al Takhassousi / An Nakheel",
+      "nameAr": "محمصة وقهوة إدمي",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJqzcL3YsDLz4R-EoAquZD6I8",
+      "place_name": "IDMI COFFEE ROASTERS",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "groovy-al-takhassusi",
+      "nameEn": "groovy | House of French Toast",
+      "nameAr": "جروفي",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJIT3PS5PjLj4R94eVG54q5po",
+      "place_name": "groovy | House of French Toast",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "dust-and-verse-al-takhassusi",
+      "nameEn": "DUST & VERSE Takhassusi",
+      "nameAr": "دوست آند فيرس",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJgQ_GVK0DLz4RjQz968x0Syk",
+      "place_name": "DUST & VERSE Takhassusi",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "somo-al-takhassusi",
+      "nameEn": "SOMO",
+      "nameAr": "소모 | سومو",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJgzzOCAAdLz4Rm5L7Gw9O6ag",
+      "place_name": "소모 | SOMO",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "glim-al-takhassusi",
+      "nameEn": "GLIM",
+      "nameAr": "جليم",
+      "neighborhood": "al-takhassusi",
+      "place_id": "ChIJDxa3dQAdLz4RhvmtC-zavqE",
+      "place_name": "GLIM",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sculpture-al-aqiq",
+      "nameEn": "Sculpture Café",
+      "nameAr": "سكلبتشر",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJ9xMXu4PjLj4RyeaL6TUxnjo",
+      "place_name": "Sculpture Café",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ashjar-cafe-al-aqiq",
+      "nameEn": "Ashjar Cafe Alaqiq (Roastery)",
+      "nameAr": "أشجار كافيه العقيق (محمصة)",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJATOmsI3jLj4RCjyAr4nYpQs",
+      "place_name": "Ashjar Cafe Alaqiq (Roastery) | أشجار كافيه العقيق(محمصة)",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "shovel-al-aqiq",
+      "nameEn": "Shovel Roastery — Al Aqiq",
+      "nameAr": "شفل محمصة قهوة",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJM3-7dLnjLj4Rzm9W8CQJEx8",
+      "place_name": "Shovel Roastery",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "out-of-line-al-aqiq",
+      "nameEn": "OUT OF LINE COFFEE ROASTERS",
+      "nameAr": "اوت اوف لاين",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJqwjB73HjLj4RIAWD80rL-v8",
+      "place_name": "OUT OF LINE COFFEE ROASTERS",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "camel-step-al-aqiq",
+      "nameEn": "Camel Step — Al Aqiq",
+      "nameAr": "خطوة جمل",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJGVIKcyjjLj4RjS3dIrgeDU8",
+      "place_name": "Camel Step",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "scarf-al-aqiq",
+      "nameEn": "Scarf Café",
+      "nameAr": "سكارف كافيه",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJ_wgbdADjLj4RAssVT1gojcU",
+      "place_name": "سكارف كافيه |scarf cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "the-coffee-kingdom-al-aqiq",
+      "nameEn": "The Coffee Kingdom",
+      "nameAr": "ذا كوفي كنجدوم",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJtXEFRBHjLj4RYuWLdIgvAU4",
+      "place_name": "ذا كوفي كنجدوم",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "file-coffee-al-aqiq",
+      "nameEn": "File Coffee — Al Aqiq",
+      "nameAr": "فايل كافية",
+      "neighborhood": "al-aqiq",
+      "place_id": "ChIJsTaCxy_jLj4RFCXKE6JpUL8",
+      "place_name": "فايل كافية | File Coffee",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kultura-al-ghadeer",
+      "nameEn": "Kultúra",
+      "nameAr": "كولتورا",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJLRjL7_njLj4Rem6JXpZnF6g",
+      "place_name": "Kultúra",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "matcha"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "tad-coffee-al-ghadeer",
+      "nameEn": "TAD Coffee | قهوة طاد",
+      "nameAr": "قهوة طاد",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJ00ovVJDjLj4RiroHa1Y68dE",
+      "place_name": "TAD Coffee | قهوة طاد",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ulica-al-ghadeer",
+      "nameEn": "ULICA SPECIALTY COFFEE",
+      "nameAr": "يوليكا",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJY_TTCr3jLj4R7es9JgXuPY0",
+      "place_name": "ULICA SPECIALTY COFFEE",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drip-al-ghadeer",
+      "nameEn": "Drip",
+      "nameAr": "دريب",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJ1yGpCjzjLj4RewpeTgW3P4U",
+      "place_name": "Drip",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "blumen-al-ghadeer",
+      "nameEn": "Blumen Cafe — الغدير",
+      "nameAr": "بلومن كافيه",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJYRbBYS3jLj4RhIXRHhGFNso",
+      "place_name": "Blumen Cafe - الغدير",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "brsk-al-ghadeer",
+      "nameEn": "BRSK",
+      "nameAr": "برسك",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJZ3gqKebjLj4Rn4-EcDHrolo",
+      "place_name": "BRSK",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-ghadeer",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJS6wxdgDjLj4RCdfJDs7dpyI",
+      "place_name": "Drive Coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ghandoura-al-ghadeer",
+      "nameEn": "Ghandoura",
+      "nameAr": "غندورة",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
+      "place_name": "Ghandoura",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "acres-al-arid",
+      "nameEn": "Acres Coffee Roaster",
+      "nameAr": "محمصة ومقهى ايكرز",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJ0ezqrdjlLj4RdgHtPnUfDNg",
+      "place_name": "Acres Coffee Roaster | محمصة ومقهى ايكرز",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kicksters-lab-al-arid",
+      "nameEn": "Kicksters Lab",
+      "nameAr": "محمصة كيكسترز",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJ-cd4QwDvLj4RSXOz8uv8bvg",
+      "place_name": "Kicksters Lab | محمصة كيكسترز",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "shovel-al-arid",
+      "nameEn": "Shovel Coffee Roaster — العارض",
+      "nameAr": "محمصة قهوة شفل | العارض",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJt22dHUjlLj4RxZHtYjvL854",
+      "place_name": "Shovel Roastery",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "archi-al-arid",
+      "nameEn": "ARCHI",
+      "nameAr": "ارتشي",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJPbfIOQDlLj4RCDS0gWA7dPw",
+      "place_name": "ARCHI",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-arid",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
+      "place_name": "Drive coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "roasting-house-al-arid",
+      "nameEn": "Roasting House Al Aaridh",
+      "nameAr": "بيت التحميص العارض",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJLUvOldTvLj4Rbgrf6FldYFQ",
+      "place_name": "بيت التحميص العارض | Roasting House Al Aaridh",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-arid",
+      "nameEn": "Coffee Address | عنوان القهوة",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJlSLGFQDvLj4Rn8WLBpqHbvI",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "shiro-al-arid",
+      "nameEn": "SHiRO",
+      "nameAr": "شيرو",
+      "neighborhood": "al-arid",
+      "place_id": "ChIJJ7pV1sHlLj4RJ7qet2EvOJE",
+      "place_name": "SHiRO",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "cypress-al-qirawan",
+      "nameEn": "CYPRESS Coffee & Roastery",
+      "nameAr": "سايبرس قهوة و محمصة",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJocCx6dnlLj4RauOOfJjRveg",
+      "place_name": "سايبرس قهوة و محمصة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "3bean-al-qirawan",
+      "nameEn": "3bean Coffee Roastery",
+      "nameAr": "محمصة ثري بين",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJyV6QhYznLj4RbkaGIPEZOvw",
+      "place_name": "3bean Coffee roastery",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "ashjar-cafe-al-qirawan",
+      "nameEn": "Ashjar Cafe Al Qirawan",
+      "nameAr": "أشجار كافيه القيروان",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJEdz_FgDnLj4RwN8jmyviHuo",
+      "place_name": "Ashjar cafe Al Qirawan | أشجار كافيه القيروان",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drip-al-qirawan",
+      "nameEn": "Drip",
+      "nameAr": "دريب",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJe5mqHBHlLj4RiviIxdUpu4w",
+      "place_name": "Drip",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-side-al-qirawan",
+      "nameEn": "Coffee Side",
+      "nameAr": "كوفي سايد",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJ_W4o9WDlLj4Robcs4L31LoQ",
+      "place_name": "Coffee Side كوفي سايد",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "caf-lab-al-qirawan",
+      "nameEn": "CAF LAB",
+      "nameAr": "كاف لاب",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJJ8jxg8LnLj4RBLXNf_W8X34",
+      "place_name": "CAF LAB I Al Qairawan",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-qirawan",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
+      "place_name": "Drive coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "scout-coffee-al-qirawan",
+      "nameEn": "Scout Coffee",
+      "nameAr": "قهوة سكاوت",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJU3jQpHflLj4RC9NG0oMbOZY",
+      "place_name": "قهوة سكاوت",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": false,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "white-roastery-al-wadi",
+      "nameEn": "White Roastery",
+      "nameAr": "وايت روستري",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJU6e4WUz9Lj4Rd-kH1pevFQg",
+      "place_name": "White Roastery",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "parole-cafe-al-wadi",
+      "nameEn": "Parole Cafe",
+      "nameAr": "بارولي كافيه",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJMRwogAD9Lj4RZF5OsS7fhQo",
+      "place_name": "بارولي كافيه",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "wama-coffee-al-wadi",
+      "nameEn": "Wama Coffee",
+      "nameAr": "قهوة واما",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJCSwSXgD9Lj4RMrpthTZH11M",
+      "place_name": "Wama coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "unique-drip-al-mohammadiyah",
+      "nameEn": "UNIQUE DRIP",
+      "nameAr": "يونيـك دريب",
+      "neighborhood": "al-mohammadiyah",
+      "place_id": "ChIJxTZbX_IdLz4ReWIBr-WPB84",
+      "place_name": "UNIQUE DRIP | Specialty Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hjeen-roasters-al-mohammadiyah",
+      "nameEn": "Hjeen Roasters",
+      "nameAr": "هجين",
+      "neighborhood": "al-mohammadiyah",
+      "place_id": "ChIJFSCjIgAdLz4R7z5COuXI6KE",
+      "place_name": "Hjeen Roasters | Espresso Bar",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hekaya-tale-al-mohammadiyah",
+      "nameEn": "Hekaya",
+      "nameAr": "حكاية مقهى مختص ومحمصة",
+      "neighborhood": "al-mohammadiyah",
+      "place_id": "ChIJr2q5B639Lj4RiSp_6BiPoT4",
+      "place_name": "Hekaya production",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "roaster",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "parka-coffee-al-muruj",
+      "nameEn": "Parka",
+      "nameAr": "باركا (قهوة مختصه)",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJAQFidV_9Lj4RdyMWm7eXVjI",
+      "place_name": "باركا (قهوة مختصه ) - parka coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "terra-cafe-al-muruj",
+      "nameEn": "TERRA CAFE",
+      "nameAr": "تيرا كافية",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJb8HxCwDjLj4RGatyVGYPvng",
+      "place_name": "تيرا كافية | TERRA CAFE",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "rabka-al-muruj",
+      "nameEn": "Rabka",
+      "nameAr": "ربكة",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJc_IJ-iXjLj4RR8AbQj9QEHo",
+      "place_name": "Rabka",
+      "dine_in": false,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "lasani-cafe-al-malaz",
+      "nameEn": "Lasani Cafe",
+      "nameAr": "مقهى لاثاني",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJr23uWCgFLz4RsYxj7UYpqXI",
+      "place_name": "Lasani Cafe | مقهى لاثاني",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "golden-pot-al-malaz",
+      "nameEn": "Golden Pot",
+      "nameAr": "الركوة الذهبية",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJfyMLsJoFLz4R1NHEGR1pOIo",
+      "place_name": "golden pot",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "walnut-wood-coffee-al-malaz",
+      "nameEn": "Walnut Wood Coffee",
+      "nameAr": "قهوة خشب الجوز",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJVX80RLoFLz4RCthkVg4fhLE",
+      "place_name": "Walnut Wood Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hazzah-coffee-al-malaz",
+      "nameEn": "Hazzah Coffee",
+      "nameAr": "حزّة",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJXXFVfbsFLz4R4g1fMnYvWRM",
+      "place_name": "Hazzah Coffee",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "canto-al-malaz",
+      "nameEn": "Canto",
+      "nameAr": "كانتو",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJbZg1RREFLz4R_tcSTu4Njbs",
+      "place_name": "Canto",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "house-of-matcha-al-mohammadiyah",
+      "nameEn": "House of Matcha",
+      "nameAr": "هاوس اوف ماتشا",
+      "neighborhood": "al-mohammadiyah",
+      "place_id": "ChIJoS6Cev8dLz4Reg6_AXVgoY0",
+      "place_name": "House of Matcha",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "house-of-matcha-sulimaniyah",
+      "nameEn": "House of Matcha",
+      "nameAr": "هاوس اوف ماتشا",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJx-oDiMwDLz4RTomabzh3hls",
+      "place_name": "House of Matcha",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "somatcha-an-nada",
+      "nameEn": "SoMatcha",
+      "nameAr": "سو ماتشا",
+      "neighborhood": "an-nada",
+      "place_id": "ChIJjbrJQr39Lj4RqxuQvzGHSjg",
+      "place_name": "SoMatcha",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "the-matcha-bar-olaya",
+      "nameEn": "The Matcha Bar",
+      "nameAr": "ذا ماتشا بار",
+      "neighborhood": "olaya",
+      "place_id": "ChIJLaOeAU4DLz4RnQh0rN7TQ40",
+      "place_name": "The Matcha Bar",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "with-heart-diriyah",
+      "nameEn": "With Heart",
+      "nameAr": "ويث هارت",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJmyDybADhLj4RS_5WMqIdhPM",
+      "place_name": "With Heart",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kuro-sulimaniyah",
+      "nameEn": "KURO",
+      "nameAr": "كورو",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJAbv74u4DLz4Rc-e4mCac04w",
+      "place_name": "KURO كورو",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "opinion-al-mathar",
+      "nameEn": "Opinion",
+      "nameAr": "اوبنيون",
+      "neighborhood": "al-mathar",
+      "place_id": "ChIJERtpPH0DLz4RnyGqEWJw6HI",
+      "place_name": "Almather Housing Complex",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "opinion-hittin",
+      "nameEn": "Opinion",
+      "nameAr": "اوبنيون",
+      "neighborhood": "hittin",
+      "place_id": "ChIJX-CJodHjLj4R7U3j7UMywlI",
+      "place_name": "Hittin",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kultura-hittin",
+      "nameEn": "Kultúra",
+      "nameAr": "كولتورا",
+      "neighborhood": "hittin",
+      "place_id": "ChIJn6Xvzy_jLj4R52eHZGPUGiM",
+      "place_name": "Kultúra",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "kultura-al-malqa",
+      "nameEn": "Kultúra",
+      "nameAr": "كولتورا",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJpzPXwKnnLj4RCKE2rrU_zNI",
+      "place_name": "Kultúra كلتورا",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "quokka-coffee-al-muruj",
+      "nameEn": "Quokka Coffee",
+      "nameAr": "كواكا كافيه",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJE5LQUMLjLj4RVQbaHAFhtNc",
+      "place_name": "كواكا كافيه",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "quokka-coffee-ghirnatah",
+      "nameEn": "Quokka Coffee Granada",
+      "nameAr": "كواكا غرناطة",
+      "neighborhood": "ghirnatah",
+      "place_id": "ChIJDUW9BQD_Lj4RYb7l1Yp-jlU",
+      "place_name": "Quokka | كواكا غرناطة",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "iota-al-ghadeer",
+      "nameEn": "IOTA",
+      "nameAr": "ايوتا",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJK_9vCyHjLj4RAR4kYeNeGfw",
+      "place_name": "IOTA",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "some-coffee-bar-al-muruj",
+      "nameEn": "Some Coffee Bar",
+      "nameAr": "بعض القهوة",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJnZX2k07jLj4RtzK9zf17r0M",
+      "place_name": "Some Coffee Bar",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "remis-matcha-club-hittin",
+      "nameEn": "Rémi's Matcha Club",
+      "nameAr": "ريمي ماتشا كلوب",
+      "neighborhood": "hittin",
+      "place_id": "ChIJ6SoOEADjLj4RDJ6r9A28D84",
+      "place_name": "Rémi’s Matcha Club",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "okawa-cafe-al-malqa",
+      "nameEn": "OKAWA Cafe Al Malqa",
+      "nameAr": "أوكاوا",
+      "neighborhood": "al-malqa",
+      "place_id": "ChIJc0fQcQDjLj4RUdRKZAPcEQI",
+      "place_name": "OKAWA Cafe Al Malqa",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "re-matcha-al-hamra",
+      "nameEn": "Re matcha",
+      "nameAr": "ري ماتشا",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJa93ebQDjLj4RGSje3XOnQ4Q",
+      "place_name": "Re matcha",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "flow-matcha-at-taawun",
+      "nameEn": "FLOW MATCHA",
+      "nameAr": "فلو ماتشا",
+      "neighborhood": "at-taawun",
+      "place_id": "ChIJCQdnXgD9Lj4RVRz9dz1megA",
+      "place_name": "FLOW MATCHA",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "hokkaido-al-hamra",
+      "nameEn": "Hokkaido",
+      "nameAr": "هوكايدو الحمراء",
+      "neighborhood": "al-hamra",
+      "place_id": "ChIJXxnECQD_Lj4R0l-tYvtkjME",
+      "place_name": "هوكايدو الحمراء | Hokkaido",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "happyland-matcha-diriyah",
+      "nameEn": "Happyland Matcha",
+      "nameAr": "هابي لاند ماتشا",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJE9_SsWbhLj4RllLfSbvCL-o",
+      "place_name": "Happyland Matcha",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "matcha",
+        "qahwa"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "24cafe-al-wadi",
+      "nameEn": "24Cafe",
+      "nameAr": "24Cafe",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJG5C3EgD9Lj4R88h-KsHTFcs",
+      "place_name": "24Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "24cafe-al-yasmin",
+      "nameEn": "24Cafe",
+      "nameAr": "24Cafe",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJ6-gCkwvlLj4RcHgbAELthf4",
+      "place_name": "24Cafe",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "24cafe-al-rabi",
+      "nameEn": "24Cafe",
+      "nameAr": "24Cafe",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJNYv530AFLz4RlgfMG7NdRp4",
+      "place_name": "24Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "agrio-al-rabi",
+      "nameEn": "AGRIO",
+      "nameAr": "اقريو",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJXSj_DwDjLj4REAYeLeil67g",
+      "place_name": "اقريو - AGRIO",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "camel-step-al-mursalat",
+      "nameEn": "Camel Step",
+      "nameAr": "خطوة جمل",
+      "neighborhood": "al-mursalat",
+      "place_id": "ChIJjeAEbQD9Lj4RwV6DczzxT-Y",
+      "place_name": "Camel Step",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "camel-step-diriyah",
+      "nameEn": "Camel Step",
+      "nameAr": "خطوة جمل",
+      "neighborhood": "diriyah",
+      "place_id": "ChIJOSvaa4HhLj4R_l1RLPcU5_Q",
+      "place_name": "Camel Step",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-malaz",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJzRf0UwAFLz4R-iHhT-brVQY",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-murabba",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-murabba",
+      "place_id": "ChIJgQEv4zEFLz4RDgQ_jnWQFFE",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-muruj",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJwfaGGiDjLj4Rg36EcDfvtF8",
+      "place_name": "address cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-wadi",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJw9IL_yP9Lj4Rl-s5A92etI4",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-rabi",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJ10hvOwADLz4RR37FAPgPJfo",
+      "place_name": "Coffee Address",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "coffee-address-al-rabwah",
+      "nameEn": "Coffee Address",
+      "nameAr": "عنوان القهوة",
+      "neighborhood": "al-rabwah",
+      "place_id": "ChIJqz8Jqk0DLz4RtetmnkR5_ZA",
+      "place_name": "Coffee Address | عنوان القهوة",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "java-cafe-al-malaz",
+      "nameEn": "Java Cafe",
+      "nameAr": "جافا كافيه",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJh1NdLkQELz4R28n2qdX3reY",
+      "place_name": "جافا كافيه Java Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": false,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "java-cafe-al-manar",
+      "nameEn": "Java Cafe",
+      "nameAr": "جافا كافيه",
+      "neighborhood": "al-manar",
+      "place_id": "ChIJP3IshJsBLz4R0kVFTMtTlAQ",
+      "place_name": "Java Cafe",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "java-cafe-al-muruj",
+      "nameEn": "Java Cafe",
+      "nameAr": "جافا كافيه",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJuYwiS6PiLj4RRlUyXcFysHk",
+      "place_name": "جافا كافيه Java Cafe‎",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "java-cafe-al-wadi",
+      "nameEn": "Java Cafe",
+      "nameAr": "جافا كافيه",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJXzNA-hr9Lj4RPNGcaLtUOVU",
+      "place_name": "Java Cafe",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "java-cafe-al-rabi",
+      "nameEn": "Java Cafe",
+      "nameAr": "جافا كافيه",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJqd-bBwDjLj4R2d50wDLTI7A",
+      "place_name": "Java Cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "java-cafe-al-rawabi",
+      "nameEn": "Java Cafe",
+      "nameAr": "جافا كافيه",
+      "neighborhood": "al-rawabi",
+      "place_id": "ChIJc31OzOEHLz4REWusjJWHU00",
+      "place_name": "Java Cafe",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "meeting-caffeine-al-rabi",
+      "nameEn": "MEETING CAFFEINE",
+      "nameAr": "MEETING CAFFEINE",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJ9_gOE3oDLz4Rm6joL2iCcGk",
+      "place_name": "MEETING CAFFEINE",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "mezaj-al-malaz",
+      "nameEn": "MEZAJ",
+      "nameAr": "مزاج مغربي",
+      "neighborhood": "al-malaz",
+      "place_id": "ChIJp1mXkpIFLz4RQjfAZCvEBP4",
+      "place_name": "MEZAJ",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "mezaj-maghrebi-al-wadi",
+      "nameEn": "Mezaj Maghrebi",
+      "nameAr": "مزاج مغربي",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJky786gL9Lj4R7VWcfkuxdxI",
+      "place_name": "Mezaj Maghrebi",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "moroccan-taste-al-muruj",
+      "nameEn": "Moroccan Taste",
+      "nameAr": "Moroccan Taste",
+      "neighborhood": "al-muruj",
+      "place_id": "ChIJQZzNKgTjLj4RXF-uBilbBkc",
+      "place_name": "Moroccan Taste",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "n5-caffe-al-rabi",
+      "nameEn": "N5 Caffe",
+      "nameAr": "ان فايف كافيه",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
+      "place_name": "N5 Caffe | ان فايف قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "n5-caffe-al-rabi-2",
+      "nameEn": "N5 Caffe",
+      "nameAr": "ان فايف كافيه",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
+      "place_name": "N5 Caffe | ان فايف قهوة مختصة",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "sol-olas-al-ghadeer",
+      "nameEn": "SOL OLAS",
+      "nameAr": "SOL OLAS",
+      "neighborhood": "al-ghadeer",
+      "place_id": "ChIJ06mtUtXjLj4RdZbvt04WbFk",
+      "place_name": "SOL OLAS",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "three-sulimaniyah",
+      "nameEn": "Three",
+      "nameAr": "Three",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJ0UUKW1MDLz4RsuMZrIvZ2eg",
+      "place_name": "Three",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "threes-al-yasmin",
+      "nameEn": "Threes",
+      "nameAr": "Threes",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJ9903awDlLj4RQC11aW_XM90",
+      "place_name": "Threes",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "wave-cafe-al-rabi",
+      "nameEn": "Wave cafe",
+      "nameAr": "Wave cafe",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJEUHKsxr_Lj4RmpbATXPRbgQ",
+      "place_name": "Wave cafe",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": null,
+      "curbside_pickup": false,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-rabi",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "place_name": "درايف كوفي Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-rabi-2",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "place_name": "درايف كوفي Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-rabi-3",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "place_name": "درايف كوفي Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-rabi-4",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "place_name": "درايف كوفي Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-rabi-5",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-rabi",
+      "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+      "place_name": "درايف كوفي Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "a-plus-as-salam",
+      "nameEn": "A PLUS",
+      "nameAr": "اي بلس درايف ثرو",
+      "neighborhood": "as-salam",
+      "place_id": "ChIJez3NxhAHLz4RMTVXVk2x3nk",
+      "place_name": "A PLUS | Drive thru",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "arabica-cafe-ghubairah",
+      "nameEn": "Arabica Cafe",
+      "nameAr": "أرابيكا كافيه",
+      "neighborhood": "ghubairah",
+      "place_id": "ChIJF3aAw-UFLz4RPy2LtGYhbqY",
+      "place_name": "Arabica Cafe",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "arabica-coffee-al-wisham",
+      "nameEn": "Arabica coffee",
+      "nameAr": "أرابيكا كافيه",
+      "neighborhood": "al-wisham",
+      "place_id": "ChIJqc-MxOEELz4RrpiHIW3gid0",
+      "place_name": "Arabica coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-badr",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "badr",
+      "place_id": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
+      "place_name": "درايف كوفي | DRIVE COFFEE",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-aziziyah",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-aziziyah",
+      "place_id": "ChIJvw8EOQAJLz4RtO1s9cD9QjQ",
+      "place_name": "درايف كوفي | DRIVE COFFEE",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-hazm",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-hazm",
+      "place_id": "ChIJcTDnbgARLz4RStpCnB_twWo",
+      "place_name": "DRIVE COFFEE",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-andalus",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-andalus",
+      "place_id": "ChIJw__YYAABLz4RSJoIVOxds18",
+      "place_name": "درايف كوفي | DRIVE COFFEE",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-khaleej",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-khaleej",
+      "place_id": "ChIJfd9pRwABLz4RrD1SbHX2Vvs",
+      "place_name": "درايف كوفي | DRIVE COFFEE",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-an-nasim-al-gharbi",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "an-nasim-al-gharbi",
+      "place_id": "ChIJDa8NbQCrLz4Rhy6A-Am2EHQ",
+      "place_name": "Drive Coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-ar-rimal",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "ar-rimal",
+      "place_id": "ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
+      "place_name": "Drive Coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-qirawan-2",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-qirawan",
+      "place_id": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
+      "place_name": "Drive coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-yasmin",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-yasmin",
+      "place_id": "ChIJVcmNXQDjLj4RXKXxgOcwKdU",
+      "place_name": "Drive coffee",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": null,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-as-sahafah",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "as-sahafah",
+      "place_id": "ChIJ4-ozXQDjLj4Rve97xjnbv88",
+      "place_name": "Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-badr-2",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "badr",
+      "place_id": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
+      "place_name": "درايف كوفي | DRIVE COFFEE",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-nakheel",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-nakheel",
+      "place_id": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
+      "place_name": "Drive coffee درايف كوفي",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drive-al-janadriyyah",
+      "nameEn": "Drive Coffee",
+      "nameAr": "درايف كوفي",
+      "neighborhood": "al-janadriyyah",
+      "place_id": "ChIJL2MLegBTLj4RDNtCfoYA_RQ",
+      "place_name": "Drive coffee",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-namar",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "namar",
+      "place_id": "ChIJAbffa-cPLz4R4nvYws-ZjJI",
+      "place_name": "dr. CAFE Namar | د.كيف نمار | Manual Brew",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-sulimaniyah",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJL_yPwFEDLz4RmRHSeaCibK0",
+      "place_name": "dr.CAFE SUPPORT CENTER",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-nahdah",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-nahdah",
+      "place_id": "ChIJ81R0BlIALz4RKf_ZCaTfVqg",
+      "place_name": "dr.CAFE An Nahdah | د.كيف النهضة | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-badr",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "badr",
+      "place_id": "ChIJr2Hdp0EOLz4RegSTuRkpadg",
+      "place_name": "dr.CAFE Badr, Al Shifa | د.كيف بدر، الشفاء | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-kkia",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "kkia",
+      "place_id": "ChIJgyGF8UjxLj4RqPeCEQa_Ca8",
+      "place_name": "dr.CAFE COFFEE | V12 Station",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-jazirah",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-jazirah",
+      "place_id": "ChIJd4PuXOIGLz4RUgnyRh2Z3wk",
+      "place_name": "dr.CAFE AL Jazira Ex.15 | د.كيف مخرج 15 الجزيرة | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-jazirah-2",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-jazirah",
+      "place_id": "ChIJd4PuXOIGLz4RUgnyRh2Z3wk",
+      "place_name": "dr.CAFE AL Jazira Ex.15 | د.كيف مخرج 15 الجزيرة | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-aziziyah",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-aziziyah",
+      "place_id": "ChIJO5JV094ILz4RE3tEHmtlvMQ",
+      "place_name": "dr. CAFE Al Azizah | د.كيف العزيزية | Manual Brew | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-an-nasim",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "an-nasim",
+      "place_id": "ChIJJwebVZIALz4R0nx2bzjX8J0",
+      "place_name": "dr.CAFE An Naseem Gharbi | د.كيف النسيم الغربي | Drive Thru",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": false,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-wadi",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-wadi",
+      "place_id": "ChIJIwhasQX9Lj4RSPP_4Ll3F0U",
+      "place_name": "dr.CAFE Al Wadi | د.كيف الوادي | Drive Thru",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": false,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-an-nasim-al-gharbi",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "an-nasim-al-gharbi",
+      "place_id": "ChIJJwebVZIALz4R0nx2bzjX8J0",
+      "place_name": "dr.CAFE An Naseem Gharbi | د.كيف النسيم الغربي | Drive Thru",
+      "dine_in": true,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": false,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-munsiyah",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-munsiyah",
+      "place_id": "ChIJqzJ3rKL9Lj4R8mtz4c8x5PY",
+      "place_name": "dr.CAFE Thoumamah Rd | د.كيف طريق الثمامة | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-shubra",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "shubra",
+      "place_id": "ChIJL022oooPLz4RSoD0K1HR-vw",
+      "place_name": "dr.CAFE Shubra | د.كيف شبرا | Drive Thru",
+      "dine_in": null,
+      "outdoor_seating": false,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-manfuha",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "manfuha",
+      "place_id": "ChIJHwOkiHkDLz4Rw9s3NxGe7fI",
+      "place_name": "dr.CAFE KF Rd, Al Olaya | د.كيف طريق الملك فهد، العليا | Hybrid V12 Station",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-sulimaniyah-2",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "sulimaniyah",
+      "place_id": "ChIJL_yPwFEDLz4RmRHSeaCibK0",
+      "place_name": "dr.CAFE SUPPORT CENTER",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-tuwaiq",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "tuwaiq",
+      "place_id": "ChIJ9z9599gjLz4RtajwjDDDnc0",
+      "place_name": "dr.CAFE Fuelax Station | د.كيف طريق جدة السريع | Manual Brew | Drive Thru",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-mughrizat",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-mughrizat",
+      "place_id": "ChIJJ7LT92j9Lj4RNZ1Q91EYNLk",
+      "place_name": "dr.CAFE Mughrazat Park | د.كيف حديقة المغرزات | Manual Brew",
+      "dine_in": true,
+      "outdoor_seating": null,
+      "takeout": null,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-al-mathar",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "al-mathar",
+      "place_id": "ChIJHwOkiHkDLz4Rw9s3NxGe7fI",
+      "place_name": "dr.CAFE KF Rd, Al Olaya | د.كيف طريق الملك فهد، العليا | Hybrid V12 Station",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": true,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    },
+    {
+      "id": "drcafe-as-suwaidi",
+      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف كافيه",
+      "neighborhood": "as-suwaidi",
+      "place_id": "ChIJC9-F2ogPLz4Rh0O4S3P3PDA",
+      "place_name": "dr.CAFE Al Qasr, As Suwaidi | د.كيف القصر، السويدي",
+      "dine_in": true,
+      "outdoor_seating": true,
+      "takeout": true,
+      "delivery": true,
+      "curbside_pickup": null,
+      "moment_tags": [
+        "drive-through"
+      ],
+      "status": "ok"
+    }
+  ],
+  "summary": {
+    "total": 343,
+    "by_status": {
+      "ok": 343,
+      "no_match": 0,
+      "error": 0
+    },
+    "dine_in": {
+      "true": 287,
+      "false": 4,
+      "null": 52
+    },
+    "outdoor_seating": {
+      "true": 141,
+      "false": 43,
+      "null": 159
+    },
+    "eligible_baynana": 289,
+    "ineligible": 16,
+    "unsure": 38,
+    "drive_through_tagged": 78,
+    "drive_through_but_dine_in": 50
+  }
+}

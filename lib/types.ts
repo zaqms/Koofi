@@ -118,6 +118,18 @@ export type Shop = {
    * directory only. They stay out of default specialty discovery.
    */
   catalogLane?: "drive-through";
+  /**
+   * Google Places dine-in. `null` / missing = unresolved — بيننا
+   * fail-closed until Scout confirms. Halfway-only; not a Soft Places vibe.
+   */
+  dineIn?: boolean | null;
+  /**
+   * Google Places outdoor seating. `null` / missing = unresolved.
+   * Sit-down for بيننا when `true`, even if `dineIn` is false.
+   */
+  outdoorSeating?: boolean | null;
+  /** Google Places id (`ChIJ…`) from the 19 Sep 2026 attrs backfill. */
+  placeId?: string;
   example: boolean;
 };
 

@@ -4,8 +4,6 @@ import { CityDiscovery } from "@/components/city-discovery";
 import { DocumentLocale } from "@/components/document-locale";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
-import { ShopClaimProvider } from "@/components/shop-claim-provider";
-import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import {
   listDirectoryShops,
@@ -82,21 +80,17 @@ export function HomeLanding({
       />
       <CityDiscovery>
         {bareHome ? <BrowseNeighborhoods language={language} /> : null}
-        <ShopUpvoteProvider>
-          <ShopClaimProvider>
-            {filterPutsDirectoryFirst(listing, null, chipMoment) ? (
-              <>
-                {directory}
-                {week}
-              </>
-            ) : (
-              <>
-                {week}
-                {directory}
-              </>
-            )}
-          </ShopClaimProvider>
-        </ShopUpvoteProvider>
+        {filterPutsDirectoryFirst(listing, null, chipMoment) ? (
+          <>
+            {directory}
+            {week}
+          </>
+        ) : (
+          <>
+            {week}
+            {directory}
+          </>
+        )}
       </CityDiscovery>
       <SiteFooter language={language} />
     </main>

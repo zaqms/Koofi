@@ -15,6 +15,12 @@
   --gold-deep: #8d6b38;
   --passport-wash: #f3ead8;
   --blush: #e3c4b8;
+  /* Wain brand guidelines v1 — listing card */
+  --wain-paper: #fbf8f2;
+  --wain-warm-cream: #f5f0e7;
+  --wain-divider: #ded4c7;
+  --wain-soft-taupe: #9a887d;
+  --radius-card: 20px;
 }
 
 @theme inline {
@@ -32,6 +38,10 @@
   --color-gold-deep: var(--gold-deep);
   --color-passport-wash: var(--passport-wash);
   --color-blush: var(--blush);
+  --color-wain-paper: var(--wain-paper);
+  --color-wain-warm-cream: var(--wain-warm-cream);
+  --color-wain-divider: var(--wain-divider);
+  --color-wain-soft-taupe: var(--wain-soft-taupe);
   --font-sans: var(--font-koofi);
   --font-serif: var(--font-passport), "Times New Roman", serif;
 }

@@ -251,6 +251,7 @@ const consumers = [
   ["lib/copy.ts", "copy.chips"],
   ["lib/sitemap-xml.ts", "indexed chip URLs"],
   ["lib/most-popular.ts", "static params"],
+  ["lib/listing-tags.ts", "listing card pills"],
 ];
 for (const [path, why] of consumers) {
   const src = read(path);

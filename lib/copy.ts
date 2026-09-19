@@ -500,6 +500,14 @@ export const copy = {
     ar: "شارك",
     en: "Share",
   },
+  listingMap: {
+    ar: "الخريطة",
+    en: "Map",
+  },
+  listingShare: {
+    ar: "مشاركة",
+    en: "Share",
+  },
   packetCopied: {
     ar: "تم النسخ",
     en: "Copied",

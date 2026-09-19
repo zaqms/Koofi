@@ -217,7 +217,7 @@ export function ShopDirectory({
         />
       ) : null}
 
-      <ul className="mt-4 grid gap-2">
+      <ul className="mt-4 grid gap-3">
         {visible.map((shop) => (
           <DirectoryCard key={shop.id} shop={shop} language={language} />
         ))}

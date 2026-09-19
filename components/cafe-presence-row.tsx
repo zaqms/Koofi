@@ -7,6 +7,7 @@ import { TargetIcon } from "@/components/target-icon";
 import { ViralShareActions } from "@/components/viral-share";
 import { copy } from "@/lib/copy";
 import { shopMapsHref } from "@/lib/public-url";
+import { SHOW_INVITE_CTA, SHOW_TONIGHT_CARD } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
 
 type CafePresenceRowProps = {
@@ -17,8 +18,8 @@ type CafePresenceRowProps = {
 };
 
 /**
- * Locked cafe actions: compact like, listing-share icon, wider gold وين؟,
- * Maps hugging its label. No X / Stories / Snap grid.
+ * Locked cafe actions: compact like, listing-share icon, parked وين؟
+ * (`SHOW_INVITE_CTA`), Maps hugging its label. No X / Stories / Snap grid.
  */
 export function CafePresenceRow({
   shop,
@@ -45,12 +46,14 @@ export function CafePresenceRow({
         compact
         variant={variant === "passport" ? "passport" : "default"}
       />
-      <ViralShareActions
-        shop={shop}
-        language={language}
-        photo={photo}
-        variant={variant}
-      />
+      {SHOW_TONIGHT_CARD || SHOW_INVITE_CTA ? (
+        <ViralShareActions
+          shop={shop}
+          language={language}
+          photo={photo}
+          variant={variant}
+        />
+      ) : null}
       <MapsLink
         href={shopMapsHref(shop)}
         shopId={shop.id}

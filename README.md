@@ -19,7 +19,7 @@ Owner: **Amjad Puliyali**. The real shop list still comes from him.
 - Reason over rating. Neighborhood and moment still choose the three shops — never sort or pick by stars. A real shop card may show Google’s rating, review count, and one short snippet via Places. If `GOOGLE_PLACES_API_KEY` is missing or the lookup fails, the rating row is hidden. Do not scrape Maps.
 - **Been here** on the web (`localStorage`) so we stop offering that place as new.
 - Optional card at `/c/[id]`: name AR/EN, neighborhood, pin, vibe tags. Unclaimed shops stay a thin card. Verified shops unlock the richer Passport card (owner photos, brewing/note, owner-supplied hours only, thin offer, optional phone/IG, share, shared like, Maps CTA). Do not invent hours. Do not ask people to share a Koofi URL.
-- **وين؟ / wain?** is the primary share on Passport and thin cards. Prefill `وين؟ أنا بـ {name}` / `wain? I'm at {name}` + `/c/{id}?from=tonight`. Share sends a photo-forward 9:16 image (full-bleed `passport.photos[0]` or logo, `wain.lol` watermark) **and** that copy together. If Web Share cannot attach a file, we download the image and copy the text. The PNG embeds the hero from disk so Preview SSO cannot strip the photo. Invite copy stays on the share text — never baked onto the card. Tracked as `invite_open` / `invite_share`.
+- **وين؟ / wain?** cafe-card CTA is parked (`SHOW_INVITE_CTA = false`) until share-tonight strategy is locked. Invite sheet, mint, and `invite_*` events stay wired but are not user-facing. Prefill stays `وين؟ أنا بـ {name}` / `wain? I'm at {name}` + `/c/{id}?from=tonight`. Spoken **وين** in Arabic copy elsewhere is fine. Listing share + Maps stay on the card.
 - **بطاقة الليلة / Tonight’s card** is parked (`SHOW_TONIGHT_CARD = false`). Code and `tonight_*` events stay wired but are not user-facing.
 - Each pick card has a small 44px letter mark from the shop name (IK, WO, …). A `photoUrl` is shown only if Amjad sets one. Do not scrape Maps photos.
 - **أضف قهوة / Add a shop** sits under the composer, not in the chip row. Drop a Google Maps link. Koofi thanks them and stores a suggestion for Amjad — it does not go into `catalog.json`.
@@ -186,8 +186,8 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 | `tonight_card_open` | Tonight’s card composer opened (parked — unused while `SHOW_TONIGHT_CARD` is false) | `shop_id`, `locale` |
 | `tonight_card_mint` | Tonight card image generated (parked) | `shop_id`, `locale` |
 | `tonight_card_share` | Tonight card share fired (parked) | `shop_id`, `locale`, `channel` (`system` / `x` / `ig` / `snap` / `download` / `copy`) |
-| `invite_open` | وين؟ / wain? sheet opened | `shop_id`, `locale` |
-| `invite_share` | وين؟ / wain? shared | `shop_id`, `locale`, `channel` |
+| `invite_open` | وين؟ / wain? sheet opened (parked — unused while `SHOW_INVITE_CTA` is false) | `shop_id`, `locale` |
+| `invite_share` | وين؟ / wain? shared (parked) | `shop_id`, `locale`, `channel` |
 | `meet_halfway_open` | بيننا chip tapped / picker opened | `locale`, `chip_id`, `chip_label` |
 | `meet_halfway_pin` | A pin is set | `locale`, `which` (`a` / `b` / `self`), `method` (`geolocation` / `paste` / `maps_url`) |
 | `meet_halfway_invite_share` | اعزم خويك share fired | `locale`, `pack_id` (invite token) |
@@ -245,7 +245,7 @@ Tonight / Invite events reuse the same `dataLayer` helper as `cafe_upvote` and `
 1. **Variables** → Data Layer Variable `DL - shop_id` (`shop_id`), `DL - locale` (`locale`), `DL - channel` (`channel`) — skip any that already exist.
 2. **Triggers** → Custom Event for each of `tonight_card_open`, `tonight_card_mint`, `tonight_card_share`, `invite_open`, `invite_share` (All Custom Events).
 3. **Tags** → **Google Analytics: GA4 Event** per name (`GA4 - tonight_card_open`, …) → Measurement ID `G-EFZZET02TT` → Event Name matches the dataLayer `event` → Event Parameters `shop_id` = `{{DL - shop_id}}`, `locale` = `{{DL - locale}}`, and `channel` = `{{DL - channel}}` on the two share events.
-4. Preview on `/c/woods-olaya` (Passport) and `/c/cafu-olaya` (thin). Confirm وين؟ open → share with `shop_id` + `locale` + `channel`. `tonight_*` can stay tagged but will not fire while parked. Publish the container.
+4. Preview on `/c/woods-olaya` (Passport) and `/c/cafu-olaya` (thin). `invite_*` and `tonight_*` can stay tagged but will not fire while parked. Publish the container.
 
 Do not send the one-liner, image bytes, or a session id. `channel` is only `system` | `x` | `ig` | `snap` | `download` | `copy`.
 
@@ -511,8 +511,8 @@ lib/public-mcp.ts               Streamable HTTP MCP handler + CORS
 lib/faq.ts                      visible About/district FAQ + FAQPage JSON-LD
 lib/product.ts                  Koofi, opener, vibe chips, example flag, card path
 lib/track.ts                    GTM dataLayer helpers (chat_query and the rest)
-lib/tonight.ts                  وين؟ / wain? invite copy, parked Tonight mint, session rate limit
-components/viral-share.tsx      وين؟ / wain? share sheet (Passport + thin)
+lib/tonight.ts                  parked وين؟ / wain? invite + Tonight mint, session rate limit
+components/viral-share.tsx      parked وين؟ / wain? share sheet (Passport + thin)
 lib/feedback.ts                 Neon (or local memory) ideas board
 lib/upvotes.ts                  Neon (or local memory) directory-list upvotes
 lib/claims.ts                   Neon (or local memory) owner claims

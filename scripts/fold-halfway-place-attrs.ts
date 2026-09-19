@@ -1,34 +1,39 @@
 /**
- * Fold the 19 Sep 2026 Places sit-down backfill onto existing catalog shops.
- * Never invents cafés. Soft Places parked.
+ * Fold Places sit-down backfill, then Scout manual verdicts, onto
+ * existing catalog shops. Scout wins. Never invents cafés. Soft Places parked.
  *
- * Usage: npx tsx scripts/fold-halfway-place-attrs.ts [path/to/backfill.json]
+ * Usage: npx tsx scripts/fold-halfway-place-attrs.ts
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import catalogFile from "../data/catalog.json";
-import { foldHalfwayPlaceAttrs } from "../lib/fold-halfway-place-attrs";
+import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
 import type { CatalogFile } from "../lib/types";
 
-const DEFAULT_PACK = join(
+const PLACES_PACK = join(process.cwd(), "data/places-attrs-2026-09-19.json");
+const SCOUT_PACK = join(
   process.cwd(),
-  "data/places-attrs-2026-09-19.json",
+  "data/scout-manual-verdicts-2026-09-19.json",
 );
 
-const packPath = process.argv[2] ?? DEFAULT_PACK;
 const catalog = catalogFile as CatalogFile;
-const raw = JSON.parse(readFileSync(packPath, "utf8")) as {
+const placesRaw = JSON.parse(readFileSync(PLACES_PACK, "utf8")) as {
   shops?: unknown;
 };
-const rows = Array.isArray(raw.shops) ? raw.shops : [];
-const { shops, applied, unmatched, missing } = foldHalfwayPlaceAttrs(
-  catalog.shops,
-  rows as { id: string }[],
-);
+const scoutRaw = JSON.parse(readFileSync(SCOUT_PACK, "utf8")) as unknown;
+const placeRows = Array.isArray(placesRaw.shops) ? placesRaw.shops : [];
+const scoutRows = Array.isArray(scoutRaw) ? scoutRaw : [];
+
+const { shops, applied, scoutApplied, unmatched, missing } =
+  foldHalfwayPlaceAndScoutAttrs(
+    catalog.shops,
+    placeRows as { id: string }[],
+    scoutRows as { id: string }[],
+  );
 
 if (unmatched.length > 0) {
   console.warn(
-    "fold-halfway-place-attrs: ignored backfill ids not in catalog",
+    "fold-halfway-place-attrs: ignored ids not in catalog",
     unmatched,
   );
 }
@@ -41,7 +46,9 @@ writeFileSync(
 
 console.log("fold-halfway-place-attrs: applied", applied.length, {
   catalog: shops.length,
-  packRows: rows.length,
+  placeRows: placeRows.length,
+  scoutRows: scoutRows.length,
+  scoutApplied: scoutApplied.length,
   missing: missing.length,
   unmatched: unmatched.length,
 });

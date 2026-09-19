@@ -9,10 +9,24 @@ export type HalfwayPlaceAttrRow = {
   status?: string;
 };
 
+/** Scout manual verdict. Booleans or `"unclear"`. Never creates shops. */
+export type HalfwayScoutVerdictRow = {
+  id: string;
+  dine_in?: boolean | null | "unclear";
+  outdoor_seating?: boolean | null | "unclear";
+  pickup_only?: boolean | null | "unclear";
+  baynana_eligible?: boolean | null | "unclear";
+  place_id?: string | null;
+  wrong_place_match?: boolean;
+  correct_place_id?: string | null;
+};
+
 export type HalfwayPlaceAttrFold = {
   id: string;
   dineIn: boolean | null;
   outdoorSeating: boolean | null;
+  pickupOnly: boolean | null;
+  baynanaEligible?: boolean | null;
   placeId?: string;
 };
 
@@ -34,9 +48,66 @@ export function attrsFromHalfwayPlaceRow(
     id: row.id,
     dineIn: asTriState(row.dine_in),
     outdoorSeating: asTriState(row.outdoor_seating),
+    pickupOnly: null,
     ...(placeId ? { placeId } : {}),
   };
 }
+
+export function attrsFromHalfwayScoutRow(
+  row: HalfwayScoutVerdictRow,
+): HalfwayPlaceAttrFold {
+  const correctId = asPlaceId(row.correct_place_id);
+  const matchedId = asPlaceId(row.place_id);
+  const placeId = correctId ?? (row.wrong_place_match ? undefined : matchedId);
+  return {
+    id: row.id,
+    dineIn: asTriState(row.dine_in),
+    outdoorSeating: asTriState(row.outdoor_seating),
+    pickupOnly: asTriState(row.pickup_only),
+    baynanaEligible: asTriState(row.baynana_eligible),
+    ...(placeId ? { placeId } : {}),
+  };
+}
+
+/**
+ * Scout wins when present. Places fills the rest. Unclear → null.
+ * Wrong-pin rows keep Scout `correct_place_id` when Scout sent one.
+ */
+export function mergeHalfwayPlaceAndScoutAttrs(
+  places: HalfwayPlaceAttrFold | undefined,
+  scout: HalfwayPlaceAttrFold | undefined,
+): Omit<HalfwayPlaceAttrFold, "id"> {
+  const base = places ?? {
+    dineIn: null,
+    outdoorSeating: null,
+    pickupOnly: null,
+  };
+  if (!scout) {
+    return {
+      dineIn: base.dineIn,
+      outdoorSeating: base.outdoorSeating,
+      pickupOnly: base.pickupOnly ?? null,
+      ...(base.placeId ? { placeId: base.placeId } : {}),
+    };
+  }
+  return {
+    dineIn: scout.dineIn,
+    outdoorSeating: scout.outdoorSeating,
+    pickupOnly: scout.pickupOnly,
+    baynanaEligible: scout.baynanaEligible ?? null,
+    ...(scout.placeId || base.placeId
+      ? { placeId: scout.placeId ?? base.placeId }
+      : {}),
+  };
+}
+
+const ATTR_KEYS = [
+  "dineIn",
+  "outdoorSeating",
+  "pickupOnly",
+  "baynanaEligible",
+  "placeId",
+] as const;
 
 /**
  * Insert durable Halfway fields before `example`, keeping other keys as-is.
@@ -44,18 +115,20 @@ export function attrsFromHalfwayPlaceRow(
  */
 export function shopWithHalfwayPlaceAttrs(
   shop: Shop,
-  attrs: Pick<HalfwayPlaceAttrFold, "dineIn" | "outdoorSeating" | "placeId">,
+  attrs: Omit<HalfwayPlaceAttrFold, "id">,
 ): Shop {
   const next: Record<string, unknown> = {};
   let inserted = false;
   for (const [key, value] of Object.entries(shop)) {
-    if (key === "dineIn" || key === "outdoorSeating" || key === "placeId") {
-      continue;
-    }
+    if ((ATTR_KEYS as readonly string[]).includes(key)) continue;
     if (key === "example") {
       if (attrs.placeId) next.placeId = attrs.placeId;
       next.dineIn = attrs.dineIn;
       next.outdoorSeating = attrs.outdoorSeating;
+      next.pickupOnly = attrs.pickupOnly;
+      if (attrs.baynanaEligible !== undefined) {
+        next.baynanaEligible = attrs.baynanaEligible;
+      }
       inserted = true;
     }
     next[key] = value;
@@ -64,8 +137,34 @@ export function shopWithHalfwayPlaceAttrs(
     if (attrs.placeId) next.placeId = attrs.placeId;
     next.dineIn = attrs.dineIn;
     next.outdoorSeating = attrs.outdoorSeating;
+    next.pickupOnly = attrs.pickupOnly;
+    if (attrs.baynanaEligible !== undefined) {
+      next.baynanaEligible = attrs.baynanaEligible;
+    }
   }
   return next as Shop;
+}
+
+function indexPlaceRows(
+  rows: readonly HalfwayPlaceAttrRow[],
+): Map<string, HalfwayPlaceAttrFold> {
+  const byId = new Map<string, HalfwayPlaceAttrFold>();
+  for (const row of rows) {
+    if (!row?.id) continue;
+    byId.set(row.id, attrsFromHalfwayPlaceRow(row));
+  }
+  return byId;
+}
+
+function indexScoutRows(
+  rows: readonly HalfwayScoutVerdictRow[],
+): Map<string, HalfwayPlaceAttrFold> {
+  const byId = new Map<string, HalfwayPlaceAttrFold>();
+  for (const row of rows) {
+    if (!row?.id) continue;
+    byId.set(row.id, attrsFromHalfwayScoutRow(row));
+  }
+  return byId;
 }
 
 /**
@@ -81,29 +180,50 @@ export function foldHalfwayPlaceAttrs(
   unmatched: string[];
   missing: string[];
 } {
-  const byId = new Map<string, HalfwayPlaceAttrFold>();
-  for (const row of rows) {
-    if (!row?.id) continue;
-    byId.set(row.id, attrsFromHalfwayPlaceRow(row));
-  }
+  return foldHalfwayPlaceAndScoutAttrs(shops, rows, []);
+}
 
+/**
+ * Places first, then Scout overrides. Existing catalog ids only.
+ */
+export function foldHalfwayPlaceAndScoutAttrs(
+  shops: readonly Shop[],
+  placeRows: readonly HalfwayPlaceAttrRow[],
+  scoutRows: readonly HalfwayScoutVerdictRow[] = [],
+): {
+  shops: Shop[];
+  applied: HalfwayPlaceAttrFold[];
+  scoutApplied: string[];
+  unmatched: string[];
+  missing: string[];
+} {
+  const placesById = indexPlaceRows(placeRows);
+  const scoutById = indexScoutRows(scoutRows);
   const applied: HalfwayPlaceAttrFold[] = [];
+  const scoutApplied: string[] = [];
   const missing: string[] = [];
+
   const next = shops.map((shop) => {
-    const attrs = byId.get(shop.id);
-    if (!attrs) {
+    const places = placesById.get(shop.id);
+    const scout = scoutById.get(shop.id);
+    if (!places && !scout) {
       missing.push(shop.id);
       return shopWithHalfwayPlaceAttrs(shop, {
         dineIn: null,
         outdoorSeating: null,
+        pickupOnly: null,
       });
     }
-    applied.push(attrs);
-    return shopWithHalfwayPlaceAttrs(shop, attrs);
+    if (scout) scoutApplied.push(shop.id);
+    const merged = { id: shop.id, ...mergeHalfwayPlaceAndScoutAttrs(places, scout) };
+    applied.push(merged);
+    return shopWithHalfwayPlaceAttrs(shop, merged);
   });
 
   const catalogIds = new Set(shops.map((shop) => shop.id));
-  const unmatched = [...byId.keys()].filter((id) => !catalogIds.has(id));
+  const unmatched = [...new Set([...placesById.keys(), ...scoutById.keys()])].filter(
+    (id) => !catalogIds.has(id),
+  );
 
-  return { shops: next, applied, unmatched, missing };
+  return { shops: next, applied, scoutApplied, unmatched, missing };
 }

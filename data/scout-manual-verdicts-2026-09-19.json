@@ -1,0 +1,622 @@
+[
+  {
+    "id": "roasting-house-al-yasmin",
+    "nameEn": "Roasting House Alyasmin",
+    "neighborhood": "al-yasmin",
+    "place_id": "ChIJMwSfiUXlLj4Rnwiq3RN79V8",
+    "place_name_matched": "بيت التحميص الياسمين | Roasting House Alyasmin",
+    "dine_in": true,
+    "outdoor_seating": false,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About limited (Delivery/takeout+curbside API). Photos: retail-heavy Roasting House; glass front shows ≥1 round table+chairs → minimal dine-in; no outdoor.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJMwSfiUXlLj4Rnwiq3RN79V8",
+    "about_chips_limited_view": [
+      "Delivery"
+    ]
+  },
+  {
+    "id": "get-up-coffee-ar-rabwah",
+    "nameEn": "Get Up",
+    "neighborhood": "al-rabwah",
+    "place_id": "ChIJ2w45ulkHLz4RcYYkoir3wR8",
+    "place_name_matched": "Al Hussain Top Up",
+    "dine_in": "unclear",
+    "outdoor_seating": "unclear",
+    "pickup_only": "unclear",
+    "baynana_eligible": "unclear",
+    "evidence": "WRONG PIN: matched Al Hussain Top Up (discount store), not Get Up coffee. Nearby GET UP COFFEE is in An Nasim Ash Sharqi (ChIJc_6fwjIHLz4Ra7l6xNArkUM), not Al Rabwah — rematch needed; attrs left unclear.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ2w45ulkHLz4RcYYkoir3wR8",
+    "wrong_place_match": true,
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "kail-roastery-and-cafe-al-narjis",
+    "nameEn": "kail Roastery & cafe",
+    "neighborhood": "al-narjis",
+    "place_id": "ChIJm84K26v7Lj4RWYzHu2weU_w",
+    "place_name_matched": "kail Roastery & cafe محمصة ومقهى كيل",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About limited (Delivery). Photos: boutique retail showroom (scent island, product walls); no customer tables/chairs → pickup/retail-led.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJm84K26v7Lj4RWYzHu2weU_w",
+    "about_chips_limited_view": [
+      "Delivery"
+    ]
+  },
+  {
+    "id": "file-coffee-ghirnatah",
+    "nameEn": "File Coffee",
+    "neighborhood": "ghirnatah",
+    "place_id": "ChIJQZGu0mH_Lj4RXVMbq5WI8TE",
+    "place_name_matched": "فايل كافية | File Coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About limited (Delivery). Photos: orange walk-up with labeled ORDER / PICK UP windows; no seating → pickup-only.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJQZGu0mH_Lj4RXVMbq5WI8TE",
+    "about_chips_limited_view": [
+      "Delivery"
+    ]
+  },
+  {
+    "id": "window-coffee-ar-rabwah",
+    "nameEn": "window coffee",
+    "neighborhood": "al-rabwah",
+    "place_id": "ChIJOYds4ZYHLz4R52zpZ7oJ1jk",
+    "place_name_matched": "window coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About limited. Photos: Window Coffee glass counter storefront; no interior/outdoor seating → walk-up/pickup.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJOYds4ZYHLz4R52zpZ7oJ1jk",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "nosound-qurtubah",
+    "nameEn": "NOSOUND",
+    "neighborhood": "qurtubah",
+    "place_id": "ChIJV5lF8hv9Lj4RT-X2C0w0H5g",
+    "place_name_matched": "نوساوند قرطبة NOSOUND",
+    "dine_in": false,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About limited. Photos: narrow counter interior; wooden chair+table visible on sidewalk → outdoor seating; meet via outdoor.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJV5lF8hv9Lj4RT-X2C0w0H5g",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "wathba-an-nazhah",
+    "nameEn": "Wathba",
+    "neighborhood": "an-nazhah",
+    "place_id": "ChIJG-kuXgADLz4R85qqrTsXazU",
+    "place_name_matched": "Alwathba Consulting",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "WRONG PIN: Alwathba Consulting. Correct: وثبة | قهوة مختصة - النزهة ChIJcZz_CAADLz4RfeFA9IJmOdM; API dine+outdoor+takeout; photos patio tables/chairs + indoor seating. Attrs from correct pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJG-kuXgADLz4R85qqrTsXazU",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJcZz_CAADLz4RfeFA9IJmOdM",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJcZz_CAADLz4RfeFA9IJmOdM",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "elite-cup-roasters-an-nazhah",
+    "nameEn": "Elite Cup Roasters",
+    "neighborhood": "an-nazhah",
+    "place_id": "ChIJM7281acDLz4RhVZq8FI7gpw",
+    "place_name_matched": "Elite Cup Roasters | محمصة كوب النخبة",
+    "dine_in": true,
+    "outdoor_seating": false,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About chips Takeout+Delivery. Photos: lounge with sofas/armchairs/tables + chair behind cup shot → clear dine-in; outdoor not shown.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJM7281acDLz4RhVZq8FI7gpw",
+    "about_chips_limited_view": [
+      "Takeout",
+      "Delivery"
+    ]
+  },
+  {
+    "id": "obo-speciality-al-yarmouk",
+    "nameEn": "OBO Speciality Coffee",
+    "neighborhood": "al-yarmouk",
+    "place_id": "ChIJt8QREQD_Lj4RNEan94QUJHY",
+    "place_name_matched": "OBO Speciality Coffee | اوبو للقهوة المختصة",
+    "dine_in": false,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About Takeout. Photos: yellow alcove with ORDER/PICK UP window; 1 small outdoor table + 2 chairs under overhang → outdoor seating (minimal).",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJt8QREQD_Lj4RNEan94QUJHY",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "shafel-roastery-al-yarmouk",
+    "nameEn": "Shafel Coffee Roastery",
+    "neighborhood": "al-yarmouk",
+    "place_id": "ChIJSQFlL8n_Lj4Rk0ZydGFZSeI",
+    "place_name_matched": "محمصة قهوة شفل | اليرموك",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About Takeout. Photos: SHOVEL/شفل drive-thru pod with menu board + window service; no seating → DT/pickup-only.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJSQFlL8n_Lj4Rk0ZydGFZSeI",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "kapu-cafe-al-nahdah",
+    "nameEn": "Kapu Cafe",
+    "neighborhood": "al-nahdah",
+    "place_id": "ChIJ4RniBYIBLz4RMC2ze6F8FVs",
+    "place_name_matched": "كابو | محمصة وقهوة - الخليج",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "WRONG PIN: target place_id is كابو الخليج (Al Khaleej), not النهضة. Correct Kapu Nahdah pin ChIJHZ3CbwCrLz4R9r0bYpDJLmo (catalog lat/lng match); API dineIn=true outdoor=false but photos show طلب/استلام ORDER+PICKUP windows, no seating → treat as pickup-only. Attrs below are for CORRECT Nahdah pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ4RniBYIBLz4RMC2ze6F8FVs",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJHZ3CbwCrLz4R9r0bYpDJLmo",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJHZ3CbwCrLz4R9r0bYpDJLmo",
+    "amjad_flag": true,
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "half-ten-al-nahdah",
+    "nameEn": "Half Ten",
+    "neighborhood": "al-nahdah",
+    "place_id": "ChIJn8Af-m0BLz4RuzyVWRFA6lo",
+    "place_name_matched": "Half Ten | هاف تن",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About Takeout+Delivery. Photos: glass front with PICKUP window; tiny waiting space, no tables/chairs outside → pickup-led.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJn8Af-m0BLz4RuzyVWRFA6lo",
+    "about_chips_limited_view": [
+      "Takeout",
+      "Delivery"
+    ]
+  },
+  {
+    "id": "floated-al-rayyan",
+    "nameEn": "FLOATED",
+    "neighborhood": "al-rayyan",
+    "place_id": "ChIJW5sxcgABLz4RbWSrklcpr-E",
+    "place_name_matched": "فلوتد FLOATED",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About Takeout. Photos: FLOATED tray on indoor table + outdoor high-top visible through window → dine-in + outdoor.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJW5sxcgABLz4RbWSrklcpr-E",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "the-it-al-rawabi",
+    "nameEn": "THE IT",
+    "neighborhood": "al-rawabi",
+    "place_id": "ChIJ0dpXHSQHLz4RRf-E-5yFDc8",
+    "place_name_matched": "Ar Rawabi",
+    "dine_in": true,
+    "outdoor_seating": "unclear",
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "WRONG PIN: matched neighborhood 'Ar Rawabi'. Correct THE IT cafe ChIJ7UTZTQ0HLz4RHXt3m3J-4ME; API dineIn=true; photos communal table+chairs. Outdoor unclear. Attrs from correct pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ0dpXHSQHLz4RRf-E-5yFDc8",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "rukyah-al-fayha",
+    "nameEn": "Rukyah",
+    "neighborhood": "al-fayha",
+    "place_id": "ChIJXwlCbnsGLz4RAfgGBjPLqGY",
+    "place_name_matched": "Dar ul Ruqya al-Sharia",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "WRONG PIN: Dar ul Ruqya al-Sharia. Correct ركية | مقهى ومحمصة ChIJD6HFYgAHLz4RM1jh4QJH2Hw Al Fayha; API dine+outdoor. Attrs from correct pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJXwlCbnsGLz4RAfgGBjPLqGY",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJD6HFYgAHLz4RM1jh4QJH2Hw",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJD6HFYgAHLz4RM1jh4QJH2Hw",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "coffee-address-al-munsiyah",
+    "nameEn": "Coffee Address",
+    "neighborhood": "al-munsiyah",
+    "place_id": "ChIJ9Y1teAD_Lj4RDIRsRSw6_9A",
+    "place_name_matched": "Coffee Address | عنوان القهوة",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About Takeout; moment_tags drive-through. Photos: standalone DT kiosk (Order Here + pickup window); no seating → ineligible.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ9Y1teAD_Lj4RDIRsRSw6_9A",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "kicksters-lab-al-arid",
+    "nameEn": "Kicksters Lab",
+    "neighborhood": "al-arid",
+    "place_id": "ChIJ-cd4QwDvLj4RSXOz8uv8bvg",
+    "place_name_matched": "Kicksters Lab | محمصة كيكسترز",
+    "dine_in": true,
+    "outdoor_seating": false,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About limited. Photos: roastery retail with blue bench sofa + small round table → limited but real dine-in; no outdoor shown.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ-cd4QwDvLj4RSXOz8uv8bvg",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "roasting-house-al-arid",
+    "nameEn": "Roasting House Al Aaridh",
+    "neighborhood": "al-arid",
+    "place_id": "ChIJLUvOldTvLj4Rbgrf6FldYFQ",
+    "place_name_matched": "بيت التحميص العارض | Roasting House Al Aaridh",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About Delivery. Photos: retail + maintenance + training storefronts; product shelves, no cafe seating → retail/pickup not meet-friendly.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJLUvOldTvLj4Rbgrf6FldYFQ",
+    "about_chips_limited_view": [
+      "Delivery"
+    ]
+  },
+  {
+    "id": "coffee-address-al-arid",
+    "nameEn": "Coffee Address | عنوان القهوة",
+    "neighborhood": "al-arid",
+    "place_id": "ChIJlSLGFQDvLj4Rn8WLBpqHbvI",
+    "place_name_matched": "Coffee Address | عنوان القهوة",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About Takeout; tagged drive-through but photos show cafe: indoor tables/armchairs + outdoor patio tables; also counter with window stool. Meet-friendly.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJlSLGFQDvLj4Rn8WLBpqHbvI",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "hekaya-tale-al-mohammadiyah",
+    "nameEn": "Hekaya",
+    "neighborhood": "al-mohammadiyah",
+    "place_id": "ChIJr2q5B639Lj4RiSp_6BiPoT4",
+    "place_name_matched": "Hekaya production",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "WRONG PIN: Hekaya production. Correct حكاية مقهى مختص ومحمصة ChIJows0hcfjLj4R76rT7wthQBA; API dine+outdoor+takeout; photos indoor tables/chairs. Attrs from correct pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJr2q5B639Lj4RiSp_6BiPoT4",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJows0hcfjLj4R76rT7wthQBA",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJows0hcfjLj4R76rT7wthQBA",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "the-matcha-bar-olaya",
+    "nameEn": "The Matcha Bar",
+    "neighborhood": "olaya",
+    "place_id": "ChIJLaOeAU4DLz4RnQh0rN7TQ40",
+    "place_name_matched": "The Matcha Bar",
+    "dine_in": false,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "About limited. Photos: green courtyard kiosk THE MATCHA BAR with wooden tables/chairs under umbrella beside booth → outdoor seating. (One Maps photo looks like unrelated fine-dining interior—ignored.)",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJLaOeAU4DLz4RnQh0rN7TQ40",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "opinion-al-mathar",
+    "nameEn": "Opinion",
+    "neighborhood": "al-mathar",
+    "place_id": "ChIJERtpPH0DLz4RnyGqEWJw6HI",
+    "place_name_matched": "Almather Housing Complex",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "WRONG PIN: Almather Housing Complex. Correct Opinion North Mathar ChIJsSEs3GwdLz4RkrIeQxGM2vc; API dine+outdoor+takeout; photos lounge chairs/tables. Attrs from correct pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJERtpPH0DLz4RnyGqEWJw6HI",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJsSEs3GwdLz4RkrIeQxGM2vc",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJsSEs3GwdLz4RkrIeQxGM2vc",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "opinion-hittin",
+    "nameEn": "Opinion",
+    "neighborhood": "hittin",
+    "place_id": "ChIJX-CJodHjLj4R7U3j7UMywlI",
+    "place_name_matched": "Hittin",
+    "dine_in": true,
+    "outdoor_seating": true,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "WRONG PIN: matched district 'Hittin'. Correct Opinion|اوبنيون Hittin ChIJed24-Q_jLj4Ry57c9ZIft5Q; API dine+outdoor+takeout. Attrs from correct pin.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJX-CJodHjLj4R7U3j7UMywlI",
+    "wrong_place_match": true,
+    "correct_place_id": "ChIJed24-Q_jLj4Ry57c9ZIft5Q",
+    "correct_maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJed24-Q_jLj4Ry57c9ZIft5Q",
+    "about_chips_limited_view": []
+  },
+  {
+    "id": "flow-matcha-at-taawun",
+    "nameEn": "FLOW MATCHA",
+    "neighborhood": "at-taawun",
+    "place_id": "ChIJCQdnXgD9Lj4RVRz9dz1megA",
+    "place_name_matched": "FLOW MATCHA",
+    "dine_in": false,
+    "outdoor_seating": "unclear",
+    "pickup_only": true,
+    "baynana_eligible": "unclear",
+    "evidence": "About Takeout. Photos: FLOW Matcha trailer kiosk under canopy, no owned seating at booth; one cup-on-table shot may be plaza seating (unclear if shop's).",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJCQdnXgD9Lj4RVRz9dz1megA",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drive-al-rabi",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-rabi",
+    "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+    "place_name_matched": "درايف كوفي Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJE8dnDwDnLj4RULzc-I9gsIc",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drive-al-rabi-2",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-rabi",
+    "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+    "place_name_matched": "درايف كوفي Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJE8dnDwDnLj4RULzc-I9gsIc"
+  },
+  {
+    "id": "drive-al-rabi-3",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-rabi",
+    "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+    "place_name_matched": "درايف كوفي Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJE8dnDwDnLj4RULzc-I9gsIc"
+  },
+  {
+    "id": "drive-al-rabi-4",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-rabi",
+    "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+    "place_name_matched": "درايف كوفي Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJE8dnDwDnLj4RULzc-I9gsIc"
+  },
+  {
+    "id": "drive-al-rabi-5",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-rabi",
+    "place_id": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
+    "place_name_matched": "درايف كوفي Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJE8dnDwDnLj4RULzc-I9gsIc"
+  },
+  {
+    "id": "arabica-cafe-ghubairah",
+    "nameEn": "Arabica Cafe",
+    "neighborhood": "ghubairah",
+    "place_id": "ChIJF3aAw-UFLz4RPy2LtGYhbqY",
+    "place_name_matched": "Arabica Cafe",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "About Takeout+Delivery; tagged drive-through. Photos: small Arabica/أرابيكا kiosk booth, service window only, no seating → pickup/DT.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJF3aAw-UFLz4RPy2LtGYhbqY",
+    "about_chips_limited_view": [
+      "Takeout",
+      "Delivery"
+    ]
+  },
+  {
+    "id": "drive-al-khaleej",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-khaleej",
+    "place_id": "ChIJfd9pRwABLz4RrD1SbHX2Vvs",
+    "place_name_matched": "درايف كوفي | DRIVE COFFEE",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout', 'Drive-through'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJfd9pRwABLz4RrD1SbHX2Vvs",
+    "about_chips_limited_view": [
+      "Takeout",
+      "Drive-through"
+    ]
+  },
+  {
+    "id": "drive-an-nasim-al-gharbi",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "an-nasim-al-gharbi",
+    "place_id": "ChIJDa8NbQCrLz4Rhy6A-Am2EHQ",
+    "place_name_matched": "Drive Coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJDa8NbQCrLz4Rhy6A-Am2EHQ",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drive-ar-rimal",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "ar-rimal",
+    "place_id": "ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
+    "place_name_matched": "Drive Coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drive-as-sahafah",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "as-sahafah",
+    "place_id": "ChIJ4-ozXQDjLj4Rve97xjnbv88",
+    "place_name_matched": "Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout', 'Delivery'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ4-ozXQDjLj4Rve97xjnbv88",
+    "about_chips_limited_view": [
+      "Takeout",
+      "Delivery"
+    ]
+  },
+  {
+    "id": "drive-al-nakheel",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-nakheel",
+    "place_id": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
+    "place_name_matched": "Drive coffee درايف كوفي",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drive-al-janadriyyah",
+    "nameEn": "Drive Coffee",
+    "neighborhood": "al-janadriyyah",
+    "place_id": "ChIJL2MLegBTLj4RDNtCfoYA_RQ",
+    "place_name_matched": "Drive coffee",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Brand Drive Specialty Coffee. About: Takeout (±Drive-through on Khaleej). Photos: glass DT kiosk / car-service, no seating → ineligible for بيننا. Chips seen: ['Takeout'].",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJL2MLegBTLj4RDNtCfoYA_RQ",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drcafe-badr",
+    "nameEn": "dr.CAFE",
+    "neighborhood": "badr",
+    "place_id": "ChIJr2Hdp0EOLz4RegSTuRkpadg",
+    "place_name_matched": "dr.CAFE Badr, Al Shifa | د.كيف بدر، الشفاء | Drive Thru",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Maps name includes Drive Thru. About Takeout. Photos: dr.CAFE container kiosk with drive-thru lettering; no seating → ineligible.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJr2Hdp0EOLz4RegSTuRkpadg",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "drcafe-al-munsiyah",
+    "nameEn": "dr.CAFE",
+    "neighborhood": "al-munsiyah",
+    "place_id": "ChIJqzJ3rKL9Lj4R8mtz4c8x5PY",
+    "place_name_matched": "dr.CAFE Thoumamah Rd | د.كيف طريق الثمامة | Drive Thru",
+    "dine_in": false,
+    "outdoor_seating": false,
+    "pickup_only": true,
+    "baynana_eligible": false,
+    "evidence": "Maps name Drive Thru Thoumamah. About Takeout. Photos/format: DT kiosk brand; disposable cup counter shots, no seating → ineligible.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJqzJ3rKL9Lj4R8mtz4c8x5PY",
+    "about_chips_limited_view": [
+      "Takeout"
+    ]
+  },
+  {
+    "id": "shafel-roastery-al-nahdah",
+    "nameEn": "Shafel Coffee Roastery",
+    "neighborhood": "al-nahdah",
+    "place_id": "ChIJ71ockjoBLz4R38YZnJDX3Jk",
+    "place_name_matched": "محمصة قهوة شفل - فرع النهضة",
+    "dine_in": true,
+    "outdoor_seating": false,
+    "pickup_only": false,
+    "baynana_eligible": true,
+    "evidence": "Amjad flagged pickup; API dineIn=true. About limited (Takeout+Delivery, no Dine-in chip in limited view). Photos: glass cafe with many indoor tables/chairs + ORDER HERE lane — clear dine-in, not pickup-only. Outdoor not evidenced.",
+    "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ71ockjoBLz4R38YZnJDX3Jk",
+    "amjad_flag": true,
+    "about_chips_limited_view": [
+      "Takeout",
+      "Delivery"
+    ]
+  }
+]

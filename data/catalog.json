@@ -28,6 +28,7 @@
       "placeId": "ChIJoUYKBoUDLz4RsVh1QXnfpIo",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -60,6 +61,7 @@
       "placeId": "ChIJLbkCFlgDLz4RnTOlP8wH6mA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -88,6 +90,7 @@
       "placeId": "ChIJIUvnEgADLz4RQNm2YYy-SeU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -114,6 +117,7 @@
       "placeId": "ChIJ82qbdwADLz4Rfx23hDu6_Iw",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -138,6 +142,7 @@
       "placeId": "ChIJ2yAnHk8DLz4RnDDobFKrqiA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -167,6 +172,7 @@
       "placeId": "ChIJX7yQ_RkDLz4RF4mf7HtqS84",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -194,6 +200,7 @@
       "placeId": "ChIJ1aDdbQAdLz4RVXmER-MCays",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -225,6 +232,7 @@
       "placeId": "ChIJ75dDmeICLz4Rz_qyoYhY3rc",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -251,6 +259,7 @@
       "placeId": "ChIJ9T_urnv9Lj4RTgWkCsggNHE",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -274,6 +283,7 @@
       "placeId": "ChIJCZDiu0v9Lj4R7KtsY0-lwNE",
       "dineIn": false,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -301,6 +311,7 @@
       "placeId": "ChIJB7hEKXkdLz4R2fJIJFGfQGU",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -333,6 +344,7 @@
       "placeId": "ChIJp2fuYKjjLj4RSydpSuflfnU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -363,6 +375,7 @@
       "placeId": "ChIJVweuysfjLj4RPS2pmZBo5mk",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -393,6 +406,7 @@
       "placeId": "ChIJ51Pu3-zhLj4Ry-wqP7jP9us",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -422,6 +436,7 @@
       "placeId": "ChIJc-uPzNHhLj4RrDI6wE0iyQY",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -451,6 +466,7 @@
       "placeId": "ChIJHRRHvYzjLj4RfO5imLFCk3E",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -483,6 +499,7 @@
       "placeId": "ChIJ6UXD0vDhLj4RmB1YhhXuXBA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -509,6 +526,7 @@
       "placeId": "ChIJaX-KNADjLj4RFNXLXtc2pzk",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -535,6 +553,7 @@
       "placeId": "ChIJ9RV2fADjLj4R54bXP-20Vqo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -563,6 +582,7 @@
       "placeId": "ChIJg-fc-NHjLj4RpNeKU7h9UxI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -590,6 +610,7 @@
       "placeId": "ChIJXQxac1XjLj4RkusgNzCm7j8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -618,6 +639,7 @@
       "placeId": "ChIJDc9vhyXlLj4RPsaFjEBAyqk",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -644,6 +666,7 @@
       "placeId": "ChIJBV_IAt7lLj4RR0JleeIDhn0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -668,6 +691,7 @@
       "placeId": "ChIJO2g83iHjLj4RkdtvyAaIRRE",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -696,6 +720,7 @@
       "placeId": "ChIJu9PkdQDlLj4Rf1muMjVmwrM",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -724,6 +749,7 @@
       "placeId": "ChIJKXmvT4nnLj4R6h25grff8oY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -754,6 +780,7 @@
       "placeId": "ChIJu1ZmnC7lLj4RG3a2K7c5lWQ",
       "dineIn": false,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -782,6 +809,7 @@
       "placeId": "ChIJuelhFhPiLj4R-vbGiLH97Zo",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -809,6 +837,7 @@
       "placeId": "ChIJUQFfWIDjLj4RhT0eKtNMeKs",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -839,6 +868,7 @@
       "placeId": "ChIJ2wq6u37jLj4RJfYMWgjeRGI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -869,6 +899,7 @@
       "placeId": "ChIJD1fl8PLjLj4RmPZvudqW1cg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -898,6 +929,7 @@
       "placeId": "ChIJa6jnjiTjLj4RQ781Q8THA3Y",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -924,6 +956,7 @@
       "placeId": "ChIJswgca_PjLj4RR6pHkY5zFoQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -955,6 +988,7 @@
       "placeId": "ChIJx0VK1rPlLj4RRNTLKYCAq9Q",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -982,6 +1016,7 @@
       "placeId": "ChIJTWK9szLlLj4R5VAFiXeZY4g",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1013,6 +1048,7 @@
       "placeId": "ChIJy-Lqbz_lLj4ROTFi07eSXnU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1038,8 +1074,10 @@
       "logoUrl": "/logos/roasting-house.png",
       "popularityIndex": 68.1,
       "placeId": "ChIJMwSfiUXlLj4Rnwiq3RN79V8",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -1071,6 +1109,7 @@
       "placeId": "ChIJrZX_AgDlLj4RCfChxTJoToM",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1095,6 +1134,7 @@
       "placeId": "ChIJgfDIPADjLj4Roist1N0d1fY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1122,6 +1162,7 @@
       "placeId": "ChIJt22dHUjlLj4RxZHtYjvL854",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1148,6 +1189,7 @@
       "placeId": "ChIJw3kT8A_lLj4RPkjxv-xvVZQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1175,6 +1217,7 @@
       "placeId": "ChIJGRn3cAHlLj4R1BMGq6XnNvo",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1206,6 +1249,7 @@
       "placeId": "ChIJqzcL3YsDLz4R-EoAquZD6I8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1237,6 +1281,7 @@
       "placeId": "ChIJmxIuQ83jLj4Rqk0WK9cN95s",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1268,6 +1313,7 @@
       "placeId": "ChIJ5fc40vwDLz4RRvedPggTxEI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1297,6 +1343,7 @@
       "placeId": "ChIJMasuxoEDLz4RfhHsiQGwCAs",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1327,6 +1374,7 @@
       "placeId": "ChIJW84Ocn4DLz4R_oTU77AQ8Vk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1356,6 +1404,7 @@
       "placeId": "ChIJzXA11zEDLz4Rywpgn5zncG8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1383,6 +1432,7 @@
       "placeId": "ChIJeaicBoPlLj4RXO9Z2EC8Re0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1406,6 +1456,7 @@
       "placeId": "ChIJ1TdaoQwHLz4RVGE3zmmf7-8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1433,6 +1484,7 @@
       "placeId": "ChIJ6dcAmcEdLz4RGZwZGqKbVp8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1462,6 +1514,7 @@
       "placeId": "ChIJ2UGMhEADLz4RzpMTWkDPWA8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1493,6 +1546,7 @@
       "placeId": "ChIJpwbCxS8DLz4REWiOCO8GjMs",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1518,6 +1572,7 @@
       "placeId": "ChIJic2Xxs8DLz4RZ4xALOyeCZs",
       "dineIn": null,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1547,6 +1602,7 @@
       "placeId": "ChIJyb5Nin0DLz4R84E-hQQJnMk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1577,6 +1633,7 @@
       "placeId": "ChIJo4YhbK0DLz4Ry-v54UH2f_Y",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1605,6 +1662,7 @@
       "placeId": "ChIJTaRs5mTjLj4RAxGryF6WLPc",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1633,6 +1691,7 @@
       "placeId": "ChIJN50BBwADLz4RQyUBXydcGqA",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1663,6 +1722,7 @@
       "placeId": "ChIJGeAI7T0FLz4R6APbAVTqukc",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1693,6 +1753,7 @@
       "placeId": "ChIJtXzCF6kHLz4R4OeW5iNZsVg",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1722,6 +1783,7 @@
       "placeId": "ChIJOaGCmo4HLz4RWoCxvJ-J5fk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1746,6 +1808,8 @@
       "placeId": "ChIJ2w45ulkHLz4RcYYkoir3wR8",
       "dineIn": null,
       "outdoorSeating": null,
+      "pickupOnly": null,
+      "baynanaEligible": null,
       "example": false
     },
     {
@@ -1770,6 +1834,7 @@
       "placeId": "ChIJTWTMnvIDLz4RcMiEZ8Jy0X0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1795,6 +1860,7 @@
       "placeId": "ChIJ9-rwFJYDLz4RcHNuNSuO6fU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1824,6 +1890,7 @@
       "placeId": "ChIJ050tGBsDLz4RO38u5BphxC4",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1853,6 +1920,7 @@
       "placeId": "ChIJsymty_DlLj4RtdQ-2zW9Acg",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1881,6 +1949,7 @@
       "placeId": "ChIJc4imk-blLj4R7dr8sHHpDYU",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1910,6 +1979,7 @@
       "placeId": "ChIJiXqtwtjjLj4R3rONYqIsEa4",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1939,6 +2009,7 @@
       "placeId": "ChIJrYkZJVXjLj4Rx-nhN9HwaA4",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1968,6 +2039,7 @@
       "placeId": "ChIJBUCyZs7jLj4RMhgd1kkxV4I",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -1996,6 +2068,7 @@
       "placeId": "ChIJ_WqHfgDjLj4RiTPlV_SYT_0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2023,6 +2096,7 @@
       "placeId": "ChIJq3iLWQDjLj4Rn6W7PFh5boA",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2053,6 +2127,7 @@
       "placeId": "ChIJHxeUSyDjLj4RCE1b_FEOVQg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2082,6 +2157,7 @@
       "placeId": "ChIJZ14CdHDjLj4RjcZ37JauztY",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2111,6 +2187,7 @@
       "placeId": "ChIJZUHgtmDjLj4RZbWQbguBnRs",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2137,6 +2214,7 @@
       "placeId": "ChIJP0FNHwDhLj4RykP0yZR-izg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2164,6 +2242,7 @@
       "placeId": "ChIJU2WkbiXhLj4RT6ykBZ6zslc",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2191,6 +2270,7 @@
       "placeId": "ChIJUVU8dADhLj4R2mkQLlxBJ98",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2220,6 +2300,7 @@
       "placeId": "ChIJEyfuiaThLj4ReGR0OZznMXA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2246,6 +2327,7 @@
       "placeId": "ChIJOXciZ4DhLj4Rdmf-4HncyQc",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2273,6 +2355,7 @@
       "placeId": "ChIJi-6jfbvhLj4Rmyg_wfKwxbY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2300,6 +2383,7 @@
       "placeId": "ChIJPfrMyIThLj4RAZ5ah0D4q0I",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2329,6 +2413,7 @@
       "placeId": "ChIJy3OjYwDhLj4RbYv-olYJL7U",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2360,6 +2445,7 @@
       "placeId": "ChIJ23xbdAvhLj4RUf98kQi-LgM",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2386,6 +2472,7 @@
       "placeId": "ChIJL60cZQDnLj4RtaEOLPeErPo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2415,6 +2502,7 @@
       "placeId": "ChIJ_23iHwXhLj4RUxAfJNZQXQU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2443,6 +2531,7 @@
       "placeId": "ChIJI_Yr4Bj7Lj4RuyPSyXDqn3k",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2471,6 +2560,7 @@
       "placeId": "ChIJ0Rl5nqD9Lj4RdNPOmgESYXM",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2500,6 +2590,7 @@
       "placeId": "ChIJeV0uYhj7Lj4RKOA8c3Qmm_M",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2523,8 +2614,10 @@
       "logoUrl": "/logos/kail-roastery-and-cafe-al-narjis.jpg",
       "popularityIndex": 51.7,
       "placeId": "ChIJm84K26v7Lj4RWYzHu2weU_w",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -2553,6 +2646,7 @@
       "placeId": "ChIJ0xuko-L7Lj4RnCMD3lUHq74",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2582,6 +2676,7 @@
       "placeId": "ChIJwefbQtHlLj4R5Kr5d7NHl-k",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2611,6 +2706,7 @@
       "placeId": "ChIJ71JdegDlLj4R7NUGfqzKT-0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2638,6 +2734,7 @@
       "placeId": "ChIJ1cyvaf-rLz4R0TtD0h2K9Uc",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2667,6 +2764,7 @@
       "placeId": "ChIJvS9kAgDlLj4REIfR0pivAU0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2693,6 +2791,7 @@
       "placeId": "ChIJx3spj8T9Lj4RkjDgEdM8sIQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2721,6 +2820,7 @@
       "placeId": "ChIJUZjX0kTlLj4REDSY9Ss39mU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2746,6 +2846,7 @@
       "placeId": "ChIJgYhOJQf9Lj4Rl7mXTb80cWs",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2769,6 +2870,7 @@
       "placeId": "ChIJ7RcDzkT9Lj4RwF4jitAZAOc",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2790,6 +2892,7 @@
       "placeId": "ChIJgfo9vIL9Lj4R9bcmn_MRLQ4",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2810,6 +2913,7 @@
       "placeId": "ChIJWbKLn0X9Lj4R7IlL2Bgks9g",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2829,8 +2933,10 @@
       "logoUrl": "/logos/file-coffee-ghirnatah.png",
       "popularityIndex": 52,
       "placeId": "ChIJQZGu0mH_Lj4RXVMbq5WI8TE",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -2851,6 +2957,7 @@
       "placeId": "ChIJgzfgtb__Lj4R5XVn8PvfJno",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2871,6 +2978,7 @@
       "placeId": "ChIJ9ys2AWH9Lj4RJ_O7IbVa8gU",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2892,6 +3000,7 @@
       "placeId": "ChIJ9Sm-IMz_Lj4RA6XpjqGDCA0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2913,6 +3022,7 @@
       "placeId": "ChIJhww8klj9Lj4RG8u2KCKMRV0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2934,6 +3044,7 @@
       "placeId": "ChIJN9rp_l_lLj4Rcby8Ui4VBMU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2955,6 +3066,7 @@
       "placeId": "ChIJRz85bwD9Lj4R7lZXfinkJRg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -2980,6 +3092,7 @@
       "placeId": "ChIJnYNAcQAHLz4R0cdy_Bintrs",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3000,6 +3113,7 @@
       "placeId": "ChIJXzP2bQAHLz4RRRi-lYtDNjk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3020,6 +3134,7 @@
       "placeId": "ChIJtVu2LwAHLz4R6pWq7XwvCBo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3040,6 +3155,7 @@
       "placeId": "ChIJuVzWGAAHLz4RIFBMQCFugTg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3060,6 +3176,7 @@
       "placeId": "ChIJMx1lBwAHLz4R1fHZkZVyHa0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3081,6 +3198,7 @@
       "placeId": "ChIJ_yn29AIELz4RHsvAf0ax6NE",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3101,6 +3219,7 @@
       "placeId": "ChIJ75cOyNsZLz4Ry8hievc1T9M",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3121,6 +3240,7 @@
       "placeId": "ChIJyT7I4QcHLz4RrVt2z_-5tPw",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3141,6 +3261,7 @@
       "placeId": "ChIJZwcTQwAHLz4RMKCZhI6Fsjg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3159,8 +3280,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0796e16c8739:0x39d609ba67e96ce7",
       "popularityIndex": 45.1,
       "placeId": "ChIJOYds4ZYHLz4R52zpZ7oJ1jk",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -3181,6 +3304,7 @@
       "placeId": "ChIJZ_xcIAoHLz4RIxZq-Ub7V20",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3203,6 +3327,7 @@
       "placeId": "ChIJPcFXY6kBLz4RyzN8YYDKumM",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3223,6 +3348,7 @@
       "placeId": "ChIJcWXeJU79Lj4RjnggZ-Hhywc",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3243,6 +3369,7 @@
       "placeId": "ChIJZffgEQD9Lj4RaKQwlz9zF3A",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3264,6 +3391,7 @@
       "placeId": "ChIJY-VCT6D9Lj4RyX-gU-tx594",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3284,6 +3412,7 @@
       "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3306,6 +3435,7 @@
       "placeId": "ChIJHZ8F0uD9Lj4RzEChHLUApPw",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3328,6 +3458,7 @@
       "placeId": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3348,6 +3479,7 @@
       "placeId": "ChIJc0EUrVX_Lj4RBjKvYrQVAnE",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3368,6 +3500,7 @@
       "placeId": "ChIJ-TFNIwD9Lj4RRbmh6IAPjdg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3386,8 +3519,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd1bf2459957:0x981f344c0bf6e54f",
       "popularityIndex": 54.3,
       "placeId": "ChIJV5lF8hv9Lj4RT-X2C0w0H5g",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3408,6 +3543,7 @@
       "placeId": "ChIJuxUGuQ7_Lj4RvEdy7wqsXdQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3430,6 +3566,7 @@
       "placeId": "ChIJbyRdX9f9Lj4RS_xhOaga_L4",
       "dineIn": false,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3450,6 +3587,7 @@
       "placeId": "ChIJO2KKH8P9Lj4RJTYRd1C6jqI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3470,6 +3608,7 @@
       "placeId": "ChIJLUjfHgADLz4RET9gq_0sRQA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3488,9 +3627,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f030008ff9c71:0xd3396682f440e17d",
       "logoUrl": "/logos/wathba-an-nazhah.jpg",
       "popularityIndex": 55.6,
-      "placeId": "ChIJG-kuXgADLz4R85qqrTsXazU",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "placeId": "ChIJcZz_CAADLz4RfeFA9IJmOdM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3512,6 +3653,7 @@
       "placeId": "ChIJY-VlAz8DLz4RjCiduL4ZrPo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3535,6 +3677,7 @@
       "placeId": "ChIJR_VAzIECLz4RqEAlL5Hw41g",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3556,8 +3699,10 @@
       "logoUrl": "/logos/elite-cup-roasters-an-nazhah.png",
       "popularityIndex": 69.2,
       "placeId": "ChIJM7281acDLz4RhVZq8FI7gpw",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -3579,6 +3724,7 @@
       "placeId": "ChIJ8dFM-80DLz4RYAll-gCPVpQ",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3600,6 +3746,7 @@
       "placeId": "ChIJD3WShPIDLz4Rk47gyVwxlxE",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3621,6 +3768,7 @@
       "placeId": "ChIJpb7bGOsDLz4RRg94-8o3tvg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3642,6 +3790,7 @@
       "placeId": "ChIJwxe37QADLz4R4woNuDu_ZRI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3663,6 +3812,7 @@
       "placeId": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3692,6 +3842,7 @@
       "placeId": "ChIJ64xp8br_Lj4RMcLUwkZYSdo",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3718,6 +3869,7 @@
       "placeId": "ChIJoyPGGscBLz4RkgJNsDEsUHw",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3743,6 +3895,7 @@
       "placeId": "ChIJ845kug4BLz4RvnEwimqRL5Y",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3768,6 +3921,7 @@
       "placeId": "ChIJ4-_-WgADLz4RN6D40OQ2k_s",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3793,6 +3947,7 @@
       "placeId": "ChIJp3o_LAABLz4R-PfJ2Xx1zC4",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3818,6 +3973,7 @@
       "placeId": "ChIJuYAxoh7_Lj4ReoBUZueYe2Q",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3845,6 +4001,7 @@
       "placeId": "ChIJXRAsLQD_Lj4R6a7KYir3pzs",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3870,6 +4027,7 @@
       "placeId": "ChIJN3oZka3_Lj4RlwS7bu3s1_A",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3896,6 +4054,7 @@
       "placeId": "ChIJmQPhDP0BLz4R642u0qfHUls",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3921,6 +4080,7 @@
       "placeId": "ChIJ46ukI5__Lj4RQWRi9agRHqA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3948,6 +4108,7 @@
       "placeId": "ChIJfVLuBqX_Lj4RnV4CEilIwpo",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3973,6 +4134,7 @@
       "placeId": "ChIJPdgxAMIBLz4R2OXfBa5cZkk",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -3996,8 +4158,10 @@
       "logoUrl": "/logos/obo-speciality-al-yarmouk-ig.jpg",
       "popularityIndex": 45.6,
       "placeId": "ChIJt8QREQD_Lj4RNEan94QUJHY",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4023,8 +4187,10 @@
       "logoUrl": "/logos/shafel-roastery-al-yarmouk.png",
       "popularityIndex": 53.4,
       "placeId": "ChIJSQFlL8n_Lj4Rk0ZydGFZSeI",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -4051,6 +4217,7 @@
       "placeId": "ChIJx-pRRpr_Lj4RaUWkqb6S0F8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4078,6 +4245,7 @@
       "placeId": "ChIJjyQTZJL_Lj4RJQV26FDR_CQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4103,6 +4271,7 @@
       "placeId": "ChIJRZ1jjHn_Lj4R5bYYiLDOXzc",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4128,6 +4297,7 @@
       "placeId": "ChIJFxlOzfhVLj4R_mqZZq9EfLw",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4153,6 +4323,7 @@
       "placeId": "ChIJ-ySlIq7_Lj4RmaHpzahzFQY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4178,6 +4349,7 @@
       "placeId": "ChIJzfUSd7v_Lj4RJyW7Y1TXF_I",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4202,9 +4374,11 @@
       },
       "logoUrl": "/logos/kapu-cafe-al-nahdah.jpg",
       "popularityIndex": 54.2,
-      "placeId": "ChIJ4RniBYIBLz4RMC2ze6F8FVs",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "placeId": "ChIJHZ3CbwCrLz4R9r0bYpDJLmo",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -4230,6 +4404,7 @@
       "placeId": "ChIJaVRqjQIBLz4RjU3QvqstvKA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4255,6 +4430,7 @@
       "placeId": "ChIJl_84XocBLz4RUIdD7KGal8U",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4281,7 +4457,9 @@
       "popularityIndex": 52.7,
       "placeId": "ChIJ71ockjoBLz4R38YZnJDX3Jk",
       "dineIn": true,
-      "outdoorSeating": null,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4304,8 +4482,10 @@
       },
       "popularityIndex": 50.1,
       "placeId": "ChIJn8Af-m0BLz4RuzyVWRFA6lo",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -4331,6 +4511,7 @@
       "placeId": "ChIJMY5USi0BLz4RcAL8th0VZS0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4357,6 +4538,7 @@
       "placeId": "ChIJgzeOOuYBLz4RHJVzrsLs9mM",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4382,6 +4564,7 @@
       "placeId": "ChIJR3KFdwABLz4RceCChbi2onk",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4407,6 +4590,7 @@
       "placeId": "ChIJEwRlue0BLz4RXPIHql79IiI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4431,6 +4615,7 @@
       "placeId": "ChIJuUSJCgABLz4Rt-xRQEdmfK4",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4451,6 +4636,7 @@
       "placeId": "ChIJUTQ_wcwBLz4Rs8YAXmHaPa4",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4471,6 +4657,7 @@
       "placeId": "ChIJoe6Cm5IBLz4RYzRX8dLYuok",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4492,6 +4679,7 @@
       "placeId": "ChIJgxuj8hYBLz4R0b9bc8h677w",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7101855,
@@ -4516,6 +4704,7 @@
       "placeId": "ChIJlceOVAABLz4RjXL-MBP2vaY",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4538,6 +4727,7 @@
       "placeId": "ChIJBbZCV3IHLz4RCV24pKzgNog",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4556,8 +4746,10 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010072319b5b:0xe1af295792ab646d",
       "popularityIndex": 40,
       "placeId": "ChIJW5sxcgABLz4RbWSrklcpr-E",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4580,6 +4772,7 @@
       "placeId": "ChIJRetLSAABLz4R-KBxVt8Awwc",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4600,6 +4793,7 @@
       "placeId": "ChIJIWhbqo0BLz4RN4BZUyaJmrg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4620,6 +4814,7 @@
       "placeId": "ChIJedqr12cBLz4RVswWTPZRPQc",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4637,9 +4832,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070d4dd944ed:0xc1e07e729b777b1d",
       "popularityIndex": 40,
-      "placeId": "ChIJ0dpXHSQHLz4RRf-E-5yFDc8",
-      "dineIn": null,
+      "placeId": "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
+      "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4660,6 +4857,7 @@
       "placeId": "ChIJLz2JTwAHLz4RRuwZDBopO5o",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4679,9 +4877,11 @@
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070062c5a10f:0x7cd84702e1e15833",
       "popularityIndex": 40,
-      "placeId": "ChIJXwlCbnsGLz4RAfgGBjPLqGY",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "placeId": "ChIJD6HFYgAHLz4RM1jh4QJH2Hw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -4702,6 +4902,7 @@
       "placeId": "ChIJbz_gRwAHLz4Rzo7jR0QMuFs",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4724,6 +4925,7 @@
       "placeId": "ChIJO49dPOEDLz4RQsSAhSSj3XU",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4744,6 +4946,7 @@
       "placeId": "ChIJzSWjcuYBLz4Rv-1qox0vvJQ",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4766,6 +4969,7 @@
       "placeId": "ChIJsw_DVQABLz4RGRjHHufPuYU",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4791,6 +4995,7 @@
       "placeId": "ChIJeRTdE4D_Lj4RyIN2BFaxVhA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4818,6 +5023,7 @@
       "placeId": "ChIJP6wvelr_Lj4RZP5jOnaIgTk",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4843,6 +5049,7 @@
       "placeId": "ChIJ3SuDtZvlLj4R_LWg76UiFcE",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4870,6 +5077,7 @@
       "placeId": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4895,6 +5103,7 @@
       "placeId": "ChIJA8qH_LD_Lj4R_14sDVWPxYM",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4920,6 +5129,7 @@
       "placeId": "ChIJC7CqX6f_Lj4RBcgTk7r2keI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4945,6 +5155,7 @@
       "placeId": "ChIJoXjq-gD_Lj4Rm-keg7sX72o",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -4969,8 +5180,10 @@
       "logoUrl": "/logos/coffee-address-al-munsiyah.png",
       "popularityIndex": 40,
       "placeId": "ChIJ9Y1teAD_Lj4RDIRsRSw6_9A",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -4996,6 +5209,7 @@
       "placeId": "ChIJYSeMhcH_Lj4RW1BHwauFRG0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5021,6 +5235,7 @@
       "placeId": "ChIJM-4-6YT_Lj4Rgjnmdx8v-zI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5048,6 +5263,7 @@
       "placeId": "ChIJGYQ7bf39Lj4Rglkjr6vSewI",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5073,6 +5289,7 @@
       "placeId": "ChIJdzbExw_jLj4RFmi7rthGO1E",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5098,6 +5315,7 @@
       "placeId": "ChIJK3BsP6UdLz4RTFCSz6lNp5M",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5123,6 +5341,7 @@
       "placeId": "ChIJg7ZEawAdLz4RcnjDpcXeoAI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5144,6 +5363,7 @@
       "placeId": "ChIJhahPHmDjLj4RGCr2QdO-jB8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5165,6 +5385,7 @@
       "placeId": "ChIJF5EoaxwdLz4Rut0u4cOBeFI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5192,6 +5413,7 @@
       "placeId": "ChIJqzcL3YsDLz4R-EoAquZD6I8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5213,6 +5435,7 @@
       "placeId": "ChIJIT3PS5PjLj4R94eVG54q5po",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5238,6 +5461,7 @@
       "placeId": "ChIJgQ_GVK0DLz4RjQz968x0Syk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5259,6 +5483,7 @@
       "placeId": "ChIJgzzOCAAdLz4Rm5L7Gw9O6ag",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5284,6 +5509,7 @@
       "placeId": "ChIJDxa3dQAdLz4RhvmtC-zavqE",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5305,6 +5531,7 @@
       "placeId": "ChIJ9xMXu4PjLj4RyeaL6TUxnjo",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5328,6 +5555,7 @@
       "placeId": "ChIJATOmsI3jLj4RCjyAr4nYpQs",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5351,6 +5579,7 @@
       "placeId": "ChIJM3-7dLnjLj4Rzm9W8CQJEx8",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5374,6 +5603,7 @@
       "placeId": "ChIJqwjB73HjLj4RIAWD80rL-v8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5395,6 +5625,7 @@
       "placeId": "ChIJGVIKcyjjLj4RjS3dIrgeDU8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5416,6 +5647,7 @@
       "placeId": "ChIJ_wgbdADjLj4RAssVT1gojcU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5437,6 +5669,7 @@
       "placeId": "ChIJtXEFRBHjLj4RYuWLdIgvAU4",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5458,6 +5691,7 @@
       "placeId": "ChIJsTaCxy_jLj4RFCXKE6JpUL8",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5480,6 +5714,7 @@
       "placeId": "ChIJLRjL7_njLj4Rem6JXpZnF6g",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7705458,
@@ -5505,6 +5740,7 @@
       "placeId": "ChIJ00ovVJDjLj4RiroHa1Y68dE",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5527,6 +5763,7 @@
       "placeId": "ChIJY_TTCr3jLj4R7es9JgXuPY0",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7660308,
@@ -5552,6 +5789,7 @@
       "placeId": "ChIJ1yGpCjzjLj4RewpeTgW3P4U",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5573,6 +5811,7 @@
       "placeId": "ChIJYRbBYS3jLj4RhIXRHhGFNso",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5594,6 +5833,7 @@
       "placeId": "ChIJZ3gqKebjLj4Rn4-EcDHrolo",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5616,6 +5856,7 @@
       "placeId": "ChIJS6wxdgDjLj4RCdfJDs7dpyI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7718293,
@@ -5641,6 +5882,7 @@
       "placeId": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5668,6 +5910,7 @@
       "placeId": "ChIJ0ezqrdjlLj4RdgHtPnUfDNg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5693,8 +5936,10 @@
       "logoUrl": "/logos/kicksters-lab-al-arid.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ-cd4QwDvLj4RSXOz8uv8bvg",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -5722,6 +5967,7 @@
       "placeId": "ChIJt22dHUjlLj4RxZHtYjvL854",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5747,6 +5993,7 @@
       "placeId": "ChIJPbfIOQDlLj4RCDS0gWA7dPw",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5773,6 +6020,7 @@
       "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5798,8 +6046,10 @@
       "logoUrl": "/logos/roasting-house-al-arid.png",
       "popularityIndex": 40,
       "placeId": "ChIJLUvOldTvLj4Rbgrf6FldYFQ",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -5824,8 +6074,10 @@
       "logoUrl": "/logos/coffee-address-al-arid.png",
       "popularityIndex": 40,
       "placeId": "ChIJlSLGFQDvLj4Rn8WLBpqHbvI",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -5851,6 +6103,7 @@
       "placeId": "ChIJJ7pV1sHlLj4RJ7qet2EvOJE",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5878,6 +6131,7 @@
       "placeId": "ChIJocCx6dnlLj4RauOOfJjRveg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5905,6 +6159,7 @@
       "placeId": "ChIJyV6QhYznLj4RbkaGIPEZOvw",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5930,6 +6185,7 @@
       "placeId": "ChIJEdz_FgDnLj4RwN8jmyviHuo",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5955,6 +6211,7 @@
       "placeId": "ChIJe5mqHBHlLj4RiviIxdUpu4w",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -5980,6 +6237,7 @@
       "placeId": "ChIJ_W4o9WDlLj4Robcs4L31LoQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6005,6 +6263,7 @@
       "placeId": "ChIJJ8jxg8LnLj4RBLXNf_W8X34",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6031,6 +6290,7 @@
       "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6056,6 +6316,7 @@
       "placeId": "ChIJU3jQpHflLj4RC9NG0oMbOZY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6083,6 +6344,7 @@
       "placeId": "ChIJU6e4WUz9Lj4Rd-kH1pevFQg",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6108,6 +6370,7 @@
       "placeId": "ChIJMRwogAD9Lj4RZF5OsS7fhQo",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6133,6 +6396,7 @@
       "placeId": "ChIJCSwSXgD9Lj4RMrpthTZH11M",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6158,6 +6422,7 @@
       "placeId": "ChIJxTZbX_IdLz4ReWIBr-WPB84",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6185,6 +6450,7 @@
       "placeId": "ChIJFSCjIgAdLz4R7z5COuXI6KE",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6209,9 +6475,11 @@
       },
       "logoUrl": "/logos/hekaya-tale-al-mohammadiyah.png",
       "popularityIndex": 40,
-      "placeId": "ChIJr2q5B639Lj4RiSp_6BiPoT4",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "placeId": "ChIJows0hcfjLj4R76rT7wthQBA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false
     },
     {
@@ -6237,6 +6505,7 @@
       "placeId": "ChIJAQFidV_9Lj4RdyMWm7eXVjI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6262,6 +6531,7 @@
       "placeId": "ChIJb8HxCwDjLj4RGatyVGYPvng",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6287,6 +6557,7 @@
       "placeId": "ChIJc_IJ-iXjLj4RR8AbQj9QEHo",
       "dineIn": false,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6312,6 +6583,7 @@
       "placeId": "ChIJr23uWCgFLz4RsYxj7UYpqXI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6337,6 +6609,7 @@
       "placeId": "ChIJfyMLsJoFLz4R1NHEGR1pOIo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6362,6 +6635,7 @@
       "placeId": "ChIJVX80RLoFLz4RCthkVg4fhLE",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6387,6 +6661,7 @@
       "placeId": "ChIJXXFVfbsFLz4R4g1fMnYvWRM",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6412,6 +6687,7 @@
       "placeId": "ChIJbZg1RREFLz4R_tcSTu4Njbs",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -6434,6 +6710,7 @@
       "placeId": "ChIJoS6Cev8dLz4Reg6_AXVgoY0",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7253683,
@@ -6460,6 +6737,7 @@
       "placeId": "ChIJx-oDiMwDLz4RTomabzh3hls",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7069755,
@@ -6486,6 +6764,7 @@
       "placeId": "ChIJjbrJQr39Lj4RqxuQvzGHSjg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.804065,
@@ -6510,8 +6789,10 @@
       "logoUrl": "/logos/the-matcha-bar-olaya.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJLaOeAU4DLz4RnQh0rN7TQ40",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false,
       "pin": {
         "lat": 24.6970065,
@@ -6538,6 +6819,7 @@
       "placeId": "ChIJmyDybADhLj4RS_5WMqIdhPM",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7448391,
@@ -6564,6 +6846,7 @@
       "placeId": "ChIJAbv74u4DLz4Rc-e4mCac04w",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7068552,
@@ -6587,9 +6870,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d6cdc2c21b1:0xf7da8c11431eb292",
       "logoUrl": "/logos/opinion-al-mathar.png",
       "popularityIndex": 40,
-      "placeId": "ChIJERtpPH0DLz4RnyGqEWJw6HI",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "placeId": "ChIJsSEs3GwdLz4RkrIeQxGM2vc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false,
       "pin": {
         "lat": 24.6894778,
@@ -6613,9 +6898,11 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30ff9b8dd79:0x94b71f92f5dc9ecb",
       "logoUrl": "/logos/opinion-hittin.png",
       "popularityIndex": 40,
-      "placeId": "ChIJX-CJodHjLj4R7U3j7UMywlI",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "placeId": "ChIJed24-Q_jLj4Ry57c9ZIft5Q",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": false,
+      "baynanaEligible": true,
       "example": false,
       "pin": {
         "lat": 24.7712573,
@@ -6642,6 +6929,7 @@
       "placeId": "ChIJn6Xvzy_jLj4R52eHZGPUGiM",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7685385,
@@ -6668,6 +6956,7 @@
       "placeId": "ChIJpzPXwKnnLj4RCKE2rrU_zNI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7964815,
@@ -6694,6 +6983,7 @@
       "placeId": "ChIJE5LQUMLjLj4RVQbaHAFhtNc",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7616583,
@@ -6720,6 +7010,7 @@
       "placeId": "ChIJDUW9BQD_Lj4RYb7l1Yp-jlU",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7982152,
@@ -6746,6 +7037,7 @@
       "placeId": "ChIJK_9vCyHjLj4RAR4kYeNeGfw",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7723996,
@@ -6772,6 +7064,7 @@
       "placeId": "ChIJnZX2k07jLj4RtzK9zf17r0M",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7551905,
@@ -6798,6 +7091,7 @@
       "placeId": "ChIJ6SoOEADjLj4RDJ6r9A28D84",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.759081,
@@ -6824,6 +7118,7 @@
       "placeId": "ChIJc0fQcQDjLj4RUdRKZAPcEQI",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7937069,
@@ -6850,6 +7145,7 @@
       "placeId": "ChIJa93ebQDjLj4RGSje3XOnQ4Q",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7697085,
@@ -6874,8 +7170,10 @@
       "logoUrl": "/logos/flow-matcha-at-taawun.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJCQdnXgD9Lj4RVRz9dz1megA",
-      "dineIn": null,
+      "dineIn": false,
       "outdoorSeating": null,
+      "pickupOnly": true,
+      "baynanaEligible": null,
       "example": false,
       "pin": {
         "lat": 24.7789549,
@@ -6902,6 +7200,7 @@
       "placeId": "ChIJXxnECQD_Lj4R0l-tYvtkjME",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.787066,
@@ -6928,6 +7227,7 @@
       "placeId": "ChIJE9_SsWbhLj4RllLfSbvCL-o",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7471773,
@@ -6954,6 +7254,7 @@
       "placeId": "ChIJG5C3EgD9Lj4R88h-KsHTFcs",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7817078,
@@ -6980,6 +7281,7 @@
       "placeId": "ChIJ6-gCkwvlLj4RcHgbAELthf4",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.824307,
@@ -7010,6 +7312,7 @@
       "placeId": "ChIJNYv530AFLz4RlgfMG7NdRp4",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7031,6 +7334,7 @@
       "placeId": "ChIJXSj_DwDjLj4REAYeLeil67g",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7558116,
@@ -7060,6 +7364,7 @@
       "placeId": "ChIJjeAEbQD9Lj4RwV6DczzxT-Y",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7085,6 +7390,7 @@
       "placeId": "ChIJOSvaa4HhLj4R_l1RLPcU5_Q",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7107,6 +7413,7 @@
       "placeId": "ChIJzRf0UwAFLz4R-iHhT-brVQY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6620663,
@@ -7137,6 +7444,7 @@
       "placeId": "ChIJgQEv4zEFLz4RDgQ_jnWQFFE",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7159,6 +7467,7 @@
       "placeId": "ChIJwfaGGiDjLj4Rg36EcDfvtF8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.754773,
@@ -7185,6 +7494,7 @@
       "placeId": "ChIJw9IL_yP9Lj4Rl-s5A92etI4",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.781097,
@@ -7211,6 +7521,7 @@
       "placeId": "ChIJ10hvOwADLz4RR37FAPgPJfo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.793066,
@@ -7241,6 +7552,7 @@
       "placeId": "ChIJqz8Jqk0DLz4RtetmnkR5_ZA",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7263,6 +7575,7 @@
       "placeId": "ChIJh1NdLkQELz4R28n2qdX3reY",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6595032,
@@ -7293,6 +7606,7 @@
       "placeId": "ChIJP3IshJsBLz4R0kVFTMtTlAQ",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7315,6 +7629,7 @@
       "placeId": "ChIJuYwiS6PiLj4RRlUyXcFysHk",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7468207,
@@ -7341,6 +7656,7 @@
       "placeId": "ChIJXzNA-hr9Lj4RPNGcaLtUOVU",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7826863,
@@ -7371,6 +7687,7 @@
       "placeId": "ChIJqd-bBwDjLj4R2d50wDLTI7A",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7397,6 +7714,7 @@
       "placeId": "ChIJc31OzOEHLz4REWusjJWHU00",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7418,6 +7736,7 @@
       "placeId": "ChIJ9_gOE3oDLz4Rm6joL2iCcGk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7406508,
@@ -7444,6 +7763,7 @@
       "placeId": "ChIJp1mXkpIFLz4RQjfAZCvEBP4",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6631437,
@@ -7470,6 +7790,7 @@
       "placeId": "ChIJky786gL9Lj4R7VWcfkuxdxI",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.790487,
@@ -7495,6 +7816,7 @@
       "placeId": "ChIJQZzNKgTjLj4RXF-uBilbBkc",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7513115,
@@ -7520,6 +7842,7 @@
       "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8199129,
@@ -7545,6 +7868,7 @@
       "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5577425,
@@ -7570,6 +7894,7 @@
       "placeId": "ChIJ06mtUtXjLj4RdZbvt04WbFk",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7665264,
@@ -7600,6 +7925,7 @@
       "placeId": "ChIJ0UUKW1MDLz4RsuMZrIvZ2eg",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7622,6 +7948,7 @@
       "placeId": "ChIJ9903awDlLj4RQC11aW_XM90",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8214588,
@@ -7651,6 +7978,7 @@
       "placeId": "ChIJEUHKsxr_Lj4RmpbATXPRbgQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7671,8 +7999,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7979995,
@@ -7697,8 +8027,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.4858894,
@@ -7723,8 +8055,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.6113129,
@@ -7749,8 +8083,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7605159,
@@ -7775,8 +8111,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7749556,
@@ -7802,6 +8140,7 @@
       "placeId": "ChIJez3NxhAHLz4RMTVXVk2x3nk",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.700983,
@@ -7829,8 +8168,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJF3aAw-UFLz4RPy2LtGYhbqY",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false
     },
     {
@@ -7856,6 +8197,7 @@
       "placeId": "ChIJqc-MxOEELz4RrpiHIW3gid0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     },
     {
@@ -7878,6 +8220,7 @@
       "placeId": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5640625,
@@ -7904,6 +8247,7 @@
       "placeId": "ChIJvw8EOQAJLz4RtO1s9cD9QjQ",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5710152,
@@ -7930,6 +8274,7 @@
       "placeId": "ChIJcTDnbgARLz4RStpCnB_twWo",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5383997,
@@ -7956,6 +8301,7 @@
       "placeId": "ChIJw__YYAABLz4RSJoIVOxds18",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7458387,
@@ -7980,8 +8326,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJfd9pRwABLz4RrD1SbHX2Vvs",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7819433,
@@ -8006,8 +8354,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJDa8NbQCrLz4Rhy6A-Am2EHQ",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7338849,
@@ -8032,8 +8382,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.9274174,
@@ -8060,6 +8412,7 @@
       "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8298297,
@@ -8086,6 +8439,7 @@
       "placeId": "ChIJVcmNXQDjLj4RXKXxgOcwKdU",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.809641,
@@ -8110,8 +8464,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJ4-ozXQDjLj4Rve97xjnbv88",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.8122922,
@@ -8138,6 +8494,7 @@
       "placeId": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5222259,
@@ -8162,8 +8519,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.7300452,
@@ -8188,8 +8547,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJL2MLegBTLj4RDNtCfoYA_RQ",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.8392682,
@@ -8216,6 +8577,7 @@
       "placeId": "ChIJAbffa-cPLz4R4nvYws-ZjJI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5742199,
@@ -8242,6 +8604,7 @@
       "placeId": "ChIJL_yPwFEDLz4RmRHSeaCibK0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6855165,
@@ -8268,6 +8631,7 @@
       "placeId": "ChIJ81R0BlIALz4RKf_ZCaTfVqg",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.756872,
@@ -8292,8 +8656,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJr2Hdp0EOLz4RegSTuRkpadg",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.5435077,
@@ -8320,6 +8686,7 @@
       "placeId": "ChIJgyGF8UjxLj4RqPeCEQa_Ca8",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.8475657,
@@ -8346,6 +8713,7 @@
       "placeId": "ChIJd4PuXOIGLz4RUgnyRh2Z3wk",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6570831,
@@ -8372,6 +8740,7 @@
       "placeId": "ChIJd4PuXOIGLz4RUgnyRh2Z3wk",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6817172,
@@ -8398,6 +8767,7 @@
       "placeId": "ChIJO5JV094ILz4RE3tEHmtlvMQ",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5875376,
@@ -8424,6 +8794,7 @@
       "placeId": "ChIJJwebVZIALz4R0nx2bzjX8J0",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7458764,
@@ -8450,6 +8821,7 @@
       "placeId": "ChIJIwhasQX9Lj4RSPP_4Ll3F0U",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7848771,
@@ -8476,6 +8848,7 @@
       "placeId": "ChIJJwebVZIALz4R0nx2bzjX8J0",
       "dineIn": true,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.74208,
@@ -8500,8 +8873,10 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJqzJ3rKL9Lj4R8mtz4c8x5PY",
-      "dineIn": null,
-      "outdoorSeating": null,
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": true,
+      "baynanaEligible": false,
       "example": false,
       "pin": {
         "lat": 24.8340945,
@@ -8528,6 +8903,7 @@
       "placeId": "ChIJL022oooPLz4RSoD0K1HR-vw",
       "dineIn": null,
       "outdoorSeating": false,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5728836,
@@ -8554,6 +8930,7 @@
       "placeId": "ChIJHwOkiHkDLz4Rw9s3NxGe7fI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5941235,
@@ -8580,6 +8957,7 @@
       "placeId": "ChIJL_yPwFEDLz4RmRHSeaCibK0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7012987,
@@ -8606,6 +8984,7 @@
       "placeId": "ChIJ9z9599gjLz4RtajwjDDDnc0",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5550754,
@@ -8632,6 +9011,7 @@
       "placeId": "ChIJJ7LT92j9Lj4RNZ1Q91EYNLk",
       "dineIn": true,
       "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.7555574,
@@ -8658,6 +9038,7 @@
       "placeId": "ChIJHwOkiHkDLz4Rw9s3NxGe7fI",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.6884683,
@@ -8684,6 +9065,7 @@
       "placeId": "ChIJC9-F2ogPLz4Rh0O4S3P3PDA",
       "dineIn": true,
       "outdoorSeating": true,
+      "pickupOnly": null,
       "example": false,
       "pin": {
         "lat": 24.5818563,

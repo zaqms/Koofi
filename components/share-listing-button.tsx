@@ -13,7 +13,7 @@ type ShareListingButtonProps = {
   language: Language;
   source: ListingShareSource;
   compact?: boolean;
-  variant?: "default" | "passport" | "ghost" | "listing" | "hero" | "detail";
+  variant?: "default" | "passport" | "ghost" | "listing" | "hero";
 };
 
 export function ShareListingButton({
@@ -45,33 +45,12 @@ export function ShareListingButton({
         onClick={() => {
           void onShare();
         }}
-        className="inline-flex size-11 items-center justify-center rounded-[8px] bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider"
+        className="inline-flex size-11 items-center justify-center rounded-full bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider"
         lang={language}
         translate="no"
         aria-label={copy.listingShare[language]}
       >
         <ShareIcon className="size-5" />
-        {copied ? (
-          <span className="sr-only">{copy.packetCopied[language]}</span>
-        ) : null}
-      </button>
-    );
-  }
-
-  if (variant === "detail") {
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          void onShare();
-        }}
-        className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[12px] border border-wain-divider bg-foam px-3 text-sm font-medium text-ink hover:border-bean"
-        lang={language}
-        translate="no"
-        aria-label={copy.listingShare[language]}
-      >
-        <ShareIcon className="size-5" />
-        <span>{copy.listingShare[language]}</span>
         {copied ? (
           <span className="sr-only">{copy.packetCopied[language]}</span>
         ) : null}

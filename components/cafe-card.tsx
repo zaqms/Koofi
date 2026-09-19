@@ -140,7 +140,7 @@ function ThinCafeCard({
       {SHOW_BEEN_HERE ? (
         <CardBeen shopId={shop.id} language={language} />
       ) : null}
-      <div className="mt-10">
+      <div className="sr-only">
         <CafeClaimFooter shop={shop} language={language} status={status} />
       </div>
     </div>

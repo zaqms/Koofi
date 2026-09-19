@@ -32,8 +32,10 @@ assert(SHOW_INVITE_CTA === false, "وين؟ stays parked");
 assert(SHOW_DETAIL_FAVORITE === false, "hero heart stays parked");
 assert(MAX_LISTING_TAGS === 2, "detail pills cap at 2");
 
-assert(copy.takeMeThere.ar === "ودّني هناك", "AR Maps CTA stays ودّني هناك");
-assert(copy.takeMeThere.en === "Take me there", "EN Maps CTA");
+assert(copy.takeMeThere.ar === "ودّني هناك", "Passport Maps CTA stays ودّني هناك");
+assert(copy.takeMeThere.en === "Take me there", "Passport EN Maps CTA");
+assert(copy.detailTakeMeThere.ar === "خذني له", "detail AR Maps CTA is خذني له");
+assert(copy.detailTakeMeThere.en === "Take me there", "detail EN Maps CTA");
 assert(copy.listingShare.ar === "مشاركة", "AR Share is مشاركة");
 assert(copy.listingShare.en === "Share", "EN Share");
 assert(copy.detailSeeAll.ar === "عرض الكل", "AR See all is عرض الكل");
@@ -123,16 +125,22 @@ assert(detail.includes("districtPath"), "neighborhood row + See all use district
 assert(detail.includes("shopMapsHref"), "Take me there opens existing Maps");
 assert(detail.includes('source="card"'), "Maps hop stays the card source");
 assert(detail.includes("ShareListingButton"), "share stays the listing packet");
-assert(detail.includes('variant="detail"'), "primary row Share is the outline CTA");
-assert(detail.includes('variant="hero"'), "hero Share is the square overlay");
+assert(
+  (detail.match(/<ShareListingButton/g) ?? []).length === 1,
+  "one Share on the whole screen — hero only",
+);
+assert(!detail.includes('variant="detail"'), "no lower Share CTA next to Maps");
+assert(detail.includes('variant="hero"'), "hero Share is the overlay control");
 assert(detail.includes("SHOW_DETAIL_FAVORITE"), "heart is flagged");
-assert(detail.includes("{SHOW_DETAIL_FAVORITE ?"), "heart is not rendered while parked");
+assert(detail.includes("const parked = !SHOW_DETAIL_FAVORITE"), "heart stays parked without a real like");
+assert(detail.includes("<CafeDetailFavorite"), "hero keeps the Favorite control");
 assert(detail.includes("size=\"listing\""), "floating logo uses listing treatment");
 assert(detail.includes("start-1 -bottom-8"), "logo overlaps hero start edge");
-assert(detail.includes("rounded-[8px]"), "overlay controls are rounded squares");
+assert(detail.includes("rounded-full"), "hero overlays match the circular mock chrome");
 assert(detail.includes("rtl:scale-x-[-1]"), "back + chevron flip with RTL");
-assert(detail.includes("copy.takeMeThere"), "Maps label is locked product copy");
-assert(!detail.includes("خذني"), "do not use the mock’s خذني له");
+assert(detail.includes("copy.detailTakeMeThere"), "Maps label is the detail lock");
+assert(detail.includes("w-full"), "Take me there is the single wide CTA");
+assert(!detail.includes("copy.takeMeThere"), "Passport ودّني هناك stays off this page");
 assert(!detail.includes("CafePresenceRow"), "detail replaces the old presence row");
 assert(!detail.includes("DirectoryCard"), "detail is not the listing card");
 assert(!detail.includes("CardBeen"), "Been here stays off the identity layout");
@@ -161,7 +169,8 @@ assert(blurb.includes("cafeArMarkdown"), "AR SEO markdown stays");
 
 const thin = read("components/cafe-card.tsx");
 assert(thin.includes("CafeDetail"), "thin /c/[id] uses the approved detail");
-assert(thin.includes("CafeClaimFooter"), "claim footer stays below the identity card");
+assert(thin.includes("CafeClaimFooter"), "claim footer stays for SEO / claim path");
+assert(thin.includes("sr-only"), "Listed on / Own this cafe stay off the visible UI");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here stays parked on the thin card");
 assert(thin.includes("{SHOW_BEEN_HERE ?"), "Been here is not rendered while parked");
 assert(!thin.includes("CafePresenceRow"), "thin no longer mounts the old action row");
@@ -169,8 +178,17 @@ assert(!thin.includes("DirectoryCard"), "thin /c/[id] is not the listing card");
 
 const share = read("components/share-listing-button.tsx");
 assert(share.includes('"hero"'), "hero share variant");
-assert(share.includes('"detail"'), "detail share variant");
-assert(share.includes("listingShare"), "detail share label stays مشاركة / Share");
+assert(!share.includes('"detail"'), "lower detail Share variant is gone");
+assert(share.includes("listingShare"), "hero share label stays مشاركة / Share");
+assert(!share.includes("rtl:scale-x-[-1]"), "share glyph does not flip in RTL");
+
+const arPage = read("app/c/[id]/page.tsx");
+const enPage = read("app/en/c/[id]/page.tsx");
+assert(arPage.includes("cafePageMetadata"), "AR route keeps unique title+meta");
+assert(enPage.includes("cafePageMetadata"), "EN route keeps unique title+meta");
+assert(arPage.includes("shopJsonLd"), "AR route keeps Cafe JSON-LD");
+assert(enPage.includes("shopJsonLd"), "EN route keeps Cafe JSON-LD");
+assert(read("lib/cafe-metadata.ts").includes("pageAlternates"), "canonical + hreflang stay");
 
 const tonight = read("lib/tonight.ts");
 assert(tonight.includes("SHOW_DETAIL_FAVORITE = false"), "favorite flag defaults false");

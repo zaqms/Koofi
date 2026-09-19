@@ -699,6 +699,11 @@ export const copy = {
     ar: "ودّني هناك",
     en: "Take me there",
   },
+  /** Public /c/[id] detail Maps CTA. Other surfaces keep takeMeThere. */
+  detailTakeMeThere: {
+    ar: "خذني له",
+    en: "Take me there",
+  },
   nowPouring: {
     ar: "يصبّون الحين",
     en: "Now pouring",

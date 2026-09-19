@@ -361,9 +361,10 @@ assert(!thin.includes("beenHere"), "thin does not hardcode Been here copy");
 
 const detail = readFileSync("components/cafe-detail.tsx", "utf8");
 assert(detail.includes("ShareListingButton"), "detail share stays the listing packet");
-assert(detail.includes("copy.takeMeThere"), "detail Maps CTA stays ودّني هناك / Take me there");
+assert(detail.includes("copy.detailTakeMeThere"), "detail Maps CTA is خذني له / Take me there");
+assert(!detail.includes("copy.takeMeThere"), "Passport ودّني هناك stays off the public detail");
 assert(detail.includes("SHOW_DETAIL_FAVORITE"), "hero heart is flagged");
-assert(detail.includes("{SHOW_DETAIL_FAVORITE ?"), "hero heart is not rendered while parked");
+assert(detail.includes("const parked = !SHOW_DETAIL_FAVORITE"), "hero heart stays parked without a real like");
 
 const cardBeen = readFileSync("components/card-been.tsx", "utf8");
 assert(cardBeen.includes("SHOW_BEEN_HERE"), "CardBeen is gated");

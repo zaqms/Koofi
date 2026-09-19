@@ -41,10 +41,10 @@ type CafeDetailProps = {
 };
 
 const heroSquareClass =
-  "inline-flex size-11 items-center justify-center rounded-[8px] bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider";
+  "inline-flex size-11 items-center justify-center rounded-full bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider";
 
-const actionClass =
-  "inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-[12px] border border-wain-divider bg-foam px-3 text-sm font-medium text-ink hover:border-bean";
+const mapsCtaClass =
+  "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-card)] bg-wain-warm-cream px-4 text-[15px] font-medium text-ink hover:bg-wain-warm-cream/80";
 
 export function CafeDetail({
   shop,
@@ -77,6 +77,8 @@ export function CafeDetail({
           language={language}
           backHref={backHref}
           shop={shop}
+          name={name}
+          neighborhood={area}
         />
         <div className="pointer-events-none absolute start-1 -bottom-8 z-10">
           <div className="pointer-events-auto rounded-[16px] shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider">
@@ -91,8 +93,8 @@ export function CafeDetail({
         </div>
       </div>
 
-      <div className="pt-11">
-        <h1 className="text-[1.65rem] font-semibold leading-tight break-words">
+      <div className="pt-12">
+        <h1 className="text-[1.75rem] font-semibold leading-tight tracking-[-0.02em] break-words">
           {name}
         </h1>
         <CafeDetailLocation
@@ -114,30 +116,24 @@ export function CafeDetail({
           </ul>
         ) : null}
 
-        <div className="mt-5 flex items-stretch gap-2.5">
+        <div className="mt-6">
           <MapsLink
             href={shopMapsHref(shop)}
             shopId={shop.id}
             locale={language}
             source="card"
-            className={actionClass}
+            className={mapsCtaClass}
           >
-            <MapPinIcon className="size-5" />
-            <span>{copy.takeMeThere[language]}</span>
+            <MapPinIcon className="size-5 shrink-0" />
+            <span>{copy.detailTakeMeThere[language]}</span>
           </MapsLink>
-          <ShareListingButton
-            shop={shop}
-            language={language}
-            source="card"
-            variant="detail"
-          />
         </div>
 
         {description ? (
           <p className="mt-5 text-sm leading-6 text-ink-soft">{description}</p>
         ) : null}
 
-        <div className="mt-6 border-y border-wain-divider">
+        <div className="mt-7 border-y border-wain-divider">
           <DetailInfoRow
             href={districtPath(shop.neighborhood, language)}
             icon={<MapPinIcon className="size-[18px]" />}
@@ -182,11 +178,15 @@ function CafeDetailHero({
   language,
   backHref,
   shop,
+  name,
+  neighborhood,
 }: {
   photos: string[];
   language: Language;
   backHref: string;
   shop: Shop;
+  name: string;
+  neighborhood: string;
 }) {
   const [index, setIndex] = useState(0);
   const startX = useRef<number | null>(null);
@@ -215,7 +215,11 @@ function CafeDetailHero({
       {photo ? (
         // Catalog photoUrl only. Local /logos stay on <img>.
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={photo} alt="" className="size-full object-cover" />
+        <img
+          src={photo}
+          alt={`${name} · ${neighborhood}`}
+          className="size-full object-cover"
+        />
       ) : null}
 
       <div className="absolute inset-x-3 top-3 z-10 flex items-center justify-between gap-2">
@@ -233,9 +237,7 @@ function CafeDetailHero({
             source="card"
             variant="hero"
           />
-          {SHOW_DETAIL_FAVORITE ? (
-            <CafeDetailFavorite shopId={shop.id} language={language} />
-          ) : null}
+          <CafeDetailFavorite shopId={shop.id} language={language} />
         </div>
       </div>
 
@@ -259,7 +261,8 @@ function CafeDetailFavorite({
   language: Language;
 }) {
   const upvote = useShopUpvote();
-  const voted = upvote.hasVoted(shopId);
+  const parked = !SHOW_DETAIL_FAVORITE;
+  const voted = !parked && upvote.hasVoted(shopId);
   const busy = upvote.votingId === shopId;
   const label = copy.detailFavorite[language];
 
@@ -267,12 +270,13 @@ function CafeDetailFavorite({
     <button
       type="button"
       className={heroSquareClass}
-      aria-pressed={voted}
+      aria-pressed={parked ? undefined : voted}
+      aria-disabled={parked || undefined}
       aria-label={label}
       title={label}
-      disabled={busy}
+      disabled={parked ? false : busy}
       onClick={() => {
-        if (busy) return;
+        if (parked || busy) return;
         void upvote.vote(shopId, language);
       }}
     >
@@ -369,7 +373,7 @@ function DetailInfoRow({
   );
 
   const rowClass =
-    "flex w-full items-start gap-3 border-b border-wain-divider py-3.5 last:border-b-0";
+    "flex w-full items-start gap-3 border-b border-wain-divider py-4 last:border-b-0";
 
   if (href) {
     return (

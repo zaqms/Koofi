@@ -9,7 +9,7 @@ type ListingActionFaceProps = {
 export function ListingActionFace({ label, children }: ListingActionFaceProps) {
   return (
     <>
-      <span className="inline-flex size-11 items-center justify-center rounded-[12px] border border-wain-divider bg-wain-paper">
+      <span className="inline-flex size-11 items-center justify-center rounded-[10px] border border-wain-divider bg-foam">
         {children}
       </span>
       <span className="text-[11px] leading-none">{label}</span>

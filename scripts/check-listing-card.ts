@@ -111,7 +111,7 @@ assert(!/Soft Places/i.test(tags), "Soft Places parked on tags");
 const visual = read("components/shop-visual.tsx");
 assert(visual.includes('"listing"'), "listing logo size");
 assert(visual.includes("bg-wain-warm-cream"), "listing logo sits on Warm Cream");
-assert(visual.includes("p-2"), "listing logo has padding from the edge");
+assert(visual.includes("p-1.5"), "listing logo has padding from the edge");
 
 const share = read("components/share-listing-button.tsx");
 assert(share.includes('"listing"'), "listing share variant");
@@ -119,7 +119,7 @@ assert(share.includes("listingShare"), "listing share label is مشاركة / Sh
 assert(share.includes("ListingActionFace"), "listing share uses square chrome");
 
 const action = read("components/listing-action.tsx");
-assert(action.includes("rounded-[12px]"), "actions are rounded squares, not circles");
+assert(action.includes("rounded-[10px]"), "actions are rounded squares, not circles");
 assert(!action.includes("rounded-full"), "actions are not pills");
 
 const directory = read("components/shop-directory.tsx");

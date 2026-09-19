@@ -79,7 +79,7 @@ export function ShopVisual({
       : "bg-paper-deep text-bean";
   const sizeClass =
     listing
-      ? "size-[4.5rem]"
+      ? "size-20"
       : size === "lg"
         ? "size-14"
         : size === "md"
@@ -97,11 +97,11 @@ export function ShopVisual({
         <img
           src={logoUrl}
           alt=""
-          width={listing ? 72 : 44}
-          height={listing ? 72 : 44}
+          width={listing ? 80 : 44}
+          height={listing ? 80 : 44}
           className={
             listing
-              ? "size-full object-contain p-2"
+              ? "size-full object-contain p-1.5"
               : "size-full object-contain p-px"
           }
           onError={() => setLogoFailed(true)}

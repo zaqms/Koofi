@@ -33,7 +33,7 @@ export function DirectoryCard({ shop, language }: DirectoryCardProps) {
 
   return (
     <li
-      className="rounded-[var(--radius-card)] border border-wain-divider bg-wain-paper px-3 py-3 shadow-[0_1px_4px_rgba(30,23,20,0.04)]"
+      className="rounded-[var(--radius-card)] border border-wain-divider bg-wain-paper px-3.5 py-3.5 shadow-[0_2px_8px_rgba(30,23,20,0.05)]"
       dir={dir}
       lang={language}
     >

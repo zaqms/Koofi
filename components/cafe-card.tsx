@@ -13,7 +13,6 @@ type CafeCardProps = {
   shop: Shop;
   language?: Language;
   backHref?: string;
-  localeHref: string;
   siblings?: DirectoryShop[];
 };
 
@@ -26,7 +25,6 @@ export function CafeCard({
   shop,
   language = "ar",
   backHref = "/",
-  localeHref,
   siblings = [],
 }: CafeCardProps) {
   const [status, setStatus] = useState<ClaimStatus>("none");
@@ -57,7 +55,6 @@ export function CafeCard({
         shop={shop}
         language={language}
         backHref={backHref}
-        localeHref={localeHref}
         siblings={siblings}
       />
       {SHOW_BEEN_HERE ? (

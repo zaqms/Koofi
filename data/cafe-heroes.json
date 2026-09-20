@@ -8218,5 +8218,125 @@
         "uri": "https://maps.google.com/maps/contrib/100286719382201192569"
       }
     }
+  ],
+  "walnut-wood-coffee-al-malaz": [
+    {
+      "src": "/cafe-heroes/walnut-wood-coffee-al-malaz/1.png",
+      "attribution": {
+        "displayName": "Walnut Wood Coffee",
+        "uri": "https://maps.google.com/maps/contrib/109644625648253842867"
+      }
+    },
+    {
+      "src": "/cafe-heroes/walnut-wood-coffee-al-malaz/2.jpg",
+      "attribution": {
+        "displayName": "الهنوف بنت عبدالعزيز",
+        "uri": "https://maps.google.com/maps/contrib/115364056718436830736"
+      }
+    },
+    {
+      "src": "/cafe-heroes/walnut-wood-coffee-al-malaz/3.jpg",
+      "attribution": {
+        "displayName": "Walnut Wood Coffee",
+        "uri": "https://maps.google.com/maps/contrib/109644625648253842867"
+      }
+    },
+    {
+      "src": "/cafe-heroes/walnut-wood-coffee-al-malaz/4.jpg",
+      "attribution": {
+        "displayName": "سائح",
+        "uri": "https://maps.google.com/maps/contrib/114745745901409082613"
+      }
+    }
+  ],
+  "wama-coffee-al-wadi": [
+    {
+      "src": "/cafe-heroes/wama-coffee-al-wadi/1.jpg",
+      "attribution": {
+        "displayName": "قهوة وما | Wma Coffee",
+        "uri": "https://maps.google.com/maps/contrib/101908176677294876732"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wama-coffee-al-wadi/2.jpg",
+      "attribution": {
+        "displayName": "Nhar Al",
+        "uri": "https://maps.google.com/maps/contrib/103216145571557884367"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wama-coffee-al-wadi/3.jpg",
+      "attribution": {
+        "displayName": "Omar",
+        "uri": "https://maps.google.com/maps/contrib/117251340560091587361"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wama-coffee-al-wadi/4.jpg",
+      "attribution": {
+        "displayName": "Afaf abdulrahman",
+        "uri": "https://maps.google.com/maps/contrib/111166367637217984541"
+      }
+    }
+  ],
+  "white-roastery-al-wadi": [
+    {
+      "src": "/cafe-heroes/white-roastery-al-wadi/1.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    },
+    {
+      "src": "/cafe-heroes/white-roastery-al-wadi/2.jpg",
+      "attribution": {
+        "displayName": "BADER HAMAD",
+        "uri": "https://maps.google.com/maps/contrib/105716869461488847616"
+      }
+    },
+    {
+      "src": "/cafe-heroes/white-roastery-al-wadi/3.jpg",
+      "attribution": {
+        "displayName": "A",
+        "uri": "https://maps.google.com/maps/contrib/106315297947454099160"
+      }
+    },
+    {
+      "src": "/cafe-heroes/white-roastery-al-wadi/4.jpg",
+      "attribution": {
+        "displayName": "شيخه الشمري",
+        "uri": "https://maps.google.com/maps/contrib/113518780456490241554"
+      }
+    }
+  ],
+  "with-heart-diriyah": [
+    {
+      "src": "/cafe-heroes/with-heart-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "Ohana Cafe",
+        "uri": "https://maps.google.com/maps/contrib/106283927900747856503"
+      }
+    },
+    {
+      "src": "/cafe-heroes/with-heart-diriyah/2.jpg",
+      "attribution": {
+        "displayName": "Ohana Cafe",
+        "uri": "https://maps.google.com/maps/contrib/106283927900747856503"
+      }
+    },
+    {
+      "src": "/cafe-heroes/with-heart-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "The Danah",
+        "uri": "https://maps.google.com/maps/contrib/101873096021705164758"
+      }
+    },
+    {
+      "src": "/cafe-heroes/with-heart-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "Aseel Abdullah",
+        "uri": "https://maps.google.com/maps/contrib/100226013473835015406"
+      }
+    }
   ]
 }

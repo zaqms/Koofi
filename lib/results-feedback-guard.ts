@@ -5,6 +5,8 @@ const STORAGE_KEY = "wain.results_feedback.v1";
 type GuardChoice = {
   choice: "yes" | "no";
   reason?: string;
+  /** Something else stays open until blur / Enter / Done. */
+  noteDone?: boolean;
 };
 
 type GuardStore = {

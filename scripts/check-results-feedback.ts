@@ -50,6 +50,18 @@ assert(
 assert(master.includes("text-start"), "copy aligns to the start edge");
 assert(master.includes("meet_halfway_feedback"), "event name stays meet_halfway_feedback");
 assert(master.includes("resultsFeedbackParams"), "payload goes through resultsFeedbackParams");
+assert(master.includes("awaitingNote"), "Something else stays in the tell-more flow");
+assert(
+  master.includes("completeNote") &&
+    master.includes("data-feedback-note-done") &&
+    master.includes('event.key !== "Enter"'),
+  "optional text commits on Done, Enter, or blur",
+);
+assert(
+  master.includes("awaitingNote ? null : reason ? thanksNo : null"),
+  "Thanks does not paint over an open Tell us more field",
+);
+assert(copy.resultsFeedbackDone.en === "Done" && copy.resultsFeedbackDone.ar === "تم", "Done / تم");
 
 assert(chat.includes("ResultsFeedbackBlock"), "chat mounts the master");
 assert(chat.includes('preset="chat"') || chat.includes('"chat"'), "chat_results preset");
@@ -141,6 +153,22 @@ assert(chatNo.feedback_source === "chat_results", "feedback_source matches");
 assert(chatNo.shop_ids === "camel-step-hittin,cafu-olaya", "shop ids");
 assert(chatNo.query_text === "قهوة شغل", "query context");
 assert(typeof chatNo.timestamp === "string", "timestamp");
+const otherNote = resultsFeedbackParams({
+  locale: "en",
+  feedback: "no",
+  feedback_reason: "other",
+  feedback_text: "Nothing exciting",
+  source: "cafe_detail",
+  feature: "cafe_detail",
+  shopId: "camel-step-hittin",
+});
+assert(otherNote.feedback === "no" && otherNote.reason === "other", "other reason");
+assert(otherNote.feedback_text === "Nothing exciting", "free-text rides the same event");
+assert(otherNote.feedback_note == null, "primary other+text is not a note-only follow-up");
+assert(
+  !master.includes("fetch(") && !master.includes("/api/"),
+  "free-text is not POSTed to a backend",
+);
 
 assert(track.includes("feedback_source?: ResultsFeedbackSource"), "track exports feedback_source");
 assert(!/\bween\b/i.test(copySrc), "copy never romanizes وين as ween");

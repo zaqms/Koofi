@@ -341,6 +341,10 @@ export const copy = {
     ar: "قل لنا أكثر",
     en: "Tell us more",
   },
+  resultsFeedbackDone: {
+    ar: "تم",
+    en: "Done",
+  },
   resultsFeedbackThanks: {
     ar: "شكراً — رأيك يساعدنا نحسّن وين.",
     en: "Thanks — this helps us improve.",

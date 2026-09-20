@@ -28,6 +28,7 @@ export type ResultsFeedbackPreset = {
   noLabel: string;
   whyLabel: string;
   tellMoreLabel: string;
+  doneLabel: string;
   thanksYes: string;
   thanksNo: string;
   reasons: ResultsFeedbackReasonRow[];
@@ -42,6 +43,7 @@ export function resultsFeedbackPreset(
   language: Language,
 ): ResultsFeedbackPreset {
   const tellMore = copy.resultsFeedbackTellMore[language];
+  const done = copy.resultsFeedbackDone[language];
   const yes = copy.resultsFeedbackYes[language];
   const no = copy.resultsFeedbackNo[language];
   const why = copy.resultsFeedbackWhy[language];
@@ -57,6 +59,7 @@ export function resultsFeedbackPreset(
       noLabel: copy.meetHalfwayFeedbackNo[language],
       whyLabel: copy.meetHalfwayFeedbackWhy[language],
       tellMoreLabel: copy.meetHalfwayFeedbackTellMore[language],
+      doneLabel: done,
       thanksYes: copy.meetHalfwayFeedbackThanksYes[language],
       thanksNo: copy.meetHalfwayFeedbackThanksNo[language],
       reasons: [
@@ -81,6 +84,7 @@ export function resultsFeedbackPreset(
       noLabel: no,
       whyLabel: why,
       tellMoreLabel: tellMore,
+      doneLabel: done,
       thanksYes: thanks,
       thanksNo: thanks,
       reasons: [
@@ -103,6 +107,7 @@ export function resultsFeedbackPreset(
       noLabel: no,
       whyLabel: why,
       tellMoreLabel: tellMore,
+      doneLabel: done,
       thanksYes: thanks,
       thanksNo: thanks,
       reasons: [
@@ -124,6 +129,7 @@ export function resultsFeedbackPreset(
       noLabel: copy.resultsFeedbackCafeNo[language],
       whyLabel: copy.resultsFeedbackCafeWhy[language],
       tellMoreLabel: tellMore,
+      doneLabel: done,
       thanksYes: copy.resultsFeedbackCafeThanks[language],
       thanksNo: copy.resultsFeedbackCafeThanks[language],
       reasons: [
@@ -147,6 +153,7 @@ export function resultsFeedbackPreset(
       noLabel: no,
       whyLabel: why,
       tellMoreLabel: tellMore,
+      doneLabel: done,
       thanksYes: thanks,
       thanksNo: thanks,
       reasons: [
@@ -171,6 +178,7 @@ export function resultsFeedbackPreset(
     noLabel: no,
     whyLabel: why,
     tellMoreLabel: tellMore,
+    doneLabel: done,
     thanksYes: thanks,
     thanksNo: thanks,
     reasons: [

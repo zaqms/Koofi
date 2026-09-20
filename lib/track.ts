@@ -235,6 +235,7 @@ export function districtMatchParams(input: {
   return { district_slug, locale: input.locale };
 }
 
+/** Client dataLayer only. Results-feedback free-text is not written to Neon. */
 export function resultsFeedbackParams(input: {
   locale: Language;
   feedback: MeetHalfwayFeedbackHelpful;

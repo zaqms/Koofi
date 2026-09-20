@@ -33,6 +33,7 @@ export type ResultsFeedbackProps = {
   noLabel: string;
   whyLabel: string;
   tellMoreLabel: string;
+  doneLabel: string;
   thanksYes: string;
   thanksNo: string;
   reasons: ResultsFeedbackReasonRow[];
@@ -78,6 +79,7 @@ export function ResultsFeedback({
   noLabel,
   whyLabel,
   tellMoreLabel,
+  doneLabel,
   thanksYes,
   thanksNo,
   reasons,
@@ -96,19 +98,23 @@ export function ResultsFeedback({
     () => EMPTY_FEEDBACK_GUARD_SNAPSHOT,
   );
   const stored = JSON.parse(snap) as {
-    instance: { choice: "yes" | "no"; reason?: string } | null;
+    instance: {
+      choice: "yes" | "no";
+      reason?: string;
+      noteDone?: boolean;
+    } | null;
     offer: boolean;
   };
   const choice = stored.instance?.choice ?? null;
   const reason =
     (stored.instance?.reason as ResultsFeedbackReason | undefined) ?? null;
+  const noteDone = Boolean(stored.instance?.noteDone);
+  const awaitingNote = reason === "other" && !noteDone;
   const [noteKey, setNoteKey] = useState(resetKey);
   const [note, setNote] = useState("");
-  const [noteSent, setNoteSent] = useState(false);
   if (noteKey !== resetKey) {
     setNoteKey(resetKey);
     setNote("");
-    setNoteSent(false);
   }
 
   if (!stored.offer) return null;
@@ -157,19 +163,27 @@ export function ResultsFeedback({
 
   function onReason(next: ResultsFeedbackReason) {
     if (reason) return;
-    markResultsFeedback(source, resetKey, { choice: "no", reason: next });
-    fire("no", next);
+    markResultsFeedback(source, resetKey, {
+      choice: "no",
+      reason: next,
+      noteDone: next !== "other",
+    });
+    if (next !== "other") fire("no", next);
   }
 
-  function sendNote() {
+  function completeNote() {
+    if (reason !== "other" || noteDone) return;
     const text = note.trim();
-    if (!text || noteSent || reason !== "other") return;
-    setNoteSent(true);
-    fire("no", "other", { feedback_text: text, feedback_note: true });
+    markResultsFeedback(source, resetKey, {
+      choice: "no",
+      reason: "other",
+      noteDone: true,
+    });
+    fire("no", "other", text ? { feedback_text: text } : undefined);
   }
 
   const thanks =
-    choice === "yes" ? thanksYes : reason ? thanksNo : null;
+    choice === "yes" ? thanksYes : awaitingNote ? null : reason ? thanksNo : null;
 
   return (
     <section
@@ -236,18 +250,46 @@ export function ResultsFeedback({
         </div>
       ) : null}
 
-      {reason === "other" ? (
-        <label className="mt-3 block">
-          <span className="sr-only">{tellMoreLabel}</span>
-          <input
-            type="text"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            onBlur={sendNote}
-            placeholder={tellMoreLabel}
-            className="h-9 w-full rounded-xl border border-line bg-paper px-2.5 text-start text-xs text-ink outline-none placeholder:text-ink-soft focus:border-bean"
-          />
-        </label>
+      {awaitingNote ? (
+        <div className="mt-3 space-y-2" data-feedback-note="">
+          <p className="text-start text-xs leading-4 text-ink">{tellMoreLabel}</p>
+          <div className="flex items-center gap-1.5">
+            <label className="min-w-0 flex-1">
+              <span className="sr-only">{tellMoreLabel}</span>
+              <input
+                type="text"
+                value={note}
+                autoFocus
+                onChange={(event) => setNote(event.target.value)}
+                onBlur={(event) => {
+                  const next = event.relatedTarget;
+                  if (
+                    next instanceof HTMLElement &&
+                    next.closest("[data-feedback-note-done]")
+                  ) {
+                    return;
+                  }
+                  completeNote();
+                }}
+                onKeyDown={(event) => {
+                  if (event.key !== "Enter") return;
+                  event.preventDefault();
+                  completeNote();
+                }}
+                placeholder={tellMoreLabel}
+                className="h-9 w-full rounded-xl border border-line bg-paper px-2.5 text-start text-xs text-ink outline-none placeholder:text-ink-soft focus:border-bean"
+              />
+            </label>
+            <button
+              type="button"
+              data-feedback-note-done=""
+              onClick={completeNote}
+              className="inline-flex h-8 shrink-0 items-center rounded-full border border-line bg-paper px-2.5 text-[11px] leading-4 text-ink"
+            >
+              {doneLabel}
+            </button>
+          </div>
+        </div>
       ) : null}
     </section>
   );
@@ -294,6 +336,7 @@ export function ResultsFeedbackBlock({
       noLabel={row.noLabel}
       whyLabel={row.whyLabel}
       tellMoreLabel={row.tellMoreLabel}
+      doneLabel={row.doneLabel}
       thanksYes={row.thanksYes}
       thanksNo={row.thanksNo}
       reasons={row.reasons}

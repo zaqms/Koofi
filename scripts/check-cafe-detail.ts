@@ -44,6 +44,12 @@ assert(copy.listingShare.en === "Share", "EN Share");
 assert(copy.detailSeeAll.ar === "عرض الكل", "AR See all is عرض الكل");
 assert(copy.detailSeeAll.en === "See all", "EN See all");
 assert(copy.detailStatus.ar === "الحالة", "AR status label");
+assert(copy.detailOpenNow.en === "Open now", "EN Open now");
+assert(copy.detailOpenNow.ar === "مفتوح الآن", "AR Open now");
+assert(copy.detailClosedNow.en === "Closed", "EN Closed");
+assert(copy.detailClosedNow.ar === "مغلق", "AR Closed");
+assert(copy.detailOpensAt.en === "Opens at", "EN Opens at");
+assert(copy.detailOpensAt.ar === "يفتح الساعة", "AR Opens at");
 assert(copy.detailVibe.ar === "التصنيف", "AR vibe row is التصنيف");
 assert(copy.neighborhood.ar === "الحي", "AR neighborhood label");
 
@@ -81,34 +87,42 @@ assert(
   "Camel Step AR pills stay catalog محمصة · قهوة",
 );
 
+function heroSrcs(shop: { id: string; photoUrl?: string }): string {
+  return cafeDetailHeroPhotos(shop)
+    .map((photo) => photo.src)
+    .join(",");
+}
+
 assert(
-  cafeDetailHeroPhotos({ id: "camel-step-hittin" }).length === 0,
-  "no invented hero on other Camel Step rows",
+  cafeDetailHeroPhotos({ id: "camel-step-hittin" }).length === 4,
+  "Hittin Camel Step uses baked cafe-heroes",
 );
 assert(
-  cafeDetailHeroPhotos({ id: "percent-arabica-hittin", photoUrl: "/photos/x.jpg" }).join(
-    ",",
-  ) === "/photos/x.jpg",
-  "other shops still use catalog photoUrl only",
+  heroSrcs({ id: "camel-step-al-aqiq", photoUrl: "/photos/x.jpg" }) === "/photos/x.jpg",
+  "shops outside the 50-set still use catalog photoUrl only",
 );
 assert(
-  cafeDetailHeroPhotos({ id: "camel-step-al-rahmaniyyah" }).join(",") ===
+  heroSrcs({ id: "camel-step-al-rahmaniyyah" }) ===
     CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS.join(","),
-  "Rahmaniyyah Camel Step has the 3 sample hero slides",
+  "Rahmaniyyah Camel Step uses baked cafe-heroes",
 );
 assert(
-  CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS.length === 3,
-  "sample carousel is 1/3",
+  CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS.length === 4,
+  "Rahmaniyyah carousel is up to 4 cached photos",
 );
 for (const src of CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS) {
   assert(src.startsWith("/cafe-heroes/camel-step-al-rahmaniyyah/"), `${src} is shop-scoped`);
   assert(existsSync(join("public", src.slice(1))), `${src} is on disk`);
 }
+assert(
+  cafeDetailHeroPhotos({ id: "camel-step-al-rahmaniyyah" })[0]?.attribution?.displayName,
+  "Places hero attribution is preserved",
+);
 assert(cafeDetailDescription({ id: "camel-step-al-rahmaniyyah" }) === null, "no AI description");
 assert(
   cafeDetailHoursStatus({ id: "camel-step-al-rahmaniyyah", hours: "Open daily" }, "en") ===
     null,
-  "catalog hours never become Open now",
+  "catalog hours strings still never become Open now",
 );
 
 const detail = read("components/cafe-detail.tsx");
@@ -200,6 +214,60 @@ assert(
   cafeEnMarkdown(rahmaniyyah).includes("/coffee-shops/al-rahmaniyyah"),
   "solo-district essay still links the neighborhood page",
 );
+assert(
+  (rahmaniyyah.openingHours?.periods?.length ?? 0) > 0,
+  "Rahmaniyyah has baked catalog periods",
+);
+assert(
+  hittin.openingHours?.periods?.length === 1 &&
+    hittin.openingHours.periods[0]?.open.day === 0 &&
+    !("close" in (hittin.openingHours.periods[0] ?? {})),
+  "Hittin Camel Step is baked 24h",
+);
+for (const id of ["qamaria-hittin", "salam-cafe-al-malqa", "qirat-al-yasmin"]) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(!shop.openingHours, `${id} keeps Status hidden — no invented hours`);
+  assert(
+    cafeDetailHoursStatus(shop, "en") === null,
+    `${id} Status stays hidden`,
+  );
+}
+
+const wedOpen = new Date("2026-09-16T10:00:00+03:00");
+const wedLate = new Date("2026-09-16T23:30:00+03:00");
+const thuEarly = new Date("2026-09-17T05:00:00+03:00");
+const friGap = new Date("2026-09-18T11:45:00+03:00");
+assert(
+  cafeDetailHoursStatus(rahmaniyyah, "en", wedOpen)?.kind === "open",
+  "periods can show Open now",
+);
+assert(
+  cafeDetailHoursStatus(rahmaniyyah, "en", wedOpen)?.label === "Open now",
+  "EN Open now label",
+);
+assert(
+  cafeDetailHoursStatus(rahmaniyyah, "ar", wedOpen)?.label === "مفتوح الآن",
+  "AR Open now label",
+);
+assert(
+  cafeDetailHoursStatus(rahmaniyyah, "en", wedLate)?.kind === "closed",
+  "after last period today is Closed",
+);
+const thuOpens = cafeDetailHoursStatus(rahmaniyyah, "en", thuEarly);
+assert(thuOpens?.kind === "opens", "later today is Opens at…");
+assert(thuOpens?.label === "Opens at 6:30 AM", "EN Opens at 6:30 AM");
+assert(
+  cafeDetailHoursStatus(rahmaniyyah, "ar", thuEarly)?.label === "يفتح الساعة ٦:٣٠ ص",
+  "AR Opens at uses Riyadh time",
+);
+const friOpens = cafeDetailHoursStatus(rahmaniyyah, "en", friGap);
+assert(friOpens?.kind === "opens", "Friday gap uses the next period");
+assert(friOpens?.label === "Opens at 12:15 PM", "EN Opens at 12:15 PM");
+assert(
+  cafeDetailHoursStatus(hittin, "en", wedLate)?.kind === "open",
+  "24h catalog periods stay Open now",
+);
 
 const thin = read("components/cafe-card.tsx");
 assert(thin.includes("CafeDetail"), "thin /c/[id] uses the approved detail");
@@ -229,11 +297,18 @@ assert(tonight.includes("SHOW_DETAIL_FAVORITE = false"), "favorite flag defaults
 
 const helper = read("lib/cafe-detail.ts");
 assert(helper.includes("photoUrl"), "other shops still read catalog photoUrl");
-assert(helper.includes("camel-step-al-rahmaniyyah"), "sample heroes are this shop only");
-assert(!helper.includes("camel-step-hittin"), "do not invent Hittin Camel Step photos");
+assert(helper.includes("camel-step-al-rahmaniyyah"), "Rahmaniyyah heroes stay shop-scoped");
+assert(helper.includes("Asia/Riyadh"), "Status clock is Asia/Riyadh");
+assert(helper.includes("openingHours"), "Status reads baked catalog openingHours");
+assert(helper.includes("periods"), "Status computes from periods");
 assert(!helper.includes("logoUrl"), "logos are not stretched into the hero");
 assert(!/Soft Places/i.test(helper), "Soft Places parked on helpers");
 assert(!/\bween\b/i.test(helper), "never ween");
 assert(!helper.includes("هيتين"), "never هيتين");
+assert(!helper.includes("places.ts"), "no live Place Details on detail helpers");
+
+assert(detail.includes("photo.src"), "hero paints cached photo src");
+assert(detail.includes("attribution"), "hero keeps Google attribution");
+assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");
 
 console.log("check-cafe-detail: ok");

@@ -19,6 +19,7 @@ import {
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
   neighborhoodCafesHeading,
+  type CafeDetailHeroPhoto,
 } from "@/lib/cafe-detail";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
@@ -181,7 +182,7 @@ function CafeDetailHero({
   name,
   neighborhood,
 }: {
-  photos: string[];
+  photos: CafeDetailHeroPhoto[];
   language: Language;
   backHref: string;
   shop: Shop;
@@ -191,6 +192,8 @@ function CafeDetailHero({
   const [index, setIndex] = useState(0);
   const startX = useRef<number | null>(null);
   const photo = photos[index];
+  const credit = photo?.attribution?.displayName?.trim();
+  const creditHref = photo?.attribution?.uri?.trim();
 
   function go(delta: number) {
     if (photos.length < 2) return;
@@ -213,10 +216,10 @@ function CafeDetailHero({
       }}
     >
       {photo ? (
-        // Catalog photoUrl only. Local /logos stay on <img>.
+        // Cached /cafe-heroes or catalog photoUrl. Local /logos stay off the well.
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={photo}
+          src={photo.src}
           alt={`${name} · ${neighborhood}`}
           className="size-full object-cover"
         />
@@ -241,6 +244,22 @@ function CafeDetailHero({
         </div>
       </div>
 
+      {credit ? (
+        <p className="absolute bottom-3 start-3 z-20 max-w-[58%] truncate rounded-full bg-ink/70 px-2 py-0.5 text-[10px] leading-4 text-foam">
+          {creditHref ? (
+            <a
+              href={creditHref}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:underline"
+            >
+              {credit}
+            </a>
+          ) : (
+            credit
+          )}
+        </p>
+      ) : null}
       {photos.length > 0 ? (
         <p className="absolute bottom-3 end-3 z-20 rounded-full bg-ink/70 px-2 py-0.5 text-[11px] leading-4 text-foam">
           <span dir="ltr">

@@ -390,6 +390,10 @@ export const copy = {
     ar: "مغلق",
     en: "Closed",
   },
+  detailOpensAt: {
+    ar: "يفتح الساعة",
+    en: "Opens at",
+  },
   detailFavorite: {
     ar: "مفضلة",
     en: "Favorite",

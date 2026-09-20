@@ -618,6 +618,30 @@ assert(
     ?.kind === "open",
   "THE IT Sunday afternoon is Open now",
 );
+const theItAttrs = (
+  JSON.parse(read("data/places-attrs-2026-09-19.json")) as {
+    shops: { id: string; place_id?: string; place_name?: string }[];
+  }
+).shops.find((row) => row.id === "the-it-al-rawabi");
+assert(
+  theItAttrs?.place_id === "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME" &&
+    theItAttrs.place_name === "THE IT",
+  "places-attrs THE IT uses the coffee_shop pin, not Ar Rawabi",
+);
+const theItScout = (
+  JSON.parse(read("data/scout-manual-verdicts-2026-09-19.json")) as {
+    id: string;
+    place_id?: string;
+    maps_url?: string;
+    wrong_place_match?: boolean;
+  }[]
+).find((row) => row.id === "the-it-al-rawabi");
+assert(
+  theItScout?.place_id === "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME" &&
+    theItScout.wrong_place_match === false &&
+    theItScout.maps_url?.includes("ChIJ7UTZTQ0HLz4RHXt3m3J-4ME"),
+  "scout THE IT pin hotfix matches the coffee_shop place",
+);
 assert(
   cafeDetailHeroPhotos(getShop("maqha-mahamasa-al-raqban")!).length === 4,
   "Maqha Mahamasa uses baked cafe-heroes without invented hours",

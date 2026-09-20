@@ -5,7 +5,7 @@
  *
  * Reads:
  *   - catalog-hours-patch.json (50 shops)
- *   - catalog-heroes-manifest.json (49 shops; wathba-an-nazhah has none)
+ *   - catalog-heroes-manifest.json (50 shops after Wathba pin fix)
  *   - photos/{id}/1..4.*
  * Writes:
  *   - data/catalog.json openingHours for those 50 ids only
@@ -25,7 +25,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const MISSING_HOURS = new Set();
-const MISSING_PHOTOS = new Set(["wathba-an-nazhah"]);
+const MISSING_PHOTOS = new Set();
 
 function firstExisting(paths) {
   return paths.find((path) => existsSync(path));
@@ -96,10 +96,12 @@ const resultsPath = firstExisting([
 ]);
 const hoursPatchPath = firstExisting([
   join(root, "wain-places-fill-batch3/catalog-hours-patch.json"),
+  "/home/ubuntu/.cursor/projects/workspace/uploads/catalog-hours-patch_bf29.json",
   "/home/ubuntu/.cursor/projects/workspace/uploads/catalog-hours-patch_3333.json",
 ]);
 const heroesManifestPath = firstExisting([
   join(root, "wain-places-fill-batch3/catalog-heroes-manifest.json"),
+  "/home/ubuntu/.cursor/projects/workspace/uploads/catalog-heroes-manifest_e787.json",
   "/home/ubuntu/.cursor/projects/workspace/uploads/catalog-heroes-manifest_c951.json",
 ]);
 const photosRoot = firstExisting([
@@ -124,8 +126,8 @@ if (resultIds.length !== 50) {
 if (!Array.isArray(hoursPatch) || hoursPatch.length !== 50) {
   throw new Error(`hours patch must be 50 shops, got ${hoursPatch?.length}`);
 }
-if (!Array.isArray(heroesManifest) || heroesManifest.length !== 49) {
-  throw new Error(`heroes manifest must be 49 shops, got ${heroesManifest?.length}`);
+if (!Array.isArray(heroesManifest) || heroesManifest.length !== 50) {
+  throw new Error(`heroes manifest must be 50 shops, got ${heroesManifest?.length}`);
 }
 
 const allowedIds = new Set(resultIds);
@@ -186,7 +188,7 @@ for (const row of heroesManifest) {
   if (heroIds.has(row.id)) throw new Error(`duplicate heroes manifest id ${row.id}`);
   heroIds.add(row.id);
 }
-if (heroIds.size !== 49) throw new Error("expected 49 unique hero shops");
+if (heroIds.size !== 50) throw new Error("expected 50 unique hero shops");
 for (const id of MISSING_PHOTOS) {
   if (heroIds.has(id)) throw new Error(`${id} must stay out of the heroes manifest`);
   delete heroesOut[id];

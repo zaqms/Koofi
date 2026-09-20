@@ -13912,72 +13912,96 @@
       "baynanaEligible": true,
       "openingHours": {
         "weekdayDescriptions": [
-          "Monday: 9:00 AM – 4:00 PM",
-          "Tuesday: 9:00 AM – 4:00 PM",
-          "Wednesday: 9:00 AM – 4:00 PM",
-          "Thursday: 9:00 AM – 4:00 PM",
-          "Friday: Closed",
-          "Saturday: Closed",
-          "Sunday: 9:00 AM – 4:00 PM"
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 1:30 AM",
+          "Friday: 6:00 AM – 1:30 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
         ],
         "periods": [
           {
             "open": {
               "day": 0,
-              "hour": 9,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
               "minute": 0
             },
             "close": {
               "day": 0,
-              "hour": 16,
-              "minute": 0
-            }
-          },
-          {
-            "open": {
-              "day": 1,
-              "hour": 9,
-              "minute": 0
-            },
-            "close": {
-              "day": 1,
-              "hour": 16,
-              "minute": 0
-            }
-          },
-          {
-            "open": {
-              "day": 2,
-              "hour": 9,
-              "minute": 0
-            },
-            "close": {
-              "day": 2,
-              "hour": 16,
-              "minute": 0
-            }
-          },
-          {
-            "open": {
-              "day": 3,
-              "hour": 9,
-              "minute": 0
-            },
-            "close": {
-              "day": 3,
-              "hour": 16,
-              "minute": 0
-            }
-          },
-          {
-            "open": {
-              "day": 4,
-              "hour": 9,
-              "minute": 0
-            },
-            "close": {
-              "day": 4,
-              "hour": 16,
+              "hour": 0,
               "minute": 0
             }
           }

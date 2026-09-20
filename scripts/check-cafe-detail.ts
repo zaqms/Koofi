@@ -213,8 +213,8 @@ assert(
   "batch 1–2 cafe-heroes stay; batch 3 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
-assert(batch3HeroIds.length === 49, "batch 3 49-shop hero set is complete");
-assert(!bakedHeroes["wathba-an-nazhah"], "wathba-an-nazhah stays without invented heroes");
+assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
 assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–3 heroes");
@@ -445,6 +445,14 @@ const wathba = getShop("wathba-an-nazhah");
 assert(bind && (bind.openingHours?.periods?.length ?? 0) > 0, "BIND has baked periods");
 assert(dripHamra && (dripHamra.openingHours?.periods?.length ?? 0) > 0, "Drip Al Hamra has baked periods");
 assert(wathba && (wathba.openingHours?.periods?.length ?? 0) > 0, "Wathba has baked periods");
+assert(
+  wathba.placeId === "ChIJcZz_CAADLz4RfeFA9IJmOdM",
+  "Wathba uses وثبة | قهوة مختصة - النزهة, not Alwathba Consulting",
+);
+assert(
+  wathba.openingHours?.periods?.[0]?.open.hour === 6,
+  "Wathba hours are the cafe pin (6 AM), not the consulting office",
+);
 assert(cafeDetailHeroPhotos(bind).length === 4, "BIND uses baked cafe-heroes");
 assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(bind)),
@@ -461,9 +469,11 @@ assert(fileCoffee && cafeDetailHeroPhotos(fileCoffee).length === 4, "File Coffee
 assert(sanva && cafeDetailHeroPhotos(sanva).length === 4, "Sanva uses baked cafe-heroes");
 assert(mill && cafeDetailHeroPhotos(mill).length === 2, "Mill keeps the 2 downloaded frames");
 assert(cafeDetailHeroPhotos(dripHamra).length === 4, "Drip Al Hamra uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(wathba).length === 4, "Wathba uses baked cafe-heroes");
 assert(
-  cafeDetailHeroPhotos(wathba).length === 0,
-  "Wathba stays without invented heroes",
+  cafeDetailHeroPhotos(wathba)[0]?.attribution?.displayName ===
+    "وثبة | قهوة مختصة - النزهة",
+  "Wathba bake has the cafe Places author name",
 );
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");

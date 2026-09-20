@@ -4415,5 +4415,35 @@
         "uri": "https://maps.google.com/maps/contrib/115717834401219761993"
       }
     }
+  ],
+  "wathba-an-nazhah": [
+    {
+      "src": "/cafe-heroes/wathba-an-nazhah/1.jpg",
+      "attribution": {
+        "displayName": "وثبة | قهوة مختصة - النزهة",
+        "uri": "https://maps.google.com/maps/contrib/104100751197435951633"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wathba-an-nazhah/2.png",
+      "attribution": {
+        "displayName": "وثبة | قهوة مختصة - النزهة",
+        "uri": "https://maps.google.com/maps/contrib/104100751197435951633"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wathba-an-nazhah/3.jpg",
+      "attribution": {
+        "displayName": "Sulafa S",
+        "uri": "https://maps.google.com/maps/contrib/114513574579336218740"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wathba-an-nazhah/4.jpg",
+      "attribution": {
+        "displayName": "بسام",
+        "uri": "https://maps.google.com/maps/contrib/114875738287200264816"
+      }
+    }
   ]
 }

@@ -2089,5 +2089,875 @@
         "uri": "https://maps.google.com/maps/contrib/115073371772228408689"
       }
     }
+  ],
+  "tobys-estate-olaya": [
+    {
+      "src": "/cafe-heroes/tobys-estate-olaya/1.jpg",
+      "attribution": {
+        "displayName": "Toby's Estate (Olaya)",
+        "uri": "https://maps.google.com/maps/contrib/100205162012870684698"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tobys-estate-olaya/2.jpg",
+      "attribution": {
+        "displayName": "Fatima AlGhamdi",
+        "uri": "https://maps.google.com/maps/contrib/107520537504979025627"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tobys-estate-olaya/3.jpg",
+      "attribution": {
+        "displayName": "حنان المنيع",
+        "uri": "https://maps.google.com/maps/contrib/112168022652721822757"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tobys-estate-olaya/4.jpg",
+      "attribution": {
+        "displayName": "やまぴー",
+        "uri": "https://maps.google.com/maps/contrib/112032581004590866106"
+      }
+    }
+  ],
+  "hjeen-roaster-factory-al-yasmin": [
+    {
+      "src": "/cafe-heroes/hjeen-roaster-factory-al-yasmin/1.png",
+      "attribution": {
+        "displayName": "محمصة هجين المصنع | Hjeen Roaster Factory",
+        "uri": "https://maps.google.com/maps/contrib/101644925282980902724"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roaster-factory-al-yasmin/2.jpg",
+      "attribution": {
+        "displayName": "محمصة هجين المصنع | Hjeen Roaster Factory",
+        "uri": "https://maps.google.com/maps/contrib/101644925282980902724"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roaster-factory-al-yasmin/3.jpg",
+      "attribution": {
+        "displayName": "Sarah Mohammad",
+        "uri": "https://maps.google.com/maps/contrib/107556593791858423797"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roaster-factory-al-yasmin/4.jpg",
+      "attribution": {
+        "displayName": "Faisal",
+        "uri": "https://maps.google.com/maps/contrib/115723406254805239781"
+      }
+    }
+  ],
+  "ror-coffee-roasters-al-yasmin": [
+    {
+      "src": "/cafe-heroes/ror-coffee-roasters-al-yasmin/1.jpg",
+      "attribution": {
+        "displayName": "Choicolate",
+        "uri": "https://maps.google.com/maps/contrib/107509562805602750073"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ror-coffee-roasters-al-yasmin/2.jpg",
+      "attribution": {
+        "displayName": "Faleh",
+        "uri": "https://maps.google.com/maps/contrib/105859331078144024257"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ror-coffee-roasters-al-yasmin/3.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ror-coffee-roasters-al-yasmin/4.jpg",
+      "attribution": {
+        "displayName": "RoR Coffee Roasters - محمصة و مقهى ار او ار",
+        "uri": "https://maps.google.com/maps/contrib/103036784117275526204"
+      }
+    }
+  ],
+  "yamm-olaya": [
+    {
+      "src": "/cafe-heroes/yamm-olaya/1.jpg",
+      "attribution": {
+        "displayName": "عبدالله السناني",
+        "uri": "https://maps.google.com/maps/contrib/111882577465669076479"
+      }
+    },
+    {
+      "src": "/cafe-heroes/yamm-olaya/2.jpg",
+      "attribution": {
+        "displayName": "7ammad",
+        "uri": "https://maps.google.com/maps/contrib/118420700604564816339"
+      }
+    },
+    {
+      "src": "/cafe-heroes/yamm-olaya/3.jpg",
+      "attribution": {
+        "displayName": "Ali",
+        "uri": "https://maps.google.com/maps/contrib/106809870009856393558"
+      }
+    },
+    {
+      "src": "/cafe-heroes/yamm-olaya/4.jpg",
+      "attribution": {
+        "displayName": "R Qasem",
+        "uri": "https://maps.google.com/maps/contrib/117035218099474675551"
+      }
+    }
+  ],
+  "urth-caffe-tahlia-sulimaniyah": [
+    {
+      "src": "/cafe-heroes/urth-caffe-tahlia-sulimaniyah/1.jpg",
+      "attribution": {
+        "displayName": "Urth Caffé — Tahlia",
+        "uri": "https://maps.google.com/maps/contrib/103867452396472519660"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-tahlia-sulimaniyah/2.jpg",
+      "attribution": {
+        "displayName": "Ahmed Al Ansari",
+        "uri": "https://maps.google.com/maps/contrib/114186423310556931842"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-tahlia-sulimaniyah/3.jpg",
+      "attribution": {
+        "displayName": "عبدالله العتيبي",
+        "uri": "https://maps.google.com/maps/contrib/107668229097946637571"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-tahlia-sulimaniyah/4.jpg",
+      "attribution": {
+        "displayName": "Moh'd K Younes",
+        "uri": "https://maps.google.com/maps/contrib/113255945071509868058"
+      }
+    }
+  ],
+  "sombrero-sulimaniyah": [
+    {
+      "src": "/cafe-heroes/sombrero-sulimaniyah/1.png",
+      "attribution": {
+        "displayName": "Sombrero",
+        "uri": "https://maps.google.com/maps/contrib/117424702023634958371"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sombrero-sulimaniyah/2.png",
+      "attribution": {
+        "displayName": "Sombrero",
+        "uri": "https://maps.google.com/maps/contrib/117424702023634958371"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sombrero-sulimaniyah/3.png",
+      "attribution": {
+        "displayName": "Sombrero",
+        "uri": "https://maps.google.com/maps/contrib/117424702023634958371"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sombrero-sulimaniyah/4.jpg",
+      "attribution": {
+        "displayName": "nahed nasser",
+        "uri": "https://maps.google.com/maps/contrib/102624717608105338341"
+      }
+    }
+  ],
+  "seven-beans-sulimaniyah": [
+    {
+      "src": "/cafe-heroes/seven-beans-sulimaniyah/1.png",
+      "attribution": {
+        "displayName": "Seven Beans",
+        "uri": "https://maps.google.com/maps/contrib/117375941745173495716"
+      }
+    },
+    {
+      "src": "/cafe-heroes/seven-beans-sulimaniyah/2.jpg",
+      "attribution": {
+        "displayName": "Ola Mahmoud",
+        "uri": "https://maps.google.com/maps/contrib/110754910975222500946"
+      }
+    },
+    {
+      "src": "/cafe-heroes/seven-beans-sulimaniyah/3.jpg",
+      "attribution": {
+        "displayName": "Seven Beans",
+        "uri": "https://maps.google.com/maps/contrib/117375941745173495716"
+      }
+    },
+    {
+      "src": "/cafe-heroes/seven-beans-sulimaniyah/4.jpg",
+      "attribution": {
+        "displayName": "Hani",
+        "uri": "https://maps.google.com/maps/contrib/103158863044265790079"
+      }
+    }
+  ],
+  "sand-clock-as-sulimaniyah": [
+    {
+      "src": "/cafe-heroes/sand-clock-as-sulimaniyah/1.jpg",
+      "attribution": {
+        "displayName": "BRHOOM BRHOOM",
+        "uri": "https://maps.google.com/maps/contrib/115073371772228408689"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sand-clock-as-sulimaniyah/2.jpg",
+      "attribution": {
+        "displayName": "ساند كلوك السليمانية",
+        "uri": "https://maps.google.com/maps/contrib/100962914645463831660"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sand-clock-as-sulimaniyah/3.jpg",
+      "attribution": {
+        "displayName": "sLman",
+        "uri": "https://maps.google.com/maps/contrib/108840509068826157888"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sand-clock-as-sulimaniyah/4.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    }
+  ],
+  "yly-specialty-coffee-ar-rabwah": [
+    {
+      "src": "/cafe-heroes/yly-specialty-coffee-ar-rabwah/1.jpg",
+      "attribution": {
+        "displayName": "YLY Specialty Coffee | يلي قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/111486552940148103701"
+      }
+    },
+    {
+      "src": "/cafe-heroes/yly-specialty-coffee-ar-rabwah/2.jpg",
+      "attribution": {
+        "displayName": "YLY Specialty Coffee | يلي قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/111486552940148103701"
+      }
+    },
+    {
+      "src": "/cafe-heroes/yly-specialty-coffee-ar-rabwah/3.jpg",
+      "attribution": {
+        "displayName": "Person",
+        "uri": "https://maps.google.com/maps/contrib/101313618827420538588"
+      }
+    },
+    {
+      "src": "/cafe-heroes/yly-specialty-coffee-ar-rabwah/4.jpg",
+      "attribution": {
+        "displayName": "Soso Elf",
+        "uri": "https://maps.google.com/maps/contrib/116046450445151456378"
+      }
+    }
+  ],
+  "get-up-coffee-ar-rabwah": [
+    {
+      "src": "/cafe-heroes/get-up-coffee-ar-rabwah/1.jpg",
+      "attribution": {
+        "displayName": "الحسين توب أب- فرع الربوة",
+        "uri": "https://maps.google.com/maps/contrib/100879666204381978746"
+      }
+    },
+    {
+      "src": "/cafe-heroes/get-up-coffee-ar-rabwah/2.jpg",
+      "attribution": {
+        "displayName": "الحسين توب أب- فرع الربوة",
+        "uri": "https://maps.google.com/maps/contrib/100879666204381978746"
+      }
+    },
+    {
+      "src": "/cafe-heroes/get-up-coffee-ar-rabwah/3.jpg",
+      "attribution": {
+        "displayName": "الحسين توب أب- فرع الربوة",
+        "uri": "https://maps.google.com/maps/contrib/100879666204381978746"
+      }
+    },
+    {
+      "src": "/cafe-heroes/get-up-coffee-ar-rabwah/4.jpg",
+      "attribution": {
+        "displayName": "الحسين توب أب- فرع الربوة",
+        "uri": "https://maps.google.com/maps/contrib/100879666204381978746"
+      }
+    }
+  ],
+  "the-gate-specialty-coffee-al-wurud": [
+    {
+      "src": "/cafe-heroes/the-gate-specialty-coffee-al-wurud/1.jpg",
+      "attribution": {
+        "displayName": "The Gate Specialty Coffee",
+        "uri": "https://maps.google.com/maps/contrib/116784931677975656799"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-gate-specialty-coffee-al-wurud/2.jpg",
+      "attribution": {
+        "displayName": "BLOQR SHOSH",
+        "uri": "https://maps.google.com/maps/contrib/100737450554061287402"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-gate-specialty-coffee-al-wurud/3.jpg",
+      "attribution": {
+        "displayName": "Ashwag",
+        "uri": "https://maps.google.com/maps/contrib/117975317092488119241"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-gate-specialty-coffee-al-wurud/4.jpg",
+      "attribution": {
+        "displayName": "بشاير العتيبي",
+        "uri": "https://maps.google.com/maps/contrib/104863613209438683646"
+      }
+    }
+  ],
+  "y97-specialty-coffee-as-sahafah": [
+    {
+      "src": "/cafe-heroes/y97-specialty-coffee-as-sahafah/1.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    },
+    {
+      "src": "/cafe-heroes/y97-specialty-coffee-as-sahafah/2.jpg",
+      "attribution": {
+        "displayName": "SHAHER",
+        "uri": "https://maps.google.com/maps/contrib/105624755567093735451"
+      }
+    },
+    {
+      "src": "/cafe-heroes/y97-specialty-coffee-as-sahafah/3.png",
+      "attribution": {
+        "displayName": "واي 97 قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/115798900868220167987"
+      }
+    },
+    {
+      "src": "/cafe-heroes/y97-specialty-coffee-as-sahafah/4.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    }
+  ],
+  "hakwah-speciality-coffee-as-sahafah": [
+    {
+      "src": "/cafe-heroes/hakwah-speciality-coffee-as-sahafah/1.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hakwah-speciality-coffee-as-sahafah/2.jpg",
+      "attribution": {
+        "displayName": "Ziyad Alkhalaf",
+        "uri": "https://maps.google.com/maps/contrib/115301018995068090462"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hakwah-speciality-coffee-as-sahafah/3.jpg",
+      "attribution": {
+        "displayName": "Hakwah Speciality Coffee | حكوة للقهوة المختصة",
+        "uri": "https://maps.google.com/maps/contrib/114979974990679920224"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hakwah-speciality-coffee-as-sahafah/4.jpg",
+      "attribution": {
+        "displayName": "Thamer AlSaadoun",
+        "uri": "https://maps.google.com/maps/contrib/105200121071800525961"
+      }
+    }
+  ],
+  "hal-alkeif-kafd": [
+    {
+      "src": "/cafe-heroes/hal-alkeif-kafd/1.jpg",
+      "attribution": {
+        "displayName": "Hal Al Keif - KAFD / هل الكيف - مدينة الملك عبدلله المالية",
+        "uri": "https://maps.google.com/maps/contrib/105237284705842786852"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hal-alkeif-kafd/2.jpg",
+      "attribution": {
+        "displayName": "Hal Al Keif - KAFD / هل الكيف - مدينة الملك عبدلله المالية",
+        "uri": "https://maps.google.com/maps/contrib/105237284705842786852"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hal-alkeif-kafd/3.jpg",
+      "attribution": {
+        "displayName": "Hal Al Keif - KAFD / هل الكيف - مدينة الملك عبدلله المالية",
+        "uri": "https://maps.google.com/maps/contrib/105237284705842786852"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hal-alkeif-kafd/4.jpg",
+      "attribution": {
+        "displayName": "Hal Al Keif - KAFD / هل الكيف - مدينة الملك عبدلله المالية",
+        "uri": "https://maps.google.com/maps/contrib/105237284705842786852"
+      }
+    }
+  ],
+  "trieste-kafd": [
+    {
+      "src": "/cafe-heroes/trieste-kafd/1.jpg",
+      "attribution": {
+        "displayName": "hanan al",
+        "uri": "https://maps.google.com/maps/contrib/101437596800205578742"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trieste-kafd/2.jpg",
+      "attribution": {
+        "displayName": "Arnold Lorilla (Public Account)",
+        "uri": "https://maps.google.com/maps/contrib/106647454094701843454"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trieste-kafd/3.jpg",
+      "attribution": {
+        "displayName": "Prakash Cornelius",
+        "uri": "https://maps.google.com/maps/contrib/102372462083268232156"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trieste-kafd/4.jpg",
+      "attribution": {
+        "displayName": "John Steven Cruz",
+        "uri": "https://maps.google.com/maps/contrib/107356172726507959018"
+      }
+    }
+  ],
+  "kmr-diriyah": [
+    {
+      "src": "/cafe-heroes/kmr-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "كُمر | KMR",
+        "uri": "https://maps.google.com/maps/contrib/105435364013090950718"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kmr-diriyah/2.jpg",
+      "attribution": {
+        "displayName": "كُمر | KMR",
+        "uri": "https://maps.google.com/maps/contrib/105435364013090950718"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kmr-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "Mhd Hafez",
+        "uri": "https://maps.google.com/maps/contrib/106439996448373700097"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kmr-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "La",
+        "uri": "https://maps.google.com/maps/contrib/110366177456923768591"
+      }
+    }
+  ],
+  "malfa-coffee-house-diriyah": [
+    {
+      "src": "/cafe-heroes/malfa-coffee-house-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/malfa-coffee-house-diriyah/2.jpg",
+      "attribution": {
+        "displayName": "The prof. Sami",
+        "uri": "https://maps.google.com/maps/contrib/117804876066798531008"
+      }
+    },
+    {
+      "src": "/cafe-heroes/malfa-coffee-house-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "ايمن البهلول",
+        "uri": "https://maps.google.com/maps/contrib/100846589087726186357"
+      }
+    },
+    {
+      "src": "/cafe-heroes/malfa-coffee-house-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    }
+  ],
+  "offbrief-cafe-diriyah": [
+    {
+      "src": "/cafe-heroes/offbrief-cafe-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "OFFBRiEF Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115910653424371684620"
+      }
+    },
+    {
+      "src": "/cafe-heroes/offbrief-cafe-diriyah/2.jpg",
+      "attribution": {
+        "displayName": "muhannad okky",
+        "uri": "https://maps.google.com/maps/contrib/113624031433730750290"
+      }
+    },
+    {
+      "src": "/cafe-heroes/offbrief-cafe-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "hassan almarer",
+        "uri": "https://maps.google.com/maps/contrib/112172311947878279216"
+      }
+    },
+    {
+      "src": "/cafe-heroes/offbrief-cafe-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "abdulaziz Albahusayn",
+        "uri": "https://maps.google.com/maps/contrib/109104727906766512041"
+      }
+    }
+  ],
+  "khasib-al-bun-diriyah": [
+    {
+      "src": "/cafe-heroes/khasib-al-bun-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "عسيب",
+        "uri": "https://maps.google.com/maps/contrib/110904003076272170960"
+      }
+    },
+    {
+      "src": "/cafe-heroes/khasib-al-bun-diriyah/2.png",
+      "attribution": {
+        "displayName": "عسيب",
+        "uri": "https://maps.google.com/maps/contrib/110904003076272170960"
+      }
+    },
+    {
+      "src": "/cafe-heroes/khasib-al-bun-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "Dennis op den Buijs",
+        "uri": "https://maps.google.com/maps/contrib/104687328220176741137"
+      }
+    },
+    {
+      "src": "/cafe-heroes/khasib-al-bun-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "عسيب",
+        "uri": "https://maps.google.com/maps/contrib/110904003076272170960"
+      }
+    }
+  ],
+  "sirius-speciality-coffee-diriyah": [
+    {
+      "src": "/cafe-heroes/sirius-speciality-coffee-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "luay JP",
+        "uri": "https://maps.google.com/maps/contrib/105613361404749707437"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sirius-speciality-coffee-diriyah/2.jpg",
+      "attribution": {
+        "displayName": "Maali Ali",
+        "uri": "https://maps.google.com/maps/contrib/103389213205400741462"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sirius-speciality-coffee-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "alanood",
+        "uri": "https://maps.google.com/maps/contrib/115204643212150341495"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sirius-speciality-coffee-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "Abdullah Alaidarous",
+        "uri": "https://maps.google.com/maps/contrib/117120424167507773648"
+      }
+    }
+  ],
+  "jazel-speciality-cafe-diriyah": [
+    {
+      "src": "/cafe-heroes/jazel-speciality-cafe-diriyah/1.jpg",
+      "attribution": {
+        "displayName": "Abdullatif Al Rashed",
+        "uri": "https://maps.google.com/maps/contrib/107455311991774779840"
+      }
+    },
+    {
+      "src": "/cafe-heroes/jazel-speciality-cafe-diriyah/2.jpg",
+      "attribution": {
+        "displayName": "Ameera Ibrahim",
+        "uri": "https://maps.google.com/maps/contrib/103321194233987528859"
+      }
+    },
+    {
+      "src": "/cafe-heroes/jazel-speciality-cafe-diriyah/3.jpg",
+      "attribution": {
+        "displayName": "ALI ALMUSHAFI",
+        "uri": "https://maps.google.com/maps/contrib/109469329240686707126"
+      }
+    },
+    {
+      "src": "/cafe-heroes/jazel-speciality-cafe-diriyah/4.jpg",
+      "attribution": {
+        "displayName": "Sultan Tarabishi",
+        "uri": "https://maps.google.com/maps/contrib/100456930287597501004"
+      }
+    }
+  ],
+  "repository-coffee-roasters-al-narjis": [
+    {
+      "src": "/cafe-heroes/repository-coffee-roasters-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "Dr•Najwa",
+        "uri": "https://maps.google.com/maps/contrib/105357369762586709334"
+      }
+    },
+    {
+      "src": "/cafe-heroes/repository-coffee-roasters-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "محمد M",
+        "uri": "https://maps.google.com/maps/contrib/100859367762110688083"
+      }
+    },
+    {
+      "src": "/cafe-heroes/repository-coffee-roasters-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "raed alateeq",
+        "uri": "https://maps.google.com/maps/contrib/105763230058108433015"
+      }
+    },
+    {
+      "src": "/cafe-heroes/repository-coffee-roasters-al-narjis/4.jpg",
+      "attribution": {
+        "displayName": "Dr•Najwa",
+        "uri": "https://maps.google.com/maps/contrib/105357369762586709334"
+      }
+    }
+  ],
+  "hjeen-roaster-al-narjis": [
+    {
+      "src": "/cafe-heroes/hjeen-roaster-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "Hjeen Roaster",
+        "uri": "https://maps.google.com/maps/contrib/110167495835392672132"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roaster-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "ABU TURKI",
+        "uri": "https://maps.google.com/maps/contrib/101214366545189639102"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roaster-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "Hjeen Roaster",
+        "uri": "https://maps.google.com/maps/contrib/110167495835392672132"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roaster-al-narjis/4.jpg",
+      "attribution": {
+        "displayName": "Allison Taylor",
+        "uri": "https://maps.google.com/maps/contrib/103475267532362125720"
+      }
+    }
+  ],
+  "kail-roastery-and-cafe-al-narjis": [
+    {
+      "src": "/cafe-heroes/kail-roastery-and-cafe-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "nouf altami",
+        "uri": "https://maps.google.com/maps/contrib/111247679795846616914"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kail-roastery-and-cafe-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "Maha",
+        "uri": "https://maps.google.com/maps/contrib/106188198643157750120"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kail-roastery-and-cafe-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kail-roastery-and-cafe-al-narjis/4.jpg",
+      "attribution": {
+        "displayName": "M",
+        "uri": "https://maps.google.com/maps/contrib/112547326742141752813"
+      }
+    }
+  ],
+  "volume-coffee-roasters-al-narjis": [
+    {
+      "src": "/cafe-heroes/volume-coffee-roasters-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "Khaled Albrethen",
+        "uri": "https://maps.google.com/maps/contrib/116708365147224152633"
+      }
+    },
+    {
+      "src": "/cafe-heroes/volume-coffee-roasters-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "Afnan 115",
+        "uri": "https://maps.google.com/maps/contrib/105556513911194479231"
+      }
+    },
+    {
+      "src": "/cafe-heroes/volume-coffee-roasters-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "FSN99 (F.H)",
+        "uri": "https://maps.google.com/maps/contrib/104181164692755030122"
+      }
+    },
+    {
+      "src": "/cafe-heroes/volume-coffee-roasters-al-narjis/4.jpg",
+      "attribution": {
+        "displayName": "RRR -",
+        "uri": "https://maps.google.com/maps/contrib/113109226717359089363"
+      }
+    }
+  ],
+  "melex-specialty-coffee-al-narjis": [
+    {
+      "src": "/cafe-heroes/melex-specialty-coffee-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "Mohammed Allaith",
+        "uri": "https://maps.google.com/maps/contrib/115845209759422554578"
+      }
+    },
+    {
+      "src": "/cafe-heroes/melex-specialty-coffee-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "Reoof",
+        "uri": "https://maps.google.com/maps/contrib/105198115644397172695"
+      }
+    },
+    {
+      "src": "/cafe-heroes/melex-specialty-coffee-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "Mohammed Allaith",
+        "uri": "https://maps.google.com/maps/contrib/115845209759422554578"
+      }
+    },
+    {
+      "src": "/cafe-heroes/melex-specialty-coffee-al-narjis/4.jpg",
+      "attribution": {
+        "displayName": "sLman",
+        "uri": "https://maps.google.com/maps/contrib/108840509068826157888"
+      }
+    }
+  ],
+  "nosound-al-narjis": [
+    {
+      "src": "/cafe-heroes/nosound-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "نوساوند النرجس NOSOUND",
+        "uri": "https://maps.google.com/maps/contrib/114424861305732894193"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nosound-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "نوساوند النرجس NOSOUND",
+        "uri": "https://maps.google.com/maps/contrib/114424861305732894193"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nosound-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "نوساوند النرجس NOSOUND",
+        "uri": "https://maps.google.com/maps/contrib/114424861305732894193"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nosound-al-narjis/4.jpg",
+      "attribution": {
+        "displayName": "نوساوند النرجس NOSOUND",
+        "uri": "https://maps.google.com/maps/contrib/114424861305732894193"
+      }
+    }
+  ],
+  "specialty-bean-ghirnatah": [
+    {
+      "src": "/cafe-heroes/specialty-bean-ghirnatah/1.jpg",
+      "attribution": {
+        "displayName": "S A",
+        "uri": "https://maps.google.com/maps/contrib/100538579094869820858"
+      }
+    },
+    {
+      "src": "/cafe-heroes/specialty-bean-ghirnatah/2.png",
+      "attribution": {
+        "displayName": "Specialty Bean Roastery | محمصة سبيشلتي بين",
+        "uri": "https://maps.google.com/maps/contrib/112743507305867377761"
+      }
+    },
+    {
+      "src": "/cafe-heroes/specialty-bean-ghirnatah/3.jpg",
+      "attribution": {
+        "displayName": "Specialty Bean Roastery | محمصة سبيشلتي بين",
+        "uri": "https://maps.google.com/maps/contrib/112743507305867377761"
+      }
+    },
+    {
+      "src": "/cafe-heroes/specialty-bean-ghirnatah/4.png",
+      "attribution": {
+        "displayName": "Specialty Bean Roastery | محمصة سبيشلتي بين",
+        "uri": "https://maps.google.com/maps/contrib/112743507305867377761"
+      }
+    }
+  ],
+  "mkth-ghirnatah": [
+    {
+      "src": "/cafe-heroes/mkth-ghirnatah/1.jpg",
+      "attribution": {
+        "displayName": "Mkth",
+        "uri": "https://maps.google.com/maps/contrib/109003665198232915378"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mkth-ghirnatah/2.jpg",
+      "attribution": {
+        "displayName": "Mkth",
+        "uri": "https://maps.google.com/maps/contrib/109003665198232915378"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mkth-ghirnatah/3.jpg",
+      "attribution": {
+        "displayName": "أحمد حُمدي",
+        "uri": "https://maps.google.com/maps/contrib/116384208515330317224"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mkth-ghirnatah/4.jpg",
+      "attribution": {
+        "displayName": "نجم .",
+        "uri": "https://maps.google.com/maps/contrib/115637744188189071429"
+      }
+    }
   ]
 }

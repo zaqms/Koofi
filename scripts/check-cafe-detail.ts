@@ -158,8 +158,11 @@ assert(
   Object.keys(bakedHeroes).length === 50 + batch2HeroIds.length,
   "batch 1 cafe-heroes stay; batch 2 merges in",
 );
-assert(batch2HeroIds.length >= 21, "batch 2 pack 1 heroes are baked");
+assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
+assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–3 heroes");
+assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 heroes");
+assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
 for (const [id, photos] of Object.entries(bakedHeroes)) {
   const expected = id === "elixir-bunn-al-narjis" ? 3 : 4;
   assert(photos.length === expected, `${id} has ${expected} cached cafe-heroes`);
@@ -358,6 +361,12 @@ assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(firstSeries)),
   "batch 2 Places photos still require a Google credit",
 );
+const tobys = getShop("tobys-estate-olaya");
+const mkth = getShop("mkth-ghirnatah");
+assert(tobys && (tobys.openingHours?.periods?.length ?? 0) > 0, "Toby's has baked periods");
+assert(mkth && (mkth.openingHours?.periods?.length ?? 0) > 0, "MKTH has baked periods");
+assert(cafeDetailHeroPhotos(tobys).length === 4, "Toby's uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(mkth).length === 4, "MKTH uses baked cafe-heroes");
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
 const wedLate = new Date("2026-09-16T23:30:00+03:00");

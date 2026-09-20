@@ -837,14 +837,11 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.
 
-[dr.CAFE](/en/c/drcafe-as-suwaidi) is the name on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from As Suwaidi on the catalog today:`,
-    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+No cafes from this neighborhood are on the catalog today. We don’t invent extras to fill the page.`,
     nearbyIntro: `If As Suwaidi isn’t the stop, these southwest lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Suwaidi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in As Suwaidi on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
 };
 

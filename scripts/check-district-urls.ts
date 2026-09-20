@@ -172,7 +172,7 @@ assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.length === 45, `expected 45 districts, got ${areas.length}`);
 assert(listDiscoveryShops().length === 275, `specialty discovery stays 275, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 343, `catalog 275→343 with DT-lane, got ${listRealShops().length}`);
+assert(listRealShops().length === 342, `catalog 275→342 with DT-lane, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1379,14 +1379,22 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 78, `Drive-through directory is 78, got ${dt.length}`);
+  assert(dt.length === 77, `Drive-through directory is 77, got ${dt.length}`);
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
     "Drive-through directory is tagged only",
   );
   assert(
-    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 19,
-    "19 hex-verified dr.CAFE rows are on the Drive-through directory",
+    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 18,
+    "18 hex-verified dr.CAFE rows are on the Drive-through directory",
+  );
+  assert(
+    !getShop("drcafe-as-suwaidi"),
+    "CLOSED_PERMANENTLY dr.CAFE As Suwaidi stays dropped",
+  );
+  assert(
+    listDirectoryShopsForDistrict("as-suwaidi").length === 0,
+    "as-suwaidi has no live catalog row after the closed drop",
   );
   assert(
     !listRealShops().some((shop) =>
@@ -1413,10 +1421,10 @@ const MALAZ_REFILL = {
     "kkia includes open dr.CAFE, not closed A PLUS",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
-  assert(drcafe.length === 19, `19 dr.CAFE rows, got ${drcafe.length}`);
+  assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);
   assert(
     drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
-    "all 19 dr.CAFE rows use the official mark",
+    "all 18 dr.CAFE rows use the official mark",
   );
   assert(
     getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",

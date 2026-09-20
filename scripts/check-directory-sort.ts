@@ -60,7 +60,7 @@ assert(!isDirectoryResultSortChip("popular"), "Most Popular stays unsorted");
 assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();
-assert(dt.length === 78, `DT directory stays 78 shops, got ${dt.length}`);
+assert(dt.length === 77, `DT directory stays 77 shops, got ${dt.length}`);
 assert(
   dt.every((shop) => shop.momentTags.includes("drive-through")),
   "sort does not change the DT filter",
@@ -69,7 +69,7 @@ assert(
 const newestDt = [...dt].sort((a, b) => b.catalogIndex - a.catalogIndex)[0];
 assert(newestDt, "DT has a newest row");
 const ulica = dt.find((shop) => shop.id === "ulica-al-ghadeer");
-const lastLane = dt.find((shop) => shop.id === "drcafe-as-suwaidi");
+const lastLane = dt.find((shop) => shop.id === "drcafe-al-mathar");
 assert(ulica && lastLane, "ULICA TAG and latest DT-lane row are in the directory");
 assert(
   lastLane.catalogIndex > ulica.catalogIndex,

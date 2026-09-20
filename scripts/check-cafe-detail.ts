@@ -311,6 +311,8 @@ assert(
 );
 assert(!detail.includes('variant="detail"'), "no lower Share CTA next to Maps");
 assert(detail.includes('variant="hero"'), "hero Share is the overlay control");
+assert(!detail.includes("copy.switchLanguage"), "language switch stays off the hero");
+assert(!detail.includes("data-language-switch"), "language switch stays off the identity card");
 assert(detail.includes("SHOW_DETAIL_FAVORITE"), "heart is flagged");
 assert(detail.includes("const parked = !SHOW_DETAIL_FAVORITE"), "heart stays parked without a real like");
 assert(detail.includes("<CafeDetailFavorite"), "hero keeps the Favorite control");
@@ -351,7 +353,15 @@ assert(!page.includes("CafePassportCard"), "public page never mounts Passport");
 assert(page.includes("<CafeEnBlurb"), "SEO essay stays in the main public flow");
 assert(!page.includes("visuallyHidden"), "SEO essay is not forced off-screen");
 assert(page.includes("listDirectoryShopsForDistrict"), "related is same-neighborhood catalog");
-assert(!page.includes("BrandHomeLink"), "old thin header is gone");
+assert(page.includes("<header"), "language switch sits in a top header");
+assert(page.includes("copy.switchLanguage[language]"), "header switcher is EN / عربي");
+assert(page.includes('data-language-switch=""'), "header has a stable switcher hook");
+assert(page.includes("href={localeHref}"), "header keeps locale switch on /c vs /en/c");
+assert(
+  page.indexOf("<header") < page.indexOf("<CafeCard"),
+  "header sits above the card, not under the essay",
+);
+assert(!page.includes("BrandHomeLink"), "old thin wordmark header is gone");
 assert(!page.includes("backToChat"), "old back-to-chat line is gone from the thin page");
 
 const blurb = read("components/cafe-en-blurb.tsx");

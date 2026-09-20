@@ -42,6 +42,15 @@ export async function CafeCardPageView({
         shopId={shop.id}
         from={inboundFrom}
       />
+      <header className="mb-3 flex items-center justify-end">
+        <Link
+          href={localeHref}
+          data-language-switch=""
+          className="text-xs text-ink-soft underline-offset-2 hover:underline"
+        >
+          {copy.switchLanguage[language]}
+        </Link>
+      </header>
       <ShopUpvoteProvider>
         <CafeCard
           shop={shop}
@@ -51,14 +60,6 @@ export async function CafeCardPageView({
         />
       </ShopUpvoteProvider>
       <CafeEnBlurb shop={shop} language={language} />
-      <p className="mt-6">
-        <Link
-          href={localeHref}
-          className="text-xs text-ink-soft underline-offset-2 hover:underline"
-        >
-          {copy.switchLanguage[language]}
-        </Link>
-      </p>
       <SiteFooter language={language} padded={false} />
     </main>
   );

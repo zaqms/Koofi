@@ -165,6 +165,7 @@ const thin = read("components/cafe-card.tsx");
 assert(!thin.includes("DirectoryCard"), "thin /c/[id] card is not the listing card");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here stays parked on the thin card");
 assert(thin.includes("CafeDetail"), "thin /c/[id] uses the approved detail layout");
+assert(!thin.includes("localeHref"), "language switch stays on the page header, not the card");
 
 const cafeDetail = read("components/cafe-detail.tsx");
 assert(!cafeDetail.includes("DirectoryCard"), "detail chrome is not the listing card");

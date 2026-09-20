@@ -290,18 +290,25 @@ function CafeDetailHero({
         </>
       ) : null}
 
-      {googleCredit ? (
-        <p className="pointer-events-none absolute bottom-3 start-3 z-20 max-w-[58%] truncate rounded-full bg-ink/70 px-2 py-0.5 text-[10px] leading-4 text-foam">
-          {copy.detailPhotosGoogle[language]}
-          {author ? <span className="sr-only">{` · ${author}`}</span> : null}
-        </p>
-      ) : null}
-      {photos.length > 0 ? (
-        <p className="absolute bottom-3 end-3 z-20 rounded-full bg-ink/70 px-2 py-0.5 text-[11px] leading-4 text-foam">
-          <span dir="ltr">
-            {index + 1}/{photos.length}
-          </span>
-        </p>
+      {googleCredit || photos.length > 0 ? (
+        <div
+          data-cafe-detail-hero-meta=""
+          className="pointer-events-none absolute bottom-3 end-3 z-20 flex max-w-[46%] flex-col items-end gap-1"
+        >
+          {googleCredit ? (
+            <p className="truncate rounded-full bg-ink/70 px-2 py-0.5 text-[10px] leading-4 text-foam">
+              {copy.detailPhotosGoogle[language]}
+              {author ? <span className="sr-only">{` · ${author}`}</span> : null}
+            </p>
+          ) : null}
+          {photos.length > 0 ? (
+            <p className="rounded-full bg-ink/70 px-2 py-0.5 text-[11px] leading-4 text-foam">
+              <span dir="ltr">
+                {index + 1}/{photos.length}
+              </span>
+            </p>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

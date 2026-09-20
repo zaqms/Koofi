@@ -374,6 +374,19 @@ assert(detail.includes("detailHeroPrev"), "hero has a prev control");
 assert(detail.includes("go(1)"), "tap/click advances the carousel");
 assert(detail.includes("heroNavClass"), "hero chevrons are dedicated nav controls");
 assert(detail.includes("cursor-pointer"), "multi-photo hero shows a click affordance");
+assert(
+  detail.includes('data-cafe-detail-hero-meta=""'),
+  "credit and 1/N share a meta cluster",
+);
+assert(detail.includes("bottom-3 end-3"), "photo credit sits with the 1/N pill");
+assert(
+  !detail.includes("bottom-3 start-3"),
+  "photo credit is not on the floating-logo edge",
+);
+assert(
+  detail.includes("absolute start-1 -bottom-8"),
+  "floating ShopVisual stays on the start edge",
+);
 assert(detail.includes("draggable={false}"), "hero img is not a native drag ghost");
 assert(detail.includes("setPointerCapture"), "hero swipe captures the pointer");
 assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");

@@ -152,19 +152,82 @@ const BATCH2_IDS = [
   "mkth-ghirnatah",
 ] as const;
 
+const BATCH3_IDS = [
+  "bind-specialty-coffee-ghirnatah",
+  "file-coffee-ghirnatah",
+  "sanva-specialty-coffee-ghirnatah",
+  "jae-specialty-coffee-ghirnatah",
+  "moff-ghirnatah",
+  "semi-specialty-cafe-ghirnatah",
+  "camel-step-granada-business",
+  "archi-ghirnatah",
+  "blumen-al-safa",
+  "hawaf-al-safa",
+  "recaf-al-safa",
+  "raslania-al-safa",
+  "dyar-bakery-al-safa",
+  "jazwa-specialty-coffee-ar-rabwah",
+  "makhsousa-coffee-ar-rabwah",
+  "blog-coffee-ar-rabwah",
+  "enzo-coffee-ar-rabwah",
+  "window-coffee-ar-rabwah",
+  "b-cafe-ar-rabwah",
+  "hai-coffee-roasters-al-rawdah",
+  "coffeehood-qurtubah",
+  "obo-qurtubah",
+  "lattio-lounge-qurtubah",
+  "n5-caffe-qurtubah",
+  "cacti-roastery-qurtubah",
+  "najd-roastery-qurtubah",
+  "najd-alathiah-qurtubah",
+  "klatch-qurtubah",
+  "nosound-qurtubah",
+  "vanilla-coffee-qurtubah",
+  "mill-coffee-qurtubah",
+  "cofen-qurtubah",
+  "mud-speciality-coffee-an-nazhah",
+  "wathba-an-nazhah",
+  "moraq-cafe-an-nazhah",
+  "november-coffee-an-nazhah",
+  "elite-cup-roasters-an-nazhah",
+  "belong-an-nazhah",
+  "desired-coffee-an-nazhah",
+  "cross-coffee-an-nazhah",
+  "kraz-an-nazhah",
+  "ghandoura-an-nazhah",
+  "serene-coffee-roastery",
+  "rimthan-coffee-al-hamra",
+  "mind-break-al-hamra",
+  "jather-al-hamra",
+  "harf-coffee-al-hamra",
+  "zeila-al-hamra",
+  "cord-cafe-al-hamra",
+  "drip-al-hamra",
+] as const;
+
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
+const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 assert(
-  Object.keys(bakedHeroes).length === 50 + batch2HeroIds.length,
-  "batch 1 cafe-heroes stay; batch 2 merges in",
+  Object.keys(bakedHeroes).length === 50 + batch2HeroIds.length + batch3HeroIds.length,
+  "batch 1–2 cafe-heroes stay; batch 3 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
+assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
+assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
 assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–3 heroes");
 assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 heroes");
 assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
+assert(bakedHeroes["bind-specialty-coffee-ghirnatah"]?.length === 4, "BIND pack 1 heroes");
+function expectedHeroCount(id: string): number {
+  if (id === "elixir-bunn-al-narjis") return 3;
+  if (id === "mill-coffee-qurtubah") return 2;
+  return 4;
+}
 for (const [id, photos] of Object.entries(bakedHeroes)) {
-  const expected = id === "elixir-bunn-al-narjis" ? 3 : 4;
+  const expected = expectedHeroCount(id);
   assert(photos.length === expected, `${id} has ${expected} cached cafe-heroes`);
   for (const photo of photos) {
     assert(photo.src.startsWith(`/cafe-heroes/${id}/`), `${photo.src} is shop-scoped`);
@@ -367,6 +430,51 @@ assert(tobys && (tobys.openingHours?.periods?.length ?? 0) > 0, "Toby's has bake
 assert(mkth && (mkth.openingHours?.periods?.length ?? 0) > 0, "MKTH has baked periods");
 assert(cafeDetailHeroPhotos(tobys).length === 4, "Toby's uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(mkth).length === 4, "MKTH uses baked cafe-heroes");
+
+for (const id of BATCH3_IDS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(
+    (shop.openingHours?.periods?.length ?? 0) > 0,
+    `${id} has baked catalog periods — no invented hours omitted`,
+  );
+}
+const bind = getShop("bind-specialty-coffee-ghirnatah");
+const dripHamra = getShop("drip-al-hamra");
+const wathba = getShop("wathba-an-nazhah");
+assert(bind && (bind.openingHours?.periods?.length ?? 0) > 0, "BIND has baked periods");
+assert(dripHamra && (dripHamra.openingHours?.periods?.length ?? 0) > 0, "Drip Al Hamra has baked periods");
+assert(wathba && (wathba.openingHours?.periods?.length ?? 0) > 0, "Wathba has baked periods");
+assert(
+  wathba.placeId === "ChIJcZz_CAADLz4RfeFA9IJmOdM",
+  "Wathba uses وثبة | قهوة مختصة - النزهة, not Alwathba Consulting",
+);
+assert(
+  wathba.openingHours?.periods?.[0]?.open.hour === 6,
+  "Wathba hours are the cafe pin (6 AM), not the consulting office",
+);
+assert(cafeDetailHeroPhotos(bind).length === 4, "BIND uses baked cafe-heroes");
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(bind)),
+  "batch 3 Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(bind)[0]?.attribution?.displayName === "zainb alshammri",
+  "BIND bake still has the Places author name",
+);
+const fileCoffee = getShop("file-coffee-ghirnatah");
+const sanva = getShop("sanva-specialty-coffee-ghirnatah");
+const mill = getShop("mill-coffee-qurtubah");
+assert(fileCoffee && cafeDetailHeroPhotos(fileCoffee).length === 4, "File Coffee uses baked cafe-heroes");
+assert(sanva && cafeDetailHeroPhotos(sanva).length === 4, "Sanva uses baked cafe-heroes");
+assert(mill && cafeDetailHeroPhotos(mill).length === 2, "Mill keeps the 2 downloaded frames");
+assert(cafeDetailHeroPhotos(dripHamra).length === 4, "Drip Al Hamra uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(wathba).length === 4, "Wathba uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(wathba)[0]?.attribution?.displayName ===
+    "وثبة | قهوة مختصة - النزهة",
+  "Wathba bake has the cafe Places author name",
+);
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
 const wedLate = new Date("2026-09-16T23:30:00+03:00");

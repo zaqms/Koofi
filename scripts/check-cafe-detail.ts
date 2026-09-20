@@ -537,9 +537,8 @@ assert(
   "Wathba bake has the cafe Places author name",
 );
 
-const BATCH4_HOURS_IDS = BATCH4_IDS.filter(
-  (id) => !BATCH4_MISSING_HOURS.includes(id),
-);
+const BATCH4_MISSING_HOUR_IDS = new Set<string>(BATCH4_MISSING_HOURS);
+const BATCH4_HOURS_IDS = BATCH4_IDS.filter((id) => !BATCH4_MISSING_HOUR_IDS.has(id));
 for (const id of BATCH4_HOURS_IDS) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
@@ -559,12 +558,13 @@ for (const id of BATCH4_MISSING_HOURS) {
 }
 const coffeeAddress = getShop("coffee-address-al-hamra");
 const ashjar = getShop("ashjar-cafe-ar-rabi");
+assert(coffeeAddress, "Coffee Address Al Hamra is in the catalog");
 assert(
-  coffeeAddress && (coffeeAddress.openingHours?.periods?.length ?? 0) > 0,
+  (coffeeAddress.openingHours?.periods?.length ?? 0) > 0,
   "Coffee Address Al Hamra has baked periods",
 );
 assert(
-  coffeeAddress.openingHours?.periods.length === 1 &&
+  coffeeAddress.openingHours?.periods?.length === 1 &&
     coffeeAddress.openingHours.periods[0]?.open.day === 0 &&
     !("close" in (coffeeAddress.openingHours.periods[0] ?? {})),
   "Coffee Address Al Hamra is baked 24h",

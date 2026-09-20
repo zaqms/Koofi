@@ -193,7 +193,12 @@ assert(!/koofi/i.test(detail), "detail must not say Koofi");
 assert(!/Amjad|Ajz/i.test(detail), "detail must not name Amjad/Ajz");
 
 const page = read("components/cafe-card-page.tsx");
-assert(page.includes("bg-wain-paper"), "thin /c/[id] sits on Wain Paper");
+assert(page.includes("bg-wain-paper"), "every /c/[id] sits on Wain Paper");
+assert(!page.includes("bg-charcoal"), "no charcoal Passport chrome on public detail");
+assert(!page.includes("passportPage"), "no dual public layouts");
+assert(!page.includes("previewPassport"), "Woods preview does not open Passport");
+assert(!page.includes("preferPassportUi"), "verified does not switch the public template");
+assert(!page.includes("CafePassportCard"), "public page never mounts Passport");
 assert(page.includes("<CafeEnBlurb"), "SEO essay stays in the main public flow");
 assert(!page.includes("visuallyHidden"), "SEO essay is not forced off-screen");
 assert(page.includes("listDirectoryShopsForDistrict"), "related is same-neighborhood catalog");
@@ -284,13 +289,27 @@ assert(
 );
 
 const thin = read("components/cafe-card.tsx");
-assert(thin.includes("CafeDetail"), "thin /c/[id] uses the approved detail");
+assert(thin.includes("CafeDetail"), "every /c/[id] uses the approved detail");
+assert(!thin.includes("CafePassportCard"), "verified shops stay on CafeDetail");
+assert(!thin.includes("preferPassportUi"), "claim status does not pick a second layout");
+assert(!thin.includes("woodsPassportFixture"), "Woods fixture stays off the public card");
 assert(thin.includes("CafeClaimFooter"), "claim footer stays for SEO / claim path");
 assert(thin.includes("sr-only"), "Listed on / Own this cafe stay off the visible UI");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here stays parked on the thin card");
 assert(thin.includes("{SHOW_BEEN_HERE ?"), "Been here is not rendered while parked");
 assert(!thin.includes("CafePresenceRow"), "thin no longer mounts the old action row");
 assert(!thin.includes("DirectoryCard"), "thin /c/[id] is not the listing card");
+
+const woods = getShop("woods-olaya");
+assert(woods, "WOODS Olaya is in the catalog");
+assert(
+  cafeDetailHeroPhotos(woods).length === 4,
+  "WOODS uses baked cafe-heroes, not Passport fixtures",
+);
+assert(
+  (woods.openingHours?.periods?.length ?? 0) > 0,
+  "WOODS keeps baked catalog periods",
+);
 
 const share = read("components/share-listing-button.tsx");
 assert(share.includes('"hero"'), "hero share variant");

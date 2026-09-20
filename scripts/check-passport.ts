@@ -147,8 +147,10 @@ for (const file of files) {
 
 const thin = readFileSync("components/cafe-card.tsx", "utf8");
 assert(thin.includes("CafeClaimFooter"), "unclaimed keeps WhatsApp footer");
-assert(thin.includes('previewPassport ? "verified"'), "preview can open Passport");
-assert(thin.includes("woodsPassportFixture"), "locale fixture on preview");
+assert(thin.includes("CafeDetail"), "public /c/[id] is CafeDetail");
+assert(!thin.includes("CafePassportCard"), "verified Woods stays on CafeDetail");
+assert(!thin.includes("previewPassport"), "preview no longer opens Passport on /c/[id]");
+assert(!thin.includes("woodsPassportFixture"), "Woods fixture stays off the public card");
 assert(thin.includes("SHOW_BEEN_HERE"), "thin Been here is parked");
 assert(thin.includes("{SHOW_BEEN_HERE ?"), "thin Been here is not rendered while parked");
 
@@ -178,11 +180,10 @@ assert(!list.includes("useShopClaim"), "listing card does not fetch claim badges
 
 const page = readFileSync("components/cafe-card-page.tsx", "utf8");
 assert(page.includes("ShopUpvoteProvider"), "card page wraps upvote provider");
-assert(page.includes("allowPassportPreview"), "page gates fixture off production");
-assert(
-  page.includes("onDark={passportPage}"),
-  "Passport charcoal footer uses light type + inverted wordmark",
-);
+assert(page.includes("bg-wain-paper"), "public /c/[id] stays Wain Paper");
+assert(!page.includes("allowPassportPreview"), "page does not overlay Woods Passport");
+assert(!page.includes("passportPage"), "no dual public layouts");
+assert(!page.includes("onDark={true}"), "public footer is not charcoal Passport");
 
 const siteFooter = readFileSync("components/site-footer.tsx", "utf8");
 assert(siteFooter.includes("text-foam/85"), "dark footer links are foam");

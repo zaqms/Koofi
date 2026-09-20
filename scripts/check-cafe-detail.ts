@@ -385,7 +385,7 @@ assert(
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
-assert(batch5HeroIds.length === 80, "batch 5 packs 1–4 + 6 cafe-heroes are wired");
+assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -848,6 +848,7 @@ assert(
 assert(markab && (markab.openingHours?.periods?.length ?? 0) > 0, "Markab has baked periods");
 assert(kernel && (kernel.openingHours?.periods?.length ?? 0) > 0, "Kernel has baked periods");
 assert(solOlas && (solOlas.openingHours?.periods?.length ?? 0) > 0, "Sol Olas has baked periods");
+assert(cafeDetailHeroPhotos(solOlas).length === 4, "Sol Olas uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("with-heart-diriyah")!).length === 4, "With Heart uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("white-roastery-al-wadi")!).length === 4, "White Roastery uses baked cafe-heroes");
 assert(

@@ -5945,5 +5945,425 @@
         "uri": "https://maps.google.com/maps/contrib/104636189059637547387"
       }
     }
+  ],
+  "ashjar-cafe-al-aqiq": [
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-aqiq/1.jpg",
+      "attribution": {
+        "displayName": "Ashjar Cafe Alaqiq (Roastery) | أشجار كافيه العقيق(محمصة)",
+        "uri": "https://maps.google.com/maps/contrib/117793965036642604907"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-aqiq/2.jpg",
+      "attribution": {
+        "displayName": "Manal",
+        "uri": "https://maps.google.com/maps/contrib/116167729006605218634"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-aqiq/3.jpg",
+      "attribution": {
+        "displayName": "Mohannad Tayib",
+        "uri": "https://maps.google.com/maps/contrib/102704087647299323253"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-aqiq/4.jpg",
+      "attribution": {
+        "displayName": "AG Al",
+        "uri": "https://maps.google.com/maps/contrib/100746832207599522999"
+      }
+    }
+  ],
+  "camel-step-al-aqiq": [
+    {
+      "src": "/cafe-heroes/camel-step-al-aqiq/1.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    },
+    {
+      "src": "/cafe-heroes/camel-step-al-aqiq/2.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    },
+    {
+      "src": "/cafe-heroes/camel-step-al-aqiq/3.jpg",
+      "attribution": {
+        "displayName": "Camel Step",
+        "uri": "https://maps.google.com/maps/contrib/117232355066526326168"
+      }
+    },
+    {
+      "src": "/cafe-heroes/camel-step-al-aqiq/4.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    }
+  ],
+  "blumen-al-ghadeer": [
+    {
+      "src": "/cafe-heroes/blumen-al-ghadeer/1.jpg",
+      "attribution": {
+        "displayName": "Zouhair Lahham",
+        "uri": "https://maps.google.com/maps/contrib/103367312591459311301"
+      }
+    },
+    {
+      "src": "/cafe-heroes/blumen-al-ghadeer/2.png",
+      "attribution": {
+        "displayName": "Ahmed Hakeem",
+        "uri": "https://maps.google.com/maps/contrib/113905471387507090032"
+      }
+    },
+    {
+      "src": "/cafe-heroes/blumen-al-ghadeer/3.jpg",
+      "attribution": {
+        "displayName": "Zouhair Lahham",
+        "uri": "https://maps.google.com/maps/contrib/103367312591459311301"
+      }
+    },
+    {
+      "src": "/cafe-heroes/blumen-al-ghadeer/4.jpg",
+      "attribution": {
+        "displayName": "wejdan",
+        "uri": "https://maps.google.com/maps/contrib/103509966288519939662"
+      }
+    }
+  ],
+  "brsk-al-ghadeer": [
+    {
+      "src": "/cafe-heroes/brsk-al-ghadeer/1.jpg",
+      "attribution": {
+        "displayName": "fouad aljumaiah",
+        "uri": "https://maps.google.com/maps/contrib/114851447140764599563"
+      }
+    },
+    {
+      "src": "/cafe-heroes/brsk-al-ghadeer/2.jpg",
+      "attribution": {
+        "displayName": "nasser alarifi",
+        "uri": "https://maps.google.com/maps/contrib/117638073785500675738"
+      }
+    },
+    {
+      "src": "/cafe-heroes/brsk-al-ghadeer/3.jpg",
+      "attribution": {
+        "displayName": "Hessa Alrashed",
+        "uri": "https://maps.google.com/maps/contrib/106275745809918568212"
+      }
+    },
+    {
+      "src": "/cafe-heroes/brsk-al-ghadeer/4.jpg",
+      "attribution": {
+        "displayName": "Sara Almalki",
+        "uri": "https://maps.google.com/maps/contrib/111526133499025672025"
+      }
+    }
+  ],
+  "acres-al-arid": [
+    {
+      "src": "/cafe-heroes/acres-al-arid/1.jpg",
+      "attribution": {
+        "displayName": "Fayz",
+        "uri": "https://maps.google.com/maps/contrib/117149880046746556404"
+      }
+    },
+    {
+      "src": "/cafe-heroes/acres-al-arid/2.jpg",
+      "attribution": {
+        "displayName": "Acres Coffee Roaster | محمصة ومقهى ايكرز",
+        "uri": "https://maps.google.com/maps/contrib/116643272975042379608"
+      }
+    },
+    {
+      "src": "/cafe-heroes/acres-al-arid/3.jpg",
+      "attribution": {
+        "displayName": "Mem mohammed",
+        "uri": "https://maps.google.com/maps/contrib/104793530092641945017"
+      }
+    },
+    {
+      "src": "/cafe-heroes/acres-al-arid/4.jpg",
+      "attribution": {
+        "displayName": "Faisal Alnasser",
+        "uri": "https://maps.google.com/maps/contrib/103303202757875558970"
+      }
+    }
+  ],
+  "archi-al-arid": [
+    {
+      "src": "/cafe-heroes/archi-al-arid/1.jpg",
+      "attribution": {
+        "displayName": "Juhir Jandilon",
+        "uri": "https://maps.google.com/maps/contrib/100750557992306837178"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-al-arid/2.jpg",
+      "attribution": {
+        "displayName": "Mohamed Nahfees",
+        "uri": "https://maps.google.com/maps/contrib/116289892566649712413"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-al-arid/3.jpg",
+      "attribution": {
+        "displayName": "Namli.905",
+        "uri": "https://maps.google.com/maps/contrib/103749533860882924164"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-al-arid/4.jpg",
+      "attribution": {
+        "displayName": "Halah",
+        "uri": "https://maps.google.com/maps/contrib/107705727316938270120"
+      }
+    }
+  ],
+  "3bean-al-qirawan": [
+    {
+      "src": "/cafe-heroes/3bean-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "3bean Coffee roastery",
+        "uri": "https://maps.google.com/maps/contrib/105328335045020347193"
+      }
+    },
+    {
+      "src": "/cafe-heroes/3bean-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "روح SouL",
+        "uri": "https://maps.google.com/maps/contrib/109997978528481368532"
+      }
+    },
+    {
+      "src": "/cafe-heroes/3bean-al-qirawan/3.jpg",
+      "attribution": {
+        "displayName": "MOAYYAD",
+        "uri": "https://maps.google.com/maps/contrib/103956474207192364876"
+      }
+    },
+    {
+      "src": "/cafe-heroes/3bean-al-qirawan/4.jpg",
+      "attribution": {
+        "displayName": "ASQ",
+        "uri": "https://maps.google.com/maps/contrib/103381231838003426752"
+      }
+    }
+  ],
+  "ashjar-cafe-al-qirawan": [
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "Ashjar cafe Al Qirawan | أشجار كافيه القيروان",
+        "uri": "https://maps.google.com/maps/contrib/107833064764519262048"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "حيــاة التويجــري",
+        "uri": "https://maps.google.com/maps/contrib/100416614789399843496"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-qirawan/3.png",
+      "attribution": {
+        "displayName": "Ashjar cafe Al Qirawan | أشجار كافيه القيروان",
+        "uri": "https://maps.google.com/maps/contrib/107833064764519262048"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ashjar-cafe-al-qirawan/4.jpg",
+      "attribution": {
+        "displayName": "Ashjar cafe Al Qirawan | أشجار كافيه القيروان",
+        "uri": "https://maps.google.com/maps/contrib/107833064764519262048"
+      }
+    }
+  ],
+  "caf-lab-al-qirawan": [
+    {
+      "src": "/cafe-heroes/caf-lab-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "Hassan",
+        "uri": "https://maps.google.com/maps/contrib/112174425987421070341"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caf-lab-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "bashaer kh",
+        "uri": "https://maps.google.com/maps/contrib/115792734840495175178"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caf-lab-al-qirawan/3.jpg",
+      "attribution": {
+        "displayName": "nauman tasneem",
+        "uri": "https://maps.google.com/maps/contrib/102279419405646929561"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caf-lab-al-qirawan/4.jpg",
+      "attribution": {
+        "displayName": "عبدالمحسن القعود",
+        "uri": "https://maps.google.com/maps/contrib/113206711541327662456"
+      }
+    }
+  ],
+  "24cafe-al-wadi": [
+    {
+      "src": "/cafe-heroes/24cafe-al-wadi/1.png",
+      "attribution": {
+        "displayName": "24 Coffe",
+        "uri": "https://maps.google.com/maps/contrib/107406362125106950898"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-wadi/2.png",
+      "attribution": {
+        "displayName": "24 Coffe",
+        "uri": "https://maps.google.com/maps/contrib/107406362125106950898"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-wadi/3.jpg",
+      "attribution": {
+        "displayName": "Sadeem",
+        "uri": "https://maps.google.com/maps/contrib/103883777155012005781"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-wadi/4.png",
+      "attribution": {
+        "displayName": "24 Coffe",
+        "uri": "https://maps.google.com/maps/contrib/107406362125106950898"
+      }
+    }
+  ],
+  "24cafe-al-yasmin": [
+    {
+      "src": "/cafe-heroes/24cafe-al-yasmin/1.jpg",
+      "attribution": {
+        "displayName": "ahmed abdulaziz",
+        "uri": "https://maps.google.com/maps/contrib/111523501884666902351"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-yasmin/2.jpg",
+      "attribution": {
+        "displayName": "24Cafe",
+        "uri": "https://maps.google.com/maps/contrib/100095541539401464144"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-yasmin/3.jpg",
+      "attribution": {
+        "displayName": "3amer Bk",
+        "uri": "https://maps.google.com/maps/contrib/101558801728426422977"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-yasmin/4.png",
+      "attribution": {
+        "displayName": "24Cafe",
+        "uri": "https://maps.google.com/maps/contrib/100095541539401464144"
+      }
+    }
+  ],
+  "24cafe-al-rabi": [
+    {
+      "src": "/cafe-heroes/24cafe-al-rabi/1.jpg",
+      "attribution": {
+        "displayName": "24Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115605793382913407537"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-rabi/2.png",
+      "attribution": {
+        "displayName": "24Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115605793382913407537"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-rabi/3.png",
+      "attribution": {
+        "displayName": "24Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115605793382913407537"
+      }
+    },
+    {
+      "src": "/cafe-heroes/24cafe-al-rabi/4.jpg",
+      "attribution": {
+        "displayName": "24Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115605793382913407537"
+      }
+    }
+  ],
+  "agrio-al-rabi": [
+    {
+      "src": "/cafe-heroes/agrio-al-rabi/1.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/agrio-al-rabi/2.jpg",
+      "attribution": {
+        "displayName": "اقريو - AGRIO",
+        "uri": "https://maps.google.com/maps/contrib/110054515182991945309"
+      }
+    },
+    {
+      "src": "/cafe-heroes/agrio-al-rabi/3.jpg",
+      "attribution": {
+        "displayName": "اقريو - AGRIO",
+        "uri": "https://maps.google.com/maps/contrib/110054515182991945309"
+      }
+    },
+    {
+      "src": "/cafe-heroes/agrio-al-rabi/4.jpg",
+      "attribution": {
+        "displayName": "منيرة",
+        "uri": "https://maps.google.com/maps/contrib/114147349065636611507"
+      }
+    }
+  ],
+  "camel-step-al-mursalat": [
+    {
+      "src": "/cafe-heroes/camel-step-al-mursalat/1.png",
+      "attribution": {
+        "displayName": "Camel Step",
+        "uri": "https://maps.google.com/maps/contrib/110374816634708788243"
+      }
+    },
+    {
+      "src": "/cafe-heroes/camel-step-al-mursalat/2.jpg",
+      "attribution": {
+        "displayName": "Camel Step",
+        "uri": "https://maps.google.com/maps/contrib/110374816634708788243"
+      }
+    },
+    {
+      "src": "/cafe-heroes/camel-step-al-mursalat/3.jpg",
+      "attribution": {
+        "displayName": "Homoud AlNofeai",
+        "uri": "https://maps.google.com/maps/contrib/103059176023592673323"
+      }
+    },
+    {
+      "src": "/cafe-heroes/camel-step-al-mursalat/4.jpg",
+      "attribution": {
+        "displayName": "Moe",
+        "uri": "https://maps.google.com/maps/contrib/104358299208494217896"
+      }
+    }
   ]
 }

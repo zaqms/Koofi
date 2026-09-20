@@ -11,6 +11,7 @@ import { MeetHalfwayPicker } from "@/components/meet-halfway-picker";
 import { MeetHalfwayResultCards } from "@/components/meet-halfway-result-cards";
 import { MeetHalfwayResultsFooter } from "@/components/meet-halfway-results-footer";
 import { PickList, type ChatPick } from "@/components/pick-list";
+import { ResultsFeedbackBlock } from "@/components/results-feedback";
 import {
   formatHalfwayLocationLine,
   pinFromHalfwayInput,
@@ -69,6 +70,7 @@ import {
   trackChatQuery,
   trackDistrictMatch,
   trackEvent,
+  type ChatQueryVia,
   type MeetHalfwayResultSource,
   type MeetHalfwayStartSource,
 } from "@/lib/track";
@@ -107,6 +109,7 @@ type AssistantMessage = {
   halfwayLocations?: HalfwayPinInput[];
   halfwayPaged?: boolean;
   halfwayJoined?: boolean;
+  resultVia?: ChatQueryVia;
 };
 
 type UserMessage = {
@@ -136,6 +139,7 @@ type PendingSend = {
   id: string;
   promise: Promise<PendingResult>;
   applied: boolean;
+  via?: ChatQueryVia;
   halfway?: {
     locations: HalfwayPinInput[];
     more: boolean;
@@ -359,6 +363,7 @@ function restoreMessages(restore: ChatRestore, landing: Language): Message[] {
     language: restore.language,
     text: copy.threePicks[restore.language],
     picks: restore.picks,
+    resultVia: "chip",
   });
   return messages;
 }
@@ -377,6 +382,7 @@ function chipOpenMessages(open: ChipOpenRestore, landing: Language): Message[] {
       language: open.language,
       text: open.reply,
       picks: open.picks,
+      resultVia: "chip",
     },
   ];
 }
@@ -394,6 +400,24 @@ function askBeforePicks(messages: Message[], index: number): string {
     if (message?.role === "user") return message.text;
   }
   return "";
+}
+
+function isEmptyCatalogMessage(message: AssistantMessage): boolean {
+  return (
+    !message.picks?.length &&
+    (message.text === copy.emptyCatalog.ar ||
+      message.text === copy.emptyCatalog.en)
+  );
+}
+
+function lastCompletedResultIndex(messages: readonly Message[]): number {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (message?.role !== "assistant") continue;
+    if (typeof message.halfwayMore === "boolean") continue;
+    if (message.picks?.length || isEmptyCatalogMessage(message)) return index;
+  }
+  return -1;
 }
 
 export function Chat({
@@ -839,6 +863,7 @@ export function Chat({
               halfwayLocations: locations,
               halfwayPaged: paged || undefined,
               halfwayJoined: halfway?.joined || undefined,
+              resultVia: halfway ? undefined : pending.via,
             },
           ];
           threads[threadKey] = {
@@ -933,6 +958,7 @@ export function Chat({
     const pending: PendingSend = {
       id: crypto.randomUUID(),
       applied: false,
+      via,
       promise: (async (): Promise<PendingResult> => {
         try {
           const response = await fetch("/api/chat", {
@@ -1046,6 +1072,7 @@ export function Chat({
       language: landing,
       text,
       picks,
+      resultVia: "chip",
     });
   }
 
@@ -1691,6 +1718,7 @@ export function Chat({
                   : "local"
               }
               cafeCount={halfwayResult.picks.length}
+              shopIds={halfwayResult.picks.map((pick) => pick.id)}
               onMore={() => {
                 const locations =
                   halfwayResult.halfwayLocations ?? halfwayLocationsRef.current;
@@ -1835,6 +1863,23 @@ export function Chat({
                       : undefined
                   }
                   mapsSource="pack"
+                />
+              ) : null}
+              {!busy &&
+              index === lastCompletedResultIndex(messages) &&
+              (message.picks?.length || isEmptyCatalogMessage(message)) ? (
+                <ResultsFeedbackBlock
+                  language={message.language}
+                  preset={
+                    isEmptyCatalogMessage(message)
+                      ? "zero"
+                      : message.resultVia === "typed"
+                        ? "search"
+                        : "chat"
+                  }
+                  resetKey={message.id}
+                  shopIds={message.picks?.map((pick) => pick.id)}
+                  queryText={askBeforePicks(messages, index)}
                 />
               ) : null}
               {index === messages.length - 1 &&

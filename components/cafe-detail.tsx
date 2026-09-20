@@ -11,6 +11,7 @@ import {
 } from "@/components/cafe-detail-icons";
 import { MapPinIcon } from "@/components/map-pin-icon";
 import { MapsLink } from "@/components/maps-link";
+import { ResultsFeedbackBlock } from "@/components/results-feedback";
 import { ShareListingButton } from "@/components/share-listing-button";
 import { ShopVisual } from "@/components/shop-visual";
 import { useShopUpvote } from "@/components/shop-upvote-provider";
@@ -165,6 +166,16 @@ export function CafeDetail({
               language={language}
             />
           ) : null}
+        </div>
+
+        <div className="mt-5">
+          <ResultsFeedbackBlock
+            language={language}
+            preset="cafe"
+            resetKey={`cafe:${shop.id}`}
+            shopId={shop.id}
+            shopIds={[shop.id]}
+          />
         </div>
       </div>
 

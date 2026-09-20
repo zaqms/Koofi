@@ -317,6 +317,122 @@ export const copy = {
     ar: "قل لنا أكثر",
     en: "Tell us more",
   },
+  resultsFeedbackTitle: {
+    ar: "هل ناسبتك هذي النتائج؟",
+    en: "Were these results helpful?",
+  },
+  resultsFeedbackSub: {
+    ar: "رأيك يساعدنا نحسّن وين.",
+    en: "Your feedback helps us improve.",
+  },
+  resultsFeedbackYes: {
+    ar: "إيه",
+    en: "Yes",
+  },
+  resultsFeedbackNo: {
+    ar: "مو مرّة",
+    en: "Not really",
+  },
+  resultsFeedbackWhy: {
+    ar: "وش كان ناقص؟",
+    en: "What could be better?",
+  },
+  resultsFeedbackTellMore: {
+    ar: "قل لنا أكثر",
+    en: "Tell us more",
+  },
+  resultsFeedbackThanks: {
+    ar: "شكراً — رأيك يساعدنا نحسّن وين.",
+    en: "Thanks — this helps us improve.",
+  },
+  resultsFeedbackTooFar: {
+    ar: "بعيدة",
+    en: "Too far",
+  },
+  resultsFeedbackVibe: {
+    ar: "مو على جوّي",
+    en: "Not my vibe",
+  },
+  resultsFeedbackNotRelevant: {
+    ar: "مو اللي أدور عليه",
+    en: "Not relevant",
+  },
+  resultsFeedbackMoreOptions: {
+    ar: "أبغى خيارات أكثر",
+    en: "Need more options",
+  },
+  resultsFeedbackOther: {
+    ar: "شيء ثاني",
+    en: "Something else",
+  },
+  resultsFeedbackNotExpected: {
+    ar: "مو هذا اللي توقعت",
+    en: "Not what I expected",
+  },
+  resultsFeedbackSearchTitle: {
+    ar: "هذي النتائج تطابق اللي تدور عليه؟",
+    en: "Did these results match what you were looking for?",
+  },
+  resultsFeedbackCafeTitle: {
+    ar: "معلومات المقهى صحيحة؟",
+    en: "Is this café information accurate?",
+  },
+  resultsFeedbackCafeNo: {
+    ar: "فيه شيء غلط",
+    en: "Something's wrong",
+  },
+  resultsFeedbackCafeWhy: {
+    ar: "وش يحتاج تعديل؟",
+    en: "What needs fixing?",
+  },
+  resultsFeedbackCafeThanks: {
+    ar: "شكراً — بنراجعها.",
+    en: "Thanks — we'll review it.",
+  },
+  resultsFeedbackCafeLocation: {
+    ar: "الموقع",
+    en: "Location",
+  },
+  resultsFeedbackCafeHours: {
+    ar: "أوقات العمل",
+    en: "Opening hours",
+  },
+  resultsFeedbackCafeSeating: {
+    ar: "الجلسات",
+    en: "Seating",
+  },
+  resultsFeedbackCafeCategory: {
+    ar: "التصنيف",
+    en: "Category",
+  },
+  resultsFeedbackCafePhotos: {
+    ar: "الصور",
+    en: "Photos",
+  },
+  resultsFeedbackZeroTitle: {
+    ar: "ما لقيت اللي تبيه؟",
+    en: "Couldn't find what you need?",
+  },
+  resultsFeedbackZeroSub: {
+    ar: "كنت تدور على وش؟",
+    en: "What were you looking for?",
+  },
+  resultsFeedbackZeroCloser: {
+    ar: "قهاوي أقرب",
+    en: "Closer cafés",
+  },
+  resultsFeedbackZeroMore: {
+    ar: "خيارات أكثر",
+    en: "More options",
+  },
+  resultsFeedbackZeroVibe: {
+    ar: "جو ثاني",
+    en: "Different vibe",
+  },
+  resultsFeedbackZeroCategory: {
+    ar: "تصنيف ثاني",
+    en: "Different category",
+  },
   exampleBadge: EXAMPLE_BADGE,
   exampleNote: {
     ar: `محل تجريبي — مو قهوة حقيقية في ${cityLabel(DEFAULT_LIVE_CITY, "ar")}.`,

@@ -17,6 +17,7 @@ type MeetHalfwayResultsFooterProps = {
   packId?: string;
   feedbackSource?: MeetHalfwayFeedbackSource;
   cafeCount?: number;
+  shopIds?: string[];
   onMore: () => void;
   onShareResults?: () => void;
   onStartNew?: () => void;
@@ -60,6 +61,7 @@ export function MeetHalfwayResultsFooter({
   packId,
   feedbackSource,
   cafeCount,
+  shopIds,
   onMore,
   onShareResults,
   onStartNew,
@@ -117,6 +119,7 @@ export function MeetHalfwayResultsFooter({
           packId={packId}
           source={feedbackSource}
           count={cafeCount}
+          shopIds={shopIds}
         />
       ) : null}
       {onShareResults ? (

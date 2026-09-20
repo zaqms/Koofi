@@ -63,6 +63,33 @@ export type MeetHalfwayFeedbackReason =
   | "vibe"
   | "more_options"
   | "other";
+/** Screen that painted the shared results-feedback master. */
+export type ResultsFeedbackSource =
+  | "halfway_results"
+  | "chat_results"
+  | "search_results"
+  | "category_results"
+  | "cafe_detail"
+  | "zero_results";
+export type ResultsFeedbackReason =
+  | MeetHalfwayFeedbackReason
+  | "not_relevant"
+  | "not_expected"
+  | "location"
+  | "hours"
+  | "seating"
+  | "category"
+  | "photos"
+  | "closer"
+  | "different_vibe"
+  | "different_category";
+export type ResultsFeedbackFeature =
+  | "halfway"
+  | "chat"
+  | "search"
+  | "category"
+  | "cafe_detail"
+  | "zero_results";
 
 export type AnalyticsParams = {
   locale?: Language;
@@ -77,7 +104,20 @@ export type AnalyticsParams = {
     | MeetHalfwayResultSource
     | MeetHalfwayStartSource
     | MeetHalfwayFeedbackSource
+    | ResultsFeedbackSource
     | DistrictSelectSource;
+  /** Structured placement — Halfway GA still reads `source` as host/guest/local. */
+  feedback_source?: ResultsFeedbackSource;
+  feature?: ResultsFeedbackFeature;
+  /** Alias of locale for the shared results-feedback payload. */
+  language?: Language;
+  /** Optional free-text after Something else. */
+  feedback_text?: string;
+  /** True when this push is the optional note, not the Yes/No count. */
+  feedback_note?: boolean;
+  timestamp?: string;
+  category_id?: string;
+  category_slug?: string;
   city?: City;
   sort?: NeighborhoodsSortId | DirectorySortId;
   text_length?: number;
@@ -103,11 +143,11 @@ export type AnalyticsParams = {
   /** بيننا results feedback — yes / no. GTM/GA4 primary. */
   feedback?: MeetHalfwayFeedbackHelpful;
   /** Stable English chip id after Not really. */
-  feedback_reason?: MeetHalfwayFeedbackReason;
+  feedback_reason?: ResultsFeedbackReason;
   /** Alias of feedback — keep for existing GTM Preview notes. */
   helpful?: MeetHalfwayFeedbackHelpful;
   /** Alias of feedback_reason. */
-  reason?: MeetHalfwayFeedbackReason;
+  reason?: ResultsFeedbackReason;
 };
 
 const DEDUPE_MS = 400;
@@ -195,25 +235,49 @@ export function districtMatchParams(input: {
   return { district_slug, locale: input.locale };
 }
 
-export function meetHalfwayFeedbackParams(input: {
+export function resultsFeedbackParams(input: {
   locale: Language;
   feedback: MeetHalfwayFeedbackHelpful;
-  feedback_reason?: MeetHalfwayFeedbackReason;
-  source?: MeetHalfwayFeedbackSource;
+  feedback_reason?: ResultsFeedbackReason;
+  feedback_text?: string;
+  feedback_note?: boolean;
+  source: ResultsFeedbackSource;
+  halfwaySource?: MeetHalfwayFeedbackSource;
+  feature: ResultsFeedbackFeature;
   count?: number;
   packId?: string;
+  shopIds?: string[];
+  shopId?: string;
+  queryText?: string;
+  categoryId?: string;
+  categorySlug?: string;
 }): AnalyticsParams {
+  const halfway = input.source === "halfway_results";
+  const shop_ids =
+    input.shopIds && input.shopIds.length > 0
+      ? input.shopIds.join(",")
+      : undefined;
   return {
     locale: input.locale,
+    language: input.locale,
+    feature: input.feature,
+    feedback_source: input.source,
     feedback: input.feedback,
     helpful: input.feedback,
+    timestamp: new Date().toISOString(),
+    ...(halfway
+      ? input.halfwaySource
+        ? { source: input.halfwaySource }
+        : {}
+      : { source: input.source }),
     ...(input.feedback_reason
       ? {
           feedback_reason: input.feedback_reason,
           reason: input.feedback_reason,
         }
       : {}),
-    ...(input.source ? { source: input.source } : {}),
+    ...(input.feedback_text ? { feedback_text: input.feedback_text } : {}),
+    ...(input.feedback_note ? { feedback_note: true } : {}),
     ...(typeof input.count === "number" ? { count: input.count } : {}),
     ...(input.packId
       ? {
@@ -222,7 +286,36 @@ export function meetHalfwayFeedbackParams(input: {
           invite_id: input.packId,
         }
       : {}),
+    ...(shop_ids ? { shop_ids } : {}),
+    ...(input.shopId ? { shop_id: input.shopId } : {}),
+    ...(input.queryText ? { query_text: input.queryText } : {}),
+    ...(input.categoryId ? { category_id: input.categoryId } : {}),
+    ...(input.categorySlug
+      ? { category_slug: input.categorySlug, district_slug: input.categorySlug }
+      : {}),
   };
+}
+
+export function meetHalfwayFeedbackParams(input: {
+  locale: Language;
+  feedback: MeetHalfwayFeedbackHelpful;
+  feedback_reason?: MeetHalfwayFeedbackReason;
+  source?: MeetHalfwayFeedbackSource;
+  count?: number;
+  packId?: string;
+  shopIds?: string[];
+}): AnalyticsParams {
+  return resultsFeedbackParams({
+    locale: input.locale,
+    feedback: input.feedback,
+    feedback_reason: input.feedback_reason,
+    source: "halfway_results",
+    halfwaySource: input.source,
+    feature: "halfway",
+    count: input.count,
+    packId: input.packId,
+    shopIds: input.shopIds,
+  });
 }
 
 export function meetHalfwayResultsParams(input: {

@@ -258,7 +258,7 @@ const BATCH4_IDS = [
   "ashjar-cafe-ar-rabi",
 ] as const;
 
-const BATCH4_MISSING_HOURS = ["maqha-mahamasa-al-raqban"] as const;
+const BATCH4_MISSING_HOURS = [] as const;
 
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
@@ -642,9 +642,47 @@ assert(
     theItScout.maps_url?.includes("ChIJ7UTZTQ0HLz4RHXt3m3J-4ME"),
   "scout THE IT pin hotfix matches the coffee_shop place",
 );
+const mahmasa = getShop("maqha-mahamasa-al-raqban");
+assert(mahmasa, "Maqha Mahamasa is in the catalog");
 assert(
-  cafeDetailHeroPhotos(getShop("maqha-mahamasa-al-raqban")!).length === 4,
-  "Maqha Mahamasa uses baked cafe-heroes without invented hours",
+  mahmasa.placeId === "ChIJO6S1MwCpLz4RadufNTMpDCE",
+  "Maqha Mahamasa uses مقهى ومحمصة حي Al Raqban, not GOAT Olaya",
+);
+assert(
+  (mahmasa.openingHours?.periods?.length ?? 0) === 8,
+  "Maqha Mahamasa has cafe Maps periods",
+);
+assert(
+  mahmasa.openingHours?.periods?.[0]?.open.hour === 6,
+  "Maqha Mahamasa Sunday opens at 6 AM",
+);
+assert(
+  mahmasa.openingHours?.periods?.[5]?.open.hour === 7 &&
+    mahmasa.openingHours?.periods?.[5]?.close?.hour === 11,
+  "Maqha Mahamasa Friday morning period is 7–11:30 AM",
+);
+assert(
+  cafeDetailHeroPhotos(mahmasa).length === 4,
+  "Maqha Mahamasa uses cafe-pin cafe-heroes",
+);
+assert(
+  cafeDetailHeroPhotos(mahmasa)[0]?.attribution?.displayName === "M A",
+  "Maqha Mahamasa bake has the cafe Places author name",
+);
+assert(
+  cafeDetailHoursStatus(mahmasa, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "Maqha Mahamasa Sunday afternoon is Open now",
+);
+const mahmasaAttrs = (
+  JSON.parse(read("data/places-attrs-2026-09-19.json")) as {
+    shops: { id: string; place_id?: string; place_name?: string }[];
+  }
+).shops.find((row) => row.id === "maqha-mahamasa-al-raqban");
+assert(
+  mahmasaAttrs?.place_id === "ChIJO6S1MwCpLz4RadufNTMpDCE" &&
+    mahmasaAttrs.place_name === "مقهى ومحمصة حي",
+  "places-attrs Mahmasa uses the Al Raqban cafe pin, not GOAT Olaya",
 );
 for (const id of BATCH4_IDS) {
   assert(

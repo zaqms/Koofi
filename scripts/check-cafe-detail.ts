@@ -368,24 +368,84 @@ const BATCH5_MISSING_HOURS = [
   "opinion-al-mathar",
 ] as const;
 
+const BATCH6_IDS = [
+  "three-sulimaniyah",
+  "threes-al-yasmin",
+  "wave-cafe-al-rabi",
+  "drive-al-rabi",
+  "drive-al-rabi-2",
+  "drive-al-rabi-3",
+  "drive-al-rabi-4",
+  "drive-al-rabi-5",
+  "a-plus-as-salam",
+  "arabica-cafe-ghubairah",
+  "arabica-coffee-al-wisham",
+  "drive-badr",
+  "drive-al-aziziyah",
+  "drive-al-hazm",
+  "drive-al-andalus",
+  "drive-al-khaleej",
+  "drive-an-nasim-al-gharbi",
+  "drive-ar-rimal",
+  "drive-al-qirawan-2",
+  "drive-al-yasmin",
+  "drive-as-sahafah",
+  "drive-badr-2",
+  "drive-al-nakheel",
+  "drive-al-janadriyyah",
+  "drcafe-namar",
+  "drcafe-sulimaniyah",
+  "drcafe-al-nahdah",
+  "drcafe-badr",
+  "drcafe-kkia",
+  "drcafe-al-jazirah",
+  "drcafe-al-jazirah-2",
+  "drcafe-al-aziziyah",
+  "drcafe-an-nasim",
+  "drcafe-al-wadi",
+  "drcafe-an-nasim-al-gharbi",
+  "drcafe-al-munsiyah",
+  "drcafe-shubra",
+  "drcafe-manfuha",
+  "drcafe-sulimaniyah-2",
+  "drcafe-tuwaiq",
+  "drcafe-al-mughrizat",
+  "drcafe-al-mathar",
+  "drcafe-as-suwaidi",
+] as const;
+
+const BATCH6_MISSING_HOURS = [
+  "drive-al-rabi",
+  "drive-al-rabi-2",
+  "drive-al-rabi-3",
+  "drive-al-rabi-4",
+  "drive-al-rabi-5",
+  "drive-al-yasmin",
+  "drive-al-janadriyyah",
+  "drcafe-as-suwaidi",
+] as const;
+
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
 const batch5HeroIds = BATCH5_IDS.filter((id) => bakedHeroes[id]);
+const batch6HeroIds = BATCH6_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
       batch2HeroIds.length +
       batch3HeroIds.length +
       batch4HeroIds.length +
-      batch5HeroIds.length,
-  "batch 1–4 cafe-heroes stay; batch 5 merges in",
+      batch5HeroIds.length +
+      batch6HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batch 6 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
+assert(batch6HeroIds.length === 43, "batch 6 43-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -909,6 +969,93 @@ for (const id of batch5HeroIds) {
     `${id} uses ${expectedHeroCount(id)} baked cafe-heroes`,
   );
 }
+
+const BATCH6_MISSING_HOUR_IDS = new Set<string>(BATCH6_MISSING_HOURS);
+const BATCH6_HOURS_IDS = BATCH6_IDS.filter((id) => !BATCH6_MISSING_HOUR_IDS.has(id));
+for (const id of BATCH6_HOURS_IDS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(
+    (shop.openingHours?.periods?.length ?? 0) > 0,
+    `${id} has baked catalog periods — no invented hours`,
+  );
+}
+for (const id of BATCH6_MISSING_HOURS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(!shop.openingHours, `${id} keeps Status hidden — no invented hours`);
+  assert(
+    cafeDetailHoursStatus(shop, "en") === null,
+    `${id} Status stays hidden`,
+  );
+}
+const three = getShop("three-sulimaniyah");
+const threes = getShop("threes-al-yasmin");
+const wave = getShop("wave-cafe-al-rabi");
+const drcafeMathar = getShop("drcafe-al-mathar");
+const drcafeSuwaidi = getShop("drcafe-as-suwaidi");
+assert(three, "Three Sulimaniyah is in the catalog");
+assert(
+  (three.openingHours?.periods?.length ?? 0) > 0,
+  "Three Sulimaniyah has baked periods",
+);
+assert(threes && (threes.openingHours?.periods?.length ?? 0) > 0, "Threes Al Yasmin has baked periods");
+assert(wave, "Wave cafe Al Rabi is in the catalog");
+assert(
+  wave.openingHours?.periods?.length === 1 &&
+    wave.openingHours.periods[0]?.open.day === 0 &&
+    !("close" in (wave.openingHours.periods[0] ?? {})),
+  "Wave cafe Al Rabi is baked 24h",
+);
+assert(
+  cafeDetailHoursStatus(wave, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "Wave cafe Sunday afternoon is Open now",
+);
+assert(drcafeMathar && (drcafeMathar.openingHours?.periods?.length ?? 0) > 0, "DRCAFE Al Mathar has baked periods");
+assert(drcafeSuwaidi, "DRCAFE As Suwaidi is in the catalog");
+assert(!drcafeSuwaidi.openingHours, "DRCAFE As Suwaidi keeps Status hidden — no invented hours");
+assert(cafeDetailHeroPhotos(three).length === 4, "Three Sulimaniyah uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(threes).length === 4, "Threes Al Yasmin uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(wave).length === 4, "Wave cafe uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(drcafeMathar).length === 4, "DRCAFE Al Mathar uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(drcafeSuwaidi).length === 4, "DRCAFE As Suwaidi uses baked cafe-heroes");
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(three)),
+  "batch 6 Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(three)[0]?.attribution?.displayName === "ثري كافيه",
+  "Three Sulimaniyah bake still has the Places author name",
+);
+assert(
+  cafeDetailHeroPhotos(drcafeSuwaidi)[0]?.attribution?.displayName === "Random Tech",
+  "DRCAFE As Suwaidi bake has the Places author name",
+);
+assert(
+  cafeDetailHoursStatus(three, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "Three Sulimaniyah Sunday afternoon is Open now",
+);
+for (const id of BATCH6_IDS) {
+  assert(
+    cafeDetailHeroPhotos(getShop(id)!).length === 4,
+    `${id} uses 4 baked cafe-heroes`,
+  );
+}
+const remainingUnbaked = (
+  JSON.parse(read("data/catalog.json")) as {
+    shops: { id: string; placeId?: string; openingHours?: unknown }[];
+  }
+).shops.filter((shop) => {
+  if (!shop.placeId) return false;
+  if (shop.id === "hekaya-tale-al-mohammadiyah") return false;
+  return !bakedHeroes[shop.id] && !shop.openingHours;
+});
+assert(
+  remainingUnbaked.length === 0,
+  "no place_id shops left unbaked after batch 6",
+);
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
 const wedLate = new Date("2026-09-16T23:30:00+03:00");

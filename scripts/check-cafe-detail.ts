@@ -99,10 +99,73 @@ function heroSrcs(shop: { id: string; photoUrl?: string }): string {
     .join(",");
 }
 
+const BATCH2_IDS = [
+  "first-series-olaya",
+  "drip-olaya",
+  "tobys-estate-olaya",
+  "hjeen-roaster-factory-al-yasmin",
+  "ror-coffee-roasters-al-yasmin",
+  "yamm-olaya",
+  "brew-crew-sulimaniyah",
+  "urth-caffe-tahlia-sulimaniyah",
+  "sombrero-sulimaniyah",
+  "seven-beans-sulimaniyah",
+  "dear-you-sulimaniyah",
+  "sand-clock-as-sulimaniyah",
+  "carve-roastery-ar-rabwah",
+  "yly-specialty-coffee-ar-rabwah",
+  "get-up-coffee-ar-rabwah",
+  "carve-coffee-bar-al-wurud",
+  "eya-specialty-coffee-al-wurud",
+  "the-gate-specialty-coffee-al-wurud",
+  "y97-specialty-coffee-as-sahafah",
+  "hakwah-speciality-coffee-as-sahafah",
+  "12-cups-roastery-and-cafe-kafd",
+  "coffee-planet-kafd",
+  "hal-alkeif-kafd",
+  "draft-cafe-kafd",
+  "cafe-tale-kafd",
+  "trieste-kafd",
+  "archi-al-bujairi-diriyah",
+  "archi-and-jax-diriyah",
+  "kmr-diriyah",
+  "malfa-coffee-house-diriyah",
+  "offbrief-cafe-diriyah",
+  "cosefan-diriyah",
+  "khasib-al-bun-diriyah",
+  "dips-plus-diriyah",
+  "sirius-speciality-coffee-diriyah",
+  "jazel-speciality-cafe-diriyah",
+  "repository-coffee-roasters-al-narjis",
+  "core-coffee-and-roastery-al-narjis",
+  "hjeen-roaster-al-narjis",
+  "kail-roastery-and-cafe-al-narjis",
+  "volume-coffee-roasters-al-narjis",
+  "elixir-bunn-al-narjis",
+  "melex-specialty-coffee-al-narjis",
+  "nosound-al-narjis",
+  "aim-al-narjis",
+  "archi-al-narjis",
+  "caf-lab-al-narjis",
+  "cred-al-mughrizat",
+  "specialty-bean-ghirnatah",
+  "mkth-ghirnatah",
+] as const;
+
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
-assert(Object.keys(bakedHeroes).length === 50, "50-shop hero set is complete");
+const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
+assert(
+  Object.keys(bakedHeroes).length === 50 + batch2HeroIds.length,
+  "batch 1 cafe-heroes stay; batch 2 merges in",
+);
+assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
+assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
+assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–3 heroes");
+assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 heroes");
+assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
 for (const [id, photos] of Object.entries(bakedHeroes)) {
-  assert(photos.length === 4, `${id} has 4 cached cafe-heroes`);
+  const expected = id === "elixir-bunn-al-narjis" ? 3 : 4;
+  assert(photos.length === expected, `${id} has ${expected} cached cafe-heroes`);
   for (const photo of photos) {
     assert(photo.src.startsWith(`/cafe-heroes/${id}/`), `${photo.src} is shop-scoped`);
     assert(existsSync(join("public", photo.src.slice(1))), `${photo.src} is on disk`);
@@ -118,7 +181,7 @@ assert(
 );
 assert(
   heroSrcs({ id: "camel-step-al-aqiq", photoUrl: "/photos/x.jpg" }) === "/photos/x.jpg",
-  "shops outside the 50-set still use catalog photoUrl only",
+  "shops outside the baked set still use catalog photoUrl only",
 );
 assert(
   heroSrcs({ id: "camel-step-al-rahmaniyyah" }) ===
@@ -266,7 +329,15 @@ assert(
     !("close" in (hittin.openingHours.periods[0] ?? {})),
   "Hittin Camel Step is baked 24h",
 );
-for (const id of ["qamaria-hittin", "salam-cafe-al-malqa", "qirat-al-yasmin"]) {
+for (const id of [
+  "qamaria-hittin",
+  "salam-cafe-al-malqa",
+  "qirat-al-yasmin",
+  "sombrero-sulimaniyah",
+  "coffee-planet-kafd",
+  "kmr-diriyah",
+  "malfa-coffee-house-diriyah",
+]) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
   assert(!shop.openingHours, `${id} keeps Status hidden — no invented hours`);
@@ -275,6 +346,27 @@ for (const id of ["qamaria-hittin", "salam-cafe-al-malqa", "qirat-al-yasmin"]) {
     `${id} Status stays hidden`,
   );
 }
+
+const firstSeries = getShop("first-series-olaya");
+assert(firstSeries, "First Series Olaya is in the catalog");
+assert(
+  (firstSeries.openingHours?.periods?.length ?? 0) > 0,
+  "First Series has baked catalog periods",
+);
+assert(
+  cafeDetailHeroPhotos(firstSeries).length === 4,
+  "First Series uses baked cafe-heroes",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(firstSeries)),
+  "batch 2 Places photos still require a Google credit",
+);
+const tobys = getShop("tobys-estate-olaya");
+const mkth = getShop("mkth-ghirnatah");
+assert(tobys && (tobys.openingHours?.periods?.length ?? 0) > 0, "Toby's has baked periods");
+assert(mkth && (mkth.openingHours?.periods?.length ?? 0) > 0, "MKTH has baked periods");
+assert(cafeDetailHeroPhotos(tobys).length === 4, "Toby's uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(mkth).length === 4, "MKTH uses baked cafe-heroes");
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
 const wedLate = new Date("2026-09-16T23:30:00+03:00");

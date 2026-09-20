@@ -205,15 +205,76 @@ const BATCH3_IDS = [
   "drip-al-hamra",
 ] as const;
 
+const BATCH4_IDS = [
+  "coffee-address-al-hamra",
+  "glint-al-hamra",
+  "silo-cafe-al-yarmouk",
+  "nosound-al-yarmouk",
+  "obo-speciality-al-yarmouk",
+  "shafel-roastery-al-yarmouk",
+  "coffee-address-al-yarmouk",
+  "aleel-roastery-al-yarmouk",
+  "bourbon-al-yarmouk",
+  "ratio-speciality-al-yarmouk",
+  "coffee-zam-al-yarmouk",
+  "nus-talqimah-al-yarmouk",
+  "kapu-cafe-al-nahdah",
+  "dahal-specialty-al-nahdah",
+  "ghazala-cafe-al-nahdah",
+  "shafel-roastery-al-nahdah",
+  "half-ten-al-nahdah",
+  "bon-ferro-al-nahdah",
+  "coffee-address-al-nahdah",
+  "chord-daily-coffee-al-nahdah",
+  "taco-cup-al-nahdah",
+  "awj-cafe-al-nahdah",
+  "vase-coffee-al-manar",
+  "recaf-al-manar",
+  "kultura-al-rayyan",
+  "da-nonna-al-rayyan",
+  "amber-speciality-al-rayyan",
+  "floated-al-rayyan",
+  "sica-al-rayyan",
+  "fabrica-de-cafe-al-rayyan",
+  "78-specialty-coffee-al-rayyan",
+  "the-it-al-rawabi",
+  "essert-al-rawabi",
+  "rukyah-al-fayha",
+  "roof-coffee-al-fayha",
+  "maqha-mahamasa-al-raqban",
+  "on-al-rawdah",
+  "steam-roastery-al-rawdah",
+  "serb-specialty-al-munsiyah",
+  "roasting-stages-al-munsiyah",
+  "eagle-coffee-al-munsiyah",
+  "najd-roastery-al-munsiyah",
+  "cu-specialty-al-munsiyah",
+  "45-degrees-al-munsiyah",
+  "true-side-al-munsiyah",
+  "coffee-address-al-munsiyah",
+  "das-mond-al-munsiyah",
+  "anotherside-cafe-al-munsiyah",
+  "brew92-an-nada",
+  "ashjar-cafe-ar-rabi",
+] as const;
+
+const BATCH4_MISSING_HOURS = [
+  "the-it-al-rawabi",
+  "maqha-mahamasa-al-raqban",
+] as const;
+
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
+const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
 assert(
-  Object.keys(bakedHeroes).length === 50 + batch2HeroIds.length + batch3HeroIds.length,
-  "batch 1–2 cafe-heroes stay; batch 3 merges in",
+  Object.keys(bakedHeroes).length ===
+    50 + batch2HeroIds.length + batch3HeroIds.length + batch4HeroIds.length,
+  "batch 1–3 cafe-heroes stay; batch 4 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(batch4HeroIds.length >= 17, "batch 4 pack 1 heroes are baked");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -474,6 +535,58 @@ assert(
   cafeDetailHeroPhotos(wathba)[0]?.attribution?.displayName ===
     "وثبة | قهوة مختصة - النزهة",
   "Wathba bake has the cafe Places author name",
+);
+
+const BATCH4_HOURS_IDS = BATCH4_IDS.filter(
+  (id) => !BATCH4_MISSING_HOURS.includes(id),
+);
+for (const id of BATCH4_HOURS_IDS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(
+    (shop.openingHours?.periods?.length ?? 0) > 0,
+    `${id} has baked catalog periods — no invented hours`,
+  );
+}
+for (const id of BATCH4_MISSING_HOURS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(!shop.openingHours, `${id} keeps Status hidden — no invented hours`);
+  assert(
+    cafeDetailHoursStatus(shop, "en") === null,
+    `${id} Status stays hidden`,
+  );
+}
+const coffeeAddress = getShop("coffee-address-al-hamra");
+const ashjar = getShop("ashjar-cafe-ar-rabi");
+assert(
+  coffeeAddress && (coffeeAddress.openingHours?.periods?.length ?? 0) > 0,
+  "Coffee Address Al Hamra has baked periods",
+);
+assert(
+  coffeeAddress.openingHours?.periods.length === 1 &&
+    coffeeAddress.openingHours.periods[0]?.open.day === 0 &&
+    !("close" in (coffeeAddress.openingHours.periods[0] ?? {})),
+  "Coffee Address Al Hamra is baked 24h",
+);
+assert(
+  cafeDetailHeroPhotos(coffeeAddress).length === 4,
+  "Coffee Address Al Hamra uses baked cafe-heroes",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(coffeeAddress)),
+  "batch 4 Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(coffeeAddress)[0]?.attribution?.displayName === "Sk Ajeez",
+  "Coffee Address Al Hamra bake still has the Places author name",
+);
+assert(ashjar && (ashjar.openingHours?.periods?.length ?? 0) > 0, "Ashjar has baked periods");
+assert(cafeDetailHeroPhotos(ashjar).length === 4, "Ashjar uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("brew92-an-nada")!).length === 4, "Brew92 uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(getShop("anotherside-cafe-al-munsiyah")!).length === 4,
+  "Anotherside uses baked cafe-heroes",
 );
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");

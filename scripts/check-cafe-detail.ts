@@ -8,6 +8,7 @@ import cafeHeroesFile from "../data/cafe-heroes.json";
 import {
   CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS,
   cafeDetailDescription,
+  cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
   neighborhoodCafesHeading,
@@ -51,6 +52,10 @@ assert(copy.detailClosedNow.en === "Closed", "EN Closed");
 assert(copy.detailClosedNow.ar === "مغلق", "AR Closed");
 assert(copy.detailOpensAt.en === "Opens at", "EN Opens at");
 assert(copy.detailOpensAt.ar === "يفتح الساعة", "AR Opens at");
+assert(copy.detailPhotosGoogle.en === "Photos · Google", "EN photo credit is quiet Google");
+assert(copy.detailPhotosGoogle.ar === "صور · Google", "AR photo credit is quiet Google");
+assert(copy.detailHeroNext.en === "Next photo", "EN hero next");
+assert(copy.detailHeroPrev.en === "Previous photo", "EN hero prev");
 assert(copy.detailVibe.ar === "التصنيف", "AR vibe row is التصنيف");
 assert(copy.neighborhood.ar === "الحي", "AR neighborhood label");
 
@@ -130,7 +135,25 @@ for (const src of CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS) {
 }
 assert(
   cafeDetailHeroPhotos({ id: "camel-step-al-rahmaniyyah" })[0]?.attribution?.displayName,
-  "Places hero attribution is preserved",
+  "Places author attribution stays in the bake data",
+);
+assert(
+  cafeDetailHeroPhotos({ id: "woods-olaya" })[0]?.attribution?.displayName ===
+    "Nawaf Saleh",
+  "Woods Olaya bake still has the Places author name",
+);
+assert(
+  cafeDetailHeroPhotos({ id: "camel-step-hittin" })[0]?.attribution?.displayName ===
+    "Dr. Fahad AlShammari",
+  "Hittin Camel Step bake still has the Places author name",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos({ id: "camel-step-al-rahmaniyyah" })),
+  "baked Places photos still require a Google credit",
+);
+assert(
+  !cafeDetailHeroNeedsGoogleCredit([{ src: "/photos/x.jpg" }]),
+  "catalog photoUrl-only heroes have no invented credit",
 );
 assert(cafeDetailDescription({ id: "camel-step-al-rahmaniyyah" }) === null, "no AI description");
 assert(
@@ -341,7 +364,16 @@ assert(!helper.includes("هيتين"), "never هيتين");
 assert(!helper.includes("places.ts"), "no live Place Details on detail helpers");
 
 assert(detail.includes("photo.src"), "hero paints cached photo src");
-assert(detail.includes("attribution"), "hero keeps Google attribution");
+assert(detail.includes("cafeDetailHeroNeedsGoogleCredit"), "hero keeps a quiet Google credit");
+assert(detail.includes("detailPhotosGoogle"), "visible credit is Photos · Google");
+assert(detail.includes("sr-only"), "author names stay off the primary chrome");
+assert(!detail.includes("maps.google.com/maps/contrib"), "no contrib-profile links in hero");
+assert(!detail.includes("creditHref"), "author uri is not painted as a link");
+assert(detail.includes("detailHeroNext"), "hero has a next control");
+assert(detail.includes("detailHeroPrev"), "hero has a prev control");
+assert(detail.includes("go(1)"), "tap/click advances the carousel");
+assert(detail.includes("heroNavClass"), "hero chevrons are dedicated nav controls");
+assert(detail.includes("cursor-pointer"), "multi-photo hero shows a click affordance");
 assert(detail.includes("draggable={false}"), "hero img is not a native drag ghost");
 assert(detail.includes("setPointerCapture"), "hero swipe captures the pointer");
 assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");

@@ -398,6 +398,18 @@ export const copy = {
     ar: "مفضلة",
     en: "Favorite",
   },
+  detailPhotosGoogle: {
+    ar: "صور · Google",
+    en: "Photos · Google",
+  },
+  detailHeroPrev: {
+    ar: "الصورة السابقة",
+    en: "Previous photo",
+  },
+  detailHeroNext: {
+    ar: "الصورة التالية",
+    en: "Next photo",
+  },
   newThisWeek: {
     ar: "جديد هالأسبوع",
     en: "New this week",

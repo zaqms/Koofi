@@ -36,6 +36,13 @@ export function cafeDetailHeroPhotos(
   return photo ? [{ src: photo }] : [];
 }
 
+/** Quiet Google credit when baked Places photos carry author attributions. */
+export function cafeDetailHeroNeedsGoogleCredit(
+  photos: readonly CafeDetailHeroPhoto[],
+): boolean {
+  return photos.some((photo) => Boolean(photo.attribution?.displayName?.trim()));
+}
+
 /**
  * Short identity line. Catalog has no verified description field —
  * return null rather than SEO filler or AI copy.

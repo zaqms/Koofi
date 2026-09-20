@@ -274,7 +274,7 @@ assert(
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
-assert(batch4HeroIds.length >= 17, "batch 4 pack 1 heroes are baked");
+assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -588,6 +588,22 @@ assert(
   cafeDetailHeroPhotos(getShop("anotherside-cafe-al-munsiyah")!).length === 4,
   "Anotherside uses baked cafe-heroes",
 );
+assert(cafeDetailHeroPhotos(getShop("glint-al-hamra")!).length === 4, "Glint uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("silo-cafe-al-yarmouk")!).length === 4, "Silo uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(getShop("the-it-al-rawabi")!).length === 4,
+  "THE IT uses baked cafe-heroes without invented hours",
+);
+assert(
+  cafeDetailHeroPhotos(getShop("maqha-mahamasa-al-raqban")!).length === 4,
+  "Maqha Mahamasa uses baked cafe-heroes without invented hours",
+);
+for (const id of BATCH4_IDS) {
+  assert(
+    cafeDetailHeroPhotos(getShop(id)!).length === 4,
+    `${id} uses 4 baked cafe-heroes`,
+  );
+}
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
 const wedLate = new Date("2026-09-16T23:30:00+03:00");

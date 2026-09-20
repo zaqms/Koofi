@@ -1260,6 +1260,10 @@ const resultCards = readFileSync(
   "utf8",
 );
 const feedbackUi = readFileSync(
+  join(repoRoot, "components/results-feedback.tsx"),
+  "utf8",
+);
+const halfwayFeedbackWrap = readFileSync(
   join(repoRoot, "components/meet-halfway-feedback.tsx"),
   "utf8",
 );
@@ -1277,13 +1281,17 @@ assert(
   "بيننا result cards reuse DirectoryCard + subtle Top Match — no chevron, no Save",
 );
 assert(
+  halfwayFeedbackWrap.includes("ResultsFeedbackBlock") &&
+    halfwayFeedbackWrap.includes('preset="halfway"'),
+  "بيننا feedback is the shared results-feedback master",
+);
+assert(
   feedbackUi.includes("meet_halfway_feedback") &&
     feedbackUi.includes('fire("yes")') &&
     feedbackUi.includes('fire("no")') &&
-    feedbackUi.includes("fire(\"no\", next)") &&
-    feedbackUi.includes("too_far") &&
-    feedbackUi.includes("meetHalfwayFeedbackParams") &&
-    feedbackUi.includes("meetHalfwayFeedbackTellMore") &&
+    feedbackUi.includes('fire("no", next)') &&
+    feedbackUi.includes("resultsFeedbackParams") &&
+    feedbackUi.includes("tellMoreLabel") &&
     !feedbackUi.includes("dataLayer"),
   "results feedback fires meet_halfway_feedback on Yes, No, and No-reason",
 );
@@ -1487,8 +1495,9 @@ for (const name of persistentEvents) {
 assert(
   track.includes('"meet_halfway_feedback"') &&
     track.includes("feedback?: MeetHalfwayFeedbackHelpful") &&
-    track.includes("feedback_reason?: MeetHalfwayFeedbackReason") &&
+    track.includes("feedback_reason?: ResultsFeedbackReason") &&
     track.includes("meetHalfwayFeedbackParams") &&
+    track.includes("resultsFeedbackParams") &&
     feedbackUi.includes("meet_halfway_feedback"),
   "meet_halfway_feedback stays on the existing dataLayer helper",
 );
@@ -1503,6 +1512,9 @@ assert(
   yesLayer.feedback === "yes" &&
     yesLayer.helpful === "yes" &&
     yesLayer.source === "host" &&
+    yesLayer.feedback_source === "halfway_results" &&
+    yesLayer.feature === "halfway" &&
+    yesLayer.language === "en" &&
     yesLayer.count === 3 &&
     yesLayer.pack_id === "session-token" &&
     yesLayer.feedback_reason == null,

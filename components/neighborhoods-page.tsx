@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
 import { DocumentLocale } from "@/components/document-locale";
+import { ResultsFeedbackBlock } from "@/components/results-feedback";
+import { ResultsFeedbackReveal } from "@/components/results-feedback-reveal";
 import { useCity } from "@/lib/city-context";
 import {
   DEFAULT_BROWSE_CITY,
@@ -72,6 +74,7 @@ export function NeighborhoodsPageView({
     return () => window.clearTimeout(handle);
   }, [query, language, city]);
 
+  const searched = query.trim();
   const filtered = useMemo(
     () => filterNeighborhoodRows(rows, query),
     [rows, query],
@@ -271,6 +274,28 @@ export function NeighborhoodsPageView({
           })}
         </ul>
       )}
+      {searched ? (
+        <div className="mt-4">
+          {visible.length === 0 ? (
+            <ResultsFeedbackBlock
+              language={language}
+              preset="zero"
+              resetKey={`neighborhoods-zero:${language}:${searched}`}
+              queryText={searched}
+            />
+          ) : (
+            <ResultsFeedbackReveal ready>
+              <ResultsFeedbackBlock
+                language={language}
+                preset="search"
+                resetKey={`neighborhoods:${language}:${searched}`}
+                queryText={searched}
+                count={visible.length}
+              />
+            </ResultsFeedbackReveal>
+          )}
+        </div>
+      ) : null}
       </>
       ) : null}
     </main>

@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
+import { ResultsFeedbackBlock } from "@/components/results-feedback";
+import { ResultsFeedbackReveal } from "@/components/results-feedback-reveal";
 import {
   directoryNeighborhoods,
   filterDirectoryShops,
@@ -29,6 +31,7 @@ import {
   discoveryCategoryLabel,
   getDiscoveryCategory,
   homePath,
+  isStaticDirectoryChip,
   mostPopularHeading,
   mostPopularPath,
 } from "@/lib/product";
@@ -130,6 +133,12 @@ export function ShopDirectory({
       : vibe
         ? `wain-chip-${vibe.id}`
         : "koofi-directory";
+  const categoryPage =
+    Boolean(district) ||
+    popular ||
+    Boolean(chipId && isStaticDirectoryChip(chipId));
+  const categoryId = district ?? (popular ? "popular" : chipId);
+  const listedIds = visible.slice(0, 8).map((shop) => shop.id);
 
   return (
     <section
@@ -222,6 +231,32 @@ export function ShopDirectory({
           <DirectoryCard key={shop.id} shop={shop} language={language} />
         ))}
       </ul>
+      {categoryPage && visible.length === 0 && !waitingForNearby ? (
+        <div className="mt-4">
+          <ResultsFeedbackBlock
+            language={language}
+            preset="zero"
+            resetKey={`category-zero:${categoryId ?? "none"}`}
+            categoryId={categoryId ?? undefined}
+            categorySlug={district ?? vibe?.slug ?? categoryId ?? undefined}
+          />
+        </div>
+      ) : null}
+      {categoryPage && visible.length > 0 ? (
+        <div className="mt-4">
+          <ResultsFeedbackReveal ready={!waitingForNearby}>
+            <ResultsFeedbackBlock
+              language={language}
+              preset="category"
+              resetKey={`category:${categoryId ?? "none"}:${listedIds.join(",")}`}
+              shopIds={listedIds}
+              count={visible.length}
+              categoryId={categoryId ?? undefined}
+              categorySlug={district ?? vibe?.slug ?? categoryId ?? undefined}
+            />
+          </ResultsFeedbackReveal>
+        </div>
+      ) : null}
       {intro}
     </section>
   );

@@ -4,6 +4,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import cafeHeroesFile from "../data/cafe-heroes.json";
 import {
   CAMEL_STEP_RAHMANIYYAH_HERO_PHOTOS,
   cafeDetailDescription,
@@ -93,6 +94,19 @@ function heroSrcs(shop: { id: string; photoUrl?: string }): string {
     .join(",");
 }
 
+const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
+assert(Object.keys(bakedHeroes).length === 50, "50-shop hero set is complete");
+for (const [id, photos] of Object.entries(bakedHeroes)) {
+  assert(photos.length === 4, `${id} has 4 cached cafe-heroes`);
+  for (const photo of photos) {
+    assert(photo.src.startsWith(`/cafe-heroes/${id}/`), `${photo.src} is shop-scoped`);
+    assert(existsSync(join("public", photo.src.slice(1))), `${photo.src} is on disk`);
+  }
+}
+assert(
+  cafeDetailHeroPhotos({ id: "percent-arabica-hittin" }).length === 4,
+  "pack 2–4 shops resolve baked cafe-heroes",
+);
 assert(
   cafeDetailHeroPhotos({ id: "camel-step-hittin" }).length === 4,
   "Hittin Camel Step uses baked cafe-heroes",

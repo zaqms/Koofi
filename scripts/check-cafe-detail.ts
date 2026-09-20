@@ -260,18 +260,132 @@ const BATCH4_IDS = [
 
 const BATCH4_MISSING_HOURS = [] as const;
 
+const BATCH5_IDS = [
+  "jazean-diplomatic-quarter",
+  "markab-king-fahd",
+  "kernel-al-takhassusi",
+  "percent-arabica-the-zone-al-takhassusi",
+  "idmi-nakheel-takhassusi",
+  "groovy-al-takhassusi",
+  "dust-and-verse-al-takhassusi",
+  "somo-al-takhassusi",
+  "glim-al-takhassusi",
+  "sculpture-al-aqiq",
+  "ashjar-cafe-al-aqiq",
+  "shovel-al-aqiq",
+  "out-of-line-al-aqiq",
+  "camel-step-al-aqiq",
+  "scarf-al-aqiq",
+  "the-coffee-kingdom-al-aqiq",
+  "file-coffee-al-aqiq",
+  "kultura-al-ghadeer",
+  "tad-coffee-al-ghadeer",
+  "ulica-al-ghadeer",
+  "drip-al-ghadeer",
+  "blumen-al-ghadeer",
+  "brsk-al-ghadeer",
+  "drive-al-ghadeer",
+  "ghandoura-al-ghadeer",
+  "acres-al-arid",
+  "kicksters-lab-al-arid",
+  "shovel-al-arid",
+  "archi-al-arid",
+  "drive-al-arid",
+  "roasting-house-al-arid",
+  "coffee-address-al-arid",
+  "shiro-al-arid",
+  "cypress-al-qirawan",
+  "3bean-al-qirawan",
+  "ashjar-cafe-al-qirawan",
+  "drip-al-qirawan",
+  "coffee-side-al-qirawan",
+  "caf-lab-al-qirawan",
+  "drive-al-qirawan",
+  "scout-coffee-al-qirawan",
+  "white-roastery-al-wadi",
+  "parole-cafe-al-wadi",
+  "wama-coffee-al-wadi",
+  "unique-drip-al-mohammadiyah",
+  "hjeen-roasters-al-mohammadiyah",
+  "hekaya-tale-al-mohammadiyah",
+  "parka-coffee-al-muruj",
+  "terra-cafe-al-muruj",
+  "rabka-al-muruj",
+  "lasani-cafe-al-malaz",
+  "golden-pot-al-malaz",
+  "walnut-wood-coffee-al-malaz",
+  "hazzah-coffee-al-malaz",
+  "canto-al-malaz",
+  "house-of-matcha-al-mohammadiyah",
+  "house-of-matcha-sulimaniyah",
+  "somatcha-an-nada",
+  "the-matcha-bar-olaya",
+  "with-heart-diriyah",
+  "kuro-sulimaniyah",
+  "opinion-al-mathar",
+  "opinion-hittin",
+  "kultura-hittin",
+  "kultura-al-malqa",
+  "quokka-coffee-al-muruj",
+  "quokka-coffee-ghirnatah",
+  "iota-al-ghadeer",
+  "some-coffee-bar-al-muruj",
+  "remis-matcha-club-hittin",
+  "okawa-cafe-al-malqa",
+  "re-matcha-al-hamra",
+  "flow-matcha-at-taawun",
+  "hokkaido-al-hamra",
+  "happyland-matcha-diriyah",
+  "24cafe-al-wadi",
+  "24cafe-al-yasmin",
+  "24cafe-al-rabi",
+  "agrio-al-rabi",
+  "camel-step-al-mursalat",
+  "camel-step-diriyah",
+  "coffee-address-al-malaz",
+  "coffee-address-al-murabba",
+  "coffee-address-al-muruj",
+  "coffee-address-al-wadi",
+  "coffee-address-al-rabi",
+  "coffee-address-al-rabwah",
+  "java-cafe-al-malaz",
+  "java-cafe-al-manar",
+  "java-cafe-al-muruj",
+  "java-cafe-al-wadi",
+  "java-cafe-al-rabi",
+  "java-cafe-al-rawabi",
+  "meeting-caffeine-al-rabi",
+  "mezaj-al-malaz",
+  "mezaj-maghrebi-al-wadi",
+  "moroccan-taste-al-muruj",
+  "n5-caffe-al-rabi",
+  "n5-caffe-al-rabi-2",
+  "sol-olas-al-ghadeer",
+] as const;
+
+const BATCH5_MISSING_HOURS = [
+  "hekaya-tale-al-mohammadiyah",
+  "opinion-al-mathar",
+] as const;
+
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
+const batch5HeroIds = BATCH5_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
-    50 + batch2HeroIds.length + batch3HeroIds.length + batch4HeroIds.length,
-  "batch 1–3 cafe-heroes stay; batch 4 merges in",
+    50 +
+      batch2HeroIds.length +
+      batch3HeroIds.length +
+      batch4HeroIds.length +
+      batch5HeroIds.length,
+  "batch 1–4 cafe-heroes stay; batch 5 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
+assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -282,6 +396,7 @@ assert(bakedHeroes["bind-specialty-coffee-ghirnatah"]?.length === 4, "BIND pack 
 function expectedHeroCount(id: string): number {
   if (id === "elixir-bunn-al-narjis") return 3;
   if (id === "mill-coffee-qurtubah") return 2;
+  if (id === "hokkaido-al-hamra") return 3;
   return 4;
 }
 for (const [id, photos] of Object.entries(bakedHeroes)) {
@@ -301,8 +416,9 @@ assert(
   "Hittin Camel Step uses baked cafe-heroes",
 );
 assert(
-  heroSrcs({ id: "camel-step-al-aqiq", photoUrl: "/photos/x.jpg" }) === "/photos/x.jpg",
-  "shops outside the baked set still use catalog photoUrl only",
+  heroSrcs({ id: "hekaya-tale-al-mohammadiyah", photoUrl: "/photos/x.jpg" }) ===
+    "/photos/x.jpg",
+  "shops without baked cafe-heroes still use catalog photoUrl only",
 );
 assert(
   heroSrcs({ id: "camel-step-al-rahmaniyyah" }) ===
@@ -698,6 +814,99 @@ for (const id of BATCH4_IDS) {
   assert(
     cafeDetailHeroPhotos(getShop(id)!).length === 4,
     `${id} uses 4 baked cafe-heroes`,
+  );
+}
+
+const BATCH5_MISSING_HOUR_IDS = new Set<string>(BATCH5_MISSING_HOURS);
+const BATCH5_HOURS_IDS = BATCH5_IDS.filter((id) => !BATCH5_MISSING_HOUR_IDS.has(id));
+for (const id of BATCH5_HOURS_IDS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(
+    (shop.openingHours?.periods?.length ?? 0) > 0,
+    `${id} has baked catalog periods — no invented hours`,
+  );
+}
+for (const id of BATCH5_MISSING_HOURS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(!shop.openingHours, `${id} keeps Status hidden — no invented hours`);
+  assert(
+    cafeDetailHoursStatus(shop, "en") === null,
+    `${id} Status stays hidden`,
+  );
+}
+const jazean = getShop("jazean-diplomatic-quarter");
+const markab = getShop("markab-king-fahd");
+const kernel = getShop("kernel-al-takhassusi");
+const solOlas = getShop("sol-olas-al-ghadeer");
+assert(jazean, "Jazean DQ is in the catalog");
+assert(
+  (jazean.openingHours?.periods?.length ?? 0) > 0,
+  "Jazean DQ has baked periods",
+);
+assert(markab && (markab.openingHours?.periods?.length ?? 0) > 0, "Markab has baked periods");
+assert(kernel && (kernel.openingHours?.periods?.length ?? 0) > 0, "Kernel has baked periods");
+assert(solOlas && (solOlas.openingHours?.periods?.length ?? 0) > 0, "Sol Olas has baked periods");
+assert(cafeDetailHeroPhotos(solOlas).length === 4, "Sol Olas uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("with-heart-diriyah")!).length === 4, "With Heart uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("white-roastery-al-wadi")!).length === 4, "White Roastery uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(getShop("camel-step-al-aqiq")!).length === 4,
+  "Al Aqiq Camel Step uses baked cafe-heroes",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(getShop("camel-step-al-aqiq")!)),
+  "batch 5 Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(getShop("camel-step-al-aqiq")!)[0]?.attribution?.displayName ===
+    "Nawaf Saleh",
+  "Al Aqiq Camel Step bake still has the Places author name",
+);
+assert(cafeDetailHeroPhotos(getShop("24cafe-al-rabi")!).length === 4, "24Cafe Al Rabi uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("ashjar-cafe-al-aqiq")!).length === 4, "Ashjar Al Aqiq uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("camel-step-al-mursalat")!).length === 4, "Mursalat Camel Step uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("camel-step-diriyah")!).length === 4, "Diriyah Camel Step uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("file-coffee-al-aqiq")!).length === 4, "File Coffee Al Aqiq uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("dust-and-verse-al-takhassusi")!).length === 4, "Dust and Verse uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(jazean).length === 4, "Jazean DQ uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(kernel).length === 4, "Kernel uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("hokkaido-al-hamra")!).length === 3, "Hokkaido keeps the 3 downloaded frames");
+assert(cafeDetailHeroPhotos(markab).length === 4, "Markab uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi")!).length === 4, "N5 Al Rabi uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi-2")!).length === 4, "N5 Al Rabi 2 uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("opinion-al-mathar")!).length === 4, "Opinion Al Mathar uses baked cafe-heroes");
+const opinionHittin = getShop("opinion-hittin");
+assert(opinionHittin, "Opinion Hittin is in the catalog");
+assert(
+  opinionHittin.placeId === "ChIJed24-Q_jLj4Ry57c9ZIft5Q",
+  "Opinion Hittin uses Opinion | اوبنيون, not Hittin district",
+);
+assert(
+  opinionHittin.openingHours?.periods?.length === 1 &&
+    opinionHittin.openingHours.periods[0]?.open.day === 0 &&
+    !("close" in (opinionHittin.openingHours.periods[0] ?? {})),
+  "Opinion Hittin is baked 24h",
+);
+assert(
+  cafeDetailHoursStatus(opinionHittin, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "Opinion Hittin Sunday afternoon is Open now",
+);
+assert(cafeDetailHeroPhotos(opinionHittin).length === 4, "Opinion Hittin uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(opinionHittin)[0]?.attribution?.displayName === "Opinion | اوبنيون",
+  "Opinion Hittin bake has the cafe Places author name",
+);
+assert(
+  !bakedHeroes["hekaya-tale-al-mohammadiyah"],
+  "Hekaya Tale keeps heroes hidden — no invented photos",
+);
+for (const id of batch5HeroIds) {
+  assert(
+    cafeDetailHeroPhotos(getShop(id)!).length === expectedHeroCount(id),
+    `${id} uses ${expectedHeroCount(id)} baked cafe-heroes`,
   );
 }
 

@@ -323,6 +323,8 @@ assert(!helper.includes("places.ts"), "no live Place Details on detail helpers")
 
 assert(detail.includes("photo.src"), "hero paints cached photo src");
 assert(detail.includes("attribution"), "hero keeps Google attribution");
+assert(detail.includes("draggable={false}"), "hero img is not a native drag ghost");
+assert(detail.includes("setPointerCapture"), "hero swipe captures the pointer");
 assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");
 
 console.log("check-cafe-detail: ok");

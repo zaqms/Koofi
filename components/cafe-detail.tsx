@@ -206,11 +206,15 @@ function CafeDetailHero({
       className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-wain-warm-cream ring-1 ring-wain-divider touch-pan-y"
       onPointerDown={(event) => {
         startX.current = event.clientX;
+        event.currentTarget.setPointerCapture(event.pointerId);
       }}
       onPointerUp={(event) => {
         if (startX.current == null) return;
         const dx = event.clientX - startX.current;
         startX.current = null;
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
         if (Math.abs(dx) < 40) return;
         go(dx < 0 ? 1 : -1);
       }}
@@ -221,7 +225,8 @@ function CafeDetailHero({
         <img
           src={photo.src}
           alt={`${name} · ${neighborhood}`}
-          className="size-full object-cover"
+          draggable={false}
+          className="pointer-events-none size-full select-none object-cover"
         />
       ) : null}
 

@@ -39,6 +39,7 @@ type CafeDetailProps = {
   shop: Shop;
   language: Language;
   backHref: string;
+  localeHref: string;
   siblings: DirectoryShop[];
 };
 
@@ -55,6 +56,7 @@ export function CafeDetail({
   shop,
   language,
   backHref,
+  localeHref,
   siblings,
 }: CafeDetailProps) {
   const dir = language === "ar" ? "rtl" : "ltr";
@@ -81,6 +83,7 @@ export function CafeDetail({
           photos={photos}
           language={language}
           backHref={backHref}
+          localeHref={localeHref}
           shop={shop}
           name={name}
           neighborhood={area}
@@ -182,6 +185,7 @@ function CafeDetailHero({
   photos,
   language,
   backHref,
+  localeHref,
   shop,
   name,
   neighborhood,
@@ -189,6 +193,7 @@ function CafeDetailHero({
   photos: CafeDetailHeroPhoto[];
   language: Language;
   backHref: string;
+  localeHref: string;
   shop: Shop;
   name: string;
   neighborhood: string;
@@ -253,6 +258,13 @@ function CafeDetailHero({
           <DetailBackIcon className="rtl:scale-x-[-1]" />
         </Link>
         <div className="flex items-center gap-2">
+          <Link
+            href={localeHref}
+            data-language-switch=""
+            className="inline-flex h-11 items-center justify-center rounded-full bg-foam px-3.5 text-xs font-medium text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider"
+          >
+            {copy.switchLanguage[language]}
+          </Link>
           <ShareListingButton
             shop={shop}
             language={language}

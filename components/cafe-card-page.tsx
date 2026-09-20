@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CafeCard } from "@/components/cafe-card";
 import { CafeEnBlurb } from "@/components/cafe-en-blurb";
 import { DocumentLocale } from "@/components/document-locale";
@@ -6,7 +5,6 @@ import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
 import { listDirectoryShopsForDistrict } from "@/lib/catalog";
-import { copy } from "@/lib/copy";
 import { cardPath, homePath } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
@@ -47,18 +45,11 @@ export async function CafeCardPageView({
           shop={shop}
           language={language}
           backHref={home}
+          localeHref={localeHref}
           siblings={siblings}
         />
       </ShopUpvoteProvider>
       <CafeEnBlurb shop={shop} language={language} />
-      <p className="mt-6">
-        <Link
-          href={localeHref}
-          className="text-xs text-ink-soft underline-offset-2 hover:underline"
-        >
-          {copy.switchLanguage[language]}
-        </Link>
-      </p>
       <SiteFooter language={language} padded={false} />
     </main>
   );

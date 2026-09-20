@@ -311,6 +311,13 @@ assert(
 );
 assert(!detail.includes('variant="detail"'), "no lower Share CTA next to Maps");
 assert(detail.includes('variant="hero"'), "hero Share is the overlay control");
+assert(detail.includes("localeHref"), "hero receives the AR↔EN href");
+assert(detail.includes('data-language-switch=""'), "language switch sits in the hero chrome");
+assert(detail.includes("copy.switchLanguage[language]"), "hero switcher is EN / عربي");
+assert(
+  detail.includes("absolute inset-x-3 top-3"),
+  "language switch stays in the top hero chrome",
+);
 assert(detail.includes("SHOW_DETAIL_FAVORITE"), "heart is flagged");
 assert(detail.includes("const parked = !SHOW_DETAIL_FAVORITE"), "heart stays parked without a real like");
 assert(detail.includes("<CafeDetailFavorite"), "hero keeps the Favorite control");
@@ -351,6 +358,8 @@ assert(!page.includes("CafePassportCard"), "public page never mounts Passport");
 assert(page.includes("<CafeEnBlurb"), "SEO essay stays in the main public flow");
 assert(!page.includes("visuallyHidden"), "SEO essay is not forced off-screen");
 assert(page.includes("listDirectoryShopsForDistrict"), "related is same-neighborhood catalog");
+assert(page.includes("localeHref={localeHref}"), "page keeps locale switch on /c vs /en/c");
+assert(!page.includes("copy.switchLanguage"), "switcher is not a footer link on the thin page");
 assert(!page.includes("BrandHomeLink"), "old thin header is gone");
 assert(!page.includes("backToChat"), "old back-to-chat line is gone from the thin page");
 

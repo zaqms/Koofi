@@ -258,10 +258,7 @@ const BATCH4_IDS = [
   "ashjar-cafe-ar-rabi",
 ] as const;
 
-const BATCH4_MISSING_HOURS = [
-  "the-it-al-rawabi",
-  "maqha-mahamasa-al-raqban",
-] as const;
+const BATCH4_MISSING_HOURS = ["maqha-mahamasa-al-raqban"] as const;
 
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
@@ -590,9 +587,36 @@ assert(
 );
 assert(cafeDetailHeroPhotos(getShop("glint-al-hamra")!).length === 4, "Glint uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("silo-cafe-al-yarmouk")!).length === 4, "Silo uses baked cafe-heroes");
+const theIt = getShop("the-it-al-rawabi");
+assert(theIt, "THE IT is in the catalog");
 assert(
-  cafeDetailHeroPhotos(getShop("the-it-al-rawabi")!).length === 4,
-  "THE IT uses baked cafe-heroes without invented hours",
+  theIt.placeId === "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
+  "THE IT uses the coffee_shop pin, not Ar Rawabi neighborhood",
+);
+assert(
+  (theIt.openingHours?.periods?.length ?? 0) === 7,
+  "THE IT has cafe Maps periods",
+);
+assert(
+  theIt.openingHours?.periods?.[0]?.open.hour === 6,
+  "THE IT Sunday opens at 6 AM",
+);
+assert(
+  theIt.openingHours?.periods?.[5]?.open.hour === 8,
+  "THE IT Friday opens at 8 AM",
+);
+assert(
+  cafeDetailHeroPhotos(theIt).length === 4,
+  "THE IT uses cafe-pin cafe-heroes",
+);
+assert(
+  cafeDetailHeroPhotos(theIt)[0]?.attribution?.displayName === "Khalid",
+  "THE IT bake has the cafe Places author name",
+);
+assert(
+  cafeDetailHoursStatus(theIt, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "THE IT Sunday afternoon is Open now",
 );
 assert(
   cafeDetailHeroPhotos(getShop("maqha-mahamasa-al-raqban")!).length === 4,

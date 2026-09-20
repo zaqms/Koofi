@@ -4,11 +4,11 @@
  * Does not invent hours. Does not overwrite batch 1–3 heroes.
  *
  * Reads:
- *   - catalog-hours-patch.json (48 shops)
+ *   - catalog-hours-patch.json (49 shops; THE IT cafe pin)
  *   - catalog-heroes-manifest.json (50 shops)
  *   - photos/{id}/1..4.*
  * Writes:
- *   - data/catalog.json openingHours for those 48 ids only
+ *   - data/catalog.json openingHours for those 49 ids only
  *   - public/cafe-heroes/{id}/ from photos on disk
  *   - data/cafe-heroes.json merged (batch 1–3 kept, batch 4 upserted)
  */
@@ -24,10 +24,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const MISSING_HOURS = new Set([
-  "the-it-al-rawabi",
-  "maqha-mahamasa-al-raqban",
-]);
+const MISSING_HOURS = new Set(["maqha-mahamasa-al-raqban"]);
 
 function firstExisting(paths) {
   return paths.find((path) => existsSync(path));
@@ -123,8 +120,8 @@ const resultIds = Array.isArray(results?.places)
 if (resultIds.length !== 50) {
   throw new Error(`results must list 50 shops, got ${resultIds.length}`);
 }
-if (!Array.isArray(hoursPatch) || hoursPatch.length !== 48) {
-  throw new Error(`hours patch must be 48 shops, got ${hoursPatch?.length}`);
+if (!Array.isArray(hoursPatch) || hoursPatch.length !== 49) {
+  throw new Error(`hours patch must be 49 shops, got ${hoursPatch?.length}`);
 }
 if (!Array.isArray(heroesManifest) || heroesManifest.length !== 50) {
   throw new Error(`heroes manifest must be 50 shops, got ${heroesManifest?.length}`);
@@ -154,7 +151,7 @@ for (const row of hoursPatch) {
   hoursById.set(row.id, openingHours);
 }
 
-if (hoursById.size !== 48) throw new Error("expected 48 baked hour shops");
+if (hoursById.size !== 49) throw new Error("expected 49 baked hour shops");
 
 catalog.shops = catalog.shops.map((shop) => {
   if (!allowedIds.has(shop.id)) return shop;

@@ -385,7 +385,7 @@ assert(
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
-assert(batch5HeroIds.length === 53, "batch 5 packs 1–3 cafe-heroes are wired");
+assert(batch5HeroIds.length === 76, "batch 5 packs 1–4 cafe-heroes are wired");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -870,6 +870,10 @@ assert(cafeDetailHeroPhotos(getShop("dust-and-verse-al-takhassusi")!).length ===
 assert(cafeDetailHeroPhotos(jazean).length === 4, "Jazean DQ uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(kernel).length === 4, "Kernel uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("hokkaido-al-hamra")!).length === 3, "Hokkaido keeps the 3 downloaded frames");
+assert(cafeDetailHeroPhotos(markab).length === 4, "Markab uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi")!).length === 4, "N5 Al Rabi uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi-2")!).length === 4, "N5 Al Rabi 2 uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("opinion-al-mathar")!).length === 4, "Opinion Al Mathar uses baked cafe-heroes");
 const opinionHittin = getShop("opinion-hittin");
 assert(opinionHittin, "Opinion Hittin is in the catalog");
 assert(
@@ -886,6 +890,11 @@ assert(
   cafeDetailHoursStatus(opinionHittin, "en", new Date("2026-09-20T15:00:00+03:00"))
     ?.kind === "open",
   "Opinion Hittin Sunday afternoon is Open now",
+);
+assert(cafeDetailHeroPhotos(opinionHittin).length === 4, "Opinion Hittin uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(opinionHittin)[0]?.attribution?.displayName === "Opinion | اوبنيون",
+  "Opinion Hittin bake has the cafe Places author name",
 );
 assert(
   !bakedHeroes["hekaya-tale-al-mohammadiyah"],

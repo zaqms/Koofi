@@ -213,8 +213,9 @@ assert(
   "batch 1–2 cafe-heroes stay; batch 3 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
-assert(batch3HeroIds.length >= 17, "batch 3 pack 1 heroes are baked");
+assert(batch3HeroIds.length === 49, "batch 3 49-shop hero set is complete");
 assert(!bakedHeroes["wathba-an-nazhah"], "wathba-an-nazhah stays without invented heroes");
+assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
 assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–3 heroes");
 assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 heroes");
@@ -453,6 +454,13 @@ assert(
   cafeDetailHeroPhotos(bind)[0]?.attribution?.displayName === "zainb alshammri",
   "BIND bake still has the Places author name",
 );
+const fileCoffee = getShop("file-coffee-ghirnatah");
+const sanva = getShop("sanva-specialty-coffee-ghirnatah");
+const mill = getShop("mill-coffee-qurtubah");
+assert(fileCoffee && cafeDetailHeroPhotos(fileCoffee).length === 4, "File Coffee uses baked cafe-heroes");
+assert(sanva && cafeDetailHeroPhotos(sanva).length === 4, "Sanva uses baked cafe-heroes");
+assert(mill && cafeDetailHeroPhotos(mill).length === 2, "Mill keeps the 2 downloaded frames");
+assert(cafeDetailHeroPhotos(dripHamra).length === 4, "Drip Al Hamra uses baked cafe-heroes");
 assert(
   cafeDetailHeroPhotos(wathba).length === 0,
   "Wathba stays without invented heroes",

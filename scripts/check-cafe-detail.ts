@@ -205,15 +205,73 @@ const BATCH3_IDS = [
   "drip-al-hamra",
 ] as const;
 
+const BATCH4_IDS = [
+  "coffee-address-al-hamra",
+  "glint-al-hamra",
+  "silo-cafe-al-yarmouk",
+  "nosound-al-yarmouk",
+  "obo-speciality-al-yarmouk",
+  "shafel-roastery-al-yarmouk",
+  "coffee-address-al-yarmouk",
+  "aleel-roastery-al-yarmouk",
+  "bourbon-al-yarmouk",
+  "ratio-speciality-al-yarmouk",
+  "coffee-zam-al-yarmouk",
+  "nus-talqimah-al-yarmouk",
+  "kapu-cafe-al-nahdah",
+  "dahal-specialty-al-nahdah",
+  "ghazala-cafe-al-nahdah",
+  "shafel-roastery-al-nahdah",
+  "half-ten-al-nahdah",
+  "bon-ferro-al-nahdah",
+  "coffee-address-al-nahdah",
+  "chord-daily-coffee-al-nahdah",
+  "taco-cup-al-nahdah",
+  "awj-cafe-al-nahdah",
+  "vase-coffee-al-manar",
+  "recaf-al-manar",
+  "kultura-al-rayyan",
+  "da-nonna-al-rayyan",
+  "amber-speciality-al-rayyan",
+  "floated-al-rayyan",
+  "sica-al-rayyan",
+  "fabrica-de-cafe-al-rayyan",
+  "78-specialty-coffee-al-rayyan",
+  "the-it-al-rawabi",
+  "essert-al-rawabi",
+  "rukyah-al-fayha",
+  "roof-coffee-al-fayha",
+  "maqha-mahamasa-al-raqban",
+  "on-al-rawdah",
+  "steam-roastery-al-rawdah",
+  "serb-specialty-al-munsiyah",
+  "roasting-stages-al-munsiyah",
+  "eagle-coffee-al-munsiyah",
+  "najd-roastery-al-munsiyah",
+  "cu-specialty-al-munsiyah",
+  "45-degrees-al-munsiyah",
+  "true-side-al-munsiyah",
+  "coffee-address-al-munsiyah",
+  "das-mond-al-munsiyah",
+  "anotherside-cafe-al-munsiyah",
+  "brew92-an-nada",
+  "ashjar-cafe-ar-rabi",
+] as const;
+
+const BATCH4_MISSING_HOURS = [] as const;
+
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
+const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
 assert(
-  Object.keys(bakedHeroes).length === 50 + batch2HeroIds.length + batch3HeroIds.length,
-  "batch 1–2 cafe-heroes stay; batch 3 merges in",
+  Object.keys(bakedHeroes).length ===
+    50 + batch2HeroIds.length + batch3HeroIds.length + batch4HeroIds.length,
+  "batch 1–3 cafe-heroes stay; batch 4 merges in",
 );
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -485,6 +543,163 @@ assert(
     "وثبة | قهوة مختصة - النزهة",
   "Wathba bake has the cafe Places author name",
 );
+
+const BATCH4_MISSING_HOUR_IDS = new Set<string>(BATCH4_MISSING_HOURS);
+const BATCH4_HOURS_IDS = BATCH4_IDS.filter((id) => !BATCH4_MISSING_HOUR_IDS.has(id));
+for (const id of BATCH4_HOURS_IDS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(
+    (shop.openingHours?.periods?.length ?? 0) > 0,
+    `${id} has baked catalog periods — no invented hours`,
+  );
+}
+for (const id of BATCH4_MISSING_HOURS) {
+  const shop = getShop(id);
+  assert(shop, `${id} is in the catalog`);
+  assert(!shop.openingHours, `${id} keeps Status hidden — no invented hours`);
+  assert(
+    cafeDetailHoursStatus(shop, "en") === null,
+    `${id} Status stays hidden`,
+  );
+}
+const coffeeAddress = getShop("coffee-address-al-hamra");
+const ashjar = getShop("ashjar-cafe-ar-rabi");
+assert(coffeeAddress, "Coffee Address Al Hamra is in the catalog");
+assert(
+  (coffeeAddress.openingHours?.periods?.length ?? 0) > 0,
+  "Coffee Address Al Hamra has baked periods",
+);
+assert(
+  coffeeAddress.openingHours?.periods?.length === 1 &&
+    coffeeAddress.openingHours.periods[0]?.open.day === 0 &&
+    !("close" in (coffeeAddress.openingHours.periods[0] ?? {})),
+  "Coffee Address Al Hamra is baked 24h",
+);
+assert(
+  cafeDetailHeroPhotos(coffeeAddress).length === 4,
+  "Coffee Address Al Hamra uses baked cafe-heroes",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(coffeeAddress)),
+  "batch 4 Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(coffeeAddress)[0]?.attribution?.displayName === "Sk Ajeez",
+  "Coffee Address Al Hamra bake still has the Places author name",
+);
+assert(ashjar && (ashjar.openingHours?.periods?.length ?? 0) > 0, "Ashjar has baked periods");
+assert(cafeDetailHeroPhotos(ashjar).length === 4, "Ashjar uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("brew92-an-nada")!).length === 4, "Brew92 uses baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(getShop("anotherside-cafe-al-munsiyah")!).length === 4,
+  "Anotherside uses baked cafe-heroes",
+);
+assert(cafeDetailHeroPhotos(getShop("glint-al-hamra")!).length === 4, "Glint uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("silo-cafe-al-yarmouk")!).length === 4, "Silo uses baked cafe-heroes");
+const theIt = getShop("the-it-al-rawabi");
+assert(theIt, "THE IT is in the catalog");
+assert(
+  theIt.placeId === "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
+  "THE IT uses the coffee_shop pin, not Ar Rawabi neighborhood",
+);
+assert(
+  (theIt.openingHours?.periods?.length ?? 0) === 7,
+  "THE IT has cafe Maps periods",
+);
+assert(
+  theIt.openingHours?.periods?.[0]?.open.hour === 6,
+  "THE IT Sunday opens at 6 AM",
+);
+assert(
+  theIt.openingHours?.periods?.[5]?.open.hour === 8,
+  "THE IT Friday opens at 8 AM",
+);
+assert(
+  cafeDetailHeroPhotos(theIt).length === 4,
+  "THE IT uses cafe-pin cafe-heroes",
+);
+assert(
+  cafeDetailHeroPhotos(theIt)[0]?.attribution?.displayName === "Khalid",
+  "THE IT bake has the cafe Places author name",
+);
+assert(
+  cafeDetailHoursStatus(theIt, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "THE IT Sunday afternoon is Open now",
+);
+const theItAttrs = (
+  JSON.parse(read("data/places-attrs-2026-09-19.json")) as {
+    shops: { id: string; place_id?: string; place_name?: string }[];
+  }
+).shops.find((row) => row.id === "the-it-al-rawabi");
+assert(
+  theItAttrs?.place_id === "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME" &&
+    theItAttrs.place_name === "THE IT",
+  "places-attrs THE IT uses the coffee_shop pin, not Ar Rawabi",
+);
+const theItScout = (
+  JSON.parse(read("data/scout-manual-verdicts-2026-09-19.json")) as {
+    id: string;
+    place_id?: string;
+    maps_url?: string;
+    wrong_place_match?: boolean;
+  }[]
+).find((row) => row.id === "the-it-al-rawabi");
+assert(
+  theItScout?.place_id === "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME" &&
+    theItScout.wrong_place_match === false &&
+    theItScout.maps_url?.includes("ChIJ7UTZTQ0HLz4RHXt3m3J-4ME"),
+  "scout THE IT pin hotfix matches the coffee_shop place",
+);
+const mahmasa = getShop("maqha-mahamasa-al-raqban");
+assert(mahmasa, "Maqha Mahamasa is in the catalog");
+assert(
+  mahmasa.placeId === "ChIJO6S1MwCpLz4RadufNTMpDCE",
+  "Maqha Mahamasa uses مقهى ومحمصة حي Al Raqban, not GOAT Olaya",
+);
+assert(
+  (mahmasa.openingHours?.periods?.length ?? 0) === 8,
+  "Maqha Mahamasa has cafe Maps periods",
+);
+assert(
+  mahmasa.openingHours?.periods?.[0]?.open.hour === 6,
+  "Maqha Mahamasa Sunday opens at 6 AM",
+);
+assert(
+  mahmasa.openingHours?.periods?.[5]?.open.hour === 7 &&
+    mahmasa.openingHours?.periods?.[5]?.close?.hour === 11,
+  "Maqha Mahamasa Friday morning period is 7–11:30 AM",
+);
+assert(
+  cafeDetailHeroPhotos(mahmasa).length === 4,
+  "Maqha Mahamasa uses cafe-pin cafe-heroes",
+);
+assert(
+  cafeDetailHeroPhotos(mahmasa)[0]?.attribution?.displayName === "M A",
+  "Maqha Mahamasa bake has the cafe Places author name",
+);
+assert(
+  cafeDetailHoursStatus(mahmasa, "en", new Date("2026-09-20T15:00:00+03:00"))
+    ?.kind === "open",
+  "Maqha Mahamasa Sunday afternoon is Open now",
+);
+const mahmasaAttrs = (
+  JSON.parse(read("data/places-attrs-2026-09-19.json")) as {
+    shops: { id: string; place_id?: string; place_name?: string }[];
+  }
+).shops.find((row) => row.id === "maqha-mahamasa-al-raqban");
+assert(
+  mahmasaAttrs?.place_id === "ChIJO6S1MwCpLz4RadufNTMpDCE" &&
+    mahmasaAttrs.place_name === "مقهى ومحمصة حي",
+  "places-attrs Mahmasa uses the Al Raqban cafe pin, not GOAT Olaya",
+);
+for (const id of BATCH4_IDS) {
+  assert(
+    cafeDetailHeroPhotos(getShop(id)!).length === 4,
+    `${id} uses 4 baked cafe-heroes`,
+  );
+}
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
 const wedLate = new Date("2026-09-16T23:30:00+03:00");

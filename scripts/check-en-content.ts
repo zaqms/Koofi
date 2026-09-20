@@ -175,6 +175,15 @@ for (const district of [
   );
 }
 
+assert(
+  !districtEnMarkdown("as-suwaidi").includes("/en/c/drcafe-as-suwaidi"),
+  "as-suwaidi EN must not keep the closed card link",
+);
+assert(
+  shopsInDistrict("as-suwaidi").length === 0,
+  "as-suwaidi catalog is empty after the closed drop",
+);
+
 const kafdMeta = districtMetadata("kafd", "en");
 assert(kafdMeta.alternates?.canonical === "/en/coffee-shops/kafd", "kafd EN canonical");
 assert(
@@ -541,6 +550,11 @@ for (const district of liveDistricts) {
     `${district} AR lists catalog cafes`,
   );
 }
+
+assert(
+  !districtArMarkdown("as-suwaidi").includes("/c/drcafe-as-suwaidi"),
+  "as-suwaidi AR must not keep the closed card link",
+);
 
 const arBlurbs = new Set<string>();
 for (const id of CNI_PRIORITY_CAFE_IDS) {

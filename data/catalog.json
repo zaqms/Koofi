@@ -32581,33 +32581,6 @@
         "lat": 24.6884683,
         "lng": 46.6655579
       }
-    },
-    {
-      "id": "drcafe-as-suwaidi",
-      "nameAr": "د.كيف كافيه",
-      "nameEn": "dr.CAFE",
-      "city": "riyadh",
-      "neighborhood": "as-suwaidi",
-      "neighborhoodAr": "السويدي",
-      "vibeTags": [
-        "طلبات السيارة"
-      ],
-      "momentTags": [
-        "drive-through"
-      ],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11001901a3f5:0xaf74b1bb8db394a2",
-      "logoUrl": "/logos/drcafe-mark.png",
-      "popularityIndex": 40,
-      "catalogLane": "drive-through",
-      "placeId": "ChIJC9-F2ogPLz4Rh0O4S3P3PDA",
-      "dineIn": true,
-      "outdoorSeating": true,
-      "pickupOnly": null,
-      "example": false,
-      "pin": {
-        "lat": 24.5818563,
-        "lng": 46.657982
-      }
     }
   ]
 }

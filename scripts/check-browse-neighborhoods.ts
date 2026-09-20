@@ -110,7 +110,7 @@ const WADI_REFILL_DISTRICTS = ["al-wadi"] as const;
 const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
 const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
-const SCOUT_GAP_DISTRICTS = [] as const;
+const SCOUT_GAP_DISTRICTS = ["as-suwaidi"] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "Al Sulaymaniyah",

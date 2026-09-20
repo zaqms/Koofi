@@ -5,15 +5,8 @@ import { DocumentLocale } from "@/components/document-locale";
 import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
-import { publicClaimStatus } from "@/lib/claims";
-import { preferPassportUi } from "@/lib/claims-types";
-import { listDirectoryShopsForDistrict, shopCardNumber } from "@/lib/catalog";
+import { listDirectoryShopsForDistrict } from "@/lib/catalog";
 import { copy } from "@/lib/copy";
-import {
-  allowPassportPreview,
-  isPassportPreviewShop,
-} from "@/lib/passport-preview";
-import { loadPassportSocial } from "@/lib/passport-social";
 import { cardPath, homePath } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
@@ -33,23 +26,13 @@ export async function CafeCardPageView({
   const localeHref = inboundFrom
     ? `${cardPath(shop.id, other)}?from=${encodeURIComponent(inboundFrom)}`
     : cardPath(shop.id, other);
-  const previewPassport =
-    allowPassportPreview() && isPassportPreviewShop(shop.id);
-  const claim = await publicClaimStatus(shop.id);
-  const passportPage =
-    previewPassport || (claim.ok && preferPassportUi(claim.status));
-  const social = passportPage ? await loadPassportSocial(shop, language) : null;
   const siblings = listDirectoryShopsForDistrict(shop.neighborhood).filter(
     (row) => row.id !== shop.id,
   );
 
   return (
     <main
-      className={
-        passportPage
-          ? "mx-auto min-h-dvh w-full max-w-md bg-charcoal px-3 py-4"
-          : "mx-auto min-h-dvh w-full max-w-md bg-wain-paper px-4 pb-6 pt-3"
-      }
+      className="mx-auto min-h-dvh w-full max-w-md bg-wain-paper px-4 pb-6 pt-3"
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
     >
@@ -63,30 +46,20 @@ export async function CafeCardPageView({
         <CafeCard
           shop={shop}
           language={language}
-          previewPassport={previewPassport}
-          cardNumber={shopCardNumber(shop.id)}
           backHref={home}
-          localeHref={localeHref}
-          social={social}
           siblings={siblings}
         />
       </ShopUpvoteProvider>
-      {!passportPage ? (
-        <CafeEnBlurb shop={shop} language={language} />
-      ) : null}
-      {passportPage ? null : (
-        <p className="mt-6">
-          <Link
-            href={localeHref}
-            className="text-xs text-ink-soft underline-offset-2 hover:underline"
-          >
-            {copy.switchLanguage[language]}
-          </Link>
-        </p>
-      )}
-      <div className={passportPage ? "px-2" : undefined}>
-        <SiteFooter language={language} padded={false} onDark={passportPage} />
-      </div>
+      <CafeEnBlurb shop={shop} language={language} />
+      <p className="mt-6">
+        <Link
+          href={localeHref}
+          className="text-xs text-ink-soft underline-offset-2 hover:underline"
+        >
+          {copy.switchLanguage[language]}
+        </Link>
+      </p>
+      <SiteFooter language={language} padded={false} />
     </main>
   );
 }

@@ -96,6 +96,23 @@ export type Pin = {
   lng: number;
 };
 
+/** Google Places weekday: 0 = Sunday. Baked catalog hours only. */
+export type OpeningHoursPoint = {
+  day: number;
+  hour: number;
+  minute: number;
+};
+
+export type OpeningHoursPeriod = {
+  open: OpeningHoursPoint;
+  close?: OpeningHoursPoint;
+};
+
+export type OpeningHours = {
+  weekdayDescriptions?: string[];
+  periods?: OpeningHoursPeriod[];
+};
+
 export type Shop = {
   id: string;
   nameAr: string;
@@ -108,6 +125,8 @@ export type Shop = {
   officialSite?: string;
   pin?: Pin;
   hours?: string;
+  /** Baked Places regularOpeningHours. Detail Status reads periods only. */
+  openingHours?: OpeningHours;
   mapsShareUrl?: string;
   photoUrl?: string;
   logoUrl?: string;

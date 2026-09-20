@@ -16,9 +16,11 @@ import { ShopVisual } from "@/components/shop-visual";
 import { useShopUpvote } from "@/components/shop-upvote-provider";
 import {
   cafeDetailDescription,
+  cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
   neighborhoodCafesHeading,
+  type CafeDetailHeroPhoto,
 } from "@/lib/cafe-detail";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
@@ -42,6 +44,9 @@ type CafeDetailProps = {
 
 const heroSquareClass =
   "inline-flex size-11 items-center justify-center rounded-full bg-foam text-ink shadow-[0_2px_8px_rgba(30,23,20,0.08)] ring-1 ring-wain-divider";
+
+const heroNavClass =
+  "absolute top-1/2 z-20 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-ink/40 text-foam ring-1 ring-foam/25";
 
 const mapsCtaClass =
   "inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-card)] bg-wain-warm-cream px-4 text-[15px] font-medium text-ink hover:bg-wain-warm-cream/80";
@@ -181,7 +186,7 @@ function CafeDetailHero({
   name,
   neighborhood,
 }: {
-  photos: string[];
+  photos: CafeDetailHeroPhoto[];
   language: Language;
   backHref: string;
   shop: Shop;
@@ -189,36 +194,53 @@ function CafeDetailHero({
   neighborhood: string;
 }) {
   const [index, setIndex] = useState(0);
-  const startX = useRef<number | null>(null);
+  const start = useRef<{ x: number; y: number } | null>(null);
   const photo = photos[index];
+  const googleCredit = cafeDetailHeroNeedsGoogleCredit(photos);
+  const author = photo?.attribution?.displayName?.trim();
 
   function go(delta: number) {
     if (photos.length < 2) return;
     setIndex((current) => (current + delta + photos.length) % photos.length);
   }
 
+  function isHeroChrome(target: EventTarget | null): boolean {
+    return target instanceof Element && Boolean(target.closest("a,button"));
+  }
+
   return (
     <div
       data-cafe-detail-hero=""
-      className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-wain-warm-cream ring-1 ring-wain-divider touch-pan-y"
+      className={`relative aspect-video overflow-hidden rounded-[var(--radius-card)] bg-wain-warm-cream ring-1 ring-wain-divider touch-pan-y${photos.length > 1 ? " cursor-pointer" : ""}`}
       onPointerDown={(event) => {
-        startX.current = event.clientX;
+        if (isHeroChrome(event.target)) return;
+        start.current = { x: event.clientX, y: event.clientY };
+        event.currentTarget.setPointerCapture(event.pointerId);
       }}
       onPointerUp={(event) => {
-        if (startX.current == null) return;
-        const dx = event.clientX - startX.current;
-        startX.current = null;
-        if (Math.abs(dx) < 40) return;
-        go(dx < 0 ? 1 : -1);
+        if (start.current == null) return;
+        const dx = event.clientX - start.current.x;
+        const dy = event.clientY - start.current.y;
+        start.current = null;
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+        if (isHeroChrome(event.target)) return;
+        if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) {
+          go(dx < 0 ? 1 : -1);
+          return;
+        }
+        if (Math.abs(dx) < 40 && Math.abs(dy) < 24) go(1);
       }}
     >
       {photo ? (
-        // Catalog photoUrl only. Local /logos stay on <img>.
+        // Cached /cafe-heroes or catalog photoUrl. Local /logos stay off the well.
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={photo}
+          src={photo.src}
           alt={`${name} · ${neighborhood}`}
-          className="size-full object-cover"
+          draggable={false}
+          className="pointer-events-none size-full select-none object-cover"
         />
       ) : null}
 
@@ -241,12 +263,52 @@ function CafeDetailHero({
         </div>
       </div>
 
-      {photos.length > 0 ? (
-        <p className="absolute bottom-3 end-3 z-20 rounded-full bg-ink/70 px-2 py-0.5 text-[11px] leading-4 text-foam">
-          <span dir="ltr">
-            {index + 1}/{photos.length}
-          </span>
-        </p>
+      {photos.length > 1 ? (
+        <>
+          <button
+            type="button"
+            className={`${heroNavClass} start-2`}
+            aria-label={copy.detailHeroPrev[language]}
+            onClick={(event) => {
+              event.stopPropagation();
+              go(-1);
+            }}
+          >
+            <DetailChevronIcon className="rotate-180 rtl:rotate-0" />
+          </button>
+          <button
+            type="button"
+            className={`${heroNavClass} end-2`}
+            aria-label={copy.detailHeroNext[language]}
+            onClick={(event) => {
+              event.stopPropagation();
+              go(1);
+            }}
+          >
+            <DetailChevronIcon className="rtl:rotate-180" />
+          </button>
+        </>
+      ) : null}
+
+      {googleCredit || photos.length > 0 ? (
+        <div
+          data-cafe-detail-hero-meta=""
+          className="pointer-events-none absolute bottom-3 end-3 z-20 flex max-w-[46%] flex-col items-end gap-1"
+        >
+          {googleCredit ? (
+            <p className="truncate rounded-full bg-ink/70 px-2 py-0.5 text-[10px] leading-4 text-foam">
+              {copy.detailPhotosGoogle[language]}
+              {author ? <span className="sr-only">{` · ${author}`}</span> : null}
+            </p>
+          ) : null}
+          {photos.length > 0 ? (
+            <p className="rounded-full bg-ink/70 px-2 py-0.5 text-[11px] leading-4 text-foam">
+              <span dir="ltr">
+                {index + 1}/{photos.length}
+              </span>
+            </p>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

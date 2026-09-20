@@ -139,8 +139,9 @@ for (const file of ownerFiles) {
 
 const cafeCard = readFileSync("components/cafe-card.tsx", "utf8");
 assert(cafeCard.includes("CafeClaimFooter"), "thin cafe card renders claim footer");
-assert(cafeCard.includes("CafePassportCard"), "verified shops switch to Passport");
-assert(cafeCard.includes("preferPassportUi"), "Passport only when verified");
+assert(cafeCard.includes("CafeDetail"), "public /c/[id] is CafeDetail");
+assert(!cafeCard.includes("CafePassportCard"), "verified shops do not switch to Passport");
+assert(!cafeCard.includes("preferPassportUi"), "claim status does not pick a second layout");
 
 const footer = readFileSync("components/cafe-claim-footer.tsx", "utf8");
 assert(footer.includes("listedOn"), "footer has Listed on wain.lol");

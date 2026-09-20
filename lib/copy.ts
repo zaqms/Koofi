@@ -390,9 +390,25 @@ export const copy = {
     ar: "مغلق",
     en: "Closed",
   },
+  detailOpensAt: {
+    ar: "يفتح الساعة",
+    en: "Opens at",
+  },
   detailFavorite: {
     ar: "مفضلة",
     en: "Favorite",
+  },
+  detailPhotosGoogle: {
+    ar: "صور · Google",
+    en: "Photos · Google",
+  },
+  detailHeroPrev: {
+    ar: "الصورة السابقة",
+    en: "Previous photo",
+  },
+  detailHeroNext: {
+    ar: "الصورة التالية",
+    en: "Next photo",
   },
   newThisWeek: {
     ar: "جديد هالأسبوع",

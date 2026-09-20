@@ -385,7 +385,7 @@ assert(
 assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
-assert(batch5HeroIds.length === 14, "batch 5 pack 1 cafe-heroes are wired");
+assert(batch5HeroIds.length === 32, "batch 5 packs 1–2 cafe-heroes are wired");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -864,6 +864,9 @@ assert(
 assert(cafeDetailHeroPhotos(getShop("24cafe-al-rabi")!).length === 4, "24Cafe Al Rabi uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("ashjar-cafe-al-aqiq")!).length === 4, "Ashjar Al Aqiq uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("camel-step-al-mursalat")!).length === 4, "Mursalat Camel Step uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("camel-step-diriyah")!).length === 4, "Diriyah Camel Step uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("file-coffee-al-aqiq")!).length === 4, "File Coffee Al Aqiq uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(getShop("dust-and-verse-al-takhassusi")!).length === 4, "Dust and Verse uses baked cafe-heroes");
 const opinionHittin = getShop("opinion-hittin");
 assert(opinionHittin, "Opinion Hittin is in the catalog");
 assert(

@@ -39,7 +39,7 @@ export const NEIGHBORHOODS: Record<
   "al-nakheel": {
     id: "al-nakheel",
     ar: "النخيل",
-    en: "Al Nakheel",
+    en: "An Nakheel",
     aliases: [
       "النخيل",
       "نخیل",
@@ -71,7 +71,7 @@ export const NEIGHBORHOODS: Record<
   olaya: {
     id: "olaya",
     ar: "العليا",
-    en: "Olaya",
+    en: "Al Olaya",
     aliases: [
       "العليا",
       "عليا",
@@ -82,12 +82,13 @@ export const NEIGHBORHOODS: Record<
       "ulaya",
       "al olaya",
       "al-olaya",
+      "Al Olaya",
     ],
   },
   sulimaniyah: {
     id: "sulimaniyah",
     ar: "السليمانية",
-    en: "Sulimaniyah",
+    en: "As Sulimaniyah",
     aliases: [
       "السليمانية",
       "سليمانية",
@@ -97,6 +98,9 @@ export const NEIGHBORHOODS: Record<
       "suleimaniyah",
       "sulaymaniya",
       "al sulimaniyah",
+      "as sulimaniyah",
+      "as-sulimaniyah",
+      "As Sulimaniyah",
     ],
   },
   "al-wurud": {
@@ -118,7 +122,7 @@ export const NEIGHBORHOODS: Record<
   "al-rabwah": {
     id: "al-rabwah",
     ar: "الربوة",
-    en: "Al Rabwah",
+    en: "Ar Rabwah",
     aliases: [
       "الربوة",
       "ربوة",
@@ -134,7 +138,7 @@ export const NEIGHBORHOODS: Record<
   "al-rabi": {
     id: "al-rabi",
     ar: "الربيع",
-    en: "Al Rabi",
+    en: "Ar Rabi",
     aliases: [
       "الربيع",
       "ربيع",
@@ -166,7 +170,7 @@ export const NEIGHBORHOODS: Record<
   "al-rahmaniyyah": {
     id: "al-rahmaniyyah",
     ar: "الرحمانية",
-    en: "Al Rahmaniyyah",
+    en: "Ar Rahmaniyyah",
     aliases: [
       "الرحمانية",
       "رحمانية",
@@ -183,7 +187,7 @@ export const NEIGHBORHOODS: Record<
   "as-sahafah": {
     id: "as-sahafah",
     ar: "الصحافة",
-    en: "Al Sahafah",
+    en: "As Sahafah",
     aliases: [
       "الصحافة",
       "صحافة",
@@ -224,11 +228,12 @@ export const NEIGHBORHOODS: Record<
   "al-narjis": {
     id: "al-narjis",
     ar: "النرجس",
-    en: "Al Narjis",
+    en: "An Narjis",
     aliases: [
       "النرجس",
       "نرجس",
       "narjis",
+      "An Narjis",
       "an narjis",
       "al narjis",
       "al-narjis",
@@ -272,7 +277,7 @@ export const NEIGHBORHOODS: Record<
   "al-shohda": {
     id: "al-shohda",
     ar: "الشهداء",
-    en: "Al Shohda",
+    en: "Ash Shuhada",
     aliases: [
       "الشهداء",
       "شهداء",
@@ -284,6 +289,9 @@ export const NEIGHBORHOODS: Record<
       "al-shuhada",
       "ash shohda",
       "ash-shohda",
+      "ash shuhada",
+      "ash-shuhada",
+      "Ash Shuhada",
       "alshohda",
       "shuhadaa",
     ],
@@ -291,20 +299,23 @@ export const NEIGHBORHOODS: Record<
   "al-safa": {
     id: "al-safa",
     ar: "الصفا",
-    en: "Al Safa",
+    en: "As Safa",
     aliases: [
       "الصفا",
       "صفا",
       "safa",
       "al safa",
       "al-safa",
+      "as safa",
+      "as-safa",
+      "As Safa",
       "alsafa",
     ],
   },
   "al-rawdah": {
     id: "al-rawdah",
     ar: "الروضة",
-    en: "Al Rawdah",
+    en: "Ar Rawdah",
     aliases: [
       "الروضة",
       "روضة",
@@ -371,7 +382,7 @@ export const NEIGHBORHOODS: Record<
   "al-yarmouk": {
     id: "al-yarmouk",
     ar: "اليرموك",
-    en: "Al Yarmouk",
+    en: "Al Yarmuk",
     aliases: [
       "اليرموك",
       "يرموك",
@@ -388,7 +399,7 @@ export const NEIGHBORHOODS: Record<
   "al-nahdah": {
     id: "al-nahdah",
     ar: "النهضة",
-    en: "Al Nahdah",
+    en: "An Nahdah",
     aliases: [
       "النهضة",
       "نهضة",
@@ -397,6 +408,9 @@ export const NEIGHBORHOODS: Record<
       "al-nahdah",
       "alnahdah",
       "Al Nahdah",
+      "an nahdah",
+      "an-nahdah",
+      "An Nahdah",
       "nahda",
       "al nahda",
       "al-nahda",
@@ -420,7 +434,7 @@ export const NEIGHBORHOODS: Record<
   "al-rayyan": {
     id: "al-rayyan",
     ar: "الريان",
-    en: "Al Rayyan",
+    en: "Ar Rayyan",
     aliases: [
       "الريان",
       "ريان",
@@ -437,7 +451,7 @@ export const NEIGHBORHOODS: Record<
   "al-rawabi": {
     id: "al-rawabi",
     ar: "الروابي",
-    en: "Al Rawabi",
+    en: "Ar Rawabi",
     aliases: [
       "الروابي",
       "روابي",
@@ -537,11 +551,13 @@ export const NEIGHBORHOODS: Record<
   "king-fahd": {
     id: "king-fahd",
     ar: "الملك فهد",
-    en: "King Fahd",
+    en: "King Fahd District",
     aliases: [
       "الملك فهد",
       "حي الملك فهد",
       "king fahd",
+      "king fahd district",
+      "King Fahd District",
       "king-fahd",
       "al malik fahd",
       "al-malik-fahd",
@@ -585,7 +601,7 @@ export const NEIGHBORHOODS: Record<
   "al-ghadeer": {
     id: "al-ghadeer",
     ar: "الغدير",
-    en: "Al Ghadeer",
+    en: "Al Ghadir",
     aliases: [
       "الغدير",
       "غدير",
@@ -647,16 +663,17 @@ export const NEIGHBORHOODS: Record<
   "al-mohammadiyah": {
     id: "al-mohammadiyah",
     ar: "المحمدية",
-    en: "Al Mohammadiyah",
+    en: "Al Muhammadiyah",
     aliases: [
       "المحمدية",
       "محمدية",
       "mohammadiyah",
       "muhammadiyah",
-      "al mohammadiyah",
-      "al-mohammadiyah",
+      "Al Muhammadiyah",
       "al muhammadiyah",
       "al-muhammadiyah",
+      "al mohammadiyah",
+      "al-mohammadiyah",
       "almohammadiyah",
       "mohammadiyyah",
       "al mohammadiyyah",
@@ -907,7 +924,7 @@ export const NEIGHBORHOODS: Record<
   "al-janadriyyah": {
     id: "al-janadriyyah",
     ar: "الجنادرية",
-    en: "Al Janadriyyah",
+    en: "Al Janadriyah",
     aliases: [
       "الجنادرية",
       "جنادرية",
@@ -1002,7 +1019,7 @@ export const NEIGHBORHOODS: Record<
   manfuha: {
     id: "manfuha",
     ar: "منفوحة",
-    en: "Manfuha",
+    en: "Manfuhah",
     aliases: [
       "منفوحة",
       "منفوحه",

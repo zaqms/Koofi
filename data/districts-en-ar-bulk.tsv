@@ -1,0 +1,131 @@
+stable_id	name_en	name_ar	city_id	seo_slug	shop_count_live	en_source	status	notes
+diriyah	Diriyah	الدرعية	riyadh	diriyah	13	shoug_locked_2026-09-21	live	
+olaya	Al Olaya	العليا	riyadh	olaya	13	shoug_locked_2026-09-21	live	
+al-hamra	Al Hamra	الحمراء	riyadh	al-hamra	12	shoug_locked_2026-09-21	live	
+hittin	Hittin	حطين	riyadh	hittin	12	shoug_locked_2026-09-21	live	
+qurtubah	Qurtubah	قرطبة	riyadh	qurtubah	12	shoug_locked_2026-09-21	live	
+al-narjis	An Narjis	النرجس	riyadh	al-narjis	11	shoug_locked_2026-09-21	live	
+al-yasmin	Al Yasmin	الياسمين	riyadh	al-yasmin	11	shoug_locked_2026-09-21	live	
+al-munsiyah	Al Munsiyah	المونسية	riyadh	al-munsiyah	10	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-nahdah	An Nahdah	النهضة	riyadh	al-nahdah	10	shoug_locked_2026-09-21	live	
+al-rabwah	Ar Rabwah	الربوة	riyadh	al-rabwah	10	shoug_locked_2026-09-21	live	
+al-yarmouk	Al Yarmuk	اليرموك	riyadh	al-yarmouk	10	shoug_locked_2026-09-21	live	
+an-nazhah	An Nuzhah	النزهة	riyadh	an-nazhah	10	shoug_locked_2026-09-21	live	
+ghirnatah	Ghirnatah	غرناطة	riyadh	ghirnatah	10	shoug_locked_2026-09-21	live	
+sulimaniyah	As Sulimaniyah	السليمانية	riyadh	sulimaniyah	10	shoug_locked_2026-09-21	live	Shoug lock EN As Sulimaniyah.
+al-ghadeer	Al Ghadir	الغدير	riyadh	al-ghadeer	9	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-malqa	Al Malqa	الملقا	riyadh	al-malqa	9	shoug_locked_2026-09-21	live	
+al-aqiq	Al Aqiq	العقيق	riyadh	al-aqiq	8	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-arid	Al Arid	العارض	riyadh	al-arid	8	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-qirawan	Al Qirawan	القيروان	riyadh	al-qirawan	8	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-rayyan	Ar Rayyan	الريان	riyadh	al-rayyan	7	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-takhassusi	Al Takhassusi	التخصصي	riyadh	al-takhassusi	7	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+an-nasim-ash-sharqi	An Nasim Ash Sharqi	النسيم الشرقي	riyadh	an-nasim-ash-sharqi	7	shoug_locked_2026-09-21_plus_187	live	Added 21 Sep — missing from Shoug sheet; live via Scout #187 (Eastern). EN follows An/Ash style.
+kafd	KAFD	كافد	riyadh	kafd	7	shoug_locked_2026-09-21	live	
+al-muruj	Al Muruj	المروج	riyadh	al-muruj	6	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-nakheel	An Nakheel	النخيل	riyadh	al-nakheel	6	shoug_locked_2026-09-21	live	
+al-malaz	Al Malaz	الملز	riyadh	al-malaz	5	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-safa	As Safa	الصفا	riyadh	al-safa	5	shoug_locked_2026-09-21	live	
+al-mohammadiyah	Al Muhammadiyah	المحمدية	riyadh	al-mohammadiyah	4	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-wurud	Al Wurud	الورود	riyadh	al-wurud	4	shoug_locked_2026-09-21	live	
+al-rawdah	Ar Rawdah	الروضة	riyadh	al-rawdah	3	shoug_locked_2026-09-21	live	
+al-wadi	Al Wadi	الوادي	riyadh	al-wadi	3	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+an-nasim-al-gharbi	An Nasim Al Gharbi	النسيم الغربي	riyadh	an-nasim-al-gharbi	3	shoug_locked_2026-09-21_plus_187	live	Added 21 Sep — missing from Shoug sheet; live via Scout #187 (Western).
+as-sahafah	As Sahafah	الصحافة	riyadh	as-sahafah	3	shoug_locked_2026-09-21	live	
+al-fayha	Al Fayha	الفيحاء	riyadh	al-fayha	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-manar	Al Manar	المنار	riyadh	al-manar	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-rabi	Ar Rabi	الربيع	riyadh	al-rabi	2	shoug_locked_2026-09-21	live	
+al-rawabi	Ar Rawabi	الروابي	riyadh	al-rawabi	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+an-nada	An Nada	الندى	riyadh	an-nada	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-masif	Al Masif	المصيف	riyadh	al-masif	1	shoug_locked_2026-09-21	live	
+al-mathar	Al Mathar	المعذر	riyadh	al-mathar	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-mughrizat	Al Mughrizat	المغرزات	riyadh	al-mughrizat	1	shoug_locked_2026-09-21	live	
+al-rahmaniyyah	Ar Rahmaniyyah	الرحمانية	riyadh	al-rahmaniyyah	1	shoug_locked_2026-09-21	live	
+al-raqban	Al Raqban	الرقبان	riyadh	al-raqban	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-shohda	Ash Shuhada	الشهداء	riyadh	al-shohda	1	shoug_locked_2026-09-21	live	
+at-taawun	At Taawun	التعاون	riyadh	at-taawun	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+diplomatic-quarter	Diplomatic Quarter	الحي الدبلوماسي	riyadh	diplomatic-quarter	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+king-fahd	King Fahd District	الملك فهد	riyadh	king-fahd	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+ad-daho	Ad Daho	الدحو	riyadh	ad-daho		shoug_locked_2026-09-21	dictionary_only	
+ad-dar-al-baida	Ad Dar Al Baida	الدار البيضاء	riyadh	ad-dar-al-baida		shoug_locked_2026-09-21	dictionary_only	
+ad-difa	Ad Difa	الدفاع	riyadh	ad-difa		shoug_locked_2026-09-21	dictionary_only	
+ad-dirah	Ad Dirah	الديرة	riyadh	ad-dirah		shoug_locked_2026-09-21	dictionary_only	
+ad-dirahimiyah	Ad Dirahimiyah	الدريهمية	riyadh	ad-dirahimiyah		shoug_locked_2026-09-21	dictionary_only	
+ad-dubbat	Ad Dubbat	الضباط	riyadh	ad-dubbat		shoug_locked_2026-09-21	dictionary_only	
+al-amal	Al Amal	العمل	riyadh	al-amal		shoug_locked_2026-09-21	dictionary_only	
+al-aziziyah	Al Aziziyah	العزيزية	riyadh	al-aziziyah		shoug_locked_2026-09-21	dictionary_only	
+al-badiah	Al Badiah	البديعة	riyadh	al-badiah		shoug_locked_2026-09-21	dictionary_only	
+al-batha	Al Batha	البطحاء	riyadh	al-batha		shoug_locked_2026-09-21	dictionary_only	
+al-butaiha	Al Butaiha	البطيحاء	riyadh	al-butaiha		shoug_locked_2026-09-21	dictionary_only	
+al-fakhiriyah	Al Fakhiriyah	الفاخرية	riyadh	al-fakhiriyah		shoug_locked_2026-09-21	dictionary_only	
+al-falah	Al Falah	الفلاح	riyadh	al-falah		shoug_locked_2026-09-21	dictionary_only	
+al-fawaz	Al Fawaz	الفواز	riyadh	al-fawaz		shoug_locked_2026-09-21	dictionary_only	
+al-futah	Al Futah	الفوطة	riyadh	al-futah		shoug_locked_2026-09-21	dictionary_only	
+al-hada	Al Hada	الهدا	riyadh	al-hada		shoug_locked_2026-09-21	dictionary_only	
+al-hair	Al Hair	الحائر	riyadh	al-hair		shoug_locked_2026-09-21	dictionary_only	
+al-hazm	Al Hazm	الحزم	riyadh	al-hazm		shoug_locked_2026-09-21	dictionary_only	
+al-industrial-new	New Industrial Area	الصناعية الجديدة	riyadh	al-industrial-new		shoug_locked_2026-09-21	dictionary_only	Fixed slug typo al-ndustrial-new→al-industrial-new.
+al-iskan	Al Iskan	الإسكان	riyadh	al-iskan		shoug_locked_2026-09-21	dictionary_only	
+al-izdihar	Al Izdihar	الازدهار	riyadh	al-izdihar		shoug_locked_2026-09-21	dictionary_only	
+al-janadriyah	Al Janadriyah	الجنادرية	riyadh	al-janadriyah		shoug_locked_2026-09-21	dictionary_only	
+al-jaradiyah	Al Jaradiyah	الجرادية	riyadh	al-jaradiyah		shoug_locked_2026-09-21	dictionary_only	
+al-jazirah	Al Jazirah	الجزيرة	riyadh	al-jazirah		shoug_locked_2026-09-21	dictionary_only	
+al-khaleej	Al Khaleej	الخليج	riyadh	al-khaleej		shoug_locked_2026-09-21	dictionary_only	
+al-khuzama	Al Khuzama	الخزامى	riyadh	al-khuzama		shoug_locked_2026-09-21	dictionary_only	
+al-mahdiyah	Al Mahdiyah	المهدية	riyadh	al-mahdiyah		shoug_locked_2026-09-21	dictionary_only	
+al-manakh	Al Manakh	المناخ	riyadh	al-manakh		shoug_locked_2026-09-21	dictionary_only	
+al-mansurah	Al Mansurah	المنصورة	riyadh	al-mansurah		shoug_locked_2026-09-21	dictionary_only	
+al-marqab	Al Marqab	المرقب	riyadh	al-marqab		shoug_locked_2026-09-21	dictionary_only	
+al-marwah	Al Marwah	المروة	riyadh	al-marwah		shoug_locked_2026-09-21	dictionary_only	
+al-masani	Al Masani	المصانع	riyadh	al-masani		shoug_locked_2026-09-21	dictionary_only	
+al-mathar-ash-shamali	Al Mathar Ash Shamali	المعذر الشمالي	riyadh	al-mathar-ash-shamali		shoug_locked_2026-09-21	dictionary_only	
+al-mishal	Al Mishal	المشاعل	riyadh	al-mishal		shoug_locked_2026-09-21	dictionary_only	
+al-murabba	Al Murabba	المربع	riyadh	al-murabba		shoug_locked_2026-09-21	dictionary_only	
+al-mutamarat	Al Mutamarat	المؤتمرات	riyadh	al-mutamarat		shoug_locked_2026-09-21	dictionary_only	
+al-qadisiyah	Al Qadisiyah	القادسية	riyadh	al-qadisiyah		shoug_locked_2026-09-21	dictionary_only	
+al-quds	Al Quds	القدس	riyadh	al-quds		shoug_locked_2026-09-21	dictionary_only	
+al-uraija	Al Uraija	العريجاء	riyadh	al-uraija		shoug_locked_2026-09-21	dictionary_only	
+al-uraija-al-gharbiyah	Al Uraija Al Gharbiyah	العريجاء الغربية	riyadh	al-uraija-al-gharbiyah		shoug_locked_2026-09-21	dictionary_only	
+al-uraija-al-wusta	Al Uraija Al Wusta	العريجاء الوسطى	riyadh	al-uraija-al-wusta		shoug_locked_2026-09-21	dictionary_only	
+al-wisham	Al Wisham	الوشام	riyadh	al-wisham		shoug_locked_2026-09-21	dictionary_only	
+al-wizarat	Al Wizarat	الوزارات	riyadh	al-wizarat		shoug_locked_2026-09-21	dictionary_only	
+al-yamamah	Al Yamamah	اليمامة	riyadh	al-yamamah		shoug_locked_2026-09-21	dictionary_only	
+an-nadhim	An Nadhim	النظيم	riyadh	an-nadhim		shoug_locked_2026-09-21	dictionary_only	
+an-nadwah	An Nadwah	الندوة	riyadh	an-nadwah		shoug_locked_2026-09-21	dictionary_only	
+an-namudhajiyah	An Namudhajiyah	النموذجية	riyadh	an-namudhajiyah		shoug_locked_2026-09-21	dictionary_only	
+an-nasiriyah	An Nasiriyah	الناصرية	riyadh	an-nasiriyah		shoug_locked_2026-09-21	dictionary_only	
+ar-rimal	Ar Rimal	الرمال	riyadh	ar-rimal		shoug_locked_2026-09-21	dictionary_only	
+as-saadah	As Saadah	السعادة	riyadh	as-saadah		shoug_locked_2026-09-21	dictionary_only	
+as-salam	As Salam	السلام	riyadh	as-salam		shoug_locked_2026-09-21	dictionary_only	
+as-salihiyah	As Salihiyah	الصالحية	riyadh	as-salihiyah		shoug_locked_2026-09-21	dictionary_only	
+as-sulay	As Sulay	السلي	riyadh	as-sulay		shoug_locked_2026-09-21	dictionary_only	
+as-suwaidi	As Suwaidi	السويدي	riyadh	as-suwaidi		shoug_locked_2026-09-21	dictionary_only	
+as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi		shoug_locked_2026-09-21	dictionary_only	
+ash-shifa	Ash Shifa	الشفا	riyadh	ash-shifa		shoug_locked_2026-09-21	dictionary_only	
+ash-shumaisi	Ash Shumaisi	الشميسي	riyadh	ash-shumaisi		shoug_locked_2026-09-21	dictionary_only	
+ath-thumairi	Ath Thumairi	الثميري	riyadh	ath-thumairi		shoug_locked_2026-09-21	dictionary_only	
+badr	Badr	بدر	riyadh	badr		shoug_locked_2026-09-21	dictionary_only	
+dahiat-namar	Dahiat Namar	ضاحية نمار	riyadh	dahiat-namar		shoug_locked_2026-09-21	dictionary_only	
+dhahrat-al-badiah	Dhahrat Al Badiah	ظهرة البديعة	riyadh	dhahrat-al-badiah		shoug_locked_2026-09-21	dictionary_only	
+dhahrat-laban	Dhahrat Laban	ظهرة لبن	riyadh	dhahrat-laban		shoug_locked_2026-09-21	dictionary_only	
+dirab	Dirab	ديراب	riyadh	dirab		shoug_locked_2026-09-21	dictionary_only	
+ghubairah	Ghubairah	غبيرة	riyadh	ghubairah		shoug_locked_2026-09-21	dictionary_only	
+irqah	Irqah	عرقة	riyadh	irqah		shoug_locked_2026-09-21	dictionary_only	
+ishbiliyah	Ishbiliyah	إشبيلية	riyadh	ishbiliyah		shoug_locked_2026-09-21	dictionary_only	
+jarir	Jarir	جرير	riyadh	jarir		shoug_locked_2026-09-21	dictionary_only	
+khashm-al-an	Khashm Al An	خشم العان	riyadh	khashm-al-an		shoug_locked_2026-09-21	dictionary_only	
+king-abdullah	King Abdullah District	الملك عبدالله	riyadh	king-abdullah		shoug_locked_2026-09-21	dictionary_only	
+laban	Laban	لبن	riyadh	laban		shoug_locked_2026-09-21	dictionary_only	
+manfuhah	Manfuhah	منفوحة	riyadh	manfuhah		shoug_locked_2026-09-21	dictionary_only	
+namar	Namar	نمار	riyadh	namar		shoug_locked_2026-09-21	dictionary_only	
+new-manfuhah	New Manfuhah	منفوحة الجديدة	riyadh	new-manfuhah		shoug_locked_2026-09-21	dictionary_only	
+second-industrial-city	Second Industrial City	المدينة الصناعية الثانية	riyadh	second-industrial-city		shoug_locked_2026-09-21	dictionary_only	
+shubra	Shubra	شبرا	riyadh	shubra		shoug_locked_2026-09-21	dictionary_only	
+sultanah	Sultanah	سلطانة	riyadh	sultanah		shoug_locked_2026-09-21	dictionary_only	
+taybah	Taybah	طيبة	riyadh	taybah		shoug_locked_2026-09-21	dictionary_only	
+tuwaiq	Tuwaiq	طويق	riyadh	tuwaiq		shoug_locked_2026-09-21	dictionary_only	
+uhud	Uhud	أحد	riyadh	uhud		shoug_locked_2026-09-21	dictionary_only	
+ukaz	Ukaz	عكاظ	riyadh	ukaz		shoug_locked_2026-09-21	dictionary_only	
+ulaishah	Ulaishah	عليشة	riyadh	ulaishah		shoug_locked_2026-09-21	dictionary_only	
+umm-al-hamam-al-gharbi	Umm Al Hamam Al Gharbi	أم الحمام الغربي	riyadh	umm-al-hamam-al-gharbi		shoug_locked_2026-09-21	dictionary_only	
+umm-al-hamam-ash-sharqi	Umm Al Hamam Ash Sharqi	أم الحمام الشرقي	riyadh	umm-al-hamam-ash-sharqi		shoug_locked_2026-09-21	dictionary_only	

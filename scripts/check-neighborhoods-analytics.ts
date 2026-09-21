@@ -80,7 +80,7 @@ try {
     {
       district_id: "olaya",
       district_ar: "العليا",
-      district_en: "Olaya",
+      district_en: "Al Olaya",
       locale: "ar",
       source: "view_all",
       city: "riyadh",

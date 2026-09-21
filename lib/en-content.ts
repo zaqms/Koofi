@@ -109,9 +109,9 @@ Pick one that sounds right, open the card, and hit **Take me there** when you’
 Worth a look nearby:
 
 - [Coffee shops in Al Wurud](/en/coffee-shops/al-wurud)
-- [Coffee shops in Al Sahafah](/en/coffee-shops/as-sahafah)
-- [Coffee shops in Olaya](/en/coffee-shops/olaya)
-- [Coffee shops in Al Narjis](/en/coffee-shops/al-narjis)
+- [Coffee shops in As Sahafah](/en/coffee-shops/as-sahafah)
+- [Coffee shops in Al Olaya](/en/coffee-shops/olaya)
+- [Coffee shops in An Narjis](/en/coffee-shops/al-narjis)
 
 ## About wain
 
@@ -142,9 +142,9 @@ Short list on purpose — soft launch, only what we’ve actually added. Open a 
 ## Other neighborhoods nearby
 
 - [Coffee shops in KAFD](/en/coffee-shops/kafd)
-- [Coffee shops in Al Rabwah](/en/coffee-shops/al-rabwah)
-- [Coffee shops in Al Rabi](/en/coffee-shops/al-rabi)
-- [Coffee shops in Olaya](/en/coffee-shops/olaya)
+- [Coffee shops in Ar Rabwah](/en/coffee-shops/al-rabwah)
+- [Coffee shops in Ar Rabi](/en/coffee-shops/al-rabi)
+- [Coffee shops in Al Olaya](/en/coffee-shops/olaya)
 
 ## About wain
 
@@ -258,18 +258,18 @@ type DistrictLead = {
  */
 const DISTRICT_COPY: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-narjis": {
-    lead: `Al Narjis sits up in north Riyadh. If you’re already in that part of town and you just want a coffee from the catalog, this page is the Al Narjis set on wain.lol.
+    lead: `An Narjis sits up in north Riyadh. If you’re already in that part of town and you just want a coffee from the catalog, this page is the An Narjis set on wain.lol.
 
 A few of the names people ask about first are [CORE COFFEE & ROASTERY](/en/c/core-coffee-and-roastery-al-narjis), [CAF LAB](/en/c/caf-lab-al-narjis), and [Repository Coffee Roasters](/en/c/repository-coffee-roasters-al-narjis). They’re on this list with the rest. We don’t rank them.
 
-That’s how many Al Narjis places we’ve actually added. Open a card if a name fits. Skip it if it doesn’t.`,
-    hereIntro: `There are **{count}** cafes from Al Narjis on the catalog today:`,
+That’s how many An Narjis places we’ve actually added. Open a card if a name fits. Skip it if it doesn’t.`,
+    hereIntro: `There are **{count}** cafes from An Narjis on the catalog today:`,
     hereOutro: `Names come from the catalog as we added them. Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
-    nearbyIntro: `If Al Narjis isn’t the stop, these north-Riyadh lists are next door on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Narjis. Not a review site, not delivery. [About](/en/about) has the longer note.
+    nearbyIntro: `If An Narjis isn’t the stop, these north-Riyadh lists are next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Narjis. Not a review site, not delivery. [About](/en/about) has the longer note.
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Cafes in Al Narjis on wain.lol — a north Riyadh list including Core, CAF LAB, and Repository, each with a Maps link.",
+    meta: "Cafes in An Narjis on wain.lol — a north Riyadh list including Core, CAF LAB, and Repository, each with a Maps link.",
   },
   diriyah: {
     lead: `Diriyah sits west of the usual north-Riyadh loop — JAX, Bujairi, the older town. This page is the Diriyah set we’ve put on wain.lol so far.`,
@@ -296,16 +296,16 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
   "al-rabwah": {
-    lead: `Al Rabwah (الربوة) sits east of the Olaya–Wurud stretch. This page is the Rabwah cafes on the catalog today.`,
-    hereIntro: `There are **{count}** cafes from Al Rabwah on wain.lol right now:`,
+    lead: `Ar Rabwah (الربوة) sits east of the Al Olaya–Wurud stretch. This page is the Rabwah cafes on the catalog today.`,
+    hereIntro: `There are **{count}** cafes from Ar Rabwah on wain.lol right now:`,
     hereOutro: `Short of inventing extra names. Open a card, then **Take me there** so Maps can show the pin and hours.`,
-    about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list like Al Rabwah. We’re not a review site and we’re not delivery. [About](/en/about).
+    about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list like Ar Rabwah. We’re not a review site and we’re not delivery. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
   "as-sahafah": {
-    lead: `Al Sahafah sits on the north side of Riyadh. This page is the Sahafah cafes we’ve added so far.`,
-    hereIntro: `**{countWordCap}** cafes from Al Sahafah are on the catalog today:`,
+    lead: `As Sahafah sits on the north side of Riyadh. This page is the Sahafah cafes we’ve added so far.`,
+    hereIntro: `**{countWordCap}** cafes from As Sahafah are on the catalog today:`,
     hereOutro: `Soft launch length. Open a card when one fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
     about: `wain.lol is a small Riyadh coffee guide. Three suggestions, or a neighborhood list. [About](/en/about) has the longer note.
 
@@ -336,37 +336,37 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
   "al-nakheel": {
-    lead: `Al Nakheel’s page is the Nakheel cafes on the list today — a north Riyadh neighborhood.`,
-    hereIntro: `**{countWordCap}** cafes from Al Nakheel are on wain.lol right now:`,
+    lead: `An Nakheel’s page is the Nakheel cafes on the list today — a north Riyadh neighborhood.`,
+    hereIntro: `**{countWordCap}** cafes from An Nakheel are on wain.lol right now:`,
     hereOutro: `Short of what we’ve actually added. **Take me there** opens Maps for the pin and today’s hours.`,
     about: `Browse by area or ask the chat. More on [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
   olaya: {
-    lead: `Olaya is the central stretch a lot of people already know. This is the Olaya set on wain.lol, each with a Maps link.`,
-    hereIntro: `There are **{count}** cafes from Olaya on the list right now:`,
+    lead: `Al Olaya is the central stretch a lot of people already know. This is the Al Olaya set on wain.lol, each with a Maps link.`,
+    hereIntro: `There are **{count}** cafes from Al Olaya on the list right now:`,
     hereOutro: `Open a card when a name fits, then **Take me there**. Hours and the exact pin live on Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or browse by area like Olaya. [About](/en/about).
+    about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or browse by area like Al Olaya. [About](/en/about).
 
 We’re Riyadh-only for now. Missing a place you like? Send a Maps link from the site.`,
   },
   sulimaniyah: {
-    lead: `Sulimaniyah sits beside Olaya and Tahlia. These are the Sulimaniyah cafes on the catalog so far.`,
-    hereIntro: `There are **{count}** cafes from Sulimaniyah on the catalog today:`,
+    lead: `As Sulimaniyah sits beside Al Olaya and Tahlia. These are the As Sulimaniyah cafes on the catalog so far.`,
+    hereIntro: `There are **{count}** cafes from As Sulimaniyah on the catalog today:`,
     hereOutro: `Pick one, open the card, and hit **Take me there** when you’re ready.`,
     about: `wain.lol helps you find coffee in Riyadh — ask for three suggestions, or open a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
   "al-rabi": {
-    lead: `Al Rabi (الربيع) is still a short north-Riyadh list. [Piccolo Roasters](/en/c/piccolo-al-rabi) and [Ashjar cafe](/en/c/ashjar-cafe-ar-rabi) are the two cards on this page today. We don’t pad it with names we haven’t added.`,
-    hereIntro: `There are **{count}** cafes from Al Rabi on wain.lol right now:`,
+    lead: `Ar Rabi (الربيع) is still a short north-Riyadh list. [Piccolo Roasters](/en/c/piccolo-al-rabi) and [Ashjar cafe](/en/c/ashjar-cafe-ar-rabi) are the two cards on this page today. We don’t pad it with names we haven’t added.`,
+    hereIntro: `There are **{count}** cafes from Ar Rabi on wain.lol right now:`,
     hereOutro: `That’s the set. Open a card, then **Take me there** for the Maps pin.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
-    meta: "Two cafes in Al Rabi on wain.lol — a north Riyadh list including Piccolo and Ashjar, each with a Maps link.",
+    meta: "Two cafes in Ar Rabi on wain.lol — a north Riyadh list including Piccolo and Ashjar, each with a Maps link.",
   },
   "al-masif": {
     lead: `Al Masif has one place on wain.lol right now. Short on purpose — only what we’ve actually added.`,
@@ -377,42 +377,42 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   "al-rahmaniyyah": {
-    lead: `Al Rahmaniyyah is on the catalog with a single shop for now. This page stays that honest.`,
-    hereIntro: `There is **{count}** cafe from Al Rahmaniyyah on the list right now:`,
+    lead: `Ar Rahmaniyyah is on the catalog with a single shop for now. This page stays that honest.`,
+    hereIntro: `There is **{count}** cafe from Ar Rahmaniyyah on the list right now:`,
     hereOutro: `**Take me there** opens Maps for the pin.`,
     about: `wain.lol helps you find coffee in Riyadh. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
   "al-shohda": {
-    lead: `Al Shohda is a small east-Riyadh list — one cafe added so far.`,
-    hereIntro: `There is **{count}** cafe from Al Shohda on the catalog today:`,
+    lead: `Ash Shuhada is a small east-Riyadh list — one cafe added so far.`,
+    hereIntro: `There is **{count}** cafe from Ash Shuhada on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   },
   "al-safa": {
-    lead: `Al Safa is an east Riyadh neighborhood on the list. Here are the Safa places we’ve added.`,
-    hereIntro: `There are **{count}** cafes from Al Safa on wain.lol right now:`,
+    lead: `As Safa is an east Riyadh neighborhood on the list. Here are the Safa places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from As Safa on wain.lol right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
     about: `Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
   },
   "al-rawdah": {
-    lead: `Al Rawdah (الروضة) is an east Riyadh neighborhood on the catalog. If you’re already in الروضة and you just want a coffee from the list, this is the Rawdah set on wain.lol.
+    lead: `Ar Rawdah (الروضة) is an east Riyadh neighborhood on the catalog. If you’re already in الروضة and you just want a coffee from the list, this is the Rawdah set on wain.lol.
 
 Names on this list include [HAI Coffee & Roasters](/en/c/hai-coffee-roasters-al-rawdah), [ON](/en/c/on-al-rawdah), and [Steam Roastery](/en/c/steam-roastery-al-rawdah). They’re here with the rest. We don’t rank them.
 
-That’s how many Al Rawdah places we’ve actually added.`,
-    hereIntro: `There are **{count}** cafes from Al Rawdah on the catalog today:`,
+That’s how many Ar Rawdah places we’ve actually added.`,
+    hereIntro: `There are **{count}** cafes from Ar Rawdah on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there**. Hours stay on Google Maps.`,
-    nearbyIntro: `If Al Rawdah isn’t the stop, these east-Riyadh lists are next door on the site:`,
+    nearbyIntro: `If Ar Rawdah isn’t the stop, these east-Riyadh lists are next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
-    meta: "Three cafes in Al Rawdah on wain.lol — an east Riyadh list including HAI, ON, and Steam, each with a Maps link.",
+    meta: "Three cafes in Ar Rawdah on wain.lol — an east Riyadh list including HAI, ON, and Steam, each with a Maps link.",
   },
   qurtubah: {
     lead: `Qurtubah is an east Riyadh neighborhood. These are the Qurtubah cafes on wain.lol — still only what’s in the catalog.`,
@@ -445,32 +445,32 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Twelve cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
   },
   "al-yarmouk": {
-    lead: `Al Yarmouk (اليرموك) sits out on Riyadh’s east side toward the Eastern Ring. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmouk set on wain.lol.
+    lead: `Al Yarmuk (اليرموك) sits out on Riyadh’s east side toward the Eastern Ring. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmuk set on wain.lol.
 
 Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other seven. We don’t rank them.
 
-The count is ten because that’s how many Al Yarmouk places we’ve added.`,
-    hereIntro: `There are **{count}** cafes from Al Yarmouk on the catalog today:`,
+The count is ten because that’s how many Al Yarmuk places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from Al Yarmuk on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    nearbyIntro: `If Al Yarmouk isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Yarmouk. [About](/en/about).
+    nearbyIntro: `If Al Yarmuk isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Yarmuk. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ten cafes in Al Yarmouk on wain.lol — an east Riyadh list including Silo, NOSOUND, and RATIO, each with a Maps link.",
+    meta: "Ten cafes in Al Yarmuk on wain.lol — an east Riyadh list including Silo, NOSOUND, and RATIO, each with a Maps link.",
   },
   "al-nahdah": {
-    lead: `Al Nahdah (النهضة) is a Riyadh حي on the city’s east side. If you’re already in النهضة and you just want a coffee from the catalog, this is the Al Nahdah set on wain.lol.
+    lead: `An Nahdah (النهضة) is a Riyadh حي on the city’s east side. If you’re already in النهضة and you just want a coffee from the catalog, this is the An Nahdah set on wain.lol.
 
 Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other seven. We don’t rank them.
 
-The count is ten because that’s how many Al Nahdah places we’ve added.`,
-    hereIntro: `There are **{count}** cafes from Al Nahdah on the catalog today:`,
+The count is ten because that’s how many An Nahdah places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from An Nahdah on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    nearbyIntro: `If Al Nahdah isn’t the stop, these east-Riyadh lists are next door on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Nahdah. [About](/en/about).
+    nearbyIntro: `If An Nahdah isn’t the stop, these east-Riyadh lists are next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nahdah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ten cafes in Al Nahdah on wain.lol — an east Riyadh list including Kapu, Ghazala, and Coffee Address, each with a Maps link.",
+    meta: "Ten cafes in An Nahdah on wain.lol — an east Riyadh list including Kapu, Ghazala, and Coffee Address, each with a Maps link.",
   },
   "al-manar": {
     lead: `Al Manar (المنار) sits on Riyadh’s east side. If you’re already in المنار and you just want a coffee from the catalog, this is the Al Manar set on wain.lol.
@@ -487,30 +487,30 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Two cafes in Al Manar on wain.lol — an east Riyadh list including VASE and Recaf I, each with a Maps link.",
   },
   "al-rayyan": {
-    lead: `Al Rayyan (الريان) is a Riyadh حي on the city’s east side. If you’re already in الريان and you just want a coffee from the catalog, this is the Al Rayyan set on wain.lol.
+    lead: `Ar Rayyan (الريان) is a Riyadh حي on the city’s east side. If you’re already in الريان and you just want a coffee from the catalog, this is the Ar Rayyan set on wain.lol.
 
 Names people ask about on this list include [Kultúra](/en/c/kultura-al-rayyan), [Amber Speciality Coffee & Roastery](/en/c/amber-speciality-al-rayyan), and [sica](/en/c/sica-al-rayyan). They’re on the page with the rest. We don’t rank them.
 
-The count is seven because that’s how many Al Rayyan places we’ve added.`,
-    hereIntro: `There are **{count}** cafes from Al Rayyan on the catalog today:`,
+The count is seven because that’s how many Ar Rayyan places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from Ar Rayyan on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    nearbyIntro: `If Al Rayyan isn’t the stop, these east-Riyadh lists are next door on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Rayyan. [About](/en/about).
+    nearbyIntro: `If Ar Rayyan isn’t the stop, these east-Riyadh lists are next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ar Rayyan. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Seven cafes in Al Rayyan on wain.lol — an east Riyadh list including Kultúra, Amber, and sica, each with a Maps link.",
+    meta: "Seven cafes in Ar Rayyan on wain.lol — an east Riyadh list including Kultúra, Amber, and sica, each with a Maps link.",
   },
   "al-rawabi": {
-    lead: `Al Rawabi (الروابي) is an east Riyadh neighborhood on the list. Here are the Rawabi places we’ve added.
+    lead: `Ar Rawabi (الروابي) is an east Riyadh neighborhood on the list. Here are the Rawabi places we’ve added.
 
 [THE IT](/en/c/the-it-al-rawabi) and [Essert](/en/c/essert-al-rawabi) are the two cards on this page today. We don’t invent extras.`,
-    hereIntro: `There are **{count}** cafes from Al Rawabi on wain.lol right now:`,
+    hereIntro: `There are **{count}** cafes from Ar Rawabi on wain.lol right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
-    nearbyIntro: `If Al Rawabi isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
+    nearbyIntro: `If Ar Rawabi isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
     about: `Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
-    meta: "Two cafes in Al Rawabi on wain.lol — an east Riyadh list including THE IT and Essert, each with a Maps link.",
+    meta: "Two cafes in Ar Rawabi on wain.lol — an east Riyadh list including THE IT and Essert, each with a Maps link.",
   },
   "al-fayha": {
     lead: `Al Fayha (الفيحاء) sits on Riyadh’s east side. This page is the Fayha cafes we’ve put on wain.lol so far — still only what’s in the catalog.
@@ -572,19 +572,19 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     meta: "One cafe in the Diplomatic Quarter on wain.lol — a Riyadh list including Jazean DQ, with a Maps link.",
   },
   "king-fahd": {
-    lead: `King Fahd (الملك فهد) is its own district on the catalog — Olaya Street runs through it, but this is not the Olaya page. This is the King Fahd set on wain.lol.
+    lead: `King Fahd District (الملك فهد) is its own district on the catalog — Al Olaya Street runs through it, but this is not the Al Olaya page. This is the King Fahd District set on wain.lol.
 
 [Markab](/en/c/markab-king-fahd) is the card we’ve added. Coffee first. We don’t invent extras.`,
-    hereIntro: `There is **{count}** cafe from King Fahd on the catalog today:`,
+    hereIntro: `There is **{count}** cafe from King Fahd District on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
-    nearbyIntro: `If King Fahd isn’t the stop, these central Riyadh lists sit on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like King Fahd. [About](/en/about).
+    nearbyIntro: `If King Fahd District isn’t the stop, these central Riyadh lists sit on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like King Fahd District. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in King Fahd on wain.lol — a Riyadh district list including Markab, with a Maps link.",
+    meta: "One cafe in King Fahd District on wain.lol — a Riyadh district list including Markab, with a Maps link.",
   },
   "at-taawun": {
-    lead: `At Taawun (التعاون) sits between Olaya and Al Mughrizat — a mid-north Riyadh حي of its own. This page is the At Taawun set on wain.lol so far.
+    lead: `At Taawun (التعاون) sits between Al Olaya and Al Mughrizat — a mid-north Riyadh حي of its own. This page is the At Taawun set on wain.lol so far.
 
 [FLOW MATCHA](/en/c/flow-matcha-at-taawun) is the name on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from At Taawun on the catalog today:`,
@@ -608,7 +608,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Al Mursalat on wain.lol — a Riyadh neighborhood list including Camel Step, with a Maps link.",
   },
   "al-murabba": {
-    lead: `Al Murabba (المربع) sits by Al Malaz and Olaya. This page is the Al Murabba set on wain.lol so far.
+    lead: `Al Murabba (المربع) sits by Al Malaz and Al Olaya. This page is the Al Murabba set on wain.lol so far.
 
 [Coffee Address](/en/c/coffee-address-al-murabba) is the name on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Al Murabba on the catalog today:`,
@@ -863,14 +863,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 };
 
 const CNI_BLURBS: Record<string, string> = {
-  "core-coffee-and-roastery-al-narjis": `**CORE COFFEE & ROASTERY** is on our list for Al Narjis on the north side of Riyadh — same Al Narjis page as CAF LAB and Repository. If you want another name from the same north-Riyadh list, the siblings are below.`,
-  "caf-lab-al-narjis": `**CAF LAB** is one of the Al Narjis places on wain.lol. If you’re already up north and you just want this shop, you’re in the right spot. Other Al Narjis names on the catalog are linked underneath.`,
-  "repository-coffee-roasters-al-narjis": `**Repository Coffee Roasters** is on the Al Narjis catalog with the other north-Riyadh names — same list as Core and CAF LAB, its own card. The rest of the Al Narjis list is linked below if you want to hop.`,
+  "core-coffee-and-roastery-al-narjis": `**CORE COFFEE & ROASTERY** is on our list for An Narjis on the north side of Riyadh — same An Narjis page as CAF LAB and Repository. If you want another name from the same north-Riyadh list, the siblings are below.`,
+  "caf-lab-al-narjis": `**CAF LAB** is one of the An Narjis places on wain.lol. If you’re already up north and you just want this shop, you’re in the right spot. Other An Narjis names on the catalog are linked underneath.`,
+  "repository-coffee-roasters-al-narjis": `**Repository Coffee Roasters** is on the An Narjis catalog with the other north-Riyadh names — same list as Core and CAF LAB, its own card. The rest of the An Narjis list is linked below if you want to hop.`,
   "jazel-speciality-cafe-diriyah": `**Jazel speciality cafe** is on the Diriyah list on wain.lol — west of the usual north-Riyadh loop. Other Diriyah places we’ve added sit on the same neighborhood list if this one isn’t the stop.`,
   "qirat-al-yasmin": `**Qirat – Specialty Coffee** is one of the Al Yasmin cafes on wain.lol. If you’re browsing that north-Riyadh neighborhood next to Malqa and Narjis, this is the card. The other Yasmin names on the catalog are linked below — we don’t invent extras.`,
   "cred-al-mughrizat": `Al Mughrizat is a short list on wain.lol, and **CRED** is the cafe on it today. We only add what we have. If you wanted a longer neighborhood list, the district page points at nearby areas we actually cover. There’s no sibling cafe on this list yet.`,
-  "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Al Rabwah catalog — east of the Olaya–Wurud stretch, its own neighborhood page. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
-  "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the Al Sahafah list. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
+  "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Ar Rabwah catalog — east of the Al Olaya–Wurud stretch, its own neighborhood page. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
+  "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the As Sahafah list. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
   "archi-ghirnatah": `**Archi Granada** is on the Ghirnatah list — east Riyadh. Other Granada-area places on wain.lol are linked below if you want to stay on that side of the city.`,
   "serene-coffee-roastery": `**SERENE COFFEE ROASTERY** is on the Al Hamra list on wain.lol — the east-belt page. Catalog tags on the card: Roastery. Other الحمراء names sit underneath if this one isn’t the stop.`,
   "rimthan-coffee-al-hamra": `**Rimthan + Coffee** is one of the Al Hamra cafes on wain.lol. If you’re already on that east-Riyadh stretch and you want this card, you’re in the right spot. The rest of the Al Hamra catalog is linked below.`,
@@ -882,26 +882,26 @@ const CNI_BLURBS: Record<string, string> = {
   "drip-al-hamra": `This is the **Drip** page on wain.lol for Al Hamra. Other Al Hamra names on the catalog sit below if you want to stay in that حي.`,
   "coffee-address-al-hamra": `**Coffee Address** is on the Al Hamra catalog on wain.lol. If this east-belt name is the one you wanted, the card is here. We don’t invent extras; the other الحمراء shops we’ve added are linked below.`,
   "glint-al-hamra": `Al Hamra has **Glint** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Hamra places on wain.lol are linked below.`,
-  "silo-cafe-al-yarmouk": `**Silo Cafe** is on the Al Yarmouk list on wain.lol. Catalog tags on the card: Roastery. Other اليرموك names sit underneath if this one isn’t the stop.`,
-  "nosound-al-yarmouk": `This is the **NOSOUND** page on wain.lol for Al Yarmouk. Other Al Yarmouk names on the catalog sit below if you want to stay in that حي.`,
-  "obo-speciality-al-yarmouk": `**OBO Speciality Coffee** is on the Al Yarmouk catalog — its own east-Riyadh pin. Other اليرموك names we’ve added are linked underneath.`,
-  "shafel-roastery-al-yarmouk": `**Shafel Coffee Roastery** is on the wain.lol list for Al Yarmouk in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Silo and RATIO, its own pin. Hop the other اليرموك cards below if you want a different name.`,
-  "coffee-address-al-yarmouk": `**Coffee Address** is on the Al Yarmouk catalog on wain.lol. This is the اليرموك pin. We don’t invent extras; the other Al Yarmouk shops we’ve added are linked below.`,
-  "aleel-roastery-al-yarmouk": `Al Yarmouk has **Aleel Roastery** on the catalog. Catalog tags on the card: Roastery. This is the card if you want that name from the اليرموك list. Siblings from the same حي sit below.`,
-  "bourbon-al-yarmouk": `**Bourbon Speciality Coffee** is one of the Al Yarmouk cafes on wain.lol. If you’re already out toward the Eastern Ring and you want this card, you’re in the right spot. The rest of the Al Yarmouk catalog is linked below.`,
-  "ratio-speciality-al-yarmouk": `**RATIO Speciality Coffee** is on the Al Yarmouk list. The other Al Yarmouk places on the catalog are linked below.`,
-  "coffee-zam-al-yarmouk": `**COFFEE ZAM** is on the wain.lol list for Al Yarmouk in Riyadh. Same neighborhood page as Silo and NOSOUND, its own pin. Hop the other اليرموك cards below if you want a different name.`,
-  "nus-talqimah-al-yarmouk": `Al Yarmouk has **Nus Talqimah** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Yarmouk places on wain.lol are linked below.`,
-  "kapu-cafe-al-nahdah": `**Kapu Cafe** is on the Al Nahdah list on wain.lol. Catalog tags on the card: Roastery. Other النهضة names sit underneath if this one isn’t the stop.`,
-  "dahal-specialty-al-nahdah": `**Dahal Specialty Coffee** is on the Al Nahdah catalog — its own النهضة pin. Other النهضة names we’ve added are linked underneath.`,
-  "ghazala-cafe-al-nahdah": `This is the **Ghazala Cafe** page on wain.lol for Al Nahdah. Other Al Nahdah names on the catalog sit below if you want to stay in that حي.`,
-  "shafel-roastery-al-nahdah": `**Shafel Coffee Roastery** is on the wain.lol list for Al Nahdah in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Kapu and Coffee Address, its own pin. Hop the other النهضة cards below if you want a different name.`,
-  "half-ten-al-nahdah": `**Half Ten** is one of the Al Nahdah cafes on wain.lol. If you’re already in النهضة and you want this card, you’re in the right spot. The rest of the Al Nahdah catalog is linked below.`,
-  "bon-ferro-al-nahdah": `Al Nahdah has **Bon Ferro Specialty Coffee** on the catalog. This is the card if you want that name from the النهضة list. Siblings from the same حي sit below.`,
-  "coffee-address-al-nahdah": `**Coffee Address** is on the Al Nahdah catalog on wain.lol. This is the النهضة pin. We don’t invent extras; the other Al Nahdah shops we’ve added are linked below.`,
-  "chord-daily-coffee-al-nahdah": `**Chord Daily Coffee** is on the Al Nahdah list. The other Al Nahdah places on the catalog are linked below.`,
-  "taco-cup-al-nahdah": `**TACO CUP** is on the wain.lol list for Al Nahdah in Riyadh. Same neighborhood page as Kapu and Ghazala, its own pin. Hop the other النهضة cards below if you want a different name.`,
-  "awj-cafe-al-nahdah": `Al Nahdah has **Awj Cafe** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Nahdah places on wain.lol are linked below.`,
+  "silo-cafe-al-yarmouk": `**Silo Cafe** is on the Al Yarmuk list on wain.lol. Catalog tags on the card: Roastery. Other اليرموك names sit underneath if this one isn’t the stop.`,
+  "nosound-al-yarmouk": `This is the **NOSOUND** page on wain.lol for Al Yarmuk. Other Al Yarmuk names on the catalog sit below if you want to stay in that حي.`,
+  "obo-speciality-al-yarmouk": `**OBO Speciality Coffee** is on the Al Yarmuk catalog — its own east-Riyadh pin. Other اليرموك names we’ve added are linked underneath.`,
+  "shafel-roastery-al-yarmouk": `**Shafel Coffee Roastery** is on the wain.lol list for Al Yarmuk in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Silo and RATIO, its own pin. Hop the other اليرموك cards below if you want a different name.`,
+  "coffee-address-al-yarmouk": `**Coffee Address** is on the Al Yarmuk catalog on wain.lol. This is the اليرموك pin. We don’t invent extras; the other Al Yarmuk shops we’ve added are linked below.`,
+  "aleel-roastery-al-yarmouk": `Al Yarmuk has **Aleel Roastery** on the catalog. Catalog tags on the card: Roastery. This is the card if you want that name from the اليرموك list. Siblings from the same حي sit below.`,
+  "bourbon-al-yarmouk": `**Bourbon Speciality Coffee** is one of the Al Yarmuk cafes on wain.lol. If you’re already out toward the Eastern Ring and you want this card, you’re in the right spot. The rest of the Al Yarmuk catalog is linked below.`,
+  "ratio-speciality-al-yarmouk": `**RATIO Speciality Coffee** is on the Al Yarmuk list. The other Al Yarmuk places on the catalog are linked below.`,
+  "coffee-zam-al-yarmouk": `**COFFEE ZAM** is on the wain.lol list for Al Yarmuk in Riyadh. Same neighborhood page as Silo and NOSOUND, its own pin. Hop the other اليرموك cards below if you want a different name.`,
+  "nus-talqimah-al-yarmouk": `Al Yarmuk has **Nus Talqimah** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Yarmuk places on wain.lol are linked below.`,
+  "kapu-cafe-al-nahdah": `**Kapu Cafe** is on the An Nahdah list on wain.lol. Catalog tags on the card: Roastery. Other النهضة names sit underneath if this one isn’t the stop.`,
+  "dahal-specialty-al-nahdah": `**Dahal Specialty Coffee** is on the An Nahdah catalog — its own النهضة pin. Other النهضة names we’ve added are linked underneath.`,
+  "ghazala-cafe-al-nahdah": `This is the **Ghazala Cafe** page on wain.lol for An Nahdah. Other An Nahdah names on the catalog sit below if you want to stay in that حي.`,
+  "shafel-roastery-al-nahdah": `**Shafel Coffee Roastery** is on the wain.lol list for An Nahdah in Riyadh. Catalog tags on the card: Roastery. Same neighborhood page as Kapu and Coffee Address, its own pin. Hop the other النهضة cards below if you want a different name.`,
+  "half-ten-al-nahdah": `**Half Ten** is one of the An Nahdah cafes on wain.lol. If you’re already in النهضة and you want this card, you’re in the right spot. The rest of the An Nahdah catalog is linked below.`,
+  "bon-ferro-al-nahdah": `An Nahdah has **Bon Ferro Specialty Coffee** on the catalog. This is the card if you want that name from the النهضة list. Siblings from the same حي sit below.`,
+  "coffee-address-al-nahdah": `**Coffee Address** is on the An Nahdah catalog on wain.lol. This is the النهضة pin. We don’t invent extras; the other An Nahdah shops we’ve added are linked below.`,
+  "chord-daily-coffee-al-nahdah": `**Chord Daily Coffee** is on the An Nahdah list. The other An Nahdah places on the catalog are linked below.`,
+  "taco-cup-al-nahdah": `**TACO CUP** is on the wain.lol list for An Nahdah in Riyadh. Same neighborhood page as Kapu and Ghazala, its own pin. Hop the other النهضة cards below if you want a different name.`,
+  "awj-cafe-al-nahdah": `An Nahdah has **Awj Cafe** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other An Nahdah places on wain.lol are linked below.`,
   "serb-specialty-al-munsiyah": `**Serb Specialty Coffee** is on the Al Munsiyah list on wain.lol. Other المونسية names sit underneath if this one isn’t the stop.`,
   "roasting-stages-al-munsiyah": `**Roasting Stages** is on the Al Munsiyah catalog — a roastery card on that east-Riyadh page. Catalog tags on the card: Roastery. Other المونسية names we’ve added are linked underneath.`,
   "eagle-coffee-al-munsiyah": `This is the **Eagle Coffee** page on wain.lol for Al Munsiyah. Other Al Munsiyah names on the catalog sit below if you want to stay in that حي.`,
@@ -923,9 +923,9 @@ const CNI_BLURBS: Record<string, string> = {
   "public-al-naseem-sharqi": `This is the **Public** page on wain.lol for An Nasim Ash Sharqi. Other An Nasim Ash Sharqi names on the catalog sit below if you want to stay in that حي.`,
   "be-such-al-naseem-gharbi": `**BE SUCH** is on the wain.lol list for An Nasim Al Gharbi in Riyadh. Same neighborhood page as Trivali and Gusn, its own pin. Hop the other النسيم الغربي cards below if you want a different name.`,
   "brew92-an-nada": `**Brew 92 - Al Nada** is on the An Nada list on wain.lol. Catalog tags on the card: Roastery. Other الندى names sit underneath if this one isn’t the stop — short list, only what’s added.`,
-  "ashjar-cafe-ar-rabi": `**Ashjar cafe** is one of the Al Rabi cafes on wain.lol. Same الربيع page as Piccolo, its own pin. Hop the other Al Rabi card below if you want a different name.`,
+  "ashjar-cafe-ar-rabi": `**Ashjar cafe** is one of the Ar Rabi cafes on wain.lol. Same الربيع page as Piccolo, its own pin. Hop the other Ar Rabi card below if you want a different name.`,
   "jazean-diplomatic-quarter": `This is the **Jazean DQ** page on wain.lol for the Diplomatic Quarter. The الحي الدبلوماسي list is that card today. Full neighborhood page is linked below.`,
-  "markab-king-fahd": `**Markab** is on the King Fahd list on wain.lol — الملك فهد, not the Olaya district page. Coffee first. The rest of that حي sits below if another name lands.`,
+  "markab-king-fahd": `**Markab** is on the King Fahd District list on wain.lol — الملك فهد, not the Al Olaya district page. Coffee first. The rest of that حي sits below if another name lands.`,
 };
 
 const CAFE_OPENERS = [

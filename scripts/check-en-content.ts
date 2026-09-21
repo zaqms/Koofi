@@ -108,7 +108,7 @@ const wurudShops = shopsInDistrict("al-wurud");
 assert(wurudShops.length === 4, "al-wurud still has four catalog cafes");
 
 const narjis = districtEnMarkdown("al-narjis");
-assert(narjis.includes("# Coffee shops in Al Narjis"), "al-narjis has H1");
+assert(narjis.includes("# Coffee shops in An Narjis"), "al-narjis has H1");
 assert(narjis.includes("CORE COFFEE & ROASTERY"), "al-narjis names Core");
 assert(narjis.includes("CAF LAB"), "al-narjis names CAF LAB");
 assert(narjis.includes("Repository Coffee Roasters"), "al-narjis names Repository");

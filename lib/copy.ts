@@ -602,6 +602,16 @@ export const copy = {
     ar: "موقع غير متاح",
     en: "Location unavailable",
   },
+  /** Permission denied — not a missing shop pin. */
+  directoryDistancePermission: {
+    ar: "اسمح بالموقع عشان تشوف البعد.",
+    en: "Allow location to see distance.",
+  },
+  /** Granted or a fix arrived, but it is not a usable visitor origin. */
+  directoryDistanceUnread: {
+    ar: "ما قدرنا نقرأ موقعك.",
+    en: "Couldn't read your location.",
+  },
   neighborhoodsEmpty: {
     ar: "ما فيه حي بهالاسم.",
     en: "No neighborhoods match.",

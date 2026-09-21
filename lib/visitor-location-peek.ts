@@ -1,4 +1,8 @@
-export type VisitorLocationStatus = "pending" | "ready" | "unavailable";
+export type VisitorLocationStatus =
+  | "pending"
+  | "ready"
+  | "unavailable"
+  | "denied";
 
 export type GeoPermission = "granted" | "prompt" | "denied" | "unknown";
 

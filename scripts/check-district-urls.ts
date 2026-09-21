@@ -3491,6 +3491,18 @@ assert(
   "sitemap missing EN drive-through",
 );
 assert(
+  sitemap.includes("https://wain.lol/halfway<"),
+  "sitemap missing AR /halfway",
+);
+assert(
+  sitemap.includes("https://wain.lol/en/halfway<"),
+  "sitemap missing EN /halfway",
+);
+assert(
+  !sitemap.includes("/h/") && !sitemap.includes("/en/h/"),
+  "sitemap must not list invite session /h/{id} URLs",
+);
+assert(
   !sitemap.includes("good-for-a-date") &&
     !sitemap.includes("/coffee-shops/for-two") &&
     !sitemap.includes("soft-places"),

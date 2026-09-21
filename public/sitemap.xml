@@ -41,6 +41,16 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://wain.lol/halfway</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://wain.lol/en/halfway</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://wain.lol/llms.txt</loc>
     <lastmod>2026-09-21</lastmod>
     <changefreq>weekly</changefreq>

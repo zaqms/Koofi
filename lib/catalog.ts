@@ -1,3 +1,4 @@
+import addedAtFile from "../data/catalog-added-at.json";
 import catalogFile from "../data/catalog.json";
 import popularityIndexFile from "../data/popularity-index.json";
 import { DEFAULT_LIVE_CITY } from "./cities";
@@ -17,6 +18,13 @@ export {
 
 const catalog = catalogFile as CatalogFile;
 const POPULARITY_INDEX = popularityIndexFile as Record<string, number>;
+/**
+ * First commit that introduced each shop id. See data/catalog-added-at.json.
+ * Not baked onto catalog.json so shop merges do not have to touch hours/pins.
+ */
+const CATALOG_ADDED_AT = (
+  addedAtFile as { addedAt: Record<string, string> }
+).addedAt;
 
 function withBakedPopularity(shop: Shop): Shop {
   const popularityIndex = POPULARITY_INDEX[shop.id];
@@ -92,6 +100,7 @@ function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
         photoUrl: shop.photoUrl,
         logoUrl: shop.logoUrl,
         catalogIndex: added.get(shop.id) ?? -1,
+        addedAt: CATALOG_ADDED_AT[shop.id],
         ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
       };
     });

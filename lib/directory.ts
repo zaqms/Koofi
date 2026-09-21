@@ -13,8 +13,13 @@ export type DirectoryShop = {
   logoUrl?: string;
   lat?: number;
   lng?: number;
-  /** Position in the live Wain catalog. Later index = added more recently. */
+  /** Position in the live Wain catalog. Later index breaks same-`addedAt` ties. */
   catalogIndex: number;
+  /**
+   * ISO time this shop id was added to the Wain catalog.
+   * District "New" reads this. Not a café opening date.
+   */
+  addedAt?: string;
 };
 
 export function directoryNeighborhoods(

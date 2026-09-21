@@ -2,7 +2,7 @@ import { listDirectoryShops } from "./catalog";
 import type { DirectoryShop } from "./directory";
 
 /**
- * v1 allowlist — catalog shops have no addedAt/createdAt.
+ * v1 allowlist. Not derived from catalog addedAt.
  * Skip any id that is missing or example.
  */
 export const NEW_THIS_WEEK_IDS = [

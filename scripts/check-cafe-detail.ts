@@ -64,7 +64,7 @@ assert(
   "AR related heading is قهاوي {الحي}",
 );
 assert(
-  neighborhoodCafesHeading("Al Rahmaniyyah", "en") === "Al Rahmaniyyah cafés",
+  neighborhoodCafesHeading("Ar Rahmaniyyah", "en") === "Ar Rahmaniyyah cafés",
   "EN related heading is {Neighborhood} cafés",
 );
 assert(

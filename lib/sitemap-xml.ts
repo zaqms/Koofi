@@ -1,4 +1,5 @@
 import { listRealShops } from "./catalog";
+import { listLiveCatalogDistrictIds } from "./district-dictionary";
 import {
   aboutPath,
   cardPath,
@@ -12,7 +13,6 @@ import {
   neighborhoodsPath,
   PUBLIC_SITE_URL,
 } from "./product";
-import { NEIGHBORHOOD_IDS } from "./types";
 
 /** Canonical sitemap for robots.txt and GSC. Apex only. */
 export const SITEMAP_PATH = "/sitemap.xml" as const;
@@ -62,7 +62,7 @@ function sitemapPaths(): string[] {
     paths.push(cardPath(shop.id, "ar"), cardPath(shop.id, "en"));
   }
 
-  for (const id of NEIGHBORHOOD_IDS) {
+  for (const id of listLiveCatalogDistrictIds()) {
     paths.push(districtPath(id, "ar"), districtPath(id, "en"));
   }
 

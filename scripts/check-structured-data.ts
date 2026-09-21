@@ -86,7 +86,7 @@ assert(!("image" in arLd), "JSON-LD has no image");
 const enLd = shopJsonLd(sample, "en");
 assert(enLd.name === sample.nameEn, "EN JSON-LD name is nameEn");
 assert(enLd.url === `https://wain.lol/en/c/${sample.id}`, "EN card URL");
-assert(enLd.address.addressLocality === "Olaya", "EN locality");
+assert(enLd.address.addressLocality === "Al Olaya", "EN locality");
 
 const apiShop = publicShopPayload(sample.id);
 assert(apiShop, "API payload exists");
@@ -228,8 +228,10 @@ assert(
     !sitemap.includes("/coffee-shops/for-two") &&
     !sitemap.includes("/coffee-shops/date<") &&
     !sitemap.includes("/en/coffee-shops/date<") &&
-    !sitemap.includes("soft-places"),
-  "sitemap excludes dating and Soft Places slugs",
+    !sitemap.includes("soft-places") &&
+    !sitemap.includes("/coffee-shops/as-suwaidi<") &&
+    !sitemap.includes("/en/coffee-shops/as-suwaidi<"),
+  "sitemap excludes dating, Soft Places, and 0-shop districts",
 );
 assert(
   sitemap.includes("https://wain.lol/neighborhoods<"),

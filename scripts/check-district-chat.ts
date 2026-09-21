@@ -80,6 +80,13 @@ assert(extractPrimaryDistrict("Al Narjis") === "al-narjis", "Al Narjis");
 assert(extractPrimaryDistrict("النرجس") === "al-narjis", "النرجس");
 assert(extractPrimaryDistrict("alnarjis") === "al-narjis", "alnarjis");
 assert(extractPrimaryDistrict("Olaya") === "olaya", "Olaya");
+assert(extractPrimaryDistrict("Al Olaya") === "olaya", "Al Olaya");
+assert(extractPrimaryDistrict("As Sulimaniyah") === "sulimaniyah", "As Sulimaniyah");
+assert(extractPrimaryDistrict("An Narjis") === "al-narjis", "An Narjis");
+assert(extractPrimaryDistrict("An Nakheel") === "al-nakheel", "An Nakheel");
+assert(extractPrimaryDistrict("Ash Shuhada") === "al-shohda", "Ash Shuhada");
+assert(extractPrimaryDistrict("Al Ghadir") === "al-ghadeer", "Al Ghadir");
+assert(extractPrimaryDistrict("King Fahd District") === "king-fahd", "King Fahd District");
 assert(extractPrimaryDistrict("العليا") === "olaya", "العليا");
 assert(extractPrimaryDistrict("quiet in Hittin") === "hittin", "quiet in Hittin");
 assert(

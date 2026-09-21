@@ -1,4 +1,4 @@
-import { listDirectoryShops } from "./catalog";
+import { listDirectoryShops, listRealShops } from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { directoryNeighborhoods } from "./directory";
 import { districtCity } from "./district-city";
@@ -13,6 +13,13 @@ import type { City, Language, NeighborhoodId } from "./types";
  */
 export function listLiveDistrictIds(): NeighborhoodId[] {
   return directoryNeighborhoods(listDirectoryShops());
+}
+
+/** Real catalog shops — sitemap / browse destinations. 0-shop ids stay out. */
+export function listLiveCatalogDistrictIds(): NeighborhoodId[] {
+  return directoryNeighborhoods(
+    listRealShops().map((shop) => ({ neighborhood: shop.neighborhood })),
+  );
 }
 
 export function dictionaryDistrictIds(): NeighborhoodId[] {

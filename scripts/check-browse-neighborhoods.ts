@@ -110,11 +110,11 @@ const WADI_REFILL_DISTRICTS = ["al-wadi"] as const;
 const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
 const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
-const SCOUT_GAP_DISTRICTS = ["as-suwaidi"] as const;
+const EMPTY_DICTIONARY_DISTRICTS = ["as-suwaidi"] as const;
 
 assert(
-  browseNeighborhoodLabel("sulimaniyah", "en") === "Al Sulaymaniyah",
-  "EN Sulimaniyah uses Al Sulaymaniyah",
+  browseNeighborhoodLabel("sulimaniyah", "en") === "As Sulimaniyah",
+  "EN Sulimaniyah uses locked As Sulimaniyah",
 );
 assert(
   browseNeighborhoodLabel("olaya", "en") === "Al Olaya",
@@ -126,9 +126,25 @@ assert(NEIGHBORHOODS.hittin.ar === "حطين", "catalog Hittin Arabic stays حط
 assert(browseNeighborhoodLabel("al-nakheel", "en") === "An Nakheel", "EN An Nakheel");
 assert(browseNeighborhoodLabel("as-sahafah", "en") === "As Sahafah", "EN As Sahafah");
 assert(browseNeighborhoodLabel("al-rabi", "en") === "Ar Rabi", "EN Ar Rabi");
-assert(browseNeighborhoodLabel("ghirnatah", "en") === "Granada", "EN Granada");
+assert(browseNeighborhoodLabel("ghirnatah", "en") === "Ghirnatah", "EN Ghirnatah");
 assert(browseNeighborhoodLabel("al-rawdah", "en") === "Ar Rawdah", "EN Ar Rawdah");
 assert(browseNeighborhoodLabel("al-yarmouk", "en") === "Al Yarmuk", "EN Al Yarmuk");
+assert(
+  browseNeighborhoodLabel("al-narjis", "en") === "An Narjis",
+  "EN An Narjis",
+);
+assert(
+  browseNeighborhoodLabel("al-ghadeer", "en") === "Al Ghadir",
+  "EN Al Ghadir",
+);
+assert(
+  browseNeighborhoodLabel("king-fahd", "en") === "King Fahd District",
+  "EN King Fahd District",
+);
+assert(
+  browseNeighborhoodLabel("al-shohda", "en") === "Ash Shuhada",
+  "EN Ash Shuhada",
+);
 assert(
   browseNeighborhoodLabel("diplomatic-quarter", "en") === "Diplomatic Quarter",
   "EN Diplomatic Quarter label",
@@ -147,11 +163,20 @@ const rowsEn = listNeighborhoodRows("en", shops);
 const rowsAr = listNeighborhoodRows("ar", shops);
 const live = directoryNeighborhoods(shops);
 
-assert(rowsEn.length === NEIGHBORHOOD_IDS.length, "view-all lists every catalog district");
-assert(rowsAr.length === NEIGHBORHOOD_IDS.length, "AR view-all lists the same districts");
 assert(
-  rowsEn.every((row) => NEIGHBORHOOD_IDS.includes(row.id)),
-  "view-all rows stay on catalog ids",
+  rowsEn.length === live.length,
+  "view-all lists every live-with-shops district",
+);
+assert(rowsAr.length === live.length, "AR view-all lists the same live districts");
+assert(
+  rowsEn.every((row) => NEIGHBORHOOD_IDS.includes(row.id) && row.cafeCount > 0),
+  "view-all rows stay on live catalog ids",
+);
+assert(
+  EMPTY_DICTIONARY_DISTRICTS.every(
+    (id) => !rowsEn.some((row) => row.id === id),
+  ),
+  "0-shop dictionary districts stay out of live browse",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -201,8 +226,6 @@ for (const row of rowsEn) {
       row.cafeCount === 5,
       `${row.id} Malaz refill has 5 cafes, got ${row.cafeCount}`,
     );
-  } else if ((SCOUT_GAP_DISTRICTS as readonly string[]).includes(row.id)) {
-    assert(row.cafeCount === 0, `${row.id} is a Scout-gap district (0 cafes)`);
   } else {
     assert(row.cafeCount > 0, `${row.id} has at least one cafe`);
   }
@@ -323,8 +346,12 @@ assert(az.some((row) => row.id === "an-nasim"), "A–Z includes an-nasim");
 assert(az.some((row) => row.id === "shubra"), "A–Z includes shubra");
 assert(az.some((row) => row.id === "manfuha"), "A–Z includes manfuha");
 assert(az.some((row) => row.id === "tuwaiq"), "A–Z includes tuwaiq");
-assert(az.some((row) => row.id === "as-suwaidi"), "A–Z includes as-suwaidi");
-assert(az.length === 67, "A–Z is the 67 catalog districts");
+assert(
+  !az.some((row) => row.id === "as-suwaidi"),
+  "A–Z excludes 0-shop as-suwaidi",
+);
+assert(az.length === live.length, "A–Z is the live-with-shops districts");
+assert(az.length === 66, "A–Z is the 66 live catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

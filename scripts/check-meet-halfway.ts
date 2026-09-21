@@ -798,7 +798,6 @@ assert(
 
 const kapu = SHOPS.find((shop) => shop.id === "kapu-cafe-al-nahdah");
 const shafel = SHOPS.find((shop) => shop.id === "shafel-roastery-al-nahdah");
-const getUp = SHOPS.find((shop) => shop.id === "get-up-coffee-ar-rabwah");
 const flow = SHOPS.find((shop) => shop.id === "flow-matcha-at-taawun");
 assert(
   kapu?.placeId === "ChIJHZ3CbwCrLz4R9r0bYpDJLmo" &&
@@ -814,11 +813,12 @@ assert(
   "Shafel Nahdah is Amjad deny / pickup-ineligible",
 );
 assert(
-  getUp?.baynanaEligible === null &&
-    !isHalfwayEligible(getUp!) &&
-    flow?.pickupOnly === true &&
-    !isHalfwayEligible(flow),
-  "Get Up + FLOW Matcha stay fail-closed / pickup-only",
+  !SHOPS.some((shop) => shop.id === "get-up-coffee-ar-rabwah"),
+  "wrong Get Up Ar Rabwah listing stays dropped",
+);
+assert(
+  flow?.pickupOnly === true && !isHalfwayEligible(flow),
+  "FLOW Matcha stays pickup-only",
 );
 const vouteNaseem = SHOPS.find((shop) => shop.id === "voute-fot-al-naseem-sharqi");
 const gusnNaseem = SHOPS.find((shop) => shop.id === "gusn-coffee-al-naseem-gharbi");

@@ -114,7 +114,6 @@ const BATCH2_IDS = [
   "sand-clock-as-sulimaniyah",
   "carve-roastery-ar-rabwah",
   "yly-specialty-coffee-ar-rabwah",
-  "get-up-coffee-ar-rabwah",
   "carve-coffee-bar-al-wurud",
   "eya-specialty-coffee-al-wurud",
   "the-gate-specialty-coffee-al-wurud",
@@ -441,7 +440,7 @@ assert(
       batch6HeroIds.length,
   "batch 1–5 cafe-heroes stay; batch 6 merges in",
 );
-assert(batch2HeroIds.length === 50, "batch 2 50-shop hero set is complete");
+assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");

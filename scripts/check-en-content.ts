@@ -181,6 +181,10 @@ assert(
   "as-suwaidi EN must not keep the closed card link",
 );
 assert(
+  !districtEnMarkdown("al-rabwah").includes("/en/c/get-up-coffee-ar-rabwah"),
+  "al-rabwah EN must not keep the wrong Get Up card link",
+);
+assert(
   shopsInDistrict("as-suwaidi").length === 0,
   "as-suwaidi catalog is empty after the closed drop",
 );
@@ -555,6 +559,10 @@ for (const district of liveDistricts) {
 assert(
   !districtArMarkdown("as-suwaidi").includes("/c/drcafe-as-suwaidi"),
   "as-suwaidi AR must not keep the closed card link",
+);
+assert(
+  !districtArMarkdown("al-rabwah").includes("/c/get-up-coffee-ar-rabwah"),
+  "al-rabwah AR must not keep the wrong Get Up card link",
 );
 
 const arBlurbs = new Set<string>();

@@ -917,7 +917,7 @@ const CNI_BLURBS: Record<string, string> = {
   "tamper-speciality-al-naseem-sharqi": `This is the **Tamper Speciality Coffee** page on wain.lol for An Nasim Ash Sharqi. Other An Nasim Ash Sharqi names on the catalog sit below if you want to stay in that حي.`,
   "luxo-coffee-al-naseem-sharqi": `**LUXO Coffee** is on the wain.lol list for An Nasim Ash Sharqi in Riyadh. Same neighborhood page as VOÛTE and JARO, its own pin. Hop the other النسيم الشرقي cards below if you want a different name.`,
   "ma-specialty-al-naseem-sharqi": `**MA Specialty Coffee** is one of the An Nasim Ash Sharqi cafes on wain.lol. If you’re already in النسيم الشرقي and you want this card, you’re in the right spot. The rest of the An Nasim Ash Sharqi catalog is linked below.`,
-  "get-up-coffee-al-naseem-sharqi": `An Nasim Ash Sharqi has **GET UP COFFEE** on the catalog. This is the النسيم الشرقي branch — a distinct pin from the Rabwah shop. Siblings from the same حي sit below.`,
+  "get-up-coffee-al-naseem-sharqi": `An Nasim Ash Sharqi has **GET UP COFFEE** on the catalog. This is the النسيم الشرقي card. Siblings from the same حي sit below.`,
   "trivali-roaster-al-naseem-gharbi": `**Trivali Roaster** is on the An Nasim Al Gharbi list on wain.lol. Catalog tags on the card: Roastery. Other النسيم الغربي names sit underneath if this one isn’t the stop.`,
   "gusn-coffee-al-naseem-gharbi": `**Gusn Coffee (Al Naseem)** is on the An Nasim Al Gharbi catalog — its own النسيم الغربي pin. Other النسيم الغربي names we’ve added are linked underneath.`,
   "public-al-naseem-sharqi": `This is the **Public** page on wain.lol for An Nasim Ash Sharqi. Other An Nasim Ash Sharqi names on the catalog sit below if you want to stay in that حي.`,

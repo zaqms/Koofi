@@ -175,8 +175,8 @@ assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 292, `specialty discovery 285→292, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 359, `catalog 352→359 with Ar Rabwah Scout-7, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 291, `specialty discovery 292→291 after dropping wrong Get Up Rabwah, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 358, `catalog 359→358 after dropping wrong Get Up Rabwah, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1696,9 +1696,22 @@ assertDistinctPlaceHex(
   ["sand-clock-al-muruj", "sand-clock-as-sulimaniyah"],
   "Sand Clock",
 );
-assertDistinctPlaceHex(
-  ["get-up-coffee-ar-rabwah", "get-up-coffee-al-naseem-sharqi"],
-  "GET UP",
+assert(
+  !getShop("get-up-coffee-ar-rabwah"),
+  "wrong Get Up Ar Rabwah listing stays dropped — not a café",
+);
+assert(
+  getShop("get-up-coffee-al-naseem-sharqi")?.placeId ===
+    "ChIJc_6fwjIHLz4Ra7l6xNArkUM" &&
+    getShop("get-up-coffee-al-naseem-sharqi")?.neighborhood ===
+      "an-nasim-ash-sharqi",
+  "Nasim GET UP COFFEE stays a different shop",
+);
+assert(
+  !listDirectoryShopsForDistrict("al-rabwah").some(
+    (shop) => shop.id === "get-up-coffee-ar-rabwah",
+  ),
+  "al-rabwah directory must not keep the wrong Get Up listing",
 );
 assertDistinctPlaceHex(
   [

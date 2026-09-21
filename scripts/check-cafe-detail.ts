@@ -567,6 +567,8 @@ assert(!detail.includes("DirectoryCard"), "detail is not the listing card");
 assert(!detail.includes("CardBeen"), "Been here stays off the identity layout");
 assert(!detail.includes("ownThisCafe"), "Own this cafe stays off the identity card");
 assert(!detail.includes("listedOn"), "Listed on stays off the identity card");
+assert(!detail.includes("Listed on wain.lol"), "EN listed line stays off the identity card");
+assert(!detail.includes("معروض على wain.lol"), "AR listed line stays off the identity card");
 assert(!detail.includes("iframe"), "no embedded map");
 assert(!detail.includes("You might also like"), "no invented related heading");
 assert(!detail.includes("shop.hours"), "catalog hours are not painted");
@@ -595,7 +597,23 @@ assert(
   "header sits above the card, not under the essay",
 );
 assert(!page.includes("BrandHomeLink"), "old thin wordmark header is gone");
+assert(!page.includes("listedOn"), "Listed on stays off the public page shell");
+assert(!page.includes("Listed on wain.lol"), "EN listed line stays off the public page shell");
+assert(!page.includes("معروض على wain.lol"), "AR listed line stays off the public page shell");
 assert(!page.includes("backToChat"), "old back-to-chat line is gone from the thin page");
+
+const thinEarly = read("components/cafe-card.tsx");
+assert(!thinEarly.includes("listedOn"), "Listed on stays off the thin card");
+assert(!thinEarly.includes("Listed on wain.lol"), "EN listed line stays off the thin card");
+assert(!thinEarly.includes("معروض على wain.lol"), "AR listed line stays off the thin card");
+const claimFooter = read("components/cafe-claim-footer.tsx");
+assert(!claimFooter.includes("listedOn"), "claim footer does not render Listed on");
+assert(!claimFooter.includes("Listed on wain.lol"), "EN listed line is not in the claim footer");
+assert(!claimFooter.includes("معروض على wain.lol"), "AR listed line is not in the claim footer");
+const copySource = read("lib/copy.ts");
+assert(!copySource.includes("listedOn"), "listed chrome copy is stripped");
+assert(!copySource.includes("Listed on wain.lol"), "EN listed line is stripped from copy");
+assert(!copySource.includes("معروض على wain.lol"), "AR listed line is stripped from copy");
 
 const blurb = read("components/cafe-en-blurb.tsx");
 assert(blurb.includes('data-cafe-seo-essay=""'), "visible SEO body has a stable hook");
@@ -1097,7 +1115,10 @@ assert(!thin.includes("CafePassportCard"), "verified shops stay on CafeDetail");
 assert(!thin.includes("preferPassportUi"), "claim status does not pick a second layout");
 assert(!thin.includes("woodsPassportFixture"), "Woods fixture stays off the public card");
 assert(thin.includes("CafeClaimFooter"), "claim footer stays for SEO / claim path");
-assert(thin.includes("sr-only"), "Listed on / Own this cafe stay off the visible UI");
+assert(thin.includes("sr-only"), "Own this cafe stays off the visible UI");
+assert(!thin.includes("listedOn"), "Listed on stays off the thin card");
+assert(!thin.includes("Listed on wain.lol"), "EN listed line stays off the thin card");
+assert(!thin.includes("معروض على wain.lol"), "AR listed line stays off the thin card");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here stays parked on the thin card");
 assert(thin.includes("{SHOW_BEEN_HERE ?"), "Been here is not rendered while parked");
 assert(!thin.includes("CafePresenceRow"), "thin no longer mounts the old action row");

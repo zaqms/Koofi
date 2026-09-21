@@ -6,6 +6,7 @@ import {
   COFFEE_SHOP_CHIP_SLUGS,
   districtPath,
   feedbackPath,
+  halfwayPath,
   homePath,
   mostPopularPath,
   neighborhoodsPath,
@@ -50,6 +51,9 @@ function sitemapPaths(): string[] {
     feedbackPath("en"),
     neighborhoodsPath("ar"),
     neighborhoodsPath("en"),
+    // Real landings only — app/halfway + app/en/halfway both exist.
+    halfwayPath("ar"),
+    halfwayPath("en"),
     "/llms.txt",
   ];
 

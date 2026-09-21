@@ -715,10 +715,6 @@ export const copy = {
     ar: "البورد بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
     en: "The board is not connected yet. Try again later.",
   },
-  listedOn: {
-    ar: "معروض على wain.lol",
-    en: "Listed on wain.lol",
-  },
   ownThisCafe: {
     ar: "تملك المقهى؟",
     en: "Own this cafe?",

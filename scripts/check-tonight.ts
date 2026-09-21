@@ -178,7 +178,7 @@ assert(
 );
 assert(satoriArabicLine("العليا") === "العليا", "single Arabic word stays");
 assert(tonightDistrict(woods, "ar") === "العليا", "AR district");
-assert(tonightDistrict(woods, "en") === "Olaya", "EN district");
+assert(tonightDistrict(woods, "en") === "Al Olaya", "EN district");
 assert(tonightHeroForShop(cafu) === "/logos/cafu-olaya.jpg", "thin Cafu uses logo");
 const prevEnv = process.env.VERCEL_ENV;
 process.env.VERCEL_ENV = "preview";

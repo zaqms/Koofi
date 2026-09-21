@@ -222,7 +222,7 @@ assert(
   "al-safa Arabic label",
 );
 assert(
-  neighborhoodLabel("al-safa", "en") === "Al Safa",
+  neighborhoodLabel("al-safa", "en") === "As Safa",
   "al-safa English label",
 );
 assert(
@@ -296,7 +296,7 @@ assert(
   "al-rawdah Arabic label",
 );
 assert(
-  neighborhoodLabel("al-rawdah", "en") === "Al Rawdah",
+  neighborhoodLabel("al-rawdah", "en") === "Ar Rawdah",
   "al-rawdah English label",
 );
 assert(
@@ -562,7 +562,7 @@ assert(
   "al-yarmouk Arabic label",
 );
 assert(
-  neighborhoodLabel("al-yarmouk", "en") === "Al Yarmouk",
+  neighborhoodLabel("al-yarmouk", "en") === "Al Yarmuk",
   "al-yarmouk English label",
 );
 assert(
@@ -659,7 +659,7 @@ assert(
   "al-nahdah Arabic label",
 );
 assert(
-  neighborhoodLabel("al-nahdah", "en") === "Al Nahdah",
+  neighborhoodLabel("al-nahdah", "en") === "An Nahdah",
   "al-nahdah English label",
 );
 assert(
@@ -748,7 +748,7 @@ for (const id of [
   assert(rayyan.some((shop) => shop.id === id), `al-rayyan includes ${id}`);
 }
 assert(neighborhoodLabel("al-rayyan", "ar") === "الريان", "al-rayyan Arabic label");
-assert(neighborhoodLabel("al-rayyan", "en") === "Al Rayyan", "al-rayyan English label");
+assert(neighborhoodLabel("al-rayyan", "en") === "Ar Rayyan", "al-rayyan English label");
 for (const ask of ["الريان", "ريان", "rayyan", "al rayyan", "ar-rayyan"]) {
   assert(parseIntent(ask).neighborhoods.includes("al-rayyan"), `parseIntent(${ask}) should hit al-rayyan`);
 }
@@ -759,7 +759,7 @@ for (const id of ["the-it-al-rawabi", "essert-al-rawabi"]) {
   assert(rawabi.some((shop) => shop.id === id), `al-rawabi includes ${id}`);
 }
 assert(neighborhoodLabel("al-rawabi", "ar") === "الروابي", "al-rawabi Arabic label");
-assert(neighborhoodLabel("al-rawabi", "en") === "Al Rawabi", "al-rawabi English label");
+assert(neighborhoodLabel("al-rawabi", "en") === "Ar Rawabi", "al-rawabi English label");
 for (const ask of ["الروابي", "روابي", "rawabi", "al rawabi", "ar-rawabi"]) {
   assert(parseIntent(ask).neighborhoods.includes("al-rawabi"), `parseIntent(${ask}) should hit al-rawabi`);
 }
@@ -1013,7 +1013,7 @@ assert(
   "king-fahd Arabic label",
 );
 assert(
-  neighborhoodLabel("king-fahd", "en") === "King Fahd",
+  neighborhoodLabel("king-fahd", "en") === "King Fahd District",
   "king-fahd English label",
 );
 assert(
@@ -1077,7 +1077,7 @@ const WAVE1_DISTRICTS: {
   {
     id: "al-ghadeer",
     ar: "الغدير",
-    en: "Al Ghadeer",
+    en: "Al Ghadir",
     shops: [
       "kultura-al-ghadeer",
       "tad-coffee-al-ghadeer",
@@ -3358,6 +3358,11 @@ for (const id of areas) {
     `sitemap missing ${districtPath(id, "en")}`,
   );
 }
+assert(
+  !sitemap.includes("/coffee-shops/as-suwaidi<") &&
+    !sitemap.includes("/en/coffee-shops/as-suwaidi<"),
+  "sitemap excludes 0-shop as-suwaidi",
+);
 assert(!sitemap.includes("/n/"), "sitemap must drop retired /n/ paths");
 assert(!sitemap.includes("/en/n/"), "sitemap must drop retired /en/n/ paths");
 assert(!/Koofi/i.test(sitemap), "sitemap must not say Koofi");

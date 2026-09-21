@@ -88,19 +88,9 @@ export const NEIGHBORHOOD_SORTS: readonly NeighborhoodSort[] = [
 ];
 
 /**
- * EN labels for this section. Catalog `en` stays shorter
- * (Olaya, Sulimaniyah); the refs use the Al … forms.
+ * Browse EN uses the locked district dictionary (`NEIGHBORHOODS.en`).
+ * Shoug sheet 21 Sep 2026 — no separate Granada / Al Sulaymaniyah overlays.
  */
-const BROWSE_EN_LABELS: Partial<Record<NeighborhoodId, string>> = {
-  sulimaniyah: "Al Sulaymaniyah",
-  olaya: "Al Olaya",
-  "al-nakheel": "An Nakheel",
-  "as-sahafah": "As Sahafah",
-  "al-rabi": "Ar Rabi",
-  ghirnatah: "Granada",
-  "al-rawdah": "Ar Rawdah",
-  "al-yarmouk": "Al Yarmuk",
-};
 
 export type NeighborhoodIconKind =
   | "fortress"
@@ -199,10 +189,7 @@ export function browseNeighborhoodLabel(
   id: NeighborhoodId,
   language: Language,
 ): string {
-  if (language === "en") {
-    return BROWSE_EN_LABELS[id] ?? NEIGHBORHOODS[id].en;
-  }
-  return NEIGHBORHOODS[id].ar;
+  return neighborhoodLabel(id, language);
 }
 
 export function neighborhoodIconKind(id: NeighborhoodId): NeighborhoodIconKind {
@@ -276,13 +263,15 @@ export function listNeighborhoodRows(
   shops: readonly DirectoryShop[],
   city: City = DEFAULT_BROWSE_CITY,
 ): NeighborhoodRow[] {
-  return districtsInCity(city).map((id) => ({
-    id,
-    href: districtPath(id, language),
-    label: browseNeighborhoodLabel(id, language),
-    cafeCount: neighborhoodCafeCount(id, shops),
-    centroid: neighborhoodCentroidFromShops(id, shops),
-  }));
+  return districtsInCity(city)
+    .map((id) => ({
+      id,
+      href: districtPath(id, language),
+      label: browseNeighborhoodLabel(id, language),
+      cafeCount: neighborhoodCafeCount(id, shops),
+      centroid: neighborhoodCentroidFromShops(id, shops),
+    }))
+    .filter((row) => row.cafeCount > 0);
 }
 
 function compareAz(a: NeighborhoodRow, b: NeighborhoodRow, language: Language): number {

@@ -945,7 +945,7 @@ assert(
 );
 assert(
   formatHalfwayPlaceLabel(nakheelPin, "ar").includes("النخيل") &&
-    formatHalfwayPlaceLabel(nakheelPin, "en").includes("Al Nakheel"),
+    formatHalfwayPlaceLabel(nakheelPin, "en").includes("An Nakheel"),
   "Ready label has locked AR/EN neighborhood copy",
 );
 const inviteText = halfwayInviteShareText({

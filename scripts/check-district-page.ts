@@ -165,6 +165,23 @@ assert(DATE_CHIP_ID === "with-friends", "dating scrub stays with-friends");
 assert(DATE_CHIP_PUBLIC_SLUG === "with-friends", "public slug stays with-friends");
 assert(!product.includes("Good for a date"), "do not revive Good for a date");
 assert(!registry.includes("Good for a date"), "registry does not revive Good for a date");
+assert(
+  shopDirectory.includes("sortDistrictCafes") &&
+    shopDirectory.includes("DISTRICT_CAFE_SORTS") &&
+    shopDirectory.includes('marker="district"') &&
+    shopDirectory.includes("data-district-cafe-order"),
+  "district results mount Nearby | A–Z | New on the shared pills",
+);
+assert(
+  read("lib/district-cafe-sort.ts").includes('["nearby", "az", "new"]') &&
+    read("lib/district-cafe-sort.ts").includes("أ - ي"),
+  "district sort order and Arabic A–Z label",
+);
+assert(
+  !shopDirectory.includes("Soft Places") &&
+    !sortPills.includes("Soft Places"),
+  "Soft Places stay parked off the district sort",
+);
 assert(districtPage.includes("Soft Places stays parked"), "Soft Places stays parked");
 assert(!districtPage.includes("ثلاث الليلة"), "no Soft Places badge on district page");
 assert(!homeLanding.includes("Good for a date"), "home landing keeps the dating scrub");

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
@@ -25,6 +25,17 @@ import {
   sortDirectoryShops,
   type DirectoryResultSort,
 } from "@/lib/directory-sort";
+import {
+  DISTRICT_CAFE_SORT_COPY,
+  DISTRICT_CAFE_SORTS,
+  districtCafeSortServerSnapshot,
+  readDistrictCafeSort,
+  resolveDistrictCafeSort,
+  sortDistrictCafes,
+  subscribeDistrictCafeSort,
+  writeDistrictCafeSort,
+  type DistrictCafeSort,
+} from "@/lib/district-cafe-sort";
 import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
 import {
   districtPath,
@@ -78,6 +89,15 @@ export function ShopDirectory({
   const origin = originFromVisitor(visitor);
   const nearbyAvailable = origin != null;
   const [userSort, setUserSort] = useState<DirectoryResultSort | null>(null);
+  const storedDistrictSort = useSyncExternalStore(
+    subscribeDistrictCafeSort,
+    readDistrictCafeSort,
+    districtCafeSortServerSnapshot,
+  );
+  const districtSort = resolveDistrictCafeSort(
+    storedDistrictSort,
+    nearbyAvailable,
+  );
   const requested: DirectoryResultSort =
     userSort ?? (resultSort && nearbyAvailable ? "nearby" : "new");
   const waitingForNearby =
@@ -99,13 +119,31 @@ export function ShopDirectory({
           : filterDirectoryShops(shops, district),
     [popular, shops, moment, district],
   );
-  const visible = useMemo(
-    () =>
-      resultSort
-        ? sortDirectoryShops(filtered, sort, origin, language)
-        : filtered,
-    [resultSort, filtered, sort, origin, language],
-  );
+  const visible = useMemo(() => {
+    if (district) {
+      return sortDistrictCafes(filtered, districtSort, origin, language);
+    }
+    if (resultSort) {
+      return sortDirectoryShops(filtered, sort, origin, language);
+    }
+    return filtered;
+  }, [district, districtSort, resultSort, filtered, sort, origin, language]);
+
+  function pickDistrictSort(next: DistrictCafeSort) {
+    writeDistrictCafeSort(next);
+    trackEvent(
+      "directory_sort",
+      {
+        sort: next,
+        locale: language,
+        district_id: district ?? undefined,
+      },
+      { dedupeKey: `district_cafe_sort:${district}:${language}:${next}` },
+    );
+    if (next === "nearby" && !nearbyAvailable) {
+      void requestVisitorLocation({ retry: true });
+    }
+  }
 
   function pickSort(next: DirectoryResultSort) {
     setUserSort(next);
@@ -139,6 +177,9 @@ export function ShopDirectory({
     Boolean(chipId && isStaticDirectoryChip(chipId));
   const categoryId = district ?? (popular ? "popular" : chipId);
   const listedIds = visible.slice(0, 8).map((shop) => shop.id);
+  const feedbackResetIds = district
+    ? [...filtered].map((shop) => shop.id).sort()
+    : listedIds;
 
   return (
     <section
@@ -216,7 +257,17 @@ export function ShopDirectory({
       </div>
       ) : null}
 
-      {resultSort ? (
+      {district ? (
+        <DirectoryResultSortPills
+          language={language}
+          sort={districtSort}
+          sorts={DISTRICT_CAFE_SORTS}
+          labels={DISTRICT_CAFE_SORT_COPY}
+          marker="district"
+          onPick={pickDistrictSort}
+          nearbyAvailable={nearbyAvailable}
+        />
+      ) : resultSort ? (
         <DirectoryResultSortPills
           language={language}
           sort={selectedSort}
@@ -226,7 +277,10 @@ export function ShopDirectory({
         />
       ) : null}
 
-      <ul className="mt-4 grid gap-3">
+      <ul
+        className="mt-4 grid gap-3"
+        data-district-cafe-order={district ? districtSort : undefined}
+      >
         {visible.map((shop) => (
           <DirectoryCard key={shop.id} shop={shop} language={language} />
         ))}
@@ -248,7 +302,7 @@ export function ShopDirectory({
             <ResultsFeedbackBlock
               language={language}
               preset="category"
-              resetKey={`category:${categoryId ?? "none"}:${listedIds.join(",")}`}
+              resetKey={`category:${categoryId ?? "none"}:${feedbackResetIds.join(",")}`}
               shopIds={listedIds}
               count={visible.length}
               categoryId={categoryId ?? undefined}

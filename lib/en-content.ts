@@ -926,6 +926,13 @@ const CNI_BLURBS: Record<string, string> = {
   "ashjar-cafe-ar-rabi": `**Ashjar cafe** is one of the Ar Rabi cafes on wain.lol. Same الربيع page as Piccolo, its own pin. Hop the other Ar Rabi card below if you want a different name.`,
   "jazean-diplomatic-quarter": `This is the **Jazean DQ** page on wain.lol for the Diplomatic Quarter. The الحي الدبلوماسي list is that card today. Full neighborhood page is linked below.`,
   "markab-king-fahd": `**Markab** is on the King Fahd District list on wain.lol — الملك فهد, not the Al Olaya district page. Coffee first. The rest of that حي sits below if another name lands.`,
+  "hjeen-roaster-saudi-90s-ar-rabwah": `**Hjeen Roaster Saudi 90's** is on the Ar Rabwah list on wain.lol. Catalog tags on the card: Roastery. Other الربوة names sit underneath if this one isn’t the stop.`,
+  "on-move-ar-rabwah": `**ON MOVE** is on the Ar Rabwah catalog — its own الربوة pin. Other الربوة names we’ve added are linked underneath.`,
+  "claz-ar-rabwah": `This is the **CLAZ** page on wain.lol for Ar Rabwah. Other Ar Rabwah names on the catalog sit below if you want to stay in that حي.`,
+  "coffee-address-ar-rabwah": `**Coffee Address (Ar Rabwah)** is on the Ar Rabwah catalog on wain.lol. This card is the MQR6 pin (24.6909538, 46.7602769). Other الربوة names we’ve added are linked below.`,
+  "coffee-address-ar-rabwah-ihsaa": `**Coffee Address (Al Ihsaa / Rabwah)** is on the Ar Rabwah catalog on wain.lol. This card is the Al Ihsaa pin (24.6941875, 46.7323125). Other الربوة names we’ve added are linked below.`,
+  "somatcha-ar-rabwah": `**SoMatcha** is on the Ar Rabwah list. The other الربوة places on the catalog are linked below.`,
+  "jaam-coffee-ar-rabwah": `**Jaam Coffee** is on the wain.lol list for Ar Rabwah in Riyadh. Same neighborhood page as Hjeen and CLAZ, its own pin. Hop the other الربوة cards below if you want a different name.`,
 };
 
 const CAFE_OPENERS = [

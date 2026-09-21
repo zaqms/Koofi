@@ -33016,6 +33016,191 @@
       "outdoorSeating": null,
       "pickupOnly": null,
       "example": false
+    },
+    {
+      "id": "hjeen-roaster-saudi-90s-ar-rabwah",
+      "nameAr": "محمصة هجين التسعينات",
+      "nameEn": "Hjeen Roaster Saudi 90's",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01001ab91f75:0x1807bcf6a4b86169!8m2!3d24.6975072!4d46.7505095",
+      "pin": {
+        "lat": 24.6975072,
+        "lng": 46.7505095
+      },
+      "logoUrl": "/logos/hjeen-roaster-saudi-90s-ar-rabwah.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJdR-5GgABLz4RaWG4pPa8Bxg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "on-move-ar-rabwah",
+      "nameAr": "أون موف",
+      "nameEn": "ON MOVE",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07001b96e433:0xe9e5eee3bede2246!8m2!3d24.68575!4d46.7660278",
+      "pin": {
+        "lat": 24.68575,
+        "lng": 46.7660278
+      },
+      "logoUrl": "/logos/on-move-ar-rabwah-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJM-SWGwAHLz4RRiLevuPu5ek",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "claz-ar-rabwah",
+      "nameAr": "كلاز",
+      "nameEn": "CLAZ",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070003557aab:0x7dfd70736f89f06a!8m2!3d24.6954227!4d46.7621402",
+      "pin": {
+        "lat": 24.6954227,
+        "lng": 46.7621402
+      },
+      "logoUrl": "/logos/claz-ar-rabwah-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJq3pVAwAHLz4RavCJb3Nw_X0",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "coffee-address-ar-rabwah",
+      "nameAr": "عنوان القهوة - الربوة",
+      "nameEn": "Coffee Address (Ar Rabwah)",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070cc7daa507:0x22ae2a7d417f74d0!8m2!3d24.6909538!4d46.7602769",
+      "pin": {
+        "lat": 24.6909538,
+        "lng": 46.7602769
+      },
+      "logoUrl": "/logos/coffee-address-ar-rabwah-mqr6.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJB6XaxwwHLz4R0HR_QX0qriI",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "coffee-address-ar-rabwah-ihsaa",
+      "nameAr": "عنوان القهوة - الإحساء / الربوة",
+      "nameEn": "Coffee Address (Al Ihsaa / Rabwah)",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f034daa093fab:0x90fd79449e66ebb5!8m2!3d24.6941875!4d46.7323125",
+      "pin": {
+        "lat": 24.6941875,
+        "lng": 46.7323125
+      },
+      "logoUrl": "/logos/coffee-address-ar-rabwah-ihsaa.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJqz8Jqk0DLz4RtetmnkR5_ZA",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "somatcha-ar-rabwah",
+      "nameAr": "سو ماتشا",
+      "nameEn": "SoMatcha",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "matcha",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070028102e93:0x47d73e8d4304a16a!8m2!3d24.6970662!4d46.7716812",
+      "pin": {
+        "lat": 24.6970662,
+        "lng": 46.7716812
+      },
+      "logoUrl": "/logos/somatcha-ar-rabwah-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJky4QKAAHLz4RaqEEQ40-10c",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "jaam-coffee-ar-rabwah",
+      "nameAr": "جام كوفي",
+      "nameEn": "Jaam Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-rabwah",
+      "neighborhoodAr": "الربوة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f072dc370deab:0x1db2b31c2e1f28f!8m2!3d24.692156!4d46.764295",
+      "pin": {
+        "lat": 24.692156,
+        "lng": 46.764295
+      },
+      "logoUrl": "/logos/jaam-coffee-ar-rabwah-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJq95wwy0HLz4Rj_LhwjEr2wE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

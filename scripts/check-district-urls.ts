@@ -50,6 +50,7 @@ import {
   neighborhoodsPath,
   PRODUCT_NAME,
 } from "../lib/product";
+import { officialShopCoords } from "../lib/place-coords";
 import { rankByPopularity } from "../lib/picker";
 import { buildSitemapXml } from "../lib/sitemap-xml";
 
@@ -174,8 +175,8 @@ assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 284, `specialty discovery 275→284, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 351, `catalog 342→351 after dropping wrong Get Up Rabwah, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 291, `specialty discovery 292→291 after dropping wrong Get Up Rabwah, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 358, `catalog 359→358 after dropping wrong Get Up Rabwah, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -265,6 +266,13 @@ for (const id of [
   "enzo-coffee-ar-rabwah",
   "window-coffee-ar-rabwah",
   "b-cafe-ar-rabwah",
+  "hjeen-roaster-saudi-90s-ar-rabwah",
+  "on-move-ar-rabwah",
+  "claz-ar-rabwah",
+  "coffee-address-ar-rabwah",
+  "coffee-address-ar-rabwah-ihsaa",
+  "somatcha-ar-rabwah",
+  "jaam-coffee-ar-rabwah",
 ]) {
   assert(
     rabwah.some((shop) => shop.id === id),
@@ -1527,7 +1535,7 @@ const MALAZ_REFILL = {
   assert(chipDirectoryMoment("popular") === null, "popular chip is not a moment filter");
   assert(chipDirectoryMoment("nearby") === null, "nearby chip is not a moment filter");
   const matchaRows = filterDirectoryShopsByMoment(shops, "matcha");
-  assert(matchaRows.length === 25, `Matcha directory is 25 tagged shops, got ${matchaRows.length}`);
+  assert(matchaRows.length === 26, `Matcha directory is 26 tagged shops, got ${matchaRows.length}`);
   assert(
     matchaRows.every((shop) => shop.momentTags.includes("matcha")),
     "Matcha directory is matcha-tagged only",
@@ -1545,6 +1553,7 @@ const MALAZ_REFILL = {
     "flow-matcha-at-taawun": "/logos/flow-matcha-at-taawun.jpg",
     "hokkaido-al-hamra": "/logos/hokkaido-al-hamra.png",
     "happyland-matcha-diriyah": "/logos/happyland-matcha-diriyah.jpg",
+    "somatcha-ar-rabwah": "/logos/somatcha-ar-rabwah-ig.jpg",
   };
   for (const [id, logoUrl] of Object.entries(harvestLogos)) {
     const shop = matchaRows.find((row) => row.id === id);
@@ -1673,6 +1682,9 @@ assertDistinctPlaceHex(
     "coffee-address-al-nahdah",
     "coffee-address-al-munsiyah",
     "coffee-address-al-arid",
+    "coffee-address-al-rabwah",
+    "coffee-address-ar-rabwah",
+    "coffee-address-ar-rabwah-ihsaa",
   ],
   "Coffee Address",
 );
@@ -1706,8 +1718,13 @@ assertDistinctPlaceHex(
     "hjeen-roaster-factory-al-yasmin",
     "hjeen-roaster-al-narjis",
     "hjeen-roasters-al-mohammadiyah",
+    "hjeen-roaster-saudi-90s-ar-rabwah",
   ],
   "Hjeen",
+);
+assertDistinctPlaceHex(
+  ["somatcha-an-nada", "somatcha-ar-rabwah"],
+  "SoMatcha",
 );
 
 assert(
@@ -1772,6 +1789,11 @@ const scoutPack: {
   moments: string[];
   logoUrl?: string;
   pin?: { lat: number; lng: number };
+  /** #190 form: `/maps/place/` hex plus `!3d!4d` so officialShopCoords reads the URL. */
+  coordsInUrl?: boolean;
+  placeId?: string;
+  dineIn?: boolean | null;
+  outdoorSeating?: boolean | null;
 }[] = [
   {
     id: "hawaf-al-safa",
@@ -3244,6 +3266,97 @@ const scoutPack: {
     moments: ["matcha", "qahwa"],
     logoUrl: "/logos/happyland-matcha-diriyah.jpg",
   },
+  {
+    id: "hjeen-roaster-saudi-90s-ar-rabwah",
+    hex: "0x3e2f01001ab91f75:0x1807bcf6a4b86169",
+    neighborhood: "al-rabwah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/hjeen-roaster-saudi-90s-ar-rabwah.png",
+    pin: { lat: 24.6975072, lng: 46.7505095 },
+    coordsInUrl: true,
+    placeId: "ChIJdR-5GgABLz4RaWG4pPa8Bxg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "on-move-ar-rabwah",
+    hex: "0x3e2f07001b96e433:0xe9e5eee3bede2246",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/on-move-ar-rabwah-ig.jpg",
+    pin: { lat: 24.68575, lng: 46.7660278 },
+    coordsInUrl: true,
+    placeId: "ChIJM-SWGwAHLz4RRiLevuPu5ek",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "claz-ar-rabwah",
+    hex: "0x3e2f070003557aab:0x7dfd70736f89f06a",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/claz-ar-rabwah-ig.jpg",
+    pin: { lat: 24.6954227, lng: 46.7621402 },
+    coordsInUrl: true,
+    placeId: "ChIJq3pVAwAHLz4RavCJb3Nw_X0",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "coffee-address-ar-rabwah",
+    hex: "0x3e2f070cc7daa507:0x22ae2a7d417f74d0",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-ar-rabwah-mqr6.png",
+    pin: { lat: 24.6909538, lng: 46.7602769 },
+    coordsInUrl: true,
+    placeId: "ChIJB6XaxwwHLz4R0HR_QX0qriI",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-ar-rabwah-ihsaa",
+    hex: "0x3e2f034daa093fab:0x90fd79449e66ebb5",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-ar-rabwah-ihsaa.png",
+    pin: { lat: 24.6941875, lng: 46.7323125 },
+    coordsInUrl: true,
+    placeId: "ChIJqz8Jqk0DLz4RtetmnkR5_ZA",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "somatcha-ar-rabwah",
+    hex: "0x3e2f070028102e93:0x47d73e8d4304a16a",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["matcha", "qahwa"],
+    logoUrl: "/logos/somatcha-ar-rabwah-ig.jpg",
+    pin: { lat: 24.6970662, lng: 46.7716812 },
+    coordsInUrl: true,
+    placeId: "ChIJky4QKAAHLz4RaqEEQ40-10c",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "jaam-coffee-ar-rabwah",
+    hex: "0x3e2f072dc370deab:0x1db2b31c2e1f28f",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jaam-coffee-ar-rabwah-ig.jpg",
+    pin: { lat: 24.692156, lng: 46.764295 },
+    coordsInUrl: true,
+    placeId: "ChIJq95wwy0HLz4Rj_LhwjEr2wE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3251,9 +3364,13 @@ for (const row of scoutPack) {
   assert(shop, `${row.id} is a real catalog shop`);
   assert(shop.example === false, `${row.id} is not an example shop`);
   assert(shop.neighborhood === row.neighborhood, `${row.id} neighborhood`);
+  const placeHref = `https://www.google.com/maps/place/data=!4m2!3m1!1s${row.hex}`;
+  const expectedHref =
+    row.coordsInUrl && row.pin
+      ? `${placeHref}!8m2!3d${row.pin.lat}!4d${row.pin.lng}`
+      : placeHref;
   assert(
-    shop.mapsShareUrl ===
-      `https://www.google.com/maps/place/data=!4m2!3m1!1s${row.hex}`,
+    shop.mapsShareUrl === expectedHref,
     `${row.id} maps href is official place id form`,
   );
   assert(!("hours" in shop), `${row.id} catalog has no hours field`);
@@ -3270,6 +3387,22 @@ for (const row of scoutPack) {
   if (row.pin) {
     assert(shop.pin?.lat === row.pin.lat, `${row.id} official pin lat`);
     assert(shop.pin?.lng === row.pin.lng, `${row.id} official pin lng`);
+    if (row.coordsInUrl) {
+      const coords = officialShopCoords(shop);
+      assert(
+        coords?.lat === row.pin.lat && coords?.lng === row.pin.lng,
+        `${row.id} officialShopCoords matches the locked pin`,
+      );
+    }
+  }
+  if (row.placeId) {
+    assert(shop.placeId === row.placeId, `${row.id} place id`);
+  }
+  if ("dineIn" in row) {
+    assert(shop.dineIn === row.dineIn, `${row.id} dineIn`);
+  }
+  if ("outdoorSeating" in row) {
+    assert(shop.outdoorSeating === row.outdoorSeating, `${row.id} outdoorSeating`);
   }
   assert(
     shop.vibeTags.join(",") === row.vibe.join(","),

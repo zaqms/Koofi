@@ -836,6 +836,25 @@ assert(
     isHalfwayEligible(jaroNaseem),
   "Al Naseem: VOÛTE + Gusn denied from بيننا; JARO eligible via dineIn",
 );
+const rabwahScout = [
+  "hjeen-roaster-saudi-90s-ar-rabwah",
+  "on-move-ar-rabwah",
+  "claz-ar-rabwah",
+  "coffee-address-ar-rabwah-ihsaa",
+  "somatcha-ar-rabwah",
+  "jaam-coffee-ar-rabwah",
+] as const;
+for (const id of rabwahScout) {
+  const shop = SHOPS.find((row) => row.id === id);
+  assert(shop && isHalfwayEligible(shop), `${id} is بيننا sit-down from PACK dine-in`);
+}
+const coffeeMqr6 = SHOPS.find((row) => row.id === "coffee-address-ar-rabwah");
+assert(
+  coffeeMqr6?.dineIn == null &&
+    coffeeMqr6?.outdoorSeating == null &&
+    !isHalfwayEligible(coffeeMqr6!),
+  "Coffee Address MQR6 has no PACK seating verdict and stays out of بيننا",
+);
 
 const mid = locationsCentroid(two, SHOPS);
 assert(mid && Number.isFinite(mid.lat) && Number.isFinite(mid.lng), "band around pin centroid");

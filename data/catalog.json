@@ -3924,10 +3924,10 @@
       "momentTags": [
         "qahwa"
       ],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=24.807407,46.658768",
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3003cc8f081:0xf6d51dddd42d2ba2!8m2!3d24.8067516!4d46.6591872",
       "pin": {
-        "lat": 24.807407,
-        "lng": 46.658768
+        "lat": 24.8067516,
+        "lng": 46.6591872
       },
       "popularityIndex": 39,
       "placeId": "ChIJgfDIPADjLj4Roist1N0d1fY",
@@ -4002,7 +4002,11 @@
         "pastry",
         "quiet"
       ],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Basementers+Roastery,+Al+Khayalah+Street,+Al+Yasmin,+Riyadh",
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50ff01379c3:0x94556fecbff1483e!8m2!3d24.805938!4d46.6146229",
+      "pin": {
+        "lat": 24.805938,
+        "lng": 46.6146229
+      },
       "logoUrl": "/logos/basementers-al-yasmin.jpg",
       "popularityIndex": 67.4,
       "placeId": "ChIJw3kT8A_lLj4RPkjxv-xvVZQ",
@@ -5263,7 +5267,7 @@
         "roaster",
         "qahwa"
       ],
-      "mapsShareUrl": "https://www.google.com/maps/search/?api=1&query=Yamm+Coffee+Roasters%2C+Al+Takhasousi+Street%2C+Al+Olaya%2C+Riyadh",
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dc19900d7e9:0x9f569ba21a199c19!8m2!3d24.7073712!4d46.6644448",
       "pin": {
         "lat": 24.7073712,
         "lng": 46.6644448
@@ -10453,6 +10457,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd44ce0317ed:0xe70019d08a235ec0",
+      "pin": {
+        "lat": 24.7898675,
+        "lng": 46.7401713
+      },
       "logoUrl": "/logos/specialty-bean-ghirnatah.png",
       "popularityIndex": 63.3,
       "placeId": "ChIJ7RcDzkT9Lj4RwF4jitAZAOc",
@@ -10572,6 +10580,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd82bc3dfa81:0xe2d11f39f26b7f5",
+      "pin": {
+        "lat": 24.7914143,
+        "lng": 46.7348591
+      },
       "logoUrl": "/logos/mkth-ghirnatah.jpg",
       "popularityIndex": 81.7,
       "placeId": "ChIJgfo9vIL9Lj4R9bcmn_MRLQ4",
@@ -10691,6 +10703,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd459f8bb259:0xd8b32418d84b89ec",
+      "pin": {
+        "lat": 24.7827896,
+        "lng": 46.7365139
+      },
       "popularityIndex": 37.7,
       "placeId": "ChIJWbKLn0X9Lj4R7IlL2Bgks9g",
       "dineIn": true,
@@ -10809,6 +10825,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff61d2ae9141:0x31f18895ab1b535d",
+      "pin": {
+        "lat": 24.7940938,
+        "lng": 46.7478464
+      },
       "logoUrl": "/logos/file-coffee-ghirnatah.png",
       "popularityIndex": 52,
       "placeId": "ChIJQZGu0mH_Lj4RXVMbq5WI8TE",
@@ -10852,6 +10872,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effbfb5e03783:0x7a26dffbf06775e5",
+      "pin": {
+        "lat": 24.7967874,
+        "lng": 46.7518222
+      },
       "popularityIndex": 42.1,
       "placeId": "ChIJgzfgtb__Lj4R5XVn8PvfJno",
       "dineIn": true,
@@ -10970,6 +10994,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd6101362bf7:0x5f25ab521bbf327",
+      "pin": {
+        "lat": 24.7866827,
+        "lng": 46.7457007
+      },
       "popularityIndex": 39.5,
       "placeId": "ChIJ9ys2AWH9Lj4RJ_O7IbVa8gU",
       "dineIn": true,
@@ -11088,6 +11116,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effcc20be29f5:0xd0883a18ee9a503",
+      "pin": {
+        "lat": 24.794175,
+        "lng": 46.7480144
+      },
       "logoUrl": "/logos/moff-ghirnatah.jpg",
       "popularityIndex": 47.3,
       "placeId": "ChIJ9Sm-IMz_Lj4RA6XpjqGDCA0",
@@ -11207,6 +11239,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b",
+      "pin": {
+        "lat": 24.7946345,
+        "lng": 46.7331844
+      },
       "logoUrl": "/logos/semi-specialty-cafe-ghirnatah.jpg",
       "popularityIndex": 73,
       "placeId": "ChIJhww8klj9Lj4RG8u2KCKMRV0",
@@ -11326,6 +11362,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd3b20850645:0xfdc7a6eb6f2966eb",
+      "pin": {
+        "lat": 24.7867538,
+        "lng": 46.7279544
+      },
       "logoUrl": "/logos/camel-step-granada-business.png",
       "popularityIndex": 63.4,
       "placeId": "ChIJN9rp_l_lLj4Rcby8Ui4VBMU",
@@ -11445,6 +11485,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd006f393f47:0x1825e4297e5756ee",
+      "pin": {
+        "lat": 24.7870625,
+        "lng": 46.7284375
+      },
       "logoUrl": "/logos/archi-ghirnatah.jpg",
       "popularityIndex": 56.6,
       "placeId": "ChIJRz85bwD9Lj4R7lZXfinkJRg",
@@ -11586,6 +11630,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07006df6335f:0x3936438b95be1845",
+      "pin": {
+        "lat": 24.672338,
+        "lng": 46.7590849
+      },
       "popularityIndex": 62.2,
       "placeId": "ChIJXzP2bQAHLz4RRRi-lYtDNjk",
       "dineIn": true,
@@ -11704,6 +11752,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07002fb65bb5:0x1a082f7cedaa95ea",
+      "pin": {
+        "lat": 24.6723231,
+        "lng": 46.7797775
+      },
       "popularityIndex": 58.2,
       "placeId": "ChIJtVu2LwAHLz4R6pWq7XwvCBo",
       "dineIn": true,
@@ -11745,6 +11797,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070018d65cb9:0x38816e21404c5020",
+      "pin": {
+        "lat": 24.6720513,
+        "lng": 46.7790703
+      },
       "popularityIndex": 68.2,
       "placeId": "ChIJuVzWGAAHLz4RIFBMQCFugTg",
       "dineIn": true,
@@ -11863,6 +11919,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070007651d33:0xad1d729591d9f1d5",
+      "pin": {
+        "lat": 24.6702516,
+        "lng": 46.781139
+      },
       "popularityIndex": 68.8,
       "placeId": "ChIJMx1lBwAHLz4R1fHZkZVyHa0",
       "dineIn": true,
@@ -11981,6 +12041,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0402f4f629ff:0xd1e8b1467fc0cb1e",
+      "pin": {
+        "lat": 24.6862679,
+        "lng": 46.7465036
+      },
       "logoUrl": "/logos/jazwa-specialty-coffee-ar-rabwah.jpg",
       "popularityIndex": 67.6,
       "placeId": "ChIJ_yn29AIELz4RHsvAf0ax6NE",
@@ -12100,6 +12164,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07a81f6a3c47:0x7f418c32999d69fa",
+      "pin": {
+        "lat": 24.6962539,
+        "lng": 46.7617983
+      },
       "popularityIndex": 49.2,
       "placeId": "ChIJ75cOyNsZLz4Ry8hievc1T9M",
       "dineIn": true,
@@ -12141,6 +12209,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0707e1c83ec9:0xfcb4b9ffcf765bad",
+      "pin": {
+        "lat": 24.685495,
+        "lng": 46.7750256
+      },
       "popularityIndex": 51,
       "placeId": "ChIJyT7I4QcHLz4RrVt2z_-5tPw",
       "dineIn": true,
@@ -12259,6 +12331,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070043130767:0x38b2858e8499a030",
+      "pin": {
+        "lat": 24.6832006,
+        "lng": 46.7758066
+      },
       "popularityIndex": 45.1,
       "placeId": "ChIJZwcTQwAHLz4RMKCZhI6Fsjg",
       "dineIn": true,
@@ -12377,6 +12453,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0796e16c8739:0x39d609ba67e96ce7",
+      "pin": {
+        "lat": 24.6810422,
+        "lng": 46.776808
+      },
       "popularityIndex": 45.1,
       "placeId": "ChIJOYds4ZYHLz4R52zpZ7oJ1jk",
       "dineIn": false,
@@ -12419,6 +12499,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070a205cfc67:0x6d57fb46f96a1623",
+      "pin": {
+        "lat": 24.6784075,
+        "lng": 46.768952
+      },
       "popularityIndex": 54.7,
       "placeId": "ChIJZ_xcIAoHLz4RIxZq-Ub7V20",
       "dineIn": true,
@@ -12539,6 +12623,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01a96357c13d:0x63baca80617c33cb",
+      "pin": {
+        "lat": 24.7194714,
+        "lng": 46.7641553
+      },
       "popularityIndex": 52.3,
       "placeId": "ChIJPcFXY6kBLz4RyzN8YYDKumM",
       "dineIn": true,
@@ -12669,6 +12757,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd4e25de6571:0x7cbe1e16720788e",
+      "pin": {
+        "lat": 24.8101511,
+        "lng": 46.745063
+      },
       "popularityIndex": 54.3,
       "placeId": "ChIJcWXeJU79Lj4RjnggZ-Hhywc",
       "dineIn": true,
@@ -12787,6 +12879,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0011e0f765:0x7017733f9730a468",
+      "pin": {
+        "lat": 24.8271847,
+        "lng": 46.7351638
+      },
       "popularityIndex": 44.3,
       "placeId": "ChIJZffgEQD9Lj4RaKQwlz9zF3A",
       "dineIn": true,
@@ -12829,6 +12925,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efda30ba6b329:0x6fbe069618b289cf",
+      "pin": {
+        "lat": 24.8178788,
+        "lng": 46.7408249
+      },
       "popularityIndex": 12.2,
       "placeId": "ChIJY-VCT6D9Lj4RyX-gU-tx594",
       "dineIn": true,
@@ -12947,6 +13047,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff5b8b2fe293:0x8add6fb3fc1cb262",
+      "pin": {
+        "lat": 24.8153031,
+        "lng": 46.7537667
+      },
       "popularityIndex": 29.7,
       "placeId": "ChIJk-Ivi1v_Lj4RYrIc_LNv3Yo",
       "dineIn": true,
@@ -12990,6 +13094,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efde0d2059f1d:0xfca400b51ca140cc",
+      "pin": {
+        "lat": 24.8339904,
+        "lng": 46.7356247
+      },
       "popularityIndex": 79.6,
       "placeId": "ChIJHZ8F0uD9Lj4RzEChHLUApPw",
       "dineIn": true,
@@ -13033,6 +13141,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd7e48611c89:0x9f325ee903e4115c",
+      "pin": {
+        "lat": 24.8282922,
+        "lng": 46.7472154
+      },
       "popularityIndex": 51.4,
       "placeId": "ChIJiRxhSH79Lj4RXBHkA-leMp8",
       "dineIn": true,
@@ -13151,6 +13263,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff55ad144173:0x710215b462af3206",
+      "pin": {
+        "lat": 24.8126018,
+        "lng": 46.7551322
+      },
       "popularityIndex": 66.6,
       "placeId": "ChIJc0EUrVX_Lj4RBjKvYrQVAnE",
       "dineIn": true,
@@ -13269,6 +13385,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd00234d31f9:0xd88d0f80e8a1b945",
+      "pin": {
+        "lat": 24.8268581,
+        "lng": 46.7285066
+      },
       "popularityIndex": 45.1,
       "placeId": "ChIJ-TFNIwD9Lj4RRbmh6IAPjdg",
       "dineIn": true,
@@ -13387,6 +13507,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd1bf2459957:0x981f344c0bf6e54f",
+      "pin": {
+        "lat": 24.8245256,
+        "lng": 46.7299808
+      },
       "popularityIndex": 54.3,
       "placeId": "ChIJV5lF8hv9Lj4RT-X2C0w0H5g",
       "dineIn": false,
@@ -13429,6 +13553,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
+      "pin": {
+        "lat": 24.818295,
+        "lng": 46.7418064
+      },
       "popularityIndex": 0,
       "placeId": "ChIJuxUGuQ7_Lj4RvEdy7wqsXdQ",
       "dineIn": true,
@@ -13549,6 +13677,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdd75f5d246f:0xbefc1aa83961fc4b",
+      "pin": {
+        "lat": 24.8226611,
+        "lng": 46.7284632
+      },
       "popularityIndex": 16.7,
       "placeId": "ChIJbyRdX9f9Lj4RS_xhOaga_L4",
       "dineIn": false,
@@ -13667,6 +13799,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdc31f8a623b:0xa28eba5077113625",
+      "pin": {
+        "lat": 24.8161916,
+        "lng": 46.7375013
+      },
       "popularityIndex": 37.4,
       "placeId": "ChIJO2KKH8P9Lj4RJTYRd1C6jqI",
       "dineIn": true,
@@ -13785,6 +13921,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03001edf482d:0x452cfdab603f11",
+      "pin": {
+        "lat": 24.7548019,
+        "lng": 46.7061558
+      },
       "popularityIndex": 20.1,
       "placeId": "ChIJLUjfHgADLz4RET9gq_0sRQA",
       "dineIn": true,
@@ -13903,6 +14043,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f030008ff9c71:0xd3396682f440e17d",
+      "pin": {
+        "lat": 24.7553333,
+        "lng": 46.7075793
+      },
       "logoUrl": "/logos/wathba-an-nazhah.jpg",
       "popularityIndex": 55.6,
       "placeId": "ChIJcZz_CAADLz4RfeFA9IJmOdM",
@@ -14023,6 +14167,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f033f0365e563:0xfaac19beb89d288c",
+      "pin": {
+        "lat": 24.747373,
+        "lng": 46.7019206
+      },
       "logoUrl": "/logos/moraq-cafe-an-nazhah.jpg",
       "popularityIndex": 36.4,
       "placeId": "ChIJY-VlAz8DLz4RjCiduL4ZrPo",
@@ -14067,6 +14215,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0281cc40f547:0x58e3f0912f2540a8",
+      "pin": {
+        "lat": 24.7547842,
+        "lng": 46.7063577
+      },
       "logoUrl": "/logos/november-coffee-an-nazhah.png",
       "popularityIndex": 80.1,
       "placeId": "ChIJR_VAzIECLz4RqEAlL5Hw41g",
@@ -14111,6 +14263,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03a7d5bcbd33:0x9c823b52f06a5685",
+      "pin": {
+        "lat": 24.7588406,
+        "lng": 46.715495
+      },
       "logoUrl": "/logos/elite-cup-roasters-an-nazhah.png",
       "popularityIndex": 69.2,
       "placeId": "ChIJM7281acDLz4RhVZq8FI7gpw",
@@ -14231,6 +14387,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03cdfb4cd1f1:0x94568f00fa650960",
+      "pin": {
+        "lat": 24.7543424,
+        "lng": 46.7066642
+      },
       "logoUrl": "/logos/belong-an-nazhah.png",
       "popularityIndex": 80.9,
       "placeId": "ChIJ8dFM-80DLz4RYAll-gCPVpQ",
@@ -14350,6 +14510,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03f28492750f:0x1197315cc9e08e93",
+      "pin": {
+        "lat": 24.7579534,
+        "lng": 46.7152344
+      },
       "logoUrl": "/logos/desired-coffee-an-nazhah.jpg",
       "popularityIndex": 57.9,
       "placeId": "ChIJD3WShPIDLz4Rk47gyVwxlxE",
@@ -14392,6 +14556,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03eb18dbbea5:0xf8b637cafb780f46",
+      "pin": {
+        "lat": 24.7571051,
+        "lng": 46.7132312
+      },
       "logoUrl": "/logos/cross-coffee-an-nazhah.jpg",
       "popularityIndex": 56.9,
       "placeId": "ChIJpb7bGOsDLz4RRg94-8o3tvg",
@@ -14523,6 +14691,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0300edb717c3:0x1265bf3bb80d0ae3",
+      "pin": {
+        "lat": 24.749666,
+        "lng": 46.7041749
+      },
       "logoUrl": "/logos/kraz-an-nazhah.jpg",
       "popularityIndex": 66.5,
       "placeId": "ChIJwxe37QADLz4R4woNuDu_ZRI",
@@ -14642,6 +14814,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03424178439d:0x9d0a63b8efe7b615",
+      "pin": {
+        "lat": 24.7542623,
+        "lng": 46.7049051
+      },
       "logoUrl": "/logos/ghandoura-an-nazhah.png",
       "popularityIndex": 66,
       "placeId": "ChIJ7_tqab3jLj4RiUApHyvOHhE",
@@ -17266,6 +17442,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01ccc13f3451:0xae3dda615e00c6b3",
+      "pin": {
+        "lat": 24.7131875,
+        "lng": 46.7953714
+      },
       "popularityIndex": 40,
       "placeId": "ChIJUTQ_wcwBLz4Rs8YAXmHaPa4",
       "dineIn": true,
@@ -17384,6 +17564,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01929b82eea1:0x89bad8d2f1573463",
+      "pin": {
+        "lat": 24.7215219,
+        "lng": 46.7996901
+      },
       "popularityIndex": 40,
       "placeId": "ChIJoe6Cm5IBLz4RYzRX8dLYuok",
       "dineIn": true,
@@ -17625,6 +17809,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0100548ec795:0xa6bdf61330fe728d",
+      "pin": {
+        "lat": 24.7132963,
+        "lng": 46.7724044
+      },
       "popularityIndex": 40,
       "placeId": "ChIJlceOVAABLz4RjXL-MBP2vaY",
       "dineIn": true,
@@ -17745,6 +17933,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07725742b605:0x8836e0aca4b85d09",
+      "pin": {
+        "lat": 24.7036915,
+        "lng": 46.7768408
+      },
       "popularityIndex": 40,
       "placeId": "ChIJBbZCV3IHLz4RCV24pKzgNog",
       "dineIn": true,
@@ -17863,6 +18055,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010072319b5b:0xe1af295792ab646d",
+      "pin": {
+        "lat": 24.714226,
+        "lng": 46.7864642
+      },
       "popularityIndex": 40,
       "placeId": "ChIJW5sxcgABLz4RbWSrklcpr-E",
       "dineIn": true,
@@ -17984,6 +18180,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0100484beb45:0x7c300df5671a0f8",
+      "pin": {
+        "lat": 24.7149003,
+        "lng": 46.776414
+      },
       "popularityIndex": 40,
       "placeId": "ChIJRetLSAABLz4R-KBxVt8Awwc",
       "dineIn": true,
@@ -18102,6 +18302,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f018daa5b6821:0xb89a892653598037",
+      "pin": {
+        "lat": 24.7084351,
+        "lng": 46.7714582
+      },
       "popularityIndex": 40,
       "placeId": "ChIJIWhbqo0BLz4RN4BZUyaJmrg",
       "dineIn": true,
@@ -18220,6 +18424,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0167d7abda79:0x73d51f64c16cc56",
+      "pin": {
+        "lat": 24.7073765,
+        "lng": 46.7709811
+      },
       "popularityIndex": 40,
       "placeId": "ChIJedqr12cBLz4RVswWTPZRPQc",
       "dineIn": true,
@@ -18338,6 +18546,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070d4dd944ed:0xc1e07e729b777b1d",
+      "pin": {
+        "lat": 24.688464,
+        "lng": 46.7788631
+      },
       "popularityIndex": 40,
       "placeId": "ChIJ7UTZTQ0HLz4RHXt3m3J-4ME",
       "dineIn": true,
@@ -18457,6 +18669,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46",
+      "pin": {
+        "lat": 24.6876817,
+        "lng": 46.7950323
+      },
       "popularityIndex": 40,
       "placeId": "ChIJLz2JTwAHLz4RRuwZDBopO5o",
       "dineIn": true,
@@ -18577,6 +18793,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070062c5a10f:0x7cd84702e1e15833",
+      "pin": {
+        "lat": 24.6908729,
+        "lng": 46.8113373
+      },
       "popularityIndex": 40,
       "placeId": "ChIJD6HFYgAHLz4RM1jh4QJH2Hw",
       "dineIn": true,
@@ -18744,6 +18964,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f070047e03f6f:0x5bb80c4447e38ece",
+      "pin": {
+        "lat": 24.6911788,
+        "lng": 46.8111251
+      },
       "popularityIndex": 40,
       "placeId": "ChIJbz_gRwAHLz4Rzo7jR0QMuFs",
       "dineIn": true,
@@ -18864,6 +19088,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fa90033b5a43b:0x210c2933359fdb69",
+      "pin": {
+        "lat": 24.7016528,
+        "lng": 46.8262298
+      },
       "popularityIndex": 40,
       "placeId": "ChIJO6S1MwCpLz4RadufNTMpDCE",
       "dineIn": true,
@@ -18994,6 +19222,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01e672a325cd:0x94bc2f1da36aedbf",
+      "pin": {
+        "lat": 24.7243801,
+        "lng": 46.7607257
+      },
       "popularityIndex": 40,
       "placeId": "ChIJzSWjcuYBLz4Rv-1qox0vvJQ",
       "dineIn": true,
@@ -19114,6 +19346,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010055c30fb3:0x85b9cfe71ec71819",
+      "pin": {
+        "lat": 24.7259966,
+        "lng": 46.766189
+      },
       "popularityIndex": 40,
       "placeId": "ChIJsw_DVQABLz4RGRjHHufPuYU",
       "dineIn": true,
@@ -20750,6 +20986,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3601e4fa885:0x1f8cbed341f62a18",
+      "pin": {
+        "lat": 24.7360284,
+        "lng": 46.6481283
+      },
       "logoUrl": "/logos/kernel-al-takhassusi.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJhahPHmDjLj4RGCr2QdO-jB8",
@@ -20869,6 +21109,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d1c6b289117:0x527881c3e12eddba",
+      "pin": {
+        "lat": 24.7317282,
+        "lng": 46.6480216
+      },
       "logoUrl": "/logos/percent-arabica-the-zone-al-takhassusi.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJF5EoaxwdLz4Rut0u4cOBeFI",
@@ -21113,6 +21357,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3934bcf3d21:0x9ae62a9e1b9587f7",
+      "pin": {
+        "lat": 24.7525597,
+        "lng": 46.6390522
+      },
       "logoUrl": "/logos/groovy-al-takhassusi.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJIT3PS5PjLj4R94eVG54q5po",
@@ -21367,6 +21615,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d0008ce3c83:0xa8e94e0f1bfb929b",
+      "pin": {
+        "lat": 24.7272413,
+        "lng": 46.6515523
+      },
       "logoUrl": "/logos/somo-al-takhassusi.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJgzzOCAAdLz4Rm5L7Gw9O6ag",
@@ -21621,6 +21873,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee383bb1713f7:0x3a9e3135e98be6c9",
+      "pin": {
+        "lat": 24.7713335,
+        "lng": 46.6320343
+      },
       "logoUrl": "/logos/sculpture-al-aqiq.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ9xMXu4PjLj4RyeaL6TUxnjo",
@@ -21742,6 +21998,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee38db0a63301:0xba5d889af803c0a",
+      "pin": {
+        "lat": 24.7716801,
+        "lng": 46.6347808
+      },
       "logoUrl": "/logos/ashjar-cafe-al-aqiq.png",
       "popularityIndex": 40,
       "placeId": "ChIJATOmsI3jLj4RCjyAr4nYpQs",
@@ -21839,6 +22099,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3b974bb7f33:0x1f130924f0566fce",
+      "pin": {
+        "lat": 24.7828426,
+        "lng": 46.6149135
+      },
       "logoUrl": "/logos/shovel-al-aqiq.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJM3-7dLnjLj4Rzm9W8CQJEx8",
@@ -21883,6 +22147,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee371efc108ab:0xfffacb4af3830520",
+      "pin": {
+        "lat": 24.781336,
+        "lng": 46.6330339
+      },
       "logoUrl": "/logos/out-of-line-al-aqiq.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJqwjB73HjLj4RIAWD80rL-v8",
@@ -22002,6 +22270,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee328730a5219:0x4f0d1eb822dd2d8d",
+      "pin": {
+        "lat": 24.7659654,
+        "lng": 46.6242179
+      },
       "logoUrl": "/logos/camel-step-al-aqiq.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJGVIKcyjjLj4RjS3dIrgeDU8",
@@ -22121,6 +22393,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee300741b08ff:0xc58d28584f15cb02",
+      "pin": {
+        "lat": 24.7891879,
+        "lng": 46.6279617
+      },
       "logoUrl": "/logos/scarf-al-aqiq.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ_wgbdADjLj4RAssVT1gojcU",
@@ -22240,6 +22516,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee311440571b5:0x4e012f88748be562",
+      "pin": {
+        "lat": 24.7827712,
+        "lng": 46.6307545
+      },
       "logoUrl": "/logos/the-coffee-kingdom-al-aqiq.png",
       "popularityIndex": 40,
       "placeId": "ChIJtXEFRBHjLj4RYuWLdIgvAU4",
@@ -22359,6 +22639,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32fc78236b1:0xbf5069a213ca2514",
+      "pin": {
+        "lat": 24.775154,
+        "lng": 46.6301702
+      },
       "logoUrl": "/logos/file-coffee-al-aqiq.png",
       "popularityIndex": 40,
       "placeId": "ChIJsTaCxy_jLj4RFCXKE6JpUL8",
@@ -22525,6 +22809,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee390542f4ad3:0xd1f13a566b07ba8a",
+      "pin": {
+        "lat": 24.7721463,
+        "lng": 46.6521201
+      },
       "logoUrl": "/logos/tad-coffee-al-ghadeer.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ00ovVJDjLj4RiroHa1Y68dE",
@@ -22696,6 +22984,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee33c0aa921d7:0x853fb7054e5e0a7b",
+      "pin": {
+        "lat": 24.770168,
+        "lng": 46.6483881
+      },
       "logoUrl": "/logos/drip-al-ghadeer.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ1yGpCjzjLj4RewpeTgW3P4U",
@@ -22815,6 +23107,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32d61c11661:0xca3685111ed18584",
+      "pin": {
+        "lat": 24.770684,
+        "lng": 46.6484509
+      },
       "logoUrl": "/logos/blumen-al-ghadeer.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJYRbBYS3jLj4RhIXRHhGFNso",
@@ -22857,6 +23153,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3e6292a7867:0x5aa2eb3170848f9f",
+      "pin": {
+        "lat": 24.7772312,
+        "lng": 46.6606971
+      },
       "logoUrl": "/logos/brsk-al-ghadeer.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJZ3gqKebjLj4Rn4-EcDHrolo",
@@ -22946,6 +23246,10 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3bd696afbef:0x111ece2b1f294089",
+      "pin": {
+        "lat": 24.7780735,
+        "lng": 46.6627153
+      },
       "logoUrl": "/logos/ghandoura-al-ghadeer.png",
       "popularityIndex": 40,
       "placeId": "ChIJ7_tqab3jLj4RiUApHyvOHhE",

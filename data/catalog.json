@@ -32581,6 +32581,272 @@
         "lat": 24.6884683,
         "lng": 46.6655579
       }
+    },
+    {
+      "id": "voute-fot-al-naseem-sharqi",
+      "nameAr": "فوت | محمصة وقهوة مختصة",
+      "nameEn": "VOÛTE / Fot",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fab027b7f2d21:0xebe230fac7adf242",
+      "pin": {
+        "lat": 24.7504252,
+        "lng": 46.8280744
+      },
+      "logoUrl": "/logos/voute-fot-al-naseem-sharqi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJIS1_ewKrLz4RQvKtx_ow4us",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": true,
+      "baynanaEligible": false,
+      "example": false
+    },
+    {
+      "id": "jaro-cafe-al-naseem-sharqi",
+      "nameAr": "جارو قهوة مختصة",
+      "nameEn": "JARO Cafe",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fabc5365b85c7:0x5e1b00a4a8227b1f",
+      "pin": {
+        "lat": 24.7534071,
+        "lng": 46.833024
+      },
+      "logoUrl": "/logos/jaro-cafe-al-naseem-sharqi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJx4VbNsWrLz4RH3siqKQAG14",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "tamper-speciality-al-naseem-sharqi",
+      "nameAr": "تامبر قهوة مختصة",
+      "nameEn": "Tamper Speciality Coffee",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f017d06f827b7:0x6894dda1256b0876",
+      "pin": {
+        "lat": 24.7465091,
+        "lng": 46.8309965
+      },
+      "logoUrl": "/logos/tamper-speciality-al-naseem-sharqi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJtyf4Bn0BLz4RdghrJaHdlGg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "luxo-coffee-al-naseem-sharqi",
+      "nameAr": "لوكسو كوفي",
+      "nameEn": "LUXO Coffee",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fab007ce38971:0xbc7a9fc0bc0b7ddc",
+      "pin": {
+        "lat": 24.7451103,
+        "lng": 46.8385564
+      },
+      "logoUrl": "/logos/luxo-coffee-al-naseem-sharqi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJcYnjfACrLz4R3H0LvMCferw",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "ma-specialty-al-naseem-sharqi",
+      "nameAr": "MA قهوه مختصه",
+      "nameEn": "MA Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fabd6cbad150f:0x959fb366858428b",
+      "pin": {
+        "lat": 24.7428996,
+        "lng": 46.8284522
+      },
+      "logoUrl": "/logos/ma-specialty-al-naseem-sharqi.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJDxWty9arLz4Ri0JYaDb7WQk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "get-up-coffee-al-naseem-sharqi",
+      "nameAr": "قيت اب كوفي",
+      "nameEn": "GET UP COFFEE",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0732c29ffe73:0x43912bd0c47ab96b",
+      "pin": {
+        "lat": 24.7303565,
+        "lng": 46.8430769
+      },
+      "logoUrl": "/logos/get-up-coffee-al-naseem-sharqi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJc_6fwjIHLz4Ra7l6xNArkUM",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "trivali-roaster-al-naseem-gharbi",
+      "nameAr": "محمصة تريفالي",
+      "nameEn": "Trivali Roaster",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-al-gharbi",
+      "neighborhoodAr": "النسيم الغربي",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0100018c985b:0x6fb37bfcb0ce73ef",
+      "pin": {
+        "lat": 24.7246557,
+        "lng": 46.8146522
+      },
+      "logoUrl": "/logos/trivali-roaster-al-naseem-gharbi.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJW5iMAQABLz4R73POsPx7s28",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "gusn-coffee-al-naseem-gharbi",
+      "nameAr": "متجر غصن القهوة - فرع النسيم",
+      "nameEn": "Gusn Coffee (Al Naseem)",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-al-gharbi",
+      "neighborhoodAr": "النسيم الغربي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2fa992ac83304f:0x6da1e81ab1343d22",
+      "pin": {
+        "lat": 24.7248469,
+        "lng": 46.8149537
+      },
+      "logoUrl": "/logos/gusn-coffee-al-naseem-gharbi.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJTzCDrJKpLz4RIj00sRrooW0",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "baynanaEligible": false,
+      "example": false
+    },
+    {
+      "id": "public-al-naseem-sharqi",
+      "nameAr": "بابلك",
+      "nameEn": "Public",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-ash-sharqi",
+      "neighborhoodAr": "النسيم الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01d21840475d:0x877536968aa3531c",
+      "pin": {
+        "lat": 24.7473125,
+        "lng": 46.8233125
+      },
+      "logoUrl": "/logos/public-al-naseem-sharqi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJXUdAGNIBLz4RHFOjipY2dYc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "be-such-al-naseem-gharbi",
+      "nameAr": "كوفي بي ستش",
+      "nameEn": "BE SUCH",
+      "city": "riyadh",
+      "neighborhood": "an-nasim-al-gharbi",
+      "neighborhoodAr": "النسيم الغربي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010039dd5ca3:0x548af37d115477b7",
+      "pin": {
+        "lat": 24.7433878,
+        "lng": 46.8141181
+      },
+      "logoUrl": "/logos/be-such-al-naseem-gharbi-ig.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJo1zdOQABLz4Rt3dUEX3zilQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

@@ -64,6 +64,7 @@ export const NEIGHBORHOOD_IDS = [
   "namar",
   "kkia",
   "al-jazirah",
+  "an-nasim-ash-sharqi",
   "an-nasim",
   "shubra",
   "manfuha",

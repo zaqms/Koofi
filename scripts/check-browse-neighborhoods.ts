@@ -318,12 +318,13 @@ assert(az.some((row) => row.id === "al-janadriyyah"), "A–Z includes al-janadri
 assert(az.some((row) => row.id === "namar"), "A–Z includes namar");
 assert(az.some((row) => row.id === "kkia"), "A–Z includes kkia");
 assert(az.some((row) => row.id === "al-jazirah"), "A–Z includes al-jazirah");
+assert(az.some((row) => row.id === "an-nasim-ash-sharqi"), "A–Z includes an-nasim-ash-sharqi");
 assert(az.some((row) => row.id === "an-nasim"), "A–Z includes an-nasim");
 assert(az.some((row) => row.id === "shubra"), "A–Z includes shubra");
 assert(az.some((row) => row.id === "manfuha"), "A–Z includes manfuha");
 assert(az.some((row) => row.id === "tuwaiq"), "A–Z includes tuwaiq");
 assert(az.some((row) => row.id === "as-suwaidi"), "A–Z includes as-suwaidi");
-assert(az.length === 66, "A–Z is the 66 catalog districts");
+assert(az.length === 67, "A–Z is the 67 catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

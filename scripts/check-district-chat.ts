@@ -35,7 +35,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 45, `expected 45 live districts, got ${live.length}`);
+assert(live.length === 47, `expected 47 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -293,6 +293,13 @@ assert(extractPrimaryDistrict("الحزم") === "al-hazm", "الحزم");
 assert(extractPrimaryDistrict("الأندلس") === "al-andalus", "الأندلس");
 assert(extractPrimaryDistrict("الخليج") === "al-khaleej", "الخليج");
 assert(extractPrimaryDistrict("النسيم الغربي") === "an-nasim-al-gharbi", "النسيم الغربي");
+assert(extractPrimaryDistrict("النسيم الشرقي") === "an-nasim-ash-sharqi", "النسيم الشرقي");
+assert(extractPrimaryDistrict("An Nasim Ash Sharqi") === "an-nasim-ash-sharqi", "An Nasim Ash Sharqi");
+assert(extractPrimaryDistrict("East Naseem") === "an-nasim-ash-sharqi", "East Naseem");
+assertDistrictTop3("النسيم الشرقي", "ar", "an-nasim-ash-sharqi");
+assertDistrictTop3("An Nasim Ash Sharqi", "en", "an-nasim-ash-sharqi");
+assertDistrictTop3("النسيم الغربي", "ar", "an-nasim-al-gharbi");
+assertDistrictTop3("An Nasim Al Gharbi", "en", "an-nasim-al-gharbi");
 assert(extractPrimaryDistrict("الرمال") === "ar-rimal", "الرمال");
 assert(extractPrimaryDistrict("الجنادرية") === "al-janadriyyah", "الجنادرية");
 assert(extractPrimaryDistrict("نمار") === "namar", "نمار");

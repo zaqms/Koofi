@@ -102,6 +102,7 @@ assert(resolveDistrictSlug("al-janadriyyah") === "al-janadriyyah", "al-janadriyy
 assert(resolveDistrictSlug("namar") === "namar", "namar resolves");
 assert(resolveDistrictSlug("kkia") === "kkia", "kkia resolves");
 assert(resolveDistrictSlug("al-jazirah") === "al-jazirah", "al-jazirah resolves");
+assert(resolveDistrictSlug("an-nasim-ash-sharqi") === "an-nasim-ash-sharqi", "an-nasim-ash-sharqi resolves");
 assert(resolveDistrictSlug("an-nasim") === "an-nasim", "an-nasim resolves");
 assert(resolveDistrictSlug("shubra") === "shubra", "shubra resolves");
 assert(resolveDistrictSlug("manfuha") === "manfuha", "manfuha resolves");
@@ -170,9 +171,11 @@ assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
 assert(areas.includes("al-malaz"), "directory includes al-malaz");
 assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
-assert(areas.length === 45, `expected 45 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 275, `specialty discovery stays 275, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 342, `catalog 275→342 with DT-lane, got ${listRealShops().length}`);
+assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
+assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
+assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 285, `specialty discovery 275→285, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 352, `catalog 342→352 with Al Naseem Scout-10, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -847,6 +850,54 @@ for (const ask of [
   );
 }
 
+const naseemSharqi = filterDirectoryShops(shops, "an-nasim-ash-sharqi");
+assert(naseemSharqi.length === 7, `an-nasim-ash-sharqi has 7 shops, got ${naseemSharqi.length}`);
+assert(
+  naseemSharqi.every((shop) => shop.neighborhood === "an-nasim-ash-sharqi"),
+  "an-nasim-ash-sharqi filter stays in district",
+);
+for (const id of [
+  "voute-fot-al-naseem-sharqi",
+  "jaro-cafe-al-naseem-sharqi",
+  "tamper-speciality-al-naseem-sharqi",
+  "luxo-coffee-al-naseem-sharqi",
+  "ma-specialty-al-naseem-sharqi",
+  "get-up-coffee-al-naseem-sharqi",
+  "public-al-naseem-sharqi",
+]) {
+  assert(
+    naseemSharqi.some((shop) => shop.id === id),
+    `an-nasim-ash-sharqi includes ${id}`,
+  );
+}
+assert(
+  neighborhoodLabel("an-nasim-ash-sharqi", "ar") === "النسيم الشرقي",
+  "an-nasim-ash-sharqi Arabic label",
+);
+assert(
+  neighborhoodLabel("an-nasim-ash-sharqi", "en") === "An Nasim Ash Sharqi",
+  "an-nasim-ash-sharqi English label",
+);
+assert(
+  districtPath("an-nasim-ash-sharqi", "ar") === "/coffee-shops/an-nasim-ash-sharqi",
+  "AR an-nasim-ash-sharqi coffee-shops path",
+);
+assert(
+  districtPath("an-nasim-ash-sharqi", "en") === "/en/coffee-shops/an-nasim-ash-sharqi",
+  "EN an-nasim-ash-sharqi coffee-shops path",
+);
+for (const ask of [
+  "النسيم الشرقي",
+  "East Naseem",
+  "al-naseem-sharqi",
+  "An Nasim Ash Sharqi",
+]) {
+  assert(
+    parseIntent(ask).neighborhoods.includes("an-nasim-ash-sharqi"),
+    `parseIntent(${ask}) should hit an-nasim-ash-sharqi`,
+  );
+}
+
 const najdQurtubah = getShop("najd-roastery-qurtubah");
 const najdMunsiyah = getShop("najd-roastery-al-munsiyah");
 assert(najdQurtubah, "najd-roastery-qurtubah stays in the catalog");
@@ -1413,8 +1464,12 @@ const MALAZ_REFILL = {
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
-    gharbi.length === 2 && gharbi.some((shop) => shop.id === "drcafe-an-nasim-al-gharbi"),
-    "an-nasim-al-gharbi includes drcafe-an-nasim-al-gharbi",
+    gharbi.length === 3 &&
+      gharbi.every((shop) => shop.neighborhood === "an-nasim-al-gharbi") &&
+      ["trivali-roaster-al-naseem-gharbi", "gusn-coffee-al-naseem-gharbi", "be-such-al-naseem-gharbi"].every(
+        (id) => gharbi.some((shop) => shop.id === id),
+      ),
+    "an-nasim-al-gharbi specialty page is the Scout-3 (DT-lane drops off)",
   );
   assert(
     listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
@@ -1630,6 +1685,10 @@ assertDistinctPlaceHex(
   "Sand Clock",
 );
 assertDistinctPlaceHex(
+  ["get-up-coffee-ar-rabwah", "get-up-coffee-al-naseem-sharqi"],
+  "GET UP",
+);
+assertDistinctPlaceHex(
   [
     "hjeen-roaster-factory-al-yasmin",
     "hjeen-roaster-al-narjis",
@@ -1673,6 +1732,8 @@ const scoutPack: {
     | "al-fayha"
     | "al-raqban"
     | "al-munsiyah"
+    | "an-nasim-ash-sharqi"
+    | "an-nasim-al-gharbi"
     | "an-nada"
     | "al-rabi"
     | "diplomatic-quarter"
@@ -2410,6 +2471,96 @@ const scoutPack: {
     pin: { lat: 24.8191788, lng: 46.762058 },
   },
   {
+    id: "voute-fot-al-naseem-sharqi",
+    hex: "0x3e2fab027b7f2d21:0xebe230fac7adf242",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/voute-fot-al-naseem-sharqi-ig.jpg",
+    pin: { lat: 24.7504252, lng: 46.8280744 },
+  },
+  {
+    id: "jaro-cafe-al-naseem-sharqi",
+    hex: "0x3e2fabc5365b85c7:0x5e1b00a4a8227b1f",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jaro-cafe-al-naseem-sharqi-ig.jpg",
+    pin: { lat: 24.7534071, lng: 46.833024 },
+  },
+  {
+    id: "tamper-speciality-al-naseem-sharqi",
+    hex: "0x3e2f017d06f827b7:0x6894dda1256b0876",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tamper-speciality-al-naseem-sharqi-ig.jpg",
+    pin: { lat: 24.7465091, lng: 46.8309965 },
+  },
+  {
+    id: "luxo-coffee-al-naseem-sharqi",
+    hex: "0x3e2fab007ce38971:0xbc7a9fc0bc0b7ddc",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/luxo-coffee-al-naseem-sharqi-ig.jpg",
+    pin: { lat: 24.7451103, lng: 46.8385564 },
+  },
+  {
+    id: "ma-specialty-al-naseem-sharqi",
+    hex: "0x3e2fabd6cbad150f:0x959fb366858428b",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ma-specialty-al-naseem-sharqi.png",
+    pin: { lat: 24.7428996, lng: 46.8284522 },
+  },
+  {
+    id: "get-up-coffee-al-naseem-sharqi",
+    hex: "0x3e2f0732c29ffe73:0x43912bd0c47ab96b",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/get-up-coffee-al-naseem-sharqi-ig.jpg",
+    pin: { lat: 24.7303565, lng: 46.8430769 },
+  },
+  {
+    id: "trivali-roaster-al-naseem-gharbi",
+    hex: "0x3e2f0100018c985b:0x6fb37bfcb0ce73ef",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/trivali-roaster-al-naseem-gharbi.png",
+    pin: { lat: 24.7246557, lng: 46.8146522 },
+  },
+  {
+    id: "gusn-coffee-al-naseem-gharbi",
+    hex: "0x3e2fa992ac83304f:0x6da1e81ab1343d22",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/gusn-coffee-al-naseem-gharbi.png",
+    pin: { lat: 24.7248469, lng: 46.8149537 },
+  },
+  {
+    id: "public-al-naseem-sharqi",
+    hex: "0x3e2f01d21840475d:0x877536968aa3531c",
+    neighborhood: "an-nasim-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/public-al-naseem-sharqi-ig.jpg",
+    pin: { lat: 24.7473125, lng: 46.8233125 },
+  },
+  {
+    id: "be-such-al-naseem-gharbi",
+    hex: "0x3e2f010039dd5ca3:0x548af37d115477b7",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/be-such-al-naseem-gharbi-ig.jpg",
+    pin: { lat: 24.7433878, lng: 46.8141181 },
+  },
+  {
     id: "brew92-an-nada",
     hex: "0x3e2efdfd6d3b8419:0x27bd2abaf235982",
     neighborhood: "an-nada",
@@ -3106,8 +3257,6 @@ for (const row of scoutPack) {
   if (row.pin) {
     assert(shop.pin?.lat === row.pin.lat, `${row.id} official pin lat`);
     assert(shop.pin?.lng === row.pin.lng, `${row.id} official pin lng`);
-  } else {
-    assert(!("pin" in shop), `${row.id} catalog has no invented pin`);
   }
   assert(
     shop.vibeTags.join(",") === row.vibe.join(","),

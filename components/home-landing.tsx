@@ -5,7 +5,9 @@ import { DocumentLocale } from "@/components/document-locale";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
 import { SiteFooter } from "@/components/site-footer";
+import { homeNeighborhoodCandidates } from "@/lib/browse-neighborhoods";
 import {
+  listBrowseDirectoryShops,
   listDirectoryShops,
   listDriveThroughDirectoryShops,
 } from "@/lib/catalog";
@@ -20,7 +22,7 @@ import {
   isOffHomeChipId,
   mostPopularPath,
 } from "@/lib/product";
-import type { Language } from "@/lib/types";
+import { CITIES, type Language } from "@/lib/types";
 
 type HomeLandingProps = {
   language: Language;
@@ -36,6 +38,9 @@ export function HomeLanding({
   const other: Language = language === "ar" ? "en" : "ar";
   const popular = listing === "popular";
   const bareHome = selectedChipId === undefined && listing == null;
+  const neighborhoodCandidates = CITIES.flatMap((city) =>
+    homeNeighborhoodCandidates(listBrowseDirectoryShops(city), city),
+  );
   const pageChipId = selectedChipId !== undefined ? selectedChipId : "popular";
   const localeHref = bareHome
     ? undefined
@@ -79,7 +84,12 @@ export function HomeLanding({
         chipOpen={chipOpen}
       />
       <CityDiscovery>
-        {bareHome ? <BrowseNeighborhoods language={language} /> : null}
+        {bareHome ? (
+          <BrowseNeighborhoods
+            language={language}
+            candidates={neighborhoodCandidates}
+          />
+        ) : null}
         {filterPutsDirectoryFirst(listing, null, chipMoment) ? (
           <>
             {directory}

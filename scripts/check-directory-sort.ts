@@ -141,7 +141,7 @@ assert(
 );
 
 const matcha = filterDirectoryShopsByMoment(listDirectoryShops(), "matcha");
-assert(matcha.length === 25, "Matcha list content stays 25 tagged shops");
+assert(matcha.length === 26, "Matcha list content stays 26 tagged shops");
 const matchaAz = sortDirectoryShops(matcha, "az", null, "en");
 const matchaNearbyNoGeo = sortDirectoryShops(matcha, "nearby", null, "en");
 const matchaNew = sortDirectoryShops(matcha, "new", null, "en");

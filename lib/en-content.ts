@@ -229,13 +229,14 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-hazm": ["al-malaz", "al-murabba", "sulimaniyah", "king-fahd"],
   "al-andalus": ["al-hamra", "al-yarmouk", "al-nahdah", "qurtubah"],
   "al-khaleej": ["al-hamra", "al-yarmouk", "al-nahdah", "al-rawdah"],
-  "an-nasim-al-gharbi": ["al-nahdah", "al-yarmouk", "al-hamra", "al-rawdah"],
+  "an-nasim-al-gharbi": ["an-nasim-ash-sharqi", "al-nahdah", "al-yarmouk", "al-hamra"],
   "ar-rimal": ["al-munsiyah", "qurtubah", "al-yarmouk", "al-hamra"],
   "al-janadriyyah": ["al-munsiyah", "qurtubah", "al-yarmouk", "al-hamra"],
   namar: ["badr", "al-aziziyah", "al-hazm", "al-malaz"],
   kkia: ["ar-rimal", "al-janadriyyah", "al-munsiyah", "qurtubah"],
   "al-jazirah": ["al-nahdah", "al-yarmouk", "al-hamra", "al-rawdah"],
-  "an-nasim": ["al-nahdah", "al-yarmouk", "an-nasim-al-gharbi", "al-hamra"],
+  "an-nasim-ash-sharqi": ["an-nasim-al-gharbi", "al-nahdah", "al-yarmouk", "al-hamra"],
+  "an-nasim": ["an-nasim-ash-sharqi", "an-nasim-al-gharbi", "al-nahdah", "al-yarmouk"],
   shubra: ["badr", "al-aziziyah", "al-hazm", "al-malaz"],
   manfuha: ["ghubairah", "al-malaz", "al-murabba", "al-aziziyah"],
   tuwaiq: ["al-hazm", "badr", "al-malaz", "king-fahd"],
@@ -715,16 +716,18 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Al Khaleej on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
   },
   "an-nasim-al-gharbi": {
-    lead: `An Nasim Al Gharbi (النسيم الغربي) sits on the east side of Riyadh. This page is the An Nasim Al Gharbi set on wain.lol so far.
+    lead: `An Nasim Al Gharbi (النسيم الغربي) sits on the east side of Riyadh. If you’re already in النسيم الغربي and you just want a coffee from the catalog, this is the An Nasim Al Gharbi set on wain.lol.
 
-[Drive Coffee](/en/c/drive-an-nasim-al-gharbi) and [dr.CAFE](/en/c/drcafe-an-nasim-al-gharbi) are on this list today. We don’t invent extras to fill the page.`,
+Names people ask about on this list include [Trivali Roaster](/en/c/trivali-roaster-al-naseem-gharbi), [Gusn Coffee (Al Naseem)](/en/c/gusn-coffee-al-naseem-gharbi), and [BE SUCH](/en/c/be-such-al-naseem-gharbi). They’re on the page. We don’t rank them.
+
+The count is three because that’s how many specialty shops we’ve added from النسيم الغربي.`,
     hereIntro: `There are **{count}** cafes from An Nasim Al Gharbi on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If An Nasim Al Gharbi isn’t the stop, these east lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim Al Gharbi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Two cafes in An Nasim Al Gharbi on wain.lol — a Riyadh neighborhood list including Drive Coffee and dr.CAFE, with Maps links.",
+    meta: "Three cafes in An Nasim Al Gharbi on wain.lol — an east Riyadh list including Trivali, Gusn, and BE SUCH, each with a Maps link.",
   },
   "ar-rimal": {
     lead: `Ar Rimal (الرمال) sits on the northeast edge of Riyadh. This page is the Ar Rimal set on wain.lol so far.
@@ -785,6 +788,20 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "Two cafes in Al Jazirah on wain.lol — a Riyadh neighborhood list including dr.CAFE, with Maps links.",
+  },
+  "an-nasim-ash-sharqi": {
+    lead: `An Nasim Ash Sharqi (النسيم الشرقي) sits on the east side of Riyadh, after النهضة. If you’re already in النسيم الشرقي and you just want a coffee from the catalog, this is the An Nasim Ash Sharqi set on wain.lol.
+
+Names people ask about on this list include [VOÛTE / Fot](/en/c/voute-fot-al-naseem-sharqi), [JARO Cafe](/en/c/jaro-cafe-al-naseem-sharqi), and [Tamper Speciality Coffee](/en/c/tamper-speciality-al-naseem-sharqi). They’re on the page with the rest. We don’t rank them.
+
+The count is seven because that’s how many An Nasim Ash Sharqi places we’ve added.`,
+    hereIntro: `There are **{count}** cafes from An Nasim Ash Sharqi on the catalog today:`,
+    hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If An Nasim Ash Sharqi isn’t the stop, these east lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim Ash Sharqi. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "Seven cafes in An Nasim Ash Sharqi on wain.lol — an east Riyadh list including VOÛTE, JARO, and Tamper, each with a Maps link.",
   },
   "an-nasim": {
     lead: `An Nasim (النسيم) sits on the east side of Riyadh. This page is the An Nasim set on wain.lol so far.
@@ -895,6 +912,16 @@ const CNI_BLURBS: Record<string, string> = {
   "coffee-address-al-munsiyah": `**Coffee Address** is on the Al Munsiyah catalog on wain.lol. This is the المونسية pin. We don’t invent extras; the other Al Munsiyah shops we’ve added are linked below.`,
   "das-mond-al-munsiyah": `Al Munsiyah has **Das Mond Café** on our catalog. The card is here if you want the Maps pin from that neighborhood list. Other Al Munsiyah places on wain.lol are linked below.`,
   "anotherside-cafe-al-munsiyah": `**ANOTHERSIDE Cafe** is on the Al Munsiyah list on wain.lol. Other المونسية names sit underneath if this one isn’t the stop.`,
+  "voute-fot-al-naseem-sharqi": `**VOÛTE / Fot** is on the An Nasim Ash Sharqi list on wain.lol. Catalog tags on the card: Roastery. Other النسيم الشرقي names sit underneath if this one isn’t the stop.`,
+  "jaro-cafe-al-naseem-sharqi": `**JARO Cafe** is on the An Nasim Ash Sharqi catalog — its own النسيم الشرقي pin. Other النسيم الشرقي names we’ve added are linked underneath.`,
+  "tamper-speciality-al-naseem-sharqi": `This is the **Tamper Speciality Coffee** page on wain.lol for An Nasim Ash Sharqi. Other An Nasim Ash Sharqi names on the catalog sit below if you want to stay in that حي.`,
+  "luxo-coffee-al-naseem-sharqi": `**LUXO Coffee** is on the wain.lol list for An Nasim Ash Sharqi in Riyadh. Same neighborhood page as VOÛTE and JARO, its own pin. Hop the other النسيم الشرقي cards below if you want a different name.`,
+  "ma-specialty-al-naseem-sharqi": `**MA Specialty Coffee** is one of the An Nasim Ash Sharqi cafes on wain.lol. If you’re already in النسيم الشرقي and you want this card, you’re in the right spot. The rest of the An Nasim Ash Sharqi catalog is linked below.`,
+  "get-up-coffee-al-naseem-sharqi": `An Nasim Ash Sharqi has **GET UP COFFEE** on the catalog. This is the النسيم الشرقي branch — a distinct pin from the Rabwah shop. Siblings from the same حي sit below.`,
+  "trivali-roaster-al-naseem-gharbi": `**Trivali Roaster** is on the An Nasim Al Gharbi list on wain.lol. Catalog tags on the card: Roastery. Other النسيم الغربي names sit underneath if this one isn’t the stop.`,
+  "gusn-coffee-al-naseem-gharbi": `**Gusn Coffee (Al Naseem)** is on the An Nasim Al Gharbi catalog — its own النسيم الغربي pin. Other النسيم الغربي names we’ve added are linked underneath.`,
+  "public-al-naseem-sharqi": `This is the **Public** page on wain.lol for An Nasim Ash Sharqi. Other An Nasim Ash Sharqi names on the catalog sit below if you want to stay in that حي.`,
+  "be-such-al-naseem-gharbi": `**BE SUCH** is on the wain.lol list for An Nasim Al Gharbi in Riyadh. Same neighborhood page as Trivali and Gusn, its own pin. Hop the other النسيم الغربي cards below if you want a different name.`,
   "brew92-an-nada": `**Brew 92 - Al Nada** is on the An Nada list on wain.lol. Catalog tags on the card: Roastery. Other الندى names sit underneath if this one isn’t the stop — short list, only what’s added.`,
   "ashjar-cafe-ar-rabi": `**Ashjar cafe** is one of the Al Rabi cafes on wain.lol. Same الربيع page as Piccolo, its own pin. Hop the other Al Rabi card below if you want a different name.`,
   "jazean-diplomatic-quarter": `This is the **Jazean DQ** page on wain.lol for the Diplomatic Quarter. The الحي الدبلوماسي list is that card today. Full neighborhood page is linked below.`,

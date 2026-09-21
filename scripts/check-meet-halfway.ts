@@ -555,6 +555,8 @@ assert(
 assert(
   HALFWAY_DENY_SHOP_IDS.includes("kapu-cafe-al-nahdah") &&
     HALFWAY_DENY_SHOP_IDS.includes("shafel-roastery-al-nahdah") &&
+    HALFWAY_DENY_SHOP_IDS.includes("voute-fot-al-naseem-sharqi") &&
+    HALFWAY_DENY_SHOP_IDS.includes("gusn-coffee-al-naseem-gharbi") &&
     !isHalfwayEligible(
       fixtureShop({
         id: "shafel-roastery-al-nahdah",
@@ -817,6 +819,22 @@ assert(
     flow?.pickupOnly === true &&
     !isHalfwayEligible(flow),
   "Get Up + FLOW Matcha stay fail-closed / pickup-only",
+);
+const vouteNaseem = SHOPS.find((shop) => shop.id === "voute-fot-al-naseem-sharqi");
+const gusnNaseem = SHOPS.find((shop) => shop.id === "gusn-coffee-al-naseem-gharbi");
+const jaroNaseem = SHOPS.find((shop) => shop.id === "jaro-cafe-al-naseem-sharqi");
+assert(
+  vouteNaseem?.dineIn == null &&
+    vouteNaseem?.pickupOnly === true &&
+    vouteNaseem?.baynanaEligible === false &&
+    !isHalfwayEligible(vouteNaseem) &&
+    gusnNaseem?.dineIn == null &&
+    gusnNaseem?.outdoorSeating == null &&
+    gusnNaseem?.baynanaEligible === false &&
+    !isHalfwayEligible(gusnNaseem) &&
+    jaroNaseem?.dineIn === true &&
+    isHalfwayEligible(jaroNaseem),
+  "Al Naseem: VOÛTE + Gusn denied from بيننا; JARO eligible via dineIn",
 );
 
 const mid = locationsCentroid(two, SHOPS);

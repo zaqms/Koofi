@@ -178,6 +178,7 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   namar: "tree",
   kkia: "landmark",
   "al-jazirah": "waves",
+  "an-nasim-ash-sharqi": "tree",
   "an-nasim": "tree",
   shubra: "building",
   manfuha: "pin",

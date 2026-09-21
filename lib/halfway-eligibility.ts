@@ -14,10 +14,12 @@ import type { Shop } from "./types";
  * even when dine-in is true. Soft Places parked. Never invent cafés.
  */
 
-/** Seed override: Kapu + Shafel Nahdah stay out of بيننا. */
+/** Seed override: Kapu + Shafel Nahdah + Al Naseem pickup/unclear stay out of بيننا. */
 export const HALFWAY_DENY_SHOP_IDS = [
   "kapu-cafe-al-nahdah",
   "shafel-roastery-al-nahdah",
+  "voute-fot-al-naseem-sharqi",
+  "gusn-coffee-al-naseem-gharbi",
 ] as const;
 
 const HALFWAY_DENY_SHOP_ID_SET = new Set<string>(HALFWAY_DENY_SHOP_IDS);

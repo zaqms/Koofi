@@ -152,6 +152,7 @@ for (const district of [
   "al-andalus",
   "al-khaleej",
   "an-nasim-al-gharbi",
+  "an-nasim-ash-sharqi",
   "ar-rimal",
   "al-janadriyyah",
   "namar",

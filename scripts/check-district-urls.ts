@@ -1219,7 +1219,7 @@ const MURUJ_REFILL = {
 const MOH_REFILL = {
   id: "al-mohammadiyah" as const,
   ar: "المحمدية",
-  en: "Al Mohammadiyah",
+  en: "Al Muhammadiyah",
   shops: [
     "unique-drip-al-mohammadiyah",
     "hjeen-roasters-al-mohammadiyah",

@@ -174,9 +174,8 @@ assert(izdihar?.status === "dictionary_only", "Izdihar stays dictionary_only");
 assert(!liveCatalog.includes("al-izdihar" as NeighborhoodId), "do not invent Izdihar shops");
 
 assert(
-  !readRepo("lib/browse-neighborhoods.ts").includes("Al Sulaymaniyah") &&
-    !readRepo("lib/browse-neighborhoods.ts").includes("Granada"),
-  "browse no longer overlays Al Sulaymaniyah / Granada",
+  !readRepo("lib/browse-neighborhoods.ts").includes("BROWSE_EN_LABELS"),
+  "browse EN comes from the locked dictionary, not a label overlay",
 );
 assert(
   !readRepo("components/district-page.tsx").includes("ثلاث الليلة") &&

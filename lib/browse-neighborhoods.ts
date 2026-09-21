@@ -89,7 +89,7 @@ export const NEIGHBORHOOD_SORTS: readonly NeighborhoodSort[] = [
 
 /**
  * Browse EN uses the locked district dictionary (`NEIGHBORHOODS.en`).
- * Shoug sheet 21 Sep 2026 — no separate Granada / Al Sulaymaniyah overlays.
+ * Shoug sheet 21 Sep 2026 is the only EN overlay.
  */
 
 export type NeighborhoodIconKind =

@@ -4,6 +4,7 @@ import { copy } from "./copy";
 import { COFFEE_SHOPS_CATEGORY, type DirectoryCategoryId } from "./directory-category";
 import type { DirectoryShop } from "./directory";
 import { categoryDistrictStaticParams } from "./district";
+import { listingOgCopy, listingOgImage } from "./listing-og";
 import { rankByPopularity } from "./picker";
 import {
   COFFEE_SHOP_CHIP_SLUGS,
@@ -31,6 +32,9 @@ export function mostPopularMetadata(language: Language): Metadata {
   const title = mostPopularTitle(language);
   const description = mostPopularDescription(language);
   const url = mostPopularPath(language);
+  const ogSpec = { kind: "popular" as const, language };
+  const og = listingOgCopy(ogSpec);
+  const images = og ? [listingOgImage(ogSpec, og.title)] : [SOCIAL_SHARE_IMAGE];
 
   return {
     title,
@@ -51,13 +55,13 @@ export function mostPopularMetadata(language: Language): Metadata {
       locale: language === "en" ? "en_US" : "ar_SA",
       type: "website",
       url,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
       title,
       description,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
   };
 }

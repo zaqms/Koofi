@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { copy } from "./copy";
+import { listingOgCopy, listingOgImage } from "./listing-og";
 import { pageAlternates } from "./locale";
 import {
   MEET_HALFWAY_CHIP,
@@ -28,6 +29,12 @@ export function chipPageMetadata(
   const title = `${label} · ${PRODUCT_NAME}`;
   const description = language === "en" ? copy.openerEn : copy.opener;
   const url = chipSharePath(chipId, language);
+  const ogSpec =
+    chipId === "popular"
+      ? ({ kind: "popular", language } as const)
+      : ({ kind: "chip", language, id: chipId } as const);
+  const og = listingOgCopy(ogSpec);
+  const images = og ? [listingOgImage(ogSpec, og.title)] : [SOCIAL_SHARE_IMAGE];
 
   return {
     title,
@@ -46,13 +53,13 @@ export function chipPageMetadata(
       locale: language === "en" ? "en_US" : "ar_SA",
       type: "website",
       url,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
       title,
       description,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
   };
 }

@@ -7,6 +7,7 @@ import {
 } from "./directory-category";
 import { districtArMeta, districtArTitle } from "./ar-content";
 import { districtEnMeta, districtEnTitle } from "./en-content";
+import { listingOgCopy, listingOgImage } from "./listing-og";
 import { pageAlternates } from "./locale";
 import { isNeighborhoodId, neighborhoodLabel } from "./neighborhoods";
 import {
@@ -69,6 +70,9 @@ export function districtMetadata(
   const title = districtTitle(id, language, category);
   const description = districtDescription(id, language, category);
   const url = categoryDistrictPath(category, id, language);
+  const ogSpec = { kind: "district" as const, language, id };
+  const og = listingOgCopy(ogSpec);
+  const images = og ? [listingOgImage(ogSpec, og.title)] : [SOCIAL_SHARE_IMAGE];
 
   return {
     title,
@@ -87,13 +91,13 @@ export function districtMetadata(
       locale: language === "en" ? "en_US" : "ar_SA",
       type: "website",
       url,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
       title,
       description,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
   };
 }

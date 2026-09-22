@@ -515,9 +515,14 @@ assert(!registry.includes("Good for a date"), "date chip label is gone from regi
 
 const directory = readRepo("components/shop-directory.tsx");
 assert(
-  directory.includes("{popular ? (") &&
-    directory.includes('className="mt-3 flex flex-wrap gap-1.5"'),
-  "Most Popular keeps the wrap; district pages do not resurrect it",
+  !directory.includes("allDistricts") &&
+    !directory.includes('className="mt-3 flex flex-wrap gap-1.5"') &&
+    !directory.includes("districtPath"),
+  "Most Popular no longer mounts the old district-chip wrap",
+);
+assert(
+  !readRepo("components/district-page.tsx").includes("allDistricts"),
+  "district pages do not resurrect the district-chip wrap",
 );
 
 const browse = readRepo("components/browse-neighborhoods.tsx");

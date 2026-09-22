@@ -250,6 +250,33 @@ export function VibeChips({
           onPick({ id: chip.id, label });
         };
 
+        const body = (
+          <>
+            <ChipIcon id={getDiscoveryCategory(chip.id)?.icon ?? chip.id} />
+            <span className="line-clamp-2 text-center text-[11px] leading-tight">
+              {label}
+            </span>
+          </>
+        );
+
+        // Already-selected Most Popular stays on the modern discovery UI.
+        // A link would open /coffee-shops/most-popular, which used to mount
+        // the old district-chip grid.
+        if (selected && chip.id === "popular") {
+          return (
+            <button
+              key={chip.id}
+              type="button"
+              aria-disabled={disabled || undefined}
+              aria-current="page"
+              onClick={onChipClick}
+              className={className}
+            >
+              {body}
+            </button>
+          );
+        }
+
         return (
           <Link
             key={chip.id}
@@ -259,10 +286,7 @@ export function VibeChips({
             onClick={onChipClick}
             className={className}
           >
-            <ChipIcon id={getDiscoveryCategory(chip.id)?.icon ?? chip.id} />
-            <span className="line-clamp-2 text-center text-[11px] leading-tight">
-              {label}
-            </span>
+            {body}
           </Link>
         );
       })}

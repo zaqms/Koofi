@@ -933,6 +933,7 @@ const CNI_BLURBS: Record<string, string> = {
   "coffee-address-ar-rabwah-ihsaa": `**Coffee Address (Al Ihsaa / Rabwah)** is on the Ar Rabwah catalog on wain.lol. This card is the Al Ihsaa pin (24.6941875, 46.7323125). Other الربوة names we’ve added are linked below.`,
   "somatcha-ar-rabwah": `**SoMatcha** is on the Ar Rabwah list. The other الربوة places on the catalog are linked below.`,
   "jaam-coffee-ar-rabwah": `**Jaam Coffee** is on the wain.lol list for Ar Rabwah in Riyadh. Same neighborhood page as Hjeen and CLAZ, its own pin. Hop the other الربوة cards below if you want a different name.`,
+  "hello-cafe-olaya": `**Hello Cafe** is on the Al Olaya list on wain.lol. This is the العليا pin. Other Al Olaya names sit underneath if this one isn’t the stop.`,
 };
 
 const CAFE_OPENERS = [

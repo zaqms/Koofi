@@ -514,6 +514,10 @@ export const copy = {
     ar: "يفتح الساعة",
     en: "Opens at",
   },
+  detailHoursAllDay: {
+    ar: "مفتوح ٢٤ ساعة",
+    en: "Open 24 hours",
+  },
   detailFavorite: {
     ar: "مفضلة",
     en: "Favorite",

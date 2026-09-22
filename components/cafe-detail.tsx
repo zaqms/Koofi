@@ -20,6 +20,7 @@ import {
   cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
+  cafeDetailWeeklyHours,
   neighborhoodCafesHeading,
   type CafeDetailHeroPhoto,
 } from "@/lib/cafe-detail";
@@ -68,6 +69,7 @@ export function CafeDetail({
   const photos = cafeDetailHeroPhotos(shop);
   const description = cafeDetailDescription(shop);
   const status = cafeDetailHoursStatus(shop, language);
+  const schedule = cafeDetailWeeklyHours(shop, language);
   const coords = officialShopCoords(shop);
 
   return (
@@ -157,6 +159,9 @@ export function CafeDetail({
               }
               language={language}
             />
+          ) : null}
+          {schedule ? (
+            <DetailHoursSchedule lines={schedule} language={language} />
           ) : null}
           {tags.length > 0 ? (
             <DetailInfoRow
@@ -409,6 +414,44 @@ function CafeDetailLocation({
         </>
       ) : null}
     </p>
+  );
+}
+
+function DetailHoursSchedule({
+  lines,
+  language,
+}: {
+  lines: { day: string; hours: string }[];
+  language: Language;
+}) {
+  return (
+    <div
+      data-cafe-detail-hours=""
+      className="flex w-full items-start gap-3 border-b border-wain-divider py-4 last:border-b-0"
+      lang={language}
+    >
+      <span className="mt-0.5 text-wain-soft-taupe">
+        <DetailClockIcon className="size-[18px]" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[11px] leading-4 text-wain-soft-taupe">
+          {copy.hours[language]}
+        </span>
+        <ul className="mt-1 flex flex-col gap-1">
+          {lines.map((line) => (
+            <li
+              key={line.day}
+              className="flex items-baseline justify-between gap-3 text-sm leading-5 text-ink"
+            >
+              <span>{line.day}</span>
+              <span dir="ltr" className="shrink-0 tabular-nums">
+                {line.hours}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </span>
+    </div>
   );
 }
 

@@ -205,6 +205,67 @@ export function cafeDetailHoursStatus(
   };
 }
 
+export type CafeDetailWeeklyHoursLine = {
+  day: string;
+  hours: string;
+};
+
+/** Google day index. Monday-first matches baked weekdayDescriptions. */
+const DAY_NAME: Record<Language, readonly string[]> = {
+  en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  ar: ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"],
+};
+const WEEK_DISPLAY = [1, 2, 3, 4, 5, 6, 0] as const;
+
+function formatSpan(
+  open: OpeningHoursPoint,
+  close: OpeningHoursPoint,
+  language: Language,
+): string {
+  return `${formatClock(open.hour, open.minute, language)} – ${formatClock(close.hour, close.minute, language)}`;
+}
+
+/**
+ * Weekly schedule from baked catalog periods in Asia/Riyadh.
+ * Shops without periods stay blank — hours are not invented.
+ * A period with no close means open 24 hours, same as Status.
+ */
+export function cafeDetailWeeklyHours(
+  shop: Pick<Shop, "openingHours">,
+  language: Language,
+): CafeDetailWeeklyHoursLine[] | null {
+  const periods = shop.openingHours?.periods;
+  if (!periods || periods.length === 0) return null;
+
+  const usable = periods.filter(
+    (period) =>
+      validPoint(period.open) && (period.close == null || validPoint(period.close)),
+  );
+  if (usable.length === 0) return null;
+
+  if (usable.some((period) => period.close == null)) {
+    return WEEK_DISPLAY.map((day) => ({
+      day: DAY_NAME[language][day] ?? "",
+      hours: copy.detailHoursAllDay[language],
+    }));
+  }
+
+  return WEEK_DISPLAY.map((day) => {
+    const todays = usable
+      .filter((period) => period.open.day === day)
+      .sort((a, b) => pointMinutes(a.open) - pointMinutes(b.open));
+    const hours =
+      todays.length === 0
+        ? copy.detailClosedNow[language]
+        : todays
+            .map((period) =>
+              formatSpan(period.open, period.close as OpeningHoursPoint, language),
+            )
+            .join(" · ");
+    return { day: DAY_NAME[language][day] ?? "", hours };
+  });
+}
+
 /** `{Neighborhood} cafés` / `قهاوي {الحي}` — catalog district name only. */
 export function neighborhoodCafesHeading(
   neighborhood: string,

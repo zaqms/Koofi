@@ -33232,7 +33232,7 @@
           "Tuesday: 6:00 AM – 2:00 AM",
           "Wednesday: 6:00 AM – 2:00 AM",
           "Thursday: 6:00 AM – 2:00 AM",
-          "Friday: 7:00 AM – 2:00 AM",
+          "Friday: 6:00 AM – 2:00 AM",
           "Saturday: 6:00 AM – 2:00 AM",
           "Sunday: 6:00 AM – 2:00 AM"
         ],
@@ -33300,7 +33300,7 @@
           {
             "open": {
               "day": 5,
-              "hour": 7,
+              "hour": 6,
               "minute": 0
             },
             "close": {

@@ -3430,15 +3430,20 @@ for (const row of scoutPack) {
 const helloOlaya = getShop("hello-cafe-olaya");
 assert(helloOlaya?.logoUrl === "/logos/hello-cafe-olaya-ig.jpg", "Hello Cafe uses the IG hlo mark");
 assert(
-  helloOlaya?.openingHours?.weekdayDescriptions?.[4] ===
-    "Friday: 7:00\u202fAM\u2009–\u20092:00\u202fAM" &&
+  helloOlaya?.openingHours?.weekdayDescriptions?.every(
+    (line) => line.endsWith("6:00\u202fAM\u2009–\u20092:00\u202fAM"),
+  ) &&
+    helloOlaya.openingHours.weekdayDescriptions[4]?.startsWith("Friday:") &&
     helloOlaya.openingHours.periods?.length === 7 &&
-    helloOlaya.openingHours.periods[0]?.open.hour === 6 &&
-    helloOlaya.openingHours.periods[0]?.close?.hour === 2 &&
-    helloOlaya.openingHours.periods[5]?.open.day === 5 &&
-    helloOlaya.openingHours.periods[5]?.open.hour === 7 &&
-    helloOlaya.openingHours.periods[5]?.close?.hour === 2,
-  "Hello Cafe bakes place.json regularOpeningHours (Fri 7 AM, else 6 AM, close 2 AM)",
+    helloOlaya.openingHours.periods.every(
+      (period, index) =>
+        period.open.day === index &&
+        period.open.hour === 6 &&
+        period.open.minute === 0 &&
+        period.close?.hour === 2 &&
+        period.close.minute === 0,
+    ),
+  "Hello Cafe hours are Amjad's lock: every day 6:00 AM–2:00 AM next day, including Friday",
 );
 assert(
   !getShop("sand-clock-sulimaniyah"),

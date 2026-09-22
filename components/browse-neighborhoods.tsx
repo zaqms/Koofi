@@ -69,6 +69,14 @@ function Arrow({ point }: { point: "left" | "right" }) {
   );
 }
 
+function trackNeighborhoodsIndex(language: Language, city: City, via: "cta" | "arrow") {
+  trackEvent(
+    "neighborhoods_view_all",
+    { locale: language, city },
+    { dedupeKey: `neighborhoods_view_all:${via}:${language}:${city}` },
+  );
+}
+
 function ViewAllLink({
   language,
   city,
@@ -81,16 +89,31 @@ function ViewAllLink({
     <Link
       href={neighborhoodsPath(language)}
       data-view-all-cta={language}
-      onClick={() => {
-        trackEvent(
-          "neighborhoods_view_all",
-          { locale: language, city },
-          { dedupeKey: `neighborhoods_view_all:${language}:${city}` },
-        );
-      }}
+      onClick={() => trackNeighborhoodsIndex(language, city, "cta")}
       className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-ink-soft"
     >
       <span>{copy.viewAllNeighborhoods[language]}</span>
+      <Arrow point={rtl ? "left" : "right"} />
+    </Link>
+  );
+}
+
+function NeighborhoodRailArrow({
+  language,
+  city,
+}: {
+  language: Language;
+  city: City;
+}) {
+  const rtl = language === "ar";
+  return (
+    <Link
+      href={neighborhoodsPath(language)}
+      data-browse-scroll=""
+      onClick={() => trackNeighborhoodsIndex(language, city, "arrow")}
+      aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
+      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
+    >
       <Arrow point={rtl ? "left" : "right"} />
     </Link>
   );
@@ -106,7 +129,6 @@ function FeaturedPills({
   city: City;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
-  const rtl = language === "ar";
   const [canScroll, setCanScroll] = useState(true);
 
   useEffect(() => {
@@ -124,13 +146,6 @@ function FeaturedPills({
       window.removeEventListener("resize", measure);
     };
   }, [ids]);
-
-  function scrollForward() {
-    const row = rowRef.current;
-    if (!row) return;
-    const delta = Math.min(220, row.clientWidth * 0.7);
-    row.scrollBy({ left: rtl ? -delta : delta, behavior: "smooth" });
-  }
 
   return (
     <div className="mt-3 flex items-center gap-2">
@@ -156,17 +171,7 @@ function FeaturedPills({
           ))}
         </div>
       </div>
-      {canScroll ? (
-        <button
-          type="button"
-          data-browse-scroll=""
-          onClick={scrollForward}
-          aria-label={rtl ? "المزيد من الأحياء" : "More neighborhoods"}
-          className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line bg-foam text-ink"
-        >
-          <Arrow point={rtl ? "left" : "right"} />
-        </button>
-      ) : null}
+      {canScroll ? <NeighborhoodRailArrow language={language} city={city} /> : null}
     </div>
   );
 }

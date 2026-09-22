@@ -1,12 +1,14 @@
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
+import { listingOgImage } from "@/lib/listing-og";
 import {
   LOCKED_OPENER_EN,
   PRODUCT_NAME,
-  SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "@/lib/product";
 import { websiteJsonLd } from "@/lib/structured-data";
+
+const homeOg = listingOgImage({ kind: "home", language: "en" }, LOCKED_OPENER_EN);
 
 export const metadata = {
   title: PRODUCT_NAME,
@@ -20,13 +22,13 @@ export const metadata = {
     locale: "en_US",
     type: "website",
     url: "/en",
-    images: [SOCIAL_SHARE_IMAGE],
+    images: [homeOg],
   },
   twitter: {
     card: SOCIAL_TWITTER_CARD,
     title: PRODUCT_NAME,
     description: LOCKED_OPENER_EN,
-    images: [SOCIAL_SHARE_IMAGE],
+    images: [homeOg],
   },
 };
 

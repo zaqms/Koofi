@@ -11,7 +11,6 @@ import {
   cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
-  cafeDetailWeeklyHours,
   neighborhoodCafesHeading,
 } from "../lib/cafe-detail";
 import { copy } from "../lib/copy";
@@ -1192,37 +1191,23 @@ assert(
 assert(detail.includes("draggable={false}"), "hero img is not a native drag ghost");
 assert(detail.includes("setPointerCapture"), "hero swipe captures the pointer");
 assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");
-assert(detail.includes("cafeDetailWeeklyHours"), "detail paints the weekly schedule");
-assert(detail.includes("data-cafe-detail-hours"), "hours row is a visible schedule");
-assert(detail.includes("copy.hours"), "hours row is labeled Hours / الساعات");
-assert(helper.includes("cafeDetailWeeklyHours"), "weekly hours come from baked periods");
-assert(
-  cafeDetailWeeklyHours({ openingHours: undefined }, "en") === null,
-  "weekly hours stay hidden when none are baked",
-);
+assert(!detail.includes("cafeDetailWeeklyHours"), "weekly schedule stays off the detail page");
+assert(!detail.includes("data-cafe-detail-hours"), "no weekly Hours row");
+assert(!detail.includes("copy.hours"), "Hours / الساعات list stays off the 19 Sep detail");
+assert(!helper.includes("cafeDetailWeeklyHours"), "no sitewide weekly schedule helper");
+assert(detail.includes("cafeDetailHoursStatus"), "Status still comes from baked periods");
+assert(detail.includes("detailStatus"), "Status row stays");
 
 const hello = getShop("hello-cafe-olaya");
 assert(hello, "Hello Cafe Olaya is in the catalog");
-const helloEn = cafeDetailWeeklyHours(hello, "en");
-const helloAr = cafeDetailWeeklyHours(hello, "ar");
-assert(helloEn?.length === 7 && helloAr?.length === 7, "Hello Cafe schedule lists 7 days");
 assert(
-  helloEn?.every((line) => line.hours === "6:00 AM – 2:00 AM"),
-  "EN schedule is 6:00 AM – 2:00 AM every day including Friday",
+  cafeDetailHoursStatus(hello, "en", new Date("2026-09-25T02:30:00Z"))?.label ===
+    "Opens at 6:00 AM",
+  "Hello Cafe Friday before 6 AM opens at 6:00 AM, not 7:00 AM",
 );
 assert(
-  helloEn?.map((line) => line.day).join(",") ===
-    "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday",
-  "EN days include Friday",
-);
-assert(
-  helloAr?.every((line) => line.hours === "٦:٠٠ ص – ٢:٠٠ ص"),
-  "AR schedule is ٦:٠٠ ص – ٢:٠٠ ص every day including Friday",
-);
-assert(helloAr?.some((line) => line.day === "الجمعة"), "AR Friday is on the schedule");
-assert(
-  !helloEn?.some((line) => line.hours.includes("7:00")),
-  "Friday is not 7:00 AM",
+  cafeDetailHoursStatus(hello, "en", new Date("2026-09-25T03:00:00Z"))?.kind === "open",
+  "Hello Cafe Friday 6:00 AM is Open now",
 );
 
 console.log("check-cafe-detail: ok");

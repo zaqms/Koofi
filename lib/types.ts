@@ -126,7 +126,7 @@ export type Shop = {
   officialSite?: string;
   pin?: Pin;
   hours?: string;
-  /** Baked regularOpeningHours. Detail Status and the weekly hours row read periods only. */
+  /** Baked Places regularOpeningHours. Detail Status reads periods only. */
   openingHours?: OpeningHours;
   mapsShareUrl?: string;
   photoUrl?: string;

@@ -3363,7 +3363,7 @@ const scoutPack: {
     neighborhood: "olaya",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/hello-cafe-olaya.jpg",
+    logoUrl: "/logos/hello-cafe-olaya-ig.jpg",
     pin: { lat: 24.695142, lng: 46.6830591 },
     coordsInUrl: true,
     placeId: "ChIJXwNrJwADLz4RU6N2vActuPg",
@@ -3427,6 +3427,19 @@ for (const row of scoutPack) {
   );
 }
 
+const helloOlaya = getShop("hello-cafe-olaya");
+assert(helloOlaya?.logoUrl === "/logos/hello-cafe-olaya-ig.jpg", "Hello Cafe uses the IG hlo mark");
+assert(
+  helloOlaya?.openingHours?.weekdayDescriptions?.[4] ===
+    "Friday: 7:00\u202fAM\u2009–\u20092:00\u202fAM" &&
+    helloOlaya.openingHours.periods?.length === 7 &&
+    helloOlaya.openingHours.periods[0]?.open.hour === 6 &&
+    helloOlaya.openingHours.periods[0]?.close?.hour === 2 &&
+    helloOlaya.openingHours.periods[5]?.open.day === 5 &&
+    helloOlaya.openingHours.periods[5]?.open.hour === 7 &&
+    helloOlaya.openingHours.periods[5]?.close?.hour === 2,
+  "Hello Cafe bakes place.json regularOpeningHours (Fri 7 AM, else 6 AM, close 2 AM)",
+);
 assert(
   !getShop("sand-clock-sulimaniyah"),
   "old sand-clock-sulimaniyah id is retired (Muruj hex moved)",

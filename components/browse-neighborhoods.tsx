@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DEFAULT_BROWSE_CITY,
   browseNeighborhoodLabel,
-  featuredNeighborhoodIds,
+  resolveHomeNeighborhoods,
+  type HomeNeighborhoodCandidate,
 } from "@/lib/browse-neighborhoods";
+import {
+  browseNeighborhoodsHintForCity,
+  isCatalogCity,
+  type CityId,
+} from "@/lib/cities";
+import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
+import { useFreshHomeOrigin } from "@/lib/fresh-visitor-origin";
 import { NEIGHBORHOODS } from "@/lib/neighborhoods";
 import { districtPath, neighborhoodsPath } from "@/lib/product";
 import { trackEvent, type DistrictSelectSource } from "@/lib/track";
@@ -15,7 +23,8 @@ import type { City, Language, NeighborhoodId } from "@/lib/types";
 
 type BrowseNeighborhoodsProps = {
   language: Language;
-  city?: City;
+  city?: CityId;
+  candidates: readonly HomeNeighborhoodCandidate[];
 };
 
 function trackDistrict(
@@ -164,10 +173,32 @@ function FeaturedPills({
 
 export function BrowseNeighborhoods({
   language,
-  city = DEFAULT_BROWSE_CITY,
+  city,
+  candidates,
 }: BrowseNeighborhoodsProps) {
+  const { cityId: selectedCityId } = useCity();
+  const selected = city ?? selectedCityId;
+  const origin = useFreshHomeOrigin();
+  const originLat = origin.status === "ready" ? origin.lat : null;
+  const originLng = origin.status === "ready" ? origin.lng : null;
+  const resolved = useMemo(
+    () =>
+      resolveHomeNeighborhoods({
+        candidates,
+        origin:
+          originLat != null && originLng != null
+            ? { lat: originLat, lng: originLng }
+            : null,
+        locationReady: originLat != null && originLng != null,
+        selectedCityId: selected,
+      }),
+    [candidates, originLat, originLng, selected],
+  );
+  const trackCity: City = isCatalogCity(resolved.cityId)
+    ? resolved.cityId
+    : DEFAULT_BROWSE_CITY;
   const rtl = language === "ar";
-  const ids = featuredNeighborhoodIds(language, city);
+  const ids = resolved.ids;
 
   return (
     <section
@@ -176,18 +207,20 @@ export function BrowseNeighborhoods({
       lang={language}
       aria-labelledby="browse-neighborhoods"
       data-browse-pills=""
+      data-browse-mode={resolved.mode}
+      data-browse-city={resolved.cityId}
       style={rtl ? undefined : { direction: "ltr", unicodeBidi: "isolate" }}
     >
       <div className="flex items-start justify-between gap-3">
         <h2 id="browse-neighborhoods" className="min-w-0 text-lg font-semibold leading-7">
           {copy.browseNeighborhoods[language]}
         </h2>
-        <ViewAllLink language={language} city={city} />
+        <ViewAllLink language={language} city={trackCity} />
       </div>
       <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
-        {copy.browseNeighborhoodsHint[language]}
+        {browseNeighborhoodsHintForCity(language, resolved.cityId)}
       </p>
-      <FeaturedPills language={language} ids={ids} city={city} />
+      <FeaturedPills language={language} ids={ids} city={trackCity} />
     </section>
   );
 }

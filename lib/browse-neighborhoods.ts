@@ -1,14 +1,18 @@
+import { cityIdFromPin } from "./city-geo";
 import {
   CITY_LABEL,
   DEFAULT_BROWSE_CITY,
   cityLabel,
+  isCatalogCity,
   neighborhoodsIndexHeadingForCity,
   neighborhoodsIndexHintForCity,
+  type CityId,
 } from "./cities";
 import { districtsInCity } from "./district-city";
 import type { DirectoryShop } from "./directory";
 import { haversineKm } from "./distance";
 import { NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
+import { isUsableVisitorOrigin } from "./place-coords";
 import { districtPath, neighborhoodsPath, PRODUCT_NAME } from "./product";
 import type { City, Language, NeighborhoodId, Pin } from "./types";
 
@@ -201,6 +205,146 @@ export function featuredNeighborhoodIds(
   city: City = DEFAULT_BROWSE_CITY,
 ): readonly NeighborhoodId[] {
   return FEATURED_NEIGHBORHOODS_BY_CITY[city];
+}
+
+/**
+ * Homepage proximity shortlist length.
+ *
+ * The rail is one horizontal scroller. The reference shows about four
+ * pills before the overflow arrow; the featured fallback belt is six,
+ * not four. Five is the single ranked count: nearest five live
+ * neighborhoods. The no-location fallback keeps the full featured belt
+ * and does not use this cap.
+ */
+export const HOME_NEIGHBORHOOD_TOP_N = 5;
+
+export type HomeNeighborhoodMode = "proximity" | "fallback";
+
+/** Live حي plus the mean of its official shop pins. Soft Places stays parked. */
+export type HomeNeighborhoodCandidate = {
+  id: NeighborhoodId;
+  city: CityId;
+  /**
+   * Arithmetic mean of official shop pins in this حي
+   * (`neighborhoodCentroidFromShops` → `officialShopCoords`).
+   * Null when the district has cafés but no official pin.
+   * Not one café pin and not a name-derived coordinate.
+   */
+  centroid: Pin | null;
+};
+
+export type HomeNeighborhoodResolution = {
+  ids: NeighborhoodId[];
+  cityId: CityId;
+  mode: HomeNeighborhoodMode;
+};
+
+/**
+ * Candidates for the home rail: live districts only (at least one catalog
+ * café). Centroid is the mean of official pins already stored on the
+ * browse row. Language does not change the id or the point.
+ */
+export function homeNeighborhoodCandidates(
+  shops: readonly DirectoryShop[],
+  city: City,
+): HomeNeighborhoodCandidate[] {
+  return listNeighborhoodRows("en", shops, city).map((row) => ({
+    id: row.id,
+    city,
+    centroid: row.centroid,
+  }));
+}
+
+function liveIdsInCity(
+  candidates: readonly HomeNeighborhoodCandidate[],
+  cityId: CityId,
+): Set<NeighborhoodId> {
+  const ids = new Set<NeighborhoodId>();
+  for (const row of candidates) {
+    if (row.city === cityId) ids.add(row.id);
+  }
+  return ids;
+}
+
+function fallbackHomeNeighborhoodIds(
+  cityId: CityId,
+  candidates: readonly HomeNeighborhoodCandidate[],
+): NeighborhoodId[] {
+  if (!isCatalogCity(cityId)) return [];
+  const live = liveIdsInCity(candidates, cityId);
+  return featuredNeighborhoodIds("en", cityId).filter((id) => live.has(id));
+}
+
+/**
+ * Nearest live neighborhoods in one city. Proximity to the district
+ * representative only — not Nearby café ranking, not Popular, not A–Z.
+ * Ties break on stable id so EN and AR share one order.
+ * Districts without a centroid stay out. Soft Places stays parked.
+ */
+export function nearestHomeNeighborhoodIds(
+  candidates: readonly HomeNeighborhoodCandidate[],
+  cityId: CityId,
+  origin: Pin,
+  topN: number = HOME_NEIGHBORHOOD_TOP_N,
+): NeighborhoodId[] {
+  const ranked = candidates.filter(
+    (row): row is HomeNeighborhoodCandidate & { centroid: Pin } =>
+      row.city === cityId && row.centroid != null,
+  );
+  ranked.sort((a, b) => {
+    const da = haversineKm(origin, a.centroid);
+    const db = haversineKm(origin, b.centroid);
+    if (da !== db) return da - db;
+    if (a.id < b.id) return -1;
+    if (a.id > b.id) return 1;
+    return 0;
+  });
+  return ranked.slice(0, topN).map((row) => row.id);
+}
+
+/**
+ * Home “Browse by Neighborhood” ids.
+ *
+ * Location allowed and inside a registry city: that city’s nearest
+ * `HOME_NEIGHBORHOOD_TOP_N` live neighborhoods. A Jeddah (or other)
+ * fix never receives Riyadh ids, even when Riyadh is the only catalog.
+ * A usable fix outside every metro box yields an empty rail.
+ * Denied, unavailable, timeout, or an unusable fix: the selected city’s
+ * existing featured belt, still only live districts.
+ */
+export function resolveHomeNeighborhoods(input: {
+  candidates: readonly HomeNeighborhoodCandidate[];
+  origin: Pin | null;
+  locationReady: boolean;
+  selectedCityId: CityId;
+}): HomeNeighborhoodResolution {
+  const usable =
+    input.locationReady &&
+    input.origin != null &&
+    isUsableVisitorOrigin(input.origin);
+
+  if (!usable || !input.origin) {
+    return {
+      ids: fallbackHomeNeighborhoodIds(input.selectedCityId, input.candidates),
+      cityId: input.selectedCityId,
+      mode: "fallback",
+    };
+  }
+
+  const gpsCity = cityIdFromPin(input.origin);
+  if (!gpsCity) {
+    return {
+      ids: [],
+      cityId: input.selectedCityId,
+      mode: "proximity",
+    };
+  }
+
+  return {
+    ids: nearestHomeNeighborhoodIds(input.candidates, gpsCity, input.origin),
+    cityId: gpsCity,
+    mode: "proximity",
+  };
 }
 
 export function popularNeighborhoodIds(

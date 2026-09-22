@@ -42,6 +42,9 @@ export function HomeLanding({
     homeNeighborhoodCandidates(listBrowseDirectoryShops(city), city),
   );
   const pageChipId = selectedChipId !== undefined ? selectedChipId : "popular";
+  // Bare `/` and `/en` highlight Most Popular. That selection has to use the
+  // same popularityIndex ranking as the explicit Most Popular URL.
+  const popularChipSelected = popular || pageChipId === "popular";
   const localeHref = bareHome
     ? undefined
     : pageChipId
@@ -61,7 +64,7 @@ export function HomeLanding({
     <ShopDirectory
       language={language}
       shops={
-        popular
+        popularChipSelected
           ? listPopularDirectoryShops()
           : isDriveThroughDirectoryChip(pageChipId)
             ? listDriveThroughDirectoryShops()
@@ -90,7 +93,11 @@ export function HomeLanding({
             candidates={neighborhoodCandidates}
           />
         ) : null}
-        {filterPutsDirectoryFirst(listing, null, chipMoment) ? (
+        {filterPutsDirectoryFirst(
+          popularChipSelected ? "popular" : listing,
+          null,
+          chipMoment,
+        ) ? (
           <>
             {directory}
             {week}

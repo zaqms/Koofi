@@ -2,13 +2,11 @@
 
 import type { ReactNode } from "react";
 import { useMemo, useState, useSyncExternalStore } from "react";
-import Link from "next/link";
 import { DirectoryCard } from "@/components/directory-card";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
 import { ResultsFeedbackBlock } from "@/components/results-feedback";
 import { ResultsFeedbackReveal } from "@/components/results-feedback-reveal";
 import {
-  directoryNeighborhoods,
   filterDirectoryShops,
   filterDirectoryShopsByMoment,
   type DirectoryShop,
@@ -36,15 +34,11 @@ import {
   writeDistrictCafeSort,
   type DistrictCafeSort,
 } from "@/lib/district-cafe-sort";
-import { NEIGHBORHOODS, neighborhoodLabel } from "@/lib/neighborhoods";
 import {
-  districtPath,
   discoveryCategoryLabel,
   getDiscoveryCategory,
-  homePath,
   isStaticDirectoryChip,
   mostPopularHeading,
-  mostPopularPath,
 } from "@/lib/product";
 import { trackEvent } from "@/lib/track";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
@@ -109,7 +103,6 @@ export function ShopDirectory({
     : sort;
   const showNearbyHint = resultSort && requested === "nearby" && !nearbyAvailable;
 
-  const areas = directoryNeighborhoods(shops);
   const filtered = useMemo(
     () =>
       popular
@@ -203,60 +196,6 @@ export function ShopDirectory({
         </p>
       )}
 
-      {popular ? (
-      <div
-        className="mt-3 flex flex-wrap gap-1.5"
-        role="group"
-        aria-label={copy.neighborhood[language]}
-      >
-        <Link
-          href={homePath(language)}
-          scroll={false}
-          aria-current={district === null && !popular ? "page" : undefined}
-          className={chipClass(district === null && !popular)}
-        >
-          {copy.allDistricts[language]}
-        </Link>
-        <Link
-          href={popular ? homePath(language) : mostPopularPath(language)}
-          scroll={false}
-          aria-current={popular ? "page" : undefined}
-          className={chipClass(popular)}
-        >
-          {discoveryCategoryLabel("popular", language)}
-        </Link>
-        {areas.map((id) => {
-          const selected = district === id;
-          return (
-            <Link
-              key={id}
-              href={selected ? homePath(language) : districtPath(id, language)}
-              scroll={false}
-              aria-current={selected ? "page" : undefined}
-              onClick={() => {
-                if (!selected) {
-                  const hood = NEIGHBORHOODS[id];
-                  trackEvent(
-                    "district_select",
-                    {
-                      district_id: hood.id,
-                      district_ar: hood.ar,
-                      district_en: hood.en,
-                      locale: language,
-                    },
-                    { dedupeKey: `district_select:${hood.id}` },
-                  );
-                }
-              }}
-              className={chipClass(selected)}
-            >
-              {neighborhoodLabel(id, language)}
-            </Link>
-          );
-        })}
-      </div>
-      ) : null}
-
       {district ? (
         <DirectoryResultSortPills
           language={language}
@@ -314,10 +253,4 @@ export function ShopDirectory({
       {intro}
     </section>
   );
-}
-
-function chipClass(selected: boolean): string {
-  return selected
-    ? "rounded-full border border-bean bg-bean px-2.5 py-1 text-[11px] leading-5 text-foam"
-    : "rounded-full border border-line bg-foam px-2.5 py-1 text-[11px] leading-5 text-ink hover:border-bean hover:bg-paper-deep";
 }

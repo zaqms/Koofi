@@ -13,7 +13,10 @@ import {
   listRealShops,
 } from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
-import { categoryListingStaticParams } from "../lib/most-popular";
+import {
+  categoryListingStaticParams,
+  listPopularDirectoryShops,
+} from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
 import {
   COFFEE_SHOP_CHIP_SLUGS,
@@ -644,6 +647,23 @@ assert(
   "most-popular still selects popular and locale-switches on that path",
 );
 assert(
+  landing.includes('pageChipId === "popular"') &&
+    landing.includes("popularChipSelected") &&
+    landing.includes("listPopularDirectoryShops()"),
+  "default Most Popular chip serves the popularityIndex ranking",
+);
+const popularRank = listPopularDirectoryShops().map((shop) => shop.id);
+const neighborhoodRank = listDirectoryShops().map((shop) => shop.id);
+assert(popularRank.length > 0, "Most Popular ranking is non-empty");
+assert(
+  popularRank.join(",") !== neighborhoodRank.join(","),
+  "Most Popular ranking is not the neighborhood directory order",
+);
+assert(
+  landing.includes('popularChipSelected ? "popular" : listing'),
+  "selected Most Popular puts that ranking above New this week",
+);
+assert(
   landing.includes("restoreOffHomeChipOpen") &&
     landing.includes("chipOpen") &&
     landing.includes("isOffHomeChipId"),
@@ -733,6 +753,17 @@ assert(
     chat.includes("VibeChips") &&
     chat.includes('pickedChipId ?? "popular"'),
   "landing stacks بيننا card above chips; default selected is popular",
+);
+const vibeChips = read("components/vibe-chips.tsx");
+assert(
+  vibeChips.includes('chip.id === "popular"') &&
+    vibeChips.includes('type="button"') &&
+    vibeChips.includes("chipSharePath(chip.id, language)"),
+  "re-tap of selected Most Popular stays put; other chips stay shareable links",
+);
+assert(
+  !read("components/shop-directory.tsx").includes("allDistricts"),
+  "shop directory does not mount the old district-chip grid",
 );
 
 console.log("check-chip-urls: ok");

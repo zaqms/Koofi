@@ -891,9 +891,17 @@ assert(
   browse.includes('dir={rtl ? "rtl" : "ltr"}') &&
     browse.includes("districtPath(id, language)") &&
     browse.includes("neighborhoodsPath(language)") &&
-    browse.includes('type="button"') &&
-    browse.includes("data-browse-scroll"),
-  "pills open the district route, View all stays the index, arrow is not a neighborhood",
+    browse.includes("data-browse-scroll") &&
+    browse.includes("NeighborhoodRailArrow") &&
+    !browse.includes("scrollBy") &&
+    !browse.includes('type="button"'),
+  "pills open the district route; View all and the circle arrow open the index",
+);
+assert(
+  browse.includes('href={neighborhoodsPath(language)}') &&
+    browse.includes("data-browse-scroll") &&
+    browse.indexOf("data-browse-scroll") > browse.indexOf("function NeighborhoodRailArrow"),
+  "circle arrow links to the neighborhoods index and is not a district",
 );
 assert(!browse.includes("Soft Places"), "Soft Places stays parked on the home rail");
 assert(

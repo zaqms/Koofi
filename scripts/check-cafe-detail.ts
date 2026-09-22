@@ -1191,5 +1191,23 @@ assert(
 assert(detail.includes("draggable={false}"), "hero img is not a native drag ghost");
 assert(detail.includes("setPointerCapture"), "hero swipe captures the pointer");
 assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");
+assert(!detail.includes("cafeDetailWeeklyHours"), "weekly schedule stays off the detail page");
+assert(!detail.includes("data-cafe-detail-hours"), "no weekly Hours row");
+assert(!detail.includes("copy.hours"), "Hours / الساعات list stays off the 19 Sep detail");
+assert(!helper.includes("cafeDetailWeeklyHours"), "no sitewide weekly schedule helper");
+assert(detail.includes("cafeDetailHoursStatus"), "Status still comes from baked periods");
+assert(detail.includes("detailStatus"), "Status row stays");
+
+const hello = getShop("hello-cafe-olaya");
+assert(hello, "Hello Cafe Olaya is in the catalog");
+assert(
+  cafeDetailHoursStatus(hello, "en", new Date("2026-09-25T02:30:00Z"))?.label ===
+    "Opens at 6:00 AM",
+  "Hello Cafe Friday before 6 AM opens at 6:00 AM, not 7:00 AM",
+);
+assert(
+  cafeDetailHoursStatus(hello, "en", new Date("2026-09-25T03:00:00Z"))?.kind === "open",
+  "Hello Cafe Friday 6:00 AM is Open now",
+);
 
 console.log("check-cafe-detail: ok");

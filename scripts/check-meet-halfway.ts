@@ -848,6 +848,14 @@ for (const id of rabwahScout) {
   const shop = SHOPS.find((row) => row.id === id);
   assert(shop && isHalfwayEligible(shop), `${id} is بيننا sit-down from PACK dine-in`);
 }
+const helloOlaya = SHOPS.find((row) => row.id === "hello-cafe-olaya");
+assert(
+  helloOlaya?.dineIn === true &&
+    helloOlaya.outdoorSeating === true &&
+    helloOlaya.pickupOnly == null &&
+    isHalfwayEligible(helloOlaya),
+  "Hello Cafe Olaya is بيننا sit-down from Scout dine-in and outdoor seating",
+);
 const coffeeMqr6 = SHOPS.find((row) => row.id === "coffee-address-ar-rabwah");
 assert(
   coffeeMqr6?.dineIn == null &&

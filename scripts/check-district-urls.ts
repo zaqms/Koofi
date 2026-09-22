@@ -175,8 +175,8 @@ assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 291, `specialty discovery 292→291 after dropping wrong Get Up Rabwah, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 358, `catalog 359→358 after dropping wrong Get Up Rabwah, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 292, `specialty discovery 291→292 with Hello Cafe Olaya, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 359, `catalog 358→359 with Hello Cafe Olaya, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -3357,6 +3357,19 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
+  {
+    id: "hello-cafe-olaya",
+    hex: "0x3e2f0300276b035f:0xf8b82d07bc76a353",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/hello-cafe-olaya-ig.jpg",
+    pin: { lat: 24.695142, lng: 46.6830591 },
+    coordsInUrl: true,
+    placeId: "ChIJXwNrJwADLz4RU6N2vActuPg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3414,6 +3427,24 @@ for (const row of scoutPack) {
   );
 }
 
+const helloOlaya = getShop("hello-cafe-olaya");
+assert(helloOlaya?.logoUrl === "/logos/hello-cafe-olaya-ig.jpg", "Hello Cafe uses the IG hlo mark");
+assert(
+  helloOlaya?.openingHours?.weekdayDescriptions?.every(
+    (line) => line.endsWith("6:00\u202fAM\u2009–\u20092:00\u202fAM"),
+  ) &&
+    helloOlaya.openingHours.weekdayDescriptions[4]?.startsWith("Friday:") &&
+    helloOlaya.openingHours.periods?.length === 7 &&
+    helloOlaya.openingHours.periods.every(
+      (period, index) =>
+        period.open.day === index &&
+        period.open.hour === 6 &&
+        period.open.minute === 0 &&
+        period.close?.hour === 2 &&
+        period.close.minute === 0,
+    ),
+  "Hello Cafe hours are Amjad's lock: every day 6:00 AM–2:00 AM next day, including Friday",
+);
 assert(
   !getShop("sand-clock-sulimaniyah"),
   "old sand-clock-sulimaniyah id is retired (Muruj hex moved)",

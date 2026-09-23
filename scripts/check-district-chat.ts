@@ -35,7 +35,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 47, `expected 47 live districts, got ${live.length}`);
+assert(live.length === 48, `expected 48 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",

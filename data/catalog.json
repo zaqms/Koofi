@@ -33363,6 +33363,166 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "bacha-coffee-solitaire",
+      "nameAr": "باشا",
+      "nameEn": "Bacha Coffee Solitaire Mall",
+      "city": "riyadh",
+      "neighborhood": "as-sahafah",
+      "neighborhoodAr": "الصحافة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee335437f23a5:0xaf69a1d8ac95ec91!8m2!3d24.8010754!4d46.6513757",
+      "pin": {
+        "lat": 24.8010754,
+        "lng": 46.6513757
+      },
+      "logoUrl": "/logos/bacha-coffee-solitaire.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJpSN_QzXjLj4RkeyVrNihaa8",
+      "example": false
+    },
+    {
+      "id": "mood-masters-al-falah",
+      "nameAr": "محمصة ومقهى مود ماسترز للقهوة المختصة",
+      "nameEn": "Mood Masters Specialty Coffee Roasters & Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd5f8fb7a897:0x3b0473a4fd421df0!8m2!3d24.8013342!4d46.7071301",
+      "pin": {
+        "lat": 24.8013342,
+        "lng": 46.7071301
+      },
+      "logoUrl": "/logos/mood-masters-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJl6i3j1_9Lj4R8B1C_aRzBDs",
+      "example": false
+    },
+    {
+      "id": "las-cafe-al-malqa",
+      "nameAr": "لاس كافيه",
+      "nameEn": "LAS CAFE",
+      "city": "riyadh",
+      "neighborhood": "al-malqa",
+      "neighborhoodAr": "الملقا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee36d1476d3bd:0x50d860d1525fa4d7!8m2!3d24.7816639!4d46.6009635",
+      "pin": {
+        "lat": 24.7816639,
+        "lng": 46.6009635
+      },
+      "logoUrl": "/logos/las-cafe-al-malqa.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJvdN2FG3jLj4R16RfUtFg2FA",
+      "example": false
+    },
+    {
+      "id": "las-cafe-al-olaya",
+      "nameAr": "لاس كافيه",
+      "nameEn": "LAS CAFE Olaya",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0330c46bced9:0xde8ee884837786cb!8m2!3d24.6962467!4d46.6842978",
+      "pin": {
+        "lat": 24.6962467,
+        "lng": 46.6842978
+      },
+      "logoUrl": "/logos/las-cafe-al-olaya.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ2c5rxDADLz4Ry4Z3g4Tojt4",
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "little-henri-al-muruj",
+      "nameAr": "ليتل هنري",
+      "nameEn": "Little Henri",
+      "city": "riyadh",
+      "neighborhood": "al-muruj",
+      "neighborhoodAr": "المروج",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3006fa06689:0xd39d80b2d2e9dfff!8m2!3d24.7612516!4d46.6569467",
+      "pin": {
+        "lat": 24.7612516,
+        "lng": 46.6569467
+      },
+      "logoUrl": "/logos/little-henri-al-muruj.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJiWagbwDjLj4R_9_p0rKAndM",
+      "example": false
+    },
+    {
+      "id": "beitkull-al-olaya",
+      "nameAr": "قهوة بيت كُلْ",
+      "nameEn": "Beitkull",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f031ab1bae0a3:0xaf7455ed04f85e37!8m2!3d24.6875566!4d46.6856358",
+      "pin": {
+        "lat": 24.6875566,
+        "lng": 46.6856358
+      },
+      "logoUrl": "/logos/beitkull-al-olaya.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJo-C6sRoDLz4RN174BO1VdK8",
+      "example": false
     }
   ]
 }

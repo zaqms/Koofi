@@ -11,6 +11,7 @@ import {
 import {
   browseNeighborhoodsHintForCity,
   isCatalogCity,
+  neighborhoodsIndexHeadingForCity,
   type CityId,
 } from "@/lib/cities";
 import { useCity } from "@/lib/city-context";
@@ -218,7 +219,7 @@ export function BrowseNeighborhoods({
     >
       <div className="flex items-start justify-between gap-3">
         <h2 id="browse-neighborhoods" className="min-w-0 text-lg font-semibold leading-7">
-          {copy.browseNeighborhoods[language]}
+          {neighborhoodsIndexHeadingForCity(language, resolved.cityId)}
         </h2>
         <ViewAllLink language={language} city={trackCity} />
       </div>

@@ -45,7 +45,7 @@ function ForwardArrow({ language }: { language: Language }) {
 }
 
 /**
- * P0 بيننا utility card — above the 4×2 chip grid, not a tile.
+ * P0 بيننا utility card — below the category grid, not a tile.
  * RTL: 3D cluster at the start (right), forward CTA on the left.
  * Selected session after اعزم خويك stays on `/h/{id}`.
  */

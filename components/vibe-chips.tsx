@@ -217,8 +217,8 @@ function ChipIcon({ id }: { id: string }) {
 /** Shared vibe surface only — Paper/white + Ink stroke, selected dusty bean. No per-chip color. */
 function vibeChipClass(selected: boolean): string {
   return selected
-    ? "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-2 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
-    : "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-2 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+    ? "flex aspect-square min-h-[4.12rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-1.5 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+    : "flex aspect-square min-h-[4.12rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-1.5 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
 }
 
 export function VibeChips({
@@ -229,7 +229,7 @@ export function VibeChips({
 }: VibeChipsProps) {
   return (
     <div
-      className="grid grid-cols-4 gap-2.5"
+      className="mx-auto grid w-[80%] grid-cols-4 gap-2"
       role="group"
       aria-busy={disabled || undefined}
       aria-label={copy.pickVibe[language]}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -334,6 +334,8 @@ type ChatProps = {
   selectedChipId?: string | null;
   /** Off-home share URLs serve three picks on the server. Not a home tile. */
   chipOpen?: ChipOpenRestore | null;
+  /** Home lists (trending, neighborhoods, cafés). Placed under Halfway on the opener. */
+  discovery?: ReactNode;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
@@ -428,6 +430,7 @@ export function Chat({
   localeHref,
   selectedChipId,
   chipOpen,
+  discovery = null,
 }: ChatProps) {
   const router = useRouter();
   const { cityId, isComingSoon } = useCity();
@@ -1547,6 +1550,13 @@ export function Chat({
   // بيننا first-class screens (invite / waiting / results). Ask composer +
   // أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen && !sessionExpired && !isComingSoon;
+  const showHomeOpener =
+    !hasThread &&
+    !meetHalfwayOpen &&
+    !sessionExpired &&
+    !isComingSoon &&
+    !isOffHomeChipId(selectedChipId ?? "");
+  const pinComposer = Boolean(discovery) && showHomeOpener && showAskComposer;
   const isHalfwayHost = Boolean(sessionHostWait(halfwayInvite));
   const halfwayGuest = Boolean(halfwayInvite) && !isHalfwayHost;
   const halfwayPicker = meetHalfwayOpen && !sessionExpired ? (
@@ -1810,16 +1820,6 @@ export function Chat({
               !isOffHomeChipId(selectedChipId ?? "") ? (
                 <div className="space-y-5">
                   <HomeHero language={landing} />
-                  <MeetHalfwayCard
-                    language={landing}
-                    disabled={busy}
-                    selected={
-                      (selectedChipId === undefined
-                        ? pickedChipId
-                        : selectedChipId) === MEET_HALFWAY_CHIP.id
-                    }
-                    onPick={sendChip}
-                  />
                   {selectedChipId !== null ? (
                     <VibeChips
                       language={landing}
@@ -1832,6 +1832,16 @@ export function Chat({
                       onPick={sendChip}
                     />
                   ) : null}
+                  <MeetHalfwayCard
+                    language={landing}
+                    disabled={busy}
+                    selected={
+                      (selectedChipId === undefined
+                        ? pickedChipId
+                        : selectedChipId) === MEET_HALFWAY_CHIP.id
+                    }
+                    onPick={sendChip}
+                  />
                   {halfwayInviteExpired ? (
                     <p className="text-xs leading-5 text-ink-soft">
                       {copy.meetHalfwayInviteExpired[landing]}
@@ -1937,19 +1947,24 @@ export function Chat({
       </div>
       )}
 
+      {showHomeOpener && discovery ? discovery : null}
+
       {showAskComposer ? (
         <form
           ref={footerRef}
           className={
-            hasThread
-              ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-              : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            pinComposer
+              ? "fixed inset-x-0 bottom-0 z-30 bg-paper px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+              : hasThread
+                ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+                : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           }
           onSubmit={(event) => {
             event.preventDefault();
             send(draft);
           }}
         >
+          <div className={pinComposer ? "mx-auto w-full max-w-lg" : undefined}>
           <label className="sr-only" htmlFor="koofi-ask">
             {awaitingMaps
               ? copy.mapsPlaceholder[landing]
@@ -1990,8 +2005,10 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
+          </div>
         </form>
       ) : null}
+      {!showHomeOpener && discovery ? discovery : null}
     </div>
   );
 }

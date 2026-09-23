@@ -189,6 +189,15 @@ export function neighborhoodsIndexHeadingForCity(
   return language === "ar" ? `أحياء ${name}` : `${name} Neighborhoods`;
 }
 
+/** Home café-list heading. Riyadh → قهاوي الرياض / Riyadh cafés. */
+export function cafesHeadingForCity(
+  language: Language,
+  city: CityId | City = DEFAULT_LIVE_CITY,
+): string {
+  const name = cityLabel(city, language);
+  return language === "ar" ? `قهاوي ${name}` : `${name} cafés`;
+}
+
 export function mostPopularHeadingForCity(
   language: Language,
   city: CityId | City = DEFAULT_LIVE_CITY,

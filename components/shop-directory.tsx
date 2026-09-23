@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { DirectoryCard } from "@/components/directory-card";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
+import { ViewAllLink } from "@/components/view-all-link";
 import { ResultsFeedbackBlock } from "@/components/results-feedback";
 import { ResultsFeedbackReveal } from "@/components/results-feedback-reveal";
 import {
@@ -11,7 +12,7 @@ import {
   filterDirectoryShopsByMoment,
   type DirectoryShop,
 } from "@/lib/directory";
-import { directoryHintForCity } from "@/lib/cities";
+import { cafesHeadingForCity, directoryHintForCity } from "@/lib/cities";
 import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
 import {
@@ -56,6 +57,10 @@ type ShopDirectoryProps = {
   moment?: MomentTag | null;
   chipId?: string | null;
   intro?: ReactNode;
+  /** Bare home uses قهاوي الرياض / Riyadh cafés instead of the directory title. */
+  headingMode?: "city-cafes";
+  viewAllHref?: string | null;
+  sectionId?: string;
 };
 
 function originFromVisitor(
@@ -74,6 +79,9 @@ export function ShopDirectory({
   moment = null,
   chipId = null,
   intro = null,
+  headingMode,
+  viewAllHref = null,
+  sectionId,
 }: ShopDirectoryProps) {
   const { liveCity } = useCity();
   const popular = listing === "popular";
@@ -150,13 +158,21 @@ export function ShopDirectory({
     }
   }
 
-  const heading = popular
-    ? mostPopularHeading(language)
-    : district
-      ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
-      : vibe
-        ? discoveryCategoryLabel(vibe.id, language) ?? copy.directory[language]
-        : copy.directory[language];
+  const heading =
+    headingMode === "city-cafes"
+      ? cafesHeadingForCity(language, liveCity)
+      : popular
+        ? mostPopularHeading(language)
+        : district
+          ? categoryDistrictHeading(COFFEE_SHOPS_CATEGORY, district, language)
+          : vibe
+            ? discoveryCategoryLabel(vibe.id, language) ??
+              copy.directory[language]
+            : copy.directory[language];
+  const headingClass =
+    headingMode === "city-cafes"
+      ? "min-w-0 text-lg font-semibold leading-7"
+      : "min-w-0 text-base font-semibold";
   const headingId = popular
     ? "most-popular"
     : district
@@ -176,21 +192,27 @@ export function ShopDirectory({
 
   return (
     <section
+      id={sectionId}
       className="mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-10"
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby={headingId}
     >
-      {district || popular || vibe ? (
-        <h1 id={headingId} className="text-base font-semibold">
-          {heading}
-        </h1>
-      ) : (
-        <h2 id={headingId} className="text-base font-semibold">
-          {heading}
-        </h2>
-      )}
-      {intro ? null : (
+      <div className="flex items-start justify-between gap-3">
+        {district || popular || vibe ? (
+          <h1 id={headingId} className={headingClass}>
+            {heading}
+          </h1>
+        ) : (
+          <h2 id={headingId} className={headingClass}>
+            {heading}
+          </h2>
+        )}
+        {viewAllHref ? (
+          <ViewAllLink href={viewAllHref} language={language} />
+        ) : null}
+      </div>
+      {intro || headingMode === "city-cafes" ? null : (
         <p className="mt-1 text-xs leading-5 text-ink-soft">
           {directoryHintForCity(language, liveCity)}
         </p>

@@ -30524,7 +30524,8 @@
       "pin": {
         "lat": 24.700983,
         "lng": 46.8038171
-      }
+      },
+      "logoUrl": "/logos/a-plus-as-salam.jpg"
     },
     {
       "id": "arabica-cafe-ghubairah",
@@ -30544,6 +30545,7 @@
         "lat": 24.6284375,
         "lng": 46.7395625
       },
+      "logoUrl": "/logos/arabica-cafe-ghubairah.jpg",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJF3aAw-UFLz4RPy2LtGYhbqY",
@@ -30591,6 +30593,7 @@
         "lat": 24.6371904,
         "lng": 46.6931136
       },
+      "logoUrl": "/logos/arabica-coffee-al-wisham.jpg",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJqc-MxOEELz4RrpiHIW3gid0",

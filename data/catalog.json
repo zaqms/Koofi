@@ -12042,6 +12042,7 @@
         "lat": 24.6962539,
         "lng": 46.7617983
       },
+      "logoUrl": "/logos/makhsousa-coffee-ar-rabwah.jpg",
       "popularityIndex": 49.2,
       "placeId": "ChIJ75cOyNsZLz4Ry8hievc1T9M",
       "dineIn": true,
@@ -13569,6 +13570,7 @@
         "lat": 24.8226611,
         "lng": 46.7284632
       },
+      "logoUrl": "/logos/mill-coffee-qurtubah.jpg",
       "popularityIndex": 16.7,
       "placeId": "ChIJbyRdX9f9Lj4RS_xhOaga_L4",
       "dineIn": false,
@@ -18993,6 +18995,7 @@
         "lat": 24.7016528,
         "lng": 46.8262298
       },
+      "logoUrl": "/logos/maqha-mahamasa-al-raqban.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJO6S1MwCpLz4RadufNTMpDCE",
       "dineIn": true,
@@ -29678,7 +29681,8 @@
       "pin": {
         "lat": 24.7406508,
         "lng": 46.672003
-      }
+      },
+      "logoUrl": "/logos/meeting-caffeine-al-rabi.jpg"
     },
     {
       "id": "mezaj-al-malaz",

@@ -855,7 +855,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-falah": {
     lead: `Al Falah (الفلاح) sits on the north side of Riyadh. This page is the Al Falah set on wain.lol so far.
 
-[Mood Masters Specialty Coffee Roasters & Cafe](/en/c/mood-masters-al-falah) is the name on this list today. We don’t invent extras to fill the page.`,
+[Mood Masters](/en/c/mood-masters-al-falah) is the name on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Al Falah on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Falah isn’t the stop, these north lists sit next door on the site:`,

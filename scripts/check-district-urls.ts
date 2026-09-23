@@ -3549,6 +3549,25 @@ for (const id of [
 ]) {
   assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
 }
+const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
+  "bacha-coffee-solitaire": {
+    nameEn: "Bacha Coffee Solitaire Mall",
+    nameAr: "باشا",
+  },
+  "mood-masters-al-falah": {
+    nameEn: "Mood Masters",
+    nameAr: "محمصة ومقهى مود ماسترز للقهوة المختصة",
+  },
+  "las-cafe-al-malqa": { nameEn: "LAS CAFE", nameAr: "لاس كافيه" },
+  "las-cafe-al-olaya": { nameEn: "LAS CAFE Olaya", nameAr: "لاس كافيه" },
+  "little-henri-al-muruj": { nameEn: "Little Henri", nameAr: "ليتل هنري" },
+  "beitkull-al-olaya": { nameEn: "Beitkull", nameAr: "قهوة بيت كُلْ" },
+};
+for (const [id, names] of Object.entries(canonicalNames)) {
+  const shop = getShop(id);
+  assert(shop?.nameEn === names.nameEn, `${id} canonical nameEn`);
+  assert(shop?.nameAr === names.nameAr, `${id} canonical nameAr`);
+}
 assert(
   !getShop("sand-clock-sulimaniyah"),
   "old sand-clock-sulimaniyah id is retired (Muruj hex moved)",

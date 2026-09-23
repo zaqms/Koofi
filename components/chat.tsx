@@ -1621,7 +1621,7 @@ export function Chat({
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
-      <header className="shrink-0 px-4 py-3">
+      <header className="shrink-0 px-4 py-2">
         {showHalfwayResults ? (
           <div className="flex items-center justify-between gap-3" dir="ltr">
             <div className="flex items-center gap-1">
@@ -1660,7 +1660,7 @@ export function Chat({
               {restore && !meetHalfwayOpen ? null : (
                 <Link
                   href={localeHref ?? (landing === "ar" ? "/en" : "/")}
-                  className="text-xs text-ink-soft underline-offset-2 hover:underline"
+                  className="inline-flex h-8 items-center rounded-full border border-line bg-foam px-3 text-[12px] leading-none text-ink"
                 >
                   {copy.switchLanguage[landing]}
                 </Link>
@@ -1787,7 +1787,9 @@ export function Chat({
         className={
           hasThread
             ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
-            : "shrink-0 space-y-2 px-4 pt-6 pb-1"
+            : showHomeOpener
+              ? "shrink-0 space-y-2 px-4 pt-1 pb-1"
+              : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
       >
@@ -1818,7 +1820,7 @@ export function Chat({
               {message.id === "opener" &&
               !hasThread &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
-                <div className="space-y-5">
+                <div className="space-y-2">
                   <HomeHero language={landing} />
                   {selectedChipId !== null ? (
                     <VibeChips
@@ -1954,7 +1956,7 @@ export function Chat({
           ref={footerRef}
           className={
             pinComposer
-              ? "fixed inset-x-0 bottom-0 z-30 bg-paper px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+              ? "fixed inset-x-0 bottom-0 z-30 border-t border-line/70 bg-paper px-3 pt-1.5 shadow-[0_-10px_28px_rgba(30,23,20,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
               : hasThread
                 ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
                 : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
@@ -1988,16 +1990,44 @@ export function Chat({
                   ? copy.mapsPlaceholder[landing]
                   : copy.placeholder[landing]
               }
-              className="min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
+              className={
+                pinComposer
+                  ? "h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none focus:border-bean"
+                  : "min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
+              }
             />
-            <button
-              type="submit"
-              disabled={busy || !draft.trim()}
-              className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
-            >
-              {copy.send[landing]}
-            </button>
+            {pinComposer ? (
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                aria-label={copy.send[landing]}
+                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-bean text-foam disabled:opacity-50"
+              >
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  className="size-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 19V5" />
+                  <path d="m6 11 6-6 6 6" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+              >
+                {copy.send[landing]}
+              </button>
+            )}
           </div>
+          {pinComposer ? null : (
           <div className="mt-2 text-start">
             <AddShopButton
               language={landing}
@@ -2005,6 +2035,7 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
+          )}
           </div>
         </form>
       ) : null}

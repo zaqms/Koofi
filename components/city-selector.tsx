@@ -75,6 +75,19 @@ export function CitySelector({ language }: CitySelectorProps) {
         onClick={() => setOpen((value) => !value)}
         className="inline-flex h-8 max-w-[11rem] items-center gap-1 rounded-full border border-line bg-foam px-2.5 text-[12px] leading-none text-ink"
       >
+        <svg
+          aria-hidden
+          viewBox="0 0 16 16"
+          className="size-3.5 shrink-0 text-ink-soft"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M8 14.2s4.4-4.05 4.4-7.15A4.4 4.4 0 0 0 8 2.65a4.4 4.4 0 0 0-4.4 4.4C3.6 10.15 8 14.2 8 14.2z" />
+          <circle cx="8" cy="7.05" r="1.35" />
+        </svg>
         <span className="min-w-0 truncate">{cityLabel(cityId, language)}</span>
         <svg
           aria-hidden

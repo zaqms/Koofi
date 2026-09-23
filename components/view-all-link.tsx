@@ -34,7 +34,7 @@ export function ViewAllLink({ href, language }: ViewAllLinkProps) {
   return (
     <Link
       href={href}
-      className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-ink-soft"
+      className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-bean"
     >
       <span>{copy.viewAllNeighborhoods[language]}</span>
       <Arrow point={rtl ? "left" : "right"} />

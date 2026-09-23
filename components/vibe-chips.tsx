@@ -40,7 +40,7 @@ function Icon({
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-7 shrink-0"
+      className="size-5 shrink-0"
     >
       {children}
     </svg>
@@ -127,7 +127,7 @@ function ChipIcon({ id }: { id: string }) {
           aria-hidden
           viewBox="0 0 512 512"
           fill="none"
-          className="size-7 shrink-0"
+          className="size-5 shrink-0"
         >
           {/* car + pickup cup */}
           <g
@@ -158,7 +158,7 @@ function ChipIcon({ id }: { id: string }) {
           aria-hidden
           viewBox="0 0 512 512"
           fill="none"
-          className="size-7 shrink-0"
+          className="size-5 shrink-0"
         >
           {/* bowl + whisk */}
           <g
@@ -217,8 +217,8 @@ function ChipIcon({ id }: { id: string }) {
 /** Shared vibe surface only — Paper/white + Ink stroke, selected dusty bean. No per-chip color. */
 function vibeChipClass(selected: boolean): string {
   return selected
-    ? "flex aspect-square min-h-[4.12rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-1.5 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
-    : "flex aspect-square min-h-[4.12rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-line bg-foam px-1 py-1.5 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+    ? "flex min-h-[3rem] w-full flex-col items-center justify-center gap-0.5 rounded-2xl border border-bean bg-bean px-1 py-1 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+    : "flex min-h-[3rem] w-full flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-1 py-1 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
 }
 
 export function VibeChips({
@@ -229,7 +229,7 @@ export function VibeChips({
 }: VibeChipsProps) {
   return (
     <div
-      className="mx-auto grid w-[80%] grid-cols-4 gap-2"
+      className="grid grid-cols-4 gap-1.5"
       role="group"
       aria-busy={disabled || undefined}
       aria-label={copy.pickVibe[language]}
@@ -253,7 +253,7 @@ export function VibeChips({
         const body = (
           <>
             <ChipIcon id={getDiscoveryCategory(chip.id)?.icon ?? chip.id} />
-            <span className="line-clamp-2 text-center text-[11px] leading-tight">
+            <span className="text-center text-[11px] leading-[1.15]">
               {label}
             </span>
           </>

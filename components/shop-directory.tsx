@@ -171,7 +171,7 @@ export function ShopDirectory({
             : copy.directory[language];
   const headingClass =
     headingMode === "city-cafes"
-      ? "min-w-0 text-lg font-semibold leading-7"
+      ? "min-w-0 text-base font-semibold leading-6"
       : "min-w-0 text-base font-semibold";
   const headingId = popular
     ? "most-popular"
@@ -193,7 +193,11 @@ export function ShopDirectory({
   return (
     <section
       id={sectionId}
-      className="mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-10"
+      className={
+        headingMode === "city-cafes"
+          ? "mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-2 pb-8"
+          : "mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-10"
+      }
       dir={language === "ar" ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby={headingId}

@@ -91,7 +91,7 @@ function ViewAllLink({
       href={neighborhoodsPath(language)}
       data-view-all-cta={language}
       onClick={() => trackNeighborhoodsIndex(language, city, "cta")}
-      className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-ink-soft"
+      className="inline-flex shrink-0 items-center gap-1 pt-1 text-[13px] leading-5 text-bean"
     >
       <span>{copy.viewAllNeighborhoods[language]}</span>
       <Arrow point={rtl ? "left" : "right"} />
@@ -149,7 +149,7 @@ function FeaturedPills({
   }, [ids]);
 
   return (
-    <div className="mt-3 flex items-center gap-2">
+    <div className="mt-1.5 flex items-center gap-2">
       <div
         ref={rowRef}
         className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -165,7 +165,7 @@ function FeaturedPills({
               data-neighborhood-id={id}
               href={districtPath(id, language)}
               onClick={() => trackDistrict(id, language, city, "home_pill")}
-              className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-foam px-3 text-[13px] leading-none text-ink"
+              className="inline-flex h-8 shrink-0 items-center rounded-full border border-line bg-foam px-3 text-[13px] leading-none text-ink"
             >
               {browseNeighborhoodLabel(id, language)}
             </Link>
@@ -208,7 +208,7 @@ export function BrowseNeighborhoods({
 
   return (
     <section
-      className="mx-auto w-full max-w-md border-y border-line bg-paper px-4 py-4"
+      className="mx-auto w-full max-w-md border-y border-line bg-paper px-4 py-2"
       dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="browse-neighborhoods"
@@ -218,12 +218,12 @@ export function BrowseNeighborhoods({
       style={rtl ? undefined : { direction: "ltr", unicodeBidi: "isolate" }}
     >
       <div className="flex items-start justify-between gap-3">
-        <h2 id="browse-neighborhoods" className="min-w-0 text-lg font-semibold leading-7">
+        <h2 id="browse-neighborhoods" className="min-w-0 text-base font-semibold leading-6">
           {neighborhoodsIndexHeadingForCity(language, resolved.cityId)}
         </h2>
         <ViewAllLink language={language} city={trackCity} />
       </div>
-      <p className="mt-0.5 text-[13px] leading-5 text-ink-soft">
+      <p className="sr-only">
         {browseNeighborhoodsHintForCity(language, resolved.cityId)}
       </p>
       <FeaturedPills language={language} ids={ids} city={trackCity} />

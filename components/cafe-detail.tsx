@@ -31,7 +31,7 @@ import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { officialShopCoords } from "@/lib/place-coords";
 import { cardPath, districtPath, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
-import { shopDistanceDisplay } from "@/lib/shop-distance-label";
+import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import { SHOW_DETAIL_FAVORITE } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
 import { useVisitorLocation } from "@/lib/visitor-location";
@@ -369,12 +369,10 @@ function CafeDetailLocation({
   lng?: number;
 }) {
   const visitor = useVisitorLocation();
-  const origin =
-    visitor.status === "ready"
-      ? { lat: visitor.lat, lng: visitor.lng }
-      : null;
-  const display = shopDistanceDisplay({
-    origin,
+  const display = shopDistanceForVisitor({
+    status: visitor.status,
+    lat: visitor.status === "ready" ? visitor.lat : undefined,
+    lng: visitor.status === "ready" ? visitor.lng : undefined,
     coords: lat != null && lng != null ? { lat, lng } : null,
     language,
   });

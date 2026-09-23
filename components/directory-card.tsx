@@ -12,7 +12,7 @@ import { listingLocationOrder } from "@/lib/listing-location";
 import { listingCardTags } from "@/lib/listing-tags";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, shopDisplayName } from "@/lib/product";
-import { shopDistanceDisplay } from "@/lib/shop-distance-label";
+import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import type { MapsClickSource } from "@/lib/track";
 import type { Language } from "@/lib/types";
 import { useVisitorLocation } from "@/lib/visitor-location";
@@ -135,12 +135,10 @@ function ListingLocation({
   lng?: number;
 }) {
   const visitor = useVisitorLocation();
-  const origin =
-    visitor.status === "ready"
-      ? { lat: visitor.lat, lng: visitor.lng }
-      : null;
-  const display = shopDistanceDisplay({
-    origin,
+  const display = shopDistanceForVisitor({
+    status: visitor.status,
+    lat: visitor.status === "ready" ? visitor.lat : undefined,
+    lng: visitor.status === "ready" ? visitor.lng : undefined,
     coords: lat != null && lng != null ? { lat, lng } : null,
     language,
   });

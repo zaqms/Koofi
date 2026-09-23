@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 66, `expected 66 live catalog districts, got ${liveCatalog.length}`);
+assert(liveCatalog.length === 67, `expected 67 live catalog districts, got ${liveCatalog.length}`);
 assert(!liveCatalog.includes("as-suwaidi"), "as-suwaidi has 0 shops");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 

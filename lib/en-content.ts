@@ -241,6 +241,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   manfuha: ["ghubairah", "al-malaz", "al-murabba", "al-aziziyah"],
   tuwaiq: ["al-hazm", "badr", "al-malaz", "king-fahd"],
   "as-suwaidi": ["al-hazm", "al-malaz", "al-murabba", "sulimaniyah"],
+  "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
 };
 
 type DistrictLead = {
@@ -850,6 +851,18 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Tuwaiq on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+  },
+  "al-falah": {
+    lead: `Al Falah (الفلاح) sits on the north side of Riyadh. This page is the Al Falah set on wain.lol so far.
+
+[Mood Masters](/en/c/mood-masters-al-falah) is the name on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Al Falah on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Falah isn’t the stop, these north lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Falah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Al Falah on wain.lol — a Riyadh neighborhood list including Mood Masters, with a Maps link.",
   },
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.

@@ -1050,6 +1050,20 @@ export const NEIGHBORHOODS: Record<
       "As Suwaidi",
     ],
   },
+  "al-falah": {
+    id: "al-falah",
+    ar: "الفلاح",
+    en: "Al Falah",
+    aliases: [
+      "الفلاح",
+      "فلاح",
+      "falah",
+      "al falah",
+      "al-falah",
+      "alfalah",
+      "Al Falah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

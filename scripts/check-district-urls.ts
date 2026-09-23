@@ -174,9 +174,10 @@ assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
-assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 292, `specialty discovery 291→292 with Hello Cafe Olaya, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 359, `catalog 358→359 with Hello Cafe Olaya, got ${listRealShops().length}`);
+assert(areas.includes("al-falah"), "directory includes al-falah");
+assert(areas.length === 48, `expected 48 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 298, `specialty discovery 292→298 with six specialty adds, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 365, `catalog 359→365 with six specialty adds, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1186,12 +1187,13 @@ const MURUJ_REFILL = {
     "rabka-al-muruj",
     "quokka-coffee-al-muruj",
     "some-coffee-bar-al-muruj",
+    "little-henri-al-muruj",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 6, `al-muruj has 6 shops, got ${rows.length}`);
+  assert(rows.length === 7, `al-muruj has 7 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1648,6 +1650,16 @@ assertDistinctPlaceHex(
   "Quokka Coffee",
 );
 assertDistinctPlaceHex(
+  ["las-cafe-al-malqa", "las-cafe-al-olaya"],
+  "LAS CAFE",
+);
+assert(
+  getShop("las-cafe-al-malqa")?.placeId !== getShop("lasani-cafe-al-malaz")?.placeId &&
+    getShop("las-cafe-al-malqa")?.logoUrl !== getShop("lasani-cafe-al-malaz")?.logoUrl &&
+    getShop("lasani-cafe-al-malaz")?.nameEn === "Lasani Cafe",
+  "LAS CAFE stays a different brand from Lasani Cafe",
+);
+assertDistinctPlaceHex(
   ["drip-olaya", "drip-al-hamra", "drip-al-ghadeer", "drip-al-qirawan"],
   "Drip",
 );
@@ -1782,6 +1794,8 @@ const scoutPack: {
     | "diriyah"
     | "hittin"
     | "al-malqa"
+    | "as-sahafah"
+    | "al-falah"
     | "ghirnatah"
     | "al-mathar"
     | "at-taawun";
@@ -3370,6 +3384,72 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: true,
   },
+  {
+    id: "bacha-coffee-solitaire",
+    hex: "0x3e2ee335437f23a5:0xaf69a1d8ac95ec91",
+    neighborhood: "as-sahafah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bacha-coffee-solitaire.jpg",
+    pin: { lat: 24.8010754, lng: 46.6513757 },
+    coordsInUrl: true,
+    placeId: "ChIJpSN_QzXjLj4RkeyVrNihaa8",
+  },
+  {
+    id: "mood-masters-al-falah",
+    hex: "0x3e2efd5f8fb7a897:0x3b0473a4fd421df0",
+    neighborhood: "al-falah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/mood-masters-al-falah.jpg",
+    pin: { lat: 24.8013342, lng: 46.7071301 },
+    coordsInUrl: true,
+    placeId: "ChIJl6i3j1_9Lj4R8B1C_aRzBDs",
+  },
+  {
+    id: "las-cafe-al-malqa",
+    hex: "0x3e2ee36d1476d3bd:0x50d860d1525fa4d7",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/las-cafe-al-malqa.jpg",
+    pin: { lat: 24.7816639, lng: 46.6009635 },
+    coordsInUrl: true,
+    placeId: "ChIJvdN2FG3jLj4R16RfUtFg2FA",
+  },
+  {
+    id: "las-cafe-al-olaya",
+    hex: "0x3e2f0330c46bced9:0xde8ee884837786cb",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/las-cafe-al-olaya.jpg",
+    pin: { lat: 24.6962467, lng: 46.6842978 },
+    coordsInUrl: true,
+    placeId: "ChIJ2c5rxDADLz4Ry4Z3g4Tojt4",
+  },
+  {
+    id: "little-henri-al-muruj",
+    hex: "0x3e2ee3006fa06689:0xd39d80b2d2e9dfff",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/little-henri-al-muruj.jpg",
+    pin: { lat: 24.7612516, lng: 46.6569467 },
+    coordsInUrl: true,
+    placeId: "ChIJiWagbwDjLj4R_9_p0rKAndM",
+  },
+  {
+    id: "beitkull-al-olaya",
+    hex: "0x3e2f031ab1bae0a3:0xaf7455ed04f85e37",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/beitkull-al-olaya.jpg",
+    pin: { lat: 24.6875566, lng: 46.6856358 },
+    coordsInUrl: true,
+    placeId: "ChIJo-C6sRoDLz4RN174BO1VdK8",
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3445,6 +3525,46 @@ assert(
     ),
   "Hello Cafe hours are Amjad's lock: every day 6:00 AM–2:00 AM next day, including Friday",
 );
+const lasOlaya = getShop("las-cafe-al-olaya");
+assert(
+  lasOlaya?.openingHours?.weekdayDescriptions?.every((line) =>
+    line.endsWith("Open 24 hours"),
+  ) &&
+    lasOlaya.openingHours.weekdayDescriptions.length === 7 &&
+    lasOlaya.openingHours.periods?.length === 1 &&
+    lasOlaya.openingHours.periods[0]?.open.day === 0 &&
+    lasOlaya.openingHours.periods[0]?.open.hour === 0 &&
+    lasOlaya.openingHours.periods[0]?.close == null,
+  "LAS CAFE Olaya hours are the Maps 24h lock only",
+);
+for (const id of [
+  "bacha-coffee-solitaire",
+  "mood-masters-al-falah",
+  "las-cafe-al-malqa",
+  "little-henri-al-muruj",
+  "beitkull-al-olaya",
+]) {
+  assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
+}
+const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
+  "bacha-coffee-solitaire": {
+    nameEn: "Bacha Coffee Solitaire Mall",
+    nameAr: "باشا",
+  },
+  "mood-masters-al-falah": {
+    nameEn: "Mood Masters",
+    nameAr: "محمصة ومقهى مود ماسترز للقهوة المختصة",
+  },
+  "las-cafe-al-malqa": { nameEn: "LAS CAFE", nameAr: "لاس كافيه" },
+  "las-cafe-al-olaya": { nameEn: "LAS CAFE Olaya", nameAr: "لاس كافيه" },
+  "little-henri-al-muruj": { nameEn: "Little Henri", nameAr: "ليتل هنري" },
+  "beitkull-al-olaya": { nameEn: "Beitkull", nameAr: "قهوة بيت كُلْ" },
+};
+for (const [id, names] of Object.entries(canonicalNames)) {
+  const shop = getShop(id);
+  assert(shop?.nameEn === names.nameEn, `${id} canonical nameEn`);
+  assert(shop?.nameAr === names.nameAr, `${id} canonical nameAr`);
+}
 assert(
   !getShop("sand-clock-sulimaniyah"),
   "old sand-clock-sulimaniyah id is retired (Muruj hex moved)",

@@ -3,6 +3,7 @@ import { Chat } from "@/components/chat";
 import { CityDiscovery } from "@/components/city-discovery";
 import { DocumentLocale } from "@/components/document-locale";
 import { HomeTrending } from "@/components/home-trending";
+import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
 import { SiteFooter } from "@/components/site-footer";
 import { homeNeighborhoodCandidates } from "@/lib/browse-neighborhoods";
@@ -18,6 +19,7 @@ import {
   MEET_HALFWAY_CHIP,
   chipSharePath,
   chipDirectoryMoment,
+  filterPutsDirectoryFirst,
   isDriveThroughDirectoryChip,
   isOffHomeChipId,
   mostPopularPath,
@@ -57,38 +59,47 @@ export function HomeLanding({
       ? restoreOffHomeChipOpen(pageChipId, language)
       : null;
   const chipMoment = chipDirectoryMoment(pageChipId);
+  const directoryShops = popularChipSelected
+    ? listPopularDirectoryShops()
+    : isDriveThroughDirectoryChip(pageChipId)
+      ? listDriveThroughDirectoryShops()
+      : listDirectoryShops();
   const cafeViewAllHref =
     pageChipId === MEET_HALFWAY_CHIP.id
       ? null
       : pageChipId && pageChipId !== "popular"
         ? chipSharePath(pageChipId, language)
         : mostPopularPath(language);
-  const discovery = (
+  const homeDiscovery = bareHome ? (
     <CityDiscovery>
       <HomeTrending language={language} shops={listNewThisWeekShops()} />
-      {bareHome ? (
-        <BrowseNeighborhoods
-          language={language}
-          candidates={neighborhoodCandidates}
-        />
-      ) : null}
+      <BrowseNeighborhoods
+        language={language}
+        candidates={neighborhoodCandidates}
+      />
       <ShopDirectory
         language={language}
-        shops={
-          popularChipSelected
-            ? listPopularDirectoryShops()
-            : isDriveThroughDirectoryChip(pageChipId)
-              ? listDriveThroughDirectoryShops()
-              : listDirectoryShops()
-        }
+        shops={directoryShops}
         listing={listing}
         moment={chipMoment}
         chipId={chipMoment ? pageChipId : null}
-        headingMode={bareHome ? "city-cafes" : undefined}
+        headingMode="city-cafes"
         viewAllHref={cafeViewAllHref}
         sectionId="wain-riyadh-cafes"
       />
     </CityDiscovery>
+  ) : null;
+  const legacyDirectory = (
+    <ShopDirectory
+      language={language}
+      shops={directoryShops}
+      listing={listing}
+      moment={chipMoment}
+      chipId={chipMoment ? pageChipId : null}
+    />
+  );
+  const legacyWeek = (
+    <NewThisWeek language={language} shops={listNewThisWeekShops()} />
   );
 
   return (
@@ -100,11 +111,35 @@ export function HomeLanding({
         localeHref={localeHref}
         selectedChipId={pageChipId}
         chipOpen={chipOpen}
-        discovery={discovery}
+        homeSurface={bareHome}
+        discovery={homeDiscovery}
       />
-      <div className="pb-[max(8.75rem,calc(7.75rem+env(safe-area-inset-bottom)))]">
-        <SiteFooter language={language} />
-      </div>
+      {bareHome ? (
+        <div className="pb-[max(8.75rem,calc(7.75rem+env(safe-area-inset-bottom)))]">
+          <SiteFooter language={language} />
+        </div>
+      ) : (
+        <>
+          <CityDiscovery>
+            {filterPutsDirectoryFirst(
+              popularChipSelected ? "popular" : listing,
+              null,
+              chipMoment,
+            ) ? (
+              <>
+                {legacyDirectory}
+                {legacyWeek}
+              </>
+            ) : (
+              <>
+                {legacyWeek}
+                {legacyDirectory}
+              </>
+            )}
+          </CityDiscovery>
+          <SiteFooter language={language} />
+        </>
+      )}
     </main>
   );
 }

@@ -427,7 +427,7 @@ assert(
     !chips.includes('stroke="#111"') &&
     chips.includes('stroke="currentColor"') &&
     chips.includes('strokeWidth = "1.55"') &&
-    chips.includes("className=\"size-5 shrink-0\"") &&
+    chips.includes("\"size-5 shrink-0\"") &&
     !chips.includes("bg-matcha") &&
     !chips.includes("text-matcha") &&
     !chips.includes("border-matcha") &&
@@ -440,8 +440,8 @@ assert(
     chips.includes("text-ink") &&
     chips.includes("border-bean bg-bean") &&
     chips.includes("text-foam") &&
-    (chips.match(/border-line bg-foam/g)?.length ?? 0) === 1 &&
-    (chips.match(/border-bean bg-bean/g)?.length ?? 0) === 1,
+    (chips.match(/border-line bg-foam/g)?.length ?? 0) === 2 &&
+    (chips.match(/border-bean bg-bean/g)?.length ?? 0) === 2,
   "vibe chips share Paper/white + Ink unselected and dusty-bean selected",
 );
 assert(

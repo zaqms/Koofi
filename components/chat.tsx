@@ -17,7 +17,9 @@ import {
   pinFromHalfwayInput,
 } from "@/lib/halfway-place";
 import { pinsMidpoint } from "@/lib/halfway-results-payload";
+import { HomeHalfwayCard } from "@/components/home-halfway-card";
 import { HomeHero } from "@/components/home-hero";
+import { LegacyOpenerHero } from "@/components/legacy-opener-hero";
 import { MeetHalfwayCard } from "@/components/meet-halfway-card";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import type { ChipOpenRestore } from "@/lib/chip-open";
@@ -336,6 +338,8 @@ type ChatProps = {
   chipOpen?: ChipOpenRestore | null;
   /** Home lists (trending, neighborhoods, cafés). Placed under Halfway on the opener. */
   discovery?: ReactNode;
+  /** Bare `/` and `/en` only. Other chats keep the pre-#205 opener and composer. */
+  homeSurface?: boolean;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
@@ -431,6 +435,7 @@ export function Chat({
   selectedChipId,
   chipOpen,
   discovery = null,
+  homeSurface = false,
 }: ChatProps) {
   const router = useRouter();
   const { cityId, isComingSoon } = useCity();
@@ -1556,7 +1561,7 @@ export function Chat({
     !sessionExpired &&
     !isComingSoon &&
     !isOffHomeChipId(selectedChipId ?? "");
-  const pinComposer = Boolean(discovery) && showHomeOpener && showAskComposer;
+  const pinComposer = homeSurface && showHomeOpener && showAskComposer;
   const isHalfwayHost = Boolean(sessionHostWait(halfwayInvite));
   const halfwayGuest = Boolean(halfwayInvite) && !isHalfwayHost;
   const halfwayPicker = meetHalfwayOpen && !sessionExpired ? (
@@ -1621,7 +1626,7 @@ export function Chat({
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
-      <header className="shrink-0 px-4 py-2">
+      <header className={homeSurface ? "shrink-0 px-4 py-2" : "shrink-0 px-4 py-3"}>
         {showHalfwayResults ? (
           <div className="flex items-center justify-between gap-3" dir="ltr">
             <div className="flex items-center gap-1">
@@ -1660,7 +1665,11 @@ export function Chat({
               {restore && !meetHalfwayOpen ? null : (
                 <Link
                   href={localeHref ?? (landing === "ar" ? "/en" : "/")}
-                  className="inline-flex h-8 items-center rounded-full border border-line bg-foam px-3 text-[12px] leading-none text-ink"
+                  className={
+                    homeSurface
+                      ? "inline-flex h-8 items-center rounded-full border border-line bg-foam px-3 text-[12px] leading-none text-ink"
+                      : "text-xs text-ink-soft underline-offset-2 hover:underline"
+                  }
                 >
                   {copy.switchLanguage[landing]}
                 </Link>
@@ -1787,7 +1796,7 @@ export function Chat({
         className={
           hasThread
             ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
-            : showHomeOpener
+            : homeSurface && showHomeOpener
               ? "shrink-0 space-y-2 px-4 pt-1 pb-1"
               : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
@@ -1820,12 +1829,14 @@ export function Chat({
               {message.id === "opener" &&
               !hasThread &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
+                homeSurface ? (
                 <div className="space-y-2">
                   <HomeHero language={landing} />
                   {selectedChipId !== null ? (
                     <VibeChips
                       language={landing}
                       disabled={busy}
+                      variant="home"
                       selectedId={
                         selectedChipId === undefined
                           ? (pickedChipId ?? "popular")
@@ -1834,7 +1845,7 @@ export function Chat({
                       onPick={sendChip}
                     />
                   ) : null}
-                  <MeetHalfwayCard
+                  <HomeHalfwayCard
                     language={landing}
                     disabled={busy}
                     selected={
@@ -1850,6 +1861,38 @@ export function Chat({
                     </p>
                   ) : null}
                 </div>
+                ) : (
+                <div className="space-y-5">
+                  <LegacyOpenerHero language={landing} />
+                  <MeetHalfwayCard
+                    language={landing}
+                    disabled={busy}
+                    selected={
+                      (selectedChipId === undefined
+                        ? pickedChipId
+                        : selectedChipId) === MEET_HALFWAY_CHIP.id
+                    }
+                    onPick={sendChip}
+                  />
+                  {selectedChipId !== null ? (
+                    <VibeChips
+                      language={landing}
+                      disabled={busy}
+                      selectedId={
+                        selectedChipId === undefined
+                          ? (pickedChipId ?? "popular")
+                          : selectedChipId
+                      }
+                      onPick={sendChip}
+                    />
+                  ) : null}
+                  {halfwayInviteExpired ? (
+                    <p className="text-xs leading-5 text-ink-soft">
+                      {copy.meetHalfwayInviteExpired[landing]}
+                    </p>
+                  ) : null}
+                </div>
+                )
               ) : (
                 <div className="flex justify-start">
                   <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">

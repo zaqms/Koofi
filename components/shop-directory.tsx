@@ -169,10 +169,7 @@ export function ShopDirectory({
             ? discoveryCategoryLabel(vibe.id, language) ??
               copy.directory[language]
             : copy.directory[language];
-  const headingClass =
-    headingMode === "city-cafes"
-      ? "min-w-0 text-base font-semibold leading-6"
-      : "min-w-0 text-base font-semibold";
+  const homeList = headingMode === "city-cafes";
   const headingId = popular
     ? "most-popular"
     : district
@@ -192,9 +189,9 @@ export function ShopDirectory({
 
   return (
     <section
-      id={sectionId}
+      id={homeList ? sectionId : undefined}
       className={
-        headingMode === "city-cafes"
+        homeList
           ? "mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-2 pb-8"
           : "mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-10"
       }
@@ -202,21 +199,29 @@ export function ShopDirectory({
       lang={language}
       aria-labelledby={headingId}
     >
-      <div className="flex items-start justify-between gap-3">
-        {district || popular || vibe ? (
-          <h1 id={headingId} className={headingClass}>
-            {heading}
-          </h1>
-        ) : (
-          <h2 id={headingId} className={headingClass}>
+      {homeList ? (
+        <div className="flex items-start justify-between gap-3">
+          <h2 id={headingId} className="min-w-0 text-base font-semibold leading-6">
             {heading}
           </h2>
-        )}
-        {viewAllHref ? (
-          <ViewAllLink href={viewAllHref} language={language} />
-        ) : null}
-      </div>
-      {intro || headingMode === "city-cafes" ? null : (
+          {viewAllHref ? (
+            <ViewAllLink href={viewAllHref} language={language} />
+          ) : null}
+        </div>
+      ) : (
+        <>
+          {district || popular || vibe ? (
+            <h1 id={headingId} className="text-base font-semibold">
+              {heading}
+            </h1>
+          ) : (
+            <h2 id={headingId} className="text-base font-semibold">
+              {heading}
+            </h2>
+          )}
+        </>
+      )}
+      {intro || homeList ? null : (
         <p className="mt-1 text-xs leading-5 text-ink-soft">
           {directoryHintForCity(language, liveCity)}
         </p>

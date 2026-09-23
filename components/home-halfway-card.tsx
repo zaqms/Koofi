@@ -45,11 +45,10 @@ function ForwardArrow({ language }: { language: Language }) {
 }
 
 /**
- * P0 بيننا utility card — above the 4×2 chip grid, not a tile.
+ * Homepage بيننا entry only. The Halfway journey keeps MeetHalfwayCard.
  * RTL: 3D cluster at the start (right), forward CTA on the left.
- * Selected session after اعزم خويك stays on `/h/{id}`.
  */
-export function MeetHalfwayCard({
+export function HomeHalfwayCard({
   language,
   disabled,
   selected = false,
@@ -58,7 +57,7 @@ export function MeetHalfwayCard({
   const title = vibeChipLabel(MEET_HALFWAY_CHIP, language);
   const subtitle = copy.meetHalfwayHomeSub[language];
   const className =
-    "flex w-full items-center gap-2.5 rounded-[26px] border border-line/80 bg-paper-deep px-3 py-3.5 text-start aria-disabled:pointer-events-none aria-disabled:opacity-50";
+    "flex w-full items-center gap-2 rounded-[18px] border border-line/80 bg-paper-deep px-2 py-1 text-start aria-disabled:pointer-events-none aria-disabled:opacity-50";
 
   const onCardClick = (
     event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
@@ -73,10 +72,7 @@ export function MeetHalfwayCard({
 
   const body = (
     <>
-      <span
-        aria-hidden
-        className="relative h-16 w-40 shrink-0"
-      >
+      <span aria-hidden className="relative h-8 w-[6rem] shrink-0">
         {/* Local static PNG. Decorative — title is the accessible name. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -88,16 +84,16 @@ export function MeetHalfwayCard({
         />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-xl font-semibold leading-7 text-ink">
+        <span className="block text-[0.95rem] font-semibold leading-5 text-ink">
           {title}
         </span>
-        <span className="mt-0.5 block text-[13px] leading-5 text-ink-soft">
+        <span className="mt-0.5 block text-[12px] leading-4 text-ink-soft">
           {subtitle}
         </span>
       </span>
       <span
         aria-hidden
-        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-bean text-foam"
+        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-bean text-foam"
       >
         <ForwardArrow language={language} />
       </span>

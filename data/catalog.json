@@ -3929,6 +3929,7 @@
         "lat": 24.8067516,
         "lng": 46.6591872
       },
+      "logoUrl": "/logos/qirat-al-yasmin.jpg",
       "popularityIndex": 39,
       "placeId": "ChIJgfDIPADjLj4Roist1N0d1fY",
       "dineIn": true,
@@ -5683,6 +5684,7 @@
         "lat": 24.7023886,
         "lng": 46.6986869
       },
+      "logoUrl": "/logos/seven-beans-sulimaniyah.jpg",
       "popularityIndex": 70.2,
       "placeId": "ChIJyb5Nin0DLz4R84E-hQQJnMk",
       "dineIn": true,
@@ -10745,6 +10747,7 @@
         "lat": 24.7967874,
         "lng": 46.7518222
       },
+      "logoUrl": "/logos/sanva-specialty-coffee-ghirnatah.jpg",
       "popularityIndex": 42.1,
       "placeId": "ChIJgzfgtb__Lj4R5XVn8PvfJno",
       "dineIn": true,
@@ -12042,6 +12045,7 @@
         "lat": 24.6962539,
         "lng": 46.7617983
       },
+      "logoUrl": "/logos/makhsousa-coffee-ar-rabwah.jpg",
       "popularityIndex": 49.2,
       "placeId": "ChIJ75cOyNsZLz4Ry8hievc1T9M",
       "dineIn": true,
@@ -12087,6 +12091,7 @@
         "lat": 24.685495,
         "lng": 46.7750256
       },
+      "logoUrl": "/logos/blog-coffee-ar-rabwah.jpg",
       "popularityIndex": 51,
       "placeId": "ChIJyT7I4QcHLz4RrVt2z_-5tPw",
       "dineIn": true,
@@ -12209,6 +12214,7 @@
         "lat": 24.6832006,
         "lng": 46.7758066
       },
+      "logoUrl": "/logos/enzo-coffee-ar-rabwah.jpg",
       "popularityIndex": 45.1,
       "placeId": "ChIJZwcTQwAHLz4RMKCZhI6Fsjg",
       "dineIn": true,
@@ -12808,6 +12814,7 @@
         "lat": 24.8178788,
         "lng": 46.7408249
       },
+      "logoUrl": "/logos/lattio-lounge-qurtubah.jpg",
       "popularityIndex": 12.2,
       "placeId": "ChIJY-VCT6D9Lj4RyX-gU-tx594",
       "dineIn": true,
@@ -13272,6 +13279,7 @@
         "lat": 24.8268581,
         "lng": 46.7285066
       },
+      "logoUrl": "/logos/klatch-qurtubah.jpg",
       "popularityIndex": 45.1,
       "placeId": "ChIJ-TFNIwD9Lj4RRbmh6IAPjdg",
       "dineIn": true,
@@ -13565,6 +13573,7 @@
         "lat": 24.8226611,
         "lng": 46.7284632
       },
+      "logoUrl": "/logos/mill-coffee-qurtubah.jpg",
       "popularityIndex": 16.7,
       "placeId": "ChIJbyRdX9f9Lj4RS_xhOaga_L4",
       "dineIn": false,
@@ -17333,6 +17342,7 @@
         "lat": 24.7131875,
         "lng": 46.7953714
       },
+      "logoUrl": "/logos/vase-coffee-al-manar.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJUTQ_wcwBLz4Rs8YAXmHaPa4",
       "dineIn": true,
@@ -17702,6 +17712,7 @@
         "lat": 24.7132963,
         "lng": 46.7724044
       },
+      "logoUrl": "/logos/da-nonna-al-rayyan.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJlceOVAABLz4RjXL-MBP2vaY",
       "dineIn": true,
@@ -18075,6 +18086,7 @@
         "lat": 24.7149003,
         "lng": 46.776414
       },
+      "logoUrl": "/logos/sica-al-rayyan.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJRetLSAABLz4R-KBxVt8Awwc",
       "dineIn": true,
@@ -18197,6 +18209,7 @@
         "lat": 24.7084351,
         "lng": 46.7714582
       },
+      "logoUrl": "/logos/fabrica-de-cafe-al-rayyan.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJIWhbqo0BLz4RN4BZUyaJmrg",
       "dineIn": true,
@@ -18691,6 +18704,7 @@
         "lat": 24.6908729,
         "lng": 46.8113373
       },
+      "logoUrl": "/logos/rukyah-al-fayha.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJD6HFYgAHLz4RM1jh4QJH2Hw",
       "dineIn": true,
@@ -18987,6 +19001,7 @@
         "lat": 24.7016528,
         "lng": 46.8262298
       },
+      "logoUrl": "/logos/maqha-mahamasa-al-raqban.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJO6S1MwCpLz4RadufNTMpDCE",
       "dineIn": true,
@@ -19121,6 +19136,7 @@
         "lat": 24.7243801,
         "lng": 46.7607257
       },
+      "logoUrl": "/logos/on-al-rawdah.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJzSWjcuYBLz4Rv-1qox0vvJQ",
       "dineIn": true,
@@ -29672,7 +29688,8 @@
       "pin": {
         "lat": 24.7406508,
         "lng": 46.672003
-      }
+      },
+      "logoUrl": "/logos/meeting-caffeine-al-rabi.jpg"
     },
     {
       "id": "mezaj-al-malaz",
@@ -30524,7 +30541,8 @@
       "pin": {
         "lat": 24.700983,
         "lng": 46.8038171
-      }
+      },
+      "logoUrl": "/logos/a-plus-as-salam.jpg"
     },
     {
       "id": "arabica-cafe-ghubairah",
@@ -30544,6 +30562,7 @@
         "lat": 24.6284375,
         "lng": 46.7395625
       },
+      "logoUrl": "/logos/arabica-cafe-ghubairah.jpg",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJF3aAw-UFLz4RPy2LtGYhbqY",
@@ -30591,6 +30610,7 @@
         "lat": 24.6371904,
         "lng": 46.6931136
       },
+      "logoUrl": "/logos/arabica-coffee-al-wisham.jpg",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJqc-MxOEELz4RrpiHIW3gid0",

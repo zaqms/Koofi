@@ -1760,23 +1760,10 @@ assert(
   layer.cafes?.[0]?.maps_url === firstPick.mapsHref,
   "GTM dataLayer café maps_url stays the product Maps href",
 );
-const amjadAjzShareUrls: Record<string, string> = {
-  "bacha-coffee-solitaire": "https://maps.app.goo.gl/CMPgmtXdJ2v7484z8",
-  "mood-masters-al-falah": "https://maps.app.goo.gl/ceCqRQKiZMprFudS6",
-  "las-cafe-al-malqa": "https://maps.app.goo.gl/aTgAqA6qcrgQsZj78",
-  "las-cafe-al-olaya": "https://maps.app.goo.gl/xxNwsn6XzxFMPMWy7",
-  "little-henri-al-muruj": "https://maps.app.goo.gl/88NZaxhrrSkq4weA7",
-  "beitkull-al-olaya": "https://maps.app.goo.gl/BqEvAM9kfPwgBRdX8",
-};
-const catalogShortlinks = SHOPS.filter(
-  (shop) => shop.mapsShareUrl && isMapsShortlink(shop.mapsShareUrl),
-);
 assert(
-  catalogShortlinks.length === 6 &&
-    catalogShortlinks.every(
-      (shop) => amjadAjzShareUrls[shop.id] === shop.mapsShareUrl,
-    ),
-  "catalog shortlinks are only the six Amjad/Ajz maps.app.goo.gl share URLs",
+  SHOPS.filter((shop) => shop.mapsShareUrl && isMapsShortlink(shop.mapsShareUrl))
+    .length === 0,
+  "catalog has no maps.app.goo.gl shortlinks — email uses /go/maps hop",
 );
 assert(
   emailMapsHref({

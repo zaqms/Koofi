@@ -1805,8 +1805,6 @@ const scoutPack: {
   pin?: { lat: number; lng: number };
   /** #190 form: `/maps/place/` hex plus `!3d!4d` so officialShopCoords reads the URL. */
   coordsInUrl?: boolean;
-  /** Amjad/Ajz maps.app.goo.gl share link. When set, this is the locked mapsShareUrl. */
-  mapsShareUrl?: string;
   placeId?: string;
   dineIn?: boolean | null;
   outdoorSeating?: boolean | null;
@@ -3394,7 +3392,7 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/bacha-coffee-solitaire.jpg",
     pin: { lat: 24.8010754, lng: 46.6513757 },
-    mapsShareUrl: "https://maps.app.goo.gl/CMPgmtXdJ2v7484z8",
+    coordsInUrl: true,
     placeId: "ChIJpSN_QzXjLj4RkeyVrNihaa8",
   },
   {
@@ -3405,7 +3403,7 @@ const scoutPack: {
     moments: ["roaster", "qahwa"],
     logoUrl: "/logos/mood-masters-al-falah.jpg",
     pin: { lat: 24.8013342, lng: 46.7071301 },
-    mapsShareUrl: "https://maps.app.goo.gl/ceCqRQKiZMprFudS6",
+    coordsInUrl: true,
     placeId: "ChIJl6i3j1_9Lj4R8B1C_aRzBDs",
   },
   {
@@ -3416,7 +3414,7 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/las-cafe-al-malqa.jpg",
     pin: { lat: 24.7816639, lng: 46.6009635 },
-    mapsShareUrl: "https://maps.app.goo.gl/aTgAqA6qcrgQsZj78",
+    coordsInUrl: true,
     placeId: "ChIJvdN2FG3jLj4R16RfUtFg2FA",
   },
   {
@@ -3427,7 +3425,7 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/las-cafe-al-olaya.jpg",
     pin: { lat: 24.6962467, lng: 46.6842978 },
-    mapsShareUrl: "https://maps.app.goo.gl/xxNwsn6XzxFMPMWy7",
+    coordsInUrl: true,
     placeId: "ChIJ2c5rxDADLz4Ry4Z3g4Tojt4",
   },
   {
@@ -3438,7 +3436,7 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/little-henri-al-muruj.jpg",
     pin: { lat: 24.7612516, lng: 46.6569467 },
-    mapsShareUrl: "https://maps.app.goo.gl/88NZaxhrrSkq4weA7",
+    coordsInUrl: true,
     placeId: "ChIJiWagbwDjLj4R_9_p0rKAndM",
   },
   {
@@ -3449,7 +3447,7 @@ const scoutPack: {
     moments: ["qahwa"],
     logoUrl: "/logos/beitkull-al-olaya.jpg",
     pin: { lat: 24.6875566, lng: 46.6856358 },
-    mapsShareUrl: "https://maps.app.goo.gl/BqEvAM9kfPwgBRdX8",
+    coordsInUrl: true,
     placeId: "ChIJo-C6sRoDLz4RN174BO1VdK8",
   },
 ];
@@ -3461,10 +3459,9 @@ for (const row of scoutPack) {
   assert(shop.neighborhood === row.neighborhood, `${row.id} neighborhood`);
   const placeHref = `https://www.google.com/maps/place/data=!4m2!3m1!1s${row.hex}`;
   const expectedHref =
-    row.mapsShareUrl ??
-    (row.coordsInUrl && row.pin
+    row.coordsInUrl && row.pin
       ? `${placeHref}!8m2!3d${row.pin.lat}!4d${row.pin.lng}`
-      : placeHref);
+      : placeHref;
   assert(
     shop.mapsShareUrl === expectedHref,
     `${row.id} maps href is official place id form`,

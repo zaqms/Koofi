@@ -175,8 +175,8 @@ assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 292, `specialty discovery 291→292 with Hello Cafe Olaya, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 359, `catalog 358→359 with Hello Cafe Olaya, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 291, `specialty discovery 292→291 after dropping Vanilla Coffee Qurtubah, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 358, `catalog 359→358 after dropping Vanilla Coffee Qurtubah, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -347,7 +347,11 @@ assert(
 );
 
 const qurtubah = filterDirectoryShops(shops, "qurtubah");
-assert(qurtubah.length === 12, `qurtubah has 12 shops, got ${qurtubah.length}`);
+assert(qurtubah.length === 11, `qurtubah has 11 shops, got ${qurtubah.length}`);
+assert(
+  !getShop("vanilla-coffee-qurtubah"),
+  "Vanilla Coffee Qurtubah stays dropped — food truck, not a specialty café",
+);
 assert(
   qurtubah.every((shop) => shop.neighborhood === "qurtubah"),
   "qurtubah filter stays in district",
@@ -362,7 +366,6 @@ for (const id of [
   "najd-alathiah-qurtubah",
   "klatch-qurtubah",
   "nosound-qurtubah",
-  "vanilla-coffee-qurtubah",
   "mill-coffee-qurtubah",
   "cofen-qurtubah",
 ]) {
@@ -1931,13 +1934,6 @@ const scoutPack: {
   {
     id: "nosound-qurtubah",
     hex: "0x3e2efd1bf2459957:0x981f344c0bf6e54f",
-    neighborhood: "qurtubah",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-  },
-  {
-    id: "vanilla-coffee-qurtubah",
-    hex: "0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
     neighborhood: "qurtubah",
     vibe: ["قهوة"],
     moments: ["qahwa"],

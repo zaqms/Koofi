@@ -181,7 +181,6 @@ const BATCH3_IDS = [
   "najd-alathiah-qurtubah",
   "klatch-qurtubah",
   "nosound-qurtubah",
-  "vanilla-coffee-qurtubah",
   "mill-coffee-qurtubah",
   "cofen-qurtubah",
   "mud-speciality-coffee-an-nazhah",
@@ -441,7 +440,7 @@ assert(
   "batch 1–5 cafe-heroes stay; batch 6 merges in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
-assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
 assert(batch6HeroIds.length === 43, "batch 6 43-shop hero set is complete");

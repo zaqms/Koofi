@@ -44,14 +44,16 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
               data-trending-id={shop.id}
               className="flex h-full items-center gap-1 rounded-2xl border border-line bg-foam px-1 py-2"
             >
-              <ShopVisual
-                nameAr={shop.nameAr}
-                nameEn={shop.nameEn}
-                photoUrl={shop.photoUrl}
-                logoUrl={shop.logoUrl}
-                size="sm"
-              />
-              <span className="line-clamp-2 min-w-0 flex-1 text-start text-[11px] font-medium leading-[1.15] text-ink">
+              <span className="size-[3.25rem] shrink-0 [&_.relative]:!size-full">
+                <ShopVisual
+                  nameAr={shop.nameAr}
+                  nameEn={shop.nameEn}
+                  photoUrl={shop.photoUrl}
+                  logoUrl={shop.logoUrl}
+                  size="sm"
+                />
+              </span>
+              <span className="line-clamp-2 min-w-0 flex-1 text-start text-[13px] font-medium leading-[1.2] text-ink">
                 {shopDisplayName(shop, language)}
               </span>
             </Link>

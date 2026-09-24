@@ -427,7 +427,7 @@ assert(
     !chips.includes('stroke="#111"') &&
     chips.includes('stroke="currentColor"') &&
     chips.includes('strokeWidth = "1.55"') &&
-    chips.includes("\"size-5 shrink-0\"") &&
+    chips.includes("\"size-6 shrink-0\"") &&
     !chips.includes("bg-matcha") &&
     !chips.includes("text-matcha") &&
     !chips.includes("border-matcha") &&

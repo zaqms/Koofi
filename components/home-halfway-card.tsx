@@ -27,7 +27,7 @@ function ForwardArrow({ language }: { language: Language }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-5"
+      className="size-[1.35rem]"
     >
       {language === "ar" ? (
         <>
@@ -57,7 +57,7 @@ export function HomeHalfwayCard({
   const title = vibeChipLabel(MEET_HALFWAY_CHIP, language);
   const subtitle = copy.meetHalfwayHomeSub[language];
   const className =
-    "flex w-full items-center gap-2 rounded-[18px] border border-line/80 bg-paper-deep px-2 py-1 text-start aria-disabled:pointer-events-none aria-disabled:opacity-50";
+    "flex w-full items-center gap-3 rounded-[18px] border border-line/80 bg-paper-deep px-3 py-3 text-start aria-disabled:pointer-events-none aria-disabled:opacity-50";
 
   const onCardClick = (
     event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
@@ -72,7 +72,7 @@ export function HomeHalfwayCard({
 
   const body = (
     <>
-      <span aria-hidden className="relative h-8 w-[6rem] shrink-0">
+      <span aria-hidden className="relative h-12 w-[8.25rem] shrink-0">
         {/* Local static PNG. Decorative — title is the accessible name. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -84,16 +84,16 @@ export function HomeHalfwayCard({
         />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[0.95rem] font-semibold leading-5 text-ink">
+        <span className="block text-base font-semibold leading-5 text-ink">
           {title}
         </span>
-        <span className="mt-0.5 block text-[12px] leading-4 text-ink-soft">
+        <span className="mt-1 block text-[13px] leading-5 text-ink-soft">
           {subtitle}
         </span>
       </span>
       <span
         aria-hidden
-        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-bean text-foam"
+        className="flex size-10 shrink-0 items-center justify-center rounded-full bg-bean text-foam"
       >
         <ForwardArrow language={language} />
       </span>

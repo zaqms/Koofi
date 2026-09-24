@@ -1621,12 +1621,22 @@ export function Chat({
       className={
         hasThread || meetHalfwayOpen
           ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
-          : "mx-auto flex w-full max-w-lg flex-col bg-paper"
+          : homeSurface
+            ? "relative mx-auto flex w-full max-w-lg flex-col bg-paper"
+            : "mx-auto flex w-full max-w-lg flex-col bg-paper"
       }
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
-      <header className={homeSurface ? "shrink-0 px-4 py-2" : "shrink-0 px-4 py-3"}>
+      <header
+        className={
+          homeSurface && showHomeOpener
+            ? "absolute inset-x-0 top-0 z-20 bg-transparent px-4 pt-[max(0.65rem,env(safe-area-inset-top))] pb-2"
+            : homeSurface
+              ? "shrink-0 px-4 py-2"
+              : "shrink-0 px-4 py-3"
+        }
+      >
         {showHalfwayResults ? (
           <div className="flex items-center justify-between gap-3" dir="ltr">
             <div className="flex items-center gap-1">
@@ -1797,7 +1807,7 @@ export function Chat({
           hasThread
             ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
             : homeSurface && showHomeOpener
-              ? "shrink-0 space-y-2 px-4 pt-8 pb-0"
+              ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
               : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
@@ -1833,7 +1843,7 @@ export function Chat({
                 <div>
                   <HomeHero language={landing} />
                   {selectedChipId !== null ? (
-                    <div className="mt-6">
+                    <div className="mt-8">
                       <VibeChips
                         language={landing}
                         disabled={busy}
@@ -1847,7 +1857,7 @@ export function Chat({
                       />
                     </div>
                   ) : null}
-                  <div className="mt-8 mb-10">
+                  <div className="mt-8 mb-12">
                     <HomeHalfwayCard
                       language={landing}
                       disabled={busy}

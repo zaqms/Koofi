@@ -244,8 +244,8 @@ function ChipIcon({ id, glyph }: { id: string; glyph: string }) {
 function vibeChipClass(selected: boolean, compact: boolean): string {
   if (compact) {
     return selected
-      ? "flex min-h-[3rem] w-full flex-col items-center justify-center gap-0.5 rounded-2xl border border-bean bg-bean px-1 py-1 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
-      : "flex min-h-[3rem] w-full flex-col items-center justify-center gap-0.5 rounded-2xl border border-line bg-foam px-1 py-1 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
+      ? "flex min-h-[4.75rem] w-full flex-col items-center justify-center gap-1.5 rounded-2xl border border-bean bg-bean px-0.5 py-2.5 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
+      : "flex min-h-[4.75rem] w-full flex-col items-center justify-center gap-1.5 rounded-2xl border border-line bg-foam px-0.5 py-2.5 text-ink hover:border-bean/40 hover:bg-paper-deep aria-disabled:pointer-events-none aria-disabled:opacity-50";
   }
   return selected
     ? "flex aspect-square min-h-[5.15rem] flex-col items-center justify-center gap-1 rounded-[1.15rem] border border-bean bg-bean px-1 py-2 text-foam hover:border-bean-deep hover:bg-bean-deep aria-disabled:pointer-events-none aria-disabled:opacity-50"
@@ -261,10 +261,10 @@ export function VibeChips({
 }: VibeChipsProps) {
   const compact = variant === "home";
   const chips = compact ? homeSurfaceChips() : legacyHomeChips();
-  const glyph = compact ? "size-5 shrink-0" : "size-7 shrink-0";
+  const glyph = compact ? "size-6 shrink-0" : "size-7 shrink-0";
   return (
     <div
-      className={compact ? "grid grid-cols-4 gap-1.5" : "grid grid-cols-4 gap-2.5"}
+      className={compact ? "grid w-full grid-cols-4 gap-2" : "grid grid-cols-4 gap-2.5"}
       role="group"
       aria-busy={disabled || undefined}
       aria-label={copy.pickVibe[language]}
@@ -294,7 +294,7 @@ export function VibeChips({
             <span
               className={
                 compact
-                  ? "text-center text-[11px] leading-[1.15]"
+                  ? "max-w-full whitespace-nowrap text-center text-[11px] leading-[1.15] tracking-[-0.01em]"
                   : "line-clamp-2 text-center text-[11px] leading-tight"
               }
             >

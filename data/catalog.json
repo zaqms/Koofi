@@ -33543,6 +33543,267 @@
       "popularityIndex": 40,
       "placeId": "ChIJo-C6sRoDLz4RN174BO1VdK8",
       "example": false
+    },
+    {
+      "id": "roasting-art-al-masif",
+      "nameAr": "فن التحميص",
+      "nameEn": "Roasting Art",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3160cb2c5bf:0xe62015cd9b48b846!8m2!3d24.7673309!4d46.6700663",
+      "pin": {
+        "lat": 24.7673309,
+        "lng": 46.6700663
+      },
+      "logoUrl": "/logos/roasting-art-al-masif.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJv8WyDBbjLj4RRrhIm80VIOY",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "qaha-roastery-al-masif",
+      "nameAr": "محمصة قها",
+      "nameEn": "Qaha Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd5485636b29:0x8eeeeb813f9d6e99!8m2!3d24.7591815!4d46.6857107",
+      "pin": {
+        "lat": 24.7591815,
+        "lng": 46.6857107
+      },
+      "logoUrl": "/logos/qaha-roastery-al-masif.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJKWtjhVT9Lj4RmW6dP4Hr7o4",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "voute-fot-al-masif",
+      "nameAr": "فوت",
+      "nameEn": "VOÛTE / Fot",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd3dcee6077d:0x3df69bbde8aeefb0!8m2!3d24.7690551!4d46.6884775",
+      "pin": {
+        "lat": 24.7690551,
+        "lng": 46.6884775
+      },
+      "logoUrl": "/logos/voute-fot-al-masif.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJfQfmzj39Lj4RsO-u6L2b9j0",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "coffee-address-al-masif",
+      "nameAr": "عنوان القهوة",
+      "nameEn": "Coffee Address",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdf232b75305:0xb6ee1d8715d792b!8m2!3d24.7633641!4d46.6930135",
+      "pin": {
+        "lat": 24.7633641,
+        "lng": 46.6930135
+      },
+      "logoUrl": "/logos/coffee-address-al-masif.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJBVO3MvL9Lj4RK3ldcdjhbgs",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "brsk-al-masif",
+      "nameAr": "برسك",
+      "nameEn": "BRSK",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "طلبات السيارة"
+      ],
+      "momentTags": [
+        "drive-through"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efde6224a57e7:0xa9583cb47c45277d!8m2!3d24.7631233!4d46.6836994",
+      "pin": {
+        "lat": 24.7631233,
+        "lng": 46.6836994
+      },
+      "logoUrl": "/logos/brsk-al-masif.jpg",
+      "popularityIndex": 40,
+      "catalogLane": "drive-through",
+      "placeId": "ChIJ51dKIub9Lj4RfSdFfLQ8WKk",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "voom-al-masif",
+      "nameAr": "فووم",
+      "nameEn": "Voom",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd45ccb7c217:0x1c2dd318e8c468b7!8m2!3d24.7667917!4d46.6821846",
+      "pin": {
+        "lat": 24.7667917,
+        "lng": 46.6821846
+      },
+      "logoUrl": "/logos/voom-al-masif.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJF8K3zEX9Lj4Rt2jE6BjTLRw",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "o2-coffee-al-masif",
+      "nameAr": "O2 كوفي",
+      "nameEn": "O2 Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdefa16bcc15:0xb80a0c4b7d131702!8m2!3d24.7667327!4d46.6798698",
+      "pin": {
+        "lat": 24.7667327,
+        "lng": 46.6798698
+      },
+      "logoUrl": "/logos/o2-coffee-al-masif.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJFcxroe_9Lj4RAhcTfUsMCrg",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "loom-coffee-al-masif",
+      "nameAr": "لوم كوفي",
+      "nameEn": "LOOM Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0018440351:0x7388a36257448227!8m2!3d24.758685!4d46.6863612",
+      "pin": {
+        "lat": 24.758685,
+        "lng": 46.6863612
+      },
+      "logoUrl": "/logos/loom-coffee-al-masif.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJUQNEGAD9Lj4RJ4JEV2KjiHM",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "befine-coffee-al-masif",
+      "nameAr": "بي فاين كوفي",
+      "nameEn": "BeFine Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd007cad345b:0x31eddc32593b7953!8m2!3d24.7677871!4d46.6739788",
+      "pin": {
+        "lat": 24.7677871,
+        "lng": 46.6739788
+      },
+      "logoUrl": "/logos/befine-coffee-al-masif.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJWzStfAD9Lj4RU3k7WTLc7TE",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "brew-crew-al-mughrizat",
+      "nameAr": "برو كرو",
+      "nameEn": "Brew Crew",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd8bb730ebcf:0xeadb1d5e87505c7d!8m2!3d24.7652958!4d46.7251486",
+      "pin": {
+        "lat": 24.7652958,
+        "lng": 46.7251486
+      },
+      "logoUrl": "/logos/brew-crew-al-mughrizat.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJz-swt4v9Lj4RfVxQh14d2-o",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

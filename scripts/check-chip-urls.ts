@@ -743,11 +743,13 @@ assert(
 
 const hero = read("components/home-hero.tsx");
 assert(
-  hero.includes("copy.opener") &&
+  hero.includes("هلا، وين ودك تروح اليوم..") &&
+    hero.includes("Hey, where are we going today..") &&
+    !hero.includes("copy.opener") &&
     !hero.includes("copy.homeSupport") &&
     !hero.includes("cityOnly") &&
     !/Koofi/i.test(hero),
-  "home chrome is the headline only — subtitle removed, no eyebrow, no Koofi",
+  "bare-home headline is Amjad’s line only — subtitle removed, no eyebrow, no Koofi",
 );
 assert(
   chat.includes("HomeHero") &&

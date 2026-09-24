@@ -33804,6 +33804,84 @@
       "outdoorSeating": false,
       "pickupOnly": null,
       "example": false
+    },
+    {
+      "id": "waznah-coffee-al-masif",
+      "nameAr": "وزنة كوفي",
+      "nameEn": "Waznah Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd31cd3d41e7:0xcf82964292d44ed1!8m2!3d24.7732742!4d46.6777402",
+      "pin": {
+        "lat": 24.7732742,
+        "lng": 46.6777402
+      },
+      "logoUrl": "/logos/waznah-coffee-al-masif.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ50E9zTH9Lj4R0U7UkkKWgs8",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "black-stamp-al-masif",
+      "nameAr": "بلاك ستامب",
+      "nameEn": "Black Stamp",
+      "city": "riyadh",
+      "neighborhood": "al-masif",
+      "neighborhoodAr": "المصيف",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdd722822601:0x5563a97ce03f8dc!8m2!3d24.7562954!4d46.6825038",
+      "pin": {
+        "lat": 24.7562954,
+        "lng": 46.6825038
+      },
+      "logoUrl": "/logos/black-stamp-al-masif.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJASaCItf9Lj4R3PgDzpc6VgU",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "aaj-al-mughrizat",
+      "nameAr": "عاج",
+      "nameEn": "AAJ",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdee31b53755:0x1c817fa17264c9c!8m2!3d24.7633532!4d46.7224536",
+      "pin": {
+        "lat": 24.7633532,
+        "lng": 46.7224536
+      },
+      "logoUrl": "/logos/aaj-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJVTe1Me79Lj4RnEwmF_oXyAE",
+      "dineIn": false,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

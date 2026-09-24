@@ -176,8 +176,8 @@ assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-s
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.length === 48, `expected 48 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 307, `specialty discovery 298→307 with nine Al Masif specialty adds, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 375, `catalog 365→375 with ten Scout-10 adds (9 specialty + 1 DT), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 310, `specialty discovery 307→310 with three more specialty adds, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 378, `catalog 375→378 with three specialty adds (13 total: 12 specialty + 1 DT), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");

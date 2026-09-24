@@ -33882,6 +33882,34 @@
       "outdoorSeating": false,
       "pickupOnly": null,
       "example": false
+    },
+    {
+      "id": "kyok-al-nakheel",
+      "nameAr": "كيوك",
+      "nameEn": "kyok",
+      "city": "riyadh",
+      "neighborhood": "al-nakheel",
+      "neighborhoodAr": "النخيل",
+      "vibeTags": [
+        "قهوة",
+        "معجنات"
+      ],
+      "momentTags": [
+        "qahwa",
+        "pastry"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3007f96a227:0x933645fe8524a4b8!8m2!3d24.7521874!4d46.639221",
+      "pin": {
+        "lat": 24.7521874,
+        "lng": 46.639221
+      },
+      "logoUrl": "/logos/kyok-al-nakheel.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJJ6KWfwDjLj4RuKQkhf5FNpM",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

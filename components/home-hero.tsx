@@ -6,29 +6,31 @@ type HomeHeroProps = {
 };
 
 /**
- * Bare-home introduction. The skyline is a top band only.
- * The headline sits entirely below that band so no painted pixel can cross the glyphs.
+ * One bare-home banner. The skyline fills the hero and sits on the
+ * headline; the type stays in the clear band under the painted art.
  */
 export function HomeHero({ language }: HomeHeroProps) {
   const arabic = language === "ar";
   return (
-    <div className="relative -mx-4" data-riyadh-hero="">
-      {/* End-aligned band. The start column stays clear for the wordmark; the h1 is below the band. */}
-      <div className="pointer-events-none flex h-[14.5rem] overflow-hidden" data-riyadh-hero-art="">
+    <div className="relative -mx-4 flex min-h-[28rem] flex-col" data-riyadh-hero="">
+      <div
+        className="pointer-events-none relative min-h-[16rem] flex-1 overflow-hidden"
+        data-riyadh-hero-art=""
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/brand/riyadh-hero.svg"
           alt=""
           width={360}
           height={220}
-          className="ms-auto h-full w-[62%] object-contain object-top"
+          className="absolute inset-x-0 bottom-0 h-[118%] w-full object-contain object-bottom"
         />
       </div>
       <h1
         className={
           arabic
-            ? "px-4 pt-5 pb-1 text-[1.9rem] font-medium leading-[1.35] tracking-tight text-ink"
-            : "px-4 pt-5 pb-1 font-serif text-[2.15rem] font-medium leading-[1.12] tracking-[-0.02em] text-ink"
+            ? "-mt-6 px-6 pb-3 text-[1.9rem] font-medium leading-[1.35] tracking-tight text-ink"
+            : "-mt-6 px-6 pb-3 font-serif text-[2.15rem] font-medium leading-[1.12] tracking-[-0.02em] text-ink"
         }
       >
         {arabic ? copy.opener : copy.openerEn}

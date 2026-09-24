@@ -176,8 +176,8 @@ assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-s
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.length === 48, `expected 48 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 298, `specialty discovery 292→298 with six specialty adds, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 365, `catalog 359→365 with six specialty adds, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 310, `specialty discovery 307→310 with three more specialty adds, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 378, `catalog 375→378 with three specialty adds (13 total: 12 specialty + 1 DT), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1440,7 +1440,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 77, `Drive-through directory is 77, got ${dt.length}`);
+  assert(dt.length === 78, `Drive-through directory is 78, got ${dt.length}`);
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
     "Drive-through directory is tagged only",

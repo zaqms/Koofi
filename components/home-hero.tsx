@@ -103,7 +103,7 @@ export function HomeHero({ language }: HomeHeroProps) {
         <div
           className={
             arabic
-              ? "absolute top-[36%] right-0 w-[32%] -translate-y-1/2 pe-4"
+              ? "absolute top-[36%] right-3 w-[32%] -translate-y-1/2 pe-4"
               : "absolute top-[36%] left-0 w-[38%] -translate-y-1/2 ps-4"
           }
         >

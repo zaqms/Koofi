@@ -42,7 +42,7 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
             <Link
               href={cardPath(shop.id, language)}
               data-trending-id={shop.id}
-              className="flex h-full items-center gap-1 rounded-2xl border border-line bg-foam px-1 py-0.5"
+              className="flex h-full items-center gap-1 rounded-2xl border border-line bg-foam px-1 py-2"
             >
               <ShopVisual
                 nameAr={shop.nameAr}

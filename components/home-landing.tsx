@@ -115,8 +115,8 @@ export function HomeLanding({
         discovery={homeDiscovery}
       />
       {bareHome ? (
-        <div className="pb-[max(8.75rem,calc(7.75rem+env(safe-area-inset-bottom)))]">
-          <SiteFooter language={language} />
+        <div className="pb-[max(11rem,calc(9rem+env(safe-area-inset-bottom)))]">
+          <SiteFooter language={language} rule={false} />
         </div>
       ) : (
         <>

@@ -21,7 +21,7 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
 
   return (
     <section
-      className="mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-2 pb-0.5"
+      className="mx-auto w-full max-w-md bg-paper px-4 pt-0 pb-0"
       dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="wain-trending"
@@ -36,22 +36,22 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
         </h2>
         <ViewAllLink href="#wain-riyadh-cafes" language={language} />
       </div>
-      <ul className="mt-2 grid grid-cols-3 items-stretch gap-2">
+      <ul className="mt-3 grid grid-cols-3 items-stretch gap-1.5">
         {rows.map((shop) => (
           <li key={shop.id} className="min-w-0">
             <Link
               href={cardPath(shop.id, language)}
               data-trending-id={shop.id}
-              className="flex h-full min-h-[3.85rem] items-center gap-1.5 rounded-2xl border border-line bg-foam p-1"
+              className="flex h-full items-center gap-1 rounded-2xl border border-line bg-foam px-1 py-0.5"
             >
               <ShopVisual
                 nameAr={shop.nameAr}
                 nameEn={shop.nameEn}
                 photoUrl={shop.photoUrl}
                 logoUrl={shop.logoUrl}
-                size="md"
+                size="sm"
               />
-              <span className="line-clamp-3 min-w-0 flex-1 text-start text-[12px] font-medium leading-[1.2] text-ink">
+              <span className="line-clamp-2 min-w-0 flex-1 text-start text-[11px] font-medium leading-[1.15] text-ink">
                 {shopDisplayName(shop, language)}
               </span>
             </Link>

@@ -192,7 +192,7 @@ export function ShopDirectory({
       id={homeList ? sectionId : undefined}
       className={
         homeList
-          ? "mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-2 pb-8"
+          ? "mx-auto mt-12 w-full max-w-md bg-paper px-4 pt-0 pb-6"
           : "mx-auto w-full max-w-md border-t border-line bg-paper px-4 pt-5 pb-10"
       }
       dir={language === "ar" ? "rtl" : "ltr"}
@@ -248,7 +248,7 @@ export function ShopDirectory({
       ) : null}
 
       <ul
-        className="mt-4 grid gap-3"
+        className={homeList ? "mt-8 grid gap-3" : "mt-4 grid gap-3"}
         data-district-cafe-order={district ? districtSort : undefined}
       >
         {visible.map((shop) => (

@@ -1797,7 +1797,7 @@ export function Chat({
           hasThread
             ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
             : homeSurface && showHomeOpener
-              ? "shrink-0 space-y-2 px-4 pt-1 pb-1"
+              ? "shrink-0 space-y-2 px-4 pt-8 pb-0"
               : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
@@ -1830,31 +1830,35 @@ export function Chat({
               !hasThread &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
                 homeSurface ? (
-                <div className="space-y-2">
+                <div>
                   <HomeHero language={landing} />
                   {selectedChipId !== null ? (
-                    <VibeChips
+                    <div className="mt-6">
+                      <VibeChips
+                        language={landing}
+                        disabled={busy}
+                        variant="home"
+                        selectedId={
+                          selectedChipId === undefined
+                            ? (pickedChipId ?? "popular")
+                            : selectedChipId
+                        }
+                        onPick={sendChip}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="mt-8 mb-10">
+                    <HomeHalfwayCard
                       language={landing}
                       disabled={busy}
-                      variant="home"
-                      selectedId={
-                        selectedChipId === undefined
-                          ? (pickedChipId ?? "popular")
-                          : selectedChipId
+                      selected={
+                        (selectedChipId === undefined
+                          ? pickedChipId
+                          : selectedChipId) === MEET_HALFWAY_CHIP.id
                       }
                       onPick={sendChip}
                     />
-                  ) : null}
-                  <HomeHalfwayCard
-                    language={landing}
-                    disabled={busy}
-                    selected={
-                      (selectedChipId === undefined
-                        ? pickedChipId
-                        : selectedChipId) === MEET_HALFWAY_CHIP.id
-                    }
-                    onPick={sendChip}
-                  />
+                  </div>
                   {halfwayInviteExpired ? (
                     <p className="text-xs leading-5 text-ink-soft">
                       {copy.meetHalfwayInviteExpired[landing]}
@@ -1999,7 +2003,7 @@ export function Chat({
           ref={footerRef}
           className={
             pinComposer
-              ? "fixed inset-x-0 bottom-0 z-30 border-t border-line/70 bg-paper px-3 pt-1.5 shadow-[0_-10px_28px_rgba(30,23,20,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+              ? "fixed inset-x-0 bottom-0 z-30 bg-paper px-3 pt-1.5 shadow-[0_-10px_28px_rgba(30,23,20,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
               : hasThread
                 ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
                 : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"

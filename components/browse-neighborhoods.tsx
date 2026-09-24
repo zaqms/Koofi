@@ -149,7 +149,7 @@ function FeaturedPills({
   }, [ids]);
 
   return (
-    <div className="mt-1.5 flex items-center gap-2">
+    <div className="mt-3 flex items-center gap-2">
       <div
         ref={rowRef}
         className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -208,7 +208,7 @@ export function BrowseNeighborhoods({
 
   return (
     <section
-      className="mx-auto w-full max-w-md border-y border-line bg-paper px-4 py-2"
+      className="mx-auto mt-12 w-full max-w-md bg-paper px-4 pt-0 pb-0"
       dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="browse-neighborhoods"

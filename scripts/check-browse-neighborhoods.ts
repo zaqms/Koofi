@@ -561,8 +561,8 @@ assert(
   "AR browse section is a true RTL twin",
 );
 assert(
-  browse.includes("border-y border-line"),
-  "subtle beige dividers above and below the strip",
+  !browse.includes("border-y border-line"),
+  "home neighborhoods separate with space, not a divider",
 );
 assert(
   browse.includes('data-view-all-cta={language}') ||

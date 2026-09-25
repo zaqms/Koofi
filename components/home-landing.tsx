@@ -64,8 +64,11 @@ export function HomeLanding({
     : isDriveThroughDirectoryChip(pageChipId)
       ? listDriveThroughDirectoryShops()
       : listDirectoryShops();
+  // بيننا is its own screen. The home discovery feed stays on bare home
+  // and on category landings; /halfway ends after pins, results, and feedback.
+  const halfwayScreen = pageChipId === MEET_HALFWAY_CHIP.id;
   const cafeViewAllHref =
-    pageChipId === MEET_HALFWAY_CHIP.id
+    halfwayScreen
       ? null
       : pageChipId && pageChipId !== "popular"
         ? chipSharePath(pageChipId, language)
@@ -112,12 +115,14 @@ export function HomeLanding({
         selectedChipId={pageChipId}
         chipOpen={chipOpen}
         homeSurface={bareHome}
-        discovery={homeDiscovery}
+        discovery={halfwayScreen ? null : homeDiscovery}
       />
       {bareHome ? (
         <div className="pb-[max(11rem,calc(9rem+env(safe-area-inset-bottom)))]">
           <SiteFooter language={language} rule={false} />
         </div>
+      ) : halfwayScreen ? (
+        <SiteFooter language={language} />
       ) : (
         <>
           <CityDiscovery>

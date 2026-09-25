@@ -10168,5 +10168,185 @@
         "uri": "https://maps.google.com/maps/contrib/103670454158184631512"
       }
     }
+  ],
+  "bacha-coffee-solitaire": [
+    {
+      "src": "/cafe-heroes/bacha-coffee-solitaire/1.jpg",
+      "attribution": {
+        "displayName": "لطيفه السنيدي",
+        "uri": "https://maps.google.com/maps/contrib/102264835694304592545"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bacha-coffee-solitaire/2.jpg",
+      "attribution": {
+        "displayName": "Norah alhazzani",
+        "uri": "https://maps.google.com/maps/contrib/114436152822080613944"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bacha-coffee-solitaire/3.jpg",
+      "attribution": {
+        "displayName": "B. M.",
+        "uri": "https://maps.google.com/maps/contrib/108705409535938330878"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bacha-coffee-solitaire/4.jpg",
+      "attribution": {
+        "displayName": "Hayat Baalbaki",
+        "uri": "https://maps.google.com/maps/contrib/102159190741505930794"
+      }
+    }
+  ],
+  "mood-masters-al-falah": [
+    {
+      "src": "/cafe-heroes/mood-masters-al-falah/1.jpg",
+      "attribution": {
+        "displayName": "Mood Masters Specialty Coffee Roasters & Cafe محمصة ومقهى مود ماسترز للقهوة المختصة",
+        "uri": "https://maps.google.com/maps/contrib/108298174026654785049"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mood-masters-al-falah/2.jpg",
+      "attribution": {
+        "displayName": "Mood Masters Specialty Coffee Roasters & Cafe محمصة ومقهى مود ماسترز للقهوة المختصة",
+        "uri": "https://maps.google.com/maps/contrib/108298174026654785049"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mood-masters-al-falah/3.jpg",
+      "attribution": {
+        "displayName": "Nada Alaklapi",
+        "uri": "https://maps.google.com/maps/contrib/107706896165849864299"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mood-masters-al-falah/4.jpg",
+      "attribution": {
+        "displayName": "فطوم القصيميه",
+        "uri": "https://maps.google.com/maps/contrib/117371079154832821855"
+      }
+    }
+  ],
+  "las-cafe-al-malqa": [
+    {
+      "src": "/cafe-heroes/las-cafe-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "لاس كافيه - LAS CAFE (الملقا)",
+        "uri": "https://maps.google.com/maps/contrib/117231785841619061782"
+      }
+    },
+    {
+      "src": "/cafe-heroes/las-cafe-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "لاس كافيه - LAS CAFE (الملقا)",
+        "uri": "https://maps.google.com/maps/contrib/117231785841619061782"
+      }
+    },
+    {
+      "src": "/cafe-heroes/las-cafe-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "نوره سعد",
+        "uri": "https://maps.google.com/maps/contrib/109306336592188510458"
+      }
+    },
+    {
+      "src": "/cafe-heroes/las-cafe-al-malqa/4.jpg",
+      "attribution": {
+        "displayName": "Deem “Deem Aziz” Aziz",
+        "uri": "https://maps.google.com/maps/contrib/108320680116507813298"
+      }
+    }
+  ],
+  "las-cafe-al-olaya": [
+    {
+      "src": "/cafe-heroes/las-cafe-al-olaya/1.jpg",
+      "attribution": {
+        "displayName": "LAS CAFE - لاس كافيه (العليا)",
+        "uri": "https://maps.google.com/maps/contrib/116908995932359689221"
+      }
+    },
+    {
+      "src": "/cafe-heroes/las-cafe-al-olaya/2.jpg",
+      "attribution": {
+        "displayName": "LAS CAFE - لاس كافيه (العليا)",
+        "uri": "https://maps.google.com/maps/contrib/116908995932359689221"
+      }
+    },
+    {
+      "src": "/cafe-heroes/las-cafe-al-olaya/3.jpg",
+      "attribution": {
+        "displayName": "Masoud Shukair",
+        "uri": "https://maps.google.com/maps/contrib/112588469659047390117"
+      }
+    },
+    {
+      "src": "/cafe-heroes/las-cafe-al-olaya/4.jpg",
+      "attribution": {
+        "displayName": "Hani Abdulrahman",
+        "uri": "https://maps.google.com/maps/contrib/107275501392927841769"
+      }
+    }
+  ],
+  "little-henri-al-muruj": [
+    {
+      "src": "/cafe-heroes/little-henri-al-muruj/1.jpg",
+      "attribution": {
+        "displayName": "AvecFatimah",
+        "uri": "https://maps.google.com/maps/contrib/114962143044022309491"
+      }
+    },
+    {
+      "src": "/cafe-heroes/little-henri-al-muruj/2.jpg",
+      "attribution": {
+        "displayName": "LITTLE HENRI",
+        "uri": "https://maps.google.com/maps/contrib/110381291557667301310"
+      }
+    },
+    {
+      "src": "/cafe-heroes/little-henri-al-muruj/3.jpg",
+      "attribution": {
+        "displayName": "Dalal Ahmed",
+        "uri": "https://maps.google.com/maps/contrib/104038654102448583410"
+      }
+    },
+    {
+      "src": "/cafe-heroes/little-henri-al-muruj/4.jpg",
+      "attribution": {
+        "displayName": "Meme",
+        "uri": "https://maps.google.com/maps/contrib/107785013871581865825"
+      }
+    }
+  ],
+  "beitkull-al-olaya": [
+    {
+      "src": "/cafe-heroes/beitkull-al-olaya/1.jpg",
+      "attribution": {
+        "displayName": "قهوة بيت كُلْ",
+        "uri": "https://maps.google.com/maps/contrib/111477662393861221932"
+      }
+    },
+    {
+      "src": "/cafe-heroes/beitkull-al-olaya/2.jpg",
+      "attribution": {
+        "displayName": "قهوة بيت كُلْ",
+        "uri": "https://maps.google.com/maps/contrib/111477662393861221932"
+      }
+    },
+    {
+      "src": "/cafe-heroes/beitkull-al-olaya/3.jpg",
+      "attribution": {
+        "displayName": "قهوة بيت كُلْ",
+        "uri": "https://maps.google.com/maps/contrib/111477662393861221932"
+      }
+    },
+    {
+      "src": "/cafe-heroes/beitkull-al-olaya/4.jpg",
+      "attribution": {
+        "displayName": "Mohammed",
+        "uri": "https://maps.google.com/maps/contrib/118258877625900191426"
+      }
+    }
   ]
 }

@@ -1,6 +1,6 @@
 stable_id	name_en	name_ar	city_id	seo_slug	shop_count_live	en_source	status	notes
 diriyah	Diriyah	الدرعية	riyadh	diriyah	13	shoug_locked_2026-09-21	live	
-olaya	Al Olaya	العليا	riyadh	olaya	13	shoug_locked_2026-09-21	live	
+olaya	Al Olaya	العليا	riyadh	olaya	16	shoug_locked_2026-09-21	live	
 al-hamra	Al Hamra	الحمراء	riyadh	al-hamra	12	shoug_locked_2026-09-21	live	
 hittin	Hittin	حطين	riyadh	hittin	12	shoug_locked_2026-09-21	live	
 qurtubah	Qurtubah	قرطبة	riyadh	qurtubah	12	shoug_locked_2026-09-21	live	
@@ -14,7 +14,7 @@ an-nazhah	An Nuzhah	النزهة	riyadh	an-nazhah	10	shoug_locked_2026-09-21	liv
 ghirnatah	Ghirnatah	غرناطة	riyadh	ghirnatah	10	shoug_locked_2026-09-21	live	
 sulimaniyah	As Sulimaniyah	السليمانية	riyadh	sulimaniyah	10	shoug_locked_2026-09-21	live	Shoug lock EN As Sulimaniyah.
 al-ghadeer	Al Ghadir	الغدير	riyadh	al-ghadeer	9	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
-al-malqa	Al Malqa	الملقا	riyadh	al-malqa	9	shoug_locked_2026-09-21	live	
+al-malqa	Al Malqa	الملقا	riyadh	al-malqa	10	shoug_locked_2026-09-21	live	
 al-aqiq	Al Aqiq	العقيق	riyadh	al-aqiq	8	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-arid	Al Arid	العارض	riyadh	al-arid	8	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-qirawan	Al Qirawan	القيروان	riyadh	al-qirawan	8	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
@@ -22,7 +22,7 @@ al-rayyan	Ar Rayyan	الريان	riyadh	al-rayyan	7	shoug_locked_2026-09-21	live
 al-takhassusi	Al Takhassusi	التخصصي	riyadh	al-takhassusi	7	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 an-nasim-ash-sharqi	An Nasim Ash Sharqi	النسيم الشرقي	riyadh	an-nasim-ash-sharqi	7	shoug_locked_2026-09-21_plus_187	live	Added 21 Sep — missing from Shoug sheet; live via Scout #187 (Eastern). EN follows An/Ash style.
 kafd	KAFD	كافد	riyadh	kafd	7	shoug_locked_2026-09-21	live	
-al-muruj	Al Muruj	المروج	riyadh	al-muruj	6	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-muruj	Al Muruj	المروج	riyadh	al-muruj	7	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-nakheel	An Nakheel	النخيل	riyadh	al-nakheel	6	shoug_locked_2026-09-21	live	
 al-malaz	Al Malaz	الملز	riyadh	al-malaz	5	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-safa	As Safa	الصفا	riyadh	al-safa	5	shoug_locked_2026-09-21	live	
@@ -31,7 +31,7 @@ al-wurud	Al Wurud	الورود	riyadh	al-wurud	4	shoug_locked_2026-09-21	live
 al-rawdah	Ar Rawdah	الروضة	riyadh	al-rawdah	3	shoug_locked_2026-09-21	live	
 al-wadi	Al Wadi	الوادي	riyadh	al-wadi	3	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 an-nasim-al-gharbi	An Nasim Al Gharbi	النسيم الغربي	riyadh	an-nasim-al-gharbi	3	shoug_locked_2026-09-21_plus_187	live	Added 21 Sep — missing from Shoug sheet; live via Scout #187 (Western).
-as-sahafah	As Sahafah	الصحافة	riyadh	as-sahafah	3	shoug_locked_2026-09-21	live	
+as-sahafah	As Sahafah	الصحافة	riyadh	as-sahafah	4	shoug_locked_2026-09-21	live	
 al-fayha	Al Fayha	الفيحاء	riyadh	al-fayha	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-manar	Al Manar	المنار	riyadh	al-manar	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-rabi	Ar Rabi	الربيع	riyadh	al-rabi	2	shoug_locked_2026-09-21	live	
@@ -58,7 +58,7 @@ al-badiah	Al Badiah	البديعة	riyadh	al-badiah		shoug_locked_2026-09-21	dic
 al-batha	Al Batha	البطحاء	riyadh	al-batha		shoug_locked_2026-09-21	dictionary_only	
 al-butaiha	Al Butaiha	البطيحاء	riyadh	al-butaiha		shoug_locked_2026-09-21	dictionary_only	
 al-fakhiriyah	Al Fakhiriyah	الفاخرية	riyadh	al-fakhiriyah		shoug_locked_2026-09-21	dictionary_only	
-al-falah	Al Falah	الفلاح	riyadh	al-falah		shoug_locked_2026-09-21	dictionary_only	
+al-falah	Al Falah	الفلاح	riyadh	al-falah	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 23 Sep — Mood Masters. Sheet status stays dictionary_only (21 Sep lock).
 al-fawaz	Al Fawaz	الفواز	riyadh	al-fawaz		shoug_locked_2026-09-21	dictionary_only	
 al-futah	Al Futah	الفوطة	riyadh	al-futah		shoug_locked_2026-09-21	dictionary_only	
 al-hada	Al Hada	الهدا	riyadh	al-hada		shoug_locked_2026-09-21	dictionary_only	

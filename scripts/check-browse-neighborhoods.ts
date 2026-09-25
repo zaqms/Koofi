@@ -219,8 +219,8 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 6,
-      `${row.id} Muruj refill has 6 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 7,
+      `${row.id} Muruj refill has 7 cafes, got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
@@ -357,7 +357,7 @@ assert(
   "A–Z excludes 0-shop as-suwaidi",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 66, "A–Z is the 66 live catalog districts");
+assert(az.length === 67, "A–Z is the 67 live catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

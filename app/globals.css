@@ -60,3 +60,8 @@ body {
 ::selection {
   background: #ead3b8;
 }
+
+/* Search/chat on bare home: end the screen after the query. Home footer stays on the opener. */
+main:has([data-search-screen]) > div:last-child {
+  display: none;
+}

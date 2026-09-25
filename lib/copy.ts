@@ -622,6 +622,10 @@ export const copy = {
     ar: "ارجع للشات",
     en: "Back to chat",
   },
+  backHome: {
+    ar: "الرئيسية",
+    en: "Home",
+  },
   passportBack: {
     ar: "رجوع للشات",
     en: "Back to chat",

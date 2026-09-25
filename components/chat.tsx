@@ -32,6 +32,7 @@ import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import type { ChipOpenRestore } from "@/lib/chip-open";
 import { BrandHomeLink } from "@/components/brand-home-link";
 import { DetailBackIcon } from "@/components/cafe-detail-icons";
+import { setSearchScreenOpen } from "@/components/home-bare-tail";
 import { useBeenIds } from "@/lib/been";
 import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
@@ -553,7 +554,6 @@ export function Chat({
     return Boolean(sessionHostWait(halfwayInvite));
   });
   const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
   const [pinnedHome, setPinnedHome] = useState(
@@ -1672,6 +1672,12 @@ export function Chat({
       : messages;
   const searchScreen = homeSurface && threadVisible && !showHalfwayResults;
 
+  useLayoutEffect(() => {
+    if (!homeSurface) return;
+    setSearchScreenOpen(searchScreen);
+    return () => setSearchScreenOpen(false);
+  }, [homeSurface, searchScreen]);
+
   useEffect(() => {
     if (!homeSurface) return;
     function onPop() {
@@ -1770,8 +1776,6 @@ export function Chat({
 
   return (
     <div
-      ref={rootRef}
-      data-search-screen={searchScreen ? "" : undefined}
       className={
         threadVisible || meetHalfwayOpen
           ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"

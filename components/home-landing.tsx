@@ -1,5 +1,6 @@
 import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { Chat } from "@/components/chat";
+import { HomeBareTail } from "@/components/home-bare-tail";
 import { CityDiscovery } from "@/components/city-discovery";
 import { DocumentLocale } from "@/components/document-locale";
 import { HomeTrending } from "@/components/home-trending";
@@ -118,9 +119,11 @@ export function HomeLanding({
         discovery={halfwayScreen ? null : homeDiscovery}
       />
       {bareHome ? (
-        <div className="pb-[max(11rem,calc(9rem+env(safe-area-inset-bottom)))]">
-          <SiteFooter language={language} rule={false} />
-        </div>
+        <HomeBareTail>
+          <div className="pb-[max(11rem,calc(9rem+env(safe-area-inset-bottom)))]">
+            <SiteFooter language={language} rule={false} />
+          </div>
+        </HomeBareTail>
       ) : halfwayScreen ? (
         <SiteFooter language={language} />
       ) : (

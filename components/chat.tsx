@@ -1531,14 +1531,15 @@ export function Chat({
   openRoutedChipRef.current = openRoutedChip;
 
   function sendChip(chip: ChipPick) {
-    setPickedChipId(chip.id);
-    routedChipOpenedRef.current = chip.id;
     trackEvent(
       "chip_tap",
       { chip_id: chip.id, chip_label: chip.label, locale: landing },
       { dedupeKey: `chip_tap:${chip.id}` },
     );
-    openRoutedChip(chip.id);
+    // Every tile is a link to its own route. Applying it here (thread,
+    // Halfway open/close, picked chip) writes that screen into the current
+    // history entry. Back restores it, and a cleared thread paints the
+    // pre-#205 opener. The destination route opens the chip itself.
   }
 
   useEffect(() => {
@@ -1583,10 +1584,10 @@ export function Chat({
     halfwayShownRef.current = [];
   }
 
-  // بيننا close/X/wordmark must leave for the one home. Collapsing in place
-  // on `/halfway` or `/h/{id}` paints the pre-#205 opener and caches it for Back.
+  // Close/X must leave for the one home. Collapsing in place on any
+  // non-home route paints the pre-#205 opener and caches it for Back.
   function dismissHalfway() {
-    if (!homeSurface && halfwaySurface) {
+    if (!homeSurface) {
       router.replace(homePath(landing));
       return;
     }
@@ -1736,8 +1737,23 @@ export function Chat({
     if (window.location.pathname !== path) router.push(path);
   }
 
+  function plainHomeClick(event: MouseEvent<HTMLAnchorElement>): boolean {
+    return (
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey &&
+      event.button === 0
+    );
+  }
+
   function onBrandHomeClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (!homeSurface && halfwaySurface) {
+    if (!plainHomeClick(event)) return;
+    // Wordmark on a category, district, pack, invite, or Halfway surface
+    // used to call startOver() before the link transition. That urgent
+    // update paints LegacyOpenerHero into this history entry; Back restores
+    // the pre-#205 opener. Leave for canonical / or /en instead.
+    if (!homeSurface) {
       event.preventDefault();
       router.replace(homePath(landing));
       return;

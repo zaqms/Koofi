@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -1452,6 +1459,10 @@ export function Chat({
   }
 
   function openRoutedChip(chipId: string) {
+    // Home tiles are links to their own routes. Handling the chip on `/` or
+    // `/en` writes that screen into the cached home entry, so Back misses
+    // the new home and can reopen the pre-#205 opener.
+    if (homeSurface) return;
     if (isStaticDirectoryChip(chipId)) {
       setMeetHalfwayOpen(false);
       return;
@@ -1544,6 +1555,25 @@ export function Chat({
     halfwayShownRef.current = [];
   }
 
+  function onBrandHomeClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!homeSurface && halfwaySurface) {
+      event.preventDefault();
+      router.replace(homePath(landing));
+      return;
+    }
+    startOver();
+  }
+
+  // بيننا close/X/wordmark must leave for the one home. Collapsing in place
+  // on `/halfway` or `/h/{id}` paints the pre-#205 opener and caches it for Back.
+  function dismissHalfway() {
+    if (!homeSurface && halfwaySurface) {
+      router.replace(homePath(landing));
+      return;
+    }
+    setMeetHalfwayOpen(false);
+  }
+
   const hasThread =
     busy ||
     messages.some(
@@ -1615,6 +1645,24 @@ export function Chat({
     resultFriend,
     landing,
   );
+  const halfwayClosedOntoOldHome =
+    !homeSurface && halfwaySurface && !meetHalfwayOpen && !sessionExpired;
+
+  useEffect(() => {
+    if (!halfwayClosedOntoOldHome) return;
+    router.replace(homePath(landing));
+  }, [halfwayClosedOntoOldHome, landing, router]);
+
+  if (halfwayClosedOntoOldHome) {
+    return (
+      <div
+        className="min-h-dvh bg-paper"
+        dir={landing === "ar" ? "rtl" : "ltr"}
+        lang={landing}
+        data-canonical-home-redirect=""
+      />
+    );
+  }
 
   return (
     <div
@@ -1642,7 +1690,7 @@ export function Chat({
             <div className="flex items-center gap-1">
               <button
                 type="button"
-                onClick={() => setMeetHalfwayOpen(false)}
+                onClick={dismissHalfway}
                 className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
                 aria-label={copy.meetHalfwayClose[landing]}
               >
@@ -1660,7 +1708,7 @@ export function Chat({
             <BrandHomeLink
               language={landing}
               className="items-end text-lg font-semibold"
-              onClick={startOver}
+              onClick={onBrandHomeClick}
             />
           </div>
         ) : (
@@ -1668,7 +1716,7 @@ export function Chat({
             <BrandHomeLink
               language={landing}
               className="text-lg font-semibold"
-              onClick={startOver}
+              onClick={onBrandHomeClick}
             />
             <div className="flex items-center gap-3">
               {meetHalfwayOpen ? null : <CitySelector language={landing} />}
@@ -1687,7 +1735,7 @@ export function Chat({
               {meetHalfwayOpen ? (
                 <button
                   type="button"
-                  onClick={() => setMeetHalfwayOpen(false)}
+                  onClick={dismissHalfway}
                   className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
                   aria-label={copy.meetHalfwayClose[landing]}
                 >

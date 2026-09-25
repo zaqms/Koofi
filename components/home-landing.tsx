@@ -2,6 +2,7 @@ import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { Chat } from "@/components/chat";
 import { CityDiscovery } from "@/components/city-discovery";
 import { DocumentLocale } from "@/components/document-locale";
+import { HomeTrending } from "@/components/home-trending";
 import { NewThisWeek } from "@/components/new-this-week";
 import { ShopDirectory } from "@/components/shop-directory";
 import { SiteFooter } from "@/components/site-footer";
@@ -15,6 +16,7 @@ import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
 import { restoreOffHomeChipOpen } from "@/lib/chip-open";
 import {
+  MEET_HALFWAY_CHIP,
   chipSharePath,
   chipDirectoryMoment,
   filterPutsDirectoryFirst,
@@ -57,23 +59,47 @@ export function HomeLanding({
       ? restoreOffHomeChipOpen(pageChipId, language)
       : null;
   const chipMoment = chipDirectoryMoment(pageChipId);
-  const week = (
-    <NewThisWeek language={language} shops={listNewThisWeekShops()} />
-  );
-  const directory = (
+  const directoryShops = popularChipSelected
+    ? listPopularDirectoryShops()
+    : isDriveThroughDirectoryChip(pageChipId)
+      ? listDriveThroughDirectoryShops()
+      : listDirectoryShops();
+  const cafeViewAllHref =
+    pageChipId === MEET_HALFWAY_CHIP.id
+      ? null
+      : pageChipId && pageChipId !== "popular"
+        ? chipSharePath(pageChipId, language)
+        : mostPopularPath(language);
+  const homeDiscovery = bareHome ? (
+    <CityDiscovery>
+      <HomeTrending language={language} shops={listNewThisWeekShops()} />
+      <BrowseNeighborhoods
+        language={language}
+        candidates={neighborhoodCandidates}
+      />
+      <ShopDirectory
+        language={language}
+        shops={directoryShops}
+        listing={listing}
+        moment={chipMoment}
+        chipId={chipMoment ? pageChipId : null}
+        headingMode="city-cafes"
+        viewAllHref={cafeViewAllHref}
+        sectionId="wain-riyadh-cafes"
+      />
+    </CityDiscovery>
+  ) : null;
+  const legacyDirectory = (
     <ShopDirectory
       language={language}
-      shops={
-        popularChipSelected
-          ? listPopularDirectoryShops()
-          : isDriveThroughDirectoryChip(pageChipId)
-            ? listDriveThroughDirectoryShops()
-            : listDirectoryShops()
-      }
+      shops={directoryShops}
       listing={listing}
       moment={chipMoment}
       chipId={chipMoment ? pageChipId : null}
     />
+  );
+  const legacyWeek = (
+    <NewThisWeek language={language} shops={listNewThisWeekShops()} />
   );
 
   return (
@@ -85,31 +111,35 @@ export function HomeLanding({
         localeHref={localeHref}
         selectedChipId={pageChipId}
         chipOpen={chipOpen}
+        homeSurface={bareHome}
+        discovery={homeDiscovery}
       />
-      <CityDiscovery>
-        {bareHome ? (
-          <BrowseNeighborhoods
-            language={language}
-            candidates={neighborhoodCandidates}
-          />
-        ) : null}
-        {filterPutsDirectoryFirst(
-          popularChipSelected ? "popular" : listing,
-          null,
-          chipMoment,
-        ) ? (
-          <>
-            {directory}
-            {week}
-          </>
-        ) : (
-          <>
-            {week}
-            {directory}
-          </>
-        )}
-      </CityDiscovery>
-      <SiteFooter language={language} />
+      {bareHome ? (
+        <div className="pb-[max(11rem,calc(9rem+env(safe-area-inset-bottom)))]">
+          <SiteFooter language={language} rule={false} />
+        </div>
+      ) : (
+        <>
+          <CityDiscovery>
+            {filterPutsDirectoryFirst(
+              popularChipSelected ? "popular" : listing,
+              null,
+              chipMoment,
+            ) ? (
+              <>
+                {legacyDirectory}
+                {legacyWeek}
+              </>
+            ) : (
+              <>
+                {legacyWeek}
+                {legacyDirectory}
+              </>
+            )}
+          </CityDiscovery>
+          <SiteFooter language={language} />
+        </>
+      )}
     </main>
   );
 }

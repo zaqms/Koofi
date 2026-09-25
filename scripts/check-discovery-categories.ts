@@ -84,8 +84,8 @@ assert(DISCOVERY_CATEGORIES.length === 14, "14 live discovery categories (13 vib
 assert(VIBE_CHIPS.length === 13, "Soft Places stay parked — 13 vibe chips");
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,nearby,outdoor,with-friends,work,drive-through",
-  "P0 home order is locked",
+    "popular,nearby,matcha,coffee,work,with-friends,outdoor,drive-through",
+  "P0 home order is the 8-tile grid",
 );
 assert(
   OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",

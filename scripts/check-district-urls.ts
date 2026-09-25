@@ -3888,7 +3888,7 @@ assert(
     join(process.cwd(), "components/meet-halfway-card.tsx"),
     "utf8",
   ).includes("MEET_HALFWAY_CHIP"),
-  "بيننا is a utility card above the chips",
+  "بيننا is a utility card under the category grid",
 );
 assert(
   !vibeChips.includes("ثلاث الليلة") && !vibeChips.includes("ON TONIGHT"),

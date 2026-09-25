@@ -538,6 +538,10 @@ export const copy = {
     ar: "انضافت للقائمة هالأسبوع.",
     en: "Added to the list this week.",
   },
+  trendingThisWeek: {
+    ar: "ترند الأسبوع",
+    en: "Trending this week",
+  },
   directory: {
     ar: "القائمة",
     en: "The list",

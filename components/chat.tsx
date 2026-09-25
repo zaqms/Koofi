@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -17,7 +17,9 @@ import {
   pinFromHalfwayInput,
 } from "@/lib/halfway-place";
 import { pinsMidpoint } from "@/lib/halfway-results-payload";
+import { HomeHalfwayCard } from "@/components/home-halfway-card";
 import { HomeHero } from "@/components/home-hero";
+import { LegacyOpenerHero } from "@/components/legacy-opener-hero";
 import { MeetHalfwayCard } from "@/components/meet-halfway-card";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import type { ChipOpenRestore } from "@/lib/chip-open";
@@ -334,6 +336,10 @@ type ChatProps = {
   selectedChipId?: string | null;
   /** Off-home share URLs serve three picks on the server. Not a home tile. */
   chipOpen?: ChipOpenRestore | null;
+  /** Home lists (trending, neighborhoods, cafés). Placed under Halfway on the opener. */
+  discovery?: ReactNode;
+  /** Bare `/` and `/en` only. Other chats keep the pre-#205 opener and composer. */
+  homeSurface?: boolean;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
@@ -428,6 +434,8 @@ export function Chat({
   localeHref,
   selectedChipId,
   chipOpen,
+  discovery = null,
+  homeSurface = false,
 }: ChatProps) {
   const router = useRouter();
   const { cityId, isComingSoon } = useCity();
@@ -1547,6 +1555,13 @@ export function Chat({
   // بيننا first-class screens (invite / waiting / results). Ask composer +
   // أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen && !sessionExpired && !isComingSoon;
+  const showHomeOpener =
+    !hasThread &&
+    !meetHalfwayOpen &&
+    !sessionExpired &&
+    !isComingSoon &&
+    !isOffHomeChipId(selectedChipId ?? "");
+  const pinComposer = homeSurface && showHomeOpener && showAskComposer;
   const isHalfwayHost = Boolean(sessionHostWait(halfwayInvite));
   const halfwayGuest = Boolean(halfwayInvite) && !isHalfwayHost;
   const halfwayPicker = meetHalfwayOpen && !sessionExpired ? (
@@ -1606,12 +1621,22 @@ export function Chat({
       className={
         hasThread || meetHalfwayOpen
           ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
-          : "mx-auto flex w-full max-w-lg flex-col bg-paper"
+          : homeSurface
+            ? "relative mx-auto flex w-full max-w-lg flex-col bg-paper"
+            : "mx-auto flex w-full max-w-lg flex-col bg-paper"
       }
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
-      <header className="shrink-0 px-4 py-3">
+      <header
+        className={
+          homeSurface && showHomeOpener
+            ? "absolute inset-x-0 top-0 z-20 bg-transparent px-4 pt-[max(0.65rem,env(safe-area-inset-top))] pb-2"
+            : homeSurface
+              ? "shrink-0 px-4 py-2"
+              : "shrink-0 px-4 py-3"
+        }
+      >
         {showHalfwayResults ? (
           <div className="flex items-center justify-between gap-3" dir="ltr">
             <div className="flex items-center gap-1">
@@ -1650,7 +1675,11 @@ export function Chat({
               {restore && !meetHalfwayOpen ? null : (
                 <Link
                   href={localeHref ?? (landing === "ar" ? "/en" : "/")}
-                  className="text-xs text-ink-soft underline-offset-2 hover:underline"
+                  className={
+                    homeSurface
+                      ? "inline-flex h-8 items-center rounded-full border border-line bg-foam px-3 text-[12px] leading-none text-ink"
+                      : "text-xs text-ink-soft underline-offset-2 hover:underline"
+                  }
                 >
                   {copy.switchLanguage[landing]}
                 </Link>
@@ -1777,7 +1806,9 @@ export function Chat({
         className={
           hasThread
             ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
-            : "shrink-0 space-y-2 px-4 pt-6 pb-1"
+            : homeSurface && showHomeOpener
+              ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
+              : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
       >
@@ -1808,8 +1839,45 @@ export function Chat({
               {message.id === "opener" &&
               !hasThread &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
-                <div className="space-y-5">
+                homeSurface ? (
+                <div>
                   <HomeHero language={landing} />
+                  {selectedChipId !== null ? (
+                    <div className="mt-8">
+                      <VibeChips
+                        language={landing}
+                        disabled={busy}
+                        variant="home"
+                        selectedId={
+                          selectedChipId === undefined
+                            ? (pickedChipId ?? "popular")
+                            : selectedChipId
+                        }
+                        onPick={sendChip}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="mt-8 mb-12">
+                    <HomeHalfwayCard
+                      language={landing}
+                      disabled={busy}
+                      selected={
+                        (selectedChipId === undefined
+                          ? pickedChipId
+                          : selectedChipId) === MEET_HALFWAY_CHIP.id
+                      }
+                      onPick={sendChip}
+                    />
+                  </div>
+                  {halfwayInviteExpired ? (
+                    <p className="text-xs leading-5 text-ink-soft">
+                      {copy.meetHalfwayInviteExpired[landing]}
+                    </p>
+                  ) : null}
+                </div>
+                ) : (
+                <div className="space-y-5">
+                  <LegacyOpenerHero language={landing} />
                   <MeetHalfwayCard
                     language={landing}
                     disabled={busy}
@@ -1838,6 +1906,7 @@ export function Chat({
                     </p>
                   ) : null}
                 </div>
+                )
               ) : (
                 <div className="flex justify-start">
                   <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
@@ -1937,19 +2006,24 @@ export function Chat({
       </div>
       )}
 
+      {showHomeOpener && discovery ? discovery : null}
+
       {showAskComposer ? (
         <form
           ref={footerRef}
           className={
-            hasThread
-              ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-              : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            pinComposer
+              ? "fixed inset-x-0 bottom-0 z-30 bg-paper px-3 pt-1.5 shadow-[0_-10px_28px_rgba(30,23,20,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+              : hasThread
+                ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+                : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           }
           onSubmit={(event) => {
             event.preventDefault();
             send(draft);
           }}
         >
+          <div className={pinComposer ? "mx-auto w-full max-w-lg" : undefined}>
           <label className="sr-only" htmlFor="koofi-ask">
             {awaitingMaps
               ? copy.mapsPlaceholder[landing]
@@ -1973,16 +2047,44 @@ export function Chat({
                   ? copy.mapsPlaceholder[landing]
                   : copy.placeholder[landing]
               }
-              className="min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
+              className={
+                pinComposer
+                  ? "h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none focus:border-bean"
+                  : "min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
+              }
             />
-            <button
-              type="submit"
-              disabled={busy || !draft.trim()}
-              className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
-            >
-              {copy.send[landing]}
-            </button>
+            {pinComposer ? (
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                aria-label={copy.send[landing]}
+                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-bean text-foam disabled:opacity-50"
+              >
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  className="size-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 19V5" />
+                  <path d="m6 11 6-6 6 6" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+              >
+                {copy.send[landing]}
+              </button>
+            )}
           </div>
+          {pinComposer ? null : (
           <div className="mt-2 text-start">
             <AddShopButton
               language={landing}
@@ -1990,8 +2092,11 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
+          )}
+          </div>
         </form>
       ) : null}
+      {!showHomeOpener && discovery ? discovery : null}
     </div>
   );
 }

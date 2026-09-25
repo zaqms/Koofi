@@ -31,6 +31,8 @@ import { MeetHalfwayCard } from "@/components/meet-halfway-card";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import type { ChipOpenRestore } from "@/lib/chip-open";
 import { BrandHomeLink } from "@/components/brand-home-link";
+import { DetailBackIcon } from "@/components/cafe-detail-icons";
+import { setSearchScreenOpen } from "@/components/home-bare-tail";
 import { useBeenIds } from "@/lib/been";
 import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
@@ -352,6 +354,20 @@ type ChatProps = {
 const threads: Partial<Record<string, LiveThread>> = {};
 const pendingSends: Partial<Record<string, PendingSend>> = {};
 
+/**
+ * Bare-home search is one history entry over `/` or `/en`.
+ * Popping it shows Home again and leaves `threads` alone.
+ */
+let searchPinnedHome = false;
+/** Set when this document pushed the search entry, so Back can pop it. */
+let searchPushedInApp = false;
+
+function historyIsSearch(): boolean {
+  if (typeof window === "undefined") return false;
+  const state = window.history.state as { wainSearch?: boolean } | null;
+  return state?.wainSearch === true;
+}
+
 function openerMessage(landing: Language): AssistantMessage {
   return {
     id: "opener",
@@ -540,6 +556,9 @@ export function Chat({
   const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
+  const [pinnedHome, setPinnedHome] = useState(
+    () => !historyIsSearch() && searchPinnedHome,
+  );
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
   const halfwayLocationsRef = useRef<HalfwayPinInput[] | null>(
     pendingSends[threadKey]?.halfway?.locations ??
@@ -946,6 +965,7 @@ export function Chat({
   ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
+    unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
     trackChatQuery({ text: trimmed, locale: landing, via });
@@ -1006,8 +1026,15 @@ export function Chat({
     setPendingId(pending.id);
   }
 
+  function unpinSearchHome() {
+    if (!searchPinnedHome) return;
+    searchPinnedHome = false;
+    setPinnedHome(false);
+  }
+
   function askForShop() {
     if (busy || inFlightRef.current) return;
+    unpinSearchHome();
     setAwaitingMaps(true);
     setMessages((current) => [
       ...current,
@@ -1034,6 +1061,7 @@ export function Chat({
 
   async function sendNearby(label: string) {
     if (inFlightRef.current) return;
+    unpinSearchHome();
 
     const userMessage: UserMessage = {
       id: crypto.randomUUID(),
@@ -1555,15 +1583,6 @@ export function Chat({
     halfwayShownRef.current = [];
   }
 
-  function onBrandHomeClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (!homeSurface && halfwaySurface) {
-      event.preventDefault();
-      router.replace(homePath(landing));
-      return;
-    }
-    startOver();
-  }
-
   // بيننا close/X/wordmark must leave for the one home. Collapsing in place
   // on `/halfway` or `/h/{id}` paints the pre-#205 opener and caches it for Back.
   function dismissHalfway() {
@@ -1581,12 +1600,14 @@ export function Chat({
         message.role === "user" ||
         (message.role === "assistant" && message.id !== "opener"),
     );
+  // Back to Home hides the thread visually. Messages stay in `threads`.
+  const threadVisible = hasThread && (!homeSurface || !pinnedHome);
   const halfwayResult = lastHalfwayResult(messages);
   // بيننا first-class screens (invite / waiting / results). Ask composer +
   // أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen && !sessionExpired && !isComingSoon;
   const showHomeOpener =
-    !hasThread &&
+    !threadVisible &&
     !meetHalfwayOpen &&
     !sessionExpired &&
     !isComingSoon &&
@@ -1645,6 +1666,95 @@ export function Chat({
     resultFriend,
     landing,
   );
+  const shownMessages =
+    homeSurface && !threadVisible
+      ? messages.filter((message) => message.id === "opener")
+      : messages;
+  const searchScreen = homeSurface && threadVisible && !showHalfwayResults;
+
+  useLayoutEffect(() => {
+    if (!homeSurface) return;
+    setSearchScreenOpen(searchScreen);
+    return () => setSearchScreenOpen(false);
+  }, [homeSurface, searchScreen]);
+
+  useEffect(() => {
+    if (!homeSurface) return;
+    function onPop() {
+      if (window.location.pathname !== homePath(landing)) return;
+      const searching = historyIsSearch();
+      searchPinnedHome = !searching;
+      setPinnedHome(!searching);
+      if (!searching) window.scrollTo(0, 0);
+    }
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [homeSurface, landing]);
+
+  useLayoutEffect(() => {
+    if (!homeSurface || !threadVisible) return;
+    if (historyIsSearch()) return;
+    const current = window.history.state;
+    const base =
+      current && typeof current === "object"
+        ? { ...(current as Record<string, unknown>) }
+        : {};
+    window.history.pushState(
+      { ...base, wainSearch: true },
+      "",
+      window.location.href,
+    );
+    searchPushedInApp = true;
+  }, [homeSurface, threadVisible]);
+
+  function backToHome(event: MouseEvent<HTMLAnchorElement>) {
+    if (
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+    event.preventDefault();
+    if (historyIsSearch()) {
+      if (searchPushedInApp) {
+        window.history.back();
+        return;
+      }
+      searchPinnedHome = true;
+      setPinnedHome(true);
+      window.scrollTo(0, 0);
+      router.replace(homePath(landing));
+      return;
+    }
+    searchPinnedHome = true;
+    setPinnedHome(true);
+    window.scrollTo(0, 0);
+    const path = homePath(landing);
+    if (window.location.pathname !== path) router.push(path);
+  }
+
+  function onBrandHomeClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!homeSurface && halfwaySurface) {
+      event.preventDefault();
+      router.replace(homePath(landing));
+      return;
+    }
+    if (historyIsSearch()) {
+      startOver();
+      event.preventDefault();
+      if (searchPushedInApp) {
+        window.history.back();
+      } else {
+        router.replace(homePath(landing));
+      }
+      return;
+    }
+    startOver();
+  }
+
   const halfwayClosedOntoOldHome =
     !homeSurface && halfwaySurface && !meetHalfwayOpen && !sessionExpired;
 
@@ -1667,7 +1777,7 @@ export function Chat({
   return (
     <div
       className={
-        hasThread || meetHalfwayOpen
+        threadVisible || meetHalfwayOpen
           ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
           : homeSurface
             ? "relative mx-auto flex w-full max-w-lg flex-col bg-paper"
@@ -1712,6 +1822,18 @@ export function Chat({
             />
           </div>
         ) : (
+          <>
+            {searchScreen ? (
+              <Link
+                href={homePath(landing)}
+                data-back-home=""
+                onClick={backToHome}
+                className="mb-1 inline-flex items-center gap-1 py-1 text-sm text-ink"
+              >
+                <DetailBackIcon className="size-4 rtl:scale-x-[-1]" />
+                <span>{copy.backHome[landing]}</span>
+              </Link>
+            ) : null}
           <div className="flex items-center justify-between gap-3">
             <BrandHomeLink
               language={landing}
@@ -1746,6 +1868,7 @@ export function Chat({
               ) : null}
             </div>
           </div>
+          </>
         )}
       </header>
 
@@ -1852,7 +1975,7 @@ export function Chat({
       <div
         ref={listRef}
         className={
-          hasThread
+          threadVisible
             ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
             : homeSurface && showHomeOpener
               ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
@@ -1860,7 +1983,7 @@ export function Chat({
         }
         aria-live="polite"
       >
-        {messages.map((message, index) =>
+        {shownMessages.map((message, index) =>
           message.role === "user" ? (
             <div key={message.id} className="flex justify-end">
               <p
@@ -1885,7 +2008,7 @@ export function Chat({
                 </p>
               ) : null}
               {message.id === "opener" &&
-              !hasThread &&
+              !threadVisible &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
                 homeSurface ? (
                 <div>
@@ -1972,7 +2095,7 @@ export function Chat({
                   ask={
                     restore && message.id === `pack-picks-${restore.packId}`
                       ? restore.ask
-                      : askBeforePicks(messages, index)
+                      : askBeforePicks(shownMessages, index)
                   }
                   packId={
                     restore && message.id === `pack-picks-${restore.packId}`
@@ -1983,7 +2106,7 @@ export function Chat({
                 />
               ) : null}
               {!busy &&
-              index === lastCompletedResultIndex(messages) &&
+              index === lastCompletedResultIndex(shownMessages) &&
               (message.picks?.length || isEmptyCatalogMessage(message)) ? (
                 <ResultsFeedbackBlock
                   language={message.language}
@@ -1996,7 +2119,7 @@ export function Chat({
                   }
                   resetKey={message.id}
                   shopIds={message.picks?.map((pick) => pick.id)}
-                  queryText={askBeforePicks(messages, index)}
+                  queryText={askBeforePicks(shownMessages, index)}
                 />
               ) : null}
               {index === messages.length - 1 &&
@@ -2050,7 +2173,7 @@ export function Chat({
             </p>
           </div>
         ) : null}
-        {hasThread ? <div aria-hidden className="h-3 shrink-0" /> : null}
+        {threadVisible ? <div aria-hidden className="h-3 shrink-0" /> : null}
       </div>
       )}
 
@@ -2062,7 +2185,7 @@ export function Chat({
           className={
             pinComposer
               ? "fixed inset-x-0 bottom-0 z-30 bg-paper px-3 pt-1.5 shadow-[0_-10px_28px_rgba(30,23,20,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
-              : hasThread
+              : threadVisible
                 ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
                 : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           }
@@ -2144,7 +2267,7 @@ export function Chat({
           </div>
         </form>
       ) : null}
-      {!showHomeOpener && discovery ? discovery : null}
+      {!showHomeOpener && !threadVisible && discovery ? discovery : null}
     </div>
   );
 }

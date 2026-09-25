@@ -1467,6 +1467,14 @@ assert(
   "ask composer and أضف قهوة stay in Chat; they restore when بيننا closes",
 );
 assert(
+  chatUi.includes("function dismissHalfway") &&
+    chatUi.includes("halfwayClosedOntoOldHome") &&
+    chatUi.includes("cached home entry") &&
+    chatUi.includes("router.replace(homePath(landing))") &&
+    !chatUi.includes("onClick={() => setMeetHalfwayOpen(false)}"),
+  "بيننا close leaves for canonical / or /en and does not cache the pre-#205 home",
+);
+assert(
   inviteSession.includes("<Chat") &&
     inviteSession.includes("halfwayInvite") &&
     chatUi.includes("showAskComposer") &&

@@ -1290,6 +1290,15 @@ assert(
     !districtPage.includes("meetHalfwayMoreTitle"),
   "home + district do not mount the بيننا results chrome",
 );
+assert(
+  homeLanding.includes("const halfwayScreen = pageChipId === MEET_HALFWAY_CHIP.id") &&
+    homeLanding.includes("discovery={halfwayScreen ? null : homeDiscovery}") &&
+    homeLanding.includes(") : halfwayScreen ? (") &&
+    homeLanding.includes("<HomeTrending") &&
+    homeLanding.includes("<BrowseNeighborhoods") &&
+    homeLanding.includes("<ShopDirectory"),
+  "بيننا drops the home discovery feed; bare home still mounts trending, neighborhoods, and cafés",
+);
 const homePage = readFileSync(join(repoRoot, "app/page.tsx"), "utf8");
 const homePageEn = readFileSync(join(repoRoot, "app/en/page.tsx"), "utf8");
 assert(

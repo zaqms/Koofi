@@ -1471,8 +1471,18 @@ assert(
     chatUi.includes("halfwayClosedOntoOldHome") &&
     chatUi.includes("cached home entry") &&
     chatUi.includes("router.replace(homePath(landing))") &&
-    !chatUi.includes("onClick={() => setMeetHalfwayOpen(false)}"),
+    !chatUi.includes("onClick={() => setMeetHalfwayOpen(false)}") &&
+    /function dismissHalfway\(\) \{\s*if \(!homeSurface\) \{\s*router\.replace\(homePath\(landing\)\);/.test(
+      chatUi,
+    ),
   "بيننا close leaves for canonical / or /en and does not cache the pre-#205 home",
+);
+assert(
+  chatUi.includes("paints LegacyOpenerHero") &&
+    /function onBrandHomeClick[\s\S]*?if \(!homeSurface\) \{\s*event\.preventDefault\(\);\s*router\.replace\(homePath\(landing\)\);/.test(
+      chatUi,
+    ),
+  "non-home wordmark replaces onto canonical home and does not paint the pre-#205 opener",
 );
 assert(
   inviteSession.includes("<Chat") &&

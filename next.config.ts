@@ -33,6 +33,16 @@ const nextConfig: NextConfig = {
         statusCode: 301,
       },
       {
+        source: "/home",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/en/home",
+        destination: "/en",
+        statusCode: 308,
+      },
+      {
         source: "/n/:slug",
         destination: "/coffee-shops/:slug",
         statusCode: 301,

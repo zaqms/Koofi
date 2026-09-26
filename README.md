@@ -227,6 +227,20 @@ npx tsx scripts/check-plg.ts
 npx tsx scripts/check-meet-halfway.ts
 ```
 
+### TikTok followers (ranking signal)
+
+Follower counts live in [`data/tiktok-followers.json`](data/tiktok-followers.json), not on `catalog.json` rows. At load, `lib/catalog.ts` adds a bonus on top of the untouched baked `popularityIndex`. That index file is never rewritten, so a refresh cannot compound.
+
+`TIKTOK_MAX_POINTS` is 10 and `TIKTOK_FOLLOWER_CAP` is 50000. A `found` row scores `10 × min(1, log1p(followers) / log1p(50000))`. `none`, `unverified`, and missing rows get the neutral bonus: the median bonus across unique found handles (chains count once). Shops with no baked index stay unranked. The score is a sort key only — it is not shown, and it is not clamped at 100.
+
+Refresh is manual, or about monthly. There is no scraper and no CI job. Pass the scout JSON or CSV (one row per catalog shop):
+
+```bash
+npm run refresh-tiktok-followers -- path/to/tiktok-followers.json
+```
+
+The script checks shop ids, requires followers on `found` rows, and rejects followers on every other status.
+
 Repo code cannot create GTM tags. In container **GTM-W3TM4552**:
 
 1. **Variables** → New → Data Layer Variable → name `DL - query_text` → Data Layer Variable Name `query_text`. Repeat for `locale` and `via` if those variables are not already in the container (`DL - locale`, `DL - via`).

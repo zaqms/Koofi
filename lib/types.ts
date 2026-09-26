@@ -132,7 +132,11 @@ export type Shop = {
   mapsShareUrl?: string;
   photoUrl?: string;
   logoUrl?: string;
-  /** Baked Maps+IG popularity. Used only by the Most Popular / popular moment lock. */
+  /**
+   * Sort key for Most Popular and district rank. Load time sets this to the
+   * baked Maps+IG index plus the TikTok bonus. Not shown. Shops with no
+   * baked index stay unranked.
+   */
   popularityIndex?: number;
   /**
    * Drive-through-lane shops are live on cafe cards + the Drive-through

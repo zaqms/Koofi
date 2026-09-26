@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type MouseEvent,
   type ReactNode,
 } from "react";
@@ -449,6 +450,124 @@ function lastCompletedResultIndex(messages: readonly Message[]): number {
   return -1;
 }
 
+/** 14px drawn size, 16px computed size so iOS Safari does not zoom the field. */
+const MANUAL_SEARCH_SCALE = 14 / 16;
+
+type SearchDraftHandle = {
+  text: string;
+  clear: () => void;
+};
+
+function manualSearchInputStyle(rtl: boolean): CSSProperties {
+  return {
+    boxSizing: "border-box",
+    fontSize: 16,
+    lineHeight: `${20 / MANUAL_SEARCH_SCALE}px`,
+    paddingBlock: `${10 / MANUAL_SEARCH_SCALE}px`,
+    paddingInline: `${12 / MANUAL_SEARCH_SCALE}px`,
+    width: `${100 / MANUAL_SEARCH_SCALE}%`,
+    height: `${100 / MANUAL_SEARCH_SCALE}%`,
+    transform: `scale(${MANUAL_SEARCH_SCALE})`,
+    transformOrigin: rtl ? "top right" : "top left",
+    // Border is inside the scaled box. 1/scale paints as 1px after scale().
+    borderWidth: `${1 / MANUAL_SEARCH_SCALE}px`,
+    top: 0,
+    left: rtl ? "auto" : 0,
+    right: rtl ? 0 : "auto",
+    overflow: "hidden",
+  };
+}
+
+function ManualSearchFields({
+  landing,
+  busy,
+  awaitingMaps,
+  draftRef,
+  onAskForShop,
+}: {
+  landing: Language;
+  busy: boolean;
+  awaitingMaps: boolean;
+  draftRef: { current: SearchDraftHandle };
+  onAskForShop: () => void;
+}) {
+  const [value, setValue] = useState("");
+  const [focused, setFocused] = useState(false);
+  const rtl = landing === "ar";
+  const placeholder = awaitingMaps
+    ? copy.mapsPlaceholder[landing]
+    : copy.placeholder[landing];
+
+  draftRef.current.clear = () => {
+    draftRef.current.text = "";
+    setValue("");
+  };
+
+  return (
+    <>
+      <label className="sr-only" htmlFor="koofi-ask">
+        {placeholder}
+      </label>
+      <div className="flex items-center gap-2">
+        <div className="relative h-14 min-h-14 flex-1">
+          <textarea
+            id="koofi-ask"
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            onChange={(event) => {
+              const next = event.target.value;
+              draftRef.current.text = next;
+              setValue(next);
+            }}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "absolute z-10 resize-none rounded-2xl border border-bean bg-foam text-start text-ink outline-none"
+                : "absolute inset-0 z-10 h-full w-full resize-none opacity-0"
+            }
+            style={manualSearchInputStyle(rtl)}
+          />
+          {focused ? null : (
+            <textarea
+              aria-hidden
+              readOnly
+              tabIndex={-1}
+              value={value}
+              rows={1}
+              dir={rtl ? "rtl" : "ltr"}
+              placeholder={placeholder}
+              className="pointer-events-none absolute inset-0 h-full w-full resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+            />
+          )}
+        </div>
+        <button
+          type="submit"
+          disabled={busy || !value.trim()}
+          className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+        >
+          {copy.send[landing]}
+        </button>
+      </div>
+      <div className="mt-2 text-start">
+        <AddShopButton
+          language={landing}
+          disabled={busy}
+          onAdd={onAskForShop}
+        />
+      </div>
+    </>
+  );
+}
+
 export function Chat({
   landing,
   restore,
@@ -556,6 +675,10 @@ export function Chat({
   const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
+  const searchDraftRef = useRef<SearchDraftHandle>({
+    text: "",
+    clear: () => undefined,
+  });
   const [pinnedHome, setPinnedHome] = useState(
     () => !historyIsSearch() && searchPinnedHome,
   );
@@ -933,31 +1056,6 @@ export function Chat({
       cancelled = true;
     };
   }, [threadKey, pendingId]);
-
-  useEffect(() => {
-    const list = listRef.current;
-    const footer = footerRef.current;
-    if (!list) return;
-    const el = list;
-
-    function pinToEnd() {
-      el.scrollTop = el.scrollHeight;
-    }
-
-    function nearEnd() {
-      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
-    }
-
-    pinToEnd();
-    if (typeof ResizeObserver === "undefined") return;
-
-    const observer = new ResizeObserver(() => {
-      if (busy || nearEnd()) pinToEnd();
-    });
-    observer.observe(el);
-    if (footer) observer.observe(footer);
-    return () => observer.disconnect();
-  }, [messages, busy, meetHalfwayOpen]);
 
   function send(
     text: string,
@@ -1673,6 +1771,72 @@ export function Chat({
       : messages;
   const searchScreen = homeSurface && threadVisible && !showHalfwayResults;
 
+  useEffect(() => {
+    // Manual Search scrolls the document. Pinning this nested overflow
+    // port on every resize fights iOS keyboard/focus scrolling and flickers.
+    if (searchScreen) return;
+    const list = listRef.current;
+    const footer = footerRef.current;
+    if (!list) return;
+    const el = list;
+
+    function pinToEnd() {
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function nearEnd() {
+      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
+    }
+
+    pinToEnd();
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      if (busy || nearEnd()) pinToEnd();
+    });
+    observer.observe(el);
+    if (footer) observer.observe(footer);
+    return () => observer.disconnect();
+  }, [messages, busy, meetHalfwayOpen, searchScreen]);
+
+  useLayoutEffect(() => {
+    if (!searchScreen) return;
+    const form = footerRef.current;
+    const vv = window.visualViewport;
+    if (!form || !vv) return;
+    const field = form;
+    const viewport = vv;
+
+    // Gap between the layout viewport bottom and the visual viewport
+    // bottom. iOS leaves innerHeight unchanged when the keyboard opens.
+    const cover = () =>
+      Math.max(0, window.innerHeight - viewport.offsetTop - viewport.height);
+    const resting = cover();
+
+    function sync() {
+      const extra = Math.max(0, cover() - resting);
+      if (extra < 1) {
+        field.style.transition = "";
+        field.style.transform = "";
+        return;
+      }
+      // Follow visualViewport frames. A CSS transition on this offset
+      // lags those events and flickers.
+      field.style.transition = "none";
+      field.style.transform = `translateY(${-extra}px)`;
+    }
+
+    sync();
+    viewport.addEventListener("resize", sync);
+    viewport.addEventListener("scroll", sync);
+    return () => {
+      viewport.removeEventListener("resize", sync);
+      viewport.removeEventListener("scroll", sync);
+      field.style.transition = "";
+      field.style.transform = "";
+    };
+  }, [searchScreen]);
+
   useLayoutEffect(() => {
     if (!homeSurface) return;
     setSearchScreenOpen(searchScreen);
@@ -1991,11 +2155,13 @@ export function Chat({
       <div
         ref={listRef}
         className={
-          threadVisible
-            ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
-            : homeSurface && showHomeOpener
-              ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
-              : "shrink-0 space-y-2 px-4 pt-6 pb-1"
+          searchScreen
+            ? "min-h-0 flex-1 space-y-3 px-4 py-4"
+            : threadVisible
+              ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
+              : homeSurface && showHomeOpener
+                ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
+                : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
       >
@@ -2207,10 +2373,26 @@ export function Chat({
           }
           onSubmit={(event) => {
             event.preventDefault();
+            if (searchScreen) {
+              const text = searchDraftRef.current.text;
+              searchDraftRef.current.clear();
+              send(text);
+              return;
+            }
             send(draft);
           }}
         >
           <div className={pinComposer ? "mx-auto w-full max-w-lg" : undefined}>
+          {searchScreen ? (
+            <ManualSearchFields
+              landing={landing}
+              busy={busy}
+              awaitingMaps={awaitingMaps}
+              draftRef={searchDraftRef}
+              onAskForShop={askForShop}
+            />
+          ) : (
+          <>
           <label className="sr-only" htmlFor="koofi-ask">
             {awaitingMaps
               ? copy.mapsPlaceholder[landing]
@@ -2279,6 +2461,8 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
+          )}
+          </>
           )}
           </div>
         </form>

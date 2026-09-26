@@ -483,21 +483,26 @@ function ManualSearchFields({
   busy,
   awaitingMaps,
   draftRef,
+  initialText,
   onAskForShop,
 }: {
   landing: Language;
   busy: boolean;
   awaitingMaps: boolean;
   draftRef: { current: SearchDraftHandle };
+  initialText: string;
   onAskForShop: () => void;
 }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialText);
   const [focused, setFocused] = useState(false);
   const rtl = landing === "ar";
   const placeholder = awaitingMaps
     ? copy.mapsPlaceholder[landing]
     : copy.placeholder[landing];
 
+  // The visible value is the only text that can be sent. Parent reads this
+  // ref; it is cleared when this field unmounts.
+  draftRef.current.text = value;
   draftRef.current.clear = () => {
     draftRef.current.text = "";
     setValue("");
@@ -531,23 +536,35 @@ function ManualSearchFields({
             placeholder={placeholder}
             className={
               focused
-                ? "absolute z-10 resize-none rounded-2xl border border-bean bg-foam text-start text-ink outline-none"
+                ? "absolute z-10 h-full w-full resize-none placeholder:text-transparent outline-none"
                 : "absolute inset-0 z-10 h-full w-full resize-none opacity-0"
             }
-            style={manualSearchInputStyle(rtl)}
+            style={{
+              ...manualSearchInputStyle(rtl),
+              // Glyphs stay on the 14px decoy so focus does not move them.
+              // This layer only takes the tap, at a computed 16px.
+              color: "transparent",
+              WebkitTextFillColor: "transparent",
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+              caretColor: focused ? "#1e1714" : "transparent",
+              outline: "none",
+            }}
           />
-          {focused ? null : (
-            <textarea
-              aria-hidden
-              readOnly
-              tabIndex={-1}
-              value={value}
-              rows={1}
-              dir={rtl ? "rtl" : "ltr"}
-              placeholder={placeholder}
-              className="pointer-events-none absolute inset-0 h-full w-full resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
-            />
-          )}
+          <textarea
+            aria-hidden
+            readOnly
+            tabIndex={-1}
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "pointer-events-none absolute inset-0 h-full w-full resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+                : "pointer-events-none absolute inset-0 h-full w-full resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+            }
+          />
         </div>
         <button
           type="submit"
@@ -679,6 +696,7 @@ export function Chat({
     text: "",
     clear: () => undefined,
   });
+  const searchWasOpenRef = useRef(false);
   const [pinnedHome, setPinnedHome] = useState(
     () => !historyIsSearch() && searchPinnedHome,
   );
@@ -1800,6 +1818,18 @@ export function Chat({
   }, [messages, busy, meetHalfwayOpen, searchScreen]);
 
   useLayoutEffect(() => {
+    const wasOpen = searchWasOpenRef.current;
+    searchWasOpenRef.current = searchScreen;
+    if (!wasOpen || searchScreen) return;
+    // The field is gone. Keep its text for the Home composer, and drop
+    // the copy this screen would otherwise send on the next Enter.
+    const carried = searchDraftRef.current.text;
+    searchDraftRef.current.text = "";
+    searchDraftRef.current.clear = () => undefined;
+    setDraft(carried);
+  }, [searchScreen]);
+
+  useLayoutEffect(() => {
     if (!searchScreen) return;
     const form = footerRef.current;
     const vv = window.visualViewport;
@@ -1807,14 +1837,15 @@ export function Chat({
     const field = form;
     const viewport = vv;
 
-    // Gap between the layout viewport bottom and the visual viewport
-    // bottom. iOS leaves innerHeight unchanged when the keyboard opens.
+    // Current overlap of the layout viewport by the visual viewport.
+    // Read on every event. A sample taken while the keyboard is still
+    // closing (this screen often opens right after a Home submit) goes
+    // stale and the next lift is short.
     const cover = () =>
       Math.max(0, window.innerHeight - viewport.offsetTop - viewport.height);
-    const resting = cover();
 
     function sync() {
-      const extra = Math.max(0, cover() - resting);
+      const extra = cover();
       if (extra < 1) {
         field.style.transition = "";
         field.style.transform = "";
@@ -1829,9 +1860,11 @@ export function Chat({
     sync();
     viewport.addEventListener("resize", sync);
     viewport.addEventListener("scroll", sync);
+    field.addEventListener("focusin", sync);
     return () => {
       viewport.removeEventListener("resize", sync);
       viewport.removeEventListener("scroll", sync);
+      field.removeEventListener("focusin", sync);
       field.style.transition = "";
       field.style.transform = "";
     };
@@ -2375,6 +2408,9 @@ export function Chat({
             event.preventDefault();
             if (searchScreen) {
               const text = searchDraftRef.current.text;
+              // send() drops an in-flight Enter and keeps the field.
+              // Clearing first wiped text the request never accepted.
+              if (!text.trim() || inFlightRef.current) return;
               searchDraftRef.current.clear();
               send(text);
               return;
@@ -2389,6 +2425,7 @@ export function Chat({
               busy={busy}
               awaitingMaps={awaitingMaps}
               draftRef={searchDraftRef}
+              initialText={draft}
               onAskForShop={askForShop}
             />
           ) : (

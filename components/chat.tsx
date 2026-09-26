@@ -478,6 +478,23 @@ function manualSearchInputStyle(rtl: boolean): CSSProperties {
   };
 }
 
+/** Hit target only. No border, scale, or clip, so it cannot restyle the field edge. */
+function manualSearchRestStyle(): CSSProperties {
+  return {
+    boxSizing: "border-box",
+    fontSize: 16,
+    color: "transparent",
+    WebkitTextFillColor: "transparent",
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    borderStyle: "none",
+    caretColor: "transparent",
+    outline: "none",
+    transform: "none",
+    overflow: "visible",
+  };
+}
+
 function ManualSearchFields({
   landing,
   busy,
@@ -514,7 +531,21 @@ function ManualSearchFields({
         {placeholder}
       </label>
       <div className="flex items-center gap-2">
-        <div className="relative h-14 min-h-14 flex-1">
+        <div className="relative flex min-w-0 flex-1 items-center">
+          <textarea
+            aria-hidden
+            readOnly
+            tabIndex={-1}
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+                : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+            }
+          />
           <textarea
             id="koofi-ask"
             value={value}
@@ -537,32 +568,22 @@ function ManualSearchFields({
             className={
               focused
                 ? "absolute z-10 h-full w-full resize-none placeholder:text-transparent outline-none"
-                : "absolute inset-0 z-10 h-full w-full resize-none opacity-0"
+                : "absolute inset-0 z-10 h-full w-full resize-none opacity-0 outline-none"
             }
-            style={{
-              ...manualSearchInputStyle(rtl),
-              // Glyphs stay on the 14px decoy so focus does not move them.
-              // This layer only takes the tap, at a computed 16px.
-              color: "transparent",
-              WebkitTextFillColor: "transparent",
-              backgroundColor: "transparent",
-              borderColor: "transparent",
-              caretColor: focused ? "#1e1714" : "transparent",
-              outline: "none",
-            }}
-          />
-          <textarea
-            aria-hidden
-            readOnly
-            tabIndex={-1}
-            value={value}
-            rows={1}
-            dir={rtl ? "rtl" : "ltr"}
-            placeholder={placeholder}
-            className={
+            style={
               focused
-                ? "pointer-events-none absolute inset-0 h-full w-full resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
-                : "pointer-events-none absolute inset-0 h-full w-full resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+                ? {
+                    ...manualSearchInputStyle(rtl),
+                    // Glyphs stay on the 14px decoy so focus does not move them.
+                    // This layer only takes the tap, at a computed 16px.
+                    color: "transparent",
+                    WebkitTextFillColor: "transparent",
+                    backgroundColor: "transparent",
+                    borderColor: "transparent",
+                    caretColor: "#1e1714",
+                    outline: "none",
+                  }
+                : manualSearchRestStyle()
             }
           />
         </div>

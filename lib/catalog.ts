@@ -6,6 +6,7 @@ import { districtCity } from "./district-city";
 import { officialShopCoords } from "./place-coords";
 import { isExampleShop } from "./product";
 import { shopMapsHref } from "./public-url";
+import { effectivePopularityIndex } from "./tiktok-popularity";
 import { NEIGHBORHOOD_IDS, type CatalogFile, type City, type NeighborhoodId, type Shop } from "./types";
 import type { DirectoryShop } from "./directory";
 
@@ -26,8 +27,16 @@ const CATALOG_ADDED_AT = (
   addedAtFile as { addedAt: Record<string, string> }
 ).addedAt;
 
+/**
+ * Baked index from data/popularity-index.json, plus the TikTok bonus.
+ * The index file stays untouched so a follower refresh cannot compound.
+ * No baked index → the catalog row is unchanged (TikTok does not create a rank).
+ */
 function withBakedPopularity(shop: Shop): Shop {
-  const popularityIndex = POPULARITY_INDEX[shop.id];
+  const popularityIndex = effectivePopularityIndex(
+    POPULARITY_INDEX[shop.id],
+    shop.id,
+  );
   if (popularityIndex == null) return shop;
   return { ...shop, popularityIndex };
 }

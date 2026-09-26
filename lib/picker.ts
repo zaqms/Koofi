@@ -59,7 +59,7 @@ function pickReasonsForPopular(
   }));
 }
 
-/** District-named ask: top 3 in that حي only, baked popularityIndex. */
+/** District-named ask: top 3 in that حي only, effective popularityIndex. */
 function pickReasonsForDistrict(
   shops: Shop[],
   district: NeighborhoodId,

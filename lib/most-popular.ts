@@ -82,7 +82,7 @@ export function categoryListingStaticParams(): {
   ];
 }
 
-/** Full catalog by baked popularityIndex. No brand-dedupe — directory cards. */
+/** Full catalog by effective popularityIndex. No brand-dedupe — directory cards. */
 export function listPopularDirectoryShops(): DirectoryShop[] {
   const byId = new Map(listDirectoryShops().map((shop) => [shop.id, shop]));
   return rankByPopularity(listDiscoveryShops())

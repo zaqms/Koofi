@@ -1,0 +1,2655 @@
+{
+  "12-cups-roastery-and-cafe-kafd": {
+    "handle": "@12_cups",
+    "followers": 3909,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "24cafe-al-rabi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "24cafe-al-wadi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "24cafe-al-yasmin": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "3bean-al-qirawan": {
+    "handle": "@3beanksa",
+    "followers": 20600,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "45-degrees-al-munsiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "78-specialty-coffee-al-rayyan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "a-plus-as-salam": {
+    "handle": "@a.pluscoffee",
+    "followers": 2822,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "aaj-al-mughrizat": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "acres-al-arid": {
+    "handle": "@acres_sa",
+    "followers": 1327,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "agrio-al-rabi": {
+    "handle": "@agrio.sa",
+    "followers": 605,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "aim-al-narjis": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "aim-coffee-bar-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "aleel-roastery-al-yarmouk": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "amber-speciality-al-rayyan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "anotherside-cafe-al-munsiyah": {
+    "handle": "@at.anotherside",
+    "followers": 91,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "arabica-cafe-ghubairah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "arabica-coffee-al-wisham": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "archi-al-arid": {
+    "handle": "@archi.saudi",
+    "followers": 138300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "archi-al-bujairi-diriyah": {
+    "handle": "@archi.saudi",
+    "followers": 138300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "archi-al-narjis": {
+    "handle": "@archi.saudi",
+    "followers": 138300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "archi-and-jax-diriyah": {
+    "handle": "@archi.saudi",
+    "followers": 138300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "archi-ghirnatah": {
+    "handle": "@archi.saudi",
+    "followers": 138300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "ash-bloom-al-nakheel": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "ashjar-cafe-al-aqiq": {
+    "handle": "@ashjarcafe",
+    "followers": 23100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "ashjar-cafe-al-qirawan": {
+    "handle": "@ashjarcafe",
+    "followers": 23100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "ashjar-cafe-ar-rabi": {
+    "handle": "@ashjarcafe",
+    "followers": 23100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "awj-cafe-al-nahdah": {
+    "handle": "@awj.cafe",
+    "followers": 2,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "b-cafe-ar-rabwah": {
+    "handle": "@bcafe.sa",
+    "followers": 680,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "bacha-coffee-solitaire": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "basementers-al-yasmin": {
+    "handle": "@basementers1",
+    "followers": 859,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "be-such-al-naseem-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "befine-coffee-al-masif": {
+    "handle": "@befine.sa",
+    "followers": 7081,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "beitkull-al-olaya": {
+    "handle": "@beitkull",
+    "followers": 2676,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "belong-an-nazhah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "bind-specialty-coffee-ghirnatah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "black-stamp-al-masif": {
+    "handle": "@blackstampsa",
+    "followers": 6541,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "blog-coffee-ar-rabwah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "blumen-al-ghadeer": {
+    "handle": "@blumen.coffeee",
+    "followers": 9164,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "blumen-al-safa": {
+    "handle": "@blumen.coffeee",
+    "followers": 9164,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "bon-ferro-al-nahdah": {
+    "handle": "@benferro",
+    "followers": 471,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "bourbon-al-yarmouk": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "breehant-al-yasmin": {
+    "handle": "@breehant_sa_",
+    "followers": 106000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "breehant-olaya": {
+    "handle": "@breehant_sa_",
+    "followers": 106000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "brew-crew-al-mughrizat": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "brew-crew-sulimaniyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "brew92-an-nada": {
+    "handle": "@brew92",
+    "followers": 718,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "brsk-al-ghadeer": {
+    "handle": "@brsk.sa",
+    "followers": 14800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "brsk-al-masif": {
+    "handle": "@brsk.sa",
+    "followers": 14800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "btw-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cacti-roastery-qurtubah": {
+    "handle": "@cacti_sa",
+    "followers": 515,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "caf-lab-al-narjis": {
+    "handle": "@caflab.sa",
+    "followers": 7700,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "caf-lab-al-qirawan": {
+    "handle": "@caflab.sa",
+    "followers": 7700,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "cafe-tale-kafd": {
+    "handle": "@cafe.tale",
+    "followers": 1889,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cafu-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "camel-step-al-aqiq": {
+    "handle": "@camelstep",
+    "followers": 5577,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "camel-step-al-mursalat": {
+    "handle": "@camelstep",
+    "followers": 5577,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "camel-step-al-rahmaniyyah": {
+    "handle": "@camelstep",
+    "followers": 5577,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "camel-step-diriyah": {
+    "handle": "@camelstep",
+    "followers": 5577,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "camel-step-granada-business": {
+    "handle": "@camelstep",
+    "followers": 5577,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "camel-step-hittin": {
+    "handle": "@camelstep",
+    "followers": 5577,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "canto-al-malaz": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "carve-coffee-bar-al-wurud": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "carve-roastery-ar-rabwah": {
+    "handle": "@curver_roastery",
+    "followers": 2039,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "chord-daily-coffee-al-nahdah": {
+    "handle": "@chord_sa",
+    "followers": 2156,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "claz-ar-rabwah": {
+    "handle": "@clazsa",
+    "followers": 19,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cofen-qurtubah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "coffee-address-al-arid": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-hamra": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-malaz": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-masif": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-munsiyah": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-murabba": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-muruj": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-nahdah": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-rabi": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-rabwah": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-wadi": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-al-yarmouk": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-ar-rabwah": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-address-ar-rabwah-ihsaa": {
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "coffee-planet-kafd": {
+    "handle": "@coffeeplanetksa",
+    "followers": 9801,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "coffee-side-al-qirawan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "coffee-zam-al-yarmouk": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "coffeehood-qurtubah": {
+    "handle": "@coffeehood.sa",
+    "followers": 1637,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cord-cafe-al-hamra": {
+    "handle": "@chord_sa",
+    "followers": 2156,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "core-coffee-and-roastery-al-narjis": {
+    "handle": "@corecoffeeksa",
+    "followers": 3215,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cosefan-diriyah": {
+    "handle": "@cosefan3",
+    "followers": 16100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "coyard-sulimaniyah": {
+    "handle": "@coyardco",
+    "followers": 1295,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cred-al-mughrizat": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cross-coffee-an-nazhah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cu-specialty-al-munsiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "cypress-al-qirawan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "da-nonna-al-rayyan": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "dahal-specialty-al-nahdah": {
+    "handle": "@dahlcoffee25",
+    "followers": 91,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "das-mond-al-munsiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "dear-you-sulimaniyah": {
+    "handle": "@dearyou.sa",
+    "followers": 531,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "desired-coffee-an-nazhah": {
+    "handle": "@desired.coffee",
+    "followers": 3331,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "dips-plus-diriyah": {
+    "handle": "@dips.plus",
+    "followers": 11800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "draft-cafe-kafd": {
+    "handle": "@draftcafe",
+    "followers": 916,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "drcafe-al-aziziyah": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-jazirah": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-jazirah-2": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-mathar": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-mughrizat": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-munsiyah": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-nahdah": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-al-wadi": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-an-nasim": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-an-nasim-al-gharbi": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-badr": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-kkia": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-manfuha": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-namar": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-shubra": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-sulimaniyah": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-sulimaniyah-2": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drcafe-tuwaiq": {
+    "handle": "@drcafeksa",
+    "followers": 1854,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drip-al-ghadeer": {
+    "handle": "@dripcoffeesa",
+    "followers": 13000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drip-al-hamra": {
+    "handle": "@dripcoffeesa",
+    "followers": 13000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drip-al-qirawan": {
+    "handle": "@dripcoffeesa",
+    "followers": 13000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drip-olaya": {
+    "handle": "@dripcoffeesa",
+    "followers": 13000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-andalus": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-arid": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-aziziyah": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-ghadeer": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-hazm": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-janadriyyah": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-khaleej": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-nakheel": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-qirawan": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-qirawan-2": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-rabi": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-rabi-2": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-rabi-3": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-rabi-4": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-rabi-5": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-al-yasmin": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-an-nasim-al-gharbi": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-ar-rimal": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-as-sahafah": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-badr": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "drive-badr-2": {
+    "handle": "@drive.sa",
+    "followers": 29800,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "dust-and-verse-al-takhassusi": {
+    "handle": "@dustandverse.sa",
+    "followers": 228,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "dyar-bakery-al-safa": {
+    "handle": "@dyarbakery",
+    "followers": 33100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "eagle-coffee-al-munsiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "elite-cup-roasters-an-nazhah": {
+    "handle": "@elitecupsa",
+    "followers": 173,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "elixir-bunn-al-nakheel": {
+    "handle": "@elixirbunn",
+    "followers": 1115,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "elixir-bunn-al-narjis": {
+    "handle": "@elixirbunn",
+    "followers": 1115,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "enzo-coffee-ar-rabwah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "essert-al-rawabi": {
+    "handle": "@essert.sa",
+    "followers": 602,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "eva-al-yasmin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "eya-specialty-coffee-al-wurud": {
+    "handle": "@eya.coffee",
+    "followers": 10300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "fabrica-de-cafe-al-rayyan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "file-coffee-al-aqiq": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "file-coffee-ghirnatah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "first-series-olaya": {
+    "handle": "@fscoffee_sa",
+    "followers": 5005,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "floated-al-rayyan": {
+    "handle": "@floated_sa",
+    "followers": 9606,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "flow-matcha-at-taawun": {
+    "handle": "@fflow_sa",
+    "followers": 2025,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "get-up-coffee-al-naseem-sharqi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "ghandoura-al-ghadeer": {
+    "handle": "@ghandoura.sa",
+    "followers": 744,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "ghandoura-an-nazhah": {
+    "handle": "@ghandoura.sa",
+    "followers": 744,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "ghazala-cafe-al-nahdah": {
+    "handle": "@ghzalacoffee",
+    "followers": 175,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "glim-al-takhassusi": {
+    "handle": "@glim_coffee",
+    "followers": 2769,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "glint-al-hamra": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "golden-pot-al-malaz": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "good-neighbor-olaya": {
+    "handle": "@goodneighbor.sa",
+    "followers": 1118,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "groovy-al-takhassusi": {
+    "handle": "@groovysa",
+    "followers": 3356,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "gusn-coffee-al-naseem-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hai-coffee-roasters-al-rawdah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hakwah-speciality-coffee-as-sahafah": {
+    "handle": "@hakwah_cafe",
+    "followers": 402,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hal-alkeif-kafd": {
+    "handle": "@halalkeif",
+    "followers": 9,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "half-ten-al-nahdah": {
+    "handle": "@halften.sa",
+    "followers": 245,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "happyland-matcha-diriyah": {
+    "handle": "@happylandmatcha",
+    "followers": 270,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "harf-coffee-al-hamra": {
+    "handle": "@harfcafe",
+    "followers": 2,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hawaf-al-safa": {
+    "handle": "@hwaf_sa",
+    "followers": 1284,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hazzah-coffee-al-malaz": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hekaya-tale-al-mohammadiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hello-cafe-olaya": {
+    "handle": "@hlo_ksa",
+    "followers": 945,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hjeen-roaster-al-narjis": {
+    "handle": "@hjeencoffee",
+    "followers": 5139,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "hjeen-roaster-factory-al-yasmin": {
+    "handle": "@hjeencoffee",
+    "followers": 5139,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "hjeen-roaster-saudi-90s-ar-rabwah": {
+    "handle": "@hjeencoffee",
+    "followers": 5139,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "hjeen-roasters-al-mohammadiyah": {
+    "handle": "@hjeencoffee",
+    "followers": 5139,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "hokkaido-al-hamra": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "house-of-matcha-al-mohammadiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "house-of-matcha-sulimaniyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "idmi-al-yasmin": {
+    "handle": "@idmicoffee",
+    "followers": 189,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "idmi-nakheel-takhassusi": {
+    "handle": "@idmicoffee",
+    "followers": 189,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "idmi-olaya": {
+    "handle": "@idmicoffee",
+    "followers": 189,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "ik-coffee-downtown": {
+    "handle": "@ikcoffee",
+    "followers": 327,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "infuse-al-nakheel": {
+    "handle": "@infuse.sa",
+    "followers": 1101,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "iota-al-ghadeer": {
+    "handle": "@iota.sa",
+    "followers": 5104,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jaam-coffee-ar-rabwah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jae-specialty-coffee-ghirnatah": {
+    "handle": "@jae.riyadh",
+    "followers": 189,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jaro-cafe-al-naseem-sharqi": {
+    "handle": "@jarocafe",
+    "followers": 604,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jather-al-hamra": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "java-cafe-al-malaz": {
+    "handle": "@javacafeksa",
+    "followers": 6240,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "java-cafe-al-manar": {
+    "handle": "@javacafeksa",
+    "followers": 6240,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "java-cafe-al-muruj": {
+    "handle": "@javacafeksa",
+    "followers": 6240,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "java-cafe-al-rabi": {
+    "handle": "@javacafeksa",
+    "followers": 6240,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "java-cafe-al-rawabi": {
+    "handle": "@javacafeksa",
+    "followers": 6240,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "java-cafe-al-wadi": {
+    "handle": "@javacafeksa",
+    "followers": 6240,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "jazean-diplomatic-quarter": {
+    "handle": "@jazeancoffee",
+    "followers": 3672,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jazel-speciality-cafe-diriyah": {
+    "handle": "@jazelcafe",
+    "followers": 5334,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jazwa-specialty-coffee-ar-rabwah": {
+    "handle": "@jazwah.sa",
+    "followers": 286,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "joe-barrel-al-wurud": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "jorn-al-malqa": {
+    "handle": "@jorn_ksa",
+    "followers": 23700,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "just-a-space-al-nakheel": {
+    "handle": "@justaspace.sa",
+    "followers": 10400,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "just-another-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kail-roastery-and-cafe-al-narjis": {
+    "handle": "@kail.sa",
+    "followers": 1198,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kapu-cafe-al-nahdah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kernel-al-takhassusi": {
+    "handle": "@kernelcafe",
+    "followers": 6335,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "khasib-al-bun-diriyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kicksters-al-malqa": {
+    "handle": "@kicksters.sa",
+    "followers": 294,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "kicksters-lab-al-arid": {
+    "handle": "@kicksters.sa",
+    "followers": 294,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "klatch-qurtubah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kmr-diriyah": {
+    "handle": "@kmr.ksa",
+    "followers": 2236,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kraz-an-nazhah": {
+    "handle": "@kraz.sa",
+    "followers": 407,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kultura-al-ghadeer": {
+    "handle": "@kultura.sa",
+    "followers": 31200,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "kultura-al-malqa": {
+    "handle": "@kultura.sa",
+    "followers": 31200,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "kultura-al-rayyan": {
+    "handle": "@kultura.sa",
+    "followers": 31200,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "kultura-hittin": {
+    "handle": "@kultura.sa",
+    "followers": 31200,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "kuro-sulimaniyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "kyok-al-nakheel": {
+    "handle": "@kyok.sa",
+    "followers": 5127,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "las-cafe-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "las-cafe-al-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "lasani-cafe-al-malaz": {
+    "handle": "@lasanicafe",
+    "followers": 17,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "lattio-lounge-qurtubah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "little-henri-al-muruj": {
+    "handle": "@littlehenri",
+    "followers": 1250,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "loom-coffee-al-masif": {
+    "handle": "@loomcoffee.sa",
+    "followers": 476,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "luxo-coffee-al-naseem-sharqi": {
+    "handle": "@luxo_coffee",
+    "followers": 236,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "ma-specialty-al-naseem-sharqi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "makhsousa-coffee-ar-rabwah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "malfa-coffee-house-diriyah": {
+    "handle": "@malfa.sc",
+    "followers": 33,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "maqha-mahamasa-al-raqban": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "markab-king-fahd": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "meeting-caffeine-al-rabi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "melex-specialty-coffee-al-narjis": {
+    "handle": "@melex_coffee",
+    "followers": 11300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mezaj-al-malaz": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mezaj-maghrebi-al-wadi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mill-coffee-qurtubah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mind-break-al-hamra": {
+    "handle": "@mindbreaksa",
+    "followers": 5930,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mkth-ghirnatah": {
+    "handle": "@mkth.sa",
+    "followers": 1706,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "moff-ghirnatah": {
+    "handle": "@moff.coffee.sa",
+    "followers": 687,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mood-masters-al-falah": {
+    "handle": "@moodmasters.co",
+    "followers": 127,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "moraq-cafe-an-nazhah": {
+    "handle": "@moraq.sa",
+    "followers": 450,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "moroccan-taste-al-muruj": {
+    "handle": "@moroccantastesa",
+    "followers": 65200,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "mud-speciality-coffee-an-nazhah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "n5-caffe-al-rabi": {
+    "handle": "@coffe_n5",
+    "followers": 10000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "n5-caffe-al-rabi-2": {
+    "handle": "@coffe_n5",
+    "followers": 10000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "n5-caffe-qurtubah": {
+    "handle": "@coffe_n5",
+    "followers": 10000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "najd-alathiah-qurtubah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "najd-roastery-al-munsiyah": {
+    "handle": "@najdroastery",
+    "followers": 641,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "najd-roastery-qurtubah": {
+    "handle": "@najdroastery",
+    "followers": 641,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "namq-al-malqa": {
+    "handle": "@namq_cafe",
+    "followers": 113600,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "nasj-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "noc-caffe-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "nosound-al-narjis": {
+    "handle": "@nosoundsa",
+    "followers": 7008,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "nosound-al-yarmouk": {
+    "handle": "@nosoundsa",
+    "followers": 7008,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "nosound-qurtubah": {
+    "handle": "@nosoundsa",
+    "followers": 7008,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "november-coffee-an-nazhah": {
+    "handle": "@novembercoffee",
+    "followers": 626,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "nus-talqimah-al-yarmouk": {
+    "handle": "@nus_talqimah",
+    "followers": 131,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "o2-coffee-al-masif": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "obo-qurtubah": {
+    "handle": "@obo_cup",
+    "followers": 2399,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "obo-speciality-al-yarmouk": {
+    "handle": "@obo_cup",
+    "followers": 2399,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "offbrief-cafe-diriyah": {
+    "handle": "@offbriefcafe",
+    "followers": 1110,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "okawa-cafe-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "on-al-rawdah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "on-move-ar-rabwah": {
+    "handle": "@onmove.sa",
+    "followers": 919,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "one-gram-sulimaniyah": {
+    "handle": "@onegramsa",
+    "followers": 419,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "opinion-al-mathar": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "opinion-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "origin-coffee-roasters-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "origin-jax-diriyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "origin-the-lab-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "out-of-line-al-aqiq": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "parka-coffee-al-muruj": {
+    "handle": "@parkacoffee",
+    "followers": 452,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "parole-cafe-al-wadi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "peaks-digital-city-al-nakheel": {
+    "handle": "@peakcafee",
+    "followers": 4879,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "percent-arabica-hittin": {
+    "handle": "@arabica.saudiarabia",
+    "followers": 19,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "percent-arabica-the-zone-al-takhassusi": {
+    "handle": "@arabica.saudiarabia",
+    "followers": 19,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "piccolo-al-rabi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "public-al-naseem-sharqi": {
+    "handle": "@public.sa",
+    "followers": 245,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "qaf-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "qaha-roastery-al-masif": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "qamaria-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "qirat-al-yasmin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "quokka-coffee-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "quokka-coffee-ghirnatah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "rabka-al-muruj": {
+    "handle": "@rabkacafe",
+    "followers": 86,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "raslania-al-safa": {
+    "handle": "@raslania_sa",
+    "followers": 3330,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "ratio-speciality-al-yarmouk": {
+    "handle": "@ratio_sa",
+    "followers": 187200,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "re-matcha-al-hamra": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "recaf-al-manar": {
+    "handle": "@recaf_ksa",
+    "followers": 4993,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "recaf-al-safa": {
+    "handle": "@recaf_ksa",
+    "followers": 4993,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "remis-matcha-club-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "repository-coffee-roasters-al-narjis": {
+    "handle": "@repository.sa",
+    "followers": 711,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "rimthan-coffee-al-hamra": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "roasting-art-al-masif": {
+    "handle": "@roastingart",
+    "followers": 479,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "roasting-house-al-arid": {
+    "handle": "@roastinghousesa",
+    "followers": 56100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "roasting-house-al-masif": {
+    "handle": "@roastinghousesa",
+    "followers": 56100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "roasting-house-al-yasmin": {
+    "handle": "@roastinghousesa",
+    "followers": 56100,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "roasting-stages-al-munsiyah": {
+    "handle": "@roastingstages",
+    "followers": 113,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "roof-coffee-al-fayha": {
+    "handle": "@roof_coffee",
+    "followers": 2457,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "ror-coffee-roasters-al-yasmin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "rukyah-al-fayha": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "salam-cafe-al-malqa": {
+    "handle": "@salamcafe.sa",
+    "followers": 109,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sand-clock-al-muruj": {
+    "handle": "@sandclockcafe",
+    "followers": 5450,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "sand-clock-as-sulimaniyah": {
+    "handle": "@sandclockcafe",
+    "followers": 5450,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "sanva-specialty-coffee-ghirnatah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "scarf-al-aqiq": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "scout-coffee-al-qirawan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sculpture-al-aqiq": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "semi-specialty-cafe-ghirnatah": {
+    "handle": "@semicafesa",
+    "followers": 2604,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "serb-specialty-al-munsiyah": {
+    "handle": "@serb.coffee",
+    "followers": 378,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "serene-coffee-roastery": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "seven-beans-sulimaniyah": {
+    "handle": "@seven.beans",
+    "followers": 67,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "shafel-roastery-al-nahdah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "shafel-roastery-al-yarmouk": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "shiro-al-arid": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "shovel-al-aqiq": {
+    "handle": "@al_shovel",
+    "followers": 15000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "shovel-al-arid": {
+    "handle": "@al_shovel",
+    "followers": 15000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "shovel-al-yasmin": {
+    "handle": "@al_shovel",
+    "followers": 15000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "sica-al-rayyan": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "silo-cafe-al-yarmouk": {
+    "handle": "@silocafe.sa",
+    "followers": 159,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sirius-speciality-coffee-diriyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sohba-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sol-olas-al-ghadeer": {
+    "handle": "@sololas.sa",
+    "followers": 1839,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "somatcha-an-nada": {
+    "handle": "@somatcha.me",
+    "followers": 27000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "somatcha-ar-rabwah": {
+    "handle": "@somatcha.me",
+    "followers": 27000,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "sombrero-sulimaniyah": {
+    "handle": "@sombrero.ksa",
+    "followers": 3760,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "some-coffee-bar-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "somo-al-takhassusi": {
+    "handle": "@somo.bakery",
+    "followers": 870,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sors-hittin": {
+    "handle": "@sors.sa",
+    "followers": 10300,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "specialty-bean-ghirnatah": {
+    "handle": "@specialtybean",
+    "followers": 36,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "steam-roastery-al-rawdah": {
+    "handle": "@steamroastery",
+    "followers": 1062,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sulalat-coffee-ar-rabwah": {
+    "handle": "@sulalatcoffee",
+    "followers": 1247,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "taco-cup-al-nahdah": {
+    "handle": "@tacocup",
+    "followers": 1914,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "tad-coffee-al-ghadeer": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "taim-specialty-coffee-as-sahafah": {
+    "handle": "@taimcafe_sa",
+    "followers": 1462,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "tamper-speciality-al-naseem-sharqi": {
+    "handle": "@tamper.sc",
+    "followers": 170,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "terra-cafe-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "the-coffee-kingdom-al-aqiq": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "the-gate-specialty-coffee-al-wurud": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "the-it-al-rawabi": {
+    "handle": "@theit.sa",
+    "followers": 2812,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "the-matcha-bar-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "three-sulimaniyah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "threes-al-yasmin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "tobys-estate-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "tobys-estate-kafd": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "tobys-estate-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "trieste-kafd": {
+    "handle": "@trieste_sa",
+    "followers": 1239,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "trivali-roaster-al-naseem-gharbi": {
+    "handle": "@trivali.sa",
+    "followers": 3203,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "true-side-al-munsiyah": {
+    "handle": "@truuee_e",
+    "followers": 1624,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "ulica-al-ghadeer": {
+    "handle": "@ulica_sa",
+    "followers": 2188,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "unique-drip-al-mohammadiyah": {
+    "handle": "@uniquedripsa",
+    "followers": 2059,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "urth-caffe-tahlia-sulimaniyah": {
+    "handle": "@urthcaffesaudi",
+    "followers": 2001,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "vanilla-coffee-qurtubah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "vase-coffee-al-manar": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "volume-al-yasmin": {
+    "handle": "@volumecoffee.sa",
+    "followers": 8700,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "volume-coffee-roasters-al-narjis": {
+    "handle": "@volumecoffee.sa",
+    "followers": 8700,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "voom-al-masif": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "voute-fot-al-masif": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "voute-fot-al-naseem-sharqi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "walnut-wood-coffee-al-malaz": {
+    "handle": "@walnutwoodcoffee",
+    "followers": 2,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "wama-coffee-al-wadi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "wathba-an-nazhah": {
+    "handle": "@wathbah_cb",
+    "followers": 8285,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "wave-cafe-al-rabi": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "waznah-coffee-al-masif": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "wee-al-nakheel": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "white-roastery-al-wadi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "window-coffee-ar-rabwah": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "with-heart-diriyah": {
+    "handle": "@withheart.sa",
+    "followers": 2832,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "woods-al-yasmin": {
+    "handle": "@woods_ksa",
+    "followers": 24500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "woods-olaya": {
+    "handle": "@woods_ksa",
+    "followers": 24500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "y97-specialty-coffee-as-sahafah": {
+    "handle": "@y97cafe",
+    "followers": 354,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "yamm-olaya": {
+    "handle": "@yamm.sa",
+    "followers": 1091,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "yly-specialty-coffee-ar-rabwah": {
+    "handle": "@yly_ksa",
+    "followers": 201,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "zeila-al-hamra": {
+    "handle": "@zeila.sa",
+    "followers": 5789,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  }
+}

@@ -12,6 +12,18 @@ import {
   rankInDistrict,
   shopsMissingIgFollowers,
 } from "../lib/district-rank";
+import {
+  TIKTOK_FOLLOWER_CAP,
+  TIKTOK_FOLLOWERS,
+  TIKTOK_MAX_POINTS,
+  TIKTOK_NEUTRAL_BONUS,
+  effectivePopularityIndex,
+  neutralBonusFromRows,
+  tiktokBonusForShop,
+  tiktokFollowerMapErrors,
+  tiktokFoundBonus,
+  uniqueFoundFollowerCounts,
+} from "../lib/tiktok-popularity";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { parseIntent } from "../lib/parse-intent";
 import { pickCafes } from "../lib/picker";
@@ -114,6 +126,82 @@ const missingIg = shopsMissingIgFollowers(catalog);
 assert(
   missingIg.length === catalog.length,
   `expected every live shop to lack a durable igFollowers field, got ${missingIg.length}/${catalog.length}`,
+);
+
+assert(TIKTOK_MAX_POINTS === 10, "TikTok max points stay 10");
+assert(TIKTOK_FOLLOWER_CAP === 50_000, "TikTok follower cap stays 50000");
+assert(
+  tiktokFoundBonus(TIKTOK_FOLLOWER_CAP) === TIKTOK_MAX_POINTS,
+  "bonus at the follower cap is the max",
+);
+assert(
+  tiktokFoundBonus(TIKTOK_FOLLOWER_CAP * 4) === TIKTOK_MAX_POINTS,
+  "bonus above the follower cap stays at the max",
+);
+assert(tiktokFoundBonus(0) === 0, "zero followers score 0");
+assert(
+  tiktokFoundBonus(1) < tiktokFoundBonus(100) &&
+    tiktokFoundBonus(100) < tiktokFoundBonus(10_000) &&
+    tiktokFoundBonus(10_000) < tiktokFoundBonus(TIKTOK_FOLLOWER_CAP),
+  "found bonus is monotonic in followers below the cap",
+);
+
+const tiktokErrors = tiktokFollowerMapErrors(TIKTOK_FOLLOWERS, catalogIds, {
+  requireComplete: true,
+});
+assert(
+  tiktokErrors.length === 0,
+  `tiktok-followers.json ${tiktokErrors.slice(0, 5).join("; ")}`,
+);
+assert(
+  TIKTOK_NEUTRAL_BONUS === neutralBonusFromRows(TIKTOK_FOLLOWERS),
+  "neutral bonus is the median of unique found accounts",
+);
+assert(
+  uniqueFoundFollowerCounts(TIKTOK_FOLLOWERS).length > 0,
+  "neutral bonus needs at least one found account",
+);
+
+const foundFollowers = uniqueFoundFollowerCounts(TIKTOK_FOLLOWERS).sort(
+  (a, b) => a - b,
+);
+for (let i = 1; i < foundFollowers.length; i += 1) {
+  const previous = foundFollowers[i - 1] ?? 0;
+  const current = foundFollowers[i] ?? 0;
+  assert(
+    tiktokFoundBonus(current) >= tiktokFoundBonus(previous),
+    `found bonus dropped from ${previous} followers to ${current}`,
+  );
+}
+
+const unverifiedId = Object.entries(TIKTOK_FOLLOWERS).find(
+  ([, row]) => row.status === "unverified",
+)?.[0];
+const noneId = Object.entries(TIKTOK_FOLLOWERS).find(
+  ([, row]) => row.status === "none",
+)?.[0];
+assert(unverifiedId, "scout includes an unverified row");
+assert(noneId, "scout includes a none row");
+assert(
+  tiktokBonusForShop(unverifiedId) === TIKTOK_NEUTRAL_BONUS,
+  "unverified equals the neutral bonus",
+);
+assert(
+  tiktokBonusForShop(noneId) === TIKTOK_NEUTRAL_BONUS,
+  "none equals the neutral bonus",
+);
+assert(
+  tiktokBonusForShop("shop-not-in-tiktok-file") === TIKTOK_NEUTRAL_BONUS,
+  "missing TikTok row equals the neutral bonus",
+);
+assert(
+  effectivePopularityIndex(undefined, unverifiedId) === undefined,
+  "no baked index means TikTok does not create a rank",
+);
+assert(
+  effectivePopularityIndex(97.5, "shop-not-in-tiktok-file") ===
+    97.5 + TIKTOK_NEUTRAL_BONUS,
+  "missing row adds the neutral bonus on top of the baked index",
 );
 
 const LOCKED_POPULAR = [

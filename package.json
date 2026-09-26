@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "generate-sitemap": "npx tsx scripts/generate-sitemap.ts",
+    "refresh-tiktok-followers": "npx tsx scripts/refresh-tiktok-followers.ts",
     "prebuild": "npx tsx scripts/generate-sitemap.ts",
     "build": "next build",
     "start": "next start",

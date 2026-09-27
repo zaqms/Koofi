@@ -451,25 +451,25 @@ function lastCompletedResultIndex(messages: readonly Message[]): number {
   return -1;
 }
 
-/**
- * 14px drawn size, 16px computed size so iOS Safari does not zoom the field.
- * `zoom` (not `transform: scale`) changes the layout box the caret is painted
- * in. iOS draws the native caret from layout coordinates and skips CSS
- * transforms, so a scaled field leaves the caret on the unscaled box.
- */
-const MANUAL_SEARCH_SCALE = 14 / 16;
-
 type SearchDraftHandle = {
   text: string;
   clear: () => void;
 };
 
-function composerZoomStyle(
+/**
+ * Focused text is a true 16px. iOS Safari auto-zooms from the rendered size
+ * after CSS `zoom`, so 16px at `zoom: 0.875` is treated as 14px. It also
+ * ignores `transform` for caret placement, so `scale(0.875)` leaves the caret
+ * off the glyphs. Neither may shrink this control or any ancestor.
+ * The line box and padding match the 14px decoy, so the caret and the ink
+ * share that box. Letter-spacing only tightens the run; it does not change
+ * the font size iOS measures.
+ */
+function composerFocusStyle(
   padBlock: number,
   padInline: number,
   radius: number,
 ): CSSProperties {
-  const scale = MANUAL_SEARCH_SCALE;
   return {
     boxSizing: "border-box",
     position: "absolute",
@@ -479,13 +479,13 @@ function composerZoomStyle(
     width: "100%",
     height: "100%",
     fontSize: 16,
-    lineHeight: `${20 / scale}px`,
-    paddingBlock: `${padBlock / scale}px`,
-    paddingInline: `${padInline / scale}px`,
-    zoom: scale,
+    lineHeight: "20px",
+    paddingBlock: padBlock,
+    paddingInline: padInline,
+    letterSpacing: "-0.012em",
     transform: "none",
-    // Transparent border keeps the content box aligned with the 14px decoy
-    // border. The decoy paints the visible edge.
+    // Transparent border keeps the content box on the decoy's content edge.
+    // The decoy paints the visible border.
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "transparent",
@@ -539,9 +539,9 @@ function ManualSearchFields({
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const decoyRef = useRef<HTMLTextAreaElement>(null);
-  // Chromium's first paint of this field, after the zoomed Home control
-  // unmounts and again when the reply lands, antialiases the placeholder
-  // one level off the live field. A later border invalidation matches it.
+  // Chromium's first paint of this field, after Home unmounts and again
+  // when the reply lands, antialiases the placeholder one level off the
+  // live field. A later border invalidation matches it.
   // The color is restored in the same turn, so no frame shows a bare edge.
   useEffect(() => {
     let second = 0;
@@ -630,7 +630,7 @@ function ManualSearchFields({
             style={
               focused
                 ? {
-                    ...composerZoomStyle(10, 12, 16),
+                    ...composerFocusStyle(10, 12, 16),
                     ...composerInk(value.length > 0),
                   }
                 : { fontSize: 16 }
@@ -726,7 +726,7 @@ function AskComposerField({
         style={
           focused
             ? {
-                ...composerZoomStyle(pin ? 12 : 10, pin ? 16 : 12, pin ? 9999 : 16),
+                ...composerFocusStyle(pin ? 12 : 10, pin ? 16 : 12, pin ? 9999 : 16),
                 ...composerInk(value.length > 0),
               }
             : { fontSize: 16 }

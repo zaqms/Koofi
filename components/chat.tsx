@@ -7,9 +7,11 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type MouseEvent,
   type ReactNode,
 } from "react";
+import { flushSync } from "react-dom";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -449,6 +451,291 @@ function lastCompletedResultIndex(messages: readonly Message[]): number {
   return -1;
 }
 
+type SearchDraftHandle = {
+  text: string;
+  clear: () => void;
+};
+
+/**
+ * Focused text is a true 16px. iOS Safari auto-zooms from the rendered size
+ * after CSS `zoom`, so 16px at `zoom: 0.875` is treated as 14px. It also
+ * ignores `transform` for caret placement, so `scale(0.875)` leaves the caret
+ * off the glyphs. Neither may shrink this control or any ancestor.
+ * The line box and padding match the 14px decoy, so the caret and the ink
+ * share that box. Letter-spacing only tightens the run; it does not change
+ * the font size iOS measures.
+ */
+function composerFocusStyle(
+  padBlock: number,
+  padInline: number,
+  radius: number,
+): CSSProperties {
+  return {
+    boxSizing: "border-box",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    margin: 0,
+    width: "100%",
+    height: "100%",
+    fontSize: 16,
+    lineHeight: "20px",
+    paddingBlock: padBlock,
+    paddingInline: padInline,
+    letterSpacing: "-0.012em",
+    transform: "none",
+    // Transparent border keeps the content box on the decoy's content edge.
+    // The decoy paints the visible border.
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "transparent",
+    backgroundColor: "transparent",
+    outline: "none",
+    overflow: "hidden",
+    resize: "none",
+    borderRadius: radius,
+    caretColor: "#1e1714",
+  };
+}
+
+function composerInk(paint: boolean): CSSProperties {
+  return paint
+    ? { color: "#1e1714", WebkitTextFillColor: "#1e1714" }
+    : { color: "transparent", WebkitTextFillColor: "transparent" };
+}
+
+/** Show the 16px control and focus it in the same gesture. It is display:none at rest. */
+function focusComposer(
+  input: HTMLTextAreaElement | null,
+  setFocused: (focused: boolean) => void,
+) {
+  if (!input || document.activeElement === input) return;
+  flushSync(() => setFocused(true));
+  input.focus();
+  const end = input.value.length;
+  try {
+    input.setSelectionRange(end, end);
+  } catch {
+    // The control can reject a selection while a browser still treats it as hidden.
+  }
+}
+
+function ManualSearchFields({
+  landing,
+  busy,
+  awaitingMaps,
+  draftRef,
+  initialText,
+  onAskForShop,
+}: {
+  landing: Language;
+  busy: boolean;
+  awaitingMaps: boolean;
+  draftRef: { current: SearchDraftHandle };
+  initialText: string;
+  onAskForShop: () => void;
+}) {
+  const [value, setValue] = useState(initialText);
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const decoyRef = useRef<HTMLTextAreaElement>(null);
+  // Chromium's first paint of this field, after Home unmounts and again
+  // when the reply lands, antialiases the placeholder one level off the
+  // live field. A later border invalidation matches it.
+  // The color is restored in the same turn, so no frame shows a bare edge.
+  useEffect(() => {
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => {
+        const el = decoyRef.current;
+        if (!el) return;
+        el.style.borderColor = "transparent";
+        void el.offsetWidth;
+        el.style.borderColor = "";
+      });
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      cancelAnimationFrame(second);
+    };
+  }, [busy]);
+  const rtl = landing === "ar";
+  const placeholder = awaitingMaps
+    ? copy.mapsPlaceholder[landing]
+    : copy.placeholder[landing];
+
+  // The visible value is the only text that can be sent. Parent reads this
+  // ref; it is cleared when this field unmounts.
+  draftRef.current.text = value;
+  draftRef.current.clear = () => {
+    draftRef.current.text = "";
+    setValue("");
+  };
+
+  return (
+    <>
+      <label className="sr-only" htmlFor="koofi-ask">
+        {placeholder}
+      </label>
+      <div className="flex items-center gap-2">
+        <div
+          className="relative flex min-w-0 flex-1 items-center"
+          onClick={() => focusComposer(inputRef.current, setFocused)}
+        >
+          <textarea
+            ref={decoyRef}
+            aria-hidden
+            readOnly
+            tabIndex={-1}
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+                : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+            }
+            style={
+              focused && value
+                ? { color: "transparent", WebkitTextFillColor: "transparent" }
+                : undefined
+            }
+          />
+          <textarea
+            ref={inputRef}
+            id="koofi-ask"
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            onChange={(event) => {
+              const next = event.target.value;
+              draftRef.current.text = next;
+              setValue(next);
+            }}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "pointer-events-auto absolute z-10 placeholder:text-transparent outline-none"
+                : "hidden"
+            }
+            style={
+              focused
+                ? {
+                    ...composerFocusStyle(10, 12, 16),
+                    ...composerInk(value.length > 0),
+                  }
+                : { fontSize: 16 }
+            }
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={busy || !value.trim()}
+          className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+        >
+          {copy.send[landing]}
+        </button>
+      </div>
+      <div className="mt-2 text-start">
+        <AddShopButton
+          language={landing}
+          disabled={busy}
+          onAdd={onAskForShop}
+        />
+      </div>
+    </>
+  );
+}
+
+/** Home pin and Chat composer. The 14px textarea is paint only. */
+function AskComposerField({
+  pin,
+  rtl,
+  value,
+  placeholder,
+  onChange,
+  onEnter,
+}: {
+  pin: boolean;
+  rtl: boolean;
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
+  onEnter: () => void;
+}) {
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const paintClass = pin
+    ? focused
+      ? "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-bean bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
+      : "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
+    : focused
+      ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+      : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none";
+
+  return (
+    <div
+      className="relative flex min-w-0 flex-1 items-center"
+      onClick={() => focusComposer(inputRef.current, setFocused)}
+    >
+      <textarea
+        aria-hidden
+        readOnly
+        tabIndex={-1}
+        value={value}
+        rows={1}
+        dir={rtl ? "rtl" : "ltr"}
+        placeholder={placeholder}
+        className={paintClass}
+        style={
+          focused && value
+            ? { color: "transparent", WebkitTextFillColor: "transparent" }
+            : undefined
+        }
+      />
+      <textarea
+        ref={inputRef}
+        id="koofi-ask"
+        value={value}
+        rows={1}
+        dir={rtl ? "rtl" : "ltr"}
+        onChange={(event) => onChange(event.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            onEnter();
+          }
+        }}
+        placeholder={placeholder}
+        className={
+          focused
+            ? "pointer-events-auto absolute z-10 placeholder:text-transparent outline-none"
+            : "hidden"
+        }
+        style={
+          focused
+            ? {
+                ...composerFocusStyle(pin ? 12 : 10, pin ? 16 : 12, pin ? 9999 : 16),
+                ...composerInk(value.length > 0),
+              }
+            : { fontSize: 16 }
+        }
+      />
+    </div>
+  );
+}
+
 export function Chat({
   landing,
   restore,
@@ -556,6 +843,11 @@ export function Chat({
   const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
+  const searchDraftRef = useRef<SearchDraftHandle>({
+    text: "",
+    clear: () => undefined,
+  });
+  const searchWasOpenRef = useRef(false);
   const [pinnedHome, setPinnedHome] = useState(
     () => !historyIsSearch() && searchPinnedHome,
   );
@@ -933,31 +1225,6 @@ export function Chat({
       cancelled = true;
     };
   }, [threadKey, pendingId]);
-
-  useEffect(() => {
-    const list = listRef.current;
-    const footer = footerRef.current;
-    if (!list) return;
-    const el = list;
-
-    function pinToEnd() {
-      el.scrollTop = el.scrollHeight;
-    }
-
-    function nearEnd() {
-      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
-    }
-
-    pinToEnd();
-    if (typeof ResizeObserver === "undefined") return;
-
-    const observer = new ResizeObserver(() => {
-      if (busy || nearEnd()) pinToEnd();
-    });
-    observer.observe(el);
-    if (footer) observer.observe(footer);
-    return () => observer.disconnect();
-  }, [messages, busy, meetHalfwayOpen]);
 
   function send(
     text: string,
@@ -1673,6 +1940,90 @@ export function Chat({
       : messages;
   const searchScreen = homeSurface && threadVisible && !showHalfwayResults;
 
+  useEffect(() => {
+    // Manual Search scrolls the document. Pinning this nested overflow
+    // port on every resize fights iOS keyboard/focus scrolling and flickers.
+    if (searchScreen) return;
+    const list = listRef.current;
+    const footer = footerRef.current;
+    if (!list) return;
+    const el = list;
+
+    function pinToEnd() {
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function nearEnd() {
+      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
+    }
+
+    pinToEnd();
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      if (busy || nearEnd()) pinToEnd();
+    });
+    observer.observe(el);
+    if (footer) observer.observe(footer);
+    return () => observer.disconnect();
+  }, [messages, busy, meetHalfwayOpen, searchScreen]);
+
+  useLayoutEffect(() => {
+    const wasOpen = searchWasOpenRef.current;
+    searchWasOpenRef.current = searchScreen;
+    if (!wasOpen || searchScreen) return;
+    // The field is gone. Keep its text for the Home composer, and drop
+    // the copy this screen would otherwise send on the next Enter.
+    const carried = searchDraftRef.current.text;
+    searchDraftRef.current.text = "";
+    searchDraftRef.current.clear = () => undefined;
+    setDraft(carried);
+  }, [searchScreen]);
+
+  useLayoutEffect(() => {
+    if (!searchScreen) return;
+    const form = footerRef.current;
+    const vv = window.visualViewport;
+    if (!form || !vv) return;
+    const field = form;
+    const viewport = vv;
+
+    // Current overlap of the layout viewport by the visual viewport.
+    // Read on every event. A sample taken while the keyboard is still
+    // closing (this screen often opens right after a Home submit) goes
+    // stale and the next lift is short.
+    const cover = () =>
+      Math.max(0, window.innerHeight - viewport.offsetTop - viewport.height);
+
+    function sync() {
+      const extra = cover();
+      // Padding, not translateY. An ancestor transform is applied again to
+      // the iOS caret, which throws it off the field (up by about the
+      // keyboard height). Padding moves the field in layout, which the
+      // caret follows.
+      field.style.transition = "none";
+      field.style.transform = "";
+      if (extra < 1) {
+        field.style.paddingBottom = "";
+        return;
+      }
+      field.style.paddingBottom = `calc(${extra}px + max(0.75rem, env(safe-area-inset-bottom)))`;
+    }
+
+    sync();
+    viewport.addEventListener("resize", sync);
+    viewport.addEventListener("scroll", sync);
+    field.addEventListener("focusin", sync);
+    return () => {
+      viewport.removeEventListener("resize", sync);
+      viewport.removeEventListener("scroll", sync);
+      field.removeEventListener("focusin", sync);
+      field.style.transition = "";
+      field.style.transform = "";
+      field.style.paddingBottom = "";
+    };
+  }, [searchScreen]);
+
   useLayoutEffect(() => {
     if (!homeSurface) return;
     setSearchScreenOpen(searchScreen);
@@ -1991,11 +2342,13 @@ export function Chat({
       <div
         ref={listRef}
         className={
-          threadVisible
-            ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
-            : homeSurface && showHomeOpener
-              ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
-              : "shrink-0 space-y-2 px-4 pt-6 pb-1"
+          searchScreen
+            ? "min-h-0 flex-1 space-y-3 px-4 py-4"
+            : threadVisible
+              ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
+              : homeSurface && showHomeOpener
+                ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
+                : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
       >
@@ -2207,38 +2560,47 @@ export function Chat({
           }
           onSubmit={(event) => {
             event.preventDefault();
+            if (searchScreen) {
+              const text = searchDraftRef.current.text;
+              // send() drops an in-flight Enter and keeps the field.
+              // Clearing first wiped text the request never accepted.
+              if (!text.trim() || inFlightRef.current) return;
+              searchDraftRef.current.clear();
+              send(text);
+              return;
+            }
             send(draft);
           }}
         >
           <div className={pinComposer ? "mx-auto w-full max-w-lg" : undefined}>
+          {searchScreen ? (
+            <ManualSearchFields
+              landing={landing}
+              busy={busy}
+              awaitingMaps={awaitingMaps}
+              draftRef={searchDraftRef}
+              initialText={draft}
+              onAskForShop={askForShop}
+            />
+          ) : (
+          <>
           <label className="sr-only" htmlFor="koofi-ask">
             {awaitingMaps
               ? copy.mapsPlaceholder[landing]
               : copy.placeholder[landing]}
           </label>
           <div className="flex items-center gap-2">
-            <textarea
-              id="koofi-ask"
+            <AskComposerField
+              pin={pinComposer}
+              rtl={landing === "ar"}
               value={draft}
-              rows={1}
-              dir={landing === "ar" ? "rtl" : "ltr"}
-              onChange={(event) => setDraft(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && !event.shiftKey) {
-                  event.preventDefault();
-                  send(draft);
-                }
-              }}
               placeholder={
                 awaitingMaps
                   ? copy.mapsPlaceholder[landing]
                   : copy.placeholder[landing]
               }
-              className={
-                pinComposer
-                  ? "h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none focus:border-bean"
-                  : "min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
-              }
+              onChange={setDraft}
+              onEnter={() => send(draft)}
             />
             {pinComposer ? (
               <button
@@ -2279,6 +2641,8 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
+          )}
+          </>
           )}
           </div>
         </form>

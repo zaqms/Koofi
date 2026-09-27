@@ -11,7 +11,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
-import { createPortal } from "react-dom";
+import { flushSync } from "react-dom";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -451,7 +451,12 @@ function lastCompletedResultIndex(messages: readonly Message[]): number {
   return -1;
 }
 
-/** 14px drawn size, 16px computed size so iOS Safari does not zoom the field. */
+/**
+ * 14px drawn size, 16px computed size so iOS Safari does not zoom the field.
+ * `zoom` (not `transform: scale`) changes the layout box the caret is painted
+ * in. iOS draws the native caret from layout coordinates and skips CSS
+ * transforms, so a scaled field leaves the caret on the unscaled box.
+ */
 const MANUAL_SEARCH_SCALE = 14 / 16;
 
 type SearchDraftHandle = {
@@ -459,41 +464,60 @@ type SearchDraftHandle = {
   clear: () => void;
 };
 
-function manualSearchInputStyle(rtl: boolean): CSSProperties {
+function composerZoomStyle(
+  padBlock: number,
+  padInline: number,
+  radius: number,
+): CSSProperties {
+  const scale = MANUAL_SEARCH_SCALE;
   return {
     boxSizing: "border-box",
-    fontSize: 16,
-    lineHeight: `${20 / MANUAL_SEARCH_SCALE}px`,
-    paddingBlock: `${10 / MANUAL_SEARCH_SCALE}px`,
-    paddingInline: `${12 / MANUAL_SEARCH_SCALE}px`,
-    width: `${100 / MANUAL_SEARCH_SCALE}%`,
-    height: `${100 / MANUAL_SEARCH_SCALE}%`,
-    transform: `scale(${MANUAL_SEARCH_SCALE})`,
-    transformOrigin: rtl ? "top right" : "top left",
-    // Border is inside the scaled box. 1/scale paints as 1px after scale().
-    borderWidth: `${1 / MANUAL_SEARCH_SCALE}px`,
+    position: "absolute",
     top: 0,
-    left: rtl ? "auto" : 0,
-    right: rtl ? 0 : "auto",
+    left: 0,
+    margin: 0,
+    width: "100%",
+    height: "100%",
+    fontSize: 16,
+    lineHeight: `${20 / scale}px`,
+    paddingBlock: `${padBlock / scale}px`,
+    paddingInline: `${padInline / scale}px`,
+    zoom: scale,
+    transform: "none",
+    // Transparent border keeps the content box aligned with the 14px decoy
+    // border. The decoy paints the visible edge.
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "transparent",
+    backgroundColor: "transparent",
+    outline: "none",
     overflow: "hidden",
+    resize: "none",
+    borderRadius: radius,
+    caretColor: "#1e1714",
   };
 }
 
-/** Hit target only. No border, scale, or clip, so it cannot restyle the field edge. */
-function manualSearchRestStyle(): CSSProperties {
-  return {
-    boxSizing: "border-box",
-    fontSize: 16,
-    color: "transparent",
-    WebkitTextFillColor: "transparent",
-    backgroundColor: "transparent",
-    borderWidth: 0,
-    borderStyle: "none",
-    caretColor: "transparent",
-    outline: "none",
-    transform: "none",
-    overflow: "visible",
-  };
+function composerInk(paint: boolean): CSSProperties {
+  return paint
+    ? { color: "#1e1714", WebkitTextFillColor: "#1e1714" }
+    : { color: "transparent", WebkitTextFillColor: "transparent" };
+}
+
+/** Show the 16px control and focus it in the same gesture. It is display:none at rest. */
+function focusComposer(
+  input: HTMLTextAreaElement | null,
+  setFocused: (focused: boolean) => void,
+) {
+  if (!input || document.activeElement === input) return;
+  flushSync(() => setFocused(true));
+  input.focus();
+  const end = input.value.length;
+  try {
+    input.setSelectionRange(end, end);
+  } catch {
+    // The control can reject a selection while a browser still treats it as hidden.
+  }
 }
 
 function ManualSearchFields({
@@ -513,6 +537,7 @@ function ManualSearchFields({
 }) {
   const [value, setValue] = useState(initialText);
   const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const rtl = landing === "ar";
   const placeholder = awaitingMaps
     ? copy.mapsPlaceholder[landing]
@@ -532,7 +557,10 @@ function ManualSearchFields({
         {placeholder}
       </label>
       <div className="flex items-center gap-2">
-        <div className="relative flex min-w-0 flex-1 items-center">
+        <div
+          className="relative flex min-w-0 flex-1 items-center"
+          onClick={() => focusComposer(inputRef.current, setFocused)}
+        >
           <textarea
             aria-hidden
             readOnly
@@ -546,8 +574,14 @@ function ManualSearchFields({
                 ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
                 : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
             }
+            style={
+              focused && value
+                ? { color: "transparent", WebkitTextFillColor: "transparent" }
+                : undefined
+            }
           />
           <textarea
+            ref={inputRef}
             id="koofi-ask"
             value={value}
             rows={1}
@@ -568,23 +602,16 @@ function ManualSearchFields({
             placeholder={placeholder}
             className={
               focused
-                ? "absolute z-10 h-full w-full resize-none placeholder:text-transparent outline-none"
-                : "absolute inset-0 z-10 h-full w-full resize-none opacity-0 outline-none"
+                ? "pointer-events-auto absolute z-10 placeholder:text-transparent outline-none"
+                : "hidden"
             }
             style={
               focused
                 ? {
-                    ...manualSearchInputStyle(rtl),
-                    // Glyphs stay on the 14px decoy so focus does not move them.
-                    // This layer only takes the tap, at a computed 16px.
-                    color: "transparent",
-                    WebkitTextFillColor: "transparent",
-                    backgroundColor: "transparent",
-                    borderColor: "transparent",
-                    caretColor: "#1e1714",
-                    outline: "none",
+                    ...composerZoomStyle(10, 12, 16),
+                    ...composerInk(value.length > 0),
                   }
-                : manualSearchRestStyle()
+                : { fontSize: 16 }
             }
           />
         </div>
@@ -607,33 +634,6 @@ function ManualSearchFields({
   );
 }
 
-function askComposerFocusStyle(rtl: boolean, pin: boolean): CSSProperties {
-  const padBlock = pin ? 12 : 10;
-  const padInline = pin ? 16 : 12;
-  return {
-    boxSizing: "border-box",
-    fontSize: 16,
-    lineHeight: `${20 / MANUAL_SEARCH_SCALE}px`,
-    paddingBlock: `${padBlock / MANUAL_SEARCH_SCALE}px`,
-    paddingInline: `${padInline / MANUAL_SEARCH_SCALE}px`,
-    width: `${100 / MANUAL_SEARCH_SCALE}%`,
-    height: `${100 / MANUAL_SEARCH_SCALE}%`,
-    transform: `scale(${MANUAL_SEARCH_SCALE})`,
-    transformOrigin: rtl ? "top right" : "top left",
-    borderWidth: `${1 / MANUAL_SEARCH_SCALE}px`,
-    top: 0,
-    left: rtl ? "auto" : 0,
-    right: rtl ? 0 : "auto",
-    overflow: "hidden",
-    color: "transparent",
-    WebkitTextFillColor: "transparent",
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-    caretColor: "#1e1714",
-    outline: "none",
-  };
-}
-
 /** Home pin and Chat composer. The 14px textarea is paint only. */
 function AskComposerField({
   pin,
@@ -651,13 +651,7 @@ function AskComposerField({
   onEnter: () => void;
 }) {
   const [focused, setFocused] = useState(false);
-  const paintRef = useRef<HTMLTextAreaElement>(null);
-  const [box, setBox] = useState<{
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-  } | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const paintClass = pin
     ? focused
       ? "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-bean bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
@@ -666,87 +660,12 @@ function AskComposerField({
       ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
       : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none";
 
-  // The pill clips with overflow:hidden. A 16px textarea inside that box
-  // makes Chromium drop subpixel antialiasing on the placeholder. The hit
-  // target is portaled so it is not a sibling of that paint layer.
-  useLayoutEffect(() => {
-    if (!pin) return;
-    const paint = paintRef.current;
-    if (!paint) return;
-    let frame = 0;
-    const measure = () => {
-      const rect = paint.getBoundingClientRect();
-      const next = {
-        left: rect.left,
-        top: rect.top,
-        width: rect.width,
-        height: rect.height,
-      };
-      setBox((prev) =>
-        prev &&
-        prev.left === next.left &&
-        prev.top === next.top &&
-        prev.width === next.width &&
-        prev.height === next.height
-          ? prev
-          : next,
-      );
-    };
-    measure();
-    const schedule = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(measure);
-    };
-    window.addEventListener("resize", schedule);
-    window.addEventListener("scroll", schedule, true);
-    window.visualViewport?.addEventListener("resize", schedule);
-    window.visualViewport?.addEventListener("scroll", schedule);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("resize", schedule);
-      window.removeEventListener("scroll", schedule, true);
-      window.visualViewport?.removeEventListener("resize", schedule);
-      window.visualViewport?.removeEventListener("scroll", schedule);
-    };
-  }, [pin, focused, value, rtl]);
-
-  const input = (
-    <textarea
-      id="koofi-ask"
-      value={value}
-      rows={1}
-      dir={rtl ? "rtl" : "ltr"}
-      onChange={(event) => onChange(event.target.value)}
-      onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          onEnter();
-        }
-      }}
-      placeholder={placeholder}
-      className={
-        focused
-          ? "pointer-events-auto absolute z-10 h-full w-full resize-none placeholder:text-transparent outline-none"
-          : pin
-            ? "pointer-events-auto absolute inset-0 h-full w-full resize-none outline-none"
-            : "absolute inset-0 z-10 h-full w-full resize-none opacity-0 outline-none"
-      }
-      style={
-        focused
-          ? askComposerFocusStyle(rtl, pin)
-          : pin
-            ? { ...manualSearchRestStyle(), opacity: 1 }
-            : manualSearchRestStyle()
-      }
-    />
-  );
-
   return (
-    <div className="relative flex min-w-0 flex-1 items-center">
+    <div
+      className="relative flex min-w-0 flex-1 items-center"
+      onClick={() => focusComposer(inputRef.current, setFocused)}
+    >
       <textarea
-        ref={paintRef}
         aria-hidden
         readOnly
         tabIndex={-1}
@@ -755,29 +674,42 @@ function AskComposerField({
         dir={rtl ? "rtl" : "ltr"}
         placeholder={placeholder}
         className={paintClass}
+        style={
+          focused && value
+            ? { color: "transparent", WebkitTextFillColor: "transparent" }
+            : undefined
+        }
       />
-      {pin
-        ? box &&
-          createPortal(
-            <div
-              style={{
-                position: "fixed",
-                left: box.left,
-                top: box.top,
-                width: box.width,
-                height: box.height,
-                zIndex: 40,
-                pointerEvents: "none",
-                borderRadius: 9999,
-                overflow: "hidden",
-                background: "transparent",
-              }}
-            >
-              {input}
-            </div>,
-            document.body,
-          )
-        : input}
+      <textarea
+        ref={inputRef}
+        id="koofi-ask"
+        value={value}
+        rows={1}
+        dir={rtl ? "rtl" : "ltr"}
+        onChange={(event) => onChange(event.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            onEnter();
+          }
+        }}
+        placeholder={placeholder}
+        className={
+          focused
+            ? "pointer-events-auto absolute z-10 placeholder:text-transparent outline-none"
+            : "hidden"
+        }
+        style={
+          focused
+            ? {
+                ...composerZoomStyle(pin ? 12 : 10, pin ? 16 : 12, pin ? 9999 : 16),
+                ...composerInk(value.length > 0),
+              }
+            : { fontSize: 16 }
+        }
+      />
     </div>
   );
 }
@@ -2043,15 +1975,17 @@ export function Chat({
 
     function sync() {
       const extra = cover();
+      // Padding, not translateY. An ancestor transform is applied again to
+      // the iOS caret, which throws it off the field (up by about the
+      // keyboard height). Padding moves the field in layout, which the
+      // caret follows.
+      field.style.transition = "none";
+      field.style.transform = "";
       if (extra < 1) {
-        field.style.transition = "";
-        field.style.transform = "";
+        field.style.paddingBottom = "";
         return;
       }
-      // Follow visualViewport frames. A CSS transition on this offset
-      // lags those events and flickers.
-      field.style.transition = "none";
-      field.style.transform = `translateY(${-extra}px)`;
+      field.style.paddingBottom = `calc(${extra}px + max(0.75rem, env(safe-area-inset-bottom)))`;
     }
 
     sync();
@@ -2064,6 +1998,7 @@ export function Chat({
       field.removeEventListener("focusin", sync);
       field.style.transition = "";
       field.style.transform = "";
+      field.style.paddingBottom = "";
     };
   }, [searchScreen]);
 

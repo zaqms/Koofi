@@ -11,6 +11,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -603,6 +604,181 @@ function ManualSearchFields({
         />
       </div>
     </>
+  );
+}
+
+function askComposerFocusStyle(rtl: boolean, pin: boolean): CSSProperties {
+  const padBlock = pin ? 12 : 10;
+  const padInline = pin ? 16 : 12;
+  return {
+    boxSizing: "border-box",
+    fontSize: 16,
+    lineHeight: `${20 / MANUAL_SEARCH_SCALE}px`,
+    paddingBlock: `${padBlock / MANUAL_SEARCH_SCALE}px`,
+    paddingInline: `${padInline / MANUAL_SEARCH_SCALE}px`,
+    width: `${100 / MANUAL_SEARCH_SCALE}%`,
+    height: `${100 / MANUAL_SEARCH_SCALE}%`,
+    transform: `scale(${MANUAL_SEARCH_SCALE})`,
+    transformOrigin: rtl ? "top right" : "top left",
+    borderWidth: `${1 / MANUAL_SEARCH_SCALE}px`,
+    top: 0,
+    left: rtl ? "auto" : 0,
+    right: rtl ? 0 : "auto",
+    overflow: "hidden",
+    color: "transparent",
+    WebkitTextFillColor: "transparent",
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    caretColor: "#1e1714",
+    outline: "none",
+  };
+}
+
+/** Home pin and Chat composer. The 14px textarea is paint only. */
+function AskComposerField({
+  pin,
+  rtl,
+  value,
+  placeholder,
+  onChange,
+  onEnter,
+}: {
+  pin: boolean;
+  rtl: boolean;
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
+  onEnter: () => void;
+}) {
+  const [focused, setFocused] = useState(false);
+  const paintRef = useRef<HTMLTextAreaElement>(null);
+  const [box, setBox] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const paintClass = pin
+    ? focused
+      ? "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-bean bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
+      : "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
+    : focused
+      ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+      : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none";
+
+  // The pill clips with overflow:hidden. A 16px textarea inside that box
+  // makes Chromium drop subpixel antialiasing on the placeholder. The hit
+  // target is portaled so it is not a sibling of that paint layer.
+  useLayoutEffect(() => {
+    if (!pin) return;
+    const paint = paintRef.current;
+    if (!paint) return;
+    let frame = 0;
+    const measure = () => {
+      const rect = paint.getBoundingClientRect();
+      const next = {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
+      setBox((prev) =>
+        prev &&
+        prev.left === next.left &&
+        prev.top === next.top &&
+        prev.width === next.width &&
+        prev.height === next.height
+          ? prev
+          : next,
+      );
+    };
+    measure();
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    };
+    window.addEventListener("resize", schedule);
+    window.addEventListener("scroll", schedule, true);
+    window.visualViewport?.addEventListener("resize", schedule);
+    window.visualViewport?.addEventListener("scroll", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("scroll", schedule, true);
+      window.visualViewport?.removeEventListener("resize", schedule);
+      window.visualViewport?.removeEventListener("scroll", schedule);
+    };
+  }, [pin, focused, value, rtl]);
+
+  const input = (
+    <textarea
+      id="koofi-ask"
+      value={value}
+      rows={1}
+      dir={rtl ? "rtl" : "ltr"}
+      onChange={(event) => onChange(event.target.value)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          onEnter();
+        }
+      }}
+      placeholder={placeholder}
+      className={
+        focused
+          ? "pointer-events-auto absolute z-10 h-full w-full resize-none placeholder:text-transparent outline-none"
+          : pin
+            ? "pointer-events-auto absolute inset-0 h-full w-full resize-none outline-none"
+            : "absolute inset-0 z-10 h-full w-full resize-none opacity-0 outline-none"
+      }
+      style={
+        focused
+          ? askComposerFocusStyle(rtl, pin)
+          : pin
+            ? { ...manualSearchRestStyle(), opacity: 1 }
+            : manualSearchRestStyle()
+      }
+    />
+  );
+
+  return (
+    <div className="relative flex min-w-0 flex-1 items-center">
+      <textarea
+        ref={paintRef}
+        aria-hidden
+        readOnly
+        tabIndex={-1}
+        value={value}
+        rows={1}
+        dir={rtl ? "rtl" : "ltr"}
+        placeholder={placeholder}
+        className={paintClass}
+      />
+      {pin
+        ? box &&
+          createPortal(
+            <div
+              style={{
+                position: "fixed",
+                left: box.left,
+                top: box.top,
+                width: box.width,
+                height: box.height,
+                zIndex: 40,
+                pointerEvents: "none",
+                borderRadius: 9999,
+                overflow: "hidden",
+                background: "transparent",
+              }}
+            >
+              {input}
+            </div>,
+            document.body,
+          )
+        : input}
+    </div>
   );
 }
 
@@ -2457,28 +2633,17 @@ export function Chat({
               : copy.placeholder[landing]}
           </label>
           <div className="flex items-center gap-2">
-            <textarea
-              id="koofi-ask"
+            <AskComposerField
+              pin={pinComposer}
+              rtl={landing === "ar"}
               value={draft}
-              rows={1}
-              dir={landing === "ar" ? "rtl" : "ltr"}
-              onChange={(event) => setDraft(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && !event.shiftKey) {
-                  event.preventDefault();
-                  send(draft);
-                }
-              }}
               placeholder={
                 awaitingMaps
                   ? copy.mapsPlaceholder[landing]
                   : copy.placeholder[landing]
               }
-              className={
-                pinComposer
-                  ? "h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none focus:border-bean"
-                  : "min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
-              }
+              onChange={setDraft}
+              onEnter={() => send(draft)}
             />
             {pinComposer ? (
               <button

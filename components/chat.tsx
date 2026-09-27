@@ -538,6 +538,27 @@ function ManualSearchFields({
   const [value, setValue] = useState(initialText);
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const decoyRef = useRef<HTMLTextAreaElement>(null);
+  // Chromium's first paint of this field, after the zoomed Home control
+  // unmounts and again when the reply lands, antialiases the placeholder
+  // one level off the live field. A later border invalidation matches it.
+  // The color is restored in the same turn, so no frame shows a bare edge.
+  useEffect(() => {
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => {
+        const el = decoyRef.current;
+        if (!el) return;
+        el.style.borderColor = "transparent";
+        void el.offsetWidth;
+        el.style.borderColor = "";
+      });
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      cancelAnimationFrame(second);
+    };
+  }, [busy]);
   const rtl = landing === "ar";
   const placeholder = awaitingMaps
     ? copy.mapsPlaceholder[landing]
@@ -562,6 +583,7 @@ function ManualSearchFields({
           onClick={() => focusComposer(inputRef.current, setFocused)}
         >
           <textarea
+            ref={decoyRef}
             aria-hidden
             readOnly
             tabIndex={-1}

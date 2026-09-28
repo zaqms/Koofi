@@ -357,7 +357,7 @@ assert(
   "A–Z excludes 0-shop as-suwaidi",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 67, "A–Z is the 67 live catalog districts");
+assert(az.length === 68, "A–Z is the 68 live catalog districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

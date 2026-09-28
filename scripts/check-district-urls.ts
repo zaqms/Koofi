@@ -175,9 +175,10 @@ assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
-assert(areas.length === 48, `expected 48 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 311, `specialty discovery 310→311 with kyok-al-nakheel, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 379, `catalog 378→379 with kyok-al-nakheel, got ${listRealShops().length}`);
+assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
+assert(areas.length === 49, `expected 49 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 321, `specialty discovery 311→321 with Al Mughrizat Scout-10, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 389, `catalog 379→389 with Al Mughrizat Scout-10, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1796,6 +1797,8 @@ const scoutPack: {
     | "al-malqa"
     | "as-sahafah"
     | "al-falah"
+    | "al-mughrizat"
+    | "al-izdihar"
     | "ghirnatah"
     | "al-mathar"
     | "at-taawun";
@@ -3450,6 +3453,136 @@ const scoutPack: {
     coordsInUrl: true,
     placeId: "ChIJo-C6sRoDLz4RN174BO1VdK8",
   },
+  {
+    id: "satr-specialty-coffee-al-mughrizat",
+    hex: "0x3e2efd0047252cc7:0xdf1b91675d24ccf2",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/satr-specialty-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7718156, lng: 46.721079 },
+    coordsInUrl: true,
+    placeId: "ChIJxywlRwD9Lj4R8swkXWeRG98",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "covo-artisan-coffee-al-mughrizat",
+    hex: "0x3e2f033b7b4e1951:0xc301a658c1532f5b",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/covo-artisan-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7578045, lng: 46.718826 },
+    coordsInUrl: true,
+    placeId: "ChIJURlOezsDLz4RWy9TwVimAcM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bunatetu-al-mughrizat",
+    hex: "0x3e2f031e134f9b71:0xda100ec939a0ca1d",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bunatetu-al-mughrizat.jpg",
+    pin: { lat: 24.7587419, lng: 46.7270237 },
+    coordsInUrl: true,
+    placeId: "ChIJcZtPEx4DLz4RHcqgOckOENo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "dune-coffee-al-mughrizat",
+    hex: "0x3e2efd006d73d9ef:0xd7edbc70bcb8fa1d",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/dune-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7718484, lng: 46.7211227 },
+    coordsInUrl: true,
+    placeId: "ChIJ79lzbQD9Lj4RHfq4vHC87dc",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "tuxedo-coffee-al-mughrizat",
+    hex: "0x3e2f03faa5c8558f:0x7b003ca2f858d5af",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tuxedo-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7563118, lng: 46.7298746 },
+    coordsInUrl: true,
+    placeId: "ChIJj1XIpfoDLz4Rr9VY-KI8AHs",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bar-coffee-al-mughrizat",
+    hex: "0x3e2efd69e3c4383f:0x4a64c096e8cafa0a",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bar-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7713271, lng: 46.7203141 },
+    coordsInUrl: true,
+    placeId: "ChIJPzjE42n9Lj4RCvrK6JbAZEo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "adab-cafe-al-mughrizat",
+    hex: "0x3e2efd906ae5ab6b:0xdcf33862e333b438",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/adab-cafe-al-mughrizat.jpg",
+    pin: { lat: 24.7713919, lng: 46.720106 },
+    coordsInUrl: true,
+    placeId: "ChIJa6vlapD9Lj4ROLQz42I489w",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "booze-specialty-coffee-bar-al-mughrizat",
+    hex: "0x3e2efde761dd5555:0x236fead5004bc60c",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/booze-specialty-coffee-bar-al-mughrizat.jpg",
+    pin: { lat: 24.7662708, lng: 46.7153749 },
+    coordsInUrl: true,
+    placeId: "ChIJVVXdYef9Lj4RDMZLANXqbyM",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "latch-al-mughrizat",
+    hex: "0x3e2efda55294c451:0x29c17c734846e880",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/latch-al-mughrizat.jpg",
+    pin: { lat: 24.7717194, lng: 46.7208678 },
+    coordsInUrl: true,
+    placeId: "ChIJUcSUUqX9Lj4RgOhGSHN8wSk",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "slant-specialty-coffee-al-izdihar",
+    hex: "0x3e2efdc71466de0b:0x117ba139fe9f43e3",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/slant-specialty-coffee-al-izdihar.jpg",
+    pin: { lat: 24.7728521, lng: 46.7217584 },
+    coordsInUrl: true,
+    placeId: "ChIJC95mFMf9Lj4R40Of_jmhexE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3543,6 +3676,16 @@ for (const id of [
   "las-cafe-al-malqa",
   "little-henri-al-muruj",
   "beitkull-al-olaya",
+  "satr-specialty-coffee-al-mughrizat",
+  "covo-artisan-coffee-al-mughrizat",
+  "bunatetu-al-mughrizat",
+  "dune-coffee-al-mughrizat",
+  "tuxedo-coffee-al-mughrizat",
+  "bar-coffee-al-mughrizat",
+  "adab-cafe-al-mughrizat",
+  "booze-specialty-coffee-bar-al-mughrizat",
+  "latch-al-mughrizat",
+  "slant-specialty-coffee-al-izdihar",
 ]) {
   assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
 }
@@ -3559,6 +3702,28 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "las-cafe-al-olaya": { nameEn: "LAS CAFE Olaya", nameAr: "لاس كافيه" },
   "little-henri-al-muruj": { nameEn: "Little Henri", nameAr: "ليتل هنري" },
   "beitkull-al-olaya": { nameEn: "Beitkull", nameAr: "قهوة بيت كُلْ" },
+  "satr-specialty-coffee-al-mughrizat": {
+    nameEn: "Satr Specialty Coffee",
+    nameAr: "سَطر | قهوة مختصة",
+  },
+  "covo-artisan-coffee-al-mughrizat": {
+    nameEn: "COVO Artisan Coffee",
+    nameAr: "كوفو",
+  },
+  "bunatetu-al-mughrizat": { nameEn: "BUNATETU", nameAr: "بوناتيتو" },
+  "dune-coffee-al-mughrizat": { nameEn: "Dune Coffee", nameAr: "كافي دون" },
+  "tuxedo-coffee-al-mughrizat": { nameEn: "TUXEDO Coffee", nameAr: "توكسيدو كوفي" },
+  "bar-coffee-al-mughrizat": { nameEn: "Bar Coffee", nameAr: "بار كافيه" },
+  "adab-cafe-al-mughrizat": { nameEn: "ADAB Cafe", nameAr: "مقهى أدب" },
+  "booze-specialty-coffee-bar-al-mughrizat": {
+    nameEn: "Booze Specialty Coffee Bar",
+    nameAr: "بوز",
+  },
+  "latch-al-mughrizat": { nameEn: "LATCH", nameAr: "لاتش" },
+  "slant-specialty-coffee-al-izdihar": {
+    nameEn: "Slant Specialty Coffee",
+    nameAr: "سلانت قهوة مختصة",
+  },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
   const shop = getShop(id);

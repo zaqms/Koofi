@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 67, `expected 67 live catalog districts, got ${liveCatalog.length}`);
+assert(liveCatalog.length === 68, `expected 68 live catalog districts, got ${liveCatalog.length}`);
 assert(!liveCatalog.includes("as-suwaidi"), "as-suwaidi has 0 shops");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -170,8 +170,15 @@ assert(
 assert(!sitemap.includes("soft-places"), "Soft Places stays parked in sitemap");
 
 const izdihar = rows.find((row) => row.stableId === "al-izdihar");
-assert(izdihar?.status === "dictionary_only", "Izdihar stays dictionary_only");
-assert(!liveCatalog.includes("al-izdihar" as NeighborhoodId), "do not invent Izdihar shops");
+assert(izdihar?.status === "dictionary_only", "Izdihar sheet stays dictionary_only");
+assert(izdihar?.nameEn === "Al Izdihar", "Izdihar EN lock");
+assert(izdihar?.nameAr === "الازدهار", "Izdihar AR lock");
+assert(liveCatalog.includes("al-izdihar"), "Slant makes Al Izdihar a live catalog district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "al-izdihar").map((shop) => shop.id).join(",") ===
+    "slant-specialty-coffee-al-izdihar",
+  "Al Izdihar catalog is Slant only",
+);
 
 assert(
   !readRepo("lib/browse-neighborhoods.ts").includes("BROWSE_EN_LABELS"),

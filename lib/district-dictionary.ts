@@ -8,8 +8,9 @@ import { districtPath } from "./product";
 import type { City, Language, NeighborhoodId } from "./types";
 
 /**
- * Live catalog districts only. Izdihar / الازدهار is not a live حي —
- * do not invent it. Aliases live on `NEIGHBORHOODS` (EN + AR + typos).
+ * Live catalog districts only. The 21 Sep sheet still marks Izdihar
+ * dictionary_only; a real catalog shop makes الازدهار live in discovery.
+ * Do not invent extra Izdihar shops. Aliases live on `NEIGHBORHOODS`.
  */
 export function listLiveDistrictIds(): NeighborhoodId[] {
   return directoryNeighborhoods(listDirectoryShops());

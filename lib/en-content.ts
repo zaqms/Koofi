@@ -242,6 +242,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   tuwaiq: ["al-hazm", "badr", "al-malaz", "king-fahd"],
   "as-suwaidi": ["al-hazm", "al-malaz", "al-murabba", "sulimaniyah"],
   "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
+  "al-izdihar": ["al-mughrizat", "olaya", "sulimaniyah", "qurtubah"],
 };
 
 type DistrictLead = {
@@ -289,7 +290,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
   },
   "al-mughrizat": {
-    lead: `Al Mughrizat is one of the thinner lists on wain.lol. We only add what we have — no filler names to make the page look busy.`,
+    lead: `Al Mughrizat (المغرزات) is a Riyadh list on wain.lol. This page is the Mughrizat cafes we’ve added so far — only what’s actually in the catalog.`,
     hereIntro: `There are **{count}** cafes from Al Mughrizat on the catalog today:`,
     hereOutro: `That’s the whole set for now. Open the card, then **Take me there** for the Maps pin and today’s hours.`,
     about: `wain.lol is a small Riyadh coffee guide. You can ask for three suggestions, or open a neighborhood page like this. [About](/en/about).
@@ -864,6 +865,18 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Al Falah on wain.lol — a Riyadh neighborhood list including Mood Masters, with a Maps link.",
   },
+  "al-izdihar": {
+    lead: `Al Izdihar (الازدهار) sits beside Al Mughrizat. This page is the Al Izdihar set on wain.lol so far.
+
+[Slant Specialty Coffee](/en/c/slant-specialty-coffee-al-izdihar) is the specialty coffee on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Al Izdihar on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Izdihar isn’t the stop, these lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Izdihar. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Al Izdihar on wain.lol — a Riyadh neighborhood list including Slant Specialty Coffee, with a Maps link.",
+  },
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.
 
@@ -881,7 +894,7 @@ const CNI_BLURBS: Record<string, string> = {
   "repository-coffee-roasters-al-narjis": `**Repository Coffee Roasters** is on the An Narjis catalog with the other north-Riyadh names — same list as Core and CAF LAB, its own card. The rest of the An Narjis list is linked below if you want to hop.`,
   "jazel-speciality-cafe-diriyah": `**Jazel speciality cafe** is on the Diriyah list on wain.lol — west of the usual north-Riyadh loop. Other Diriyah places we’ve added sit on the same neighborhood list if this one isn’t the stop.`,
   "qirat-al-yasmin": `**Qirat – Specialty Coffee** is one of the Al Yasmin cafes on wain.lol. If you’re browsing that north-Riyadh neighborhood next to Malqa and Narjis, this is the card. The other Yasmin names on the catalog are linked below — we don’t invent extras.`,
-  "cred-al-mughrizat": `**CRED** is on the Al Mughrizat list on wain.lol — a short list, still only the names we’ve actually added. We don’t pad it. If this card isn’t the stop, the other Al Mughrizat cafes on the catalog are linked below, and the district page has the whole set.`,
+  "cred-al-mughrizat": `**CRED** is on the Al Mughrizat list on wain.lol — only the names we’ve actually added. We don’t pad it. If this card isn’t the stop, the other Al Mughrizat cafes on the catalog are linked below, and the district page has the whole set.`,
   "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Ar Rabwah catalog — east of the Al Olaya–Wurud stretch, its own neighborhood page. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
   "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the As Sahafah list. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
   "archi-ghirnatah": `**Archi Granada** is on the Ghirnatah list — east Riyadh. Other Granada-area places on wain.lol are linked below if you want to stay on that side of the city.`,
@@ -947,6 +960,7 @@ const CNI_BLURBS: Record<string, string> = {
   "somatcha-ar-rabwah": `**SoMatcha** is on the Ar Rabwah list. The other الربوة places on the catalog are linked below.`,
   "jaam-coffee-ar-rabwah": `**Jaam Coffee** is on the wain.lol list for Ar Rabwah in Riyadh. Same neighborhood page as Hjeen and CLAZ, its own pin. Hop the other الربوة cards below if you want a different name.`,
   "hello-cafe-olaya": `**Hello Cafe** is on the Al Olaya list on wain.lol. This is the العليا pin. Other Al Olaya names sit underneath if this one isn’t the stop.`,
+  "booze-specialty-coffee-bar-al-mughrizat": `**Booze Specialty Coffee Bar** is specialty coffee on the Al Mughrizat list on wain.lol, inside Nakheel Mall. Other المغرزات cafes on the catalog are linked below.`,
 };
 
 const CAFE_OPENERS = [

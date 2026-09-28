@@ -3463,8 +3463,8 @@ const scoutPack: {
     pin: { lat: 24.7718156, lng: 46.721079 },
     coordsInUrl: true,
     placeId: "ChIJxywlRwD9Lj4R8swkXWeRG98",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "covo-artisan-coffee-al-mughrizat",
@@ -3476,8 +3476,8 @@ const scoutPack: {
     pin: { lat: 24.7578045, lng: 46.718826 },
     coordsInUrl: true,
     placeId: "ChIJURlOezsDLz4RWy9TwVimAcM",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "bunatetu-al-mughrizat",
@@ -3489,8 +3489,8 @@ const scoutPack: {
     pin: { lat: 24.7587419, lng: 46.7270237 },
     coordsInUrl: true,
     placeId: "ChIJcZtPEx4DLz4RHcqgOckOENo",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "dune-coffee-al-mughrizat",
@@ -3502,8 +3502,8 @@ const scoutPack: {
     pin: { lat: 24.7718484, lng: 46.7211227 },
     coordsInUrl: true,
     placeId: "ChIJ79lzbQD9Lj4RHfq4vHC87dc",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "tuxedo-coffee-al-mughrizat",
@@ -3515,8 +3515,8 @@ const scoutPack: {
     pin: { lat: 24.7563118, lng: 46.7298746 },
     coordsInUrl: true,
     placeId: "ChIJj1XIpfoDLz4Rr9VY-KI8AHs",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "bar-coffee-al-mughrizat",
@@ -3528,8 +3528,8 @@ const scoutPack: {
     pin: { lat: 24.7713271, lng: 46.7203141 },
     coordsInUrl: true,
     placeId: "ChIJPzjE42n9Lj4RCvrK6JbAZEo",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "adab-cafe-al-mughrizat",
@@ -3541,8 +3541,8 @@ const scoutPack: {
     pin: { lat: 24.7713919, lng: 46.720106 },
     coordsInUrl: true,
     placeId: "ChIJa6vlapD9Lj4ROLQz42I489w",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "booze-specialty-coffee-bar-al-mughrizat",
@@ -3554,7 +3554,7 @@ const scoutPack: {
     pin: { lat: 24.7662708, lng: 46.7153749 },
     coordsInUrl: true,
     placeId: "ChIJVVXdYef9Lj4RDMZLANXqbyM",
-    dineIn: null,
+    dineIn: true,
     outdoorSeating: null,
   },
   {
@@ -3567,8 +3567,8 @@ const scoutPack: {
     pin: { lat: 24.7717194, lng: 46.7208678 },
     coordsInUrl: true,
     placeId: "ChIJUcSUUqX9Lj4RgOhGSHN8wSk",
-    dineIn: null,
-    outdoorSeating: null,
+    dineIn: true,
+    outdoorSeating: true,
   },
   {
     id: "slant-specialty-coffee-al-izdihar",
@@ -3580,7 +3580,7 @@ const scoutPack: {
     pin: { lat: 24.7728521, lng: 46.7217584 },
     coordsInUrl: true,
     placeId: "ChIJC95mFMf9Lj4R40Of_jmhexE",
-    dineIn: null,
+    dineIn: true,
     outdoorSeating: null,
   },
 ];
@@ -3606,11 +3606,6 @@ for (const row of scoutPack) {
     assert(
       shop.logoUrl === "/logos/jazwa-specialty-coffee-ar-rabwah.jpg",
       "jazwa uses Instagram @Jazwah.sa mark",
-    );
-  } else if (shop.logoUrl) {
-    assert(
-      shop.logoUrl.startsWith("/logos/"),
-      `${row.id} logo stays under /logos`,
     );
   } else {
     assert(!("logoUrl" in shop), `${row.id} catalog has no logoUrl (letter tile)`);

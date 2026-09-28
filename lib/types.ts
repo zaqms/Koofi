@@ -71,6 +71,7 @@ export const NEIGHBORHOOD_IDS = [
   "tuwaiq",
   "as-suwaidi",
   "al-falah",
+  "al-izdihar",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 

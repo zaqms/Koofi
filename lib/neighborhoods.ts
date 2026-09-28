@@ -1064,6 +1064,20 @@ export const NEIGHBORHOODS: Record<
       "Al Falah",
     ],
   },
+  "al-izdihar": {
+    id: "al-izdihar",
+    ar: "الازدهار",
+    en: "Al Izdihar",
+    aliases: [
+      "الازدهار",
+      "ازدهار",
+      "izdihar",
+      "al izdihar",
+      "al-izdihar",
+      "alizdihar",
+      "Al Izdihar",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

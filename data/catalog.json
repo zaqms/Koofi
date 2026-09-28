@@ -33910,6 +33910,266 @@
       "outdoorSeating": false,
       "pickupOnly": null,
       "example": false
+    },
+    {
+      "id": "satr-specialty-coffee-al-mughrizat",
+      "nameAr": "سَطر | قهوة مختصة",
+      "nameEn": "Satr Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0047252cc7:0xdf1b91675d24ccf2!8m2!3d24.7718156!4d46.721079",
+      "pin": {
+        "lat": 24.7718156,
+        "lng": 46.721079
+      },
+      "logoUrl": "/logos/satr-specialty-coffee-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJxywlRwD9Lj4R8swkXWeRG98",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "covo-artisan-coffee-al-mughrizat",
+      "nameAr": "كوفو",
+      "nameEn": "COVO Artisan Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f033b7b4e1951:0xc301a658c1532f5b!8m2!3d24.7578045!4d46.718826",
+      "pin": {
+        "lat": 24.7578045,
+        "lng": 46.718826
+      },
+      "logoUrl": "/logos/covo-artisan-coffee-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJURlOezsDLz4RWy9TwVimAcM",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "bunatetu-al-mughrizat",
+      "nameAr": "بوناتيتو",
+      "nameEn": "BUNATETU",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f031e134f9b71:0xda100ec939a0ca1d!8m2!3d24.7587419!4d46.7270237",
+      "pin": {
+        "lat": 24.7587419,
+        "lng": 46.7270237
+      },
+      "logoUrl": "/logos/bunatetu-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJcZtPEx4DLz4RHcqgOckOENo",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "dune-coffee-al-mughrizat",
+      "nameAr": "كافي دون",
+      "nameEn": "Dune Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd006d73d9ef:0xd7edbc70bcb8fa1d!8m2!3d24.7718484!4d46.7211227",
+      "pin": {
+        "lat": 24.7718484,
+        "lng": 46.7211227
+      },
+      "logoUrl": "/logos/dune-coffee-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ79lzbQD9Lj4RHfq4vHC87dc",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "tuxedo-coffee-al-mughrizat",
+      "nameAr": "توكسيدو كوفي",
+      "nameEn": "TUXEDO Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03faa5c8558f:0x7b003ca2f858d5af!8m2!3d24.7563118!4d46.7298746",
+      "pin": {
+        "lat": 24.7563118,
+        "lng": 46.7298746
+      },
+      "logoUrl": "/logos/tuxedo-coffee-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJj1XIpfoDLz4Rr9VY-KI8AHs",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "bar-coffee-al-mughrizat",
+      "nameAr": "بار كافيه",
+      "nameEn": "Bar Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd69e3c4383f:0x4a64c096e8cafa0a!8m2!3d24.7713271!4d46.7203141",
+      "pin": {
+        "lat": 24.7713271,
+        "lng": 46.7203141
+      },
+      "logoUrl": "/logos/bar-coffee-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJPzjE42n9Lj4RCvrK6JbAZEo",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "adab-cafe-al-mughrizat",
+      "nameAr": "مقهى أدب",
+      "nameEn": "ADAB Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd906ae5ab6b:0xdcf33862e333b438!8m2!3d24.7713919!4d46.720106",
+      "pin": {
+        "lat": 24.7713919,
+        "lng": 46.720106
+      },
+      "logoUrl": "/logos/adab-cafe-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJa6vlapD9Lj4ROLQz42I489w",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "booze-specialty-coffee-bar-al-mughrizat",
+      "nameAr": "بوز",
+      "nameEn": "Booze Specialty Coffee Bar",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efde761dd5555:0x236fead5004bc60c!8m2!3d24.7662708!4d46.7153749",
+      "pin": {
+        "lat": 24.7662708,
+        "lng": 46.7153749
+      },
+      "logoUrl": "/logos/booze-specialty-coffee-bar-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJVVXdYef9Lj4RDMZLANXqbyM",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "latch-al-mughrizat",
+      "nameAr": "لاتش",
+      "nameEn": "LATCH",
+      "city": "riyadh",
+      "neighborhood": "al-mughrizat",
+      "neighborhoodAr": "المغرزات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efda55294c451:0x29c17c734846e880!8m2!3d24.7717194!4d46.7208678",
+      "pin": {
+        "lat": 24.7717194,
+        "lng": 46.7208678
+      },
+      "logoUrl": "/logos/latch-al-mughrizat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJUcSUUqX9Lj4RgOhGSHN8wSk",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "slant-specialty-coffee-al-izdihar",
+      "nameAr": "سلانت قهوة مختصة",
+      "nameEn": "Slant Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-izdihar",
+      "neighborhoodAr": "الازدهار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdc71466de0b:0x117ba139fe9f43e3!8m2!3d24.7728521!4d46.7217584",
+      "pin": {
+        "lat": 24.7728521,
+        "lng": 46.7217584
+      },
+      "logoUrl": "/logos/slant-specialty-coffee-al-izdihar.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJC95mFMf9Lj4R40Of_jmhexE",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

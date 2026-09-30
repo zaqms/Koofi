@@ -456,6 +456,7 @@ function expectedHeroCount(id: string): number {
   if (id === "elixir-bunn-al-narjis") return 3;
   if (id === "mill-coffee-qurtubah") return 2;
   if (id === "hokkaido-al-hamra") return 3;
+  if (id === "buljah-al-olaya") return 3;
   return 4;
 }
 for (const [id, photos] of Object.entries(bakedHeroes)) {

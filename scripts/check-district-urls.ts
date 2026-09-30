@@ -1114,6 +1114,8 @@ const WAVE1_DISTRICTS: {
       "roasting-house-al-arid",
       "coffee-address-al-arid",
       "shiro-al-arid",
+      "rex-al-arid",
+      "essert-al-arid",
     ],
   },
   {
@@ -1129,6 +1131,7 @@ const WAVE1_DISTRICTS: {
       "caf-lab-al-qirawan",
       "drive-al-qirawan",
       "scout-coffee-al-qirawan",
+      "ract-al-qirawan",
     ],
   },
 ];

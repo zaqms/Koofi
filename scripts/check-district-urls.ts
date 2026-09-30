@@ -177,8 +177,8 @@ assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gha
 assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.length === 49, `expected 49 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 332, `specialty discovery 321→332 with Al Olaya Scout-11, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 400, `catalog 389→400 with Al Olaya Scout-11, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 339, `specialty discovery 332→339 with social-trend 7, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 407, `catalog 400→407 with social-trend 7, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -470,7 +470,7 @@ assert(
 );
 
 const hamra = filterDirectoryShops(shops, "al-hamra");
-assert(hamra.length === 12, `al-hamra has 12 shops, got ${hamra.length}`);
+assert(hamra.length === 13, `al-hamra has 13 shops, got ${hamra.length}`);
 assert(
   hamra.every((shop) => shop.neighborhood === "al-hamra"),
   "al-hamra filter stays in district",
@@ -488,6 +488,7 @@ for (const id of [
   "glint-al-hamra",
   "re-matcha-al-hamra",
   "hokkaido-al-hamra",
+  "orkt-al-hamra",
 ]) {
   assert(
     hamra.some((shop) => shop.id === id),
@@ -764,8 +765,8 @@ for (const ask of ["الريان", "ريان", "rayyan", "al rayyan", "ar-rayyan
 }
 
 const rawabi = filterDirectoryShops(shops, "al-rawabi");
-assert(rawabi.length === 2, `al-rawabi has 2 shops, got ${rawabi.length}`);
-for (const id of ["the-it-al-rawabi", "essert-al-rawabi"]) {
+assert(rawabi.length === 3, `al-rawabi has 3 shops, got ${rawabi.length}`);
+for (const id of ["the-it-al-rawabi", "essert-al-rawabi", "bala-al-rawabi"]) {
   assert(rawabi.some((shop) => shop.id === id), `al-rawabi includes ${id}`);
 }
 assert(neighborhoodLabel("al-rawabi", "ar") === "الروابي", "al-rawabi Arabic label");
@@ -1801,7 +1802,8 @@ const scoutPack: {
     | "al-izdihar"
     | "ghirnatah"
     | "al-mathar"
-    | "at-taawun";
+    | "at-taawun"
+    | "al-narjis";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -3726,6 +3728,97 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: true,
   },
+  {
+    id: "crops-al-narjis",
+    hex: "0x3e2efd68665bae8b:0x30c0a30ce0c43e96",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/crops-al-narjis.jpg",
+    pin: { lat: 24.841562999999997, lng: 46.6659942 },
+    coordsInUrl: true,
+    placeId: "ChIJi65bZmj9Lj4Rlj7E4AyjwDA",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bala-al-rawabi",
+    hex: "0x3e2f07c9527d9ca1:0x179e11b5785979ab",
+    neighborhood: "al-rawabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bala-al-rawabi.jpg",
+    pin: { lat: 24.7007403, lng: 46.8030872 },
+    coordsInUrl: true,
+    placeId: "ChIJoZx9UskHLz4Rq3lZeLURnhc",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "ract-al-qirawan",
+    hex: "0x3e2ee7c139e06f69:0x85a9fc52d9cabc89",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ract-al-qirawan.jpg",
+    pin: { lat: 24.8337927, lng: 46.5890864 },
+    coordsInUrl: true,
+    placeId: "ChIJaW_gOcHnLj4RibzK2VL8qYU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "orkt-al-hamra",
+    hex: "0x3e2eff35ab2b4ba9:0x2cd1dfc44b969cc5",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/orkt-al-hamra.jpg",
+    pin: { lat: 24.787708199999997, lng: 46.767900999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJqUsrqzX_Lj4RxZyWS8Tf0Sw",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "rex-al-arid",
+    hex: "0x3e2ee5a422c9a519:0x8568cbd5379a407b",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rex-al-arid.jpg",
+    pin: { lat: 24.875037499999998, lng: 46.6211406 },
+    coordsInUrl: true,
+    placeId: "ChIJGaXJIqTlLj4Re0CaN9XLaIU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "veo-hittin",
+    hex: "0x3e2ee3544f6bd36b:0x9f35a339409906e0",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/veo-hittin.jpg",
+    pin: { lat: 24.7727506, lng: 46.607662399999995 },
+    coordsInUrl: true,
+    placeId: "ChIJa9NrT1TjLj4R4AaZQDmjNZ8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "essert-al-arid",
+    hex: "0x3e2ee519b340b15b:0x544e83e2ea999fb7",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/essert-al-rawabi.jpg",
+    pin: { lat: 24.861214699999998, lng: 46.6284055 },
+    coordsInUrl: true,
+    placeId: "ChIJW7FAsxnlLj4Rt5-Z6uKDTlQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3840,6 +3933,13 @@ for (const id of [
   "jolt-al-olaya",
   "key-cafe-al-olaya",
   "alwaal-albari-al-olaya",
+  "crops-al-narjis",
+  "bala-al-rawabi",
+  "ract-al-qirawan",
+  "orkt-al-hamra",
+  "rex-al-arid",
+  "veo-hittin",
+  "essert-al-arid",
 ]) {
   assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
 }
@@ -3889,6 +3989,13 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "jolt-al-olaya": { nameEn: "JOLT", nameAr: "جولت" },
   "key-cafe-al-olaya": { nameEn: "Key Cafe", nameAr: "كي" },
   "alwaal-albari-al-olaya": { nameEn: "Alwaal Albari", nameAr: "الوعل البري" },
+  "crops-al-narjis": { nameEn: "Crops", nameAr: "كروبس" },
+  "bala-al-rawabi": { nameEn: "Bala", nameAr: "بلة" },
+  "ract-al-qirawan": { nameEn: "RACT", nameAr: "راكت" },
+  "orkt-al-hamra": { nameEn: "ORKT", nameAr: "أوركت" },
+  "rex-al-arid": { nameEn: "Rex", nameAr: "ريكس" },
+  "veo-hittin": { nameEn: "VEO Coffee", nameAr: "فيو" },
+  "essert-al-arid": { nameEn: "Essert", nameAr: "إسرت" },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
   const shop = getShop(id);

@@ -69,6 +69,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "abeille-al-narjis": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "acres-al-arid": {
     "handle": "@acres_sa",
     "followers": 1327,
@@ -230,6 +237,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "bala-al-rawabi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "bar-coffee-al-mughrizat": {
     "handle": null,
     "followers": null,
@@ -256,6 +270,13 @@
     "followers": 7081,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "behind-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
     "sharedBrandAccount": false
   },
   "beitkull-al-olaya": {
@@ -692,6 +713,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "crops-al-narjis": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "cross-coffee-an-nazhah": {
     "handle": null,
     "followers": null,
@@ -1119,6 +1147,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "essert-al-arid": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "essert-al-rawabi": {
     "handle": "@essert.sa",
     "followers": 602,
@@ -1313,6 +1348,13 @@
     "followers": null,
     "status": "none",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hearth-al-arid": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
     "sharedBrandAccount": false
   },
   "hekaya-tale-al-mohammadiyah": {
@@ -2043,11 +2085,25 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "orkt-al-hamra": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "oromiffa-al-olaya": {
     "handle": null,
     "followers": null,
     "status": "unverified",
     "dateChecked": "2026-09-28",
+    "sharedBrandAccount": false
+  },
+  "otto-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
     "sharedBrandAccount": false
   },
   "out-of-line-al-aqiq": {
@@ -2155,6 +2211,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "ract-al-qirawan": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "raslania-al-safa": {
     "handle": "@raslania_sa",
     "followers": 3330,
@@ -2202,6 +2265,13 @@
     "followers": 711,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "rex-al-arid": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
     "sharedBrandAccount": false
   },
   "rimthan-coffee-al-hamra": {
@@ -2392,6 +2462,13 @@
     "status": "found",
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
+  },
+  "shubak-al-bun-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
   },
   "sica-al-rayyan": {
     "handle": null,
@@ -2659,6 +2736,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "veo-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "volume-al-yasmin": {
     "handle": "@volumecoffee.sa",
     "followers": 8700,
@@ -2720,6 +2804,13 @@
     "followers": null,
     "status": "none",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "way-coffee-dhahrat-al-badiah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
     "sharedBrandAccount": false
   },
   "waznah-coffee-al-masif": {

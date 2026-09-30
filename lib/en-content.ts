@@ -243,6 +243,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "as-suwaidi": ["al-hazm", "al-malaz", "al-murabba", "sulimaniyah"],
   "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
   "al-izdihar": ["al-mughrizat", "olaya", "sulimaniyah", "qurtubah"],
+  "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "al-takhassusi", "al-mathar"],
 };
 
 type DistrictLead = {
@@ -658,16 +659,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Al Wisham on wain.lol — a Riyadh neighborhood list including Arabica coffee, with a Maps link.",
   },
   badr: {
-    lead: `Badr (بدر) is a south Riyadh حي. This page is the Badr set on wain.lol so far.
-
-[Drive Coffee](/en/c/drive-badr) and [dr.CAFE](/en/c/drcafe-badr) are on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There are **{count}** cafes from Badr on the catalog today:`,
+    lead: `[Shubak Al Bun](/en/c/shubak-al-bun-badr) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Badr on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Badr isn’t the stop, these south-central lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Badr. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Three cafes in Badr on wain.lol — a Riyadh neighborhood list including Drive Coffee and dr.CAFE, with Maps links.",
+    meta: "One cafe in Badr on wain.lol — a Riyadh neighborhood list including Shubak Al Bun, with a Maps link.",
   },
   "al-aziziyah": {
     lead: `Al Aziziyah (العزيزية) sits on the south side of Riyadh. This page is the Al Aziziyah set on wain.lol so far.
@@ -876,6 +875,18 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "One cafe in Al Izdihar on wain.lol — a Riyadh neighborhood list including Slant Specialty Coffee, with a Maps link.",
+  },
+  "dhahrat-al-badiah": {
+    lead: `Dhahrat Al Badiah (ظهرة البديعة) is a Riyadh neighborhood on wain.lol. This page is the Dhahrat Al Badiah set so far.
+
+[WAY Coffee & Bakery](/en/c/way-coffee-dhahrat-al-badiah) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Dhahrat Al Badiah on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Dhahrat Al Badiah isn’t the stop, these are the closest lists on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Dhahrat Al Badiah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "One cafe in Dhahrat Al Badiah on wain.lol — a Riyadh neighborhood list including WAY Coffee & Bakery, with a Maps link.",
   },
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.

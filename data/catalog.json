@@ -34456,6 +34456,341 @@
       "outdoorSeating": true,
       "pickupOnly": null,
       "example": false
+    },
+    {
+      "id": "crops-al-narjis",
+      "nameAr": "كروبس",
+      "nameEn": "Crops",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd68665bae8b:0x30c0a30ce0c43e96!8m2!3d24.841562999999997!4d46.6659942",
+      "pin": {
+        "lat": 24.841562999999997,
+        "lng": 46.6659942
+      },
+      "logoUrl": "/logos/crops-al-narjis.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJi65bZmj9Lj4Rlj7E4AyjwDA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "bala-al-rawabi",
+      "nameAr": "بلة",
+      "nameEn": "Bala",
+      "city": "riyadh",
+      "neighborhood": "al-rawabi",
+      "neighborhoodAr": "الروابي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07c9527d9ca1:0x179e11b5785979ab!8m2!3d24.7007403!4d46.8030872",
+      "pin": {
+        "lat": 24.7007403,
+        "lng": 46.8030872
+      },
+      "logoUrl": "/logos/bala-al-rawabi.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJoZx9UskHLz4Rq3lZeLURnhc",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "ract-al-qirawan",
+      "nameAr": "راكت",
+      "nameEn": "RACT",
+      "city": "riyadh",
+      "neighborhood": "al-qirawan",
+      "neighborhoodAr": "القيروان",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7c139e06f69:0x85a9fc52d9cabc89!8m2!3d24.8337927!4d46.5890864",
+      "pin": {
+        "lat": 24.8337927,
+        "lng": 46.5890864
+      },
+      "logoUrl": "/logos/ract-al-qirawan.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJaW_gOcHnLj4RibzK2VL8qYU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "orkt-al-hamra",
+      "nameAr": "أوركت",
+      "nameEn": "ORKT",
+      "city": "riyadh",
+      "neighborhood": "al-hamra",
+      "neighborhoodAr": "الحمراء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff35ab2b4ba9:0x2cd1dfc44b969cc5!8m2!3d24.787708199999997!4d46.767900999999995",
+      "pin": {
+        "lat": 24.787708199999997,
+        "lng": 46.767900999999995
+      },
+      "logoUrl": "/logos/orkt-al-hamra.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJqUsrqzX_Lj4RxZyWS8Tf0Sw",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "rex-al-arid",
+      "nameAr": "ريكس",
+      "nameEn": "Rex",
+      "city": "riyadh",
+      "neighborhood": "al-arid",
+      "neighborhoodAr": "العارض",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee5a422c9a519:0x8568cbd5379a407b!8m2!3d24.875037499999998!4d46.6211406",
+      "pin": {
+        "lat": 24.875037499999998,
+        "lng": 46.6211406
+      },
+      "logoUrl": "/logos/rex-al-arid.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJGaXJIqTlLj4Re0CaN9XLaIU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "veo-hittin",
+      "nameAr": "فيو",
+      "nameEn": "VEO Coffee",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "حطين",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3544f6bd36b:0x9f35a339409906e0!8m2!3d24.7727506!4d46.607662399999995",
+      "pin": {
+        "lat": 24.7727506,
+        "lng": 46.607662399999995
+      },
+      "logoUrl": "/logos/veo-hittin.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJa9NrT1TjLj4R4AaZQDmjNZ8",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "essert-al-arid",
+      "nameAr": "إسرت",
+      "nameEn": "Essert",
+      "city": "riyadh",
+      "neighborhood": "al-arid",
+      "neighborhoodAr": "العارض",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee519b340b15b:0x544e83e2ea999fb7!8m2!3d24.861214699999998!4d46.6284055",
+      "pin": {
+        "lat": 24.861214699999998,
+        "lng": 46.6284055
+      },
+      "logoUrl": "/logos/essert-al-rawabi.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJW7FAsxnlLj4Rt5-Z6uKDTlQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "otto-al-muruj",
+      "nameAr": "otto",
+      "nameEn": "otto Speciality Coffee & Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-muruj",
+      "neighborhoodAr": "المروج",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee35d465958d1:0xb1577230d15e267a!8m2!3d24.758682399999998!4d46.6671364",
+      "pin": {
+        "lat": 24.758682399999998,
+        "lng": 46.6671364
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ0VhZRl3jLj4ReiZe0TByV7E",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "behind-al-muruj",
+      "nameAr": "بيهايند",
+      "nameEn": "Behind",
+      "city": "riyadh",
+      "neighborhood": "al-muruj",
+      "neighborhoodAr": "المروج",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3006bbd973f:0xadfceaef61610016!8m2!3d24.7561514!4d46.653934199999995",
+      "pin": {
+        "lat": 24.7561514,
+        "lng": 46.653934199999995
+      },
+      "logoUrl": "/logos/behind-al-muruj.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJP5e9awDjLj4RFgBhYe_q_K0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "shubak-al-bun-badr",
+      "nameAr": "شباك البن",
+      "nameEn": "Shubak Al Bun",
+      "city": "riyadh",
+      "neighborhood": "badr",
+      "neighborhoodAr": "بدر",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fce21e76aeb:0xc04a9af315f5345d!8m2!3d24.5404852!4d46.698298099999995",
+      "pin": {
+        "lat": 24.5404852,
+        "lng": 46.698298099999995
+      },
+      "logoUrl": "/logos/shubak-al-bun-badr.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ62rnIc4PLz4RXTT1FfOaSsA",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "hearth-al-arid",
+      "nameAr": "هيرث",
+      "nameEn": "HEARTH Café",
+      "city": "riyadh",
+      "neighborhood": "al-arid",
+      "neighborhoodAr": "العارض",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eef8e7a83c7cf:0x87d5b0ef9485ed19!8m2!3d24.8863463!4d46.6046896",
+      "pin": {
+        "lat": 24.8863463,
+        "lng": 46.6046896
+      },
+      "logoUrl": "/logos/hearth-al-arid.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJz8eDeo7vLj4RGe2FlO-w1Yc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "abeille-al-narjis",
+      "nameAr": "أبيي كافيه",
+      "nameEn": "Abeille cafe",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efb81a632f607:0x76dc92940ecf8dbc!8m2!3d24.8298719!4d46.670774099999996",
+      "pin": {
+        "lat": 24.8298719,
+        "lng": 46.670774099999996
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJB_YypoH7Lj4RvI3PDpSS3HY",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "way-coffee-dhahrat-al-badiah",
+      "nameAr": "وي كافية",
+      "nameEn": "WAY Coffee & Bakery",
+      "city": "riyadh",
+      "neighborhood": "dhahrat-al-badiah",
+      "neighborhoodAr": "ظهرة البديعة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1b003158bdf5:0x91847fc7e4f6fc27!8m2!3d24.599526899999997!4d46.6425717",
+      "pin": {
+        "lat": 24.599526899999997,
+        "lng": 46.6425717
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

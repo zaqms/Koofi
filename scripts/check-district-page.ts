@@ -134,7 +134,7 @@ for (const id of REFERENCE_DISTRICTS) {
 
 const hamra = listDirectoryShopsForDistrict("al-hamra");
 const sulimaniyah = listDirectoryShopsForDistrict("sulimaniyah");
-assert(hamra.length === 12, `Al Hamra catalog count stays 12, got ${hamra.length}`);
+assert(hamra.length === 13, `Al Hamra catalog count stays 13, got ${hamra.length}`);
 assert(
   sulimaniyah.length === 10,
   `Sulimaniyah catalog count stays 10, got ${sulimaniyah.length}`,

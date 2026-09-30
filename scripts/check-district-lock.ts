@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 68, `expected 68 live catalog districts, got ${liveCatalog.length}`);
+assert(liveCatalog.length === 69, `expected 69 live catalog districts, got ${liveCatalog.length}`);
 assert(!liveCatalog.includes("as-suwaidi"), "as-suwaidi has 0 shops");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -178,6 +178,17 @@ assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-izdihar").map((shop) => shop.id).join(",") ===
     "slant-specialty-coffee-al-izdihar",
   "Al Izdihar catalog is Slant only",
+);
+
+const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
+assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");
+assert(dhahrat?.nameEn === "Dhahrat Al Badiah", "Dhahrat Al Badiah EN lock");
+assert(dhahrat?.nameAr === "ظهرة البديعة", "Dhahrat Al Badiah AR lock");
+assert(liveCatalog.includes("dhahrat-al-badiah"), "WAY makes Dhahrat Al Badiah a live catalog district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "dhahrat-al-badiah").map((shop) => shop.id).join(",") ===
+    "way-coffee-dhahrat-al-badiah",
+  "Dhahrat Al Badiah catalog is WAY only",
 );
 
 assert(

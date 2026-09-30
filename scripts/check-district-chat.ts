@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 50, `expected 50 live districts, got ${live.length}`);
+assert(live.length === 51, `expected 51 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -116,6 +116,12 @@ assert(
 assert(
   parseIntent("الازدهار").neighborhoods.join(",") === "al-izdihar",
   "الازدهار is a حي",
+);
+assert(extractPrimaryDistrict("Dhahrat Al Badiah") === "dhahrat-al-badiah", "Dhahrat Al Badiah");
+assert(extractPrimaryDistrict("ظهرة البديعة") === "dhahrat-al-badiah", "ظهرة البديعة");
+assert(
+  parseIntent("ظهرة البديعة").neighborhoods.join(",") === "dhahrat-al-badiah",
+  "ظهرة البديعة is a حي",
 );
 
 assert(DISTRICT_POPULARITY_WEIGHTS.maps === 0.6, "maps weight locked at 0.6");

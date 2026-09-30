@@ -4176,6 +4176,16 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://wain.lol/c/way-coffee-dhahrat-al-badiah</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://wain.lol/en/c/way-coffee-dhahrat-al-badiah</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://wain.lol/coffee-shops/hittin</loc>
     <lastmod>2026-09-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -4853,6 +4863,16 @@
   <url>
     <loc>https://wain.lol/en/coffee-shops/al-izdihar</loc>
     <lastmod>2026-09-28</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://wain.lol/coffee-shops/dhahrat-al-badiah</loc>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://wain.lol/en/coffee-shops/dhahrat-al-badiah</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>

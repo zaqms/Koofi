@@ -1078,6 +1078,20 @@ export const NEIGHBORHOODS: Record<
       "Al Izdihar",
     ],
   },
+  "dhahrat-al-badiah": {
+    id: "dhahrat-al-badiah",
+    ar: "ظهرة البديعة",
+    en: "Dhahrat Al Badiah",
+    aliases: [
+      "ظهرة البديعة",
+      "ظهره البديعه",
+      "dhahrat al badiah",
+      "dhahrat-al-badiah",
+      "dhahrat al badi'ah",
+      "dhahratalbadiah",
+      "Dhahrat Al Badiah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

@@ -34766,6 +34766,31 @@
       "outdoorSeating": null,
       "pickupOnly": null,
       "example": false
+    },
+    {
+      "id": "way-coffee-dhahrat-al-badiah",
+      "nameAr": "وي كافية",
+      "nameEn": "WAY Coffee & Bakery",
+      "city": "riyadh",
+      "neighborhood": "dhahrat-al-badiah",
+      "neighborhoodAr": "ظهرة البديعة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1b003158bdf5:0x91847fc7e4f6fc27!8m2!3d24.599526899999997!4d46.6425717",
+      "pin": {
+        "lat": 24.599526899999997,
+        "lng": 46.6425717
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
     }
   ]
 }

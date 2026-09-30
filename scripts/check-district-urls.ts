@@ -176,9 +176,10 @@ assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-s
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
-assert(areas.length === 50, `expected 50 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 344, `specialty discovery 332→344 with social-trend 12, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 412, `catalog 400→412 with social-trend 12, got ${listRealShops().length}`);
+assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
+assert(areas.length === 51, `expected 51 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 345, `specialty discovery 344→345 with social-trend 13, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 413, `catalog 412→413 with social-trend 13, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1815,7 +1816,8 @@ const scoutPack: {
     | "al-mathar"
     | "at-taawun"
     | "al-narjis"
-    | "badr";
+    | "badr"
+    | "dhahrat-al-badiah";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -3894,6 +3896,18 @@ const scoutPack: {
     dineIn: null,
     outdoorSeating: null,
   },
+  {
+    id: "way-coffee-dhahrat-al-badiah",
+    hex: "0x3e2f1b003158bdf5:0x91847fc7e4f6fc27",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.599526899999997, lng: 46.6425717 },
+    coordsInUrl: true,
+    placeId: "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -4020,6 +4034,7 @@ for (const id of [
   "shubak-al-bun-badr",
   "hearth-al-arid",
   "abeille-al-narjis",
+  "way-coffee-dhahrat-al-badiah",
 ]) {
   assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
 }
@@ -4081,6 +4096,7 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "shubak-al-bun-badr": { nameEn: "Shubak Al Bun", nameAr: "شباك البن" },
   "hearth-al-arid": { nameEn: "HEARTH Café", nameAr: "هيرث" },
   "abeille-al-narjis": { nameEn: "Abeille cafe", nameAr: "أبيي كافيه" },
+  "way-coffee-dhahrat-al-badiah": { nameEn: "WAY Coffee & Bakery", nameAr: "وي كافية" },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
   const shop = getShop(id);

@@ -410,7 +410,41 @@ const BATCH6_IDS = [
   "drcafe-tuwaiq",
   "drcafe-al-mughrizat",
   "drcafe-al-mathar",
-  "drcafe-as-suwaidi",
+] as const;
+
+/** Post-batch-6 hero bakes: #208 (six #207 shops) + #217 Al Mughrizat Scout-10. */
+const BATCH7_IDS = [
+  "bacha-coffee-solitaire",
+  "beitkull-al-olaya",
+  "las-cafe-al-malqa",
+  "las-cafe-al-olaya",
+  "little-henri-al-muruj",
+  "mood-masters-al-falah",
+  "satr-specialty-coffee-al-mughrizat",
+  "covo-artisan-coffee-al-mughrizat",
+  "bunatetu-al-mughrizat",
+  "dune-coffee-al-mughrizat",
+  "tuxedo-coffee-al-mughrizat",
+  "bar-coffee-al-mughrizat",
+  "adab-cafe-al-mughrizat",
+  "booze-specialty-coffee-bar-al-mughrizat",
+  "latch-al-mughrizat",
+  "slant-specialty-coffee-al-izdihar",
+] as const;
+
+/** Al Olaya Scout-11 (#218). The total-keys assert on main did not include these. */
+const BATCH8_IDS = [
+  "gedeb-al-olaya",
+  "bossco-roastery-al-olaya",
+  "lluvia-caffe-al-olaya",
+  "oromiffa-al-olaya",
+  "buljah-al-olaya",
+  "19-gram-al-olaya",
+  "kulma-speciality-coffee-al-olaya",
+  "morfi-al-olaya",
+  "jolt-al-olaya",
+  "key-cafe-al-olaya",
+  "alwaal-albari-al-olaya",
 ] as const;
 
 const BATCH6_MISSING_HOURS = [
@@ -421,7 +455,6 @@ const BATCH6_MISSING_HOURS = [
   "drive-al-rabi-5",
   "drive-al-yasmin",
   "drive-al-janadriyyah",
-  "drcafe-as-suwaidi",
 ] as const;
 
 const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
@@ -430,6 +463,8 @@ const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
 const batch5HeroIds = BATCH5_IDS.filter((id) => bakedHeroes[id]);
 const batch6HeroIds = BATCH6_IDS.filter((id) => bakedHeroes[id]);
+const batch7HeroIds = BATCH7_IDS.filter((id) => bakedHeroes[id]);
+const batch8HeroIds = BATCH8_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -437,14 +472,18 @@ assert(
       batch3HeroIds.length +
       batch4HeroIds.length +
       batch5HeroIds.length +
-      batch6HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batch 6 merges in",
+      batch6HeroIds.length +
+      batch7HeroIds.length +
+      batch8HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–8 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
-assert(batch6HeroIds.length === 43, "batch 6 43-shop hero set is complete");
+assert(batch6HeroIds.length === 42, "batch 6 42-shop hero set is complete after the As Suwaidi drop");
+assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
+assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -457,6 +496,7 @@ function expectedHeroCount(id: string): number {
   if (id === "mill-coffee-qurtubah") return 2;
   if (id === "hokkaido-al-hamra") return 3;
   if (id === "buljah-al-olaya") return 3;
+  if (id === "latch-al-mughrizat") return 3;
   return 4;
 }
 for (const [id, photos] of Object.entries(bakedHeroes)) {
@@ -1011,7 +1051,6 @@ const three = getShop("three-sulimaniyah");
 const threes = getShop("threes-al-yasmin");
 const wave = getShop("wave-cafe-al-rabi");
 const drcafeMathar = getShop("drcafe-al-mathar");
-const drcafeSuwaidi = getShop("drcafe-as-suwaidi");
 assert(three, "Three Sulimaniyah is in the catalog");
 assert(
   (three.openingHours?.periods?.length ?? 0) > 0,
@@ -1031,13 +1070,10 @@ assert(
   "Wave cafe Sunday afternoon is Open now",
 );
 assert(drcafeMathar && (drcafeMathar.openingHours?.periods?.length ?? 0) > 0, "DRCAFE Al Mathar has baked periods");
-assert(drcafeSuwaidi, "DRCAFE As Suwaidi is in the catalog");
-assert(!drcafeSuwaidi.openingHours, "DRCAFE As Suwaidi keeps Status hidden — no invented hours");
 assert(cafeDetailHeroPhotos(three).length === 4, "Three Sulimaniyah uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(threes).length === 4, "Threes Al Yasmin uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(wave).length === 4, "Wave cafe uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(drcafeMathar).length === 4, "DRCAFE Al Mathar uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(drcafeSuwaidi).length === 4, "DRCAFE As Suwaidi uses baked cafe-heroes");
 assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(three)),
   "batch 6 Places photos still require a Google credit",
@@ -1045,10 +1081,6 @@ assert(
 assert(
   cafeDetailHeroPhotos(three)[0]?.attribution?.displayName === "ثري كافيه",
   "Three Sulimaniyah bake still has the Places author name",
-);
-assert(
-  cafeDetailHeroPhotos(drcafeSuwaidi)[0]?.attribution?.displayName === "Random Tech",
-  "DRCAFE As Suwaidi bake has the Places author name",
 );
 assert(
   cafeDetailHoursStatus(three, "en", new Date("2026-09-20T15:00:00+03:00"))
@@ -1072,7 +1104,7 @@ const remainingUnbaked = (
 });
 assert(
   remainingUnbaked.length === 0,
-  "no place_id shops left unbaked after batch 6",
+  "44 place_id shops left unbaked after batch 6",
 );
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");

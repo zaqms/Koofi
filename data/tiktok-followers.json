@@ -69,6 +69,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "abeille-al-narjis": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "acres-al-arid": {
     "handle": "@acres_sa",
     "followers": 1327,
@@ -263,6 +270,13 @@
     "followers": 7081,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "behind-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
     "sharedBrandAccount": false
   },
   "beitkull-al-olaya": {
@@ -1336,6 +1350,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "hearth-al-arid": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "hekaya-tale-al-mohammadiyah": {
     "handle": null,
     "followers": null,
@@ -2078,6 +2099,13 @@
     "dateChecked": "2026-09-28",
     "sharedBrandAccount": false
   },
+  "otto-al-muruj": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
+  },
   "out-of-line-al-aqiq": {
     "handle": null,
     "followers": null,
@@ -2434,6 +2462,13 @@
     "status": "found",
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
+  },
+  "shubak-al-bun-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-09-30",
+    "sharedBrandAccount": false
   },
   "sica-al-rayyan": {
     "handle": null,

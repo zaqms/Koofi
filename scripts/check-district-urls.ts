@@ -176,9 +176,9 @@ assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-s
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
-assert(areas.length === 49, `expected 49 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 339, `specialty discovery 332→339 with social-trend 7, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 407, `catalog 400→407 with social-trend 7, got ${listRealShops().length}`);
+assert(areas.length === 50, `expected 50 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 344, `specialty discovery 332→344 with social-trend 12, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 412, `catalog 400→412 with social-trend 12, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1116,6 +1116,7 @@ const WAVE1_DISTRICTS: {
       "shiro-al-arid",
       "rex-al-arid",
       "essert-al-arid",
+      "hearth-al-arid",
     ],
   },
   {
@@ -1193,12 +1194,14 @@ const MURUJ_REFILL = {
     "quokka-coffee-al-muruj",
     "some-coffee-bar-al-muruj",
     "little-henri-al-muruj",
+    "otto-al-muruj",
+    "behind-al-muruj",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 7, `al-muruj has 7 shops, got ${rows.length}`);
+  assert(rows.length === 9, `al-muruj has 9 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1430,15 +1433,20 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("badr");
-  assert(rows.length === 3, `badr has 3 DT-lane shops, got ${rows.length}`);
+  assert(rows.length === 1, `badr has 1 shop, got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "drive-badr"),
-    "badr includes drive-badr",
+    rows.some((shop) => shop.id === "shubak-al-bun-badr"),
+    "badr specialty page includes shubak-al-bun-badr",
   );
-  assert(
-    rows.some((shop) => shop.id === "drcafe-badr"),
-    "badr includes drcafe-badr",
+  const badrDriveThrough = listDriveThroughDirectoryShops().filter(
+    (shop) => shop.neighborhood === "badr",
   );
+  for (const id of ["drive-badr", "drive-badr-2", "drcafe-badr"]) {
+    assert(
+      badrDriveThrough.some((shop) => shop.id === id),
+      `badr drive-through directory includes ${id}`,
+    );
+  }
   assert(neighborhoodLabel("badr", "ar") === "بدر", "badr Arabic label");
   assert(neighborhoodLabel("badr", "en") === "Badr", "badr English label");
 }
@@ -1806,7 +1814,8 @@ const scoutPack: {
     | "ghirnatah"
     | "al-mathar"
     | "at-taawun"
-    | "al-narjis";
+    | "al-narjis"
+    | "badr";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -3822,6 +3831,69 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
+  {
+    id: "otto-al-muruj",
+    hex: "0x3e2ee35d465958d1:0xb1577230d15e267a",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.758682399999998, lng: 46.6671364 },
+    coordsInUrl: true,
+    placeId: "ChIJ0VhZRl3jLj4ReiZe0TByV7E",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "behind-al-muruj",
+    hex: "0x3e2ee3006bbd973f:0xadfceaef61610016",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/behind-al-muruj.jpg",
+    pin: { lat: 24.7561514, lng: 46.653934199999995 },
+    coordsInUrl: true,
+    placeId: "ChIJP5e9awDjLj4RFgBhYe_q_K0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "shubak-al-bun-badr",
+    hex: "0x3e2f0fce21e76aeb:0xc04a9af315f5345d",
+    neighborhood: "badr",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/shubak-al-bun-badr.jpg",
+    pin: { lat: 24.5404852, lng: 46.698298099999995 },
+    coordsInUrl: true,
+    placeId: "ChIJ62rnIc4PLz4RXTT1FfOaSsA",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "hearth-al-arid",
+    hex: "0x3e2eef8e7a83c7cf:0x87d5b0ef9485ed19",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/hearth-al-arid.jpg",
+    pin: { lat: 24.8863463, lng: 46.6046896 },
+    coordsInUrl: true,
+    placeId: "ChIJz8eDeo7vLj4RGe2FlO-w1Yc",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "abeille-al-narjis",
+    hex: "0x3e2efb81a632f607:0x76dc92940ecf8dbc",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8298719, lng: 46.670774099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJB_YypoH7Lj4RvI3PDpSS3HY",
+    dineIn: null,
+    outdoorSeating: null,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3943,6 +4015,11 @@ for (const id of [
   "rex-al-arid",
   "veo-hittin",
   "essert-al-arid",
+  "otto-al-muruj",
+  "behind-al-muruj",
+  "shubak-al-bun-badr",
+  "hearth-al-arid",
+  "abeille-al-narjis",
 ]) {
   assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
 }
@@ -3999,6 +4076,11 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "rex-al-arid": { nameEn: "Rex", nameAr: "ريكس" },
   "veo-hittin": { nameEn: "VEO Coffee", nameAr: "فيو" },
   "essert-al-arid": { nameEn: "Essert", nameAr: "إسرت" },
+  "otto-al-muruj": { nameEn: "otto Speciality Coffee & Roastery", nameAr: "otto" },
+  "behind-al-muruj": { nameEn: "Behind", nameAr: "بيهايند" },
+  "shubak-al-bun-badr": { nameEn: "Shubak Al Bun", nameAr: "شباك البن" },
+  "hearth-al-arid": { nameEn: "HEARTH Café", nameAr: "هيرث" },
+  "abeille-al-narjis": { nameEn: "Abeille cafe", nameAr: "أبيي كافيه" },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
   const shop = getShop(id);

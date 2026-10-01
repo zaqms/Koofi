@@ -363,13 +363,13 @@ We’re Riyadh-only for now. Missing a place you like? Send a Maps link from the
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   },
   "al-rabi": {
-    lead: `Ar Rabi (الربيع) is still a short north-Riyadh list. [Piccolo Roasters](/en/c/piccolo-al-rabi) and [Ashjar cafe](/en/c/ashjar-cafe-ar-rabi) are the two cards on this page today. We don’t pad it with names we haven’t added.`,
+    lead: `Ar Rabi (الربيع) is a north-Riyadh list. [Piccolo Roasters](/en/c/piccolo-al-rabi), [Ashjar cafe](/en/c/ashjar-cafe-ar-rabi), [KULMA Speciality Coffee](/en/c/kulma-speciality-coffee-al-rabi), and [3bean Coffee Roastery](/en/c/3bean-al-rabi) are among the cards on this page today. We don’t pad it with names we haven’t added.`,
     hereIntro: `There are **{count}** cafes from Ar Rabi on wain.lol right now:`,
     hereOutro: `That’s the set. Open a card, then **Take me there** for the Maps pin.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
-    meta: "Two cafes in Ar Rabi on wain.lol — a north Riyadh list including Piccolo and Ashjar, each with a Maps link.",
+    meta: "Twelve cafes in Ar Rabi on wain.lol — a north Riyadh list including Piccolo, Ashjar, and Kulma, each with a Maps link.",
   },
   "al-masif": {
     lead: `Al Masif (المصيف) is a north-central Riyadh list on wain.lol. This page is the Masif cafes we’ve added so far — only what’s actually in the catalog.`,

@@ -178,8 +178,8 @@ assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.length === 51, `expected 51 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 345, `specialty discovery 344→345 with social-trend 13, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 413, `catalog 412→413 with social-trend 13, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 355, `specialty discovery 345→355 with Ar Rabi Scout-10, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 423, `catalog 413→423 with Ar Rabi Scout-10, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -929,7 +929,21 @@ assert(
 );
 
 const rabi = filterDirectoryShops(shops, "al-rabi");
-assert(rabi.length === 2, `al-rabi has 2 shops, got ${rabi.length}`);
+assert(rabi.length === 12, `al-rabi has 12 shops, got ${rabi.length}`);
+for (const id of [
+  "kava-al-rabi",
+  "sociable-al-rabi",
+  "orne-cafe-al-rabi",
+  "atea-al-rabi",
+  "arco-al-rabi",
+  "diplab-al-rabi",
+  "and-coffee-al-rabi",
+  "wacafe-al-rabi",
+  "kulma-speciality-coffee-al-rabi",
+  "3bean-al-rabi",
+]) {
+  assert(rabi.some((shop) => shop.id === id), `al-rabi includes ${id}`);
+}
 assert(
   rabi.some((shop) => shop.id === "piccolo-al-rabi"),
   "al-rabi keeps piccolo-al-rabi",
@@ -3908,6 +3922,135 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
+  {
+    id: "kava-al-rabi",
+    hex: "0x3e2efdb9b7726783:0x393a5268ea227e10",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8020465, lng: 46.672229099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJg2dyt7n9Lj4REH4i6mhSOjk",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "sociable-al-rabi",
+    hex: "0x3e2ee38daf8a1875:0x2ba8a611b0c0c96f",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/sociable-al-rabi.jpg",
+    pin: { lat: 24.7966244, lng: 46.6514974 },
+    coordsInUrl: true,
+    placeId: "ChIJdRiKr43jLj4Rb8nAsBGmqCs",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "orne-cafe-al-rabi",
+    hex: "0x3e2ee3a4fc04d53d:0xcacc2debf99c20b5",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/orne-cafe-al-rabi.jpg",
+    pin: { lat: 24.7882458, lng: 46.6479978 },
+    coordsInUrl: true,
+    placeId: "ChIJPdUE_KTjLj4RtSCc-estzMo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "atea-al-rabi",
+    hex: "0x3e2ee333ac56baa3:0x632e286d7c2502be",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/atea-al-rabi.jpg",
+    pin: { lat: 24.7980923, lng: 46.6666336 },
+    coordsInUrl: true,
+    placeId: "ChIJo7pWrDPjLj4RvgIlfG0oLmM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "arco-al-rabi",
+    hex: "0x3e2efd7ae2ad82bb:0x403e7005cc9304af",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/arco-al-rabi.jpg",
+    pin: { lat: 24.79198, lng: 46.672729499999996 },
+    coordsInUrl: true,
+    placeId: "ChIJu4Kt4nr9Lj4RrwSTzAVwPkA",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "diplab-al-rabi",
+    hex: "0x3e2ee3b55fa32465:0xa18563e65670394e",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/diplab-al-rabi.jpg",
+    pin: { lat: 24.788220300000003, lng: 46.6478262 },
+    coordsInUrl: true,
+    placeId: "ChIJZSSjX7XjLj4RTjlwVuZjhaE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "and-coffee-al-rabi",
+    hex: "0x3e2ee3968aeea065:0xa32780ba32c88f1b",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/and-coffee-al-rabi.jpg",
+    pin: { lat: 24.793794, lng: 46.6546812 },
+    coordsInUrl: true,
+    placeId: "ChIJZaDuipbjLj4RG4_IMrqAJ6M",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "wacafe-al-rabi",
+    hex: "0x3e2ee39665d2a067:0xd4fcbbe19975f70d",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/wacafe-al-rabi.jpg",
+    pin: { lat: 24.7941798, lng: 46.6554988 },
+    coordsInUrl: true,
+    placeId: "ChIJZ6DSZZbjLj4RDfd1meG7_NQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "kulma-speciality-coffee-al-rabi",
+    hex: "0x3e2ee3004a1a16e9:0x5bc810ceb8bf0c63",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/kulma-speciality-coffee-al-olaya.jpg",
+    pin: { lat: 24.7833217, lng: 46.6456279 },
+    coordsInUrl: true,
+    placeId: "ChIJ6RYaSgDjLj4RYwy_uM4QyFs",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "3bean-al-rabi",
+    hex: "0x3e2ee3dbef551423:0xc82874176841baa6",
+    neighborhood: "al-rabi",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/3bean-al-qirawan.jpg",
+    pin: { lat: 24.791734599999998, lng: 46.6722946 },
+    coordsInUrl: true,
+    placeId: "ChIJIxRV79vjLj4RprpBaBd0KMg",
+    dineIn: true,
+    outdoorSeating: false,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -4097,11 +4240,40 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "hearth-al-arid": { nameEn: "HEARTH Café", nameAr: "هيرث" },
   "abeille-al-narjis": { nameEn: "Abeille cafe", nameAr: "أبيي كافيه" },
   "way-coffee-dhahrat-al-badiah": { nameEn: "WAY Coffee & Bakery", nameAr: "وي كافية" },
+  "kava-al-rabi": { nameEn: "KAVA", nameAr: "KAVA" },
+  "sociable-al-rabi": { nameEn: "Sociable", nameAr: "سوشبيل" },
+  "orne-cafe-al-rabi": { nameEn: "Ornè Cafè", nameAr: "اورن كافيه" },
+  "atea-al-rabi": { nameEn: "ATEA", nameAr: "آتِ" },
+  "arco-al-rabi": { nameEn: "Arco", nameAr: "اركو" },
+  "diplab-al-rabi": { nameEn: "diplab cafe", nameAr: "ديب لاب كافيه" },
+  "and-coffee-al-rabi": { nameEn: "& Coffee", nameAr: "كوفي اند" },
+  "wacafe-al-rabi": { nameEn: "Wacafe", nameAr: "وكف" },
+  "kulma-speciality-coffee-al-rabi": { nameEn: "KULMA Speciality Coffee", nameAr: "مقهى كولما" },
+  "3bean-al-rabi": { nameEn: "3bean Coffee Roastery", nameAr: "محمصة ثري بين" },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
   const shop = getShop(id);
   assert(shop?.nameEn === names.nameEn, `${id} canonical nameEn`);
   assert(shop?.nameAr === names.nameAr, `${id} canonical nameAr`);
+}
+/** Ar Rabi Scout-10: weekly hours are the Places API regularOpeningHours bake (1 Oct 2026), never hand-filled. */
+for (const id of [
+  "kava-al-rabi",
+  "sociable-al-rabi",
+  "orne-cafe-al-rabi",
+  "atea-al-rabi",
+  "arco-al-rabi",
+  "diplab-al-rabi",
+  "and-coffee-al-rabi",
+  "wacafe-al-rabi",
+  "kulma-speciality-coffee-al-rabi",
+  "3bean-al-rabi",
+]) {
+  const hours = getShop(id)?.openingHours;
+  assert(
+    hours?.weekdayDescriptions?.length === 7 && (hours.periods?.length ?? 0) > 0,
+    `${id} carries the Places weekly hours`,
+  );
 }
 assert(
   !getShop("sand-clock-sulimaniyah"),

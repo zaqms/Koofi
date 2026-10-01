@@ -189,6 +189,14 @@ assert(
   shopsInDistrict("as-suwaidi").length === 0,
   "as-suwaidi catalog is empty after the closed drop",
 );
+assert(
+  !districtEnMarkdown("al-masif").includes("/en/c/voom-al-masif"),
+  "al-masif EN must not keep the closed card link",
+);
+assert(
+  shopsInDistrict("al-masif").length === 10,
+  "al-masif catalog is 10 after the closed drop",
+);
 
 const kafdMeta = districtMetadata("kafd", "en");
 assert(kafdMeta.alternates?.canonical === "/en/coffee-shops/kafd", "kafd EN canonical");
@@ -560,6 +568,10 @@ for (const district of liveDistricts) {
 assert(
   !districtArMarkdown("as-suwaidi").includes("/c/drcafe-as-suwaidi"),
   "as-suwaidi AR must not keep the closed card link",
+);
+assert(
+  !districtArMarkdown("al-masif").includes("/c/voom-al-masif"),
+  "al-masif AR must not keep the closed card link",
 );
 assert(
   !districtArMarkdown("al-rabwah").includes("/c/get-up-coffee-ar-rabwah"),

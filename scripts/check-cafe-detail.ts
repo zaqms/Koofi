@@ -1104,7 +1104,7 @@ const remainingUnbaked = (
 });
 assert(
   remainingUnbaked.length === 0,
-  "44 place_id shops left unbaked after batch 6",
+  "43 place_id shops left unbaked after batch 6",
 );
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");

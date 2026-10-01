@@ -33676,32 +33676,6 @@
       "example": false
     },
     {
-      "id": "voom-al-masif",
-      "nameAr": "فووم",
-      "nameEn": "Voom",
-      "city": "riyadh",
-      "neighborhood": "al-masif",
-      "neighborhoodAr": "المصيف",
-      "vibeTags": [
-        "قهوة"
-      ],
-      "momentTags": [
-        "qahwa"
-      ],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd45ccb7c217:0x1c2dd318e8c468b7!8m2!3d24.7667917!4d46.6821846",
-      "pin": {
-        "lat": 24.7667917,
-        "lng": 46.6821846
-      },
-      "logoUrl": "/logos/voom-al-masif.jpg",
-      "popularityIndex": 40,
-      "placeId": "ChIJF8K3zEX9Lj4Rt2jE6BjTLRw",
-      "dineIn": false,
-      "outdoorSeating": false,
-      "pickupOnly": null,
-      "example": false
-    },
-    {
       "id": "o2-coffee-al-masif",
       "nameAr": "O2 كوفي",
       "nameEn": "O2 Coffee",

@@ -447,6 +447,53 @@ const BATCH8_IDS = [
   "alwaal-albari-al-olaya",
 ] as const;
 
+/** BATCH9 Places heroes for the previously-unbaked place_id cafés (43 with photos). */
+const BATCH9_IDS = [
+  "voute-fot-al-naseem-sharqi",
+  "jaro-cafe-al-naseem-sharqi",
+  "tamper-speciality-al-naseem-sharqi",
+  "luxo-coffee-al-naseem-sharqi",
+  "ma-specialty-al-naseem-sharqi",
+  "get-up-coffee-al-naseem-sharqi",
+  "trivali-roaster-al-naseem-gharbi",
+  "gusn-coffee-al-naseem-gharbi",
+  "public-al-naseem-sharqi",
+  "be-such-al-naseem-gharbi",
+  "hjeen-roaster-saudi-90s-ar-rabwah",
+  "on-move-ar-rabwah",
+  "claz-ar-rabwah",
+  "coffee-address-ar-rabwah-ihsaa",
+  "somatcha-ar-rabwah",
+  "jaam-coffee-ar-rabwah",
+  "roasting-art-al-masif",
+  "qaha-roastery-al-masif",
+  "voute-fot-al-masif",
+  "coffee-address-al-masif",
+  "brsk-al-masif",
+  "voom-al-masif",
+  "o2-coffee-al-masif",
+  "loom-coffee-al-masif",
+  "befine-coffee-al-masif",
+  "brew-crew-al-mughrizat",
+  "waznah-coffee-al-masif",
+  "black-stamp-al-masif",
+  "aaj-al-mughrizat",
+  "kyok-al-nakheel",
+  "crops-al-narjis",
+  "bala-al-rawabi",
+  "ract-al-qirawan",
+  "orkt-al-hamra",
+  "rex-al-arid",
+  "veo-hittin",
+  "essert-al-arid",
+  "otto-al-muruj",
+  "behind-al-muruj",
+  "shubak-al-bun-badr",
+  "hearth-al-arid",
+  "abeille-al-narjis",
+  "way-coffee-dhahrat-al-badiah",
+] as const;
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-rabi",
   "drive-al-rabi-2",
@@ -465,6 +512,7 @@ const batch5HeroIds = BATCH5_IDS.filter((id) => bakedHeroes[id]);
 const batch6HeroIds = BATCH6_IDS.filter((id) => bakedHeroes[id]);
 const batch7HeroIds = BATCH7_IDS.filter((id) => bakedHeroes[id]);
 const batch8HeroIds = BATCH8_IDS.filter((id) => bakedHeroes[id]);
+const batch9HeroIds = BATCH9_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -474,8 +522,9 @@ assert(
       batch5HeroIds.length +
       batch6HeroIds.length +
       batch7HeroIds.length +
-      batch8HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–8 merge in",
+      batch8HeroIds.length +
+      batch9HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–9 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
@@ -484,6 +533,7 @@ assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
 assert(batch6HeroIds.length === 42, "batch 6 42-shop hero set is complete after the As Suwaidi drop");
 assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
 assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
+assert(batch9HeroIds.length === 43, "batch 9 43-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -497,6 +547,7 @@ function expectedHeroCount(id: string): number {
   if (id === "hokkaido-al-hamra") return 3;
   if (id === "buljah-al-olaya") return 3;
   if (id === "latch-al-mughrizat") return 3;
+  if (id === "coffee-address-al-masif") return 3;
   return 4;
 }
 for (const [id, photos] of Object.entries(bakedHeroes)) {
@@ -1104,7 +1155,7 @@ const remainingUnbaked = (
 });
 assert(
   remainingUnbaked.length === 0,
-  "43 place_id shops left unbaked after batch 6",
+  "no place_id shops left unbaked after batch 9",
 );
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");

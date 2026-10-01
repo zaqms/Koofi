@@ -178,8 +178,8 @@ assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.length === 51, `expected 51 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 354, `specialty discovery 345→354 with Ar Rabi Scout-10, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 422, `catalog 413→422 with Ar Rabi Scout-10, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 353, `specialty discovery 354→353 after dropping closed Voom Al Masif, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 421, `catalog 422→421 after dropping closed Voom Al Masif, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1483,6 +1483,14 @@ const MALAZ_REFILL = {
   assert(
     listDirectoryShopsForDistrict("as-suwaidi").length === 0,
     "as-suwaidi has no live catalog row after the closed drop",
+  );
+  assert(
+    !getShop("voom-al-masif"),
+    "CLOSED_PERMANENTLY Voom Al Masif stays dropped",
+  );
+  assert(
+    listDirectoryShopsForDistrict("al-masif").length === 10,
+    "al-masif specialty directory is 10 after the closed Voom drop",
   );
   assert(
     !listRealShops().some((shop) =>

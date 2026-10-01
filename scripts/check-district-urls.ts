@@ -4159,22 +4159,285 @@ for (const id of [
   "jolt-al-olaya",
   "key-cafe-al-olaya",
   "alwaal-albari-al-olaya",
-  "crops-al-narjis",
-  "bala-al-rawabi",
-  "ract-al-qirawan",
-  "orkt-al-hamra",
-  "rex-al-arid",
-  "veo-hittin",
-  "essert-al-arid",
-  "otto-al-muruj",
-  "behind-al-muruj",
-  "shubak-al-bun-badr",
   "hearth-al-arid",
-  "abeille-al-narjis",
-  "way-coffee-dhahrat-al-badiah",
 ]) {
   assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
 }
+
+function assertPlacesHours(
+  id: string,
+  weekdayDescriptions: readonly string[],
+  periods: readonly (readonly [number, number, number, number, number, number])[],
+) {
+  const hours = getShop(id)?.openingHours;
+  const actual = (hours?.periods ?? []).map((period) => [
+    period.open.day,
+    period.open.hour,
+    period.open.minute,
+    period.close?.day,
+    period.close?.hour,
+    period.close?.minute,
+  ]);
+  assert(
+    JSON.stringify(hours?.weekdayDescriptions) === JSON.stringify(weekdayDescriptions) &&
+      JSON.stringify(actual) === JSON.stringify(periods),
+    `${id} keeps the Places weekly hours`,
+  );
+}
+
+assertPlacesHours(
+  "crops-al-narjis",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 0, 0],
+    [1, 6, 0, 2, 0, 0],
+    [2, 6, 0, 3, 0, 0],
+    [3, 6, 0, 4, 0, 0],
+    [4, 6, 0, 5, 0, 0],
+    [5, 6, 0, 6, 0, 0],
+    [6, 6, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "bala-al-rawabi",
+  [
+    "Monday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 12:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 12:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 12, 0, 1, 0, 0],
+    [1, 12, 0, 2, 0, 0],
+    [2, 12, 0, 3, 0, 0],
+    [3, 12, 0, 4, 0, 0],
+    [4, 12, 0, 5, 1, 0],
+    [5, 12, 0, 6, 1, 0],
+    [6, 12, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "ract-al-qirawan",
+  [
+    "Monday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 4:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 4:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 16, 0, 1, 0, 0],
+    [1, 16, 0, 2, 0, 0],
+    [2, 16, 0, 3, 0, 0],
+    [3, 16, 0, 4, 0, 0],
+    [4, 16, 0, 5, 1, 0],
+    [5, 16, 0, 6, 1, 0],
+    [6, 16, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "orkt-al-hamra",
+  [
+    "Monday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Wednesday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 7:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 1:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 1:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Sunday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 7, 0, 1, 1, 0],
+    [1, 7, 0, 2, 1, 0],
+    [2, 7, 0, 3, 1, 0],
+    [3, 7, 0, 4, 1, 0],
+    [4, 7, 0, 5, 0, 0],
+    [5, 13, 0, 6, 2, 0],
+    [6, 13, 0, 0, 2, 0],
+  ],
+);
+assertPlacesHours(
+  "rex-al-arid",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 12:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 8:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 1, 0],
+    [1, 6, 0, 2, 1, 0],
+    [2, 6, 0, 3, 1, 0],
+    [3, 6, 0, 4, 1, 0],
+    [4, 6, 0, 5, 1, 0],
+    [5, 12, 0, 6, 1, 0],
+    [6, 8, 0, 0, 1, 0],
+  ],
+);
+assertPlacesHours(
+  "veo-hittin",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Friday: 12:30\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 2, 0],
+    [1, 6, 0, 2, 2, 0],
+    [2, 6, 0, 3, 2, 0],
+    [3, 6, 0, 4, 2, 0],
+    [4, 6, 0, 5, 2, 0],
+    [5, 12, 30, 6, 2, 0],
+    [6, 6, 0, 0, 2, 0],
+  ],
+);
+assertPlacesHours(
+  "essert-al-arid",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u200912:30\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Friday: 8:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 1, 0],
+    [1, 6, 0, 2, 1, 0],
+    [2, 6, 0, 3, 0, 30],
+    [3, 6, 0, 4, 1, 0],
+    [4, 6, 0, 5, 2, 0],
+    [5, 8, 0, 6, 2, 0],
+    [6, 6, 0, 0, 1, 0],
+  ],
+);
+assertPlacesHours(
+  "otto-al-muruj",
+  [
+    "Monday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Tuesday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Wednesday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Thursday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Friday: 12:30\u2009\u2013\u200911:30\u202fPM",
+    "Saturday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Sunday: 4:00\u2009\u2013\u200911:00\u202fPM",
+  ],
+  [
+    [0, 16, 0, 0, 23, 0],
+    [1, 16, 0, 1, 23, 0],
+    [2, 16, 0, 2, 23, 0],
+    [3, 16, 0, 3, 23, 0],
+    [4, 16, 0, 4, 23, 0],
+    [5, 12, 30, 5, 23, 30],
+    [6, 16, 0, 6, 23, 0],
+  ],
+);
+assertPlacesHours(
+  "behind-al-muruj",
+  [
+    "Monday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Tuesday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Wednesday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Thursday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Friday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Saturday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Sunday: 1:00\u2009\u2013\u200911:00\u202fPM",
+  ],
+  [
+    [0, 13, 0, 0, 23, 0],
+    [1, 13, 0, 1, 23, 0],
+    [2, 13, 0, 2, 23, 0],
+    [3, 13, 0, 3, 23, 0],
+    [4, 13, 0, 4, 23, 0],
+    [5, 13, 0, 5, 23, 0],
+    [6, 13, 0, 6, 23, 0],
+  ],
+);
+assertPlacesHours(
+  "shubak-al-bun-badr",
+  [
+    "Monday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Tuesday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Wednesday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Thursday: 2:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 2:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+  ],
+  [
+    [0, 14, 0, 1, 2, 0],
+    [1, 14, 0, 2, 2, 0],
+    [2, 14, 0, 3, 2, 0],
+    [3, 14, 0, 4, 2, 0],
+    [4, 14, 0, 5, 0, 0],
+    [5, 14, 0, 6, 2, 0],
+    [6, 14, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "abeille-al-narjis",
+  [
+    "Monday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Saturday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 8, 0, 1, 0, 0],
+    [1, 8, 0, 2, 0, 0],
+    [2, 8, 0, 3, 0, 0],
+    [3, 8, 0, 4, 0, 0],
+    [4, 8, 0, 5, 0, 0],
+    [5, 12, 0, 6, 0, 0],
+    [6, 8, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "way-coffee-dhahrat-al-badiah",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 1:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 1, 0],
+    [1, 6, 0, 2, 1, 0],
+    [2, 6, 0, 3, 1, 0],
+    [3, 6, 0, 4, 1, 0],
+    [4, 6, 0, 5, 1, 0],
+    [5, 13, 0, 6, 1, 0],
+    [6, 6, 0, 0, 1, 0],
+  ],
+);
+
 const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "bacha-coffee-solitaire": {
     nameEn: "Bacha Coffee Solitaire Mall",

@@ -178,8 +178,8 @@ assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.length === 51, `expected 51 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 355, `specialty discovery 345→355 with Ar Rabi Scout-10, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 423, `catalog 413→423 with Ar Rabi Scout-10, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 354, `specialty discovery 345→354 with Ar Rabi Scout-10, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 422, `catalog 413→422 with Ar Rabi Scout-10, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -929,7 +929,7 @@ assert(
 );
 
 const rabi = filterDirectoryShops(shops, "al-rabi");
-assert(rabi.length === 12, `al-rabi has 12 shops, got ${rabi.length}`);
+assert(rabi.length === 11, `al-rabi has 11 shops, got ${rabi.length}`);
 for (const id of [
   "kava-al-rabi",
   "sociable-al-rabi",
@@ -939,7 +939,6 @@ for (const id of [
   "diplab-al-rabi",
   "and-coffee-al-rabi",
   "wacafe-al-rabi",
-  "kulma-speciality-coffee-al-rabi",
   "3bean-al-rabi",
 ]) {
   assert(rabi.some((shop) => shop.id === id), `al-rabi includes ${id}`);
@@ -4026,19 +4025,6 @@ const scoutPack: {
     outdoorSeating: null,
   },
   {
-    id: "kulma-speciality-coffee-al-rabi",
-    hex: "0x3e2ee3004a1a16e9:0x5bc810ceb8bf0c63",
-    neighborhood: "al-rabi",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-    logoUrl: "/logos/kulma-speciality-coffee-al-olaya.jpg",
-    pin: { lat: 24.7833217, lng: 46.6456279 },
-    coordsInUrl: true,
-    placeId: "ChIJ6RYaSgDjLj4RYwy_uM4QyFs",
-    dineIn: true,
-    outdoorSeating: null,
-  },
-  {
     id: "3bean-al-rabi",
     hex: "0x3e2ee3dbef551423:0xc82874176841baa6",
     neighborhood: "al-rabi",
@@ -4248,7 +4234,6 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "diplab-al-rabi": { nameEn: "diplab cafe", nameAr: "ديب لاب كافيه" },
   "and-coffee-al-rabi": { nameEn: "& Coffee", nameAr: "كوفي اند" },
   "wacafe-al-rabi": { nameEn: "Wacafe", nameAr: "وكف" },
-  "kulma-speciality-coffee-al-rabi": { nameEn: "KULMA Speciality Coffee", nameAr: "مقهى كولما" },
   "3bean-al-rabi": { nameEn: "3bean Coffee Roastery", nameAr: "محمصة ثري بين" },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
@@ -4266,7 +4251,6 @@ for (const id of [
   "diplab-al-rabi",
   "and-coffee-al-rabi",
   "wacafe-al-rabi",
-  "kulma-speciality-coffee-al-rabi",
   "3bean-al-rabi",
 ]) {
   const hours = getShop(id)?.openingHours;

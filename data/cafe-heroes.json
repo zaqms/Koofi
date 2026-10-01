@@ -10969,29 +10969,8 @@
     {
       "src": "/cafe-heroes/jaro-cafe-al-naseem-sharqi/1.jpg",
       "attribution": {
-        "displayName": "Elsayed Mustafa",
-        "uri": "https://maps.google.com/maps/contrib/100089037048125929606"
-      }
-    },
-    {
-      "src": "/cafe-heroes/jaro-cafe-al-naseem-sharqi/2.jpg",
-      "attribution": {
-        "displayName": "Abby Life",
-        "uri": "https://maps.google.com/maps/contrib/108100894193416058962"
-      }
-    },
-    {
-      "src": "/cafe-heroes/jaro-cafe-al-naseem-sharqi/3.jpg",
-      "attribution": {
         "displayName": "Sattam Alanazi",
         "uri": "https://maps.google.com/maps/contrib/104080421202949264727"
-      }
-    },
-    {
-      "src": "/cafe-heroes/jaro-cafe-al-naseem-sharqi/4.jpg",
-      "attribution": {
-        "displayName": "Tota To",
-        "uri": "https://maps.google.com/maps/contrib/117481956755392735962"
       }
     }
   ],
@@ -11119,26 +11098,19 @@
     {
       "src": "/cafe-heroes/trivali-roaster-al-naseem-gharbi/1.jpg",
       "attribution": {
-        "displayName": "osama waleed",
-        "uri": "https://maps.google.com/maps/contrib/100424496348194338462"
-      }
-    },
-    {
-      "src": "/cafe-heroes/trivali-roaster-al-naseem-gharbi/2.jpg",
-      "attribution": {
-        "displayName": "محمصة تريفالي Trivali Roaster",
-        "uri": "https://maps.google.com/maps/contrib/110753034654001334079"
-      }
-    },
-    {
-      "src": "/cafe-heroes/trivali-roaster-al-naseem-gharbi/3.jpg",
-      "attribution": {
         "displayName": "Tri Vali",
         "uri": "https://maps.google.com/maps/contrib/107930443719492997479"
       }
     },
     {
-      "src": "/cafe-heroes/trivali-roaster-al-naseem-gharbi/4.jpg",
+      "src": "/cafe-heroes/trivali-roaster-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "osama waleed",
+        "uri": "https://maps.google.com/maps/contrib/100424496348194338462"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trivali-roaster-al-naseem-gharbi/3.jpg",
       "attribution": {
         "displayName": "Tri Vali",
         "uri": "https://maps.google.com/maps/contrib/107930443719492997479"
@@ -11156,19 +11128,12 @@
     {
       "src": "/cafe-heroes/gusn-coffee-al-naseem-gharbi/2.jpg",
       "attribution": {
-        "displayName": "OMAR",
-        "uri": "https://maps.google.com/maps/contrib/100521501163932872741"
-      }
-    },
-    {
-      "src": "/cafe-heroes/gusn-coffee-al-naseem-gharbi/3.jpg",
-      "attribution": {
         "displayName": "Mustafa Yousif",
         "uri": "https://maps.google.com/maps/contrib/115306291792168418374"
       }
     },
     {
-      "src": "/cafe-heroes/gusn-coffee-al-naseem-gharbi/4.jpg",
+      "src": "/cafe-heroes/gusn-coffee-al-naseem-gharbi/3.jpg",
       "attribution": {
         "displayName": "Abdullah F",
         "uri": "https://maps.google.com/maps/contrib/101270695194040750583"
@@ -11341,14 +11306,7 @@
       }
     },
     {
-      "src": "/cafe-heroes/coffee-address-ar-rabwah-ihsaa/3.png",
-      "attribution": {
-        "displayName": "Coffee Address | عنوان القهوة",
-        "uri": "https://maps.google.com/maps/contrib/116959598092151949310"
-      }
-    },
-    {
-      "src": "/cafe-heroes/coffee-address-ar-rabwah-ihsaa/4.jpg",
+      "src": "/cafe-heroes/coffee-address-ar-rabwah-ihsaa/3.jpg",
       "attribution": {
         "displayName": "Omar Alkassim",
         "uri": "https://maps.google.com/maps/contrib/113873026533514871209"
@@ -11396,20 +11354,6 @@
     {
       "src": "/cafe-heroes/jaam-coffee-ar-rabwah/2.jpg",
       "attribution": {
-        "displayName": "عائشة الريّس",
-        "uri": "https://maps.google.com/maps/contrib/108826607350157425029"
-      }
-    },
-    {
-      "src": "/cafe-heroes/jaam-coffee-ar-rabwah/3.jpg",
-      "attribution": {
-        "displayName": "خالد السعيد",
-        "uri": "https://maps.google.com/maps/contrib/115700927233873356048"
-      }
-    },
-    {
-      "src": "/cafe-heroes/jaam-coffee-ar-rabwah/4.jpg",
-      "attribution": {
         "displayName": "Hesa",
         "uri": "https://maps.google.com/maps/contrib/109664643982584233909"
       }
@@ -11435,13 +11379,6 @@
       "attribution": {
         "displayName": "وفاء محمد",
         "uri": "https://maps.google.com/maps/contrib/114605866424626894013"
-      }
-    },
-    {
-      "src": "/cafe-heroes/roasting-art-al-masif/4.jpg",
-      "attribution": {
-        "displayName": "Nawaf Saleh",
-        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
       }
     }
   ],
@@ -11516,13 +11453,6 @@
     {
       "src": "/cafe-heroes/coffee-address-al-masif/2.jpg",
       "attribution": {
-        "displayName": "Motaib Othman",
-        "uri": "https://maps.google.com/maps/contrib/102274057035422644315"
-      }
-    },
-    {
-      "src": "/cafe-heroes/coffee-address-al-masif/3.jpg",
-      "attribution": {
         "displayName": "Sandsh Shrestha",
         "uri": "https://maps.google.com/maps/contrib/104750345295840948932"
       }
@@ -11548,13 +11478,6 @@
       "attribution": {
         "displayName": "يوسف هشبل",
         "uri": "https://maps.google.com/maps/contrib/114704240493052770442"
-      }
-    },
-    {
-      "src": "/cafe-heroes/brsk-al-masif/4.jpg",
-      "attribution": {
-        "displayName": "منال",
-        "uri": "https://maps.google.com/maps/contrib/111193531871897413002"
       }
     }
   ],
@@ -11712,8 +11635,8 @@
     {
       "src": "/cafe-heroes/waznah-coffee-al-masif/1.jpg",
       "attribution": {
-        "displayName": "هواوي",
-        "uri": "https://maps.google.com/maps/contrib/103687340598949664726"
+        "displayName": "خالد عبدالرحمن",
+        "uri": "https://maps.google.com/maps/contrib/102615955129377555869"
       }
     },
     {
@@ -11728,13 +11651,6 @@
       "attribution": {
         "displayName": "هواوي",
         "uri": "https://maps.google.com/maps/contrib/103687340598949664726"
-      }
-    },
-    {
-      "src": "/cafe-heroes/waznah-coffee-al-masif/4.jpg",
-      "attribution": {
-        "displayName": "خالد عبدالرحمن",
-        "uri": "https://maps.google.com/maps/contrib/102615955129377555869"
       }
     }
   ],
@@ -11939,13 +11855,6 @@
         "displayName": "وافي ال سالم.",
         "uri": "https://maps.google.com/maps/contrib/115061961052944625369"
       }
-    },
-    {
-      "src": "/cafe-heroes/orkt-al-hamra/4.jpg",
-      "attribution": {
-        "displayName": "nouf altami",
-        "uri": "https://maps.google.com/maps/contrib/111247679795846616914"
-      }
     }
   ],
   "rex-al-arid": [
@@ -12029,13 +11938,6 @@
         "displayName": "M",
         "uri": "https://maps.google.com/maps/contrib/116357006227338637935"
       }
-    },
-    {
-      "src": "/cafe-heroes/essert-al-arid/4.jpg",
-      "attribution": {
-        "displayName": "Yazed.",
-        "uri": "https://maps.google.com/maps/contrib/103090133353320276734"
-      }
     }
   ],
   "otto-al-muruj": [
@@ -12088,13 +11990,6 @@
       "attribution": {
         "displayName": "Yazeed Alhusainan",
         "uri": "https://maps.google.com/maps/contrib/112360421705490783556"
-      }
-    },
-    {
-      "src": "/cafe-heroes/behind-al-muruj/4.jpg",
-      "attribution": {
-        "displayName": "AbdullaH",
-        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
       }
     }
   ],

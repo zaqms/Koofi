@@ -547,7 +547,21 @@ function expectedHeroCount(id: string): number {
   if (id === "hokkaido-al-hamra") return 3;
   if (id === "buljah-al-olaya") return 3;
   if (id === "latch-al-mughrizat") return 3;
-  if (id === "coffee-address-al-masif") return 3;
+  if (id === "jaro-cafe-al-naseem-sharqi") return 1;
+  if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;
+  if (
+    id === "gusn-coffee-al-naseem-gharbi" ||
+    id === "roasting-art-al-masif" ||
+    id === "brsk-al-masif" ||
+    id === "orkt-al-hamra" ||
+    id === "waznah-coffee-al-masif" ||
+    id === "trivali-roaster-al-naseem-gharbi" ||
+    id === "essert-al-arid" ||
+    id === "coffee-address-ar-rabwah-ihsaa" ||
+    id === "behind-al-muruj"
+  ) {
+    return 3;
+  }
   return 4;
 }
 for (const [id, photos] of Object.entries(bakedHeroes)) {

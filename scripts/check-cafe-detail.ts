@@ -447,7 +447,7 @@ const BATCH8_IDS = [
   "alwaal-albari-al-olaya",
 ] as const;
 
-/** BATCH9 Places heroes for the previously-unbaked place_id cafés (43 with photos). */
+/** BATCH9 Places heroes for the previously-unbaked place_id cafés (42 with photos). */
 const BATCH9_IDS = [
   "voute-fot-al-naseem-sharqi",
   "jaro-cafe-al-naseem-sharqi",
@@ -470,7 +470,6 @@ const BATCH9_IDS = [
   "voute-fot-al-masif",
   "coffee-address-al-masif",
   "brsk-al-masif",
-  "voom-al-masif",
   "o2-coffee-al-masif",
   "loom-coffee-al-masif",
   "befine-coffee-al-masif",
@@ -533,7 +532,7 @@ assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
 assert(batch6HeroIds.length === 42, "batch 6 42-shop hero set is complete after the As Suwaidi drop");
 assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
 assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
-assert(batch9HeroIds.length === 43, "batch 9 43-shop hero set is complete");
+assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");

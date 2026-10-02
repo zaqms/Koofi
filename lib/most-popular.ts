@@ -13,6 +13,7 @@ import {
   PRODUCT_NAME,
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
+  TRENDING_SLUG,
   mostPopularHeading,
   mostPopularPath,
 } from "./product";
@@ -73,6 +74,7 @@ export function categoryListingStaticParams(): {
   return [
     ...categoryDistrictStaticParams(),
     { category: COFFEE_SHOPS_CATEGORY, slug: MOST_POPULAR_SLUG },
+    { category: COFFEE_SHOPS_CATEGORY, slug: TRENDING_SLUG },
     ...COFFEE_SHOP_CHIP_SLUGS.map(
       (slug): { category: DirectoryCategoryId; slug: string } => ({
         category: COFFEE_SHOPS_CATEGORY,

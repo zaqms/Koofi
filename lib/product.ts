@@ -371,6 +371,19 @@ export function mostPopularPath(language: Language = "ar"): string {
   return language === "en" ? `/en${path}` : path;
 }
 
+/** Latin slug for the Trending This Week list. Same shape as other list pages. */
+export const TRENDING_SLUG = "trending";
+
+export function isTrendingSlug(slug: string): boolean {
+  return slug === TRENDING_SLUG;
+}
+
+/** Trending This Week list. AR keeps the Latin slug, same as districts. */
+export function trendingPath(language: Language = "ar"): string {
+  const path = `/${COFFEE_SHOPS_CATEGORY}/${TRENDING_SLUG}`;
+  return language === "en" ? `/en${path}` : path;
+}
+
 /**
  * Shareable بيننا landing. Must stay `/halfway`, never `/h` —
  * `/h/{id}` is the invite session URL after اعزم خويك.

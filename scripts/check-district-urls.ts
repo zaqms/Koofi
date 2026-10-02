@@ -179,8 +179,8 @@ assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 assert(areas.length === 52, `expected 52 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 354, `specialty discovery 353→354 with Waqar Al Aziziyah, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 422, `catalog 421→422 with Waqar Al Aziziyah, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 364, `specialty discovery 354→364 with Shoug batch A1, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 432, `catalog 422→432 with Shoug batch A1, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1148,6 +1148,10 @@ const WAVE1_DISTRICTS: {
       "drive-al-qirawan",
       "scout-coffee-al-qirawan",
       "ract-al-qirawan",
+      "nap-al-qirawan",
+      "ouia-al-qirawan",
+      "shml-al-qirawan",
+      "for-coffee-roasters-al-qirawan",
     ],
   },
 ];
@@ -1211,12 +1215,13 @@ const MURUJ_REFILL = {
     "little-henri-al-muruj",
     "otto-al-muruj",
     "behind-al-muruj",
+    "cherie-al-muruj",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 9, `al-muruj has 9 shops, got ${rows.length}`);
+  assert(rows.length === 10, `al-muruj has 10 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1258,12 +1263,13 @@ const MOH_REFILL = {
     "hjeen-roasters-al-mohammadiyah",
     "hekaya-tale-al-mohammadiyah",
     "house-of-matcha-al-mohammadiyah",
+    "bab-al-mohammadiyah",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MOH_REFILL.id);
-  assert(rows.length === 4, `al-mohammadiyah has 4 shops, got ${rows.length}`);
+  assert(rows.length === 5, `al-mohammadiyah has 5 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-mohammadiyah"),
     "al-mohammadiyah filter stays in district",
@@ -1862,7 +1868,8 @@ const scoutPack: {
     | "al-narjis"
     | "badr"
     | "dhahrat-al-badiah"
-    | "al-aziziyah";
+    | "al-aziziyah"
+    | "al-nakheel";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -4081,6 +4088,135 @@ const scoutPack: {
     placeId: "ChIJKy_T0ZgJLz4RPPEeVUugIn0",
     dineIn: true,
     outdoorSeating: false,
+  },
+  {
+    id: "fav-coffee-room-al-malqa",
+    hex: "0x3e2ee7004c6e1c13:0x9d68a23fbbb456f3",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/fav-coffee-room-al-malqa.jpg",
+    pin: { lat: 24.8135096, lng: 46.5872023 },
+    coordsInUrl: true,
+    placeId: "ChIJExxuTADnLj4R81a0uz-iaJ0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "asfoura-al-malqa",
+    hex: "0x3e2ee55483715681:0x535c9c8273f81454",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7986493, lng: 46.6114552 },
+    coordsInUrl: true,
+    placeId: "ChIJgVZxg1TlLj4RVBT4c4KcXFM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bab-al-mohammadiyah",
+    hex: "0x3e2ee300747e7f87:0x6c346a1fe01e3398",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bab-al-mohammadiyah.jpg",
+    pin: { lat: 24.7392724, lng: 46.6489027 },
+    coordsInUrl: true,
+    placeId: "ChIJh39-dADjLj4RmDMe4B9qNGw",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "cherie-al-muruj",
+    hex: "0x3e2ee3c1855d7fc3:0x9f9b53c13178e828",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/cherie-al-muruj.png",
+    pin: { lat: 24.7622854, lng: 46.6603825 },
+    coordsInUrl: true,
+    placeId: "ChIJw39dhcHjLj4RKOh4McFTm58",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "da-nonna-al-nakheel",
+    hex: "0x3e2ee3a7dd00f84f:0xd64c48b5838c6af3",
+    neighborhood: "al-nakheel",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/da-nonna-al-nakheel.jpg",
+    pin: { lat: 24.7511551, lng: 46.6387268 },
+    coordsInUrl: true,
+    placeId: "ChIJT_gA3afjLj4R82qMg7VITNY",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "okawa-al-narjis",
+    hex: "0x3e2efb751afe87a1:0x90435bec78a9e241",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/okawa-al-narjis.jpg",
+    pin: { lat: 24.8407563, lng: 46.673187 },
+    coordsInUrl: true,
+    placeId: "ChIJoYf-GnX7Lj4RQeKpeOxbQ5A",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "nap-al-qirawan",
+    hex: "0x3e2ee55f2a614199:0xdd5833210545ac9f",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/nap-al-qirawan.png",
+    pin: { lat: 24.8235343, lng: 46.5981034 },
+    coordsInUrl: true,
+    placeId: "ChIJmUFhKl_lLj4Rn6xFBSEzWN0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "ouia-al-qirawan",
+    hex: "0x3e2ee5b88e7d525d:0x3af2bf3f2c58050c",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ouia-al-qirawan.jpg",
+    pin: { lat: 24.8303379, lng: 46.5965801 },
+    coordsInUrl: true,
+    placeId: "ChIJXVJ9jrjlLj4RDAVYLD-_8jo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "shml-al-qirawan",
+    hex: "0x3e2ee55365ec1e99:0xa8f233c114e3ea38",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/shml-al-qirawan.jpg",
+    pin: { lat: 24.8284159, lng: 46.5966631 },
+    coordsInUrl: true,
+    placeId: "ChIJmR7sZVPlLj4ROOrjFMEz8qg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "for-coffee-roasters-al-qirawan",
+    hex: "0x3e2ee531c4915ebb:0x7b97b8c07e18f93d",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/for-coffee-roasters-al-qirawan.jpg",
+    pin: { lat: 24.8431301, lng: 46.5963817 },
+    coordsInUrl: true,
+    placeId: "ChIJu16RxDHlLj4RPfkYfsC4l3s",
+    dineIn: true,
+    outdoorSeating: true,
   },
 ];
 

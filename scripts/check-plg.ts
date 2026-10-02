@@ -271,8 +271,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 422,
-  `popularity map should have 422 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 415,
+  `popularity map should have 415 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every(

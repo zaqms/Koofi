@@ -180,7 +180,7 @@ assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badia
 assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 assert(areas.length === 52, `expected 52 districts, got ${areas.length}`);
 assert(listDiscoveryShops().length === 354, `specialty discovery 353→354 with Waqar Al Aziziyah, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 422, `catalog 421→422 with Waqar Al Aziziyah, got ${listRealShops().length}`);
+assert(listRealShops().length === 415, `catalog 422→415 after the 7 wrong-district Al Rabi DT drops, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1488,7 +1488,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 78, `Drive-through directory is 78, got ${dt.length}`);
+  assert(dt.length === 71, `Drive-through directory is 71 after the 7 Al Rabi DT drops, got ${dt.length}`);
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
     "Drive-through directory is tagged only",
@@ -1508,6 +1508,32 @@ const MALAZ_REFILL = {
   assert(
     !getShop("voom-al-masif"),
     "CLOSED_PERMANENTLY Voom Al Masif stays dropped",
+  );
+  // placeId fix 2026-10-02: these 7 were not in Al Rabi (real branches in
+  // Al Qadisiyyah, Tuwaiq, Al Falah, Uhud, Utaiqah, Al Mursalat, Al Aqiq).
+  // Dropped until Scout re-adds them under real-district slugs.
+  for (const id of [
+    "n5-caffe-al-rabi",
+    "n5-caffe-al-rabi-2",
+    "drive-al-rabi",
+    "drive-al-rabi-2",
+    "drive-al-rabi-3",
+    "drive-al-rabi-4",
+    "drive-al-rabi-5",
+  ]) {
+    assert(!getShop(id), `${id} stays dropped (wrong district)`);
+    for (const locale of ["", "/en"]) {
+      assert(
+        LEGACY_SHOP_REDIRECTS.some(
+          (row) => row.source === `${locale}/c/${id}` && row.statusCode === 308,
+        ),
+        `${locale}/c/${id} 308s after the drop`,
+      );
+    }
+  }
+  assert(
+    listDirectoryShopsForDistrict("al-rabi").length === 11,
+    "al-rabi specialty directory stays 11 (the dropped rows were DT lane)",
   );
   assert(
     listDirectoryShopsForDistrict("al-masif").length === 10,
@@ -1914,6 +1940,12 @@ const scoutPack: {
     neighborhood: "al-rabwah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    // Logo landed after the Scout pack; placeId + seating are the
+    // share-link place (2026-10-02 placeId fix), not the searchText hit.
+    logoUrl: "/logos/makhsousa-coffee-ar-rabwah.jpg",
+    placeId: "ChIJRzxqH6gHLz4R-mmdmTKMQX8",
+    dineIn: null,
+    outdoorSeating: null,
   },
   {
     id: "blog-coffee-ar-rabwah",
@@ -1970,6 +2002,12 @@ const scoutPack: {
     neighborhood: "qurtubah",
     vibe: ["قهوة"],
     moments: ["friend", "qahwa"],
+    // Logo landed after the Scout pack; placeId + seating are the
+    // share-link place (2026-10-02 placeId fix), not the searchText hit.
+    logoUrl: "/logos/lattio-lounge-qurtubah.jpg",
+    placeId: "ChIJKbOmC6P9Lj4Rz4myGJYGvm8",
+    dineIn: true,
+    outdoorSeating: null,
   },
   {
     id: "n5-caffe-qurtubah",

@@ -459,8 +459,8 @@ assert(
   "drive-through slug filters drive-through tags",
 );
 assert(
-  listDriveThroughDirectoryShops().length === 78,
-  "Drive-through directory is 68 ADD + 10 TAG",
+  listDriveThroughDirectoryShops().length === 71,
+  "Drive-through directory is 61 ADD + 10 TAG after the 7 Al Rabi DT drops",
 );
 assert(
   listDriveThroughDirectoryShops().every((shop) =>

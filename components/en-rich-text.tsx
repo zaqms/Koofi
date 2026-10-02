@@ -144,11 +144,11 @@ export function EnRichText({
   className = "space-y-3 text-sm leading-6 text-ink",
 }: EnRichTextProps) {
   const items = blocks(expandChainOnlyRegions(markdown))
-    .map((block) => {
+    .map((block, index) => {
       if (block.startsWith("# ")) {
         if (skipHeadingLevel1) return null;
         return (
-          <h1 key={block} className="text-base font-semibold">
+          <h1 key={`h1-${index}`} className="text-base font-semibold">
             {renderInline(stripChainOnlyTags(block.slice(2)))}
           </h1>
         );
@@ -158,7 +158,7 @@ export function EnRichText({
         const label = stripChainOnlyTags(block.slice(3));
         return (
           <h2
-            key={block}
+            key={`h2-${index}`}
             className="text-sm font-semibold"
             {...(chainOnly ? { "data-chain-only": "" } : {})}
           >
@@ -172,12 +172,12 @@ export function EnRichText({
           .map((line) => line.trim())
           .filter((line) => line.startsWith("- "));
         return (
-          <ul key={block} className="list-disc space-y-1 ps-5">
-            {rows.map((row) => {
+          <ul key={`ul-${index}`} className="list-disc space-y-1 ps-5">
+            {rows.map((row, rowIndex) => {
               const chain = row.startsWith("- {chain} ");
               const body = chain ? row.slice("- {chain} ".length) : row.slice(2);
               return (
-                <li key={row} {...(chain ? { "data-chain-card": "" } : {})}>
+                <li key={`li-${index}-${rowIndex}`} {...(chain ? { "data-chain-card": "" } : {})}>
                   {renderWithClauses(body)}
                 </li>
               );
@@ -190,7 +190,7 @@ export function EnRichText({
         /\{chain-only\}|\{\/chain-only\}/.test(block) && !paragraph.includes("{chain-counts}");
       return (
         <p
-          key={block}
+          key={`p-${index}`}
           className="text-sm leading-6"
           {...(chainOnly ? { "data-chain-only": "" } : {})}
         >

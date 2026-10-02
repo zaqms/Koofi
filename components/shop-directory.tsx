@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { DirectoryCard } from "@/components/directory-card";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
 import { ViewAllLink } from "@/components/view-all-link";
@@ -41,6 +41,18 @@ import {
   isStaticDirectoryChip,
   mostPopularHeading,
 } from "@/lib/product";
+import {
+  CHAIN_FILTER_EMPTY_LEAD,
+  CHAIN_FILTER_LABEL,
+  CHAIN_FILTER_SHOW,
+  chainFilterDedupeKey,
+  hideChainsServerSnapshot,
+  readHideChains,
+  subscribeHideChains,
+  syncHideChainsAttribute,
+  writeHideChains,
+  type ChainFilterListing,
+} from "@/lib/chain-filter";
 import { trackEvent } from "@/lib/track";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import type { Language, MomentTag, NeighborhoodId, Pin } from "@/lib/types";
@@ -96,6 +108,14 @@ export function ShopDirectory({
     readDistrictCafeSort,
     districtCafeSortServerSnapshot,
   );
+  const hideChains = useSyncExternalStore(
+    subscribeHideChains,
+    readHideChains,
+    hideChainsServerSnapshot,
+  );
+  useEffect(() => {
+    syncHideChainsAttribute(readHideChains());
+  }, [hideChains]);
   const districtSort = resolveDistrictCafeSort(
     storedDistrictSort,
     nearbyAvailable,
@@ -120,15 +140,31 @@ export function ShopDirectory({
           : filterDirectoryShops(shops, district),
     [popular, shops, moment, district],
   );
+  const chainCount = filtered.filter((shop) => shop.isChain).length;
+  const chainListing: ChainFilterListing | null = district
+    ? "district"
+    : popular || headingMode === "city-cafes"
+      ? null
+      : chipId || moment
+        ? "category"
+        : null;
+  const showChainToggle = chainListing != null && chainCount > 0;
+  const chainScoped = useMemo(
+    () =>
+      showChainToggle && hideChains
+        ? filtered.filter((shop) => !shop.isChain)
+        : filtered,
+    [showChainToggle, hideChains, filtered],
+  );
   const visible = useMemo(() => {
     if (district) {
-      return sortDistrictCafes(filtered, districtSort, origin, language);
+      return sortDistrictCafes(chainScoped, districtSort, origin, language);
     }
     if (resultSort) {
-      return sortDirectoryShops(filtered, sort, origin, language);
+      return sortDirectoryShops(chainScoped, sort, origin, language);
     }
-    return filtered;
-  }, [district, districtSort, resultSort, filtered, sort, origin, language]);
+    return chainScoped;
+  }, [district, districtSort, resultSort, chainScoped, sort, origin, language]);
 
   function pickDistrictSort(next: DistrictCafeSort) {
     writeDistrictCafeSort(next);
@@ -144,6 +180,34 @@ export function ShopDirectory({
     if (next === "nearby" && !nearbyAvailable) {
       void requestVisitorLocation({ retry: true });
     }
+  }
+
+  function pickChainFilter(nextHidden: boolean) {
+    if (!chainListing) return;
+    writeHideChains(nextHidden);
+    const visibleCount = (
+      nextHidden ? filtered.filter((shop) => !shop.isChain) : filtered
+    ).length;
+    const state = nextHidden ? "hidden" : "shown";
+    trackEvent(
+      "chain_filter",
+      {
+        state,
+        locale: language,
+        ...(district ? { district_id: district } : {}),
+        listing: chainListing,
+        chain_count: chainCount,
+        visible_count: visibleCount,
+      },
+      {
+        dedupeKey: chainFilterDedupeKey({
+          listing: chainListing,
+          districtId: district ?? undefined,
+          language,
+          state,
+        }),
+      },
+    );
   }
 
   function pickSort(next: DirectoryResultSort) {
@@ -183,8 +247,9 @@ export function ShopDirectory({
     Boolean(chipId && isStaticDirectoryChip(chipId));
   const categoryId = district ?? (popular ? "popular" : chipId);
   const listedIds = visible.slice(0, 8).map((shop) => shop.id);
+  const localOnlyEmpty = showChainToggle && hideChains && visible.length === 0;
   const feedbackResetIds = district
-    ? [...filtered].map((shop) => shop.id).sort()
+    ? [...chainScoped].map((shop) => shop.id).sort()
     : listedIds;
 
   return (
@@ -247,6 +312,25 @@ export function ShopDirectory({
         />
       ) : null}
 
+      {showChainToggle ? (
+        <div className="mt-3">
+          <button
+            type="button"
+            aria-pressed={hideChains}
+            data-chain-filter=""
+            data-chain-filter-state={hideChains ? "hidden" : "shown"}
+            onClick={() => pickChainFilter(!hideChains)}
+            className={
+              hideChains
+                ? "h-8 rounded-full bg-bean px-3 text-[13px] text-foam"
+                : "h-8 rounded-full border border-line bg-paper px-3 text-[13px] text-ink"
+            }
+          >
+            {CHAIN_FILTER_LABEL[language]}
+          </button>
+        </div>
+      ) : null}
+
       <ul
         className={homeList ? "mt-8 grid gap-3" : "mt-4 grid gap-3"}
         data-district-cafe-order={district ? districtSort : undefined}
@@ -255,7 +339,19 @@ export function ShopDirectory({
           <DirectoryCard key={shop.id} shop={shop} language={language} />
         ))}
       </ul>
-      {categoryPage && visible.length === 0 && !waitingForNearby ? (
+      {localOnlyEmpty ? (
+        <p className="mt-4 text-sm leading-6 text-ink" data-chain-filter-empty="">
+          {CHAIN_FILTER_EMPTY_LEAD[language]}
+          <button
+            type="button"
+            className="text-bean underline"
+            onClick={() => pickChainFilter(false)}
+          >
+            {CHAIN_FILTER_SHOW[language]}
+          </button>
+        </p>
+      ) : null}
+      {categoryPage && visible.length === 0 && !waitingForNearby && !localOnlyEmpty ? (
         <div className="mt-4">
           <ResultsFeedbackBlock
             language={language}

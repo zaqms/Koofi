@@ -1,12 +1,21 @@
 import addedAtFile from "../data/catalog-added-at.json";
 import catalogFile from "../data/catalog.json";
 import popularityIndexFile from "../data/popularity-index.json";
+import { isChainShop } from "./chain-brands";
+import {
+  isHalfwaySitDown,
+  type HalfwayEligibleShop,
+} from "./halfway-eligibility";
 import { DEFAULT_LIVE_CITY } from "./cities";
+import { directoryNeighborhoods } from "./directory";
 import { districtCity } from "./district-city";
 import { officialShopCoords } from "./place-coords";
 import { isExampleShop } from "./product";
 import { shopMapsHref } from "./public-url";
-import { effectivePopularityIndex } from "./tiktok-popularity";
+import {
+  chainPopularityIndex,
+  effectivePopularityIndex,
+} from "./tiktok-popularity";
 import { NEIGHBORHOOD_IDS, type CatalogFile, type City, type NeighborhoodId, type Shop } from "./types";
 import type { DirectoryShop } from "./directory";
 
@@ -32,11 +41,17 @@ const CATALOG_ADDED_AT = (
  * The index file stays untouched so a follower refresh cannot compound.
  * No baked index → the catalog row is unchanged (TikTok does not create a rank).
  */
+/**
+ * Chains take a flat base of 40 plus the neutral TikTok weight.
+ * Every other row keeps the baked index plus its own TikTok bonus.
+ */
+export function bakedPopularityFor(shop: Shop): number | undefined {
+  if (isChainShop(shop)) return chainPopularityIndex();
+  return effectivePopularityIndex(POPULARITY_INDEX[shop.id], shop.id);
+}
+
 function withBakedPopularity(shop: Shop): Shop {
-  const popularityIndex = effectivePopularityIndex(
-    POPULARITY_INDEX[shop.id],
-    shop.id,
-  );
+  const popularityIndex = bakedPopularityFor(shop);
   if (popularityIndex == null) return shop;
   return { ...shop, popularityIndex };
 }
@@ -68,9 +83,147 @@ export function isDriveThroughLane(
   return shop.catalogLane === "drive-through";
 }
 
-/** Default specialty discovery — excludes Drive-through-lane additions. */
+/** Local specialty: real, not drive-through, not a mass-market chain. */
+export function isDiscoveryShop(
+  shop: Pick<Shop, "example" | "catalogLane" | "isChain">,
+): boolean {
+  return !isExampleShop(shop) && !isDriveThroughLane(shop) && !isChainShop(shop);
+}
+
+/**
+ * A chain is listed only when it is sit-down, not a drive-through lane,
+ * and not pickup-only. A drive-through moment tag by itself does not hide
+ * a sit-down chain — those rows stay on the drive-through list via the tag.
+ * Unknown or false dine-in stays off the district page, its meta, JSON-LD, and llms.txt.
+ */
+export function chainIsListed(shop: HalfwayEligibleShop): boolean {
+  if (!isChainShop(shop)) return true;
+  if (shop.seatingVerdict?.dineIn === false) return false;
+  if (shop.catalogLane === "drive-through") return false;
+  if (shop.pickupOnly === true) return false;
+  return isHalfwaySitDown(shop);
+}
+
+/** A manual seating verdict must match the stored lane and dineIn. */
+export function seatingVerdictDisagrees(shop: Shop): string | null {
+  const verdict = shop.seatingVerdict;
+  if (!verdict) return null;
+  const lane = shop.catalogLane === "drive-through";
+  if (verdict.dineIn === false) {
+    if (!lane) return `${shop.id} verdict is not dine-in but the drive-through lane is missing`;
+    if (shop.dineIn !== false) {
+      return `${shop.id} verdict is not dine-in but dineIn is ${String(shop.dineIn)}`;
+    }
+    return null;
+  }
+  if (lane) return `${shop.id} verdict is dine-in but the row is still a drive-through lane`;
+  if (shop.dineIn !== true) {
+    return `${shop.id} verdict is dine-in but dineIn is ${String(shop.dineIn)}`;
+  }
+  return null;
+}
+
+/**
+ * District / browse listing row: local specialty plus a sit-down chain.
+ * Drive-through lanes, and chains with dine-in unknown or false, stay out.
+ */
+export function isListingShop(
+  shop: HalfwayEligibleShop & Pick<Shop, "example">,
+): boolean {
+  return (
+    !isExampleShop(shop) &&
+    !isDriveThroughLane(shop) &&
+    chainIsListed(shop)
+  );
+}
+
+export function discoveryShopsFrom(shops: readonly Shop[]): Shop[] {
+  return shops.filter((shop) => isDiscoveryShop(shop));
+}
+
+export function listingShopsFrom(shops: readonly Shop[]): Shop[] {
+  return shops.filter((shop) => isListingShop(shop));
+}
+
+/**
+ * Non-chain rows use the prod listing: specialty shops, or every real
+ * non-chain row when the district has no specialty shop. A chain row is
+ * added only when it is sit-down, not a drive-through lane, and not
+ * pickup-only. The fallback never returns a non-qualifying chain.
+ */
+export function districtListingFrom(
+  shops: readonly Shop[],
+  district: NeighborhoodId,
+): Shop[] {
+  const inDistrict = shops.filter(
+    (shop) => !isExampleShop(shop) && shop.neighborhood === district,
+  );
+  const nonChains = inDistrict.filter((shop) => !isChainShop(shop));
+  const nonChainSpecialty = nonChains.filter((shop) => !isDriveThroughLane(shop));
+  const nonChainShown = nonChainSpecialty.length > 0 ? nonChainSpecialty : nonChains;
+  const qualifyingChains = inDistrict.filter(
+    (shop) => isChainShop(shop) && chainIsListed(shop),
+  );
+  return [...nonChainShown, ...qualifyingChains];
+}
+
+/** True when every real row is a chain branch that fails the sit-down gate. */
+export function districtRowsAreUnlistedChains(
+  shops: readonly Shop[],
+  district: NeighborhoodId,
+): boolean {
+  const rows = shops.filter(
+    (shop) => !isExampleShop(shop) && shop.neighborhood === district,
+  );
+  return (
+    rows.length > 0 &&
+    rows.every((shop) => isChainShop(shop) && !chainIsListed(shop))
+  );
+}
+
+/** Specialty district set: local discovery only. A chains-only حي stays out. */
+export function specialtyDistrictIdsFrom(
+  shops: readonly Shop[],
+): NeighborhoodId[] {
+  return directoryNeighborhoods(discoveryShopsFrom(shops));
+}
+
+/** Catalog district set: any real row, including chains-only and drive-through. */
+export function catalogDistrictIdsFrom(
+  shops: readonly Shop[],
+): NeighborhoodId[] {
+  return directoryNeighborhoods(
+    shops
+      .filter((shop) => !isExampleShop(shop))
+      .map((shop) => ({ neighborhood: shop.neighborhood })),
+  );
+}
+
+/**
+ * Districts that still have a page. A local drive-through row keeps it.
+ * The page drops only when every row is a non-qualifying chain.
+ */
+export function listedDistrictIdsFrom(shops: readonly Shop[]): NeighborhoodId[] {
+  const seen = new Set<NeighborhoodId>();
+  const rows: { neighborhood: NeighborhoodId }[] = [];
+  for (const shop of shops) {
+    if (seen.has(shop.neighborhood)) continue;
+    seen.add(shop.neighborhood);
+    if (districtListingFrom(shops, shop.neighborhood).length > 0) {
+      rows.push({ neighborhood: shop.neighborhood });
+    }
+  }
+  return directoryNeighborhoods(rows);
+}
+
+/** Default specialty discovery — excludes drive-through lanes and chains. */
 export function listDiscoveryShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
-  return listRealShops(city).filter((shop) => !isDriveThroughLane(shop));
+  return discoveryShopsFrom(listRealShops(city));
+}
+
+/** Local specialty plus dine-in chain branches. Drive-through lanes stay out. */
+export function listListingShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
+  return listingShopsFrom(listRealShops(city));
 }
 
 export function realShopCount(): number {
@@ -111,6 +264,12 @@ function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
         catalogIndex: added.get(shop.id) ?? -1,
         addedAt: CATALOG_ADDED_AT[shop.id],
         ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
+        ...(shop.isChain
+          ? {
+              isChain: true as const,
+              ...(shop.chainBrand ? { chainBrand: shop.chainBrand } : {}),
+            }
+          : {}),
       };
     });
 }
@@ -131,32 +290,31 @@ export function listDriveThroughDirectoryShops(): DirectoryShop[] {
   );
 }
 
+/** Directory rows for local specialty plus dine-in chains. */
+export function listListingDirectoryShops(
+  city: City = DEFAULT_LIVE_CITY,
+): DirectoryShop[] {
+  return toDirectoryShops(listListingShops(city));
+}
+
 /**
- * Specialty shops in a district, or DT-lane shops when that district has
- * no default-catalog rows (so new DT-only districts still have a page).
+ * Prod rows for non-chains, plus sit-down chain branches. A district whose
+ * rows are all non-qualifying chains returns nothing.
  */
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,
 ): DirectoryShop[] {
   const city = districtCity(district);
-  const specialty = listDirectoryShops(city).filter(
-    (shop) => shop.neighborhood === district,
-  );
-  if (specialty.length > 0) return specialty;
-  return listAllDirectoryShops(city).filter((shop) => shop.neighborhood === district);
+  return toDirectoryShops(districtListingFrom(listRealShops(city), district));
 }
 
-/**
- * Neighborhood index: specialty catalog plus DT-lane shops that live in
- * districts with no specialty rows.
- */
+/** Neighborhood index: the same rows the district pages show. */
 export function listBrowseDirectoryShops(
   city: City = DEFAULT_LIVE_CITY,
 ): DirectoryShop[] {
-  const specialty = listDirectoryShops(city);
-  const specialtyDistricts = new Set(specialty.map((shop) => shop.neighborhood));
-  const extra = listAllDirectoryShops(city).filter(
-    (shop) => !specialtyDistricts.has(shop.neighborhood),
+  const real = listRealShops(city);
+  const shops = listedDistrictIdsFrom(real).flatMap((id) =>
+    districtListingFrom(real, id),
   );
-  return [...specialty, ...extra];
+  return toDirectoryShops(shops);
 }

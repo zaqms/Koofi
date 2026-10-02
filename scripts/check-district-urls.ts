@@ -1577,7 +1577,8 @@ const MALAZ_REFILL = {
     "an-nasim-al-gharbi specialty page is the Scout-3 (DT-lane drops off)",
   );
   assert(
-    listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
+    listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia") &&
+      !listRealShops().some((shop) => shop.id === "a-plus-kkia"),
     "kkia includes open dr.CAFE, not closed A PLUS",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));

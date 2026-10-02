@@ -146,7 +146,22 @@ export type Shop = {
    */
   catalogLane?: "drive-through";
   /**
-   * Dine-in for بيننا. Scout verdict wins over Places.
+   * Mass-market branch (Starbucks, Dunkin', dr.CAFE, …). Never specialty.
+   * `chainBrand` is a key in `CHAIN_BRANDS`. Absent on local cafés.
+   */
+  isChain?: true;
+  chainBrand?: string;
+  /**
+   * Manual seating call. Wins over Places `dineIn` on every refresh.
+   * `dineIn: false` keeps a drive-through lane; `true` is sit-down.
+   */
+  seatingVerdict?: {
+    dineIn: boolean;
+    source: "qa" | "scout";
+    date: string;
+  };
+  /**
+   * Dine-in for بيننا. A `seatingVerdict` wins over Places, then Scout.
    * `null` / missing = unresolved — fail-closed. Not a Soft Places vibe.
    */
   dineIn?: boolean | null;

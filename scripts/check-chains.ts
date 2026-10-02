@@ -521,8 +521,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 354, "specialty discovery stays 354");
-assert(listRealShops().length === 422, "catalog stays 422");
+assert(listDiscoveryShops().length === 364, "specialty discovery is 364 after Shoug A1");
+assert(listRealShops().length === 432, "catalog is 432 after Shoug A1");
 assert(listLiveDistrictIds().length === 52, "specialty districts stay 52");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 69,
@@ -530,9 +530,9 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 69, "district pages stay the 69 prod destinations");
 assert(listDriveThroughDirectoryShops().length === 78, "drive-through stays 78");
-assert(listListingShops().length === 354, "no dine-in chains in the live catalog");
-assert(listPublicShops().length === 354, "public list stays the specialty directory");
-assert(listBrowseDirectoryShops().length === 372, "browse keeps prod drive-through fallback rows");
+assert(listListingShops().length === 364, "no dine-in chains in the live catalog");
+assert(listPublicShops().length === 364, "public list stays the specialty directory");
+assert(listBrowseDirectoryShops().length === 382, "browse keeps prod drive-through fallback rows plus Shoug A1");
 assert(
   listDiscoveryShops().every((shop) => !shop.isChain),
   "no live discovery row is tagged",
@@ -601,7 +601,7 @@ const copyBlob = districtIds
   .join("\n---\n");
 assert(
   createHash("sha256").update(copyBlob).digest("hex") ===
-    "ec3e4dd0b8fb758dbe82317a53b9e2df81e5efc3df40eea31c07828c3dbdf717",
+    "151fe77f7cdc8441d31578f4b637c3ecfb425e3e380578d79a6a6030a32e8e6a",
   "district copy hash includes the house count helper",
 );
 assert(
@@ -722,7 +722,7 @@ assert(
 const llms = buildLlmsTxt();
 assert(
   createHash("sha256").update(llms).digest("hex") ===
-    "4e823f4d6a294980659b713803d6286ccdfd45adafa22e815ea7f1e8b1a6e738",
+    "0b2feffb77d138ddad6766e26e48723d0fcb947ab41c591c9ac55491bf162983",
   "llms.txt is identical with no chains",
 );
 assert(!llms.includes("chain"), "llms.txt does not mention chains");

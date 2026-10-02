@@ -1,9 +1,8 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getShop } from "./catalog";
 import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { neighborhoodLabel } from "./neighborhoods";
+import { publicOgImageDataUri } from "./og-image-data";
 import { PRODUCT_NAME, shopDisplayName } from "./product";
 import type { Language, Shop } from "./types";
 
@@ -15,22 +14,11 @@ type CafeOgProps = {
 };
 
 function shopImageDataUri(shop: Shop): string | null {
-  const path = shop.logoUrl?.trim() || shop.photoUrl?.trim();
-  if (!path || !path.startsWith("/") || path.startsWith("//")) return null;
-  const file = join(process.cwd(), "public", path);
-  try {
-    const buffer = readFileSync(file);
-    const ext = path.split(".").pop()?.toLowerCase();
-    const mime =
-      ext === "png"
-        ? "image/png"
-        : ext === "webp"
-          ? "image/webp"
-          : "image/jpeg";
-    return `data:${mime};base64,${buffer.toString("base64")}`;
-  } catch {
-    return null;
-  }
+  // Logo first, then photo; each must be a format Satori can decode
+  // (see lib/og-image-data.ts). A webp/ico logo must not 500 the card.
+  return (
+    publicOgImageDataUri(shop.logoUrl) ?? publicOgImageDataUri(shop.photoUrl)
+  );
 }
 
 async function loadArabicFont(): Promise<ArrayBuffer | null> {

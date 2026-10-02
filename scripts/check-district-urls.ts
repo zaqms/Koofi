@@ -1638,8 +1638,8 @@ const MALAZ_REFILL = {
     "Matcha directory is matcha-tagged only",
   );
   const harvestLogos: Record<string, string> = {
-    "house-of-matcha-al-mohammadiyah": "/logos/house-of-matcha-al-mohammadiyah.webp",
-    "house-of-matcha-sulimaniyah": "/logos/house-of-matcha-sulimaniyah.webp",
+    "house-of-matcha-al-mohammadiyah": "/logos/house-of-matcha-al-mohammadiyah.png",
+    "house-of-matcha-sulimaniyah": "/logos/house-of-matcha-sulimaniyah.png",
     "the-matcha-bar-olaya": "/logos/the-matcha-bar-olaya.jpg",
     "with-heart-diriyah": "/logos/with-heart-diriyah.jpg",
     "opinion-al-mathar": "/logos/opinion-al-mathar.png",
@@ -3240,7 +3240,7 @@ const scoutPack: {
     neighborhood: "al-mohammadiyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/house-of-matcha-al-mohammadiyah.webp",
+    logoUrl: "/logos/house-of-matcha-al-mohammadiyah.png",
   },
   {
     id: "house-of-matcha-sulimaniyah",
@@ -3248,7 +3248,7 @@ const scoutPack: {
     neighborhood: "sulimaniyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/house-of-matcha-sulimaniyah.webp",
+    logoUrl: "/logos/house-of-matcha-sulimaniyah.png",
   },
   {
     id: "somatcha-an-nada",

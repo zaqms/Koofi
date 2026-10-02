@@ -24,9 +24,12 @@ import {
 } from "../lib/chain-filter";
 import {
   catalogDistrictIdsFrom,
+  chainIsListed,
   discoveryShopsFrom,
   districtListingFrom,
   getShop,
+  isListingShop,
+  listingShopsFrom,
   listBrowseDirectoryShops,
   listDirectoryShopsForDistrict,
   listDiscoveryShops,
@@ -50,6 +53,7 @@ import { rankByPopularity } from "../lib/district-rank";
 import { listPopularDirectoryShops } from "../lib/most-popular";
 import { pickCafes } from "../lib/picker";
 import { dedupeSameBrand, shopBrandKey } from "../lib/shop-brand";
+import { matchCatalogShops } from "../lib/shop-name";
 import { buildLlmsTxt, listPublicShops, publicShopRecord } from "../lib/structured-data";
 import {
   CHAIN_POPULARITY_BASE,
@@ -202,8 +206,12 @@ assert(
 );
 
 assert(
-  isHalfwayEligible(starbucks),
-  "a dine-in chain would pass the sit-down gate on its own",
+  !isHalfwayEligible(starbucks),
+  "a chain is not a بيننا candidate even when it is sit-down",
+);
+assert(
+  isHalfwayEligible(localA),
+  "a sit-down local café still passes بيننا",
 );
 assert(
   filterHalfwayEligible(discoveryShopsFrom(fixtures)).every((shop) => !shop.isChain),
@@ -247,8 +255,8 @@ assert(
   "a district with listing shops includes the dine-in chain and drops drive-through",
 );
 assert(
-  districtListingFrom(fixtures, "namar").map((shop) => shop.id).join(",") === "dunkin-namar",
-  "drive-through is the page only when the district has no listing shops",
+  districtListingFrom(fixtures, "namar").length === 0,
+  "a drive-through chain is not the district page",
 );
 assert(
   districtListingFrom(fixtures, "tuwaiq").map((shop) => shop.id).join(",") === "peets-tuwaiq",
@@ -534,6 +542,177 @@ assert(!llms.includes("chain"), "llms.txt does not mention chains");
 assert(
   read("scripts/check-district-urls.ts").includes('"Starbucks stays dropped"'),
   "Starbucks stays dropped assert is unchanged",
+);
+
+const dineInChain = fixtureShop({
+  id: "mccafe-sit",
+  nameEn: "McCafe",
+  nameAr: "ماك كافيه",
+  neighborhood: "al-hamra",
+  isChain: true,
+  chainBrand: "mccafe",
+  dineIn: true,
+  outdoorSeating: false,
+  momentTags: [],
+});
+const dineInFalse = fixtureShop({
+  id: "dunkin-closed",
+  nameEn: "Dunkin'",
+  nameAr: "دانكن",
+  neighborhood: "al-nakheel",
+  isChain: true,
+  chainBrand: "dunkin",
+  dineIn: false,
+  outdoorSeating: false,
+  momentTags: [],
+});
+const dineInUnknown = fixtureShop({
+  id: "barns-unknown",
+  nameEn: "Barn's",
+  nameAr: "بارنز",
+  neighborhood: "al-malqa",
+  isChain: true,
+  chainBrand: "barns",
+  dineIn: undefined,
+  outdoorSeating: undefined,
+  momentTags: [],
+});
+const pickupChain = fixtureShop({
+  id: "java-pickup",
+  nameEn: "Java",
+  nameAr: "جافا",
+  neighborhood: "al-narjis",
+  isChain: true,
+  chainBrand: "java",
+  dineIn: true,
+  outdoorSeating: false,
+  pickupOnly: true,
+  momentTags: ["drive-through"],
+});
+const gateShops = [dineInChain, dineInFalse, dineInUnknown, pickupChain];
+
+assert(
+  chainIsListed(dineInChain) && isListingShop(dineInChain),
+  "a chain with dineIn true is listed",
+);
+assert(
+  !chainIsListed(dineInFalse) && !isListingShop(dineInFalse),
+  "a chain with dineIn false is not listed",
+);
+assert(
+  !chainIsListed(dineInUnknown) && !isListingShop(dineInUnknown),
+  "a chain with dine-in unknown is not listed",
+);
+assert(
+  !chainIsListed(pickupChain) && !isListingShop(pickupChain),
+  "a pickup-only chain is not listed",
+);
+
+function listingSurfaceText(shops: readonly Shop[], district: NeighborhoodId): string {
+  const page = districtListingFrom(shops, district);
+  const listed = listingShopsFrom(shops).filter((shop) => shop.neighborhood === district);
+  const meta = `${page.map((shop) => shop.id).join(" ")} ${
+    page.some((shop) => shop.isChain)
+      ? chainDistrictMetaEn("District", page.length)
+      : ""
+  }`;
+  const jsonLd = JSON.stringify({
+    numberOfItems: listed.length,
+    itemListElement: listed.map((shop) => shop.id),
+  });
+  const llms = listed.map((shop) => `${shop.id} ${shop.nameEn}`).join("\n");
+  return [page.map((shop) => shop.id).join(","), meta, jsonLd, llms].join("\n");
+}
+
+assert(
+  listingSurfaceText(gateShops, "al-hamra").includes("mccafe-sit"),
+  "a chain with dineIn true is on the district page, meta, JSON-LD, and llms.txt",
+);
+for (const [id, district] of [
+  ["dunkin-closed", "al-nakheel"],
+  ["barns-unknown", "al-malqa"],
+  ["java-pickup", "al-narjis"],
+] as const) {
+  const blob = listingSurfaceText(gateShops, district);
+  assert(
+    !blob.includes(id) && districtListingFrom(gateShops, district).length === 0,
+    `${id} stays off the district page, meta, JSON-LD, and llms.txt`,
+  );
+}
+
+const catalogSrc = read("lib/catalog.ts");
+const structuredSrc = read("lib/structured-data.ts");
+const enSrc = read("lib/en-content.ts");
+const arSrc = read("lib/ar-content.ts");
+assert(catalogSrc.includes("function chainIsListed"), "listing gate is chainIsListed");
+assert(
+  enSrc.includes("shopsInDistrict(district)") &&
+    arSrc.includes("shopsInDistrict(district)"),
+  "district meta is built from the district listing",
+);
+assert(
+  structuredSrc.includes("publicShopsInDistrict(district)") &&
+    structuredSrc.includes("listListingDirectoryShops()") &&
+    structuredSrc.includes("const shops = listPublicShops()"),
+  "JSON-LD and llms.txt are built from public listing shops",
+);
+
+const layoutSrc = read("app/layout.tsx");
+const cssSrc = read("app/globals.css");
+assert(
+  layoutSrc.includes("data-hide-chains") &&
+    layoutSrc.includes("localStorage.getItem") &&
+    layoutSrc.includes("catch(e)") &&
+    layoutSrc.includes("HIDE_CHAINS_STORAGE_KEY"),
+  "root layout sets data-hide-chains before paint and survives a storage throw",
+);
+assert(
+  cssSrc.includes("html[data-hide-chains] [data-chain-card]"),
+  "CSS hides chain cards while data-hide-chains is set",
+);
+assert(
+  read("components/directory-card.tsx").includes("data-chain-card"),
+  "chain cards are marked for the pre-paint hide",
+);
+assert(
+  read("lib/chain-filter.ts").includes("function syncHideChainsAttribute") &&
+    read("components/shop-directory.tsx").includes("syncHideChainsAttribute"),
+  "the toggle keeps data-hide-chains in sync",
+);
+
+const askShops = [starbucks, barnsA, barnsB, dineInChain, dunkinOnly];
+assert(
+  matchCatalogShops("mc cafe", askShops).some((shop) => shop.id === "mccafe-sit"),
+  "mc cafe matches McCafe",
+);
+assert(
+  matchCatalogShops("mccafe", askShops).some((shop) => shop.id === "mccafe-sit"),
+  "mccafe matches McCafe",
+);
+assert(
+  matchCatalogShops("barn", askShops)
+    .map((shop) => shop.id)
+    .sort()
+    .join(",") === "barns-a,barns-b",
+  "barn matches Barn's",
+);
+for (const ask of [
+  "not starbucks",
+  "no starbucks",
+  "غير ستاربكس",
+  "بدون ستاربكس",
+  "مو ستاربكس",
+]) {
+  assert(
+    !matchCatalogShops(ask, askShops).some((shop) => shop.chainBrand === "starbucks"),
+    `${ask} excludes Starbucks`,
+  );
+}
+const dunkinNotStarbucks = matchCatalogShops("dunkin not starbucks", askShops);
+assert(
+  dunkinNotStarbucks.some((shop) => shop.id === "dunkin-namar") &&
+    !dunkinNotStarbucks.some((shop) => shop.chainBrand === "starbucks"),
+  "negation drops Starbucks and still matches Dunkin",
 );
 
 console.log("check-chains: ok");

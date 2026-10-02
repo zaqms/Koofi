@@ -75,6 +75,24 @@ export function isChainBrandId(id: string): id is ChainBrandId {
   return Object.prototype.hasOwnProperty.call(CHAIN_BRANDS, id);
 }
 
+/** Names a typed ask can use for a mass-market brand, including partials. */
+const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
+  starbucks: ["starbucks", "ستاربكس"],
+  dunkin: ["dunkin", "دانكن"],
+  mccafe: ["mccafe", "mc cafe", "ماك كافيه"],
+  barns: ["barns", "barn", "barn s", "بارنز"],
+  "krispy-kreme": ["krispy kreme", "krispykreme", "كريسبي كريم"],
+  peets: ["peets", "peet s", "بيتس"],
+  "dr-cafe": ["dr cafe", "drcafe", "د.كيف", "د كيف"],
+  java: ["java", "جافا"],
+  "24cafe": ["24cafe", "24 cafe", "24كافيه"],
+};
+
+export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
+  const brand = CHAIN_BRANDS[id];
+  return [brand.nameEn, brand.nameAr, ...CHAIN_BRAND_SEARCH_ALIASES[id]];
+}
+
 export function isChainShop(
   shop: { isChain?: boolean | true },
 ): boolean {

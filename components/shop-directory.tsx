@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { DirectoryCard } from "@/components/directory-card";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
 import { ViewAllLink } from "@/components/view-all-link";
@@ -49,6 +49,7 @@ import {
   hideChainsServerSnapshot,
   readHideChains,
   subscribeHideChains,
+  syncHideChainsAttribute,
   writeHideChains,
   type ChainFilterListing,
 } from "@/lib/chain-filter";
@@ -112,6 +113,9 @@ export function ShopDirectory({
     readHideChains,
     hideChainsServerSnapshot,
   );
+  useEffect(() => {
+    syncHideChainsAttribute(readHideChains());
+  }, [hideChains]);
   const districtSort = resolveDistrictCafeSort(
     storedDistrictSort,
     nearbyAvailable,

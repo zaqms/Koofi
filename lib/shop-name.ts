@@ -1,3 +1,9 @@
+import {
+  CHAIN_BRANDS,
+  chainBrandSearchAliases,
+  isChainBrandId,
+  type ChainBrandId,
+} from "./chain-brands";
 import { NEIGHBORHOODS } from "./neighborhoods";
 import { MEET_HALFWAY_CHIP, NEARBY_CHIP, VIBE_CHIPS } from "./product";
 import { shopBrandKey } from "./shop-brand";
@@ -177,8 +183,16 @@ function addExtraAlias(into: Set<string>, raw: string): void {
   into.add(alias);
 }
 
+function chainBrandIdForShop(
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "chainBrand">,
+): ChainBrandId | null {
+  if (shop.chainBrand && isChainBrandId(shop.chainBrand)) return shop.chainBrand;
+  const key = shopBrandKey(shop);
+  return isChainBrandId(key) ? key : null;
+}
+
 export function shopNameAliases(
-  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood">,
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "chainBrand">,
 ): string[] {
   const aliases = new Set<string>();
 
@@ -204,8 +218,34 @@ export function shopNameAliases(
   for (const extra of EXTRA_ALIASES[shopBrandKey(shop)] ?? []) {
     addExtraAlias(aliases, extra);
   }
+  const chainBrand = chainBrandIdForShop(shop);
+  if (chainBrand) {
+    for (const extra of chainBrandSearchAliases(chainBrand)) {
+      addExtraAlias(aliases, extra);
+    }
+  }
 
   return [...aliases];
+}
+
+const CHAIN_NEGATION_MARKERS = ["not", "no", "غير", "بدون", "مو"] as const;
+
+/** Brand ids the ask tells us to leave out, such as "not starbucks". */
+export function negatedChainBrandIds(raw: string): Set<ChainBrandId> {
+  const haystack = normalize(raw);
+  const negated = new Set<ChainBrandId>();
+  if (!haystack) return negated;
+  for (const id of Object.keys(CHAIN_BRANDS)) {
+    if (!isChainBrandId(id)) continue;
+    for (const alias of chainBrandSearchAliases(id)) {
+      const needle = normalize(alias);
+      if (!needle) continue;
+      for (const marker of CHAIN_NEGATION_MARKERS) {
+        if (includesAlias(haystack, `${marker} ${needle}`)) negated.add(id);
+      }
+    }
+  }
+  return negated;
 }
 
 function aliasScore(
@@ -244,8 +284,11 @@ export function matchCatalogShops<T extends Shop>(
   if (NEIGHBORHOOD_ALIASES.has(haystack) || CHIP_ASKS.has(haystack)) return [];
 
   const hits: { shop: T; score: number }[] = [];
+  const negated = negatedChainBrandIds(raw);
 
   for (const shop of shops) {
+    const brand = chainBrandIdForShop(shop);
+    if (brand && negated.has(brand)) continue;
     let best = 0;
     for (const alias of shopNameAliases(shop)) {
       if (!aliasUsableInAsk(haystack, alias)) continue;

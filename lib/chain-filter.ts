@@ -23,8 +23,16 @@ export function readHideChains(): boolean {
   return cachedHideChains;
 }
 
+/** Mirrors the pre-hydration attribute so a tap does not wait on the next paint. */
+export function syncHideChainsAttribute(hidden: boolean): void {
+  if (typeof document === "undefined") return;
+  if (hidden) document.documentElement.setAttribute("data-hide-chains", "");
+  else document.documentElement.removeAttribute("data-hide-chains");
+}
+
 export function writeHideChains(hidden: boolean): void {
   cachedHideChains = hidden;
+  syncHideChainsAttribute(hidden);
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(HIDE_CHAINS_STORAGE_KEY, hidden ? "1" : "0");

@@ -2,6 +2,11 @@ import addedAtFile from "../data/catalog-added-at.json";
 import catalogFile from "../data/catalog.json";
 import popularityIndexFile from "../data/popularity-index.json";
 import { isChainShop } from "./chain-brands";
+import {
+  isHalfwaySitDown,
+  isPickupOnlyTagged,
+  type HalfwayEligibleShop,
+} from "./halfway-eligibility";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { directoryNeighborhoods } from "./directory";
 import { districtCity } from "./district-city";
@@ -87,13 +92,26 @@ export function isDiscoveryShop(
 }
 
 /**
- * District / browse listing row: local specialty plus a dine-in chain.
- * Drive-through-only branches stay out of this set.
+ * A chain is listed only when it is sit-down and not pickup-only.
+ * Unknown or false dine-in stays off the district page, its meta, JSON-LD, and llms.txt.
+ */
+export function chainIsListed(shop: HalfwayEligibleShop): boolean {
+  if (!isChainShop(shop)) return true;
+  return isHalfwaySitDown(shop) && !isPickupOnlyTagged(shop);
+}
+
+/**
+ * District / browse listing row: local specialty plus a sit-down chain.
+ * Drive-through lanes, and chains with dine-in unknown or false, stay out.
  */
 export function isListingShop(
-  shop: Pick<Shop, "example" | "catalogLane">,
+  shop: HalfwayEligibleShop & Pick<Shop, "example">,
 ): boolean {
-  return !isExampleShop(shop) && !isDriveThroughLane(shop);
+  return (
+    !isExampleShop(shop) &&
+    !isDriveThroughLane(shop) &&
+    chainIsListed(shop)
+  );
 }
 
 export function discoveryShopsFrom(shops: readonly Shop[]): Shop[] {
@@ -105,8 +123,9 @@ export function listingShopsFrom(shops: readonly Shop[]): Shop[] {
 }
 
 /**
- * Listing shops in the district, or every real row when the district has
- * neither a local café nor a dine-in chain (drive-through-only fallback).
+ * Listing shops in the district. When that set is empty, real non-chain
+ * rows (a drive-through-only local) can still be the page. A chain with
+ * dine-in unknown, false, or pickup-only stays off the page.
  */
 export function districtListingFrom(
   shops: readonly Shop[],
@@ -117,7 +136,10 @@ export function districtListingFrom(
   );
   if (listing.length > 0) return listing;
   return shops.filter(
-    (shop) => !isExampleShop(shop) && shop.neighborhood === district,
+    (shop) =>
+      !isExampleShop(shop) &&
+      shop.neighborhood === district &&
+      chainIsListed(shop),
   );
 }
 
@@ -221,8 +243,8 @@ export function listListingDirectoryShops(
 }
 
 /**
- * Local cafés plus dine-in chains in a district. Drive-through rows stay
- * off while any listing shop exists, and are the page only when it has neither.
+ * Local cafés plus sit-down chains in a district. A chain that is not
+ * sit-down stays off the page, including when it is the only row.
  */
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,

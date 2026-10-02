@@ -5,7 +5,10 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { districtArMeta, districtArMarkdown, chainDistrictHereIntroAr, chainDistrictMetaAr } from "../lib/ar-content";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { districtArMeta, districtArMarkdown, cafeArMarkdown, chainDistrictHereIntroAr, chainDistrictMetaAr } from "../lib/ar-content";
+import { EnRichText } from "../components/en-rich-text";
 import {
   CHAIN_BRANDS,
   chainBrandNameEn,
@@ -53,12 +56,13 @@ import {
 import { sortDistrictCafes } from "../lib/district-cafe-sort";
 import type { DirectoryShop } from "../lib/directory";
 import {
+  cafeEnMarkdown,
   chainDistrictHereIntroEn,
   chainDistrictMetaEn,
   districtEnMarkdown,
   districtEnMeta,
 } from "../lib/en-content";
-import { countedCafesAr, countWord, countWordAr } from "../lib/cafe-count";
+import { chainOnlyBlock, countedCafesAr, countWord, countWordAr } from "../lib/cafe-count";
 import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
 import { isHalfwayEligible, filterHalfwayEligible } from "../lib/halfway-eligibility";
 import { rankByPopularity } from "../lib/district-rank";
@@ -521,15 +525,15 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 364, "specialty discovery is 364 after Shoug A1");
-assert(listRealShops().length === 432, "catalog is 432 after Shoug A1");
+assert(listDiscoveryShops().length === 364, "specialty discovery is 364 after the placeId fix");
+assert(listRealShops().length === 425, "catalog is 425 after the placeId fix");
 assert(listLiveDistrictIds().length === 52, "specialty districts stay 52");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 69,
   "catalog rows still cover 69 districts",
 );
 assert(listLiveCatalogDistrictIds().length === 69, "district pages stay the 69 prod destinations");
-assert(listDriveThroughDirectoryShops().length === 78, "drive-through stays 78");
+assert(listDriveThroughDirectoryShops().length === 71, "drive-through is 71 after the placeId fix");
 assert(listListingShops().length === 364, "no dine-in chains in the live catalog");
 assert(listPublicShops().length === 364, "public list stays the specialty directory");
 assert(listBrowseDirectoryShops().length === 382, "browse keeps prod drive-through fallback rows plus Shoug A1");
@@ -1059,5 +1063,50 @@ for (const id of NEIGHBORHOOD_IDS) {
     );
   }
 }
+
+const RAW_CHAIN_MARKER = /\{chain-only\}|\{\/chain-only\}/;
+
+function renderedMarkdown(markdown: string): string {
+  return renderToStaticMarkup(createElement(EnRichText, { markdown }));
+}
+
+for (const id of NEIGHBORHOOD_IDS) {
+  for (const [locale, markdown] of [
+    ["en", districtEnMarkdown(id)],
+    ["ar", districtArMarkdown(id)],
+  ] as const) {
+    const html = renderedMarkdown(markdown);
+    assert(
+      !RAW_CHAIN_MARKER.test(html),
+      `${id} ${locale} district page rendered a raw chain-only marker`,
+    );
+  }
+}
+for (const shop of listRealShops()) {
+  for (const [locale, markdown] of [
+    ["en", cafeEnMarkdown(shop)],
+    ["ar", cafeArMarkdown(shop)],
+  ] as const) {
+    const html = renderedMarkdown(markdown);
+    assert(
+      !RAW_CHAIN_MARKER.test(html),
+      `${shop.id} ${locale} cafe page rendered a raw chain-only marker`,
+    );
+  }
+}
+const wrappedLead = chainOnlyBlock("First lead paragraph.\n\nSecond lead paragraph.");
+assert(
+  wrappedLead ===
+    "{chain-only}First lead paragraph.{/chain-only}\n\n{chain-only}Second lead paragraph.{/chain-only}",
+  "chain-only wraps each lead paragraph on its own",
+);
+const spanning = renderedMarkdown(
+  "{chain-only}First lead paragraph.\n\nSecond lead paragraph.{/chain-only}",
+);
+assert(!RAW_CHAIN_MARKER.test(spanning), "a spanning chain-only pair leaked a raw marker");
+assert(
+  (spanning.match(/data-chain-only/g) ?? []).length >= 2,
+  "each paragraph of a spanning chain-only pair stays hidden with Local only",
+);
 
 console.log("check-chains: ok");

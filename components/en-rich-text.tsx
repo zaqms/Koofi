@@ -26,6 +26,35 @@ function EnLink({ href, children }: { href: string; children: ReactNode }) {
 const COUNT_CLAUSE =
   /\{(chain-counts|local-counts|chain-only)\}([\s\S]*?)\{\/\1\}/g;
 
+const CHAIN_ONLY_REGION = /\{chain-only\}([\s\S]*?)\{\/chain-only\}/g;
+
+/**
+ * A `{chain-only}` pair that spans a blank line is split before the clause
+ * regex runs. Wrap each paragraph on its own so neither tag is left as text.
+ */
+function expandChainOnlyRegions(markdown: string): string {
+  return markdown.replace(CHAIN_ONLY_REGION, (_full, inner: string) => {
+    const parts = inner
+      .replace(/\r\n/g, "\n")
+      .split(/\n{2,}/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+    if (parts.length === 0) return "";
+    return parts
+      .map((part) => {
+        if (/^#{1,6} /.test(part)) {
+          return part.replace(/^(#{1,6} )/, "$1{chain-only}");
+        }
+        return `{chain-only}${part}{/chain-only}`;
+      })
+      .join("\n\n");
+  });
+}
+
+function stripChainOnlyTags(text: string): string {
+  return text.replace(/\{chain-only\}|\{\/chain-only\}/g, "");
+}
+
 function renderWithClauses(text: string): ReactNode[] {
   const nodes: ReactNode[] = [];
   let last = 0;
@@ -33,7 +62,9 @@ function renderWithClauses(text: string): ReactNode[] {
   let key = 0;
   COUNT_CLAUSE.lastIndex = 0;
   while ((match = COUNT_CLAUSE.exec(text))) {
-    if (match.index > last) nodes.push(...renderInline(text.slice(last, match.index)));
+    if (match.index > last) {
+      nodes.push(...renderInline(stripChainOnlyTags(text.slice(last, match.index))));
+    }
     const kind = match[1];
     const attr =
       kind === "chain-counts"
@@ -49,7 +80,7 @@ function renderWithClauses(text: string): ReactNode[] {
     key += 1;
     last = match.index + match[0].length;
   }
-  if (last < text.length) nodes.push(...renderInline(text.slice(last)));
+  if (last < text.length) nodes.push(...renderInline(stripChainOnlyTags(text.slice(last))));
   return nodes;
 }
 
@@ -112,19 +143,19 @@ export function EnRichText({
   skipHeadingLevel1 = false,
   className = "space-y-3 text-sm leading-6 text-ink",
 }: EnRichTextProps) {
-  const items = blocks(markdown)
+  const items = blocks(expandChainOnlyRegions(markdown))
     .map((block) => {
       if (block.startsWith("# ")) {
         if (skipHeadingLevel1) return null;
         return (
           <h1 key={block} className="text-base font-semibold">
-            {renderInline(block.slice(2))}
+            {renderInline(stripChainOnlyTags(block.slice(2)))}
           </h1>
         );
       }
       if (block.startsWith("## ")) {
-        const chainOnly = block.includes("{chain-only}");
-        const label = block.slice(3).replaceAll("{chain-only}", "");
+        const chainOnly = /\{chain-only\}|\{\/chain-only\}/.test(block);
+        const label = stripChainOnlyTags(block.slice(3));
         return (
           <h2
             key={block}
@@ -154,9 +185,9 @@ export function EnRichText({
           </ul>
         );
       }
-      const paragraph = block.replace(/\n/g, " ");
+      const paragraph = stripChainOnlyTags(block.replace(/\n/g, " "));
       const chainOnly =
-        paragraph.includes("{chain-only}") && !paragraph.includes("{chain-counts}");
+        /\{chain-only\}|\{\/chain-only\}/.test(block) && !paragraph.includes("{chain-counts}");
       return (
         <p
           key={block}

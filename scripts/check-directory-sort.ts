@@ -60,7 +60,7 @@ assert(!isDirectoryResultSortChip("popular"), "Most Popular stays unsorted");
 assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();
-assert(dt.length === 71, `DT directory is 71 shops after the 7 Al Rabi DT drops, got ${dt.length}`);
+assert(dt.length === 71, `DT directory (moment tag) is 71 shops = 61 lane + 10 specialty tags, got ${dt.length}`);
 assert(
   dt.every((shop) => shop.momentTags.includes("drive-through")),
   "sort does not change the DT filter",

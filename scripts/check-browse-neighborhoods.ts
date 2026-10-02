@@ -213,7 +213,7 @@ for (const row of rowsEn) {
         : row.id === "al-ghadeer"
           ? 9
           : row.id === "al-qirawan"
-            ? 9
+            ? 13
             : row.id === "al-arid"
               ? 11
               : 8;
@@ -228,13 +228,13 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 9,
-      `${row.id} Muruj refill has 9 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 10,
+      `${row.id} Muruj refill has 10 cafes, got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 4,
-      `${row.id} Mohammadiyah refill has 4 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 5,
+      `${row.id} Mohammadiyah refill has 5 cafes, got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(

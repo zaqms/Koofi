@@ -11,6 +11,7 @@ import {
   cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
+  isCafeHeroFocus,
   neighborhoodCafesHeading,
 } from "../lib/cafe-detail";
 import { copy } from "../lib/copy";
@@ -25,6 +26,19 @@ import { SHOW_BEEN_HERE, SHOW_DETAIL_FAVORITE, SHOW_INVITE_CTA } from "../lib/to
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
+}
+
+/** Absent focus (undefined) is the default crop. Anything else must be two percentages. */
+function heroFocusFailure(slug: string, frame: number, focus: unknown): string | null {
+  if (focus === undefined) return null;
+  if (typeof focus !== "string") {
+    const kind = focus === null ? "null" : Array.isArray(focus) ? "array" : typeof focus;
+    return `${slug} frame ${frame} focus must be a string, got ${kind}`;
+  }
+  if (!isCafeHeroFocus(focus)) {
+    return `${slug} frame ${frame} focus must be two percentages from 0 to 100, got ${JSON.stringify(focus)}`;
+  }
+  return null;
 }
 
 function read(path: string): string {
@@ -521,7 +535,12 @@ const GALLERY_PENDING_REPULL = [
 ] as const;
 const GALLERY_PENDING_REPULL_IDS = new Set<string>(GALLERY_PENDING_REPULL);
 
-const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
+const bakedHeroes = cafeHeroesFile as Record<
+  string,
+  { src: string; focus?: unknown }[]
+>;
+/** Slugs allowed to set a per-frame hero focus. Waqar only, until QA expands this. */
+const HERO_FOCUS_SLUGS = new Set(["waqar-al-aziziyah"]);
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
@@ -623,10 +642,64 @@ function expectedHeroCount(id: string): number {
 for (const [id, photos] of Object.entries(bakedHeroes)) {
   const expected = expectedHeroCount(id);
   assert(photos.length === expected, `${id} has ${expected} cached cafe-heroes`);
-  for (const photo of photos) {
+  photos.forEach((photo, index) => {
     assert(photo.src.startsWith(`/cafe-heroes/${id}/`), `${photo.src} is shop-scoped`);
     assert(existsSync(join("public", photo.src.slice(1))), `${photo.src} is on disk`);
+    const focusError = heroFocusFailure(id, index + 1, photo.focus);
+    assert(focusError == null, focusError ?? `${id} frame ${index + 1} focus`);
+    if (photo.focus !== undefined) {
+      assert(
+        HERO_FOCUS_SLUGS.has(id),
+        `${id} is not allowed to set hero focus`,
+      );
+    }
+  });
+}
+for (const valid of ["50% 20%", "0% 100%", "100% 0%", "12.5% 0.5%", "50.0% 20%"]) {
+  assert(isCafeHeroFocus(valid), `${valid} is a valid hero focus`);
+  assert(heroFocusFailure("waqar-al-aziziyah", 1, valid) == null, `${valid} passes the frame check`);
+}
+assert(heroFocusFailure("waqar-al-aziziyah", 1, undefined) == null, "omitted focus keeps the default crop");
+for (const invalid of [
+  "top 10%",
+  "10% left",
+  "center",
+  "top",
+  "center top",
+  "left 10% top 20px",
+  "150% 0%",
+  "-5% 10%",
+  "50% -10%",
+  "50%",
+  "50% 20% 0%",
+  "",
+  " 50% 20%",
+  "50%  20%",
+  "50%20%",
+]) {
+  assert(!isCafeHeroFocus(invalid), `${JSON.stringify(invalid)} is not a hero focus`);
+  const message = heroFocusFailure("sample-cafe", 1, invalid);
+  assert(
+    message?.includes("sample-cafe") && message.includes("frame 1"),
+    `${JSON.stringify(invalid)} names the slug and frame`,
+  );
+}
+for (const [focus, kind] of [
+  [50, "number"],
+  [null, "null"],
+  [{ x: 50, y: 20 }, "object"],
+] as const) {
+  let message: string | null = null;
+  try {
+    message = heroFocusFailure("sample-cafe", 2, focus);
+  } catch (error) {
+    assert(false, `non-string focus crashed the check: ${error instanceof Error ? error.name : "error"}`);
   }
+  assert(message != null, `${kind} focus is rejected`);
+  assert(
+    message.includes("sample-cafe") && message.includes("frame 2") && message.includes(kind),
+    `${kind} focus names the slug, frame, and type`,
+  );
 }
 assert(
   cafeDetailHeroPhotos({ id: "percent-arabica-hittin" }).length === 4,
@@ -1236,6 +1309,14 @@ assert(
   cafeDetailHeroPhotos(waqar)[0]?.attribution?.displayName === "في سالم",
   "Waqar hero frame 1 keeps its Places author name",
 );
+assert(
+  cafeDetailHeroPhotos(waqar)[0]?.focus === "50% 20%",
+  "Waqar frame 1 focuses the crop so the wall logo stays in frame",
+);
+assert(
+  cafeDetailHeroPhotos(waqar).slice(1).every((photo) => photo.focus == null),
+  "Waqar frames 2–4 keep the default center crop",
+);
 const remainingUnbaked = (
   JSON.parse(read("data/catalog.json")) as {
     shops: { id: string; placeId?: string; openingHours?: unknown }[];
@@ -1309,6 +1390,10 @@ assert(
   "WOODS uses baked cafe-heroes, not Passport fixtures",
 );
 assert(
+  cafeDetailHeroPhotos(woods).every((photo) => photo.focus == null),
+  "Woods keeps the default hero crop",
+);
+assert(
   (woods.openingHours?.periods?.length ?? 0) > 0,
   "WOODS keeps baked catalog periods",
 );
@@ -1343,6 +1428,9 @@ assert(!helper.includes("هيتين"), "never هيتين");
 assert(!helper.includes("places.ts"), "no live Place Details on detail helpers");
 
 assert(detail.includes("photo.src"), "hero paints cached photo src");
+assert(detail.includes("photo.focus"), "hero crop reads the optional per-frame focus");
+assert(detail.includes("objectPosition"), "hero focus is applied as object-position");
+assert(detail.includes("isCafeHeroFocus"), "hero focus is checked before it is applied");
 assert(detail.includes("cafeDetailHeroNeedsGoogleCredit"), "hero keeps a quiet Google credit");
 assert(detail.includes("detailPhotosGoogle"), "visible credit is Photos · Google");
 assert(detail.includes("sr-only"), "author names stay off the primary chrome");

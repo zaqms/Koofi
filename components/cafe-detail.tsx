@@ -20,6 +20,7 @@ import {
   cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
+  isCafeHeroFocus,
   neighborhoodCafesHeading,
   type CafeDetailHeroPhoto,
 } from "@/lib/cafe-detail";
@@ -252,6 +253,11 @@ function CafeDetailHero({
           alt={`${name} · ${neighborhood}`}
           draggable={false}
           className="pointer-events-none size-full select-none object-cover"
+          style={
+            typeof photo.focus === "string" && isCafeHeroFocus(photo.focus)
+              ? { objectPosition: photo.focus }
+              : undefined
+          }
         />
       ) : null}
 

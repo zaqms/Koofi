@@ -14,8 +14,33 @@ export type CafeDetailHeroAttribution = {
 
 export type CafeDetailHeroPhoto = {
   src: string;
+  /**
+   * Optional crop focus: two percentages, `"<x>% <y>%"`, each 0–100.
+   * Omitted frames keep the default center crop. Invalid values are ignored.
+   */
+  focus?: string;
   attribution?: CafeDetailHeroAttribution;
 };
+
+const HERO_FOCUS_PERCENT = /^(?:\d+\.\d+|\d+)%$/;
+
+function isHeroFocusPercent(token: string): boolean {
+  if (!HERO_FOCUS_PERCENT.test(token)) return false;
+  const value = Number(token.slice(0, -1));
+  return Number.isFinite(value) && value >= 0 && value <= 100;
+}
+
+/**
+ * True only for two percentages separated by a single space, each 0–100
+ * inclusive (`"50% 20%"`, `"0% 100%"`, `"12.5% 0%"`). Keywords, mixed
+ * forms, and out-of-range values are rejected. Non-strings are rejected.
+ */
+export function isCafeHeroFocus(value: unknown): boolean {
+  if (typeof value !== "string") return false;
+  const parts = value.split(" ");
+  if (parts.length !== 2) return false;
+  return parts.every(isHeroFocusPercent);
+}
 
 const CAFE_HEROES = cafeHeroesFile as Record<string, CafeDetailHeroPhoto[]>;
 

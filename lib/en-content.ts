@@ -1,5 +1,4 @@
-import { listDirectoryShopsForDistrict } from "./catalog";
-import { listLiveCatalogDistrictIds } from "./district-dictionary";
+import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
 import { cityLabel } from "./cities";
 import { districtCity } from "./district-city";
 import { filterDirectoryShops } from "./directory";
@@ -1020,7 +1019,7 @@ function shopListMarkdown(
 }
 
 function nearbyListMarkdown(district: NeighborhoodId): string {
-  const listed = new Set(listLiveCatalogDistrictIds());
+  const listed = new Set(listDirectoryShops().map((shop) => shop.neighborhood));
   return NEARBY_DISTRICTS[district]
     .filter((id) => listed.has(id) && id !== district)
     .map((id) => `- ${districtLink(id)}`)

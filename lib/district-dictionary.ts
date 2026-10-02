@@ -1,6 +1,6 @@
 import {
+  districtRowsAreUnlistedChains,
   listDirectoryShops,
-  listDirectoryShopsForDistrict,
   listRealShops,
   listedDistrictIdsFrom,
 } from "./catalog";
@@ -22,16 +22,18 @@ export function listLiveDistrictIds(): NeighborhoodId[] {
 }
 
 /**
- * District pages. A حي is here only when it has at least one qualifying
- * dine-in row. Drive-through-only and 0-shop ids stay out, and come back
- * when a qualifying row appears.
+ * Sitemap and browse destinations. A district stays when any non-chain row
+ * remains, including a local drive-through fallback, or when a chain branch
+ * passes the sit-down gate. It drops only when every row is a non-qualifying
+ * chain. 0-shop ids stay out, the same as prod.
  */
 export function listLiveCatalogDistrictIds(): NeighborhoodId[] {
   return listedDistrictIdsFrom(listRealShops());
 }
 
-export function districtPageIsLive(id: NeighborhoodId): boolean {
-  return listDirectoryShopsForDistrict(id).length > 0;
+/** Hide the URL only when every row is a non-qualifying chain branch. */
+export function districtPageHidden(id: NeighborhoodId): boolean {
+  return districtRowsAreUnlistedChains(listRealShops(districtCity(id)), id);
 }
 
 export function dictionaryDistrictIds(): NeighborhoodId[] {

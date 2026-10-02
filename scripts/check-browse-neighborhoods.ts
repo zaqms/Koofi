@@ -362,12 +362,15 @@ for (const id of [
   "shubra",
   "manfuha",
   "tuwaiq",
-  "as-suwaidi",
 ] as const) {
-  assert(!az.some((row) => row.id === id), `A–Z hides ${id} with no qualifying row`);
+  assert(az.some((row) => row.id === id), `A–Z keeps ${id}`);
 }
+assert(
+  !az.some((row) => row.id === "as-suwaidi"),
+  "A–Z excludes 0-shop as-suwaidi",
+);
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 52, "A–Z is the 52 districts with a qualifying row");
+assert(az.length === 69, "A–Z is the 69 prod district pages");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

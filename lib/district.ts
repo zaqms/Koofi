@@ -16,8 +16,8 @@ import {
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "./product";
-import { listLiveCatalogDistrictIds } from "./district-dictionary";
-import type { Language, NeighborhoodId } from "./types";
+import { districtPageHidden } from "./district-dictionary";
+import { NEIGHBORHOOD_IDS, type Language, type NeighborhoodId } from "./types";
 
 export function resolveDistrictSlug(slug: string): NeighborhoodId | null {
   return isNeighborhoodId(slug) ? slug : null;
@@ -27,10 +27,12 @@ export function categoryDistrictStaticParams(): {
   category: DirectoryCategoryId;
   slug: NeighborhoodId;
 }[] {
-  return listLiveCatalogDistrictIds().map((slug) => ({
-    category: COFFEE_SHOPS_CATEGORY,
-    slug,
-  }));
+  return NEIGHBORHOOD_IDS.filter((slug) => !districtPageHidden(slug)).map(
+    (slug) => ({
+      category: COFFEE_SHOPS_CATEGORY,
+      slug,
+    }),
+  );
 }
 
 export function districtTitle(

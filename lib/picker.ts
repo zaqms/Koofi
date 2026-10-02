@@ -4,7 +4,7 @@ import { DEFAULT_LIVE_CITY } from "./cities";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
 import {
-  districtPageIsLive,
+  districtPageHidden,
   extractPrimaryDistrict,
   isExactDistrictAsk,
 } from "./district-dictionary";
@@ -407,7 +407,7 @@ export function formatReply(result: PickResult, spoken?: string): string {
     lines.push(`   ${copy.maps[language]}: ${shopMapsHref(pick.shop)}`);
   });
 
-  if (result.matchedDistrict && districtPageIsLive(result.matchedDistrict)) {
+  if (result.matchedDistrict && !districtPageHidden(result.matchedDistrict)) {
     const name = neighborhoodLabel(result.matchedDistrict, language);
     const href = `${PUBLIC_SITE_URL}${districtPath(result.matchedDistrict, language)}`;
     lines.push("");

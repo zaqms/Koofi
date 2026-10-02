@@ -27,6 +27,7 @@ import {
   chainIsListed,
   discoveryShopsFrom,
   districtListingFrom,
+  districtRowsAreUnlistedChains,
   getShop,
   isListingShop,
   listingShopsFrom,
@@ -43,7 +44,7 @@ import {
 import { listNeighborhoodRows } from "../lib/browse-neighborhoods";
 import { categoryDistrictStaticParams } from "../lib/district";
 import {
-  districtPageIsLive,
+  districtPageHidden,
   listLiveCatalogDistrictIds,
   listLiveDistrictIds,
 } from "../lib/district-dictionary";
@@ -276,8 +277,9 @@ const localDriveOnly = fixtureShop({
   dineIn: true,
 });
 assert(
-  districtListingFrom([localDriveOnly], "al-falah").length === 0,
-  "an empty listing does not fall back to a drive-through lane",
+  districtListingFrom([localDriveOnly], "al-falah").map((shop) => shop.id).join(",") ===
+    "local-drive-only",
+  "a local drive-through row keeps the district page",
 );
 const pickupFallback = fixtureShop({
   id: "chain-pickup-fallback",
@@ -292,7 +294,7 @@ const pickupFallback = fixtureShop({
 });
 assert(
   districtListingFrom([pickupFallback], "al-izdihar").length === 0,
-  "an empty listing does not fall back to a pickup-only row",
+  "a pickup-only chain is not a district-page fallback",
 );
 const closedFallback = fixtureShop({
   id: "chain-closed-fallback",
@@ -306,7 +308,7 @@ const closedFallback = fixtureShop({
 });
 assert(
   districtListingFrom([closedFallback], "dhahrat-al-badiah").length === 0,
-  "an empty listing does not fall back to a non-sit-down row",
+  "a non-sit-down chain is not a district-page fallback",
 );
 assert(
   districtListingFrom(fixtures, "tuwaiq").map((shop) => shop.id).join(",") === "peets-tuwaiq",
@@ -522,11 +524,11 @@ assert(
   catalogDistrictIdsFrom(listRealShops()).length === 69,
   "catalog rows still cover 69 districts",
 );
-assert(listLiveCatalogDistrictIds().length === 52, "district pages are the 52 qualifying districts");
+assert(listLiveCatalogDistrictIds().length === 69, "district pages stay the 69 prod destinations");
 assert(listDriveThroughDirectoryShops().length === 78, "drive-through stays 78");
 assert(listListingShops().length === 354, "no dine-in chains in the live catalog");
 assert(listPublicShops().length === 354, "public list stays the specialty directory");
-assert(listBrowseDirectoryShops().length === 354, "browse is the qualifying rows only");
+assert(listBrowseDirectoryShops().length === 372, "browse keeps prod drive-through fallback rows");
 assert(
   listDiscoveryShops().every((shop) => !shop.isChain),
   "no live discovery row is tagged",
@@ -595,64 +597,88 @@ const copyBlob = districtIds
   .join("\n---\n");
 assert(
   createHash("sha256").update(copyBlob).digest("hex") ===
-    "16008a4ddfcbcd9485f375f98aca35c47884d2a505b7f55e60b8760c67c1ed31",
-  "district copy hash after empty district pages drop out",
+    "39bc74a119f406aeb926553d59b87413a7e8edfa819e69a5433da333e285285b",
+  "district copy hash matches prod district pages",
 );
 assert(
   !copyBlob.includes("Zero cafes") && !copyBlob.includes("صفر"),
   "a total of 0 never says Zero or صفر",
 );
-const emptyAfterFallback = [
-  "al-mursalat",
-  "al-murabba",
-  "as-salam",
-  "ghubairah",
-  "al-wisham",
-  "al-hazm",
-  "al-andalus",
-  "al-khaleej",
-  "ar-rimal",
-  "al-janadriyyah",
-  "namar",
-  "kkia",
-  "al-jazirah",
-  "an-nasim",
-  "shubra",
-  "manfuha",
-  "tuwaiq",
-] as const;
-assert(
-  emptyAfterFallback.every(
-    (id) =>
-      listDirectoryShopsForDistrict(id).length === 0 &&
-      !listLiveCatalogDistrictIds().includes(id),
-  ),
-  "drive-through-only districts list no qualifying rows and have no page",
-);
+const mainDistrictPages = (
+  JSON.parse(read("data/main-district-pages.json")) as { slugs: NeighborhoodId[] }
+).slugs;
+assert(mainDistrictPages.length === 69, "main baseline is 69 district pages");
 const pageIds = new Set(listLiveCatalogDistrictIds());
 const paramIds = new Set(categoryDistrictStaticParams().map((row) => row.slug));
 const sitemapLocs = new Set(listSitemapLocs());
 const browseIds = new Set(
   listNeighborhoodRows("en", listBrowseDirectoryShops()).map((row) => row.id),
 );
-for (const id of NEIGHBORHOOD_IDS) {
-  const qualifying = listDirectoryShopsForDistrict(id).length > 0;
+const real = listRealShops();
+const disappeared: NeighborhoodId[] = [];
+for (const id of mainDistrictPages) {
+  const rows = real.filter((shop) => shop.neighborhood === id);
   const arLoc = `https://wain.lol${districtPath(id, "ar")}`;
   const enLoc = `https://wain.lol${districtPath(id, "en")}`;
+  const onPage =
+    pageIds.has(id) &&
+    paramIds.has(id) &&
+    sitemapLocs.has(arLoc) &&
+    sitemapLocs.has(enLoc) &&
+    browseIds.has(id);
+  if (rows.some((shop) => !isChainShop(shop))) {
+    assert(onPage, `${id} has a non-chain row and keeps its prod page`);
+  }
+  if (!onPage) disappeared.push(id);
+}
+for (const id of disappeared) {
   assert(
-    qualifying === districtPageIsLive(id) &&
-      qualifying === pageIds.has(id) &&
-      qualifying === paramIds.has(id) &&
-      qualifying === sitemapLocs.has(arLoc) &&
-      qualifying === sitemapLocs.has(enLoc) &&
-      qualifying === browseIds.has(id),
-    `${id} has a page exactly when it has a qualifying row`,
+    districtRowsAreUnlistedChains(real, id),
+    `${id} left the prod page set without every row being a non-qualifying chain`,
   );
 }
-const shubraSit = fixtureShop({
-  id: "starbucks-shubra",
+console.log(
+  `baseline districts hidden: ${disappeared.length === 0 ? "(none)" : disappeared.join(", ")}`,
+);
+assert(
+  paramIds.has("as-suwaidi") &&
+    !pageIds.has("as-suwaidi") &&
+    !sitemapLocs.has("https://wain.lol/coffee-shops/as-suwaidi") &&
+    !districtPageHidden("as-suwaidi"),
+  "as-suwaidi keeps the prod URL: generated, not in the sitemap",
+);
+const localDriveThrough = fixtureShop({
+  id: "local-dt-only",
+  nameEn: "Local Drive",
+  neighborhood: "al-mursalat",
+  catalogLane: "drive-through",
+  momentTags: ["drive-through"],
+});
+assert(
+  districtListingFrom([localDriveThrough], "al-mursalat").some(
+    (shop) => shop.id === "local-dt-only",
+  ) && listedDistrictIdsFrom([localDriveThrough]).includes("al-mursalat"),
+  "a district with only a local drive-through row keeps its page",
+);
+const chainLaneOnly = fixtureShop({
+  id: "chain-dt-only",
+  nameEn: "dr.CAFE",
+  neighborhood: "shubra",
+  isChain: true,
+  chainBrand: "dr-cafe",
+  catalogLane: "drive-through",
+  dineIn: true,
+  momentTags: ["drive-through"],
+});
+assert(
+  districtListingFrom([chainLaneOnly], "shubra").length === 0 &&
+    !listedDistrictIdsFrom([chainLaneOnly]).includes("shubra") &&
+    districtRowsAreUnlistedChains([chainLaneOnly], "shubra"),
+  "a district whose only row is a non-qualifying chain has no page",
+);
+const chainSitOnly = fixtureShop({
+  id: "chain-sit-only",
   nameEn: "Starbucks",
-  nameAr: "ستاربكس",
   neighborhood: "shubra",
   isChain: true,
   chainBrand: "starbucks",
@@ -661,25 +687,8 @@ const shubraSit = fixtureShop({
   momentTags: [],
 });
 assert(
-  listedDistrictIdsFrom([...listRealShops(), shubraSit]).includes("shubra"),
-  "a dine-in row brings a hidden district page back",
-);
-assert(
-  !listedDistrictIdsFrom([
-    ...listRealShops(),
-    fixtureShop({
-      ...shubraSit,
-      id: "starbucks-shubra-lane",
-      catalogLane: "drive-through",
-    }),
-  ]).includes("shubra"),
-  "a drive-through lane does not bring a district page back",
-);
-assert(
-  !formatReply(pickCafes({ text: "شبرا", language: "ar" })).includes(
-    "/coffee-shops/shubra",
-  ),
-  "chat does not link a district with no qualifying row",
+  listedDistrictIdsFrom([chainSitOnly]).includes("shubra"),
+  "a dine-in chain branch brings the district page back",
 );
 assert(
   formatReply(pickCafes({ text: "حطين", language: "ar" })).includes(
@@ -688,14 +697,10 @@ assert(
   "chat still links a district that has a page",
 );
 assert(
-  read("app/[category]/[slug]/page.tsx").includes("districtPageIsLive") &&
-    read("app/en/[category]/[slug]/page.tsx").includes("districtPageIsLive") &&
-    read("app/api/chat/route.ts").includes("districtPageIsLive"),
-  "unknown-district notFound and the chat chip follow the listable count",
-);
-assert(
-  districtEnMeta("kkia").startsWith("No cafes at KKIA"),
-  "an empty KKIA page says at KKIA",
+  read("app/[category]/[slug]/page.tsx").includes("districtPageHidden") &&
+    read("app/en/[category]/[slug]/page.tsx").includes("districtPageHidden") &&
+    read("app/api/chat/route.ts").includes("districtPageHidden"),
+  "notFound and the chat chip hide only an all-unlisted-chain district",
 );
 assert(
   districtEnMarkdown("manfuha").includes("Manfuha") &&

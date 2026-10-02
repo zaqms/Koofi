@@ -28,7 +28,7 @@ import {
   resolveHalfwayLocations,
   restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
-import { districtPageIsLive } from "@/lib/district-dictionary";
+import { districtPageHidden } from "@/lib/district-dictionary";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
 import type { DistrictMatch, Language, PickResult } from "@/lib/types";
@@ -270,7 +270,7 @@ export async function POST(request: Request) {
   });
 
   const districtMatch: DistrictMatch | undefined =
-    result.matchedDistrict && districtPageIsLive(result.matchedDistrict)
+    result.matchedDistrict && !districtPageHidden(result.matchedDistrict)
       ? { district_slug: result.matchedDistrict, locale: landing }
       : undefined;
 

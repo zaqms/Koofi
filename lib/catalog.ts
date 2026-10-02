@@ -126,26 +126,38 @@ export function listingShopsFrom(shops: readonly Shop[]): Shop[] {
 }
 
 /**
- * Listing shops in the district. When that set is empty, never fall back
- * to a drive-through lane, a pickup-only row, or a row that is not sit-down.
- * An empty district stays empty.
+ * Non-chain rows use the prod listing: specialty shops, or every real
+ * non-chain row when the district has no specialty shop. A chain row is
+ * added only when it is sit-down, not a drive-through lane, and not
+ * pickup-only. The fallback never returns a non-qualifying chain.
  */
 export function districtListingFrom(
   shops: readonly Shop[],
   district: NeighborhoodId,
 ): Shop[] {
-  const listing = listingShopsFrom(shops).filter(
-    (shop) => shop.neighborhood === district,
+  const inDistrict = shops.filter(
+    (shop) => !isExampleShop(shop) && shop.neighborhood === district,
   );
-  if (listing.length > 0) return listing;
-  return shops.filter(
-    (shop) =>
-      !isExampleShop(shop) &&
-      shop.neighborhood === district &&
-      !isDriveThroughLane(shop) &&
-      shop.pickupOnly !== true &&
-      isHalfwaySitDown(shop) &&
-      chainIsListed(shop),
+  const nonChains = inDistrict.filter((shop) => !isChainShop(shop));
+  const nonChainSpecialty = nonChains.filter((shop) => !isDriveThroughLane(shop));
+  const nonChainShown = nonChainSpecialty.length > 0 ? nonChainSpecialty : nonChains;
+  const qualifyingChains = inDistrict.filter(
+    (shop) => isChainShop(shop) && chainIsListed(shop),
+  );
+  return [...nonChainShown, ...qualifyingChains];
+}
+
+/** True when every real row is a chain branch that fails the sit-down gate. */
+export function districtRowsAreUnlistedChains(
+  shops: readonly Shop[],
+  district: NeighborhoodId,
+): boolean {
+  const rows = shops.filter(
+    (shop) => !isExampleShop(shop) && shop.neighborhood === district,
+  );
+  return (
+    rows.length > 0 &&
+    rows.every((shop) => isChainShop(shop) && !chainIsListed(shop))
   );
 }
 
@@ -168,8 +180,8 @@ export function catalogDistrictIdsFrom(
 }
 
 /**
- * Districts with at least one qualifying listing row. A drive-through lane
- * or a pickup-only row does not keep the page. A later dine-in row puts it back.
+ * Districts that still have a page. A local drive-through row keeps it.
+ * The page drops only when every row is a non-qualifying chain.
  */
 export function listedDistrictIdsFrom(shops: readonly Shop[]): NeighborhoodId[] {
   const seen = new Set<NeighborhoodId>();
@@ -266,8 +278,8 @@ export function listListingDirectoryShops(
 }
 
 /**
- * Local cafés plus sit-down chains in a district. A chain that is not
- * sit-down stays off the page, including when it is the only row.
+ * Prod rows for non-chains, plus sit-down chain branches. A district whose
+ * rows are all non-qualifying chains returns nothing.
  */
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,
@@ -276,7 +288,7 @@ export function listDirectoryShopsForDistrict(
   return toDirectoryShops(districtListingFrom(listRealShops(city), district));
 }
 
-/** Neighborhood index: qualifying listing rows only. Empty districts stay off. */
+/** Neighborhood index: the same rows the district pages show. */
 export function listBrowseDirectoryShops(
   city: City = DEFAULT_LIVE_CITY,
 ): DirectoryShop[] {

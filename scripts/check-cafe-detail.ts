@@ -561,7 +561,7 @@ const PLACEID_FIX_HERO_COUNTS: Record<string, number> = {
   "coffee-address-al-hamra": 2,
   "coffee-address-al-nahdah": 2,
   "coffee-address-al-rabi": 2,
-  "coffee-address-al-rabwah": 2,
+  "coffee-address-al-rabwah": 1,
   "coffee-zam-al-yarmouk": 3,
   "dahal-specialty-al-nahdah": 3,
   "drcafe-al-jazirah": 3,

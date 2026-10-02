@@ -671,14 +671,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-aziziyah": {
     lead: `Al Aziziyah (العزيزية) sits on the south side of Riyadh. This page is the Al Aziziyah set on wain.lol so far.
 
-[Drive Coffee](/en/c/drive-al-aziziyah) and [dr.CAFE](/en/c/drcafe-al-aziziyah) are on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There are **{count}** cafes from Al Aziziyah on the catalog today:`,
+[Waqar](/en/c/waqar-al-aziziyah) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Al Aziziyah on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Aziziyah isn’t the stop, these south-central lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Aziziyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Two cafes in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Drive Coffee and dr.CAFE, with Maps links.",
+    meta: "One cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
   },
   "al-hazm": {
     lead: `Al Hazm (الحزم) is a southwest Riyadh حي. This page is the Al Hazm set on wain.lol so far.

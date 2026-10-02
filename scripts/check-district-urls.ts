@@ -177,9 +177,10 @@ assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gha
 assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
-assert(areas.length === 51, `expected 51 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 353, `specialty discovery 354→353 after dropping closed Voom Al Masif, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 421, `catalog 422→421 after dropping closed Voom Al Masif, got ${listRealShops().length}`);
+assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
+assert(areas.length === 52, `expected 52 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 354, `specialty discovery 353→354 with Waqar Al Aziziyah, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 422, `catalog 421→422 with Waqar Al Aziziyah, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1466,6 +1467,26 @@ const MALAZ_REFILL = {
 }
 
 {
+  const rows = listDirectoryShopsForDistrict("al-aziziyah");
+  assert(rows.length === 1, `al-aziziyah has 1 specialty shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "waqar-al-aziziyah"),
+    "al-aziziyah specialty page includes waqar-al-aziziyah",
+  );
+  const aziziyahDriveThrough = listDriveThroughDirectoryShops().filter(
+    (shop) => shop.neighborhood === "al-aziziyah",
+  );
+  for (const id of ["drive-al-aziziyah", "drcafe-al-aziziyah"]) {
+    assert(
+      aziziyahDriveThrough.some((shop) => shop.id === id),
+      `al-aziziyah drive-through directory includes ${id}`,
+    );
+  }
+  assert(neighborhoodLabel("al-aziziyah", "ar") === "العزيزية", "al-aziziyah Arabic label");
+  assert(neighborhoodLabel("al-aziziyah", "en") === "Al Aziziyah", "al-aziziyah English label");
+}
+
+{
   const dt = listDriveThroughDirectoryShops();
   assert(dt.length === 78, `Drive-through directory is 78, got ${dt.length}`);
   assert(
@@ -1504,8 +1525,10 @@ const MALAZ_REFILL = {
   assert(jazirah.length === 2, `al-jazirah has 2 DT-lane shops, got ${jazirah.length}`);
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
-    aziziyah.length === 2 && aziziyah.some((shop) => shop.id === "drcafe-al-aziziyah"),
-    "al-aziziyah includes drcafe-al-aziziyah",
+    aziziyah.length === 1 &&
+      aziziyah[0]?.id === "waqar-al-aziziyah" &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-al-aziziyah"),
+    "al-aziziyah page is specialty Waqar; drcafe-al-aziziyah stays on the Drive-through directory",
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
@@ -1838,7 +1861,8 @@ const scoutPack: {
     | "at-taawun"
     | "al-narjis"
     | "badr"
-    | "dhahrat-al-badiah";
+    | "dhahrat-al-badiah"
+    | "al-aziziyah";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -4045,6 +4069,19 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: false,
   },
+  {
+    id: "waqar-al-aziziyah",
+    hex: "0x3e2f0998d1d32f2b:0x7d22a04b551ef13c",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/waqar-al-aziziyah.jpg",
+    pin: { lat: 24.5854079, lng: 46.7714042 },
+    coordsInUrl: true,
+    placeId: "ChIJKy_T0ZgJLz4RPPEeVUugIn0",
+    dineIn: true,
+    outdoorSeating: false,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -4506,6 +4543,7 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
   "and-coffee-al-rabi": { nameEn: "& Coffee", nameAr: "كوفي اند" },
   "wacafe-al-rabi": { nameEn: "Wacafe", nameAr: "وكف" },
   "3bean-al-rabi": { nameEn: "3bean Coffee Roastery", nameAr: "محمصة ثري بين" },
+  "waqar-al-aziziyah": { nameEn: "Waqar", nameAr: "وقار" },
 };
 for (const [id, names] of Object.entries(canonicalNames)) {
   const shop = getShop(id);
@@ -4528,6 +4566,18 @@ for (const id of [
   assert(
     hours?.weekdayDescriptions?.length === 7 && (hours.periods?.length ?? 0) > 0,
     `${id} carries the Places weekly hours`,
+  );
+}
+/** Waqar (Al Aziziyah): weekly hours are the Places API regularOpeningHours bake (2 Oct 2026), never Scout's guess. */
+{
+  const hours = getShop("waqar-al-aziziyah")?.openingHours;
+  assert(
+    hours?.weekdayDescriptions?.length === 7 && hours.periods?.length === 7,
+    "waqar-al-aziziyah carries the 7-day Places weekly hours",
+  );
+  assert(
+    hours?.weekdayDescriptions?.[4] === "Friday: 12:30\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "waqar-al-aziziyah Friday row is the Places row",
   );
 }
 assert(

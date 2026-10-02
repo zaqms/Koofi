@@ -191,6 +191,18 @@ assert(
   "Dhahrat Al Badiah catalog is WAY only",
 );
 
+const aziziyah = rows.find((row) => row.stableId === "al-aziziyah");
+assert(aziziyah?.status === "dictionary_only", "Al Aziziyah sheet stays dictionary_only");
+assert(aziziyah?.nameEn === "Al Aziziyah", "Al Aziziyah EN lock");
+assert(aziziyah?.nameAr === "العزيزية", "Al Aziziyah AR lock");
+assert(liveCatalog.includes("al-aziziyah"), "Al Aziziyah stays a live catalog district");
+assert(listLiveDistrictIds().includes("al-aziziyah"), "Waqar makes Al Aziziyah a live specialty district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "al-aziziyah" && shop.catalogLane !== "drive-through").map((shop) => shop.id).join(",") ===
+    "waqar-al-aziziyah",
+  "Al Aziziyah specialty catalog is Waqar only",
+);
+
 assert(
   !readRepo("lib/browse-neighborhoods.ts").includes("BROWSE_EN_LABELS"),
   "browse EN comes from the locked dictionary, not a label overlay",

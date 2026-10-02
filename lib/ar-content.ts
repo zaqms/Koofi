@@ -1,4 +1,6 @@
 import { coffeeShopsInDistrict } from "./directory-category";
+import { chainCountClauseAr, chainOnlyBlock, fillHereIntroAr } from "./cafe-count";
+import { districtPageHidden } from "./district-dictionary";
 import {
   GATE_CAFE_ID,
   NEARBY_DISTRICTS,
@@ -916,7 +918,8 @@ export function chainDistrictHereIntroAr(
   local: number,
   chains: number,
 ): string {
-  return `فيه **${countWordAr(total)}** قهاوي من ${name} بالقائمة اليوم — ${countWordAr(local)} محلية و${countWordAr(chains)} فروع سلاسل:`;
+  const sentence = `فيه ${chainCountClauseAr(total, local, chains)} من ${name} بالكتالوج اليوم:`;
+  return local <= 0 ? chainOnlyBlock(sentence) : sentence;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -978,7 +981,10 @@ export function districtArMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "ar");
   const copy = DISTRICT_COPY_AR[district] ?? defaultDistrictCopy(district);
-  const lead = count === 0 ? defaultDistrictCopy(district).lead : copy.lead;
+  const lead =
+    chainCount > 0 && count === chainCount ? chainOnlyBlock(copy.lead) : copy.lead;
+  const hereHeading =
+    chainCount > 0 && count === chainCount ? "## {chain-only}وش فيه" : "## وش فيه";
   const hereDefault =
     count === 0
       ? `ما فيه قهاوي من ${name} بالكتالوج للحين.`
@@ -988,7 +994,7 @@ export function districtArMarkdown(district: NeighborhoodId): string {
   const hereIntro =
     chainCount > 0
       ? chainDistrictHereIntroAr(name, count, count - chainCount, chainCount)
-      : fillCount(
+      : fillHereIntroAr(
           count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
           count,
         );
@@ -1004,7 +1010,7 @@ export function districtArMarkdown(district: NeighborhoodId): string {
 
 ${lead}
 
-## وش فيه
+${hereHeading}
 
 ${hereIntro}
 
@@ -1054,25 +1060,44 @@ function defaultCafeBlurb(shop: Shop): string {
     vibe.length > 0 && vibe[0] !== "قهوة"
       ? ` وسوم الكتالوج على البطاقة: ${vibe.join("، ")}.`
       : "";
-  return `${opener(name, district, cityLabel(shop.city, "ar"))}${vibeLine} ${extra} ${cityLabel(shop.city, "ar")} بس للحين. إذا تبي باقي الحي، صفحة الحي مربوطة تحت.`;
+  const linked = districtPageHidden(shop.neighborhood)
+    ? ""
+    : " إذا تبي باقي الحي، صفحة الحي مربوطة تحت.";
+  return `${opener(name, district, cityLabel(shop.city, "ar"))}${vibeLine} ${extra} ${cityLabel(shop.city, "ar")} بس للحين.${linked}`;
+}
+
+function plainDistrictLabel(id: NeighborhoodId): string {
+  return coffeeShopsInDistrict(neighborhoodLabel(id, "ar"), "ar");
+}
+
+function withoutDistrictLinkPitch(body: string): string {
+  return body
+    .replace(/\s*إذا تبي باقي الحي، صفحة الحي مربوطة تحت\.?/g, "")
+    .replace(/\s*صفحة الحي كاملة مربوطة تحت\.?/g, "")
+    .replace(/\s*باقي .+? مربوط(?:ة)? تحت[^.]*\./g, "")
+    .trim();
 }
 
 function cafeSiblingsMarkdown(shop: Shop): string {
   const siblings = siblingShops(shop);
   const district = neighborhoodLabel(shop.neighborhood, "ar");
+  const hidden = districtPageHidden(shop.neighborhood);
+  const page = hidden ? plainDistrictLabel(shop.neighborhood) : districtLink(shop.neighborhood);
   if (siblings.length === 0) {
-    return `صفحة الحي كاملة: ${districtLink(shop.neighborhood)}.`;
+    return `صفحة الحي كاملة: ${page}.`;
   }
   return `الباقي بنفس قائمة ${district}:
 
 ${shopListMarkdown(siblings)}
 
-صفحة الحي كاملة: ${districtLink(shop.neighborhood)}.`;
+صفحة الحي كاملة: ${page}.`;
 }
 
 export function cafeArMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE_AR.markdown;
-  const body = CNI_BLURBS_AR[shop.id] ?? defaultCafeBlurb(shop);
+  const hidden = districtPageHidden(shop.neighborhood);
+  const raw = CNI_BLURBS_AR[shop.id] ?? defaultCafeBlurb(shop);
+  const body = hidden ? withoutDistrictLinkPitch(raw) : raw;
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

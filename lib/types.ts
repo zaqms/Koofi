@@ -152,7 +152,16 @@ export type Shop = {
   isChain?: true;
   chainBrand?: string;
   /**
-   * Dine-in for بيننا. Scout verdict wins over Places.
+   * Manual seating call. Wins over Places `dineIn` on every refresh.
+   * `dineIn: false` keeps a drive-through lane; `true` is sit-down.
+   */
+  seatingVerdict?: {
+    dineIn: boolean;
+    source: "qa" | "scout";
+    date: string;
+  };
+  /**
+   * Dine-in for بيننا. A `seatingVerdict` wins over Places, then Scout.
    * `null` / missing = unresolved — fail-closed. Not a Soft Places vibe.
    */
   dineIn?: boolean | null;

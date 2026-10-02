@@ -37,6 +37,7 @@ export type HalfwayEligibleShop = Pick<
   | "momentTags"
   | "catalogLane"
   | "isChain"
+  | "seatingVerdict"
 >;
 
 export function isHalfwayDenied(id: string): boolean {
@@ -51,6 +52,8 @@ export function isPickupOnlyTagged(shop: HalfwayEligibleShop): boolean {
 }
 
 export function isHalfwaySitDown(shop: HalfwayEligibleShop): boolean {
+  if (shop.seatingVerdict?.dineIn === false) return false;
+  if (shop.seatingVerdict?.dineIn === true) return true;
   return shop.dineIn === true || shop.outdoorSeating === true;
 }
 

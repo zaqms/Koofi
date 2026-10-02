@@ -9,7 +9,7 @@ import { directoryNeighborhoods } from "./directory";
 import { districtCity } from "./district-city";
 import { NEIGHBORHOODS, isNeighborhoodId } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
-import { districtPath } from "./product";
+import { districtPath, neighborhoodsPath } from "./product";
 import type { City, Language, NeighborhoodId } from "./types";
 
 /**
@@ -34,6 +34,11 @@ export function listLiveCatalogDistrictIds(): NeighborhoodId[] {
 /** Hide the URL only when every row is a non-qualifying chain branch. */
 export function districtPageHidden(id: NeighborhoodId): boolean {
   return districtRowsAreUnlistedChains(listRealShops(districtCity(id)), id);
+}
+
+/** Temporary home for a hidden district URL until a dine-in row brings the page back. */
+export function hiddenDistrictRedirect(language: Language): string {
+  return neighborhoodsPath(language);
 }
 
 export function dictionaryDistrictIds(): NeighborhoodId[] {

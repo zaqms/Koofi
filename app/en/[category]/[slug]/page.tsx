@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { DistrictPage } from "@/components/district-page";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
-import { districtPageHidden } from "@/lib/district-dictionary";
+import { districtPageHidden, hiddenDistrictRedirect } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
 import {
   categoryListingStaticParams,
@@ -70,7 +70,8 @@ export default async function EnglishCategoryDistrictPage({
     return <HomeLanding language="en" selectedChipId={chipId} />;
   }
   const district = resolveDistrictSlug(slug);
-  if (!district || districtPageHidden(district)) notFound();
+  if (!district) notFound();
+  if (districtPageHidden(district)) redirect(hiddenDistrictRedirect("en"));
 
   return (
     <>

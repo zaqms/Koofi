@@ -100,7 +100,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   mccafe: ["mccafe", "mc cafe", "ماك كافيه"],
   barns: ["barns", "barn", "barn s", "بارنز"],
   peets: ["peets", "peet s", "بيتس"],
-  "dr-cafe": ["dr cafe", "drcafe", "د.كيف", "د كيف"],
+  "dr-cafe": ["dr cafe", "dr. cafe", "drcafe", "doctor cafe", "د.كيف", "د كيف", "دكتور كيف"],
   java: ["java", "جافا"],
   "24cafe": ["24cafe", "24 cafe", "24كافيه"],
   shqaf: ["shqaf", "shgaf", "شقفة"],

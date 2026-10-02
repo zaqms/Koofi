@@ -228,7 +228,17 @@ export function shopNameAliases(
   return [...aliases];
 }
 
-const CHAIN_NEGATION_MARKERS = ["not", "no", "غير", "بدون", "مو"] as const;
+const CHAIN_NEGATION_MARKERS = [
+  "anything but",
+  "except",
+  "not",
+  "no",
+  "ما ابي",
+  "بدون",
+  "غير",
+  "إلا",
+  "مو",
+] as const;
 
 /** Brand ids the ask tells us to leave out, such as "not starbucks". */
 export function negatedChainBrandIds(raw: string): Set<ChainBrandId> {
@@ -241,7 +251,7 @@ export function negatedChainBrandIds(raw: string): Set<ChainBrandId> {
       const needle = normalize(alias);
       if (!needle) continue;
       for (const marker of CHAIN_NEGATION_MARKERS) {
-        if (includesAlias(haystack, `${marker} ${needle}`)) negated.add(id);
+        if (includesAlias(haystack, normalize(`${marker} ${needle}`))) negated.add(id);
       }
     }
   }

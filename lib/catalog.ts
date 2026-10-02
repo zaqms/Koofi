@@ -98,9 +98,29 @@ export function isDiscoveryShop(
  */
 export function chainIsListed(shop: HalfwayEligibleShop): boolean {
   if (!isChainShop(shop)) return true;
+  if (shop.seatingVerdict?.dineIn === false) return false;
   if (shop.catalogLane === "drive-through") return false;
   if (shop.pickupOnly === true) return false;
   return isHalfwaySitDown(shop);
+}
+
+/** A manual seating verdict must match the stored lane and dineIn. */
+export function seatingVerdictDisagrees(shop: Shop): string | null {
+  const verdict = shop.seatingVerdict;
+  if (!verdict) return null;
+  const lane = shop.catalogLane === "drive-through";
+  if (verdict.dineIn === false) {
+    if (!lane) return `${shop.id} verdict is not dine-in but the drive-through lane is missing`;
+    if (shop.dineIn !== false) {
+      return `${shop.id} verdict is not dine-in but dineIn is ${String(shop.dineIn)}`;
+    }
+    return null;
+  }
+  if (lane) return `${shop.id} verdict is dine-in but the row is still a drive-through lane`;
+  if (shop.dineIn !== true) {
+    return `${shop.id} verdict is dine-in but dineIn is ${String(shop.dineIn)}`;
+  }
+  return null;
 }
 
 /**

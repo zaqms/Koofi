@@ -25,6 +25,7 @@ import {
 import {
   catalogDistrictIdsFrom,
   chainIsListed,
+  seatingVerdictDisagrees,
   discoveryShopsFrom,
   districtListingFrom,
   districtRowsAreUnlistedChains,
@@ -45,6 +46,7 @@ import { listNeighborhoodRows } from "../lib/browse-neighborhoods";
 import { categoryDistrictStaticParams } from "../lib/district";
 import {
   districtPageHidden,
+  hiddenDistrictRedirect,
   listLiveCatalogDistrictIds,
   listLiveDistrictIds,
 } from "../lib/district-dictionary";
@@ -56,6 +58,8 @@ import {
   districtEnMarkdown,
   districtEnMeta,
 } from "../lib/en-content";
+import { countedCafesAr, countWord, countWordAr } from "../lib/cafe-count";
+import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
 import { isHalfwayEligible, filterHalfwayEligible } from "../lib/halfway-eligibility";
 import { rankByPopularity } from "../lib/district-rank";
 import { listPopularDirectoryShops } from "../lib/most-popular";
@@ -570,7 +574,7 @@ assert(
 );
 assert(
   chainDistrictHereIntroEn("Al Olaya", 4, 3, 1) ===
-    "There are **four** cafes from Al Olaya on the list today — three local, one chain branches:",
+    "There are {chain-counts}**four** cafes — three local cafes, one chain branch{/chain-counts}{local-counts}**three** local cafes{/local-counts} from Al Olaya on the catalog today:",
   "EN chain hereIntro template",
 );
 assert(
@@ -580,7 +584,7 @@ assert(
 );
 assert(
   chainDistrictHereIntroAr("العليا", 4, 3, 1) ===
-    "فيه **أربع** قهاوي من العليا بالقائمة اليوم — ثلاث محلية ووحدة فروع سلاسل:",
+    "فيه {chain-counts}**أربع قهاوي** — ثلاث قهاوي محلية، وفرع واحد{/chain-counts}{local-counts}**ثلاث قهاوي محلية**{/local-counts} من العليا بالكتالوج اليوم:",
   "AR chain hereIntro template",
 );
 
@@ -597,8 +601,8 @@ const copyBlob = districtIds
   .join("\n---\n");
 assert(
   createHash("sha256").update(copyBlob).digest("hex") ===
-    "39bc74a119f406aeb926553d59b87413a7e8edfa819e69a5433da333e285285b",
-  "district copy hash matches prod district pages",
+    "ec3e4dd0b8fb758dbe82317a53b9e2df81e5efc3df40eea31c07828c3dbdf717",
+  "district copy hash includes the house count helper",
 );
 assert(
   !copyBlob.includes("Zero cafes") && !copyBlob.includes("صفر"),
@@ -918,5 +922,142 @@ assert(
     !dunkinNotStarbucks.some((shop) => shop.chainBrand === "starbucks"),
   "negation drops Starbucks and still matches Dunkin",
 );
+
+const drCafeAsk = fixtureShop({
+  id: "drcafe-namar",
+  nameEn: "dr.CAFE",
+  nameAr: "د.كيف كافيه",
+  neighborhood: "namar",
+  isChain: true,
+  chainBrand: "dr-cafe",
+});
+const javaAsk = fixtureShop({
+  id: "java-cafe-al-rabi",
+  nameEn: "Java Cafe",
+  nameAr: "جافا كافيه",
+  neighborhood: "al-rabi",
+  isChain: true,
+  chainBrand: "java",
+});
+const negationShops = [...askShops, drCafeAsk, javaAsk];
+assert(
+  matchCatalogShops("دكتور كيف", negationShops).some((shop) => shop.chainBrand === "dr-cafe"),
+  "دكتور كيف matches dr.CAFE",
+);
+assert(
+  matchCatalogShops("doctor cafe", negationShops).some((shop) => shop.chainBrand === "dr-cafe"),
+  "doctor cafe matches dr.CAFE",
+);
+assert(
+  matchCatalogShops("dr. cafe", negationShops).some((shop) => shop.chainBrand === "dr-cafe"),
+  "dr. cafe matches dr.CAFE",
+);
+for (const ask of ["مو دكتور كيف", "anything but java", "except java", "ما ابي جافا", "إلا جافا"]) {
+  const hits = matchCatalogShops(ask, negationShops);
+  if (ask.includes("java") || ask.includes("جافا")) {
+    assert(!hits.some((shop) => shop.chainBrand === "java"), `${ask} excludes Java`);
+  } else {
+    assert(!hits.some((shop) => shop.chainBrand === "dr-cafe"), `${ask} excludes dr.CAFE`);
+  }
+}
+
+const manualKiosk = fixtureShop({
+  id: "manual-kiosk",
+  isChain: true,
+  chainBrand: "dr-cafe",
+  catalogLane: "drive-through",
+  dineIn: false,
+  outdoorSeating: true,
+  seatingVerdict: { dineIn: false, source: "qa", date: "2026-10-02" },
+});
+assert(!chainIsListed(manualKiosk), "a manual not-dine-in verdict stays off the district page");
+assert(seatingVerdictDisagrees(manualKiosk) === null, "a matching manual verdict agrees with the lane");
+assert(
+  seatingVerdictDisagrees({ ...manualKiosk, catalogLane: undefined, dineIn: true }) != null,
+  "a manual verdict that disagrees with the lane fails",
+);
+const foldedVerdict = foldHalfwayPlaceAndScoutAttrs(
+  [manualKiosk],
+  [{ id: "manual-kiosk", dine_in: true, outdoor_seating: true }],
+);
+assert(
+  foldedVerdict.shops[0]?.dineIn === false,
+  "Places dineIn cannot override a manual seating verdict",
+);
+for (const shop of listRealShops()) {
+  const reason = seatingVerdictDisagrees(shop);
+  assert(reason == null, reason ?? "seating verdict");
+}
+
+assert(hiddenDistrictRedirect("ar") === "/neighborhoods", "hidden AR districts redirect to /neighborhoods");
+assert(
+  hiddenDistrictRedirect("en") === "/en/neighborhoods",
+  "hidden EN districts redirect to /en/neighborhoods",
+);
+assert(
+  read("app/[category]/[slug]/page.tsx").includes('redirect(hiddenDistrictRedirect("ar"))') &&
+    read("app/en/[category]/[slug]/page.tsx").includes('redirect(hiddenDistrictRedirect("en"))'),
+  "hidden district pages 307 to the neighborhoods index",
+);
+assert(
+  cssSrc.includes("html[data-hide-chains] [data-chain-counts]") &&
+    cssSrc.includes("html[data-hide-chains] [data-chain-only]") &&
+    cssSrc.includes("[data-local-counts]"),
+  "Local only hides chain counts and chain-only intros",
+);
+
+assert(
+  districtEnMarkdown("as-suwaidi").includes("sits on the southwest side"),
+  "As Suwaidi EN lead matches prod",
+);
+assert(
+  districtArMarkdown("as-suwaidi").includes("بجنوب غرب الرياض"),
+  "As Suwaidi AR lead matches prod",
+);
+
+const BAD_EN_INTRO = [
+  /\bone cafes\b/i,
+  /\bthere are one\b/i,
+  /\bthere is (?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\b/i,
+];
+const BAD_AR_INTRO = [/وحدة قهاوي/, /ثنتين قهاوي/, /قهوة ثنتين/, /قهوة ثلاث/, /قهوة أربع/, /قهوة خمس/];
+
+function hereIntroParagraph(markdown: string): string {
+  const at = markdown.search(/What’s here|وش فيه/);
+  const after = markdown.slice(at).replace(/^[^\n]*\n+/, "");
+  return (after.split(/\n\n/)[0] ?? "")
+    .replaceAll("{chain-only}", "")
+    .replaceAll("{/chain-only}", "")
+    .replaceAll("{chain-counts}", "")
+    .replaceAll("{/chain-counts}", "")
+    .replaceAll("{local-counts}", "")
+    .replaceAll("{/local-counts}", "");
+}
+
+for (const id of NEIGHBORHOOD_IDS) {
+  if (districtPageHidden(id)) continue;
+  const count = listDirectoryShopsForDistrict(id).length;
+  const en = hereIntroParagraph(districtEnMarkdown(id));
+  const ar = hereIntroParagraph(districtArMarkdown(id));
+  for (const bad of BAD_EN_INTRO) assert(!bad.test(en), `${id} EN intro mismatch: ${en}`);
+  for (const bad of BAD_AR_INTRO) assert(!bad.test(ar), `${id} AR intro mismatch: ${ar}`);
+  if (count === 1) {
+    assert(/\*\*one\*\* cafe\b/i.test(en) && !/\bcafes\b/i.test(en), `${id} EN singular intro: ${en}`);
+    assert(ar.includes("**قهوة وحدة**"), `${id} AR singular intro: ${ar}`);
+  } else if (count === 2) {
+    assert(/\*\*two\*\* cafes\b/i.test(en), `${id} EN dual intro: ${en}`);
+    assert(ar.includes("**قهوتين**"), `${id} AR dual intro: ${ar}`);
+  } else if (count > 2) {
+    assert(
+      new RegExp(`\\*\\*${countWord(count)}\\*\\* cafes\\b`, "i").test(en),
+      `${id} EN plural intro: ${en}`,
+    );
+    assert(
+      ar.includes(`**${countedCafesAr(count)}**`) ||
+        ar.includes(`**${countWordAr(count)}** قهاوي`),
+      `${id} AR plural intro: ${ar}`,
+    );
+  }
+}
 
 console.log("check-chains: ok");

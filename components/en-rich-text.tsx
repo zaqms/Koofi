@@ -23,6 +23,36 @@ function EnLink({ href, children }: { href: string; children: ReactNode }) {
   );
 }
 
+const COUNT_CLAUSE =
+  /\{(chain-counts|local-counts|chain-only)\}([\s\S]*?)\{\/\1\}/g;
+
+function renderWithClauses(text: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  let last = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+  COUNT_CLAUSE.lastIndex = 0;
+  while ((match = COUNT_CLAUSE.exec(text))) {
+    if (match.index > last) nodes.push(...renderInline(text.slice(last, match.index)));
+    const kind = match[1];
+    const attr =
+      kind === "chain-counts"
+        ? "data-chain-counts"
+        : kind === "local-counts"
+          ? "data-local-counts"
+          : "data-chain-only";
+    nodes.push(
+      <span key={`q${key}`} {...{ [attr]: "" }}>
+        {renderInline(match[2] ?? "")}
+      </span>,
+    );
+    key += 1;
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) nodes.push(...renderInline(text.slice(last)));
+  return nodes;
+}
+
 function renderInline(text: string): ReactNode[] {
   const nodes: ReactNode[] = [];
   const token =
@@ -93,9 +123,15 @@ export function EnRichText({
         );
       }
       if (block.startsWith("## ")) {
+        const chainOnly = block.includes("{chain-only}");
+        const label = block.slice(3).replaceAll("{chain-only}", "");
         return (
-          <h2 key={block} className="text-sm font-semibold">
-            {renderInline(block.slice(3))}
+          <h2
+            key={block}
+            className="text-sm font-semibold"
+            {...(chainOnly ? { "data-chain-only": "" } : {})}
+          >
+            {renderInline(label)}
           </h2>
         );
       }
@@ -106,15 +142,28 @@ export function EnRichText({
           .filter((line) => line.startsWith("- "));
         return (
           <ul key={block} className="list-disc space-y-1 ps-5">
-            {rows.map((row) => (
-              <li key={row}>{renderInline(row.slice(2))}</li>
-            ))}
+            {rows.map((row) => {
+              const chain = row.startsWith("- {chain} ");
+              const body = chain ? row.slice("- {chain} ".length) : row.slice(2);
+              return (
+                <li key={row} {...(chain ? { "data-chain-card": "" } : {})}>
+                  {renderWithClauses(body)}
+                </li>
+              );
+            })}
           </ul>
         );
       }
+      const paragraph = block.replace(/\n/g, " ");
+      const chainOnly =
+        paragraph.includes("{chain-only}") && !paragraph.includes("{chain-counts}");
       return (
-        <p key={block} className="text-sm leading-6">
-          {renderInline(block.replace(/\n/g, " "))}
+        <p
+          key={block}
+          className="text-sm leading-6"
+          {...(chainOnly ? { "data-chain-only": "" } : {})}
+        >
+          {renderWithClauses(paragraph)}
         </p>
       );
     })

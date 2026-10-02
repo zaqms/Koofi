@@ -1,4 +1,6 @@
+import { chainCountClauseEn, chainOnlyBlock, fillHereIntroEn } from "./cafe-count";
 import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
+import { districtPageHidden } from "./district-dictionary";
 import { cityLabel } from "./cities";
 import { districtCity } from "./district-city";
 import { filterDirectoryShops } from "./directory";
@@ -1053,7 +1055,9 @@ export function chainDistrictHereIntroEn(
   local: number,
   chains: number,
 ): string {
-  return `There are **${countWord(total)}** cafes from ${name} on the list today — ${countWord(local)} local, ${countWord(chains)} chain branches:`;
+  const verb = total === 1 ? "is" : "are";
+  const sentence = `There ${verb} ${chainCountClauseEn(total, local, chains)} from ${name} on the catalog today:`;
+  return local <= 0 ? chainOnlyBlock(sentence) : sentence;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -1116,7 +1120,12 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "en");
   const copy = DISTRICT_COPY[district] ?? defaultDistrictCopy(district);
-  const lead = count === 0 ? defaultDistrictCopy(district).lead : copy.lead;
+  const lead =
+    chainCount > 0 && count === chainCount ? chainOnlyBlock(copy.lead) : copy.lead;
+  const hereHeading =
+    chainCount > 0 && count === chainCount
+      ? "## {chain-only}What’s here"
+      : "## What’s here";
   const hereDefault =
     count === 0
       ? `No cafes from ${name} on the catalog yet.`
@@ -1126,7 +1135,7 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
   const hereIntro =
     chainCount > 0
       ? chainDistrictHereIntroEn(name, count, count - chainCount, chainCount)
-      : fillCount(
+      : fillHereIntroEn(
           count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
           count,
         );
@@ -1142,7 +1151,7 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
 ${lead}
 
-## What’s here
+${hereHeading}
 
 ${hereIntro}
 
@@ -1180,25 +1189,44 @@ function defaultCafeBlurb(shop: Shop): string {
     vibe.length > 0 && vibe[0] !== "Coffee"
       ? ` Catalog tags on the card: ${vibe.join(", ")}.`
       : "";
-  return `${opener(shop.nameEn, district, cityName)}${vibeLine} If you want the rest of that neighborhood, the district page is linked below.`;
+  const linked = districtPageHidden(shop.neighborhood)
+    ? ""
+    : " If you want the rest of that neighborhood, the district page is linked below.";
+  return `${opener(shop.nameEn, district, cityName)}${vibeLine}${linked}`;
+}
+
+function plainDistrictLabel(id: NeighborhoodId): string {
+  return `Coffee shops in ${neighborhoodLabel(id, "en")}`;
+}
+
+function withoutDistrictLinkPitch(body: string): string {
+  return body
+    .replace(/\s*If you want the rest of that neighborhood, the district page is linked below\.?/g, "")
+    .replace(/\s*Full neighborhood page is linked below\.?/g, "")
+    .replace(/\s*The rest of the .+? list is linked below[^.]*\./g, "")
+    .trim();
 }
 
 function cafeSiblingsMarkdown(shop: Shop): string {
   const siblings = siblingShops(shop);
+  const hidden = districtPageHidden(shop.neighborhood);
+  const page = hidden ? plainDistrictLabel(shop.neighborhood) : districtLink(shop.neighborhood);
   if (siblings.length === 0) {
-    return `Full neighborhood page: ${districtLink(shop.neighborhood)}.`;
+    return `Full neighborhood page: ${page}.`;
   }
   const district = neighborhoodLabel(shop.neighborhood, "en");
   return `Others on the same ${district} list:
 
 ${shopListMarkdown(siblings)}
 
-Full neighborhood page: ${districtLink(shop.neighborhood)}.`;
+Full neighborhood page: ${page}.`;
 }
 
 export function cafeEnMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.markdown;
-  const body = CNI_BLURBS[shop.id] ?? defaultCafeBlurb(shop);
+  const hidden = districtPageHidden(shop.neighborhood);
+  const raw = CNI_BLURBS[shop.id] ?? defaultCafeBlurb(shop);
+  const body = hidden ? withoutDistrictLinkPitch(raw) : raw;
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

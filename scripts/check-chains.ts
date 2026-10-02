@@ -258,6 +258,47 @@ assert(
   districtListingFrom(fixtures, "namar").length === 0,
   "a drive-through chain is not the district page",
 );
+const localDriveOnly = fixtureShop({
+  id: "local-drive-only",
+  nameEn: "Local Drive",
+  neighborhood: "al-falah",
+  catalogLane: "drive-through",
+  momentTags: ["drive-through"],
+  dineIn: true,
+});
+assert(
+  districtListingFrom([localDriveOnly], "al-falah").length === 0,
+  "an empty listing does not fall back to a drive-through lane",
+);
+const pickupFallback = fixtureShop({
+  id: "chain-pickup-fallback",
+  nameEn: "Dunkin' Pickup",
+  neighborhood: "al-izdihar",
+  isChain: true,
+  chainBrand: "dunkin",
+  pickupOnly: true,
+  dineIn: true,
+  outdoorSeating: false,
+  momentTags: [],
+});
+assert(
+  districtListingFrom([pickupFallback], "al-izdihar").length === 0,
+  "an empty listing does not fall back to a pickup-only row",
+);
+const closedFallback = fixtureShop({
+  id: "chain-closed-fallback",
+  nameEn: "Barn's Closed",
+  neighborhood: "dhahrat-al-badiah",
+  isChain: true,
+  chainBrand: "barns",
+  dineIn: false,
+  outdoorSeating: false,
+  momentTags: [],
+});
+assert(
+  districtListingFrom([closedFallback], "dhahrat-al-badiah").length === 0,
+  "an empty listing does not fall back to a non-sit-down row",
+);
 assert(
   districtListingFrom(fixtures, "tuwaiq").map((shop) => shop.id).join(",") === "peets-tuwaiq",
   "a chains-only district still has a page",
@@ -426,8 +467,29 @@ assert(
 const brandIds = Object.keys(CHAIN_BRANDS);
 assert(
   brandIds.join(",") ===
-    "starbucks,dunkin,mccafe,barns,krispy-kreme,peets,dr-cafe,java,24cafe",
+    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,24cafe,shqaf,coffee-day,kyan,dancafe",
   "registry is the mass-market set",
+);
+assert(!isChainBrandId("krispy-kreme"), "Krispy Kreme is not a chain brand");
+assert(isChainBrandId("shqaf") && CHAIN_BRANDS.shqaf.nameAr === "شقفه", "Shqaf is شقفه");
+assert(isChainBrandId("coffee-day") && CHAIN_BRANDS["coffee-day"].logo === null, "Coffee Day has no invented logo");
+assert(isChainBrandId("kyan") && CHAIN_BRANDS.kyan.nameAr === "كيان", "Kyan is كيان");
+assert(isChainBrandId("dancafe") && CHAIN_BRANDS.dancafe.nameAr === "دان كافيه", "Dancafe is دان كافيه");
+assert(
+  shopBrandKey(fixtureShop({ id: "shqaf-x", nameEn: "Shgaf" })) === "shqaf",
+  "shgaf resolves to Shqaf",
+);
+assert(
+  shopBrandKey(fixtureShop({ id: "coffee-day-x", nameEn: "Coffee Day" })) === "coffee-day",
+  "Coffee Day resolves before a generic coffee key",
+);
+assert(
+  shopBrandKey(fixtureShop({ id: "kyan-x", nameEn: "Kyan" })) === "kyan",
+  "Kyan brand key",
+);
+assert(
+  shopBrandKey(fixtureShop({ id: "dancafe-x", nameEn: "Dan Cafe" })) === "dancafe",
+  "Dan Cafe resolves to Dancafe",
 );
 assert(!isChainBrandId("coffee-address"), "Coffee Address stays specialty");
 assert(!isChainBrandId("percent-arabica"), "% Arabica stays specialty");
@@ -520,8 +582,44 @@ const copyBlob = districtIds
   .join("\n---\n");
 assert(
   createHash("sha256").update(copyBlob).digest("hex") ===
-    "dc92747be581e99b85a7478c6eb92b4e68f3efbaa3c684715e0e3c31e01c29a5",
-  "district copy with zero chains is byte-identical to main",
+    "3ef3134c58456ec4ff710f374f76cc4cae1c79634acaccdd8d6e7650ad28267e",
+  "district copy hash after the empty-listing fallback",
+);
+assert(
+  !copyBlob.includes("Zero cafes") && !copyBlob.includes("صفر"),
+  "a total of 0 never says Zero or صفر",
+);
+const emptyAfterFallback = [
+  "al-mursalat",
+  "al-murabba",
+  "as-salam",
+  "ghubairah",
+  "al-wisham",
+  "al-hazm",
+  "al-andalus",
+  "al-khaleej",
+  "ar-rimal",
+  "al-janadriyyah",
+  "namar",
+  "kkia",
+  "al-jazirah",
+  "an-nasim",
+  "shubra",
+  "manfuha",
+  "tuwaiq",
+] as const;
+assert(
+  emptyAfterFallback.every((id) => listDirectoryShopsForDistrict(id).length === 0),
+  "drive-through-only districts stay generated and list no rows",
+);
+assert(
+  districtEnMeta("kkia").startsWith("No cafes at KKIA"),
+  "an empty KKIA page says at KKIA",
+);
+assert(
+  districtEnMarkdown("manfuha").includes("Manfuha") &&
+    !districtEnMarkdown("manfuha").includes("Manfuhah"),
+  "Manfuha spelling matches the H1",
 );
 assert(
   !copyBlob.includes("local specialty plus chain branches"),
@@ -589,7 +687,19 @@ const pickupChain = fixtureShop({
   pickupOnly: true,
   momentTags: ["drive-through"],
 });
-const gateShops = [dineInChain, dineInFalse, dineInUnknown, pickupChain];
+const momentTagSitDown = fixtureShop({
+  id: "java-moment",
+  nameEn: "Java Moment",
+  nameAr: "جافا",
+  neighborhood: "al-rabi",
+  isChain: true,
+  chainBrand: "java",
+  dineIn: true,
+  outdoorSeating: false,
+  pickupOnly: false,
+  momentTags: ["drive-through"],
+});
+const gateShops = [dineInChain, dineInFalse, dineInUnknown, pickupChain, momentTagSitDown];
 
 assert(
   chainIsListed(dineInChain) && isListingShop(dineInChain),
@@ -606,6 +716,10 @@ assert(
 assert(
   !chainIsListed(pickupChain) && !isListingShop(pickupChain),
   "a pickup-only chain is not listed",
+);
+assert(
+  chainIsListed(momentTagSitDown) && isListingShop(momentTagSitDown),
+  "a sit-down chain with only a drive-through moment tag is listed",
 );
 
 function listingSurfaceText(shops: readonly Shop[], district: NeighborhoodId): string {
@@ -627,6 +741,10 @@ function listingSurfaceText(shops: readonly Shop[], district: NeighborhoodId): s
 assert(
   listingSurfaceText(gateShops, "al-hamra").includes("mccafe-sit"),
   "a chain with dineIn true is on the district page, meta, JSON-LD, and llms.txt",
+);
+assert(
+  listingSurfaceText(gateShops, "al-rabi").includes("java-moment"),
+  "a sit-down chain kept for the drive-through list still appears on its district page",
 );
 for (const [id, district] of [
   ["dunkin-closed", "al-nakheel"],

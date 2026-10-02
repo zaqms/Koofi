@@ -37,12 +37,6 @@ export const CHAIN_BRANDS = {
     nameAr: "بارنز",
     logo: null,
   },
-  "krispy-kreme": {
-    id: "krispy-kreme",
-    nameEn: "Krispy Kreme",
-    nameAr: "كريسبي كريم",
-    logo: null,
-  },
   peets: {
     id: "peets",
     nameEn: "Peet's",
@@ -67,6 +61,30 @@ export const CHAIN_BRANDS = {
     nameAr: "24كافيه",
     logo: "/logos/24cafe-mark.png",
   },
+  shqaf: {
+    id: "shqaf",
+    nameEn: "Shqaf",
+    nameAr: "شقفه",
+    logo: null,
+  },
+  "coffee-day": {
+    id: "coffee-day",
+    nameEn: "Coffee Day",
+    nameAr: "كوفي داي",
+    logo: null,
+  },
+  kyan: {
+    id: "kyan",
+    nameEn: "Kyan",
+    nameAr: "كيان",
+    logo: null,
+  },
+  dancafe: {
+    id: "dancafe",
+    nameEn: "Dancafe",
+    nameAr: "دان كافيه",
+    logo: null,
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -81,11 +99,14 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   dunkin: ["dunkin", "دانكن"],
   mccafe: ["mccafe", "mc cafe", "ماك كافيه"],
   barns: ["barns", "barn", "barn s", "بارنز"],
-  "krispy-kreme": ["krispy kreme", "krispykreme", "كريسبي كريم"],
   peets: ["peets", "peet s", "بيتس"],
   "dr-cafe": ["dr cafe", "drcafe", "د.كيف", "د كيف"],
   java: ["java", "جافا"],
   "24cafe": ["24cafe", "24 cafe", "24كافيه"],
+  shqaf: ["shqaf", "shgaf", "شقفة"],
+  "coffee-day": ["coffee day", "coffeeday", "كوفي داي"],
+  kyan: ["kyan", "كيان"],
+  dancafe: ["dancafe", "dan cafe", "دان كافيه"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -115,11 +136,22 @@ export function chainBrandNameEn(chainBrand: string | undefined): string | undef
 export function chainBrandKeyFromName(latinName: string): string | null {
   const compact = latinName.replace(/\s+/g, "");
   if (
-    latinName.startsWith("krispy kreme") ||
-    compact.startsWith("krispykreme")
+    latinName.startsWith("coffee day") ||
+    compact.startsWith("coffeeday")
   ) {
-    return "krispy-kreme";
+    return "coffee-day";
   }
+  if (latinName.startsWith("shqaf") || latinName.startsWith("shgaf")) {
+    return "shqaf";
+  }
+  if (
+    latinName.startsWith("dan cafe") ||
+    latinName.startsWith("dancafe") ||
+    compact.startsWith("dancafe")
+  ) {
+    return "dancafe";
+  }
+  if (latinName.startsWith("kyan")) return "kyan";
   if (
     latinName.startsWith("barns") ||
     latinName.startsWith("barn s") ||

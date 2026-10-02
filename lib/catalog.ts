@@ -4,7 +4,6 @@ import popularityIndexFile from "../data/popularity-index.json";
 import { isChainShop } from "./chain-brands";
 import {
   isHalfwaySitDown,
-  isPickupOnlyTagged,
   type HalfwayEligibleShop,
 } from "./halfway-eligibility";
 import { DEFAULT_LIVE_CITY } from "./cities";
@@ -92,12 +91,16 @@ export function isDiscoveryShop(
 }
 
 /**
- * A chain is listed only when it is sit-down and not pickup-only.
+ * A chain is listed only when it is sit-down, not a drive-through lane,
+ * and not pickup-only. A drive-through moment tag by itself does not hide
+ * a sit-down chain — those rows stay on the drive-through list via the tag.
  * Unknown or false dine-in stays off the district page, its meta, JSON-LD, and llms.txt.
  */
 export function chainIsListed(shop: HalfwayEligibleShop): boolean {
   if (!isChainShop(shop)) return true;
-  return isHalfwaySitDown(shop) && !isPickupOnlyTagged(shop);
+  if (shop.catalogLane === "drive-through") return false;
+  if (shop.pickupOnly === true) return false;
+  return isHalfwaySitDown(shop);
 }
 
 /**
@@ -123,9 +126,9 @@ export function listingShopsFrom(shops: readonly Shop[]): Shop[] {
 }
 
 /**
- * Listing shops in the district. When that set is empty, real non-chain
- * rows (a drive-through-only local) can still be the page. A chain with
- * dine-in unknown, false, or pickup-only stays off the page.
+ * Listing shops in the district. When that set is empty, never fall back
+ * to a drive-through lane, a pickup-only row, or a row that is not sit-down.
+ * An empty district stays empty.
  */
 export function districtListingFrom(
   shops: readonly Shop[],
@@ -139,6 +142,9 @@ export function districtListingFrom(
     (shop) =>
       !isExampleShop(shop) &&
       shop.neighborhood === district &&
+      !isDriveThroughLane(shop) &&
+      shop.pickupOnly !== true &&
+      isHalfwaySitDown(shop) &&
       chainIsListed(shop),
   );
 }

@@ -1397,10 +1397,10 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-mursalat");
-  assert(rows.length === 1, `al-mursalat has 1 DT-lane shop, got ${rows.length}`);
+  assert(rows.length === 0, `al-mursalat lists no drive-through fallback, got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "camel-step-al-mursalat"),
-    "al-mursalat includes camel-step-al-mursalat",
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "camel-step-al-mursalat"),
+    "camel-step-al-mursalat stays on the drive-through directory",
   );
   assert(neighborhoodLabel("al-mursalat", "ar") === "المرسلات", "al-mursalat Arabic label");
   assert(neighborhoodLabel("al-mursalat", "en") === "Al Mursalat", "al-mursalat English label");
@@ -1414,10 +1414,10 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-murabba");
-  assert(rows.length === 1, `al-murabba has 1 DT-lane shop, got ${rows.length}`);
+  assert(rows.length === 0, `al-murabba lists no drive-through fallback, got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "coffee-address-al-murabba"),
-    "al-murabba includes coffee-address-al-murabba",
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "coffee-address-al-murabba"),
+    "coffee-address-al-murabba stays on the drive-through directory",
   );
   assert(neighborhoodLabel("al-murabba", "ar") === "المربع", "al-murabba Arabic label");
   assert(neighborhoodLabel("al-murabba", "en") === "Al Murabba", "al-murabba English label");
@@ -1431,10 +1431,10 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("as-salam");
-  assert(rows.length === 1, `as-salam has 1 DT-lane shop, got ${rows.length}`);
+  assert(rows.length === 0, `as-salam lists no drive-through fallback, got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "a-plus-as-salam"),
-    "as-salam includes a-plus-as-salam",
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "a-plus-as-salam"),
+    "a-plus-as-salam stays on the drive-through directory",
   );
   assert(neighborhoodLabel("as-salam", "ar") === "السلام", "as-salam Arabic label");
   assert(neighborhoodLabel("as-salam", "en") === "As Salam", "as-salam English label");
@@ -1520,9 +1520,19 @@ const MALAZ_REFILL = {
     "Starbucks stays dropped",
   );
   const namar = listDirectoryShopsForDistrict("namar");
-  assert(namar.length === 1 && namar[0]?.id === "drcafe-namar", "namar is DT-only dr.CAFE");
+  assert(namar.length === 0, "namar does not fall back to its drive-through row");
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),
+    "drcafe-namar stays on the drive-through directory",
+  );
   const jazirah = listDirectoryShopsForDistrict("al-jazirah");
-  assert(jazirah.length === 2, `al-jazirah has 2 DT-lane shops, got ${jazirah.length}`);
+  assert(jazirah.length === 0, `al-jazirah does not fall back to drive-through rows, got ${jazirah.length}`);
+  assert(
+    ["drcafe-al-jazirah", "drcafe-al-jazirah-2"].every((id) =>
+      listDriveThroughDirectoryShops().some((shop) => shop.id === id),
+    ),
+    "both Al Jazirah dr.CAFE rows stay on the drive-through directory",
+  );
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
     aziziyah.length === 1 &&
@@ -1540,8 +1550,10 @@ const MALAZ_REFILL = {
     "an-nasim-al-gharbi specialty page is the Scout-3 (DT-lane drops off)",
   );
   assert(
-    listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
-    "kkia includes open dr.CAFE, not closed A PLUS",
+    listDirectoryShopsForDistrict("kkia").length === 0 &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-kkia") &&
+      !listRealShops().some((shop) => shop.id === "a-plus-kkia"),
+    "kkia lists no drive-through fallback; open dr.CAFE stays on the drive-through directory",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
   assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);

@@ -1019,7 +1019,7 @@ export const NEIGHBORHOODS: Record<
   manfuha: {
     id: "manfuha",
     ar: "منفوحة",
-    en: "Manfuhah",
+    en: "Manfuha",
     aliases: [
       "منفوحة",
       "منفوحه",

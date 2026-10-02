@@ -24,7 +24,6 @@ const KNOWN_BRANDS = [
   "dr cafe",
   "starbucks",
   "dunkin",
-  "krispy kreme",
   "mccafe",
   "mc cafe",
   "barns",

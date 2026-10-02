@@ -951,6 +951,9 @@ export function districtArMeta(district: NeighborhoodId): string {
   const chainCount = shops.filter((shop) => shop.isChain).length;
   const name = neighborhoodLabel(district, "ar");
   if (chainCount > 0) return chainDistrictMetaAr(name, shops.length);
+  if (shops.length === 0) {
+    return `ما فيه قهاوي بـ${name} على wain.lol للحين — قائمة حي بالرياض.`;
+  }
   const locked = lockedDistrictCopyAr(district);
   if (locked) return locked.meta;
   const custom = DISTRICT_COPY_AR[district];
@@ -975,6 +978,7 @@ export function districtArMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "ar");
   const copy = DISTRICT_COPY_AR[district] ?? defaultDistrictCopy(district);
+  const lead = count === 0 ? defaultDistrictCopy(district).lead : copy.lead;
   const hereDefault =
     count === 0
       ? `ما فيه قهاوي من ${name} بالكتالوج للحين.`
@@ -998,7 +1002,7 @@ export function districtArMarkdown(district: NeighborhoodId): string {
 
   return `# ${coffeeShopsInDistrict(name, "ar")}
 
-${copy.lead}
+${lead}
 
 ## وش فيه
 

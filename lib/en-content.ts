@@ -1090,6 +1090,10 @@ export function districtEnMeta(district: NeighborhoodId): string {
   const chainCount = shops.filter((shop) => shop.isChain).length;
   const name = neighborhoodLabel(district, "en");
   if (chainCount > 0) return chainDistrictMetaEn(name, shops.length);
+  if (shops.length === 0) {
+    const at = district === "kkia" ? "at" : "in";
+    return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
+  }
   const locked = lockedDistrictCopy(district);
   if (locked) return locked.meta;
   const custom = DISTRICT_COPY[district];
@@ -1114,6 +1118,7 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "en");
   const copy = DISTRICT_COPY[district] ?? defaultDistrictCopy(district);
+  const lead = count === 0 ? defaultDistrictCopy(district).lead : copy.lead;
   const hereDefault =
     count === 0
       ? `No cafes from ${name} on the catalog yet.`
@@ -1137,7 +1142,7 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
   return `# Coffee shops in ${name}
 
-${copy.lead}
+${lead}
 
 ## What’s here
 

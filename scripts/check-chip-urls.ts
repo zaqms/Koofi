@@ -459,8 +459,12 @@ assert(
   "drive-through slug filters drive-through tags",
 );
 assert(
-  listDriveThroughDirectoryShops().length === 78,
-  "Drive-through directory is 68 ADD + 10 TAG",
+  listRealShops().filter(isDriveThroughLane).length === 61,
+  "DT lane (catalogLane === drive-through) is 61",
+);
+assert(
+  listDriveThroughDirectoryShops().length === 71,
+  "Drive-through directory is 61 lane + 10 specialty tags",
 );
 assert(
   listDriveThroughDirectoryShops().every((shop) =>

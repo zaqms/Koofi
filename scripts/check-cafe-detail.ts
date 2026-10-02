@@ -371,8 +371,6 @@ const BATCH5_IDS = [
   "mezaj-al-malaz",
   "mezaj-maghrebi-al-wadi",
   "moroccan-taste-al-muruj",
-  "n5-caffe-al-rabi",
-  "n5-caffe-al-rabi-2",
   "sol-olas-al-ghadeer",
 ] as const;
 
@@ -385,11 +383,6 @@ const BATCH6_IDS = [
   "three-sulimaniyah",
   "threes-al-yasmin",
   "wave-cafe-al-rabi",
-  "drive-al-rabi",
-  "drive-al-rabi-2",
-  "drive-al-rabi-3",
-  "drive-al-rabi-4",
-  "drive-al-rabi-5",
   "a-plus-as-salam",
   "arabica-cafe-ghubairah",
   "arabica-coffee-al-wisham",
@@ -526,29 +519,10 @@ const BATCH11_IDS = [
 const BATCH11_IDS_SET = new Set<string>(BATCH11_IDS);
 
 const BATCH6_MISSING_HOURS = [
-  "drive-al-rabi",
-  "drive-al-rabi-2",
-  "drive-al-rabi-3",
-  "drive-al-rabi-4",
-  "drive-al-rabi-5",
   "drive-al-yasmin",
-  "drive-al-janadriyyah",
+  // placeId fix 2026-10-02: the corrected place has no Places hours.
+  "drive-al-qirawan-2",
 ] as const;
-
-/**
- * Gallery pending re-pull. These six used a wrong placeId, so the baked
- * Places frames belong to a different business. They stay off the hero
- * manifest until a correct re-pull. Do not add other slugs here.
- */
-const GALLERY_PENDING_REPULL = [
-  "malfa-coffee-house-diriyah",
-  "khasib-al-bun-diriyah",
-  "makhsousa-coffee-ar-rabwah",
-  "lattio-lounge-qurtubah",
-  "vanilla-coffee-qurtubah",
-  "dahal-specialty-al-nahdah",
-] as const;
-const GALLERY_PENDING_REPULL_IDS = new Set<string>(GALLERY_PENDING_REPULL);
 
 const bakedHeroes = cafeHeroesFile as Record<
   string,
@@ -581,46 +555,11 @@ assert(
       batch11HeroIds.length,
   "batch 1–5 cafe-heroes stay; batches 6–11 merge in",
 );
-function pendingRepullIn(ids: readonly string[]): string[] {
-  return ids.filter((id) => GALLERY_PENDING_REPULL_IDS.has(id));
-}
-for (const id of GALLERY_PENDING_REPULL) {
-  assert(!bakedHeroes[id], `${id} gallery pending re-pull`);
-  const shop = getShop(id);
-  assert(shop, `${id} stays in the catalog`);
-  assert(
-    cafeDetailHeroPhotos(shop).length === 0,
-    `${id} gallery pending re-pull — no hero frames`,
-  );
-  assert(
-    !existsSync(join("public", "cafe-heroes", id)),
-    `${id} wrong-business frames stay off disk`,
-  );
-}
-const batch2Pending = pendingRepullIn(BATCH2_IDS);
-const batch3Pending = pendingRepullIn(BATCH3_IDS);
-const batch4Pending = pendingRepullIn(BATCH4_IDS);
-assert(batch2Pending.length === 2, "batch 2 has 2 galleries pending re-pull");
-assert(batch3Pending.length === 3, "batch 3 has 3 galleries pending re-pull");
-assert(batch4Pending.length === 1, "batch 4 has 1 gallery pending re-pull");
-assert(
-  batch2HeroIds.length === 49 - batch2Pending.length,
-  "batch 2 hero set is 49 after the Get Up Rabwah drop, minus galleries pending re-pull",
-);
-assert(
-  batch3HeroIds.length === 50 - batch3Pending.length,
-  "batch 3 50-shop hero set is complete, minus galleries pending re-pull",
-);
-assert(
-  batch4HeroIds.length === 50 - batch4Pending.length,
-  "batch 4 50-shop hero set is complete, minus galleries pending re-pull",
-);
-for (const id of [...BATCH2_IDS, ...BATCH3_IDS, ...BATCH4_IDS]) {
-  if (GALLERY_PENDING_REPULL_IDS.has(id)) continue;
-  assert(Boolean(bakedHeroes[id]?.length), `${id} keeps baked cafe-heroes`);
-}
-assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
-assert(batch6HeroIds.length === 42, "batch 6 42-shop hero set is complete after the As Suwaidi drop");
+assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
+assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
+assert(batch5HeroIds.length === 97, "batch 5 hero set is 97 after the N5 Al Rabi drops");
+assert(batch6HeroIds.length === 37, "batch 6 hero set is 37 after the As Suwaidi and Drive Al Rabi drops");
 assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
 assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
 assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
@@ -634,7 +573,45 @@ assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–
 assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 heroes");
 assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
 assert(bakedHeroes["bind-specialty-coffee-ghirnatah"]?.length === 4, "BIND pack 1 heroes");
+/** placeId fix 2026-10-02: re-pulled galleries from the corrected place (QA-picked, 1–3 frames). */
+const PLACEID_FIX_HERO_COUNTS: Record<string, number> = {
+  "camel-step-granada-business": 3,
+  "coffee-address-al-hamra": 2,
+  "coffee-address-al-nahdah": 2,
+  "coffee-address-al-rabi": 2,
+  "coffee-address-al-rabwah": 1,
+  "coffee-zam-al-yarmouk": 3,
+  "dahal-specialty-al-nahdah": 3,
+  "drcafe-al-jazirah": 3,
+  "drcafe-al-mathar": 3,
+  "drcafe-al-mughrizat": 3,
+  "drcafe-an-nasim": 3,
+  "drcafe-kkia": 2,
+  "drcafe-manfuha": 3,
+  "drcafe-sulimaniyah": 3,
+  "drcafe-sulimaniyah-2": 2,
+  "drive-al-arid": 2,
+  "drive-al-janadriyyah": 2,
+  "drive-al-nakheel": 2,
+  "drive-al-qirawan-2": 2,
+  "drive-an-nasim-al-gharbi": 2,
+  "drive-as-sahafah": 2,
+  "drive-badr-2": 3,
+  "ghandoura-an-nazhah": 3,
+  "idmi-nakheel-takhassusi": 3,
+  // QA #230 G3: menu/promo frame 3 dropped (old gallery, kept placeId).
+  "java-cafe-al-rabi": 3,
+  "khasib-al-bun-diriyah": 3,
+  "lattio-lounge-qurtubah": 3,
+  "makhsousa-coffee-ar-rabwah": 3,
+  "malfa-coffee-house-diriyah": 3,
+  "najd-roastery-al-munsiyah": 2,
+  "nosound-al-yarmouk": 3,
+  "shovel-al-arid": 3,
+  "vanilla-coffee-qurtubah": 1,
+};
 function expectedHeroCount(id: string): number {
+  if (PLACEID_FIX_HERO_COUNTS[id]) return PLACEID_FIX_HERO_COUNTS[id];
   if (id === "okawa-al-narjis") return 2;
   if (id === "elixir-bunn-al-narjis") return 3;
   if (id === "mill-coffee-qurtubah") return 2;
@@ -920,7 +897,8 @@ for (const id of [
   "sombrero-sulimaniyah",
   "coffee-planet-kafd",
   "kmr-diriyah",
-  "malfa-coffee-house-diriyah",
+  // placeId fix 2026-10-02: corrected Vanilla place has no Places hours.
+  "vanilla-coffee-qurtubah",
 ]) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
@@ -952,7 +930,8 @@ assert(mkth && (mkth.openingHours?.periods?.length ?? 0) > 0, "MKTH has baked pe
 assert(cafeDetailHeroPhotos(tobys).length === 4, "Toby's uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(mkth).length === 4, "MKTH uses baked cafe-heroes");
 
-for (const id of BATCH3_IDS) {
+// vanilla-coffee-qurtubah: corrected place (2026-10-02 placeId fix) has no Places hours.
+for (const id of BATCH3_IDS.filter((id) => id !== "vanilla-coffee-qurtubah")) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
   assert(
@@ -1030,15 +1009,15 @@ assert(
   "Coffee Address Al Hamra is baked 24h",
 );
 assert(
-  cafeDetailHeroPhotos(coffeeAddress).length === 4,
-  "Coffee Address Al Hamra uses baked cafe-heroes",
+  cafeDetailHeroPhotos(coffeeAddress).length === 2,
+  "Coffee Address Al Hamra uses the 2 re-pulled cafe-heroes",
 );
 assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(coffeeAddress)),
   "batch 4 Places photos still require a Google credit",
 );
 assert(
-  cafeDetailHeroPhotos(coffeeAddress)[0]?.attribution?.displayName === "Sk Ajeez",
+  cafeDetailHeroPhotos(coffeeAddress)[0]?.attribution?.displayName === "Aziz !",
   "Coffee Address Al Hamra bake still has the Places author name",
 );
 assert(ashjar && (ashjar.openingHours?.periods?.length ?? 0) > 0, "Ashjar has baked periods");
@@ -1148,16 +1127,9 @@ assert(
   "places-attrs Mahmasa uses the Al Raqban cafe pin, not GOAT Olaya",
 );
 for (const id of BATCH4_IDS) {
-  if (GALLERY_PENDING_REPULL_IDS.has(id)) {
-    assert(
-      cafeDetailHeroPhotos(getShop(id)!).length === 0,
-      `${id} gallery pending re-pull — logo tile, no wrong-business frames`,
-    );
-    continue;
-  }
   assert(
-    cafeDetailHeroPhotos(getShop(id)!).length === 4,
-    `${id} uses 4 baked cafe-heroes`,
+    cafeDetailHeroPhotos(getShop(id)!).length === expectedHeroCount(id),
+    `${id} uses ${expectedHeroCount(id)} baked cafe-heroes`,
   );
 }
 
@@ -1218,8 +1190,6 @@ assert(cafeDetailHeroPhotos(jazean).length === 4, "Jazean DQ uses baked cafe-her
 assert(cafeDetailHeroPhotos(kernel).length === 4, "Kernel uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("hokkaido-al-hamra")!).length === 3, "Hokkaido keeps the 3 downloaded frames");
 assert(cafeDetailHeroPhotos(markab).length === 4, "Markab uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi")!).length === 4, "N5 Al Rabi uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi-2")!).length === 4, "N5 Al Rabi 2 uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("opinion-al-mathar")!).length === 4, "Opinion Al Mathar uses baked cafe-heroes");
 const opinionHittin = getShop("opinion-hittin");
 assert(opinionHittin, "Opinion Hittin is in the catalog");
@@ -1299,7 +1269,7 @@ assert(drcafeMathar && (drcafeMathar.openingHours?.periods?.length ?? 0) > 0, "D
 assert(cafeDetailHeroPhotos(three).length === 4, "Three Sulimaniyah uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(threes).length === 4, "Threes Al Yasmin uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(wave).length === 4, "Wave cafe uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(drcafeMathar).length === 4, "DRCAFE Al Mathar uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(drcafeMathar).length === 3, "DRCAFE Al Mathar uses the 3 re-pulled cafe-heroes");
 assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(three)),
   "batch 6 Places photos still require a Google credit",
@@ -1315,8 +1285,8 @@ assert(
 );
 for (const id of BATCH6_IDS) {
   assert(
-    cafeDetailHeroPhotos(getShop(id)!).length === 4,
-    `${id} uses 4 baked cafe-heroes`,
+    cafeDetailHeroPhotos(getShop(id)!).length === expectedHeroCount(id),
+    `${id} uses ${expectedHeroCount(id)} baked cafe-heroes`,
   );
 }
 const waqar = getShop("waqar-al-aziziyah");
@@ -1349,8 +1319,6 @@ const remainingUnbaked = (
 ).shops.filter((shop) => {
   if (!shop.placeId) return false;
   if (shop.id === "hekaya-tale-al-mohammadiyah") return false;
-  // Gallery pending re-pull: hidden even when hours are also absent (Malfa).
-  if (GALLERY_PENDING_REPULL_IDS.has(shop.id)) return false;
   return !bakedHeroes[shop.id] && !shop.openingHours;
 });
 assert(

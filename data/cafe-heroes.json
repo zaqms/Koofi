@@ -12082,5 +12082,35 @@
         "uri": "https://maps.google.com/maps/contrib/111984148896903823032"
       }
     }
+  ],
+  "waqar-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/waqar-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "في سالم",
+        "uri": "https://maps.google.com/maps/contrib/107540020492474454455"
+      }
+    },
+    {
+      "src": "/cafe-heroes/waqar-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "Faisal",
+        "uri": "https://maps.google.com/maps/contrib/114738412059496366679"
+      }
+    },
+    {
+      "src": "/cafe-heroes/waqar-al-aziziyah/3.jpg",
+      "attribution": {
+        "displayName": "Faisul Faisul",
+        "uri": "https://maps.google.com/maps/contrib/110892448756234226043"
+      }
+    },
+    {
+      "src": "/cafe-heroes/waqar-al-aziziyah/4.jpg",
+      "attribution": {
+        "displayName": "waleed omer",
+        "uri": "https://maps.google.com/maps/contrib/100030129302202393594"
+      }
+    }
   ]
 }

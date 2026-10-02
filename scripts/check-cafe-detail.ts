@@ -493,6 +493,9 @@ const BATCH9_IDS = [
   "way-coffee-dhahrat-al-badiah",
 ] as const;
 
+/** BATCH10: Waqar (Al Aziziyah, #224) Places gallery — 4 frames, Google credit per frame. */
+const BATCH10_IDS = ["waqar-al-aziziyah"] as const;
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-rabi",
   "drive-al-rabi-2",
@@ -512,6 +515,7 @@ const batch6HeroIds = BATCH6_IDS.filter((id) => bakedHeroes[id]);
 const batch7HeroIds = BATCH7_IDS.filter((id) => bakedHeroes[id]);
 const batch8HeroIds = BATCH8_IDS.filter((id) => bakedHeroes[id]);
 const batch9HeroIds = BATCH9_IDS.filter((id) => bakedHeroes[id]);
+const batch10HeroIds = BATCH10_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -522,8 +526,9 @@ assert(
       batch6HeroIds.length +
       batch7HeroIds.length +
       batch8HeroIds.length +
-      batch9HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–9 merge in",
+      batch9HeroIds.length +
+      batch10HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–10 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
@@ -533,6 +538,8 @@ assert(batch6HeroIds.length === 42, "batch 6 42-shop hero set is complete after 
 assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
 assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
 assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
+assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
+assert(bakedHeroes["waqar-al-aziziyah"]?.length === 4, "Waqar keeps the 4 QA-picked frames");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -1157,6 +1164,21 @@ for (const id of BATCH6_IDS) {
     `${id} uses 4 baked cafe-heroes`,
   );
 }
+const waqar = getShop("waqar-al-aziziyah");
+assert(waqar, "Waqar is in the catalog");
+assert(cafeDetailHeroPhotos(waqar).length === 4, "Waqar uses 4 baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(waqar).every((photo) => photo.attribution?.uri?.startsWith("https://maps.google.com/maps/contrib/")),
+  "Waqar frames each keep the Google Maps contributor credit",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(waqar)),
+  "Waqar Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(waqar)[0]?.attribution?.displayName === "في سالم",
+  "Waqar hero frame 1 keeps its Places author name",
+);
 const remainingUnbaked = (
   JSON.parse(read("data/catalog.json")) as {
     shops: { id: string; placeId?: string; openingHours?: unknown }[];

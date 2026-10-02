@@ -1,4 +1,9 @@
-import { listDirectoryShops, listRealShops } from "./catalog";
+import {
+  listDirectoryShops,
+  listDirectoryShopsForDistrict,
+  listRealShops,
+  listedDistrictIdsFrom,
+} from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { directoryNeighborhoods } from "./directory";
 import { districtCity } from "./district-city";
@@ -16,11 +21,17 @@ export function listLiveDistrictIds(): NeighborhoodId[] {
   return directoryNeighborhoods(listDirectoryShops());
 }
 
-/** Real catalog shops — sitemap / browse destinations. 0-shop ids stay out. */
+/**
+ * District pages. A حي is here only when it has at least one qualifying
+ * dine-in row. Drive-through-only and 0-shop ids stay out, and come back
+ * when a qualifying row appears.
+ */
 export function listLiveCatalogDistrictIds(): NeighborhoodId[] {
-  return directoryNeighborhoods(
-    listRealShops().map((shop) => ({ neighborhood: shop.neighborhood })),
-  );
+  return listedDistrictIdsFrom(listRealShops());
+}
+
+export function districtPageIsLive(id: NeighborhoodId): boolean {
+  return listDirectoryShopsForDistrict(id).length > 0;
 }
 
 export function dictionaryDistrictIds(): NeighborhoodId[] {

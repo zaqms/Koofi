@@ -769,7 +769,12 @@ assert(detail.includes("listingCardTags"), "pills come from listing tags");
 assert(detail.includes("listingLocationOrder"), "pin line is locale-aware");
 assert(detail.includes("neighborhoodCafesHeading"), "related heading is district cafés");
 assert(detail.includes("copy.detailSeeAll"), "See all / عرض الكل");
-assert(detail.includes("districtPath"), "neighborhood row + See all use district route");
+assert(
+  detail.includes("districtHref") &&
+    read("components/cafe-card-page.tsx").includes("listed.length > 0") &&
+    read("components/cafe-card-page.tsx").includes("districtPath"),
+  "neighborhood row + See all link only when the district has a qualifying row",
+);
 assert(detail.includes("shopMapsHref"), "Take me there opens existing Maps");
 assert(detail.includes('source="card"'), "Maps hop stays the card source");
 assert(detail.includes("ShareListingButton"), "share stays the listing packet");

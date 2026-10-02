@@ -36,10 +36,17 @@ import {
   listDriveThroughDirectoryShops,
   listListingShops,
   listRealShops,
+  listedDistrictIdsFrom,
   bakedPopularityFor,
   specialtyDistrictIdsFrom,
 } from "../lib/catalog";
-import { listLiveCatalogDistrictIds, listLiveDistrictIds } from "../lib/district-dictionary";
+import { listNeighborhoodRows } from "../lib/browse-neighborhoods";
+import { categoryDistrictStaticParams } from "../lib/district";
+import {
+  districtPageIsLive,
+  listLiveCatalogDistrictIds,
+  listLiveDistrictIds,
+} from "../lib/district-dictionary";
 import { sortDistrictCafes } from "../lib/district-cafe-sort";
 import type { DirectoryShop } from "../lib/directory";
 import {
@@ -51,7 +58,9 @@ import {
 import { isHalfwayEligible, filterHalfwayEligible } from "../lib/halfway-eligibility";
 import { rankByPopularity } from "../lib/district-rank";
 import { listPopularDirectoryShops } from "../lib/most-popular";
-import { pickCafes } from "../lib/picker";
+import { formatReply, pickCafes } from "../lib/picker";
+import { districtPath } from "../lib/product";
+import { listSitemapLocs } from "../lib/sitemap-xml";
 import { dedupeSameBrand, shopBrandKey } from "../lib/shop-brand";
 import { matchCatalogShops } from "../lib/shop-name";
 import { buildLlmsTxt, listPublicShops, publicShopRecord } from "../lib/structured-data";
@@ -60,7 +69,7 @@ import {
   TIKTOK_NEUTRAL_BONUS,
   chainPopularityIndex,
 } from "../lib/tiktok-popularity";
-import type { NeighborhoodId, Shop } from "../lib/types";
+import { NEIGHBORHOOD_IDS, type NeighborhoodId, type Shop } from "../lib/types";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -509,11 +518,15 @@ assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows
 assert(listDiscoveryShops().length === 354, "specialty discovery stays 354");
 assert(listRealShops().length === 422, "catalog stays 422");
 assert(listLiveDistrictIds().length === 52, "specialty districts stay 52");
-assert(listLiveCatalogDistrictIds().length === 69, "catalog districts stay 69");
+assert(
+  catalogDistrictIdsFrom(listRealShops()).length === 69,
+  "catalog rows still cover 69 districts",
+);
+assert(listLiveCatalogDistrictIds().length === 52, "district pages are the 52 qualifying districts");
 assert(listDriveThroughDirectoryShops().length === 78, "drive-through stays 78");
 assert(listListingShops().length === 354, "no dine-in chains in the live catalog");
 assert(listPublicShops().length === 354, "public list stays the specialty directory");
-assert(listBrowseDirectoryShops().length === 372, "browse rows stay put with zero chains");
+assert(listBrowseDirectoryShops().length === 354, "browse is the qualifying rows only");
 assert(
   listDiscoveryShops().every((shop) => !shop.isChain),
   "no live discovery row is tagged",
@@ -582,8 +595,8 @@ const copyBlob = districtIds
   .join("\n---\n");
 assert(
   createHash("sha256").update(copyBlob).digest("hex") ===
-    "3ef3134c58456ec4ff710f374f76cc4cae1c79634acaccdd8d6e7650ad28267e",
-  "district copy hash after the empty-listing fallback",
+    "16008a4ddfcbcd9485f375f98aca35c47884d2a505b7f55e60b8760c67c1ed31",
+  "district copy hash after empty district pages drop out",
 );
 assert(
   !copyBlob.includes("Zero cafes") && !copyBlob.includes("صفر"),
@@ -609,8 +622,76 @@ const emptyAfterFallback = [
   "tuwaiq",
 ] as const;
 assert(
-  emptyAfterFallback.every((id) => listDirectoryShopsForDistrict(id).length === 0),
-  "drive-through-only districts stay generated and list no rows",
+  emptyAfterFallback.every(
+    (id) =>
+      listDirectoryShopsForDistrict(id).length === 0 &&
+      !listLiveCatalogDistrictIds().includes(id),
+  ),
+  "drive-through-only districts list no qualifying rows and have no page",
+);
+const pageIds = new Set(listLiveCatalogDistrictIds());
+const paramIds = new Set(categoryDistrictStaticParams().map((row) => row.slug));
+const sitemapLocs = new Set(listSitemapLocs());
+const browseIds = new Set(
+  listNeighborhoodRows("en", listBrowseDirectoryShops()).map((row) => row.id),
+);
+for (const id of NEIGHBORHOOD_IDS) {
+  const qualifying = listDirectoryShopsForDistrict(id).length > 0;
+  const arLoc = `https://wain.lol${districtPath(id, "ar")}`;
+  const enLoc = `https://wain.lol${districtPath(id, "en")}`;
+  assert(
+    qualifying === districtPageIsLive(id) &&
+      qualifying === pageIds.has(id) &&
+      qualifying === paramIds.has(id) &&
+      qualifying === sitemapLocs.has(arLoc) &&
+      qualifying === sitemapLocs.has(enLoc) &&
+      qualifying === browseIds.has(id),
+    `${id} has a page exactly when it has a qualifying row`,
+  );
+}
+const shubraSit = fixtureShop({
+  id: "starbucks-shubra",
+  nameEn: "Starbucks",
+  nameAr: "ستاربكس",
+  neighborhood: "shubra",
+  isChain: true,
+  chainBrand: "starbucks",
+  dineIn: true,
+  outdoorSeating: false,
+  momentTags: [],
+});
+assert(
+  listedDistrictIdsFrom([...listRealShops(), shubraSit]).includes("shubra"),
+  "a dine-in row brings a hidden district page back",
+);
+assert(
+  !listedDistrictIdsFrom([
+    ...listRealShops(),
+    fixtureShop({
+      ...shubraSit,
+      id: "starbucks-shubra-lane",
+      catalogLane: "drive-through",
+    }),
+  ]).includes("shubra"),
+  "a drive-through lane does not bring a district page back",
+);
+assert(
+  !formatReply(pickCafes({ text: "شبرا", language: "ar" })).includes(
+    "/coffee-shops/shubra",
+  ),
+  "chat does not link a district with no qualifying row",
+);
+assert(
+  formatReply(pickCafes({ text: "حطين", language: "ar" })).includes(
+    "/coffee-shops/hittin",
+  ),
+  "chat still links a district that has a page",
+);
+assert(
+  read("app/[category]/[slug]/page.tsx").includes("districtPageIsLive") &&
+    read("app/en/[category]/[slug]/page.tsx").includes("districtPageIsLive") &&
+    read("app/api/chat/route.ts").includes("districtPageIsLive"),
+  "unknown-district notFound and the chat chip follow the listable count",
 );
 assert(
   districtEnMeta("kkia").startsWith("No cafes at KKIA"),

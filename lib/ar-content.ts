@@ -5,7 +5,7 @@ import {
   shopsInDistrict,
   siblingShops,
 } from "./en-content";
-import { listDirectoryShops } from "./catalog";
+import { listLiveCatalogDistrictIds } from "./district-dictionary";
 import { cityLabel } from "./cities";
 import { districtCity } from "./district-city";
 import { neighborhoodLabel } from "./neighborhoods";
@@ -893,7 +893,7 @@ function shopListMarkdown(shops: { id: string; nameAr: string; nameEn: string }[
 }
 
 function nearbyListMarkdown(district: NeighborhoodId): string {
-  const listed = new Set(listDirectoryShops().map((shop) => shop.neighborhood));
+  const listed = new Set(listLiveCatalogDistrictIds());
   return NEARBY_DISTRICTS[district]
     .filter((id) => listed.has(id) && id !== district)
     .map((id) => `- ${districtLink(id)}`)

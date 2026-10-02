@@ -167,6 +167,23 @@ export function catalogDistrictIdsFrom(
   );
 }
 
+/**
+ * Districts with at least one qualifying listing row. A drive-through lane
+ * or a pickup-only row does not keep the page. A later dine-in row puts it back.
+ */
+export function listedDistrictIdsFrom(shops: readonly Shop[]): NeighborhoodId[] {
+  const seen = new Set<NeighborhoodId>();
+  const rows: { neighborhood: NeighborhoodId }[] = [];
+  for (const shop of shops) {
+    if (seen.has(shop.neighborhood)) continue;
+    seen.add(shop.neighborhood);
+    if (districtListingFrom(shops, shop.neighborhood).length > 0) {
+      rows.push({ neighborhood: shop.neighborhood });
+    }
+  }
+  return directoryNeighborhoods(rows);
+}
+
 /** Default specialty discovery — excludes drive-through lanes and chains. */
 export function listDiscoveryShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
   return discoveryShopsFrom(listRealShops(city));
@@ -259,18 +276,13 @@ export function listDirectoryShopsForDistrict(
   return toDirectoryShops(districtListingFrom(listRealShops(city), district));
 }
 
-/**
- * Neighborhood index: listing shops, plus drive-through rows that live in
- * districts with no listing shops.
- */
+/** Neighborhood index: qualifying listing rows only. Empty districts stay off. */
 export function listBrowseDirectoryShops(
   city: City = DEFAULT_LIVE_CITY,
 ): DirectoryShop[] {
   const real = listRealShops(city);
-  const listing = toDirectoryShops(listingShopsFrom(real));
-  const listingDistricts = new Set(listing.map((shop) => shop.neighborhood));
-  const extra = toDirectoryShops(
-    real.filter((shop) => !listingDistricts.has(shop.neighborhood)),
+  const shops = listedDistrictIdsFrom(real).flatMap((id) =>
+    districtListingFrom(real, id),
   );
-  return [...listing, ...extra];
+  return toDirectoryShops(shops);
 }

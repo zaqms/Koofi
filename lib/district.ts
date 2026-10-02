@@ -16,7 +16,8 @@ import {
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "./product";
-import { NEIGHBORHOOD_IDS, type Language, type NeighborhoodId } from "./types";
+import { listLiveCatalogDistrictIds } from "./district-dictionary";
+import type { Language, NeighborhoodId } from "./types";
 
 export function resolveDistrictSlug(slug: string): NeighborhoodId | null {
   return isNeighborhoodId(slug) ? slug : null;
@@ -26,7 +27,7 @@ export function categoryDistrictStaticParams(): {
   category: DirectoryCategoryId;
   slug: NeighborhoodId;
 }[] {
-  return NEIGHBORHOOD_IDS.map((slug) => ({
+  return listLiveCatalogDistrictIds().map((slug) => ({
     category: COFFEE_SHOPS_CATEGORY,
     slug,
   }));

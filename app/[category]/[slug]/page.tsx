@@ -4,6 +4,7 @@ import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
+import { districtPageIsLive } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
 import {
   categoryListingStaticParams,
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
     return chipPageMetadata(chipId, "ar");
   }
   const district = resolveDistrictSlug(slug);
-  if (!district) {
+  if (!district || !districtPageIsLive(district)) {
     return { title: PRODUCT_NAME };
   }
   return districtMetadata(district, "ar", category);
@@ -69,7 +70,7 @@ export default async function CategoryDistrictPage({
     return <HomeLanding language="ar" selectedChipId={chipId} />;
   }
   const district = resolveDistrictSlug(slug);
-  if (!district) notFound();
+  if (!district || !districtPageIsLive(district)) notFound();
 
   return (
     <>

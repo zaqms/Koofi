@@ -11933,5 +11933,228 @@
         "uri": "https://maps.google.com/maps/contrib/100030129302202393594"
       }
     }
+  ],
+  "fav-coffee-room-al-malqa": [
+    {
+      "src": "/cafe-heroes/fav-coffee-room-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "Maqiz",
+        "uri": "https://maps.google.com/maps/contrib/111928823342216506495"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fav-coffee-room-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "majeeds",
+        "uri": "https://maps.google.com/maps/contrib/108177932579577407812"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fav-coffee-room-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "Yazeed Al Qahtani",
+        "uri": "https://maps.google.com/maps/contrib/109614391603422197705"
+      }
+    }
+  ],
+  "asfoura-al-malqa": [
+    {
+      "src": "/cafe-heroes/asfoura-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "Reem",
+        "uri": "https://maps.google.com/maps/contrib/103872912043147002494"
+      }
+    },
+    {
+      "src": "/cafe-heroes/asfoura-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/asfoura-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "Kokopn Koko",
+        "uri": "https://maps.google.com/maps/contrib/116305461380198722246"
+      }
+    }
+  ],
+  "bab-al-mohammadiyah": [
+    {
+      "src": "/cafe-heroes/bab-al-mohammadiyah/1.jpg",
+      "attribution": {
+        "displayName": "bab",
+        "uri": "https://maps.google.com/maps/contrib/116679782559648753082"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bab-al-mohammadiyah/2.jpg",
+      "attribution": {
+        "displayName": "Maryam Hm",
+        "uri": "https://maps.google.com/maps/contrib/113425327648677665484"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bab-al-mohammadiyah/3.png",
+      "attribution": {
+        "displayName": "N S",
+        "uri": "https://maps.google.com/maps/contrib/101968341722266981433"
+      }
+    }
+  ],
+  "cherie-al-muruj": [
+    {
+      "src": "/cafe-heroes/cherie-al-muruj/1.jpg",
+      "attribution": {
+        "displayName": "Tuleen Khalied",
+        "uri": "https://maps.google.com/maps/contrib/111930182839401057476"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cherie-al-muruj/2.jpg",
+      "attribution": {
+        "displayName": "Chèrie",
+        "uri": "https://maps.google.com/maps/contrib/102828098873952565438"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cherie-al-muruj/3.png",
+      "attribution": {
+        "displayName": "Reema Mohmmad",
+        "uri": "https://maps.google.com/maps/contrib/106147546039618333136"
+      }
+    }
+  ],
+  "da-nonna-al-nakheel": [
+    {
+      "src": "/cafe-heroes/da-nonna-al-nakheel/1.jpg",
+      "attribution": {
+        "displayName": "Robert Manning, Jr.",
+        "uri": "https://maps.google.com/maps/contrib/101017329221640754780"
+      }
+    },
+    {
+      "src": "/cafe-heroes/da-nonna-al-nakheel/2.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    },
+    {
+      "src": "/cafe-heroes/da-nonna-al-nakheel/3.jpg",
+      "attribution": {
+        "displayName": "Abdulilah Alroshod",
+        "uri": "https://maps.google.com/maps/contrib/117950498215407594128"
+      }
+    }
+  ],
+  "okawa-al-narjis": [
+    {
+      "src": "/cafe-heroes/okawa-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "OKAWA Cafe Al Narjis",
+        "uri": "https://maps.google.com/maps/contrib/103831700837154870090"
+      }
+    },
+    {
+      "src": "/cafe-heroes/okawa-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "OKAWA Cafe Al Narjis",
+        "uri": "https://maps.google.com/maps/contrib/103831700837154870090"
+      }
+    }
+  ],
+  "nap-al-qirawan": [
+    {
+      "src": "/cafe-heroes/nap-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "Toto Saleh",
+        "uri": "https://maps.google.com/maps/contrib/108814049094031904378"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nap-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "Bushra Alharbi",
+        "uri": "https://maps.google.com/maps/contrib/101551530326879621324"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nap-al-qirawan/3.jpg",
+      "attribution": {
+        "displayName": "Njood",
+        "uri": "https://maps.google.com/maps/contrib/103080664579436559543"
+      }
+    }
+  ],
+  "ouia-al-qirawan": [
+    {
+      "src": "/cafe-heroes/ouia-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "Rola Suliman",
+        "uri": "https://maps.google.com/maps/contrib/114699237513160591593"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ouia-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "mhnd 131",
+        "uri": "https://maps.google.com/maps/contrib/112106606908162728170"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ouia-al-qirawan/3.jpg",
+      "attribution": {
+        "displayName": "Sara T",
+        "uri": "https://maps.google.com/maps/contrib/101734347885638896613"
+      }
+    }
+  ],
+  "shml-al-qirawan": [
+    {
+      "src": "/cafe-heroes/shml-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "AbdullaH",
+        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/shml-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "Rag",
+        "uri": "https://maps.google.com/maps/contrib/106656825196522105543"
+      }
+    },
+    {
+      "src": "/cafe-heroes/shml-al-qirawan/3.jpg",
+      "attribution": {
+        "displayName": "H B",
+        "uri": "https://maps.google.com/maps/contrib/101237911197010649952"
+      }
+    }
+  ],
+  "for-coffee-roasters-al-qirawan": [
+    {
+      "src": "/cafe-heroes/for-coffee-roasters-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/for-coffee-roasters-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "اسأل الرياض",
+        "uri": "https://maps.google.com/maps/contrib/115501198122157450120"
+      }
+    },
+    {
+      "src": "/cafe-heroes/for-coffee-roasters-al-qirawan/3.jpg",
+      "attribution": {
+        "displayName": "داليا",
+        "uri": "https://maps.google.com/maps/contrib/107161456581166851530"
+      }
+    }
   ]
 }

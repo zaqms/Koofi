@@ -28261,6 +28261,8 @@
     },
     {
       "id": "24cafe-al-wadi",
+      "isChain": true,
+      "chainBrand": "24cafe",
       "nameAr": "24Cafe",
       "nameEn": "24Cafe",
       "city": "riyadh",
@@ -28277,7 +28279,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJG5C3EgD9Lj4R88h-KsHTFcs",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "scout",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": null,
       "pickupOnly": null,
       "openingHours": {
@@ -28308,6 +28315,8 @@
     },
     {
       "id": "24cafe-al-yasmin",
+      "isChain": true,
+      "chainBrand": "24cafe",
       "nameAr": "24Cafe",
       "nameEn": "24Cafe",
       "city": "riyadh",
@@ -28355,6 +28364,8 @@
     },
     {
       "id": "24cafe-al-rabi",
+      "isChain": true,
+      "chainBrand": "24cafe",
       "nameAr": "24Cafe",
       "nameEn": "24Cafe",
       "city": "riyadh",
@@ -28375,7 +28386,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJNYv530AFLz4RlgfMG7NdRp4",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "scout",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": null,
       "pickupOnly": null,
       "openingHours": {
@@ -29109,6 +29125,8 @@
     },
     {
       "id": "java-cafe-al-malaz",
+      "isChain": true,
+      "chainBrand": "java",
       "nameAr": "جافا كافيه",
       "nameEn": "Java Cafe",
       "city": "riyadh",
@@ -29123,7 +29141,6 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f04442e5d5387:0xe6adf7d5a9f6c9db",
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJh1NdLkQELz4R28n2qdX3reY",
       "dineIn": true,
       "outdoorSeating": null,
@@ -29156,6 +29173,8 @@
     },
     {
       "id": "java-cafe-al-manar",
+      "isChain": true,
+      "chainBrand": "java",
       "nameAr": "جافا كافيه",
       "nameEn": "Java Cafe",
       "city": "riyadh",
@@ -29174,7 +29193,6 @@
       },
       "logoUrl": "/logos/java-cafe.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJP3IshJsBLz4R0kVFTMtTlAQ",
       "dineIn": true,
       "outdoorSeating": true,
@@ -29203,6 +29221,8 @@
     },
     {
       "id": "java-cafe-al-muruj",
+      "isChain": true,
+      "chainBrand": "java",
       "nameAr": "جافا كافيه",
       "nameEn": "Java Cafe",
       "city": "riyadh",
@@ -29219,7 +29239,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJuYwiS6PiLj4RRlUyXcFysHk",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "scout",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": false,
       "pickupOnly": null,
       "openingHours": {
@@ -29250,6 +29275,8 @@
     },
     {
       "id": "java-cafe-al-wadi",
+      "isChain": true,
+      "chainBrand": "java",
       "nameAr": "جافا كافيه",
       "nameEn": "Java Cafe",
       "city": "riyadh",
@@ -29266,7 +29293,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJXzNA-hr9Lj4RPNGcaLtUOVU",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "qa",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": false,
       "pickupOnly": null,
       "openingHours": {
@@ -29297,6 +29329,8 @@
     },
     {
       "id": "java-cafe-al-rabi",
+      "isChain": true,
+      "chainBrand": "java",
       "nameAr": "جافا كافيه",
       "nameEn": "Java Cafe",
       "city": "riyadh",
@@ -29344,6 +29378,8 @@
     },
     {
       "id": "java-cafe-al-rawabi",
+      "isChain": true,
+      "chainBrand": "java",
       "nameAr": "جافا كافيه",
       "nameEn": "Java Cafe",
       "city": "riyadh",
@@ -29364,7 +29400,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJc31OzOEHLz4REWusjJWHU00",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "qa",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": false,
       "pickupOnly": null,
       "openingHours": {
@@ -30729,6 +30770,8 @@
     },
     {
       "id": "drcafe-namar",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -30743,7 +30786,6 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fe76bdfb701:0x928c99cfc2d87be2",
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJAbffa-cPLz4R4nvYws-ZjJI",
       "dineIn": true,
       "outdoorSeating": true,
@@ -30776,6 +30818,8 @@
     },
     {
       "id": "drcafe-sulimaniyah",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -30790,7 +30834,6 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03791bc4b859:0x1b964057f60fabad",
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJWbjEG3kDLz4RrasP9ldAlhs",
       "dineIn": true,
       "outdoorSeating": true,
@@ -30823,6 +30866,8 @@
     },
     {
       "id": "drcafe-al-nahdah",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -30947,6 +30992,8 @@
     },
     {
       "id": "drcafe-badr",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31072,6 +31119,8 @@
     },
     {
       "id": "drcafe-kkia",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31119,6 +31168,8 @@
     },
     {
       "id": "drcafe-al-jazirah",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31166,6 +31217,8 @@
     },
     {
       "id": "drcafe-al-jazirah-2",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31290,6 +31343,8 @@
     },
     {
       "id": "drcafe-al-aziziyah",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31337,6 +31392,8 @@
     },
     {
       "id": "drcafe-an-nasim",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31461,6 +31518,8 @@
     },
     {
       "id": "drcafe-al-wadi",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31477,7 +31536,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJIwhasQX9Lj4RSPP_4Ll3F0U",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "qa",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": false,
       "pickupOnly": null,
       "openingHours": {
@@ -31508,6 +31572,8 @@
     },
     {
       "id": "drcafe-an-nasim-al-gharbi",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31524,7 +31590,12 @@
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJJwebVZIALz4R0nx2bzjX8J0",
-      "dineIn": true,
+      "seatingVerdict": {
+        "dineIn": false,
+        "source": "qa",
+        "date": "2026-10-02"
+      },
+      "dineIn": false,
       "outdoorSeating": false,
       "pickupOnly": null,
       "openingHours": {
@@ -31632,6 +31703,8 @@
     },
     {
       "id": "drcafe-al-munsiyah",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31757,6 +31830,8 @@
     },
     {
       "id": "drcafe-shubra",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31804,6 +31879,8 @@
     },
     {
       "id": "drcafe-manfuha",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31928,6 +32005,8 @@
     },
     {
       "id": "drcafe-sulimaniyah-2",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31942,7 +32021,6 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03c7ad55c98f:0xab1d4d63141eb7db",
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJj8lVrccDLz4R27ceFGNNHas",
       "dineIn": true,
       "outdoorSeating": true,
@@ -31975,6 +32053,8 @@
     },
     {
       "id": "drcafe-tuwaiq",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -31989,7 +32069,6 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f23d8f7793ff7:0xcd9dc3308cf0a8b5",
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJ9z9599gjLz4RtajwjDDDnc0",
       "dineIn": true,
       "outdoorSeating": null,
@@ -32022,6 +32101,8 @@
     },
     {
       "id": "drcafe-al-mughrizat",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",
@@ -32036,7 +32117,6 @@
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03188dc9c7c3:0x6f4363ded7db4c2a",
       "logoUrl": "/logos/drcafe-mark.png",
       "popularityIndex": 40,
-      "catalogLane": "drive-through",
       "placeId": "ChIJw8fJjRgDLz4RKkzb195jQ28",
       "dineIn": true,
       "outdoorSeating": true,
@@ -32069,6 +32149,8 @@
     },
     {
       "id": "drcafe-al-mathar",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
       "nameAr": "د.كيف كافيه",
       "nameEn": "dr.CAFE",
       "city": "riyadh",

@@ -1,3 +1,4 @@
+import { cafePluralAr } from "./cafe-count";
 import type { Language } from "./types";
 
 /** Survives refresh and language switch. No URL param — canonicals stay clean. */
@@ -57,15 +58,17 @@ export const CHAIN_FILTER_LABEL = {
   ar: "المحلية بس",
 } as const;
 
+const CAFE_PLURAL_AR = cafePluralAr();
+
 export const CHAIN_FILTER_EMPTY = {
   en: "No local cafés here yet — only chains so far. Show chains",
-  ar: "ما فيه قهاوي محلية هنا للحين، بس سلاسل. اعرض السلاسل",
+  ar: `ما فيه ${CAFE_PLURAL_AR} محلية هنا للحين، بس سلاسل. اعرض السلاسل`,
 } as const;
 
 /** Lead keeps the trailing space so the button reads as the full sentence. */
 export const CHAIN_FILTER_EMPTY_LEAD = {
   en: "No local cafés here yet — only chains so far. ",
-  ar: "ما فيه قهاوي محلية هنا للحين، بس سلاسل. ",
+  ar: `ما فيه ${CAFE_PLURAL_AR} محلية هنا للحين، بس سلاسل. `,
 } as const;
 
 export const CHAIN_FILTER_SHOW = {

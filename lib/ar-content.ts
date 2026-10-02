@@ -1,5 +1,12 @@
+import {
+  chainBranchesAr,
+  chainOnlyBlock,
+  countWordAr,
+  countedCafesAr,
+  fillHereIntroAr,
+  localCafesAr,
+} from "./cafe-count";
 import { coffeeShopsInDistrict } from "./directory-category";
-import { chainCountClauseAr, chainOnlyBlock, fillHereIntroAr } from "./cafe-count";
 import { districtPageHidden } from "./district-dictionary";
 import {
   GATE_CAFE_ID,
@@ -15,26 +22,7 @@ import { cardPath, districtPath, PRODUCT_NAME, shopDisplayName } from "./product
 import type { NeighborhoodId, Shop } from "./types";
 import { vibeLabels } from "./vibe-labels";
 
-const AR_COUNT_WORDS = [
-  "صفر",
-  "وحدة",
-  "ثنتين",
-  "ثلاث",
-  "أربع",
-  "خمس",
-  "ست",
-  "سبع",
-  "ثمان",
-  "تسع",
-  "عشر",
-  "إحدى عشر",
-  "اثنتي عشر",
-] as const;
-
-export function countWordAr(n: number): string {
-  if (n >= 0 && n < AR_COUNT_WORDS.length) return AR_COUNT_WORDS[n];
-  return String(n);
-}
+export { countWordAr } from "./cafe-count";
 
 export const GATE_FORBIDDEN_CLAIMS_AR = [
   "مواقف",
@@ -50,14 +38,14 @@ export const GATE_FORBIDDEN_CLAIMS_AR = [
 /** Locked 9 Sep 2026. Najdi paraphrase of the EN KAFD gold master. Do not rewrite. */
 export const GOLD_MASTER_KAFD_AR = {
   title: `مقاهي في كافد · ${PRODUCT_NAME}`,
-  meta: "قائمة قصيرة لقهاوي كافد على wain.lol — سبع أماكن في الرياض، وكل وحدة عليها رابط قوقل ماب.",
+  meta: `قائمة قصيرة لقهاوي كافد على wain.lol — ${countWordAr(7)} أماكن في الرياض، وكل وحدة عليها رابط قوقل ماب.`,
   markdown: `# مقاهي في كافد
 
 إذا أنت بكافد وتبي قهوة من غير ما تتمشى بالشاشة طول الوقت، هذي الصفحة لك. هذي قائمتنا للأماكن بهالجزء من الرياض اللي حطيناها على wain.lol للحين.
 
 ## وش فيه
 
-فيه **سبع** قهاوي من كافد بالقائمة الحين:
+فيه **${countWordAr(7)}** قهاوي من كافد بالقائمة الحين:
 
 - [١٢ كوب](/c/12-cups-roastery-and-cafe-kafd)
 - [كافي تيل](/c/cafe-tale-kafd)
@@ -88,14 +76,14 @@ wain.lol دليل قهوة صغير في الرياض. تقدر تطلب ثلا�
 /** Locked 9 Sep 2026. Najdi paraphrase of the EN Al Wurud gold master. Do not rewrite. */
 export const GOLD_MASTER_AL_WURUD_AR = {
   title: `مقاهي في الورود · ${PRODUCT_NAME}`,
-  meta: "أربع قهاوي بالورود على wain.lol — قائمة حي أهدأ في الرياض، مع روابط قوقل ماب.",
+  meta: `${countedCafesAr(4)} بالورود على wain.lol — قائمة حي أهدأ في الرياض، مع روابط قوقل ماب.`,
   markdown: `# مقاهي في الورود
 
 الورود أكثر شوارع سكنية من أبراج مكاتب — حي بالرياض تقدر تبي فيه قهوة هادية من غير ما تقطع البلد. هذي الصفحة المجموعة الصغيرة من أماكن الورود اللي ضفناها على wain.lol للحين.
 
 ## وش فيه
 
-**أربع** قهاوي من الورود بالكتالوج اليوم:
+**${countWordAr(4)}** قهاوي من الورود بالكتالوج اليوم:
 
 - [قهوة كارڤ](/c/carve-coffee-bar-al-wurud)
 - [إيا](/c/eya-specialty-coffee-al-wurud)
@@ -333,12 +321,12 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الحمراء. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "اثنتي عشر قهاوي بالحمراء على wain.lol — قائمة شرق الرياض فيها سيرين ورمثان وحرف، وكل وحدة عليها رابط قوقل ماب.",
+    meta: "{countCafe} بالحمراء على wain.lol — قائمة شرق الرياض فيها سيرين ورمثان وحرف، وكل وحدة عليها رابط قوقل ماب.",
   },
   "al-yarmouk": {
     lead: `اليرموك على الجهة الشرقية من الرياض، باتجاه الدائري الشرقي. إذا أنت بهالجهة وتبي قهوة من الكتالوج، هذي مجموعة اليرموك على wain.lol.
 
-ناس يسألون عن [سايلو محمصة وقهوة مختصة](/c/silo-cafe-al-yarmouk) و[نوساوند](/c/nosound-al-yarmouk) و[ريشيو](/c/ratio-speciality-al-yarmouk). موجودين مع السبع الباقية. ما نرتّبهم.
+ناس يسألون عن [سايلو محمصة وقهوة مختصة](/c/silo-cafe-al-yarmouk) و[نوساوند](/c/nosound-al-yarmouk) و[ريشيو](/c/ratio-speciality-al-yarmouk). موجودين مع الـ 7 الباقية. ما نرتّبهم.
 
 العدد عشر لأن هذا اللي ضفناه من اليرموك.`,
     hereIntro: `فيه **{count}** قهاوي من اليرموك بالكتالوج اليوم:`,
@@ -352,7 +340,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-nahdah": {
     lead: `النهضة حي بالرياض على الجهة الشرقية. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة النهضة على wain.lol.
 
-ناس يسألون عن [كابو محمصة وقهوة](/c/kapu-cafe-al-nahdah) و[غزالة كافيه](/c/ghazala-cafe-al-nahdah) و[عنوان القهوة](/c/coffee-address-al-nahdah). موجودين مع السبع الباقية. ما نرتّبهم.
+ناس يسألون عن [كابو محمصة وقهوة](/c/kapu-cafe-al-nahdah) و[غزالة كافيه](/c/ghazala-cafe-al-nahdah) و[عنوان القهوة](/c/coffee-address-al-nahdah). موجودين مع الـ 7 الباقية. ما نرتّبهم.
 
 العدد عشر لأن هذا اللي ضفناه من النهضة.`,
     hereIntro: `فيه **{count}** قهاوي من النهضة بالكتالوج اليوم:`,
@@ -368,7 +356,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
 
 بالقائمة [ڤازا](/c/vase-coffee-al-manar) و[ريكاف](/c/recaf-al-manar). هذي دبابيس المنار اللي ضفناها. ما نرتّبهم.
 
-بطاقتين هذي المجموعة كلها للحين. افتح بطاقة إذا الاسم يمشي.`,
+افتح بطاقة إذا الاسم يمشي. القائمة تحت هي المجموعة كلها للحين.`,
     hereIntro: `فيه **{count}** قهاوي من المنار بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة إذا الاسم يمشي، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
     nearbyIntro: `إذا المنار مو الوقف، هالقوائم شرق الرياض بالموقع:`,
@@ -401,7 +389,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان تحبه؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهاوي ثنتين بالروابي على wain.lol — قائمة شرق الرياض فيها THE IT وإسرت، وكل وحدة عليها رابط قوقل ماب.",
+    meta: "{countCafe} بالروابي على wain.lol — قائمة شرق الرياض فيها THE IT وإسرت، وكل وحدة عليها رابط قوقل ماب.",
   },
   "al-fayha": {
     lead: `الفيحاء على الجهة الشرقية من الرياض. هذي قهاوي الفيحاء اللي حطيناها على wain.lol للحين — بس اللي بالكتالوج.
@@ -427,7 +415,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-munsiyah": {
     lead: `المونسية على الجهة الشرقية من الرياض، بعد قرطبة. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة المونسية على wain.lol.
 
-ناس يسألون عن [شرب قهوة مختصة](/c/serb-specialty-al-munsiyah) و[مراحل التحميص](/c/roasting-stages-al-munsiyah) و[ايجل كوفي](/c/eagle-coffee-al-munsiyah). موجودين مع السبع الباقية. ما نرتّبهم.
+ناس يسألون عن [شرب قهوة مختصة](/c/serb-specialty-al-munsiyah) و[مراحل التحميص](/c/roasting-stages-al-munsiyah) و[ايجل كوفي](/c/eagle-coffee-al-munsiyah). موجودين مع الـ 7 الباقية. ما نرتّبهم.
 
 العدد عشر لأن هذا اللي ضفناه من المونسية.`,
     hereIntro: `فيه **{count}** قهاوي من المونسية بالكتالوج اليوم:`,
@@ -448,7 +436,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الندى. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهوة وحدة بالندى على wain.lol — قائمة شمال الرياض فيها برو92، وعليها رابط قوقل ماب.",
+    meta: "{countCafe} بالندى على wain.lol — قائمة شمال الرياض فيها برو92، وعليها رابط قوقل ماب.",
   },
   "diplomatic-quarter": {
     lead: `الحي الدبلوماسي قائمة لوحدها بالرياض — السفارات على كرت الخريطة. هذي مجموعة الحي الدبلوماسي اللي حطيناها على wain.lol للحين.
@@ -676,12 +664,12 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الجزيرة. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهوتين بالجزيرة على wain.lol — قائمة حي فيها د.كيف، وعليها روابط قوقل ماب.",
+    meta: "{countCafe} بالجزيرة على wain.lol — قائمة حي فيها د.كيف، وعليها روابط قوقل ماب.",
   },
   "an-nasim-ash-sharqi": {
     lead: `النسيم الشرقي على الجهة الشرقية من الرياض، بعد النهضة. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة النسيم الشرقي على wain.lol.
 
-ناس يسألون عن [فوت | محمصة وقهوة مختصة](/c/voute-fot-al-naseem-sharqi) و[جارو قهوة مختصة](/c/jaro-cafe-al-naseem-sharqi) و[تامبر قهوة مختصة](/c/tamper-speciality-al-naseem-sharqi). موجودين مع الأربع الباقية. ما نرتّبهم.
+ناس يسألون عن [فوت | محمصة وقهوة مختصة](/c/voute-fot-al-naseem-sharqi) و[جارو قهوة مختصة](/c/jaro-cafe-al-naseem-sharqi) و[تامبر قهوة مختصة](/c/tamper-speciality-al-naseem-sharqi). موجودين مع الـ 4 الباقية. ما نرتّبهم.
 
 العدد سبع لأن هذا اللي ضفناه من النسيم الشرقي.`,
     hereIntro: `فيه **{count}** قهاوي من النسيم الشرقي بالكتالوج اليوم:`,
@@ -888,9 +876,14 @@ function districtLink(id: NeighborhoodId): string {
   return `[${coffeeShopsInDistrict(name, "ar")}](${districtPath(id, "ar")})`;
 }
 
-function shopListMarkdown(shops: { id: string; nameAr: string; nameEn: string }[]): string {
+function shopListMarkdown(
+  shops: { id: string; nameAr: string; nameEn: string; isChain?: boolean | true }[],
+): string {
   return shops
-    .map((shop) => `- ${cafeLink(shop.id, shopDisplayName(shop, "ar"))}`)
+    .map(
+      (shop) =>
+        `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shopDisplayName(shop, "ar"))}`,
+    )
     .join("\n");
 }
 
@@ -902,13 +895,54 @@ function nearbyListMarkdown(district: NeighborhoodId): string {
     .join("\n");
 }
 
-function fillCount(template: string, count: number): string {
-  return template.replaceAll("{count}", countWordAr(count));
+const AR_LEAD_TOTAL =
+  "إحدى عشر|اثنتي عشر|وحدة|ثنتين|ثلاث|أربع|خمس|ست|سبع|ثمان|تسع|عشر|\\d+";
+
+function leadWithLiveTotal(lead: string, count: number): string {
+  const word = countWordAr(count);
+  return lead
+    .replace(new RegExp(`العدد (${AR_LEAD_TOTAL})`, "g"), `العدد ${word}`)
+    .replace(new RegExp(`(${AR_LEAD_TOTAL}) قهاوي ضفناها`, "g"), `${word} قهاوي ضفناها`)
+    .replace(/قهوة وحدة ضفناها/g, `${countedCafesAr(count)} ضفناها`)
+    .replace(new RegExp(`(${AR_LEAD_TOTAL}) بطاقة`, "g"), `${word} بطاقة`);
 }
 
-/** Shown only when the district list includes at least one chain branch. */
-export function chainDistrictMetaAr(name: string, total: number): string {
-  return `${countWordAr(total)} قهاوي ب${name} على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.`;
+function fillCount(template: string, count: number): string {
+  const phrase = countedCafesAr(count);
+  return template
+    .replaceAll("{countCafe}", phrase)
+    .replaceAll("{count} قهاوي", phrase)
+    .replaceAll("قهاوي {count}", phrase)
+    .replaceAll("قهوة {count}", phrase)
+    .replaceAll("{count}", countWordAr(count));
+}
+
+function chainBreakdownAr(local: number, chains: number): string {
+  const parts = [localCafesAr(local), chainBranchesAr(chains)].filter(
+    (part): part is string => part != null,
+  );
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return ` — ${parts[0]}`;
+  return ` — ${parts[0]}، و${parts[1]}`;
+}
+
+/** Chain district description, Open Graph, and Twitter. */
+export function chainDistrictMetaAr(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  if (total <= 0) {
+    return `ما فيه قهاوي ب${name} على wain.lol للحين — قائمة حي بالرياض.`;
+  }
+  const counted = countedCafesAr(total);
+  if (local <= 0) {
+    const maps = total === 1 ? "وعليها رابط قوقل ماب." : "وعليها روابط قوقل ماب.";
+    const branches = chains === 1 ? "فرع سلسلة" : "فروع سلاسل";
+    return `${counted} ب${name} على wain.lol — ${branches} بس للحين، ${maps}`;
+  }
+  return `${counted} ب${name} على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.`;
 }
 
 /** Shown only when the district list includes at least one chain branch. */
@@ -918,8 +952,24 @@ export function chainDistrictHereIntroAr(
   local: number,
   chains: number,
 ): string {
-  const sentence = `فيه ${chainCountClauseAr(total, local, chains)} من ${name} بالكتالوج اليوم:`;
-  return local <= 0 ? chainOnlyBlock(sentence) : sentence;
+  if (total <= 0) return `ما فيه قهاوي من ${name} بالكتالوج للحين.`;
+  const full = `فيه **${countedCafesAr(total)}** من ${name} بالكتالوج اليوم${chainBreakdownAr(local, chains)}:`;
+  if (local <= 0) return chainOnlyBlock(full);
+  const localSentence = `فيه **${localCafesAr(local)}** من ${name} بالكتالوج اليوم:`;
+  return `{chain-counts}${full}{/chain-counts}{local-counts}${localSentence}{/local-counts}`;
+}
+
+/** Nameless chain sentence. Appended after a handwritten local lead. */
+export function chainDistrictLeadAr(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  const full = `${countedCafesAr(total)}${chainBreakdownAr(local, chains)}`;
+  if (local <= 0) return `هذي صفحة ${name} بالكتالوج على wain.lol: ${full}.`;
+  const localPhrase = localCafesAr(local) ?? countedCafesAr(local);
+  return `هذي صفحة ${name} بالكتالوج على wain.lol: {chain-counts}${full}{/chain-counts}{local-counts}${localPhrase}{/local-counts}.`;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -953,7 +1003,14 @@ export function districtArMeta(district: NeighborhoodId): string {
   const shops = shopsInDistrict(district);
   const chainCount = shops.filter((shop) => shop.isChain).length;
   const name = neighborhoodLabel(district, "ar");
-  if (chainCount > 0) return chainDistrictMetaAr(name, shops.length);
+  if (chainCount > 0) {
+    return chainDistrictMetaAr(
+      name,
+      shops.length,
+      shops.length - chainCount,
+      chainCount,
+    );
+  }
   if (shops.length === 0) {
     return `ما فيه قهاوي بـ${name} على wain.lol للحين — قائمة حي بالرياض.`;
   }
@@ -962,14 +1019,8 @@ export function districtArMeta(district: NeighborhoodId): string {
   const custom = DISTRICT_COPY_AR[district];
   if (custom?.meta) return fillCount(custom.meta, shops.length);
   const count = shops.length;
-  const word = countWordAr(count);
-  if (count === 0) {
-    return `ما فيه قهاوي بـ${name} على wain.lol للحين — قائمة حي بالرياض.`;
-  }
-  if (count === 1) {
-    return `قهوة وحدة بـ${name} على wain.lol — قائمة حي بالرياض، مع رابط قوقل ماب.`;
-  }
-  return `${word} قهاوي بـ${name} على wain.lol — قائمة حي بالرياض، مع روابط قوقل ماب.`;
+  const maps = count === 1 ? "مع رابط قوقل ماب." : "مع روابط قوقل ماب.";
+  return `${countedCafesAr(count)} بـ${name} على wain.lol — قائمة حي بالرياض، ${maps}`;
 }
 
 export function districtArMarkdown(district: NeighborhoodId): string {
@@ -981,10 +1032,21 @@ export function districtArMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "ar");
   const copy = DISTRICT_COPY_AR[district] ?? defaultDistrictCopy(district);
-  const lead =
-    chainCount > 0 && count === chainCount ? chainOnlyBlock(copy.lead) : copy.lead;
-  const hereHeading =
-    chainCount > 0 && count === chainCount ? "## {chain-only}وش فيه" : "## وش فيه";
+  const local = count - chainCount;
+  const chainSentence =
+    chainCount > 0 ? chainDistrictLeadAr(name, count, local, chainCount) : "";
+  const handwritten = locked
+    ? locked.markdown.replace(/^#[^\n]*\n+/, "").split("## وش فيه")[0]?.trim()
+    : DISTRICT_COPY_AR[district]?.lead;
+  const handwrittenLead =
+    handwritten && !locked && local > 0 ? leadWithLiveTotal(handwritten, local) : handwritten;
+  const leadBody = handwrittenLead
+    ? chainSentence
+      ? `${handwrittenLead}\n\n${chainSentence}`
+      : handwrittenLead
+    : chainSentence || copy.lead;
+  const lead = chainCount > 0 && local <= 0 ? chainOnlyBlock(leadBody) : leadBody;
+  const hereHeading = "## وش فيه";
   const hereDefault =
     count === 0
       ? `ما فيه قهاوي من ${name} بالكتالوج للحين.`
@@ -1070,6 +1132,14 @@ function plainDistrictLabel(id: NeighborhoodId): string {
   return coffeeShopsInDistrict(neighborhoodLabel(id, "ar"), "ar");
 }
 
+function withoutNameListPitch(body: string): string {
+  return body
+    .replace(/\s*إذا تبي تقارن بنفس الحي، الأسماء الثانية مربوطة تحت — بس اللي بالكتالوج فعلاً\.?/g, "")
+    .replace(/\s*إذا الاسم يمشي، باقي الحي تحت\.?/g, "")
+    .replace(/\s*[^.]*الأسماء الثانية مربوطة تحت[^.]*\./g, "")
+    .trim();
+}
+
 function withoutDistrictLinkPitch(body: string): string {
   return body
     .replace(/\s*إذا تبي باقي الحي، صفحة الحي مربوطة تحت\.?/g, "")
@@ -1097,7 +1167,9 @@ export function cafeArMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE_AR.markdown;
   const hidden = districtPageHidden(shop.neighborhood);
   const raw = CNI_BLURBS_AR[shop.id] ?? defaultCafeBlurb(shop);
-  const body = hidden ? withoutDistrictLinkPitch(raw) : raw;
+  let body = raw;
+  if (siblingShops(shop).length === 0) body = withoutNameListPitch(body);
+  if (hidden) body = withoutDistrictLinkPitch(body);
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

@@ -1,4 +1,12 @@
-import { chainCountClauseEn, chainOnlyBlock, fillHereIntroEn } from "./cafe-count";
+import {
+  chainBranchesEn,
+  chainOnlyBlock,
+  countWord,
+  countedCafesEn,
+  countedCafesEnHead,
+  fillHereIntroEn,
+  localCafesEn,
+} from "./cafe-count";
 import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
 import { districtPageHidden } from "./district-dictionary";
 import { cityLabel } from "./cities";
@@ -28,26 +36,7 @@ export const CNI_PRIORITY_CAFE_IDS = [
 
 export const LOCKED_DISTRICT_IDS = ["kafd", "al-wurud"] as const;
 
-const COUNT_WORDS = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-  "twelve",
-] as const;
-
-export function countWord(n: number): string {
-  if (n >= 0 && n < COUNT_WORDS.length) return COUNT_WORDS[n];
-  return String(n);
-}
+export { countWord } from "./cafe-count";
 
 export const DROPPED_SLOGANS = [
   "Maps is the last click",
@@ -87,14 +76,14 @@ export const GATE_FORBIDDEN_CLAIMS = ["parking", "wifi", "wi-fi", "outdoor"] as 
 /** Locked 9 Sep 2026. Do not rewrite. */
 export const GOLD_MASTER_KAFD = {
   title: `Coffee shops in KAFD · ${PRODUCT_NAME}`,
-  meta: "A short list of cafes in KAFD on wain.lol — seven places in Riyadh, each with a Maps link.",
+  meta: `A short list of cafes in KAFD on wain.lol — ${countWord(7)} places in Riyadh, each with a Maps link.`,
   markdown: `# Coffee shops in KAFD
 
 If you’re around KAFD and you just want a coffee without scrolling forever, this page is for you. It’s our list of places in that part of Riyadh that we’ve put on wain.lol so far.
 
 ## What’s here
 
-There are **seven** cafes from KAFD on the list right now:
+There are **${countWord(7)}** cafes from KAFD on the list right now:
 
 - [12 Cups Roastery and Cafe](/en/c/12-cups-roastery-and-cafe-kafd)
 - [Cafe Tale](/en/c/cafe-tale-kafd)
@@ -125,14 +114,14 @@ We’re Riyadh-only for now. Missing a place you like? You can send a Maps link 
 /** Locked 9 Sep 2026. Do not rewrite. */
 export const GOLD_MASTER_AL_WURUD = {
   title: `Coffee shops in Al Wurud · ${PRODUCT_NAME}`,
-  meta: "Four cafes in Al Wurud on wain.lol — a quieter Riyadh neighborhood list, with Maps links.",
+  meta: `${countedCafesEnHead(4)} in Al Wurud on wain.lol — a quieter Riyadh neighborhood list, with Maps links.`,
   markdown: `# Coffee shops in Al Wurud
 
 Al Wurud is more residential streets than office towers — the kind of Riyadh neighborhood where you might want a calm coffee without driving across town. This page is the small set of Al Wurud places we’ve added to wain.lol so far. (الورود)
 
 ## What’s here
 
-**Four** cafes from Al Wurud are on the catalog today:
+**${countWord(4)}** cafes from Al Wurud are on the catalog today:
 
 - [Carve Coffee Bar](/en/c/carve-coffee-bar-al-wurud)
 - [EYA Specialty Coffee](/en/c/eya-specialty-coffee-al-wurud)
@@ -447,12 +436,12 @@ Twelve cards is the whole set for now. Open a card if a name fits. Skip it if it
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Hamra. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Twelve cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
+    meta: "{countCafe} in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
   },
   "al-yarmouk": {
     lead: `Al Yarmuk (اليرموك) sits out on Riyadh’s east side toward the Eastern Ring. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmuk set on wain.lol.
 
-Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many Al Yarmuk places we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Yarmuk on the catalog today:`,
@@ -466,7 +455,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-nahdah": {
     lead: `An Nahdah (النهضة) is a Riyadh حي on the city’s east side. If you’re already in النهضة and you just want a coffee from the catalog, this is the An Nahdah set on wain.lol.
 
-Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many An Nahdah places we’ve added.`,
     hereIntro: `There are **{count}** cafes from An Nahdah on the catalog today:`,
@@ -482,7 +471,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 
 Names on this list include [VASE Coffee](/en/c/vase-coffee-al-manar) and [Recaf I](/en/c/recaf-al-manar). They’re the Manar pins we’ve added. We don’t rank them.
 
-Two cards is the whole set for now. Open a card if a name fits.`,
+Open a card if a name fits. The list below is the whole set for now.`,
     hereIntro: `There are **{count}** cafes from Al Manar on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Manar isn’t the stop, these east-Riyadh lists sit on the site:`,
@@ -515,7 +504,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
-    meta: "Two cafes in Ar Rawabi on wain.lol — an east Riyadh list including THE IT and Essert, each with a Maps link.",
+    meta: "{countCafe} in Ar Rawabi on wain.lol — an east Riyadh list including THE IT and Essert, each with a Maps link.",
   },
   "al-fayha": {
     lead: `Al Fayha (الفيحاء) sits on Riyadh’s east side. This page is the Fayha cafes we’ve put on wain.lol so far — still only what’s in the catalog.
@@ -541,7 +530,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   "al-munsiyah": {
     lead: `Al Munsiyah (المونسية) sits on Riyadh’s east belt, past Qurtubah. If you’re already in المونسية and you just want a coffee from the catalog, this is the Al Munsiyah set on wain.lol.
 
-Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many Al Munsiyah places we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Munsiyah on the catalog today:`,
@@ -562,7 +551,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nada. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in An Nada on wain.lol — a north Riyadh list including Brew 92, with a Maps link.",
+    meta: "{countCafe} in An Nada on wain.lol — a north Riyadh list including Brew 92, with a Maps link.",
   },
   "diplomatic-quarter": {
     lead: `The Diplomatic Quarter (الحي الدبلوماسي) is its own Riyadh list — السفارات on the maps card. This page is the DQ set we’ve put on wain.lol so far.
@@ -1015,9 +1004,11 @@ function districtLink(id: NeighborhoodId): string {
 }
 
 function shopListMarkdown(
-  shops: { id: string; nameEn: string }[],
+  shops: { id: string; nameEn: string; isChain?: boolean | true }[],
 ): string {
-  return shops.map((shop) => `- ${cafeLink(shop.id, shop.nameEn)}`).join("\n");
+  return shops
+    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shop.nameEn)}`)
+    .join("\n");
 }
 
 function nearbyListMarkdown(district: NeighborhoodId): string {
@@ -1028,24 +1019,58 @@ function nearbyListMarkdown(district: NeighborhoodId): string {
     .join("\n");
 }
 
-function fillCount(template: string, count: number): string {
+function leadWithLiveTotal(lead: string, count: number): string {
   const word = countWord(count);
-  const wordCap = word.charAt(0).toUpperCase() + word.slice(1);
-  const countCafe = count === 1 ? "One cafe" : `${wordCap} cafes`;
-  return template
-    .replaceAll("{countCafe}", countCafe)
-    .replaceAll("{count}", word)
-    .replaceAll("{countWordCap}", wordCap);
+  const cap = word.charAt(0).toUpperCase() + word.slice(1);
+  const noun = count === 1 ? "cafe" : "cafes";
+  return lead
+    .replace(/The count is [a-z0-9]+/gi, `The count is ${word}`)
+    .replace(
+      /[a-z0-9]+ cafes? we['’]ve actually added/gi,
+      `${word} ${noun} we’ve actually added`,
+    )
+    .replace(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+) cafe added so far/gi,
+      `${word} ${noun} added so far`,
+    )
+    .replace(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+) cards\b/gi,
+      (match) => `${match[0] === match[0]?.toUpperCase() ? cap : word} cards`,
+    );
 }
 
-/** Shown only when the district list includes at least one chain branch. */
-export function chainDistrictMetaEn(name: string, total: number): string {
-  const word = countWord(total);
-  const head =
-    total === 1
-      ? "One cafe"
-      : `${word.charAt(0).toUpperCase()}${word.slice(1)} cafes`;
-  return `${head} in ${name} on wain.lol — local specialty plus chain branches, each with a Maps link.`;
+function fillCount(template: string, count: number): string {
+  const word = countWord(count);
+  return template
+    .replaceAll("{countCafe}", countedCafesEnHead(count))
+    .replaceAll("{count}", word)
+    .replaceAll("{countWordCap}", word);
+}
+
+function chainBreakdownEn(local: number, chains: number): string {
+  const parts = [localCafesEn(local), chainBranchesEn(chains)].filter(
+    (part): part is string => part != null,
+  );
+  return parts.length ? ` — ${parts.join(", ")}` : "";
+}
+
+/** Chain district description, Open Graph, and Twitter. */
+export function chainDistrictMetaEn(
+  name: string,
+  total: number,
+  local: number,
+  _chains: number,
+  at: "at" | "in" = "in",
+): string {
+  if (total <= 0) {
+    return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
+  }
+  const head = countedCafesEnHead(total);
+  if (local <= 0) {
+    const maps = total === 1 ? "a Maps link" : "Maps links";
+    return `${head} ${at} ${name} on wain.lol — chain branches only so far, with ${maps}.`;
+  }
+  return `${head} ${at} ${name} on wain.lol — local specialty plus chain branches, each with a Maps link.`;
 }
 
 /** Shown only when the district list includes at least one chain branch. */
@@ -1055,9 +1080,30 @@ export function chainDistrictHereIntroEn(
   local: number,
   chains: number,
 ): string {
+  if (total <= 0) return `No cafes from ${name} on the catalog yet.`;
   const verb = total === 1 ? "is" : "are";
-  const sentence = `There ${verb} ${chainCountClauseEn(total, local, chains)} from ${name} on the catalog today:`;
-  return local <= 0 ? chainOnlyBlock(sentence) : sentence;
+  const noun = total === 1 ? "cafe" : "cafes";
+  const full = `There ${verb} **${countWord(total)}** ${noun} from ${name} on the catalog today${chainBreakdownEn(local, chains)}:`;
+  if (local <= 0) return chainOnlyBlock(full);
+  const localPhrase = localCafesEn(local) ?? countedCafesEn(local);
+  const localWord = localPhrase.split(" ")[0] ?? localPhrase;
+  const localRest = localPhrase.slice(localWord.length).trim();
+  const localVerb = local === 1 ? "is" : "are";
+  const localSentence = `There ${localVerb} **${localWord}** ${localRest} from ${name} on the catalog today:`;
+  return `{chain-counts}${full}{/chain-counts}{local-counts}${localSentence}{/local-counts}`;
+}
+
+/** Nameless chain sentence. Appended after a handwritten local lead. */
+export function chainDistrictLeadEn(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  const full = `${countedCafesEn(total)}${chainBreakdownEn(local, chains)}`;
+  if (local <= 0) return `This page is the ${name} catalog on wain.lol: ${full}.`;
+  const localPhrase = localCafesEn(local) ?? countedCafesEn(local);
+  return `This page is the ${name} catalog on wain.lol: {chain-counts}${full}{/chain-counts}{local-counts}${localPhrase}{/local-counts}.`;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -1087,11 +1133,25 @@ export function districtEnTitle(district: NeighborhoodId): string {
   return `Coffee shops in ${neighborhoodLabel(district, "en")} · ${PRODUCT_NAME}`;
 }
 
+function lockedLocalLead(markdown: string, heading: string): string {
+  const body = markdown.replace(/^#[^\n]*\n+/, "");
+  const cut = body.indexOf(heading);
+  return (cut === -1 ? body : body.slice(0, cut)).trim();
+}
+
 export function districtEnMeta(district: NeighborhoodId): string {
   const shops = shopsInDistrict(district);
   const chainCount = shops.filter((shop) => shop.isChain).length;
   const name = neighborhoodLabel(district, "en");
-  if (chainCount > 0) return chainDistrictMetaEn(name, shops.length);
+  if (chainCount > 0) {
+    return chainDistrictMetaEn(
+      name,
+      shops.length,
+      shops.length - chainCount,
+      chainCount,
+      district === "kkia" ? "at" : "in",
+    );
+  }
   if (shops.length === 0) {
     const at = district === "kkia" ? "at" : "in";
     return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
@@ -1101,14 +1161,8 @@ export function districtEnMeta(district: NeighborhoodId): string {
   const custom = DISTRICT_COPY[district];
   if (custom?.meta) return fillCount(custom.meta, shops.length);
   const count = shops.length;
-  const word = countWord(count);
-  if (count === 0) {
-    return `No cafes in ${name} on wain.lol yet — a Riyadh neighborhood list.`;
-  }
-  if (count === 1) {
-    return `One cafe in ${name} on wain.lol — a Riyadh neighborhood list, with a Maps link.`;
-  }
-  return `${word.charAt(0).toUpperCase()}${word.slice(1)} cafes in ${name} on wain.lol — a Riyadh neighborhood list, with Maps links.`;
+  const maps = count === 1 ? "a Maps link" : "Maps links";
+  return `${countedCafesEnHead(count)} in ${name} on wain.lol — a Riyadh neighborhood list, with ${maps}.`;
 }
 
 export function districtEnMarkdown(district: NeighborhoodId): string {
@@ -1120,12 +1174,23 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "en");
   const copy = DISTRICT_COPY[district] ?? defaultDistrictCopy(district);
-  const lead =
-    chainCount > 0 && count === chainCount ? chainOnlyBlock(copy.lead) : copy.lead;
-  const hereHeading =
-    chainCount > 0 && count === chainCount
-      ? "## {chain-only}What’s here"
-      : "## What’s here";
+  const local = count - chainCount;
+  const chainSentence =
+    chainCount > 0 ? chainDistrictLeadEn(name, count, local, chainCount) : "";
+  const handwritten = locked
+    ? lockedLocalLead(locked.markdown, "## What’s here")
+    : DISTRICT_COPY[district]?.lead;
+  const handwrittenLead =
+    handwritten && !locked && local > 0
+      ? leadWithLiveTotal(handwritten, local)
+      : handwritten;
+  const leadBody = handwrittenLead
+    ? chainSentence
+      ? `${handwrittenLead}\n\n${chainSentence}`
+      : handwrittenLead
+    : chainSentence || copy.lead;
+  const lead = chainCount > 0 && local <= 0 ? chainOnlyBlock(leadBody) : leadBody;
+  const hereHeading = "## What’s here";
   const hereDefault =
     count === 0
       ? `No cafes from ${name} on the catalog yet.`
@@ -1199,11 +1264,24 @@ function plainDistrictLabel(id: NeighborhoodId): string {
   return `Coffee shops in ${neighborhoodLabel(id, "en")}`;
 }
 
+function withoutNameListPitch(body: string): string {
+  return body
+    .replace(/\s*[^.]*\blinked below\b[^.]*\./gi, (sentence) =>
+      /district page is linked below|full neighborhood page is linked below/i.test(sentence)
+        ? sentence
+        : "",
+    )
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+}
+
 function withoutDistrictLinkPitch(body: string): string {
   return body
     .replace(/\s*If you want the rest of that neighborhood, the district page is linked below\.?/g, "")
     .replace(/\s*Full neighborhood page is linked below\.?/g, "")
     .replace(/\s*The rest of the .+? list is linked below[^.]*\./g, "")
+    .replace(/\s*[^.]*\blinked below\b[^.]*\./gi, "")
+    .replace(/[ \t]{2,}/g, " ")
     .trim();
 }
 
@@ -1226,7 +1304,9 @@ export function cafeEnMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.markdown;
   const hidden = districtPageHidden(shop.neighborhood);
   const raw = CNI_BLURBS[shop.id] ?? defaultCafeBlurb(shop);
-  const body = hidden ? withoutDistrictLinkPitch(raw) : raw;
+  let body = raw;
+  if (siblingShops(shop).length === 0) body = withoutNameListPitch(body);
+  if (hidden) body = withoutDistrictLinkPitch(body);
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

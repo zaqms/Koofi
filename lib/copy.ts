@@ -542,6 +542,10 @@ export const copy = {
     ar: "ترند الأسبوع",
     en: "Trending this week",
   },
+  trendingEmpty: {
+    ar: "ما فيه ترند هالأسبوع للحين.",
+    en: "Nothing trending this week yet.",
+  },
   directory: {
     ar: "القائمة",
     en: "The list",

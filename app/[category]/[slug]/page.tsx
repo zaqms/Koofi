@@ -6,6 +6,7 @@ import { chipPageMetadata } from "@/lib/chip-page";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
 import { districtPageHidden, hiddenDistrictRedirect } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
+import { TrendingThisWeekPage } from "@/components/trending-this-week-page";
 import {
   categoryListingStaticParams,
   mostPopularMetadata,
@@ -14,8 +15,10 @@ import {
   chipIdFromCoffeeShopSlug,
   isCoffeeShopChipSlug,
   isMostPopularSlug,
+  isTrendingSlug,
   PRODUCT_NAME,
 } from "@/lib/product";
+import { trendingMetadata } from "@/lib/trending-page";
 import {
   districtItemListJsonLd,
   mostPopularItemListJsonLd,
@@ -38,6 +41,9 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
   }
   if (isMostPopularSlug(slug)) {
     return mostPopularMetadata("ar");
+  }
+  if (isTrendingSlug(slug)) {
+    return trendingMetadata("ar");
   }
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
@@ -63,6 +69,9 @@ export default async function CategoryDistrictPage({
         <HomeLanding language="ar" listing="popular" />
       </>
     );
+  }
+  if (isTrendingSlug(slug)) {
+    return <TrendingThisWeekPage language="ar" />;
   }
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);

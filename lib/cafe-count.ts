@@ -120,7 +120,7 @@ function boldFirstWord(phrase: string): string {
 /**
  * Full count plus the chain breakdown. When local cafés remain, Local only
  * hides `{chain-counts}` and shows `{local-counts}`. A chain-only count is
- * the bare phrase; the caller wraps the whole sentence in `{chain-only}`.
+ * the bare phrase; the caller wraps it with `chainOnlyBlock`.
  */
 export function chainCountClauseEn(total: number, local: number, chains: number): string {
   const word = total <= 0 ? "zero" : countWord(total);
@@ -148,7 +148,22 @@ export function chainCountClauseAr(total: number, local: number, chains: number)
   return `{chain-counts}${full}{/chain-counts}{local-counts}**${localPart}**{/local-counts}`;
 }
 
-/** Hide a whole lead or intro while Local only is on. */
+/**
+ * Hide a lead or intro while Local only is on.
+ * Each paragraph gets its own pair so a blank line cannot split the markers.
+ */
 export function chainOnlyBlock(text: string): string {
-  return `{chain-only}${text}{/chain-only}`;
+  return text
+    .replace(/\r\n/g, "\n")
+    .split(/\n{2,}/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      if (/\{chain-only\}|\{\/chain-only\}/.test(part)) return part;
+      if (/^#{1,6} /.test(part)) {
+        return part.replace(/^(#{1,6} )/, "$1{chain-only}");
+      }
+      return `{chain-only}${part}{/chain-only}`;
+    })
+    .join("\n\n");
 }

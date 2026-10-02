@@ -1559,11 +1559,44 @@ const AR_PREFIXED_DEFINITE = new RegExp(
   `(?<![\\u0600-\\u06FF])(?:[وبفك](?:${AR_DEFINITE_FROM_THREE.join("|")})|ل(?:${AR_DEFINITE_FROM_THREE.map((word) => word.replace(/^[اأإآ]/, "")).join("|")}))(?![\\u0600-\\u06FF])`,
 );
 
+const AR_INDEFINITE_FROM_THREE = [
+  "ثلاثة",
+  "أربعة",
+  "خمسة",
+  "ستة",
+  "سبعة",
+  "ثمانية",
+  "تسعة",
+  "عشرة",
+  "إحدى عشر",
+  "اثنتي عشر",
+  "أحد عشر",
+  "اثنا عشر",
+  "ثلاث",
+  "أربع",
+  "خمس",
+  "ست",
+  "سبع",
+  "ثمان",
+  "تسع",
+  "عشر",
+].sort((a, b) => b.length - a.length);
+
+/**
+ * و ب ف ك on a count from 3 up that has no ال (وأربع، بثلاث، وثلاث، فخمس).
+ * ل is not a prefix here: «لست» is “I am not”, and للثلاث is already the definite form.
+ */
+const AR_PREFIXED_INDEFINITE = new RegExp(
+  `(?<![\\u0600-\\u06FF])[وبفك](?:${AR_INDEFINITE_FROM_THREE.join("|")})(?![\\u0600-\\u06FF])`,
+);
+
 function spelledNumberWord(text: string): string | null {
   const en = text.match(EN_SPELLED_NUMBER);
   if (en) return en[0] ?? null;
   const prefixed = text.match(AR_PREFIXED_DEFINITE);
   if (prefixed) return prefixed[0] ?? null;
+  const indefinite = text.match(AR_PREFIXED_INDEFINITE);
+  if (indefinite) return indefinite[0] ?? null;
   for (const word of AR_SPELLED_NUMBERS) {
     const re = new RegExp(`(?<![\\u0600-\\u06FF])${word}(?![\\u0600-\\u06FF])`);
     if (re.test(text)) return word;
@@ -1580,6 +1613,28 @@ assert(spelledNumberWord("قهوة وحدة") == null, "one stays a word");
 assert(spelledNumberWord("قهوتين") == null, "two stays a word");
 assert(spelledNumberWord("one cafe") == null && spelledNumberWord("two cafes") == null, "EN one and two stay words");
 assert(spelledNumberWord("محمصة هجين التسعينات") == null, "التسعينات is not a count");
+assert(spelledNumberWord("وأربع") === "وأربع", "prefixed وأربع is a spelled count");
+assert(spelledNumberWord("بثلاث") === "بثلاث", "prefixed بثلاث is a spelled count");
+assert(spelledNumberWord("وثلاث") === "وثلاث", "prefixed وثلاث is a spelled count");
+assert(spelledNumberWord("فخمس") === "فخمس", "prefixed فخمس is a spelled count");
+
+function prefixedIndefiniteCount(text: string): string | null {
+  return text.match(AR_PREFIXED_INDEFINITE)?.[0] ?? null;
+}
+
+assert(prefixedIndefiniteCount("وأربع") === "وأربع", "prefixed وأربع is a spelled count");
+assert(prefixedIndefiniteCount("بثلاث") === "بثلاث", "prefixed بثلاث is a spelled count");
+assert(prefixedIndefiniteCount("وثلاث") === "وثلاث", "prefixed وثلاث is a spelled count");
+assert(prefixedIndefiniteCount("فخمس") === "فخمس", "prefixed فخمس is a spelled count");
+assert(prefixedIndefiniteCount("كستة") === "كستة", "prefixed كستة is a spelled count");
+assert(prefixedIndefiniteCount("ثلاث") == null, "a bare ثلاث has no prefix");
+assert(prefixedIndefiniteCount("لست") == null, "لست is not a count");
+assert(prefixedIndefiniteCount("وستيم") == null, "وستيم is Steam, not six");
+assert(prefixedIndefiniteCount("ريبوستري") == null, "ريبوستري is not six");
+assert(prefixedIndefiniteCount("فستان") == null, "فستان is not six");
+assert(prefixedIndefiniteCount("بستان") == null, "بستان is not six");
+assert(prefixedIndefiniteCount("أربعاء") == null, "أربعاء is Wednesday");
+assert(prefixedIndefiniteCount("محمصة هجين التسعينات") == null, "التسعينات is not a prefixed count");
 
 /** 3–10 take a plural noun. 11+ may stay singular, and 1–2 stay words. */
 const AR_SINGULAR_AFTER_THREE_TO_TEN =
@@ -1598,6 +1653,25 @@ assert(singularNounAfterCount("7 قهاوي") == null, "7 قهاوي is plural")
 assert(singularNounAfterCount("7 أماكن") == null, "7 أماكن is plural");
 assert(singularNounAfterCount("11 بطاقة") == null, "11+ may use the singular");
 assert(singularNounAfterCount("فرع واحد") == null, "one branch stays a word");
+assert(singularNounAfterCount("1/4") == null, "a photo counter is not an Arabic count");
+
+/** Digit 3+ then a singular noun. Plurals (cards, cafes, branches) stay allowed. */
+const EN_SINGULAR_AFTER_THREE =
+  /(?<![0-9])(?:[1-9]\d+|[3-9])(?![0-9])\s+(?:card|cafe|branch)\b/i;
+
+function singularEnNounAfterCount(text: string): string | null {
+  return text.match(EN_SINGULAR_AFTER_THREE)?.[0] ?? null;
+}
+
+assert(singularEnNounAfterCount("the 3 card") === "3 card", "3 card is singular");
+assert(singularEnNounAfterCount("4 cafe") === "4 cafe", "4 cafe is singular");
+assert(singularEnNounAfterCount("5 branch") === "5 branch", "5 branch is singular");
+assert(singularEnNounAfterCount("10 cafe") === "10 cafe", "10 cafe is singular");
+assert(singularEnNounAfterCount("3 cards") == null, "3 cards is plural");
+assert(singularEnNounAfterCount("4 cafes") == null, "4 cafes is plural");
+assert(singularEnNounAfterCount("5 branches") == null, "5 branches is plural");
+assert(singularEnNounAfterCount("1 card") == null && singularEnNounAfterCount("2 cafe") == null, "one and two stay allowed");
+assert(singularEnNounAfterCount("1/4") == null && singularEnNounAfterCount("1 / 4") == null, "a photo counter is not a singular noun");
 
 function leadBeforeHeading(markdown: string, heading: string): string {
   const body = markdown.replace(/^#[^\n]*\n+/, "");
@@ -1605,6 +1679,7 @@ function leadBeforeHeading(markdown: string, heading: string): string {
   return (cut === -1 ? body : body.slice(0, cut)).trim();
 }
 
+// District lead, intro, and meta only. Café pages render a "1/4" hero counter.
 for (const id of NEIGHBORHOOD_IDS) {
   const surfaces = [
     ["EN lead", leadBeforeHeading(districtEnMarkdown(id), "## What’s here")],
@@ -1622,6 +1697,13 @@ for (const id of NEIGHBORHOOD_IDS) {
       singular == null,
       `${id} ${label} uses a singular noun after 3–10 (${singular}): ${text}`,
     );
+    if (label.startsWith("EN")) {
+      const singularEn = singularEnNounAfterCount(text);
+      assert(
+        singularEn == null,
+        `${id} ${label} uses a singular noun after a digit 3+ (${singularEn}): ${text}`,
+      );
+    }
   }
 }
 

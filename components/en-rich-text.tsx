@@ -23,8 +23,19 @@ function EnLink({ href, children }: { href: string; children: ReactNode }) {
   );
 }
 
-const COUNT_CLAUSE =
-  /\{(chain-counts|local-counts|chain-only)\}([\s\S]*?)\{\/\1\}/g;
+/** Clause kinds the renderer consumes. `{chain}` marks a list row. */
+const CLAUSE_KINDS = ["chain-counts", "local-counts", "chain-only"] as const;
+
+/** Every raw marker this renderer understands. The chain check fails if one survives. */
+export const CONTENT_MARKERS = [
+  ...CLAUSE_KINDS.flatMap((kind) => [`{${kind}}`, `{/${kind}}`]),
+  "{chain}",
+] as const;
+
+const COUNT_CLAUSE = new RegExp(
+  `\\{(${CLAUSE_KINDS.join("|")})\\}([\\s\\S]*?)\\{\\/\\1\\}`,
+  "g",
+);
 
 const CHAIN_ONLY_REGION = /\{chain-only\}([\s\S]*?)\{\/chain-only\}/g;
 
@@ -138,12 +149,44 @@ function isList(block: string): boolean {
     .every((line) => line.startsWith("- "));
 }
 
+/** True when Local only would hide the whole block. */
+function blockIsEntirelyChainOnly(block: string): boolean {
+  if (isList(block)) {
+    const rows = block
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.startsWith("- "));
+    return rows.length > 0 && rows.every((row) => row.startsWith("- {chain} "));
+  }
+  const visible = block
+    .replace(/\{chain-only\}[\s\S]*?\{\/chain-only\}/g, "")
+    .replace(/\{chain-counts\}[\s\S]*?\{\/chain-counts\}/g, "")
+    .replace(/\{chain-only\}|\{\/chain-only\}/g, "")
+    .trim();
+  return visible.length === 0;
+}
+
+/**
+ * A section heading hides with Local only when nothing after it, up to the
+ * next heading, would stay on screen. An empty section counts: nothing follows.
+ */
+function sectionHidesWithLocalOnly(source: string[], index: number): boolean {
+  for (let cursor = index + 1; cursor < source.length; cursor += 1) {
+    const next = source[cursor] ?? "";
+    if (/^#{1,6} /.test(next)) break;
+    if (!next.trim()) continue;
+    if (!blockIsEntirelyChainOnly(next)) return false;
+  }
+  return true;
+}
+
 export function EnRichText({
   markdown,
   skipHeadingLevel1 = false,
   className = "space-y-3 text-sm leading-6 text-ink",
 }: EnRichTextProps) {
-  const items = blocks(expandChainOnlyRegions(markdown))
+  const source = blocks(expandChainOnlyRegions(markdown));
+  const items = source
     .map((block, index) => {
       if (block.startsWith("# ")) {
         if (skipHeadingLevel1) return null;
@@ -154,7 +197,9 @@ export function EnRichText({
         );
       }
       if (block.startsWith("## ")) {
-        const chainOnly = /\{chain-only\}|\{\/chain-only\}/.test(block);
+        const chainOnly =
+          /\{chain-only\}|\{\/chain-only\}/.test(block) ||
+          sectionHidesWithLocalOnly(source, index);
         const label = stripChainOnlyTags(block.slice(3));
         return (
           <h2

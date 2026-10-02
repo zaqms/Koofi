@@ -497,7 +497,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-rawabi": {
     lead: `Ar Rawabi (الروابي) is an east Riyadh neighborhood on the list. Here are the Rawabi places we’ve added.
 
-[THE IT](/en/c/the-it-al-rawabi) and [Essert](/en/c/essert-al-rawabi) are the two cards on this page today. We don’t invent extras.`,
+[THE IT](/en/c/the-it-al-rawabi), [Essert](/en/c/essert-al-rawabi), and [Bala](/en/c/bala-al-rawabi) are the 3 cards on this page today. We don’t invent extras.`,
     hereIntro: `There are **{count}** cafes from Ar Rawabi on wain.lol right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
     nearbyIntro: `If Ar Rawabi isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
@@ -542,9 +542,9 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "{countCafe} in Al Munsiyah on wain.lol — an east Riyadh list including Serb, Roasting Stages, and Eagle, each with a Maps link.",
   },
   "an-nada": {
-    lead: `An Nada (الندى) sits on Riyadh’s north side, next to Yasmin and Malqa. This page is the An Nada set on wain.lol — one cafe we’ve actually added.
+    lead: `An Nada (الندى) sits on Riyadh’s north side, next to Yasmin and Malqa. This page is the An Nada set on wain.lol — two cafes we’ve actually added.
 
-[Brew 92 - Al Nada](/en/c/brew92-an-nada) is the card on this list today. We don’t invent extras.`,
+[Brew 92 - Al Nada](/en/c/brew92-an-nada) and [SoMatcha](/en/c/somatcha-an-nada) are the two cards on this list today. We don’t invent extras.`,
     hereIntro: `There is **{count}** cafe from An Nada on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
     nearbyIntro: `If An Nada isn’t the stop, these north-Riyadh lists sit next door on the site:`,
@@ -1059,7 +1059,7 @@ export function chainDistrictMetaEn(
   name: string,
   total: number,
   local: number,
-  _chains: number,
+  chains: number,
   at: "at" | "in" = "in",
 ): string {
   if (total <= 0) {
@@ -1068,7 +1068,8 @@ export function chainDistrictMetaEn(
   const head = countedCafesEnHead(total);
   if (local <= 0) {
     const maps = total === 1 ? "a Maps link" : "Maps links";
-    return `${head} ${at} ${name} on wain.lol — chain branches only so far, with ${maps}.`;
+    const branches = chains === 1 ? "chain branch" : "chain branches";
+    return `${head} ${at} ${name} on wain.lol — ${branches} only so far, with ${maps}.`;
   }
   return `${head} ${at} ${name} on wain.lol — local specialty plus chain branches, each with a Maps link.`;
 }
@@ -1204,11 +1205,15 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
           count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
           count,
         );
-  const hereOutro =
+  const hereOutroRaw =
     count === 0
       ? ""
       : copy.hereOutro ??
         `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`;
+  const hereOutro =
+    chainCount > 0 && local <= 0 && hereOutroRaw
+      ? chainOnlyBlock(hereOutroRaw)
+      : hereOutroRaw;
   const nearbyIntro = copy.nearbyIntro ?? "";
   const nearby = nearbyListMarkdown(district);
 

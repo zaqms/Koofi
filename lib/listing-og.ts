@@ -4,6 +4,7 @@ import {
   categoryDistrictHeading,
 } from "./directory-category";
 import { isNeighborhoodId } from "./neighborhoods";
+import { copy } from "./copy";
 import {
   LOCKED_HOME_SUPPORT,
   LOCKED_OPENER,
@@ -13,13 +14,14 @@ import {
   mostPopularHeading,
   vibeChipLabel,
 } from "./product";
+import { trendingWindowLabel } from "./trending-this-week";
 import type { Language } from "./types";
 
 export const LISTING_OG_SIZE = { width: 1200, height: 630 } as const;
 export const LISTING_OG_CONTENT_TYPE = "image/png";
 
 export type ListingOgSpec =
-  | { kind: "home" | "popular"; language: Language }
+  | { kind: "home" | "popular" | "trending"; language: Language }
   | { kind: "chip" | "district"; language: Language; id: string };
 
 export type ListingOgCopy = {
@@ -45,6 +47,13 @@ export function listingOgCopy(spec: ListingOgSpec): ListingOgCopy | null {
     return {
       title: mostPopularHeading(language),
       subtitle: directoryHintForCity(language),
+      language,
+    };
+  }
+  if (spec.kind === "trending") {
+    return {
+      title: copy.trendingThisWeek[language],
+      subtitle: trendingWindowLabel(language),
       language,
     };
   }

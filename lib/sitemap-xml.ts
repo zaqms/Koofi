@@ -12,6 +12,7 @@ import {
   mostPopularPath,
   neighborhoodsPath,
   PUBLIC_SITE_URL,
+  trendingPath,
 } from "./product";
 
 /** Canonical sitemap for robots.txt and GSC. Apex only. */
@@ -67,6 +68,7 @@ function sitemapPaths(): string[] {
   }
 
   paths.push(mostPopularPath("ar"), mostPopularPath("en"));
+  paths.push(trendingPath("ar"), trendingPath("en"));
 
   for (const slug of COFFEE_SHOP_CHIP_SLUGS) {
     paths.push(coffeeShopChipPath(slug, "ar"), coffeeShopChipPath(slug, "en"));

@@ -3,7 +3,7 @@ import { ShopVisual } from "@/components/shop-visual";
 import { ViewAllLink } from "@/components/view-all-link";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
-import { cardPath, shopDisplayName } from "@/lib/product";
+import { cardPath, shopDisplayName, trendingPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type HomeTrendingProps = {
@@ -41,7 +41,7 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
         >
           {copy.trendingThisWeek[language]}
         </h2>
-        <ViewAllLink href="#wain-riyadh-cafes" language={language} />
+        <ViewAllLink href={trendingPath(language)} language={language} />
       </div>
       <ul className={`mt-3 grid ${gridCols} items-stretch gap-1.5`}>
         {rows.map((shop) => (

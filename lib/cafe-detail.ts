@@ -32,7 +32,7 @@ function isHeroFocusPercent(token: string): boolean {
 
 /**
  * True only for two percentages separated by a single space, each 0–100
- * inclusive (`"50% 20%"`, `"0% 100%"`, `"12.5% 0%"`). Keywords, mixed
+ * inclusive (`"50% 16%"`, `"0% 100%"`, `"12.5% 0%"`). Keywords, mixed
  * forms, and out-of-range values are rejected. Non-strings are rejected.
  */
 export function isCafeHeroFocus(value: unknown): boolean {

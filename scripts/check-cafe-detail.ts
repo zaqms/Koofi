@@ -1310,7 +1310,7 @@ assert(
   "Waqar hero frame 1 keeps its Places author name",
 );
 assert(
-  cafeDetailHeroPhotos(waqar)[0]?.focus === "50% 20%",
+  cafeDetailHeroPhotos(waqar)[0]?.focus === "50% 16%",
   "Waqar frame 1 focuses the crop so the wall logo stays in frame",
 );
 assert(

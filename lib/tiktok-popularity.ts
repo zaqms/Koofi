@@ -117,6 +117,23 @@ export function effectivePopularityIndex(
   return base + tiktokBonusForShop(shopId);
 }
 
+/**
+ * Mass-market branches share one brand account (`sharedBrandAccount`), so
+ * they take the neutral median instead of that account's follower spike.
+ * Specialty rows keep the bonus they already have — flipping every shared
+ * account would move Most Popular.
+ */
+export const CHAIN_POPULARITY_BASE = 40;
+
+export function tiktokBonusForChain(): number {
+  return TIKTOK_NEUTRAL_BONUS;
+}
+
+/** Flat chain base plus the forced-neutral TikTok weight. No buy-rank. */
+export function chainPopularityIndex(): number {
+  return CHAIN_POPULARITY_BASE + tiktokBonusForChain();
+}
+
 function isStatus(value: unknown): value is TikTokStatus {
   return (
     value === "found" || value === "none" || value === "unverified"

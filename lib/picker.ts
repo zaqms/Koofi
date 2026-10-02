@@ -1,4 +1,5 @@
-import { listDiscoveryShops, listRealShops } from "./catalog";
+import { isChainShop } from "./chain-brands";
+import { isDriveThroughLane, listRealShops } from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
@@ -230,6 +231,11 @@ export function pickCafes(input: {
   beenIds?: string[];
   language?: Language;
   city?: City;
+  /**
+   * Fixture override. Live callers omit this and read the catalog.
+   * Chains stay out of the generic pool; a named brand still matches `real`.
+   */
+  shops?: readonly Shop[];
 }): PickResult {
   const city = input.city ?? DEFAULT_LIVE_CITY;
   const intent = parseIntent(input.text, city);
@@ -246,9 +252,15 @@ export function pickCafes(input: {
   }
   const been = new Set((input.beenIds ?? []).filter(Boolean));
   const avoided = new Set(intent.avoidedNeighborhoods);
-  const catalog = listDiscoveryShops(city);
+  const real = input.shops
+    ? input.shops.filter((shop) => shop.city === city && !isExampleShop(shop))
+    : listRealShops(city);
+  // Generic three-picks stay local. A chain is never specialty.
+  const catalog = real.filter(
+    (shop) => !isDriveThroughLane(shop) && !isChainShop(shop),
+  );
   const named = preferAskedNeighborhood(
-    matchCatalogShops(input.text, listRealShops(city)),
+    matchCatalogShops(input.text, real),
     intent.neighborhoods,
   );
   const citywide = catalog.filter(

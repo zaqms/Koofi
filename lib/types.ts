@@ -146,6 +146,12 @@ export type Shop = {
    */
   catalogLane?: "drive-through";
   /**
+   * Mass-market branch (Starbucks, Dunkin', dr.CAFE, …). Never specialty.
+   * `chainBrand` is a key in `CHAIN_BRANDS`. Absent on local cafés.
+   */
+  isChain?: true;
+  chainBrand?: string;
+  /**
    * Dine-in for بيننا. Scout verdict wins over Places.
    * `null` / missing = unresolved — fail-closed. Not a Soft Places vibe.
    */

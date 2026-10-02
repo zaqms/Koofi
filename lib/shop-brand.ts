@@ -1,3 +1,4 @@
+import { chainBrandKeyFromName } from "./chain-brands";
 import type { Shop } from "./types";
 
 const GENERIC_FIRST = new Set([
@@ -21,6 +22,18 @@ const KNOWN_BRANDS = [
   "sand clock",
   "house of matcha",
   "dr cafe",
+  "starbucks",
+  "dunkin",
+  "krispy kreme",
+  "mccafe",
+  "mc cafe",
+  "barns",
+  "barn s",
+  "peets",
+  "peet s",
+  "java",
+  "24cafe",
+  "24 cafe",
 ] as const;
 
 function latinName(shop: Pick<Shop, "nameEn" | "nameAr">): string {
@@ -41,6 +54,8 @@ export function shopBrandKey(
   shop: Pick<Shop, "id" | "nameEn" | "nameAr">,
 ): string {
   const name = latinName(shop);
+  const chainKey = chainBrandKeyFromName(name);
+  if (chainKey) return chainKey;
   if (name.startsWith("%") || name.includes("arabica")) {
     if (name.includes("arabica")) return "percent-arabica";
   }

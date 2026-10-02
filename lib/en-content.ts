@@ -1,4 +1,12 @@
-import { chainCountClauseEn, chainOnlyBlock, fillHereIntroEn } from "./cafe-count";
+import {
+  chainBranchesEn,
+  chainOnlyBlock,
+  countWord,
+  countedCafesEn,
+  countedCafesEnHead,
+  fillHereIntroEn,
+  localCafesEn,
+} from "./cafe-count";
 import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
 import { districtPageHidden } from "./district-dictionary";
 import { cityLabel } from "./cities";
@@ -28,26 +36,7 @@ export const CNI_PRIORITY_CAFE_IDS = [
 
 export const LOCKED_DISTRICT_IDS = ["kafd", "al-wurud"] as const;
 
-const COUNT_WORDS = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-  "twelve",
-] as const;
-
-export function countWord(n: number): string {
-  if (n >= 0 && n < COUNT_WORDS.length) return COUNT_WORDS[n];
-  return String(n);
-}
+export { countWord } from "./cafe-count";
 
 export const DROPPED_SLOGANS = [
   "Maps is the last click",
@@ -1015,9 +1004,11 @@ function districtLink(id: NeighborhoodId): string {
 }
 
 function shopListMarkdown(
-  shops: { id: string; nameEn: string }[],
+  shops: { id: string; nameEn: string; isChain?: boolean | true }[],
 ): string {
-  return shops.map((shop) => `- ${cafeLink(shop.id, shop.nameEn)}`).join("\n");
+  return shops
+    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shop.nameEn)}`)
+    .join("\n");
 }
 
 function nearbyListMarkdown(district: NeighborhoodId): string {
@@ -1026,6 +1017,26 @@ function nearbyListMarkdown(district: NeighborhoodId): string {
     .filter((id) => listed.has(id) && id !== district)
     .map((id) => `- ${districtLink(id)}`)
     .join("\n");
+}
+
+function leadWithLiveTotal(lead: string, count: number): string {
+  const word = countWord(count);
+  const cap = word.charAt(0).toUpperCase() + word.slice(1);
+  const noun = count === 1 ? "cafe" : "cafes";
+  return lead
+    .replace(/The count is [a-z0-9]+/gi, `The count is ${word}`)
+    .replace(
+      /[a-z0-9]+ cafes? we['’]ve actually added/gi,
+      `${word} ${noun} we’ve actually added`,
+    )
+    .replace(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+) cafe added so far/gi,
+      `${word} ${noun} added so far`,
+    )
+    .replace(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+) cards\b/gi,
+      (match) => `${match[0] === match[0]?.toUpperCase() ? cap : word} cards`,
+    );
 }
 
 function fillCount(template: string, count: number): string {
@@ -1038,14 +1049,30 @@ function fillCount(template: string, count: number): string {
     .replaceAll("{countWordCap}", wordCap);
 }
 
-/** Shown only when the district list includes at least one chain branch. */
-export function chainDistrictMetaEn(name: string, total: number): string {
-  const word = countWord(total);
-  const head =
-    total === 1
-      ? "One cafe"
-      : `${word.charAt(0).toUpperCase()}${word.slice(1)} cafes`;
-  return `${head} in ${name} on wain.lol — local specialty plus chain branches, each with a Maps link.`;
+function chainBreakdownEn(local: number, chains: number): string {
+  const parts = [localCafesEn(local), chainBranchesEn(chains)].filter(
+    (part): part is string => part != null,
+  );
+  return parts.length ? ` — ${parts.join(", ")}` : "";
+}
+
+/** Chain district description, Open Graph, and Twitter. */
+export function chainDistrictMetaEn(
+  name: string,
+  total: number,
+  local: number,
+  _chains: number,
+  at: "at" | "in" = "in",
+): string {
+  if (total <= 0) {
+    return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
+  }
+  const head = countedCafesEnHead(total);
+  if (local <= 0) {
+    const maps = total === 1 ? "a Maps link" : "Maps links";
+    return `${head} ${at} ${name} on wain.lol — chain branches only so far, with ${maps}.`;
+  }
+  return `${head} ${at} ${name} on wain.lol — local specialty plus chain branches, each with a Maps link.`;
 }
 
 /** Shown only when the district list includes at least one chain branch. */
@@ -1055,9 +1082,30 @@ export function chainDistrictHereIntroEn(
   local: number,
   chains: number,
 ): string {
+  if (total <= 0) return `No cafes from ${name} on the catalog yet.`;
   const verb = total === 1 ? "is" : "are";
-  const sentence = `There ${verb} ${chainCountClauseEn(total, local, chains)} from ${name} on the catalog today:`;
-  return local <= 0 ? chainOnlyBlock(sentence) : sentence;
+  const noun = total === 1 ? "cafe" : "cafes";
+  const full = `There ${verb} **${countWord(total)}** ${noun} from ${name} on the catalog today${chainBreakdownEn(local, chains)}:`;
+  if (local <= 0) return chainOnlyBlock(full);
+  const localPhrase = localCafesEn(local) ?? countedCafesEn(local);
+  const localWord = localPhrase.split(" ")[0] ?? localPhrase;
+  const localRest = localPhrase.slice(localWord.length).trim();
+  const localVerb = local === 1 ? "is" : "are";
+  const localSentence = `There ${localVerb} **${localWord}** ${localRest} from ${name} on the catalog today:`;
+  return `{chain-counts}${full}{/chain-counts}{local-counts}${localSentence}{/local-counts}`;
+}
+
+/** Nameless chain sentence. Appended after a handwritten local lead. */
+export function chainDistrictLeadEn(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  const full = `${countedCafesEn(total)}${chainBreakdownEn(local, chains)}`;
+  if (local <= 0) return `This page is the ${name} catalog on wain.lol: ${full}.`;
+  const localPhrase = localCafesEn(local) ?? countedCafesEn(local);
+  return `This page is the ${name} catalog on wain.lol: {chain-counts}${full}{/chain-counts}{local-counts}${localPhrase}{/local-counts}.`;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -1087,11 +1135,25 @@ export function districtEnTitle(district: NeighborhoodId): string {
   return `Coffee shops in ${neighborhoodLabel(district, "en")} · ${PRODUCT_NAME}`;
 }
 
+function lockedLocalLead(markdown: string, heading: string): string {
+  const body = markdown.replace(/^#[^\n]*\n+/, "");
+  const cut = body.indexOf(heading);
+  return (cut === -1 ? body : body.slice(0, cut)).trim();
+}
+
 export function districtEnMeta(district: NeighborhoodId): string {
   const shops = shopsInDistrict(district);
   const chainCount = shops.filter((shop) => shop.isChain).length;
   const name = neighborhoodLabel(district, "en");
-  if (chainCount > 0) return chainDistrictMetaEn(name, shops.length);
+  if (chainCount > 0) {
+    return chainDistrictMetaEn(
+      name,
+      shops.length,
+      shops.length - chainCount,
+      chainCount,
+      district === "kkia" ? "at" : "in",
+    );
+  }
   if (shops.length === 0) {
     const at = district === "kkia" ? "at" : "in";
     return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
@@ -1102,9 +1164,6 @@ export function districtEnMeta(district: NeighborhoodId): string {
   if (custom?.meta) return fillCount(custom.meta, shops.length);
   const count = shops.length;
   const word = countWord(count);
-  if (count === 0) {
-    return `No cafes in ${name} on wain.lol yet — a Riyadh neighborhood list.`;
-  }
   if (count === 1) {
     return `One cafe in ${name} on wain.lol — a Riyadh neighborhood list, with a Maps link.`;
   }
@@ -1120,12 +1179,23 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "en");
   const copy = DISTRICT_COPY[district] ?? defaultDistrictCopy(district);
-  const lead =
-    chainCount > 0 && count === chainCount ? chainOnlyBlock(copy.lead) : copy.lead;
-  const hereHeading =
-    chainCount > 0 && count === chainCount
-      ? "## {chain-only}What’s here"
-      : "## What’s here";
+  const local = count - chainCount;
+  const chainSentence =
+    chainCount > 0 ? chainDistrictLeadEn(name, count, local, chainCount) : "";
+  const handwritten = locked
+    ? lockedLocalLead(locked.markdown, "## What’s here")
+    : DISTRICT_COPY[district]?.lead;
+  const handwrittenLead =
+    handwritten && !locked && local > 0
+      ? leadWithLiveTotal(handwritten, local)
+      : handwritten;
+  const leadBody = handwrittenLead
+    ? chainSentence
+      ? `${handwrittenLead}\n\n${chainSentence}`
+      : handwrittenLead
+    : chainSentence || copy.lead;
+  const lead = chainCount > 0 && local <= 0 ? chainOnlyBlock(leadBody) : leadBody;
+  const hereHeading = "## What’s here";
   const hereDefault =
     count === 0
       ? `No cafes from ${name} on the catalog yet.`

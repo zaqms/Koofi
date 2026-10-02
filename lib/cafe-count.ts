@@ -121,7 +121,6 @@ export function chainBranchesAr(n: number): string | null {
   if (n === 2) return "فرعين";
   return `${masculineCount(n)} فروع`;
 }
-
 /**
  * Rewrite a hand-written What's-here template so the live count and noun
  * come from the house helper. The district tail ("from X on the catalog…") stays.

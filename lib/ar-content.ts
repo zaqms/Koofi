@@ -1,5 +1,12 @@
+import {
+  chainBranchesAr,
+  chainOnlyBlock,
+  countWordAr,
+  countedCafesAr,
+  fillHereIntroAr,
+  localCafesAr,
+} from "./cafe-count";
 import { coffeeShopsInDistrict } from "./directory-category";
-import { chainCountClauseAr, chainOnlyBlock, fillHereIntroAr } from "./cafe-count";
 import { districtPageHidden } from "./district-dictionary";
 import {
   GATE_CAFE_ID,
@@ -15,26 +22,7 @@ import { cardPath, districtPath, PRODUCT_NAME, shopDisplayName } from "./product
 import type { NeighborhoodId, Shop } from "./types";
 import { vibeLabels } from "./vibe-labels";
 
-const AR_COUNT_WORDS = [
-  "صفر",
-  "وحدة",
-  "ثنتين",
-  "ثلاث",
-  "أربع",
-  "خمس",
-  "ست",
-  "سبع",
-  "ثمان",
-  "تسع",
-  "عشر",
-  "إحدى عشر",
-  "اثنتي عشر",
-] as const;
-
-export function countWordAr(n: number): string {
-  if (n >= 0 && n < AR_COUNT_WORDS.length) return AR_COUNT_WORDS[n];
-  return String(n);
-}
+export { countWordAr } from "./cafe-count";
 
 export const GATE_FORBIDDEN_CLAIMS_AR = [
   "مواقف",
@@ -888,9 +876,14 @@ function districtLink(id: NeighborhoodId): string {
   return `[${coffeeShopsInDistrict(name, "ar")}](${districtPath(id, "ar")})`;
 }
 
-function shopListMarkdown(shops: { id: string; nameAr: string; nameEn: string }[]): string {
+function shopListMarkdown(
+  shops: { id: string; nameAr: string; nameEn: string; isChain?: boolean | true }[],
+): string {
   return shops
-    .map((shop) => `- ${cafeLink(shop.id, shopDisplayName(shop, "ar"))}`)
+    .map(
+      (shop) =>
+        `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shopDisplayName(shop, "ar"))}`,
+    )
     .join("\n");
 }
 
@@ -902,13 +895,47 @@ function nearbyListMarkdown(district: NeighborhoodId): string {
     .join("\n");
 }
 
+const AR_LEAD_TOTAL =
+  "إحدى عشر|اثنتي عشر|وحدة|ثنتين|ثلاث|أربع|خمس|ست|سبع|ثمان|تسع|عشر|\\d+";
+
+function leadWithLiveTotal(lead: string, count: number): string {
+  const word = countWordAr(count);
+  return lead
+    .replace(new RegExp(`العدد (${AR_LEAD_TOTAL})`, "g"), `العدد ${word}`)
+    .replace(new RegExp(`(${AR_LEAD_TOTAL}) قهاوي ضفناها`, "g"), `${word} قهاوي ضفناها`)
+    .replace(/قهوة وحدة ضفناها/g, `${countedCafesAr(count)} ضفناها`)
+    .replace(new RegExp(`(${AR_LEAD_TOTAL}) بطاقة`, "g"), `${word} بطاقة`);
+}
+
 function fillCount(template: string, count: number): string {
   return template.replaceAll("{count}", countWordAr(count));
 }
 
-/** Shown only when the district list includes at least one chain branch. */
-export function chainDistrictMetaAr(name: string, total: number): string {
-  return `${countWordAr(total)} قهاوي ب${name} على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.`;
+function chainBreakdownAr(local: number, chains: number): string {
+  const parts = [localCafesAr(local), chainBranchesAr(chains)].filter(
+    (part): part is string => part != null,
+  );
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return ` — ${parts[0]}`;
+  return ` — ${parts[0]}، و${parts[1]}`;
+}
+
+/** Chain district description, Open Graph, and Twitter. */
+export function chainDistrictMetaAr(
+  name: string,
+  total: number,
+  local: number,
+  _chains: number,
+): string {
+  if (total <= 0) {
+    return `ما فيه قهاوي ب${name} على wain.lol للحين — قائمة حي بالرياض.`;
+  }
+  const counted = countedCafesAr(total);
+  if (local <= 0) {
+    const maps = total === 1 ? "وعليها رابط قوقل ماب." : "وعليها روابط قوقل ماب.";
+    return `${counted} ب${name} على wain.lol — فروع سلاسل بس للحين، ${maps}`;
+  }
+  return `${counted} ب${name} على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.`;
 }
 
 /** Shown only when the district list includes at least one chain branch. */
@@ -918,8 +945,24 @@ export function chainDistrictHereIntroAr(
   local: number,
   chains: number,
 ): string {
-  const sentence = `فيه ${chainCountClauseAr(total, local, chains)} من ${name} بالكتالوج اليوم:`;
-  return local <= 0 ? chainOnlyBlock(sentence) : sentence;
+  if (total <= 0) return `ما فيه قهاوي من ${name} بالكتالوج للحين.`;
+  const full = `فيه **${countedCafesAr(total)}** من ${name} بالكتالوج اليوم${chainBreakdownAr(local, chains)}:`;
+  if (local <= 0) return chainOnlyBlock(full);
+  const localSentence = `فيه **${localCafesAr(local)}** من ${name} بالكتالوج اليوم:`;
+  return `{chain-counts}${full}{/chain-counts}{local-counts}${localSentence}{/local-counts}`;
+}
+
+/** Nameless chain sentence. Appended after a handwritten local lead. */
+export function chainDistrictLeadAr(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  const full = `${countedCafesAr(total)}${chainBreakdownAr(local, chains)}`;
+  if (local <= 0) return `هذي صفحة ${name} بالكتالوج على wain.lol: ${full}.`;
+  const localPhrase = localCafesAr(local) ?? countedCafesAr(local);
+  return `هذي صفحة ${name} بالكتالوج على wain.lol: {chain-counts}${full}{/chain-counts}{local-counts}${localPhrase}{/local-counts}.`;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -953,7 +996,14 @@ export function districtArMeta(district: NeighborhoodId): string {
   const shops = shopsInDistrict(district);
   const chainCount = shops.filter((shop) => shop.isChain).length;
   const name = neighborhoodLabel(district, "ar");
-  if (chainCount > 0) return chainDistrictMetaAr(name, shops.length);
+  if (chainCount > 0) {
+    return chainDistrictMetaAr(
+      name,
+      shops.length,
+      shops.length - chainCount,
+      chainCount,
+    );
+  }
   if (shops.length === 0) {
     return `ما فيه قهاوي بـ${name} على wain.lol للحين — قائمة حي بالرياض.`;
   }
@@ -963,9 +1013,6 @@ export function districtArMeta(district: NeighborhoodId): string {
   if (custom?.meta) return fillCount(custom.meta, shops.length);
   const count = shops.length;
   const word = countWordAr(count);
-  if (count === 0) {
-    return `ما فيه قهاوي بـ${name} على wain.lol للحين — قائمة حي بالرياض.`;
-  }
   if (count === 1) {
     return `قهوة وحدة بـ${name} على wain.lol — قائمة حي بالرياض، مع رابط قوقل ماب.`;
   }
@@ -981,10 +1028,21 @@ export function districtArMarkdown(district: NeighborhoodId): string {
 
   const name = neighborhoodLabel(district, "ar");
   const copy = DISTRICT_COPY_AR[district] ?? defaultDistrictCopy(district);
-  const lead =
-    chainCount > 0 && count === chainCount ? chainOnlyBlock(copy.lead) : copy.lead;
-  const hereHeading =
-    chainCount > 0 && count === chainCount ? "## {chain-only}وش فيه" : "## وش فيه";
+  const local = count - chainCount;
+  const chainSentence =
+    chainCount > 0 ? chainDistrictLeadAr(name, count, local, chainCount) : "";
+  const handwritten = locked
+    ? locked.markdown.replace(/^#[^\n]*\n+/, "").split("## وش فيه")[0]?.trim()
+    : DISTRICT_COPY_AR[district]?.lead;
+  const handwrittenLead =
+    handwritten && !locked && local > 0 ? leadWithLiveTotal(handwritten, local) : handwritten;
+  const leadBody = handwrittenLead
+    ? chainSentence
+      ? `${handwrittenLead}\n\n${chainSentence}`
+      : handwrittenLead
+    : chainSentence || copy.lead;
+  const lead = chainCount > 0 && local <= 0 ? chainOnlyBlock(leadBody) : leadBody;
+  const hereHeading = "## وش فيه";
   const hereDefault =
     count === 0
       ? `ما فيه قهاوي من ${name} بالكتالوج للحين.`

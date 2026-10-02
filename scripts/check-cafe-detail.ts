@@ -510,7 +510,7 @@ const BATCH9_IDS = [
 /** BATCH10: Waqar (Al Aziziyah, #224) Places gallery — 4 frames, Google credit per frame. */
 const BATCH10_IDS = ["waqar-al-aziziyah"] as const;
 
-/** BATCH11: Shoug batch A1 (10 specialty cafés) Places galleries — 3 frames each, Google credit per frame. */
+/** BATCH11: Shoug batch A1 (10 specialty cafés) Places galleries — 3 frames each, except Ōkawa (2 after the face frame was dropped). Google credit per frame. */
 const BATCH11_IDS = [
   "fav-coffee-room-al-malqa",
   "asfoura-al-malqa",
@@ -635,6 +635,7 @@ assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 h
 assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
 assert(bakedHeroes["bind-specialty-coffee-ghirnatah"]?.length === 4, "BIND pack 1 heroes");
 function expectedHeroCount(id: string): number {
+  if (id === "okawa-al-narjis") return 2;
   if (id === "elixir-bunn-al-narjis") return 3;
   if (id === "mill-coffee-qurtubah") return 2;
   if (id === "hokkaido-al-hamra") return 3;

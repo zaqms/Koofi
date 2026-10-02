@@ -197,6 +197,11 @@ assert(
   shopsInDistrict("al-masif").length === 10,
   "al-masif catalog is 10 after the closed drop",
 );
+assert(
+  districtEnMarkdown("al-aziziyah").includes("/en/c/waqar-al-aziziyah") &&
+    !districtEnMarkdown("al-aziziyah").includes("/en/c/drive-al-aziziyah"),
+  "al-aziziyah EN lists Waqar, not the DT-lane cards",
+);
 
 const kafdMeta = districtMetadata("kafd", "en");
 assert(kafdMeta.alternates?.canonical === "/en/coffee-shops/kafd", "kafd EN canonical");
@@ -572,6 +577,11 @@ assert(
 assert(
   !districtArMarkdown("al-masif").includes("/c/voom-al-masif"),
   "al-masif AR must not keep the closed card link",
+);
+assert(
+  districtArMarkdown("al-aziziyah").includes("/c/waqar-al-aziziyah") &&
+    !districtArMarkdown("al-aziziyah").includes("/c/drcafe-al-aziziyah"),
+  "al-aziziyah AR lists Waqar, not the DT-lane cards",
 );
 assert(
   !districtArMarkdown("al-rabwah").includes("/c/get-up-coffee-ar-rabwah"),

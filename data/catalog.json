@@ -38969,6 +38969,129 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "waqar-al-aziziyah",
+      "nameAr": "وقار",
+      "nameEn": "Waqar",
+      "city": "riyadh",
+      "neighborhood": "al-aziziyah",
+      "neighborhoodAr": "العزيزية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0998d1d32f2b:0x7d22a04b551ef13c!8m2!3d24.5854079!4d46.7714042",
+      "pin": {
+        "lat": 24.5854079,
+        "lng": 46.7714042
+      },
+      "logoUrl": "/logos/waqar-al-aziziyah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJKy_T0ZgJLz4RPPEeVUugIn0",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 1:00 PM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

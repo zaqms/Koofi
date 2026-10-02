@@ -20,6 +20,9 @@ export type DirectoryShop = {
    * District "New" reads this. Not a café opening date.
    */
   addedAt?: string;
+  /** Mass-market branch. Omitted on local cafés so existing rows stay unchanged. */
+  isChain?: true;
+  chainBrand?: string;
 };
 
 export function directoryNeighborhoods(

@@ -15,6 +15,7 @@ type CafeCardProps = {
   language?: Language;
   backHref?: string;
   siblings?: DirectoryShop[];
+  districtHref?: string;
 };
 
 type ClaimPayload = {
@@ -27,6 +28,7 @@ export function CafeCard({
   language = "ar",
   backHref,
   siblings = [],
+  districtHref,
 }: CafeCardProps) {
   const resolvedBackHref = backHref ?? homePath(language);
   const [status, setStatus] = useState<ClaimStatus>("none");
@@ -58,6 +60,7 @@ export function CafeCard({
         language={language}
         backHref={resolvedBackHref}
         siblings={siblings}
+        districtHref={districtHref}
       />
       {SHOW_BEEN_HERE ? (
         <CardBeen shopId={shop.id} language={language} />

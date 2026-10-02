@@ -136,8 +136,8 @@ const hamra = listDirectoryShopsForDistrict("al-hamra");
 const sulimaniyah = listDirectoryShopsForDistrict("sulimaniyah");
 assert(hamra.length === 13, `Al Hamra catalog count stays 13, got ${hamra.length}`);
 assert(
-  sulimaniyah.length === 10,
-  `Sulimaniyah catalog count stays 10, got ${sulimaniyah.length}`,
+  sulimaniyah.length === 12,
+  `Sulimaniyah catalog count is 12 after the two dine-in dr.CAFE branches, got ${sulimaniyah.length}`,
 );
 
 for (const id of NEIGHBORHOOD_IDS) {

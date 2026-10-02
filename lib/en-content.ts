@@ -1,4 +1,14 @@
+import {
+  chainBranchesEn,
+  chainOnlyBlock,
+  countWord,
+  countedCafesEn,
+  countedCafesEnHead,
+  fillHereIntroEn,
+  localCafesEn,
+} from "./cafe-count";
 import { listDirectoryShops, listDirectoryShopsForDistrict } from "./catalog";
+import { districtPageHidden } from "./district-dictionary";
 import { cityLabel } from "./cities";
 import { districtCity } from "./district-city";
 import { filterDirectoryShops } from "./directory";
@@ -26,26 +36,7 @@ export const CNI_PRIORITY_CAFE_IDS = [
 
 export const LOCKED_DISTRICT_IDS = ["kafd", "al-wurud"] as const;
 
-const COUNT_WORDS = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-  "twelve",
-] as const;
-
-export function countWord(n: number): string {
-  if (n >= 0 && n < COUNT_WORDS.length) return COUNT_WORDS[n];
-  return String(n);
-}
+export { countWord } from "./cafe-count";
 
 export const DROPPED_SLOGANS = [
   "Maps is the last click",
@@ -85,14 +76,14 @@ export const GATE_FORBIDDEN_CLAIMS = ["parking", "wifi", "wi-fi", "outdoor"] as 
 /** Locked 9 Sep 2026. Do not rewrite. */
 export const GOLD_MASTER_KAFD = {
   title: `Coffee shops in KAFD · ${PRODUCT_NAME}`,
-  meta: "A short list of cafes in KAFD on wain.lol — seven places in Riyadh, each with a Maps link.",
+  meta: `A short list of cafes in KAFD on wain.lol — ${countWord(7)} places in Riyadh, each with a Maps link.`,
   markdown: `# Coffee shops in KAFD
 
 If you’re around KAFD and you just want a coffee without scrolling forever, this page is for you. It’s our list of places in that part of Riyadh that we’ve put on wain.lol so far.
 
 ## What’s here
 
-There are **seven** cafes from KAFD on the list right now:
+There are **${countWord(7)}** cafes from KAFD on the list right now:
 
 - [12 Cups Roastery and Cafe](/en/c/12-cups-roastery-and-cafe-kafd)
 - [Cafe Tale](/en/c/cafe-tale-kafd)
@@ -123,14 +114,14 @@ We’re Riyadh-only for now. Missing a place you like? You can send a Maps link 
 /** Locked 9 Sep 2026. Do not rewrite. */
 export const GOLD_MASTER_AL_WURUD = {
   title: `Coffee shops in Al Wurud · ${PRODUCT_NAME}`,
-  meta: "Four cafes in Al Wurud on wain.lol — a quieter Riyadh neighborhood list, with Maps links.",
+  meta: `${countedCafesEnHead(4)} in Al Wurud on wain.lol — a quieter Riyadh neighborhood list, with Maps links.`,
   markdown: `# Coffee shops in Al Wurud
 
 Al Wurud is more residential streets than office towers — the kind of Riyadh neighborhood where you might want a calm coffee without driving across town. This page is the small set of Al Wurud places we’ve added to wain.lol so far. (الورود)
 
 ## What’s here
 
-**Four** cafes from Al Wurud are on the catalog today:
+**${countWord(4)}** cafes from Al Wurud are on the catalog today:
 
 - [Carve Coffee Bar](/en/c/carve-coffee-bar-al-wurud)
 - [EYA Specialty Coffee](/en/c/eya-specialty-coffee-al-wurud)
@@ -369,7 +360,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
-    meta: "Eleven cafes in Ar Rabi on wain.lol — a north Riyadh list including Piccolo, Ashjar, and 3bean, each with a Maps link.",
+    meta: "{countCafe} in Ar Rabi on wain.lol — a north Riyadh list including Piccolo, Ashjar, and 3bean, each with a Maps link.",
   },
   "al-masif": {
     lead: `Al Masif (المصيف) is a north-central Riyadh list on wain.lol. This page is the Masif cafes we’ve added so far — only what’s actually in the catalog.`,
@@ -415,7 +406,7 @@ That’s how many Ar Rawdah places we’ve actually added.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
-    meta: "Three cafes in Ar Rawdah on wain.lol — an east Riyadh list including HAI, ON, and Steam, each with a Maps link.",
+    meta: "{countCafe} in Ar Rawdah on wain.lol — an east Riyadh list including HAI, ON, and Steam, each with a Maps link.",
   },
   qurtubah: {
     lead: `Qurtubah is an east Riyadh neighborhood. These are the Qurtubah cafes on wain.lol — still only what’s in the catalog.`,
@@ -445,12 +436,12 @@ Twelve cards is the whole set for now. Open a card if a name fits. Skip it if it
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Hamra. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Twelve cafes in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
+    meta: "{countCafe} in Al Hamra on wain.lol — an east Riyadh list including Serene, Rimthan, and Harf, each with a Maps link.",
   },
   "al-yarmouk": {
     lead: `Al Yarmuk (اليرموك) sits out on Riyadh’s east side toward the Eastern Ring. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmuk set on wain.lol.
 
-Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many Al Yarmuk places we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Yarmuk on the catalog today:`,
@@ -459,12 +450,12 @@ The count is ten because that’s how many Al Yarmuk places we’ve added.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Yarmuk. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ten cafes in Al Yarmuk on wain.lol — an east Riyadh list including Silo, NOSOUND, and RATIO, each with a Maps link.",
+    meta: "{countCafe} in Al Yarmuk on wain.lol — an east Riyadh list including Silo, NOSOUND, and RATIO, each with a Maps link.",
   },
   "al-nahdah": {
     lead: `An Nahdah (النهضة) is a Riyadh حي on the city’s east side. If you’re already in النهضة and you just want a coffee from the catalog, this is the An Nahdah set on wain.lol.
 
-Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many An Nahdah places we’ve added.`,
     hereIntro: `There are **{count}** cafes from An Nahdah on the catalog today:`,
@@ -473,21 +464,21 @@ The count is ten because that’s how many An Nahdah places we’ve added.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nahdah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ten cafes in An Nahdah on wain.lol — an east Riyadh list including Kapu, Ghazala, and Coffee Address, each with a Maps link.",
+    meta: "{countCafe} in An Nahdah on wain.lol — an east Riyadh list including Kapu, Ghazala, and Coffee Address, each with a Maps link.",
   },
   "al-manar": {
     lead: `Al Manar (المنار) sits on Riyadh’s east side. If you’re already in المنار and you just want a coffee from the catalog, this is the Al Manar set on wain.lol.
 
 Names on this list include [VASE Coffee](/en/c/vase-coffee-al-manar) and [Recaf I](/en/c/recaf-al-manar). They’re the Manar pins we’ve added. We don’t rank them.
 
-Two cards is the whole set for now. Open a card if a name fits.`,
+Open a card if a name fits. The list below is the whole set for now.`,
     hereIntro: `There are **{count}** cafes from Al Manar on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Manar isn’t the stop, these east-Riyadh lists sit on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Manar. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Two cafes in Al Manar on wain.lol — an east Riyadh list including VASE and Recaf I, each with a Maps link.",
+    meta: "{countCafe} in Al Manar on wain.lol — an east Riyadh list including VASE and Recaf I, each with a Maps link.",
   },
   "al-rayyan": {
     lead: `Ar Rayyan (الريان) is a Riyadh حي on the city’s east side. If you’re already in الريان and you just want a coffee from the catalog, this is the Ar Rayyan set on wain.lol.
@@ -501,7 +492,7 @@ The count is seven because that’s how many Ar Rayyan places we’ve added.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ar Rayyan. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Seven cafes in Ar Rayyan on wain.lol — an east Riyadh list including Kultúra, Amber, and sica, each with a Maps link.",
+    meta: "{countCafe} in Ar Rayyan on wain.lol — an east Riyadh list including Kultúra, Amber, and sica, each with a Maps link.",
   },
   "al-rawabi": {
     lead: `Ar Rawabi (الروابي) is an east Riyadh neighborhood on the list. Here are the Rawabi places we’ve added.
@@ -513,7 +504,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `Ask for three suggestions, or browse a neighborhood list. [About](/en/about).
 
 Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
-    meta: "Two cafes in Ar Rawabi on wain.lol — an east Riyadh list including THE IT and Essert, each with a Maps link.",
+    meta: "{countCafe} in Ar Rawabi on wain.lol — an east Riyadh list including THE IT and Essert, each with a Maps link.",
   },
   "al-fayha": {
     lead: `Al Fayha (الفيحاء) sits on Riyadh’s east side. This page is the Fayha cafes we’ve put on wain.lol so far — still only what’s in the catalog.
@@ -525,7 +516,7 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
     about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like Al Fayha. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
-    meta: "Two cafes in Al Fayha on wain.lol — an east Riyadh list including Rukyah and Roof coffee, each with a Maps link.",
+    meta: "{countCafe} in Al Fayha on wain.lol — an east Riyadh list including Rukyah and Roof coffee, each with a Maps link.",
   },
   "al-raqban": {
     lead: `Al Raqban (الرقبان) is a short east-Riyadh list — one cafe added so far. We only add what we have.`,
@@ -534,12 +525,12 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
 
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
-    meta: "One cafe in Al Raqban on wain.lol — a Riyadh neighborhood list, with a Maps link.",
+    meta: "{countCafe} in Al Raqban on wain.lol — a Riyadh neighborhood list, with a Maps link.",
   },
   "al-munsiyah": {
     lead: `Al Munsiyah (المونسية) sits on Riyadh’s east belt, past Qurtubah. If you’re already in المونسية and you just want a coffee from the catalog, this is the Al Munsiyah set on wain.lol.
 
-Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many Al Munsiyah places we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Munsiyah on the catalog today:`,
@@ -548,7 +539,7 @@ The count is ten because that’s how many Al Munsiyah places we’ve added.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Munsiyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ten cafes in Al Munsiyah on wain.lol — an east Riyadh list including Serb, Roasting Stages, and Eagle, each with a Maps link.",
+    meta: "{countCafe} in Al Munsiyah on wain.lol — an east Riyadh list including Serb, Roasting Stages, and Eagle, each with a Maps link.",
   },
   "an-nada": {
     lead: `An Nada (الندى) sits on Riyadh’s north side, next to Yasmin and Malqa. This page is the An Nada set on wain.lol — one cafe we’ve actually added.
@@ -560,7 +551,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nada. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in An Nada on wain.lol — a north Riyadh list including Brew 92, with a Maps link.",
+    meta: "{countCafe} in An Nada on wain.lol — a north Riyadh list including Brew 92, with a Maps link.",
   },
   "diplomatic-quarter": {
     lead: `The Diplomatic Quarter (الحي الدبلوماسي) is its own Riyadh list — السفارات on the maps card. This page is the DQ set we’ve put on wain.lol so far.
@@ -572,7 +563,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like the Diplomatic Quarter. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
-    meta: "One cafe in the Diplomatic Quarter on wain.lol — a Riyadh list including Jazean DQ, with a Maps link.",
+    meta: "{countCafe} in the Diplomatic Quarter on wain.lol — a Riyadh list including Jazean DQ, with a Maps link.",
   },
   "king-fahd": {
     lead: `King Fahd District (الملك فهد) is its own district on the catalog — Al Olaya Street runs through it, but this is not the Al Olaya page. This is the King Fahd District set on wain.lol.
@@ -584,7 +575,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like King Fahd District. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in King Fahd District on wain.lol — a Riyadh district list including Markab, with a Maps link.",
+    meta: "{countCafe} in King Fahd District on wain.lol — a Riyadh district list including Markab, with a Maps link.",
   },
   "at-taawun": {
     lead: `At Taawun (التعاون) sits between Al Olaya and Al Mughrizat — a mid-north Riyadh حي of its own. This page is the At Taawun set on wain.lol so far.
@@ -596,7 +587,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like At Taawun. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in At Taawun on wain.lol — a Riyadh neighborhood list including FLOW MATCHA, with a Maps link.",
+    meta: "{countCafe} in At Taawun on wain.lol — a Riyadh neighborhood list including FLOW MATCHA, with a Maps link.",
   },
   "al-mursalat": {
     lead: `Al Mursalat (المرسلات) sits between Al Mughrizat and Al Masif. This page is the Al Mursalat set on wain.lol so far.
@@ -608,7 +599,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Mursalat. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Mursalat on wain.lol — a Riyadh neighborhood list including Camel Step, with a Maps link.",
+    meta: "{countCafe} in Al Mursalat on wain.lol — a Riyadh neighborhood list including Camel Step, with a Maps link.",
   },
   "al-murabba": {
     lead: `Al Murabba (المربع) sits by Al Malaz and Al Olaya. This page is the Al Murabba set on wain.lol so far.
@@ -620,7 +611,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Murabba. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Murabba on wain.lol — a Riyadh neighborhood list including Coffee Address, with a Maps link.",
+    meta: "{countCafe} in Al Murabba on wain.lol — a Riyadh neighborhood list including Coffee Address, with a Maps link.",
   },
   "as-salam": {
     lead: `As Salam (السلام) is on the east side of Riyadh. This page is the As Salam set on wain.lol so far.
@@ -632,7 +623,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Salam. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in As Salam on wain.lol — a Riyadh neighborhood list including A PLUS, with a Maps link.",
+    meta: "{countCafe} in As Salam on wain.lol — a Riyadh neighborhood list including A PLUS, with a Maps link.",
   },
   ghubairah: {
     lead: `Ghubairah (غبيرة) sits south of the old-city stretch. This page is the Ghubairah set on wain.lol so far.
@@ -644,7 +635,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ghubairah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Ghubairah on wain.lol — a Riyadh neighborhood list including Arabica Cafe, with a Maps link.",
+    meta: "{countCafe} in Ghubairah on wain.lol — a Riyadh neighborhood list including Arabica Cafe, with a Maps link.",
   },
   "al-wisham": {
     lead: `Al Wisham (الوشام) is an old-city Riyadh حي. This page is the Al Wisham set on wain.lol so far.
@@ -656,7 +647,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Wisham. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Wisham on wain.lol — a Riyadh neighborhood list including Arabica coffee, with a Maps link.",
+    meta: "{countCafe} in Al Wisham on wain.lol — a Riyadh neighborhood list including Arabica coffee, with a Maps link.",
   },
   badr: {
     lead: `[Shubak Al Bun](/en/c/shubak-al-bun-badr) is the cafe on this list today. We don’t invent extras to fill the page.`,
@@ -666,7 +657,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Badr. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Badr on wain.lol — a Riyadh neighborhood list including Shubak Al Bun, with a Maps link.",
+    meta: "{countCafe} in Badr on wain.lol — a Riyadh neighborhood list including Shubak Al Bun, with a Maps link.",
   },
   "al-aziziyah": {
     lead: `Al Aziziyah (العزيزية) sits on the south side of Riyadh. This page is the Al Aziziyah set on wain.lol so far.
@@ -678,7 +669,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Aziziyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
+    meta: "{countCafe} in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
   },
   "al-hazm": {
     lead: `Al Hazm (الحزم) is a southwest Riyadh حي. This page is the Al Hazm set on wain.lol so far.
@@ -690,7 +681,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Hazm. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Hazm on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Hazm on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
   },
   "al-andalus": {
     lead: `Al Andalus (الأندلس) sits on the northeast side of Riyadh. This page is the Al Andalus set on wain.lol so far.
@@ -702,7 +693,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Andalus. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Andalus on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Andalus on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
   },
   "al-khaleej": {
     lead: `Al Khaleej (الخليج) is an east Riyadh حي. This page is the Al Khaleej set on wain.lol so far.
@@ -714,7 +705,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Khaleej. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Khaleej on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Khaleej on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
   },
   "an-nasim-al-gharbi": {
     lead: `An Nasim Al Gharbi (النسيم الغربي) sits on the east side of Riyadh. If you’re already in النسيم الغربي and you just want a coffee from the catalog, this is the An Nasim Al Gharbi set on wain.lol.
@@ -728,7 +719,7 @@ The count is three because that’s how many specialty shops we’ve added from 
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim Al Gharbi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Three cafes in An Nasim Al Gharbi on wain.lol — an east Riyadh list including Trivali, Gusn, and BE SUCH, each with a Maps link.",
+    meta: "{countCafe} in An Nasim Al Gharbi on wain.lol — an east Riyadh list including Trivali, Gusn, and BE SUCH, each with a Maps link.",
   },
   "ar-rimal": {
     lead: `Ar Rimal (الرمال) sits on the northeast edge of Riyadh. This page is the Ar Rimal set on wain.lol so far.
@@ -740,7 +731,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ar Rimal. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Ar Rimal on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "{countCafe} in Ar Rimal on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
   },
   "al-janadriyyah": {
     lead: `Al Janadriyyah (الجنادرية) sits on the northeast edge of Riyadh. This page is the Al Janadriyyah set on wain.lol so far.
@@ -752,7 +743,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Janadriyyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Janadriyyah on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Janadriyyah on wain.lol — a Riyadh neighborhood list including Drive Coffee, with a Maps link.",
   },
   namar: {
     lead: `Namar (نمار) sits on the south side of Riyadh. This page is the Namar set on wain.lol so far.
@@ -764,7 +755,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Namar. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Namar on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in Namar on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
   kkia: {
     lead: `KKIA (مطار الملك خالد) is the airport locality on the official Maps pin. This page is the KKIA set on wain.lol so far.
@@ -776,7 +767,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like KKIA. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe at KKIA on wain.lol — a Riyadh locality list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} at KKIA on wain.lol — a Riyadh locality list including dr.CAFE, with a Maps link.",
   },
   "al-jazirah": {
     lead: `Al Jazirah (الجزيرة) sits on the east side of Riyadh. This page is the Al Jazirah set on wain.lol so far.
@@ -788,7 +779,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Jazirah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Two cafes in Al Jazirah on wain.lol — a Riyadh neighborhood list including dr.CAFE, with Maps links.",
+    meta: "{countCafe} in Al Jazirah on wain.lol — a Riyadh neighborhood list including dr.CAFE, with Maps links.",
   },
   "an-nasim-ash-sharqi": {
     lead: `An Nasim Ash Sharqi (النسيم الشرقي) sits on the east side of Riyadh, after النهضة. If you’re already in النسيم الشرقي and you just want a coffee from the catalog, this is the An Nasim Ash Sharqi set on wain.lol.
@@ -802,7 +793,7 @@ The count is seven because that’s how many An Nasim Ash Sharqi places we’ve 
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim Ash Sharqi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Seven cafes in An Nasim Ash Sharqi on wain.lol — an east Riyadh list including VOÛTE, JARO, and Tamper, each with a Maps link.",
+    meta: "{countCafe} in An Nasim Ash Sharqi on wain.lol — an east Riyadh list including VOÛTE, JARO, and Tamper, each with a Maps link.",
   },
   "an-nasim": {
     lead: `An Nasim (النسيم) sits on the east side of Riyadh. This page is the An Nasim set on wain.lol so far.
@@ -814,7 +805,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nasim. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in An Nasim on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in An Nasim on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
   shubra: {
     lead: `Shubra (شبرا) sits on the south side of Riyadh. This page is the Shubra set on wain.lol so far.
@@ -826,7 +817,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Shubra. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Shubra on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in Shubra on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
   manfuha: {
     lead: `Manfuha (منفوحة) sits south of the old-city stretch. This page is the Manfuha set on wain.lol so far.
@@ -838,7 +829,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Manfuha. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Manfuha on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in Manfuha on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
   tuwaiq: {
     lead: `Tuwaiq (طويق) sits on the southwest side of Riyadh. This page is the Tuwaiq set on wain.lol so far.
@@ -850,7 +841,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Tuwaiq. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Tuwaiq on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in Tuwaiq on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
   },
   "al-falah": {
     lead: `Al Falah (الفلاح) sits on the north side of Riyadh. This page is the Al Falah set on wain.lol so far.
@@ -862,7 +853,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Falah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Falah on wain.lol — a Riyadh neighborhood list including Mood Masters, with a Maps link.",
+    meta: "{countCafe} in Al Falah on wain.lol — a Riyadh neighborhood list including Mood Masters, with a Maps link.",
   },
   "al-izdihar": {
     lead: `Al Izdihar (الازدهار) sits beside Al Mughrizat. This page is the Al Izdihar set on wain.lol so far.
@@ -874,7 +865,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Izdihar. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Al Izdihar on wain.lol — a Riyadh neighborhood list including Slant Specialty Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Izdihar on wain.lol — a Riyadh neighborhood list including Slant Specialty Coffee, with a Maps link.",
   },
   "dhahrat-al-badiah": {
     lead: `Dhahrat Al Badiah (ظهرة البديعة) is a Riyadh neighborhood on wain.lol. This page is the Dhahrat Al Badiah set so far.
@@ -886,7 +877,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Dhahrat Al Badiah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "One cafe in Dhahrat Al Badiah on wain.lol — a Riyadh neighborhood list including WAY Coffee & Bakery, with a Maps link.",
+    meta: "{countCafe} in Dhahrat Al Badiah on wain.lol — a Riyadh neighborhood list including WAY Coffee & Bakery, with a Maps link.",
   },
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.
@@ -1013,27 +1004,106 @@ function districtLink(id: NeighborhoodId): string {
 }
 
 function shopListMarkdown(
-  shops: { id: string; nameEn: string }[],
+  shops: { id: string; nameEn: string; isChain?: boolean | true }[],
 ): string {
-  return shops.map((shop) => `- ${cafeLink(shop.id, shop.nameEn)}`).join("\n");
+  return shops
+    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shop.nameEn)}`)
+    .join("\n");
 }
 
 function nearbyListMarkdown(district: NeighborhoodId): string {
-  const listed = new Set(
-    listDirectoryShops().map((shop) => shop.neighborhood),
-  );
+  const listed = new Set(listDirectoryShops().map((shop) => shop.neighborhood));
   return NEARBY_DISTRICTS[district]
     .filter((id) => listed.has(id) && id !== district)
     .map((id) => `- ${districtLink(id)}`)
     .join("\n");
 }
 
+function leadWithLiveTotal(lead: string, count: number): string {
+  const word = countWord(count);
+  const cap = word.charAt(0).toUpperCase() + word.slice(1);
+  const noun = count === 1 ? "cafe" : "cafes";
+  return lead
+    .replace(/The count is [a-z0-9]+/gi, `The count is ${word}`)
+    .replace(
+      /[a-z0-9]+ cafes? we['’]ve actually added/gi,
+      `${word} ${noun} we’ve actually added`,
+    )
+    .replace(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+) cafe added so far/gi,
+      `${word} ${noun} added so far`,
+    )
+    .replace(
+      /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+) cards\b/gi,
+      (match) => `${match[0] === match[0]?.toUpperCase() ? cap : word} cards`,
+    );
+}
+
 function fillCount(template: string, count: number): string {
   const word = countWord(count);
-  const wordCap = word.charAt(0).toUpperCase() + word.slice(1);
   return template
+    .replaceAll("{countCafe}", countedCafesEnHead(count))
     .replaceAll("{count}", word)
-    .replaceAll("{countWordCap}", wordCap);
+    .replaceAll("{countWordCap}", word);
+}
+
+function chainBreakdownEn(local: number, chains: number): string {
+  const parts = [localCafesEn(local), chainBranchesEn(chains)].filter(
+    (part): part is string => part != null,
+  );
+  return parts.length ? ` — ${parts.join(", ")}` : "";
+}
+
+/** Chain district description, Open Graph, and Twitter. */
+export function chainDistrictMetaEn(
+  name: string,
+  total: number,
+  local: number,
+  _chains: number,
+  at: "at" | "in" = "in",
+): string {
+  if (total <= 0) {
+    return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
+  }
+  const head = countedCafesEnHead(total);
+  if (local <= 0) {
+    const maps = total === 1 ? "a Maps link" : "Maps links";
+    return `${head} ${at} ${name} on wain.lol — chain branches only so far, with ${maps}.`;
+  }
+  return `${head} ${at} ${name} on wain.lol — local specialty plus chain branches, each with a Maps link.`;
+}
+
+/** Shown only when the district list includes at least one chain branch. */
+export function chainDistrictHereIntroEn(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  if (total <= 0) return `No cafes from ${name} on the catalog yet.`;
+  const verb = total === 1 ? "is" : "are";
+  const noun = total === 1 ? "cafe" : "cafes";
+  const full = `There ${verb} **${countWord(total)}** ${noun} from ${name} on the catalog today${chainBreakdownEn(local, chains)}:`;
+  if (local <= 0) return chainOnlyBlock(full);
+  const localPhrase = localCafesEn(local) ?? countedCafesEn(local);
+  const localWord = localPhrase.split(" ")[0] ?? localPhrase;
+  const localRest = localPhrase.slice(localWord.length).trim();
+  const localVerb = local === 1 ? "is" : "are";
+  const localSentence = `There ${localVerb} **${localWord}** ${localRest} from ${name} on the catalog today:`;
+  return `{chain-counts}${full}{/chain-counts}{local-counts}${localSentence}{/local-counts}`;
+}
+
+/** Nameless chain sentence. Appended after a handwritten local lead. */
+export function chainDistrictLeadEn(
+  name: string,
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  const full = `${countedCafesEn(total)}${chainBreakdownEn(local, chains)}`;
+  if (local <= 0) return `This page is the ${name} catalog on wain.lol: ${full}.`;
+  const localPhrase = localCafesEn(local) ?? countedCafesEn(local);
+  return `This page is the ${name} catalog on wain.lol: {chain-counts}${full}{/chain-counts}{local-counts}${localPhrase}{/local-counts}.`;
 }
 
 function defaultDistrictCopy(district: NeighborhoodId): DistrictLead {
@@ -1063,41 +1133,77 @@ export function districtEnTitle(district: NeighborhoodId): string {
   return `Coffee shops in ${neighborhoodLabel(district, "en")} · ${PRODUCT_NAME}`;
 }
 
+function lockedLocalLead(markdown: string, heading: string): string {
+  const body = markdown.replace(/^#[^\n]*\n+/, "");
+  const cut = body.indexOf(heading);
+  return (cut === -1 ? body : body.slice(0, cut)).trim();
+}
+
 export function districtEnMeta(district: NeighborhoodId): string {
+  const shops = shopsInDistrict(district);
+  const chainCount = shops.filter((shop) => shop.isChain).length;
+  const name = neighborhoodLabel(district, "en");
+  if (chainCount > 0) {
+    return chainDistrictMetaEn(
+      name,
+      shops.length,
+      shops.length - chainCount,
+      chainCount,
+      district === "kkia" ? "at" : "in",
+    );
+  }
+  if (shops.length === 0) {
+    const at = district === "kkia" ? "at" : "in";
+    return `No cafes ${at} ${name} on wain.lol yet — a Riyadh neighborhood list.`;
+  }
   const locked = lockedDistrictCopy(district);
   if (locked) return locked.meta;
   const custom = DISTRICT_COPY[district];
-  if (custom?.meta) return custom.meta;
-  const name = neighborhoodLabel(district, "en");
-  const count = shopsInDistrict(district).length;
-  const word = countWord(count);
-  if (count === 0) {
-    return `No cafes in ${name} on wain.lol yet — a Riyadh neighborhood list.`;
-  }
-  if (count === 1) {
-    return `One cafe in ${name} on wain.lol — a Riyadh neighborhood list, with a Maps link.`;
-  }
-  return `${word.charAt(0).toUpperCase()}${word.slice(1)} cafes in ${name} on wain.lol — a Riyadh neighborhood list, with Maps links.`;
+  if (custom?.meta) return fillCount(custom.meta, shops.length);
+  const count = shops.length;
+  const maps = count === 1 ? "a Maps link" : "Maps links";
+  return `${countedCafesEnHead(count)} in ${name} on wain.lol — a Riyadh neighborhood list, with ${maps}.`;
 }
 
 export function districtEnMarkdown(district: NeighborhoodId): string {
-  const locked = lockedDistrictCopy(district);
-  if (locked) return locked.markdown;
-
-  const name = neighborhoodLabel(district, "en");
   const shops = shopsInDistrict(district);
   const count = shops.length;
+  const chainCount = shops.filter((shop) => shop.isChain).length;
+  const locked = lockedDistrictCopy(district);
+  if (locked && chainCount === 0) return locked.markdown;
+
+  const name = neighborhoodLabel(district, "en");
   const copy = DISTRICT_COPY[district] ?? defaultDistrictCopy(district);
+  const local = count - chainCount;
+  const chainSentence =
+    chainCount > 0 ? chainDistrictLeadEn(name, count, local, chainCount) : "";
+  const handwritten = locked
+    ? lockedLocalLead(locked.markdown, "## What’s here")
+    : DISTRICT_COPY[district]?.lead;
+  const handwrittenLead =
+    handwritten && !locked && local > 0
+      ? leadWithLiveTotal(handwritten, local)
+      : handwritten;
+  const leadBody = handwrittenLead
+    ? chainSentence
+      ? `${handwrittenLead}\n\n${chainSentence}`
+      : handwrittenLead
+    : chainSentence || copy.lead;
+  const lead = chainCount > 0 && local <= 0 ? chainOnlyBlock(leadBody) : leadBody;
+  const hereHeading = "## What’s here";
   const hereDefault =
     count === 0
       ? `No cafes from ${name} on the catalog yet.`
       : count === 1
         ? `There is **${countWord(count)}** cafe from ${name} on the list right now:`
         : `There are **${countWord(count)}** cafes from ${name} on the list right now:`;
-  const hereIntro = fillCount(
-    count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
-    count,
-  );
+  const hereIntro =
+    chainCount > 0
+      ? chainDistrictHereIntroEn(name, count, count - chainCount, chainCount)
+      : fillHereIntroEn(
+          count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
+          count,
+        );
   const hereOutro =
     count === 0
       ? ""
@@ -1108,9 +1214,9 @@ export function districtEnMarkdown(district: NeighborhoodId): string {
 
   return `# Coffee shops in ${name}
 
-${copy.lead}
+${lead}
 
-## What’s here
+${hereHeading}
 
 ${hereIntro}
 
@@ -1148,25 +1254,59 @@ function defaultCafeBlurb(shop: Shop): string {
     vibe.length > 0 && vibe[0] !== "Coffee"
       ? ` Catalog tags on the card: ${vibe.join(", ")}.`
       : "";
-  return `${opener(shop.nameEn, district, cityName)}${vibeLine} If you want the rest of that neighborhood, the district page is linked below.`;
+  const linked = districtPageHidden(shop.neighborhood)
+    ? ""
+    : " If you want the rest of that neighborhood, the district page is linked below.";
+  return `${opener(shop.nameEn, district, cityName)}${vibeLine}${linked}`;
+}
+
+function plainDistrictLabel(id: NeighborhoodId): string {
+  return `Coffee shops in ${neighborhoodLabel(id, "en")}`;
+}
+
+function withoutNameListPitch(body: string): string {
+  return body
+    .replace(/\s*[^.]*\blinked below\b[^.]*\./gi, (sentence) =>
+      /district page is linked below|full neighborhood page is linked below/i.test(sentence)
+        ? sentence
+        : "",
+    )
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+}
+
+function withoutDistrictLinkPitch(body: string): string {
+  return body
+    .replace(/\s*If you want the rest of that neighborhood, the district page is linked below\.?/g, "")
+    .replace(/\s*Full neighborhood page is linked below\.?/g, "")
+    .replace(/\s*The rest of the .+? list is linked below[^.]*\./g, "")
+    .replace(/\s*[^.]*\blinked below\b[^.]*\./gi, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
 }
 
 function cafeSiblingsMarkdown(shop: Shop): string {
   const siblings = siblingShops(shop);
+  const hidden = districtPageHidden(shop.neighborhood);
+  const page = hidden ? plainDistrictLabel(shop.neighborhood) : districtLink(shop.neighborhood);
   if (siblings.length === 0) {
-    return `Full neighborhood page: ${districtLink(shop.neighborhood)}.`;
+    return `Full neighborhood page: ${page}.`;
   }
   const district = neighborhoodLabel(shop.neighborhood, "en");
   return `Others on the same ${district} list:
 
 ${shopListMarkdown(siblings)}
 
-Full neighborhood page: ${districtLink(shop.neighborhood)}.`;
+Full neighborhood page: ${page}.`;
 }
 
 export function cafeEnMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.markdown;
-  const body = CNI_BLURBS[shop.id] ?? defaultCafeBlurb(shop);
+  const hidden = districtPageHidden(shop.neighborhood);
+  const raw = CNI_BLURBS[shop.id] ?? defaultCafeBlurb(shop);
+  let body = raw;
+  if (siblingShops(shop).length === 0) body = withoutNameListPitch(body);
+  if (hidden) body = withoutDistrictLinkPitch(body);
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

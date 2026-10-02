@@ -122,7 +122,10 @@ export function shopWithHalfwayPlaceAttrs(
     if ((ATTR_KEYS as readonly string[]).includes(key)) continue;
     if (key === "example") {
       if (attrs.placeId) next.placeId = attrs.placeId;
-      next.dineIn = attrs.dineIn;
+      next.dineIn =
+        typeof shop.seatingVerdict?.dineIn === "boolean"
+          ? shop.seatingVerdict.dineIn
+          : attrs.dineIn;
       next.outdoorSeating = attrs.outdoorSeating;
       next.pickupOnly = attrs.pickupOnly;
       if (attrs.baynanaEligible !== undefined) {
@@ -134,7 +137,10 @@ export function shopWithHalfwayPlaceAttrs(
   }
   if (!inserted) {
     if (attrs.placeId) next.placeId = attrs.placeId;
-    next.dineIn = attrs.dineIn;
+    next.dineIn =
+      typeof shop.seatingVerdict?.dineIn === "boolean"
+        ? shop.seatingVerdict.dineIn
+        : attrs.dineIn;
     next.outdoorSeating = attrs.outdoorSeating;
     next.pickupOnly = attrs.pickupOnly;
     if (attrs.baynanaEligible !== undefined) {

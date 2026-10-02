@@ -238,8 +238,8 @@ for (const row of rowsEn) {
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 5,
-      `${row.id} Malaz refill has 5 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 6,
+      `${row.id} Malaz refill has 6 cafes, got ${row.cafeCount}`,
     );
   } else {
     assert(row.cafeCount > 0, `${row.id} has at least one cafe`);
@@ -342,31 +342,33 @@ assert(
   az.some((row) => row.id === "at-taawun"),
   "A–Z includes at-taawun",
 );
-assert(
-  az.some((row) => row.id === "al-mursalat"),
-  "A–Z includes al-mursalat",
-);
-assert(
-  az.some((row) => row.id === "al-murabba"),
-  "A–Z includes al-murabba",
-);
-assert(az.some((row) => row.id === "as-salam"), "A–Z includes as-salam");
 assert(az.some((row) => row.id === "badr"), "A–Z includes badr");
-assert(az.some((row) => row.id === "al-janadriyyah"), "A–Z includes al-janadriyyah");
-assert(az.some((row) => row.id === "namar"), "A–Z includes namar");
-assert(az.some((row) => row.id === "kkia"), "A–Z includes kkia");
-assert(az.some((row) => row.id === "al-jazirah"), "A–Z includes al-jazirah");
 assert(az.some((row) => row.id === "an-nasim-ash-sharqi"), "A–Z includes an-nasim-ash-sharqi");
-assert(az.some((row) => row.id === "an-nasim"), "A–Z includes an-nasim");
-assert(az.some((row) => row.id === "shubra"), "A–Z includes shubra");
-assert(az.some((row) => row.id === "manfuha"), "A–Z includes manfuha");
-assert(az.some((row) => row.id === "tuwaiq"), "A–Z includes tuwaiq");
+for (const id of [
+  "al-mursalat",
+  "al-murabba",
+  "as-salam",
+  "ghubairah",
+  "al-wisham",
+  "al-hazm",
+  "al-andalus",
+  "al-khaleej",
+  "ar-rimal",
+  "al-janadriyyah",
+  "namar",
+  "tuwaiq",
+] as const) {
+  assert(az.some((row) => row.id === id), `A–Z keeps ${id}`);
+}
+for (const id of ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const) {
+  assert(!az.some((row) => row.id === id), `A–Z hides chain-only ${id}`);
+}
 assert(
   !az.some((row) => row.id === "as-suwaidi"),
   "A–Z excludes 0-shop as-suwaidi",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 69, "A–Z is the 69 live catalog districts");
+assert(az.length === 64, "A–Z drops the five chain-only districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

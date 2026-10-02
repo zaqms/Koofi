@@ -60,3 +60,18 @@ body {
 ::selection {
   background: #ead3b8;
 }
+
+/* Set by the root inline script before paint, then kept in sync with the toggle. */
+html[data-hide-chains] [data-chain-card],
+html[data-hide-chains] [data-chain-counts],
+html[data-hide-chains] [data-chain-only] {
+  display: none;
+}
+
+[data-local-counts] {
+  display: none;
+}
+
+html[data-hide-chains] [data-local-counts] {
+  display: inline;
+}

@@ -1495,10 +1495,10 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 71, `Drive-through directory (moment tag) is 71 = 61 lane + 10 specialty tags, got ${dt.length}`);
+  assert(dt.length === 71, `Drive-through directory (moment tag) is 71, got ${dt.length}`);
   assert(
-    listRealShops().filter(isDriveThroughLane).length === 61,
-    `DT lane (catalogLane === "drive-through") is 61, got ${listRealShops().filter(isDriveThroughLane).length}`,
+    listRealShops().filter(isDriveThroughLane).length === 54,
+    `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
   );
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
@@ -1557,9 +1557,22 @@ const MALAZ_REFILL = {
     "Starbucks stays dropped",
   );
   const namar = listDirectoryShopsForDistrict("namar");
-  assert(namar.length === 1 && namar[0]?.id === "drcafe-namar", "namar is DT-only dr.CAFE");
+  assert(
+    namar.length === 1 && namar[0]?.id === "drcafe-namar",
+    "namar lists the dine-in dr.CAFE",
+  );
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),
+    "drcafe-namar stays on the Drive-through directory",
+  );
   const jazirah = listDirectoryShopsForDistrict("al-jazirah");
-  assert(jazirah.length === 2, `al-jazirah has 2 DT-lane shops, got ${jazirah.length}`);
+  assert(jazirah.length === 0, "al-jazirah district page omits drive-through chains");
+  assert(
+    ["drcafe-al-jazirah", "drcafe-al-jazirah-2"].every((id) =>
+      listDriveThroughDirectoryShops().some((shop) => shop.id === id),
+    ),
+    "both Al Jazirah dr.CAFE rows stay on the Drive-through directory",
+  );
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
     aziziyah.length === 1 &&
@@ -1571,14 +1584,20 @@ const MALAZ_REFILL = {
   assert(
     gharbi.length === 3 &&
       gharbi.every((shop) => shop.neighborhood === "an-nasim-al-gharbi") &&
-      ["trivali-roaster-al-naseem-gharbi", "gusn-coffee-al-naseem-gharbi", "be-such-al-naseem-gharbi"].every(
-        (id) => gharbi.some((shop) => shop.id === id),
-      ),
-    "an-nasim-al-gharbi specialty page is the Scout-3 (DT-lane drops off)",
+      [
+        "trivali-roaster-al-naseem-gharbi",
+        "gusn-coffee-al-naseem-gharbi",
+        "be-such-al-naseem-gharbi",
+      ].every((id) => gharbi.some((shop) => shop.id === id)) &&
+      !gharbi.some((shop) => shop.id === "drcafe-an-nasim-al-gharbi") &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-an-nasim-al-gharbi"),
+    "an-nasim-al-gharbi lists the Scout-3; the kiosk dr.CAFE stays on Drive-through",
   );
   assert(
-    listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
-    "kkia includes open dr.CAFE, not closed A PLUS",
+    listDirectoryShopsForDistrict("kkia").length === 0 &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-kkia") &&
+      !listRealShops().some((shop) => shop.id === "a-plus-kkia"),
+    "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
   assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);
@@ -1614,7 +1633,7 @@ const MALAZ_REFILL = {
   }
   assert(
     !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-malaz"),
-    "DT-lane Java Malaz stays out of specialty directory",
+    "listed Java Malaz stays out of the specialty directory",
   );
   assert(
     listDirectoryShops().some((shop) => shop.id === "ulica-al-ghadeer"),

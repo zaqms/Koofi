@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { districtArMeta, districtArMarkdown, cafeArMarkdown, chainDistrictHereIntroAr, chainDistrictLeadAr, chainDistrictMetaAr } from "../lib/ar-content";
-import { EnRichText } from "../components/en-rich-text";
+import { CONTENT_MARKERS, EnRichText } from "../components/en-rich-text";
 import {
   CHAIN_BRANDS,
   chainBrandNameEn,
@@ -734,7 +734,7 @@ const wordingMatrix: {
     chains: 1,
     enIntro: "{chain-only}There is **one** cafe from Al Olaya on the catalog today — one chain branch:{/chain-only}",
     arIntro: "{chain-only}فيه **قهوة وحدة** من العليا بالكتالوج اليوم — فرع واحد:{/chain-only}",
-    enMeta: "One cafe in Al Olaya on wain.lol — chain branches only so far, with a Maps link.",
+    enMeta: "One cafe in Al Olaya on wain.lol — chain branch only so far, with a Maps link.",
     arMeta: "قهوة وحدة بالعليا على wain.lol — فرع سلسلة بس للحين، وعليها رابط قوقل ماب.",
   },
   {
@@ -781,7 +781,7 @@ for (const row of wordingMatrix) {
 }
 assert(
   chainDistrictMetaEn("KKIA", 1, 0, 1, "at") ===
-    "One cafe at KKIA on wain.lol — chain branches only so far, with a Maps link.",
+    "One cafe at KKIA on wain.lol — chain branch only so far, with a Maps link.",
   "KKIA chain meta says at KKIA",
 );
 assert(
@@ -847,9 +847,11 @@ assert(
   "mixed districts say local specialty plus chain branches",
 );
 assert(
-  districtEnMeta("namar").includes("chain branches only so far") &&
-    districtEnMeta("tuwaiq").includes("chain branches only so far"),
-  "Namar and Tuwaiq are chain-only pages",
+  districtEnMeta("namar").includes("chain branch only so far") &&
+    districtEnMeta("tuwaiq").includes("chain branch only so far") &&
+    !districtEnMeta("namar").includes("chain branches") &&
+    !districtEnMeta("tuwaiq").includes("chain branches"),
+  "Namar and Tuwaiq use the singular chain branch",
 );
 for (const id of chainOnlyDistricts) {
   const listed = listDirectoryShopsForDistrict(id);
@@ -1012,7 +1014,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "35cf78b5ea59cb3192a40c674333ee70d1bb2231284d6930ab82eb28cf70488e",
+  copyHash === "d8c2e0f87c4a20cacf9caa62e240e60f6d0076bf90c6d3d0be1aeb0546eeed6f",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1533,15 +1535,51 @@ const AR_SPELLED_NUMBERS = [
   "عشر",
 ];
 
+const AR_DEFINITE_FROM_THREE = [
+  "الثلاثة",
+  "الأربعة",
+  "الخمسة",
+  "الستة",
+  "السبعة",
+  "الثمانية",
+  "التسعة",
+  "العشرة",
+  "الثلاث",
+  "الأربع",
+  "الخمس",
+  "الست",
+  "السبع",
+  "الثمان",
+  "التسع",
+  "العشر",
+].sort((a, b) => b.length - a.length);
+
+/** و ب ف ك before الـ, plus ل with the article alef dropped (للثلاث، للأربع). */
+const AR_PREFIXED_DEFINITE = new RegExp(
+  `(?<![\\u0600-\\u06FF])(?:[وبفك](?:${AR_DEFINITE_FROM_THREE.join("|")})|ل(?:${AR_DEFINITE_FROM_THREE.map((word) => word.replace(/^[اأإآ]/, "")).join("|")}))(?![\\u0600-\\u06FF])`,
+);
+
 function spelledNumberWord(text: string): string | null {
   const en = text.match(EN_SPELLED_NUMBER);
   if (en) return en[0] ?? null;
+  const prefixed = text.match(AR_PREFIXED_DEFINITE);
+  if (prefixed) return prefixed[0] ?? null;
   for (const word of AR_SPELLED_NUMBERS) {
     const re = new RegExp(`(?<![\\u0600-\\u06FF])${word}(?![\\u0600-\\u06FF])`);
     if (re.test(text)) return word;
   }
   return null;
 }
+
+assert(spelledNumberWord("والثلاث") === "والثلاث", "prefixed والثلاث is a spelled count");
+assert(spelledNumberWord("بالثلاث") === "بالثلاث", "prefixed بالثلاث is a spelled count");
+assert(spelledNumberWord("للثلاث") === "للثلاث", "prefixed للثلاث is a spelled count");
+assert(spelledNumberWord("فالأربع") === "فالأربع", "prefixed فالأربع is a spelled count");
+assert(spelledNumberWord("كالخمس") === "كالخمس", "prefixed كالخمس is a spelled count");
+assert(spelledNumberWord("قهوة وحدة") == null, "one stays a word");
+assert(spelledNumberWord("قهوتين") == null, "two stays a word");
+assert(spelledNumberWord("one cafe") == null && spelledNumberWord("two cafes") == null, "EN one and two stay words");
+assert(spelledNumberWord("محمصة هجين التسعينات") == null, "التسعينات is not a count");
 
 function leadBeforeHeading(markdown: string, heading: string): string {
   const body = markdown.replace(/^#[^\n]*\n+/, "");
@@ -1564,11 +1602,19 @@ for (const id of NEIGHBORHOOD_IDS) {
   }
 }
 
-const RAW_CHAIN_MARKER = /\{chain-only\}|\{\/chain-only\}/;
-
 function renderedMarkdown(markdown: string): string {
   return renderToStaticMarkup(createElement(EnRichText, { markdown }));
 }
+
+function rawMarker(html: string): string | null {
+  return CONTENT_MARKERS.find((marker) => html.includes(marker)) ?? null;
+}
+
+assert(
+  CONTENT_MARKERS.join(",") ===
+    "{chain-counts},{/chain-counts},{local-counts},{/local-counts},{chain-only},{/chain-only},{chain}",
+  "the marker check enumerates every marker the renderer uses",
+);
 
 for (const id of NEIGHBORHOOD_IDS) {
   for (const [locale, markdown] of [
@@ -1576,10 +1622,8 @@ for (const id of NEIGHBORHOOD_IDS) {
     ["ar", districtArMarkdown(id)],
   ] as const) {
     const html = renderedMarkdown(markdown);
-    assert(
-      !RAW_CHAIN_MARKER.test(html),
-      `${id} ${locale} district page rendered a raw chain-only marker`,
-    );
+    const marker = rawMarker(html);
+    assert(marker == null, `${id} ${locale} district page rendered a raw marker ${marker ?? ""}`);
   }
 }
 for (const shop of listRealShops()) {
@@ -1588,10 +1632,8 @@ for (const shop of listRealShops()) {
     ["ar", cafeArMarkdown(shop)],
   ] as const) {
     const html = renderedMarkdown(markdown);
-    assert(
-      !RAW_CHAIN_MARKER.test(html),
-      `${shop.id} ${locale} cafe page rendered a raw chain-only marker`,
-    );
+    const marker = rawMarker(html);
+    assert(marker == null, `${shop.id} ${locale} cafe page rendered a raw marker ${marker ?? ""}`);
   }
 }
 const wrappedLead = chainOnlyBlock("First lead paragraph.\n\nSecond lead paragraph.");
@@ -1603,7 +1645,7 @@ assert(
 const spanning = renderedMarkdown(
   "{chain-only}First lead paragraph.\n\nSecond lead paragraph.{/chain-only}",
 );
-assert(!RAW_CHAIN_MARKER.test(spanning), "a spanning chain-only pair leaked a raw marker");
+assert(rawMarker(spanning) == null, "a spanning chain-only pair leaked a raw marker");
 assert(
   (spanning.match(/data-chain-only/g) ?? []).length >= 2,
   "each paragraph of a spanning chain-only pair stays hidden with Local only",
@@ -1628,6 +1670,69 @@ assert(
   !districtArMarkdown("al-manar").includes("بطاقتين") &&
     !districtEnMarkdown("al-manar").includes("Two cards"),
   "Al Manar lead does not state a card count that changes with the toggle",
+);
+
+function headingIsChainOnly(html: string, title: string): boolean {
+  const chunk = html.split("<h2").find((part) => part.includes(title));
+  if (!chunk) return false;
+  return chunk.slice(0, chunk.indexOf(">")).includes("data-chain-only");
+}
+for (const [id, enTitle, arTitle] of [
+  ["namar", "What’s here", "وش فيه"],
+  ["tuwaiq", "What’s here", "وش فيه"],
+] as const) {
+  assert(
+    headingIsChainOnly(renderedMarkdown(districtEnMarkdown(id)), enTitle),
+    `${id} EN What's here hides under Local only`,
+  );
+  assert(
+    headingIsChainOnly(renderedMarkdown(districtArMarkdown(id)), arTitle),
+    `${id} AR وش فيه hides under Local only`,
+  );
+}
+assert(
+  !headingIsChainOnly(renderedMarkdown(districtEnMarkdown("al-rawabi")), "What’s here"),
+  "Al Rawabi What's here stays when local cards follow it",
+);
+const rawabiEn = districtEnMarkdown("al-rawabi");
+const rawabiAr = districtArMarkdown("al-rawabi");
+assert(
+  rawabiEn.includes("[Bala](/en/c/bala-al-rawabi)") &&
+    rawabiEn.includes("3 cards") &&
+    rawabiEn.includes("[THE IT]") &&
+    rawabiEn.includes("[Essert]"),
+  "Al Rawabi EN lead names the three cards",
+);
+assert(
+  rawabiAr.includes("[بلة](/c/bala-al-rawabi)") &&
+    rawabiAr.includes("3 بطاقة") &&
+    rawabiAr.includes("[THE IT]") &&
+    rawabiAr.includes("[إسرت]"),
+  "Al Rawabi AR lead names the three cards",
+);
+const nadaEn = districtEnMarkdown("an-nada");
+const nadaAr = districtArMarkdown("an-nada");
+assert(
+  nadaEn.includes("[SoMatcha](/en/c/somatcha-an-nada)") &&
+    nadaEn.includes("[Brew 92 - Al Nada]") &&
+    /\btwo cards\b/.test(nadaEn) &&
+    /\btwo cafes\b/.test(nadaEn),
+  "An Nada EN lead names both cards",
+);
+assert(
+  nadaAr.includes("[سو ماتشا](/c/somatcha-an-nada)") &&
+    nadaAr.includes("[برو92]") &&
+    nadaAr.includes("البطاقتين") &&
+    nadaAr.includes("قهوتين"),
+  "An Nada AR lead names both cards",
+);
+const chainSection = renderedMarkdown(
+  "## What’s here\n\n{chain-only}Only a chain.{/chain-only}\n\n- {chain} [dr.CAFE](/en/c/drcafe-namar)\n\n## Nearby\n\n- [Olaya](/en/coffee-shops/olaya)",
+);
+assert(
+  headingIsChainOnly(chainSection, "What’s here") &&
+    !headingIsChainOnly(chainSection, "Nearby"),
+  "a heading hides under Local only only when its section is entirely chain-only",
 );
 const hiddenDistrictCafes = ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const;
 const listLeftovers = ["الأسماء الثانية مربوطة تحت", "باقي الحي تحت", "linked below", "مربوطة تحت", "مربوط تحت"];

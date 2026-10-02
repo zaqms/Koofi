@@ -382,7 +382,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-rawabi": {
     lead: `الروابي حي شرق الرياض بالقائمة. هذي أماكن الروابي اللي ضفناها.
 
-[THE IT](/c/the-it-al-rawabi) و[إسرت](/c/essert-al-rawabi) البطاقتين بهالصفحة اليوم. ما نخترع زيادة.`,
+[THE IT](/c/the-it-al-rawabi) و[إسرت](/c/essert-al-rawabi) و[بلة](/c/bala-al-rawabi) الـ 3 بطاقة بهالصفحة اليوم. ما نخترع زيادة.`,
     hereIntro: `فيه **{count}** قهاوي من الروابي على wain.lol الحين:`,
     hereOutro: `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`,
     nearbyIntro: `إذا الروابي مو الوقف، هالقوائم شرق الرياض أقرب للموقع:`,
@@ -427,9 +427,9 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     meta: "{count} قهاوي بالمونسية على wain.lol — قائمة شرق الرياض فيها شرب ومراحل التحميص وايجل، وكل وحدة عليها رابط قوقل ماب.",
   },
   "an-nada": {
-    lead: `الندى شمال الرياض، جنب الياسمين والملقا. هذي مجموعة الندى على wain.lol — قهوة وحدة ضفناها فعلاً.
+    lead: `الندى شمال الرياض، جنب الياسمين والملقا. هذي مجموعة الندى على wain.lol — قهوتين ضفناها فعلاً.
 
-[برو92](/c/brew92-an-nada) البطاقة بهالقائمة اليوم. ما نخترع زيادة.`,
+[برو92](/c/brew92-an-nada) و[سو ماتشا](/c/somatcha-an-nada) البطاقتين بهالقائمة اليوم. ما نخترع زيادة.`,
     hereIntro: `فيه قهوة **{count}** من الندى بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة إذا تبي الدبوس. **ودّني هناك** يوديك قوقل ماب.`,
     nearbyIntro: `إذا الندى مو الوقف، هالقوائم الشمالية جنبكم بالموقع:`,
@@ -1060,11 +1060,15 @@ export function districtArMarkdown(district: NeighborhoodId): string {
           count === 0 ? hereDefault : (copy.hereIntro ?? hereDefault),
           count,
         );
-  const hereOutro =
+  const hereOutroRaw =
     count === 0
       ? ""
       : copy.hereOutro ??
         `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`;
+  const hereOutro =
+    chainCount > 0 && local <= 0 && hereOutroRaw
+      ? chainOnlyBlock(hereOutroRaw)
+      : hereOutroRaw;
   const nearbyIntro = copy.nearbyIntro ?? "";
   const nearby = nearbyListMarkdown(district);
 

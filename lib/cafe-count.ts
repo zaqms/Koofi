@@ -1,13 +1,14 @@
 /**
  * House counts shared by district intro, meta, and the Local only empty state.
- * English counts are western digits. Arabic keeps the grammatical singular and
- * dual (قهوة وحدة / قهوتين, فرع واحد / فرعين) and uses western digits from 3 up.
- * Never "zero" or «صفر».
+ * English and Arabic keep words for 1 and 2 (one cafe / two cafes, قهوة وحدة / قهوتين)
+ * and use western digits from 3 up. Never "zero" or «صفر».
  */
 
-/** English counts are digits, including 1 and 2. Zero is never shown. */
+/** 1 one, 2 two, 3+ western digits. Zero is never shown. */
 export function countWord(n: number): string {
   if (n <= 0) return "zero";
+  if (n === 1) return "one";
+  if (n === 2) return "two";
   return String(n);
 }
 
@@ -27,16 +28,19 @@ function masculineCount(n: number): string {
   return String(n);
 }
 
-/** 1 cafe / 2 cafes / 12 cafes. Zero is the bare plural. */
+/** one cafe / two cafes / 12 cafes. Zero is the bare plural. */
 export function countedCafesEn(n: number): string {
   if (n <= 0) return "cafes";
-  if (n === 1) return "1 cafe";
+  if (n === 1) return "one cafe";
+  if (n === 2) return "two cafes";
   return `${countWord(n)} cafes`;
 }
 
 export function countedCafesEnHead(n: number): string {
   if (n <= 0) return "No cafes";
-  return countedCafesEn(n);
+  const phrase = countedCafesEn(n);
+  if (n === 1 || n === 2) return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+  return phrase;
 }
 
 /** قهوة وحدة / قهوتين / N قهاوي. */
@@ -56,13 +60,15 @@ export function cafePluralAr(): string {
 
 export function localCafesEn(n: number): string | null {
   if (n <= 0) return null;
-  if (n === 1) return "1 local cafe";
+  if (n === 1) return "one local cafe";
+  if (n === 2) return "two local cafes";
   return `${countWord(n)} local cafes`;
 }
 
 export function chainBranchesEn(n: number): string | null {
   if (n <= 0) return null;
-  if (n === 1) return "1 chain branch";
+  if (n === 1) return "one chain branch";
+  if (n === 2) return "two chain branches";
   return `${countWord(n)} chain branches`;
 }
 

@@ -5,7 +5,10 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { districtArMeta, districtArMarkdown, chainDistrictHereIntroAr, chainDistrictLeadAr, chainDistrictMetaAr } from "../lib/ar-content";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { districtArMeta, districtArMarkdown, cafeArMarkdown, chainDistrictHereIntroAr, chainDistrictLeadAr, chainDistrictMetaAr } from "../lib/ar-content";
+import { EnRichText } from "../components/en-rich-text";
 import {
   CHAIN_BRANDS,
   chainBrandNameEn,
@@ -53,13 +56,14 @@ import {
 import { sortDistrictCafes } from "../lib/district-cafe-sort";
 import type { DirectoryShop } from "../lib/directory";
 import {
+  cafeEnMarkdown,
   chainDistrictHereIntroEn,
   chainDistrictLeadEn,
   chainDistrictMetaEn,
   districtEnMarkdown,
   districtEnMeta,
 } from "../lib/en-content";
-import { countedCafesAr, countWord, countWordAr } from "../lib/cafe-count";
+import { chainOnlyBlock, countedCafesAr, countWord, countWordAr } from "../lib/cafe-count";
 import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
 import { isHalfwayEligible, filterHalfwayEligible } from "../lib/halfway-eligibility";
 import { rankByPopularity } from "../lib/district-rank";
@@ -491,6 +495,9 @@ assert(
 const dineInLaneRemoved = [
   "drcafe-namar",
   "drcafe-tuwaiq",
+  "drcafe-sulimaniyah",
+  "drcafe-sulimaniyah-2",
+  "drcafe-al-mughrizat",
   "java-cafe-al-malaz",
   "java-cafe-al-manar",
 ] as const;
@@ -510,9 +517,6 @@ const laneKept = [
   "drcafe-manfuha",
   "drcafe-an-nasim",
   "drcafe-al-mathar",
-  "drcafe-al-mughrizat",
-  "drcafe-sulimaniyah",
-  "drcafe-sulimaniyah-2",
   "drcafe-al-jazirah",
   "drcafe-al-jazirah-2",
   "drcafe-shubra",
@@ -523,7 +527,7 @@ assert(
 );
 assert(
   dineInLaneRemoved.every((id) => getShop(id)?.catalogLane !== "drive-through"),
-  "the 4 sit-down rows leave the drive-through lane",
+  "the 7 sit-down rows leave the drive-through lane",
 );
 for (const id of qaKiosks) {
   const shop = getShop(id);
@@ -552,8 +556,12 @@ assert(
   javaRabi?.catalogLane === "drive-through" &&
     javaRabi.dineIn === true &&
     javaRabi.seatingVerdict == null &&
-    javaRabi.neighborhood === "al-rabi",
-  "java-cafe-al-rabi stays on the drive-through lane in Al Rabi until the placeId fix",
+    javaRabi.neighborhood === "al-rabi" &&
+    javaRabi.placeId === "ChIJqd-bBwDjLj4R2d50wDLTI7A" &&
+    javaRabi.pin?.lat === 24.801485 &&
+    javaRabi.pin?.lng === 46.6544722 &&
+    javaRabi.mapsShareUrl?.includes("0x3e2ee300079bdfa9"),
+  "java-cafe-al-rabi keeps the Al Rabi drive-through lane on the corrected pin",
 );
 assert(
   getShop("24cafe-al-rabi")?.neighborhood === "al-rabi",
@@ -641,21 +649,21 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 364, "specialty discovery is 364 after Shoug A1");
-assert(listRealShops().length === 432, "catalog is 432 after Shoug A1");
+assert(listDiscoveryShops().length === 364, "specialty discovery is 364 after the placeId fix");
+assert(listRealShops().length === 425, "catalog is 425 after the placeId fix");
 assert(listLiveDistrictIds().length === 52, "specialty districts stay 52");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 69,
   "catalog rows still cover 69 districts",
 );
 assert(listLiveCatalogDistrictIds().length === 64, "five chain-only districts drop out of the page set");
-assert(listDriveThroughDirectoryShops().length === 78, "drive-through stays 78");
-assert(listListingShops().length === 368, "listing is specialty plus the 4 sit-down chains");
-assert(listPublicShops().length === 368, "public list includes the 4 sit-down chains");
-assert(listBrowseDirectoryShops().length === 378, "browse keeps local drive-through rows, Shoug A1, and sit-down chains");
+assert(listDriveThroughDirectoryShops().length === 71, "drive-through is 71 after the placeId fix");
+assert(listListingShops().length === 371, "listing is specialty plus the 7 sit-down chains");
+assert(listPublicShops().length === 371, "public list includes the 7 sit-down chains");
+assert(listBrowseDirectoryShops().length === 381, "browse keeps local drive-through rows and the sit-down chains");
 assert(
-  listListingShops().filter((shop) => shop.isChain).length === 4,
-  "exactly 4 sit-down chains are listed",
+  listListingShops().filter((shop) => shop.isChain).length === 7,
+  "exactly 7 sit-down chains are listed",
 );
 assert(
   listDirectoryShopsForDistrict("al-malaz").some((shop) => shop.id === "java-cafe-al-malaz") &&
@@ -684,8 +692,8 @@ assert(
 
 assert(
   districtEnMeta("al-aziziyah") ===
-    "1 cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
-  "Al Aziziyah EN meta uses a digit",
+    "One cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
+  "Al Aziziyah EN meta uses a word for one",
 );
 assert(
   districtArMeta("al-aziziyah") ===
@@ -724,25 +732,25 @@ const wordingMatrix: {
     total: 1,
     local: 0,
     chains: 1,
-    enIntro: "{chain-only}There is **1** cafe from Al Olaya on the catalog today — 1 chain branch:{/chain-only}",
+    enIntro: "{chain-only}There is **one** cafe from Al Olaya on the catalog today — one chain branch:{/chain-only}",
     arIntro: "{chain-only}فيه **قهوة وحدة** من العليا بالكتالوج اليوم — فرع واحد:{/chain-only}",
-    enMeta: "1 cafe in Al Olaya on wain.lol — chain branches only so far, with a Maps link.",
-    arMeta: "قهوة وحدة بالعليا على wain.lol — فروع سلاسل بس للحين، وعليها رابط قوقل ماب.",
+    enMeta: "One cafe in Al Olaya on wain.lol — chain branches only so far, with a Maps link.",
+    arMeta: "قهوة وحدة بالعليا على wain.lol — فرع سلسلة بس للحين، وعليها رابط قوقل ماب.",
   },
   {
     total: 2,
     local: 0,
     chains: 2,
-    enIntro: "{chain-only}There are **2** cafes from Al Olaya on the catalog today — 2 chain branches:{/chain-only}",
+    enIntro: "{chain-only}There are **two** cafes from Al Olaya on the catalog today — two chain branches:{/chain-only}",
     arIntro: "{chain-only}فيه **قهوتين** من العليا بالكتالوج اليوم — فرعين:{/chain-only}",
-    enMeta: "2 cafes in Al Olaya on wain.lol — chain branches only so far, with Maps links.",
+    enMeta: "Two cafes in Al Olaya on wain.lol — chain branches only so far, with Maps links.",
     arMeta: "قهوتين بالعليا على wain.lol — فروع سلاسل بس للحين، وعليها روابط قوقل ماب.",
   },
   {
     total: 3,
     local: 2,
     chains: 1,
-    enIntro: "{chain-counts}There are **3** cafes from Al Olaya on the catalog today — 2 local cafes, 1 chain branch:{/chain-counts}{local-counts}There are **2** local cafes from Al Olaya on the catalog today:{/local-counts}",
+    enIntro: "{chain-counts}There are **3** cafes from Al Olaya on the catalog today — two local cafes, one chain branch:{/chain-counts}{local-counts}There are **two** local cafes from Al Olaya on the catalog today:{/local-counts}",
     arIntro: "{chain-counts}فيه **3 قهاوي** من العليا بالكتالوج اليوم — قهوتين محليتين، وفرع واحد:{/chain-counts}{local-counts}فيه **قهوتين محليتين** من العليا بالكتالوج اليوم:{/local-counts}",
     enMeta: "3 cafes in Al Olaya on wain.lol — local specialty plus chain branches, each with a Maps link.",
     arMeta: "3 قهاوي بالعليا على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.",
@@ -751,7 +759,7 @@ const wordingMatrix: {
     total: 11,
     local: 10,
     chains: 1,
-    enIntro: "{chain-counts}There are **11** cafes from Al Olaya on the catalog today — 10 local cafes, 1 chain branch:{/chain-counts}{local-counts}There are **10** local cafes from Al Olaya on the catalog today:{/local-counts}",
+    enIntro: "{chain-counts}There are **11** cafes from Al Olaya on the catalog today — 10 local cafes, one chain branch:{/chain-counts}{local-counts}There are **10** local cafes from Al Olaya on the catalog today:{/local-counts}",
     arIntro: "{chain-counts}فيه **11 قهاوي** من العليا بالكتالوج اليوم — 10 قهاوي محلية، وفرع واحد:{/chain-counts}{local-counts}فيه **10 قهاوي محلية** من العليا بالكتالوج اليوم:{/local-counts}",
     enMeta: "11 cafes in Al Olaya on wain.lol — local specialty plus chain branches, each with a Maps link.",
     arMeta: "11 قهاوي بالعليا على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.",
@@ -773,17 +781,17 @@ for (const row of wordingMatrix) {
 }
 assert(
   chainDistrictMetaEn("KKIA", 1, 0, 1, "at") ===
-    "1 cafe at KKIA on wain.lol — chain branches only so far, with a Maps link.",
+    "One cafe at KKIA on wain.lol — chain branches only so far, with a Maps link.",
   "KKIA chain meta says at KKIA",
 );
 assert(
   chainDistrictMetaAr("طويق", 1, 0, 1) ===
-    "قهوة وحدة بطويق على wain.lol — فروع سلاسل بس للحين، وعليها رابط قوقل ماب.",
+    "قهوة وحدة بطويق على wain.lol — فرع سلسلة بس للحين، وعليها رابط قوقل ماب.",
   "chain-only Arabic meta uses وعليها after قهوة وحدة",
 );
 assert(
   chainDistrictLeadEn("Al Olaya", 4, 3, 1) ===
-    "This page is the Al Olaya catalog on wain.lol: {chain-counts}4 cafes — 3 local cafes, 1 chain branch{/chain-counts}{local-counts}3 local cafes{/local-counts}.",
+    "This page is the Al Olaya catalog on wain.lol: {chain-counts}4 cafes — 3 local cafes, one chain branch{/chain-counts}{local-counts}3 local cafes{/local-counts}.",
   "EN chain lead states the live count and names no shop",
 );
 assert(
@@ -797,7 +805,7 @@ assert(
   "chain leads omit a zero clause",
 );
 assert(
-  districtEnMarkdown("namar").includes("on the catalog today — 1 chain branch:"),
+  districtEnMarkdown("namar").includes("on the catalog today — one chain branch:"),
   "Namar EN intro counts the dine-in chain",
 );
 assert(
@@ -835,7 +843,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "al-manar,al-malaz",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -1004,7 +1012,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "48aa003a6ce7da90512b92621ca1a56c83fe55dde4f38e1f0228333165b837f3",
+  copyHash === "35cf78b5ea59cb3192a40c674333ee70d1bb2231284d6930ab82eb28cf70488e",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1124,8 +1132,8 @@ assert(
   "the drive-through directory includes the 27 tagged branches",
 );
 assert(
-  applyHideChains(driveThrough, true).length === 51,
-  "drive-through local-only keeps the 51 non-chain rows",
+  applyHideChains(driveThrough, true).length === 44,
+  "drive-through local-only keeps the 44 non-chain rows",
 );
 assert(
   !chainFilterShowsEmpty(driveThrough, true),
@@ -1134,12 +1142,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "79dad9c43c30310e5edd5b04af834703579d7aff7fdb2e9963eaaa686c9856dc",
+  llmsHash === "bf97820bcc509c337cd587911948e9eb7ec584126d3694df018dad18a5a3f50f",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("364 local, 4 chain branches"),
-  "llms.txt names the 4 chain branches separately from specialty",
+  llms.includes("364 local, 7 chain branches"),
+  "llms.txt names the 7 chain branches separately from specialty",
 );
 
 assert(
@@ -1466,10 +1474,10 @@ for (const id of NEIGHBORHOOD_IDS) {
   for (const bad of BAD_EN_INTRO) assert(!bad.test(en), `${id} EN intro mismatch: ${en}`);
   for (const bad of BAD_AR_INTRO) assert(!bad.test(ar), `${id} AR intro mismatch: ${ar}`);
   if (count === 1) {
-    assert(/\*\*1\*\* cafe\b/.test(en) && !/\bcafes\b/i.test(en), `${id} EN singular intro: ${en}`);
+    assert(/\*\*one\*\* cafe\b/i.test(en) && !/\bcafes\b/i.test(en), `${id} EN singular intro: ${en}`);
     assert(ar.includes("**قهوة وحدة**"), `${id} AR singular intro: ${ar}`);
   } else if (count === 2) {
-    assert(/\*\*2\*\* cafes\b/.test(en), `${id} EN dual intro: ${en}`);
+    assert(/\*\*two\*\* cafes\b/i.test(en), `${id} EN dual intro: ${en}`);
     assert(ar.includes("**قهوتين**"), `${id} AR dual intro: ${ar}`);
   } else if (count > 2) {
     assert(
@@ -1485,8 +1493,24 @@ for (const id of NEIGHBORHOOD_IDS) {
 }
 
 const EN_SPELLED_NUMBER =
-  /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b/i;
+  /\b(?:three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\b/i;
 const AR_SPELLED_NUMBERS = [
+  "الثلاثة",
+  "الأربعة",
+  "الخمسة",
+  "الستة",
+  "السبعة",
+  "الثمانية",
+  "التسعة",
+  "العشرة",
+  "الثلاث",
+  "الأربع",
+  "الخمس",
+  "الست",
+  "السبع",
+  "الثمان",
+  "التسع",
+  "العشر",
   "إحدى عشر",
   "اثنتي عشر",
   "أحد عشر",
@@ -1519,8 +1543,16 @@ function spelledNumberWord(text: string): string | null {
   return null;
 }
 
+function leadBeforeHeading(markdown: string, heading: string): string {
+  const body = markdown.replace(/^#[^\n]*\n+/, "");
+  const cut = body.indexOf(heading);
+  return (cut === -1 ? body : body.slice(0, cut)).trim();
+}
+
 for (const id of NEIGHBORHOOD_IDS) {
   const surfaces = [
+    ["EN lead", leadBeforeHeading(districtEnMarkdown(id), "## What’s here")],
+    ["AR lead", leadBeforeHeading(districtArMarkdown(id), "## وش فيه")],
     ["EN intro", hereIntroParagraph(districtEnMarkdown(id))],
     ["AR intro", hereIntroParagraph(districtArMarkdown(id))],
     ["EN meta", districtEnMeta(id)],
@@ -1529,6 +1561,83 @@ for (const id of NEIGHBORHOOD_IDS) {
   for (const [label, text] of surfaces) {
     const spelled = spelledNumberWord(text);
     assert(spelled == null, `${id} ${label} spells a count (${spelled}): ${text}`);
+  }
+}
+
+const RAW_CHAIN_MARKER = /\{chain-only\}|\{\/chain-only\}/;
+
+function renderedMarkdown(markdown: string): string {
+  return renderToStaticMarkup(createElement(EnRichText, { markdown }));
+}
+
+for (const id of NEIGHBORHOOD_IDS) {
+  for (const [locale, markdown] of [
+    ["en", districtEnMarkdown(id)],
+    ["ar", districtArMarkdown(id)],
+  ] as const) {
+    const html = renderedMarkdown(markdown);
+    assert(
+      !RAW_CHAIN_MARKER.test(html),
+      `${id} ${locale} district page rendered a raw chain-only marker`,
+    );
+  }
+}
+for (const shop of listRealShops()) {
+  for (const [locale, markdown] of [
+    ["en", cafeEnMarkdown(shop)],
+    ["ar", cafeArMarkdown(shop)],
+  ] as const) {
+    const html = renderedMarkdown(markdown);
+    assert(
+      !RAW_CHAIN_MARKER.test(html),
+      `${shop.id} ${locale} cafe page rendered a raw chain-only marker`,
+    );
+  }
+}
+const wrappedLead = chainOnlyBlock("First lead paragraph.\n\nSecond lead paragraph.");
+assert(
+  wrappedLead ===
+    "{chain-only}First lead paragraph.{/chain-only}\n\n{chain-only}Second lead paragraph.{/chain-only}",
+  "chain-only wraps each lead paragraph on its own",
+);
+const spanning = renderedMarkdown(
+  "{chain-only}First lead paragraph.\n\nSecond lead paragraph.{/chain-only}",
+);
+assert(!RAW_CHAIN_MARKER.test(spanning), "a spanning chain-only pair leaked a raw marker");
+assert(
+  (spanning.match(/data-chain-only/g) ?? []).length >= 2,
+  "each paragraph of a spanning chain-only pair stays hidden with Local only",
+);
+
+function paragraphWith(html: string, needle: string): string {
+  return html.split("</p>").find((part) => part.includes(needle)) ?? "";
+}
+for (const id of ["namar", "tuwaiq"] as const) {
+  const en = renderedMarkdown(districtEnMarkdown(id));
+  const ar = renderedMarkdown(districtArMarkdown(id));
+  assert(
+    paragraphWith(en, "chain branch").includes("data-chain-only"),
+    `${id} EN chain sentence is hidden with Local only`,
+  );
+  assert(
+    paragraphWith(ar, "فرع").includes("data-chain-only"),
+    `${id} AR chain sentence is hidden with Local only`,
+  );
+}
+assert(
+  !districtArMarkdown("al-manar").includes("بطاقتين") &&
+    !districtEnMarkdown("al-manar").includes("Two cards"),
+  "Al Manar lead does not state a card count that changes with the toggle",
+);
+const hiddenDistrictCafes = ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const;
+const listLeftovers = ["الأسماء الثانية مربوطة تحت", "باقي الحي تحت", "linked below", "مربوطة تحت", "مربوط تحت"];
+for (const district of hiddenDistrictCafes) {
+  for (const shop of listRealShops().filter((row) => row.neighborhood === district)) {
+    const en = cafeEnMarkdown(shop);
+    const ar = cafeArMarkdown(shop);
+    for (const phrase of listLeftovers) {
+      assert(!en.includes(phrase) && !ar.includes(phrase), `${shop.id} still promises a list (${phrase})`);
+    }
   }
 }
 

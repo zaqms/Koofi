@@ -441,7 +441,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-yarmouk": {
     lead: `Al Yarmuk (اليرموك) sits out on Riyadh’s east side toward the Eastern Ring. If you’re already out that way and you just want a coffee from the catalog, this is the Al Yarmuk set on wain.lol.
 
-Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Silo Cafe](/en/c/silo-cafe-al-yarmouk), [NOSOUND](/en/c/nosound-al-yarmouk), and [RATIO Speciality Coffee](/en/c/ratio-speciality-al-yarmouk). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many Al Yarmuk places we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Yarmuk on the catalog today:`,
@@ -455,7 +455,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-nahdah": {
     lead: `An Nahdah (النهضة) is a Riyadh حي on the city’s east side. If you’re already in النهضة and you just want a coffee from the catalog, this is the An Nahdah set on wain.lol.
 
-Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Kapu Cafe](/en/c/kapu-cafe-al-nahdah), [Ghazala Cafe](/en/c/ghazala-cafe-al-nahdah), and [Coffee Address](/en/c/coffee-address-al-nahdah). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many An Nahdah places we’ve added.`,
     hereIntro: `There are **{count}** cafes from An Nahdah on the catalog today:`,
@@ -471,7 +471,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 
 Names on this list include [VASE Coffee](/en/c/vase-coffee-al-manar) and [Recaf I](/en/c/recaf-al-manar). They’re the Manar pins we’ve added. We don’t rank them.
 
-Two cards is the whole set for now. Open a card if a name fits.`,
+Open a card if a name fits. The list below is the whole set for now.`,
     hereIntro: `There are **{count}** cafes from Al Manar on the catalog today:`,
     hereOutro: `Open a card when a name fits, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Manar isn’t the stop, these east-Riyadh lists sit on the site:`,
@@ -530,7 +530,7 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
   "al-munsiyah": {
     lead: `Al Munsiyah (المونسية) sits on Riyadh’s east belt, past Qurtubah. If you’re already in المونسية and you just want a coffee from the catalog, this is the Al Munsiyah set on wain.lol.
 
-Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other seven. We don’t rank them.
+Names people ask about on this list include [Serb Specialty Coffee](/en/c/serb-specialty-al-munsiyah), [Roasting Stages](/en/c/roasting-stages-al-munsiyah), and [Eagle Coffee](/en/c/eagle-coffee-al-munsiyah). They’re on the page with the other 7. We don’t rank them.
 
 The count is ten because that’s how many Al Munsiyah places we’ve added.`,
     hereIntro: `There are **{count}** cafes from Al Munsiyah on the catalog today:`,
@@ -1264,11 +1264,24 @@ function plainDistrictLabel(id: NeighborhoodId): string {
   return `Coffee shops in ${neighborhoodLabel(id, "en")}`;
 }
 
+function withoutNameListPitch(body: string): string {
+  return body
+    .replace(/\s*[^.]*\blinked below\b[^.]*\./gi, (sentence) =>
+      /district page is linked below|full neighborhood page is linked below/i.test(sentence)
+        ? sentence
+        : "",
+    )
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+}
+
 function withoutDistrictLinkPitch(body: string): string {
   return body
     .replace(/\s*If you want the rest of that neighborhood, the district page is linked below\.?/g, "")
     .replace(/\s*Full neighborhood page is linked below\.?/g, "")
     .replace(/\s*The rest of the .+? list is linked below[^.]*\./g, "")
+    .replace(/\s*[^.]*\blinked below\b[^.]*\./gi, "")
+    .replace(/[ \t]{2,}/g, " ")
     .trim();
 }
 
@@ -1291,7 +1304,9 @@ export function cafeEnMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.markdown;
   const hidden = districtPageHidden(shop.neighborhood);
   const raw = CNI_BLURBS[shop.id] ?? defaultCafeBlurb(shop);
-  const body = hidden ? withoutDistrictLinkPitch(raw) : raw;
+  let body = raw;
+  if (siblingShops(shop).length === 0) body = withoutNameListPitch(body);
+  if (hidden) body = withoutDistrictLinkPitch(body);
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

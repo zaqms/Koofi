@@ -326,7 +326,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-yarmouk": {
     lead: `اليرموك على الجهة الشرقية من الرياض، باتجاه الدائري الشرقي. إذا أنت بهالجهة وتبي قهوة من الكتالوج، هذي مجموعة اليرموك على wain.lol.
 
-ناس يسألون عن [سايلو محمصة وقهوة مختصة](/c/silo-cafe-al-yarmouk) و[نوساوند](/c/nosound-al-yarmouk) و[ريشيو](/c/ratio-speciality-al-yarmouk). موجودين مع السبع الباقية. ما نرتّبهم.
+ناس يسألون عن [سايلو محمصة وقهوة مختصة](/c/silo-cafe-al-yarmouk) و[نوساوند](/c/nosound-al-yarmouk) و[ريشيو](/c/ratio-speciality-al-yarmouk). موجودين مع الـ 7 الباقية. ما نرتّبهم.
 
 العدد عشر لأن هذا اللي ضفناه من اليرموك.`,
     hereIntro: `فيه **{count}** قهاوي من اليرموك بالكتالوج اليوم:`,
@@ -340,7 +340,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-nahdah": {
     lead: `النهضة حي بالرياض على الجهة الشرقية. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة النهضة على wain.lol.
 
-ناس يسألون عن [كابو محمصة وقهوة](/c/kapu-cafe-al-nahdah) و[غزالة كافيه](/c/ghazala-cafe-al-nahdah) و[عنوان القهوة](/c/coffee-address-al-nahdah). موجودين مع السبع الباقية. ما نرتّبهم.
+ناس يسألون عن [كابو محمصة وقهوة](/c/kapu-cafe-al-nahdah) و[غزالة كافيه](/c/ghazala-cafe-al-nahdah) و[عنوان القهوة](/c/coffee-address-al-nahdah). موجودين مع الـ 7 الباقية. ما نرتّبهم.
 
 العدد عشر لأن هذا اللي ضفناه من النهضة.`,
     hereIntro: `فيه **{count}** قهاوي من النهضة بالكتالوج اليوم:`,
@@ -356,7 +356,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
 
 بالقائمة [ڤازا](/c/vase-coffee-al-manar) و[ريكاف](/c/recaf-al-manar). هذي دبابيس المنار اللي ضفناها. ما نرتّبهم.
 
-بطاقتين هذي المجموعة كلها للحين. افتح بطاقة إذا الاسم يمشي.`,
+افتح بطاقة إذا الاسم يمشي. القائمة تحت هي المجموعة كلها للحين.`,
     hereIntro: `فيه **{count}** قهاوي من المنار بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة إذا الاسم يمشي، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
     nearbyIntro: `إذا المنار مو الوقف، هالقوائم شرق الرياض بالموقع:`,
@@ -415,7 +415,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-munsiyah": {
     lead: `المونسية على الجهة الشرقية من الرياض، بعد قرطبة. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة المونسية على wain.lol.
 
-ناس يسألون عن [شرب قهوة مختصة](/c/serb-specialty-al-munsiyah) و[مراحل التحميص](/c/roasting-stages-al-munsiyah) و[ايجل كوفي](/c/eagle-coffee-al-munsiyah). موجودين مع السبع الباقية. ما نرتّبهم.
+ناس يسألون عن [شرب قهوة مختصة](/c/serb-specialty-al-munsiyah) و[مراحل التحميص](/c/roasting-stages-al-munsiyah) و[ايجل كوفي](/c/eagle-coffee-al-munsiyah). موجودين مع الـ 7 الباقية. ما نرتّبهم.
 
 العدد عشر لأن هذا اللي ضفناه من المونسية.`,
     hereIntro: `فيه **{count}** قهاوي من المونسية بالكتالوج اليوم:`,
@@ -669,7 +669,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "an-nasim-ash-sharqi": {
     lead: `النسيم الشرقي على الجهة الشرقية من الرياض، بعد النهضة. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة النسيم الشرقي على wain.lol.
 
-ناس يسألون عن [فوت | محمصة وقهوة مختصة](/c/voute-fot-al-naseem-sharqi) و[جارو قهوة مختصة](/c/jaro-cafe-al-naseem-sharqi) و[تامبر قهوة مختصة](/c/tamper-speciality-al-naseem-sharqi). موجودين مع الأربع الباقية. ما نرتّبهم.
+ناس يسألون عن [فوت | محمصة وقهوة مختصة](/c/voute-fot-al-naseem-sharqi) و[جارو قهوة مختصة](/c/jaro-cafe-al-naseem-sharqi) و[تامبر قهوة مختصة](/c/tamper-speciality-al-naseem-sharqi). موجودين مع الـ 4 الباقية. ما نرتّبهم.
 
 العدد سبع لأن هذا اللي ضفناه من النسيم الشرقي.`,
     hereIntro: `فيه **{count}** قهاوي من النسيم الشرقي بالكتالوج اليوم:`,
@@ -931,7 +931,7 @@ export function chainDistrictMetaAr(
   name: string,
   total: number,
   local: number,
-  _chains: number,
+  chains: number,
 ): string {
   if (total <= 0) {
     return `ما فيه قهاوي ب${name} على wain.lol للحين — قائمة حي بالرياض.`;
@@ -939,7 +939,8 @@ export function chainDistrictMetaAr(
   const counted = countedCafesAr(total);
   if (local <= 0) {
     const maps = total === 1 ? "وعليها رابط قوقل ماب." : "وعليها روابط قوقل ماب.";
-    return `${counted} ب${name} على wain.lol — فروع سلاسل بس للحين، ${maps}`;
+    const branches = chains === 1 ? "فرع سلسلة" : "فروع سلاسل";
+    return `${counted} ب${name} على wain.lol — ${branches} بس للحين، ${maps}`;
   }
   return `${counted} ب${name} على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.`;
 }
@@ -1131,6 +1132,14 @@ function plainDistrictLabel(id: NeighborhoodId): string {
   return coffeeShopsInDistrict(neighborhoodLabel(id, "ar"), "ar");
 }
 
+function withoutNameListPitch(body: string): string {
+  return body
+    .replace(/\s*إذا تبي تقارن بنفس الحي، الأسماء الثانية مربوطة تحت — بس اللي بالكتالوج فعلاً\.?/g, "")
+    .replace(/\s*إذا الاسم يمشي، باقي الحي تحت\.?/g, "")
+    .replace(/\s*[^.]*الأسماء الثانية مربوطة تحت[^.]*\./g, "")
+    .trim();
+}
+
 function withoutDistrictLinkPitch(body: string): string {
   return body
     .replace(/\s*إذا تبي باقي الحي، صفحة الحي مربوطة تحت\.?/g, "")
@@ -1158,7 +1167,9 @@ export function cafeArMarkdown(shop: Shop): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE_AR.markdown;
   const hidden = districtPageHidden(shop.neighborhood);
   const raw = CNI_BLURBS_AR[shop.id] ?? defaultCafeBlurb(shop);
-  const body = hidden ? withoutDistrictLinkPitch(raw) : raw;
+  let body = raw;
+  if (siblingShops(shop).length === 0) body = withoutNameListPitch(body);
+  if (hidden) body = withoutDistrictLinkPitch(body);
   return `${body}
 
 ${cafeSiblingsMarkdown(shop)}`;

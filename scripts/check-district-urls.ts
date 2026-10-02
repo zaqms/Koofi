@@ -1495,10 +1495,10 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 71, `Drive-through directory (moment tag) is 71 = 61 lane + 10 specialty tags, got ${dt.length}`);
+  assert(dt.length === 71, `Drive-through directory (moment tag) is 71, got ${dt.length}`);
   assert(
-    listRealShops().filter(isDriveThroughLane).length === 61,
-    `DT lane (catalogLane === "drive-through") is 61, got ${listRealShops().filter(isDriveThroughLane).length}`,
+    listRealShops().filter(isDriveThroughLane).length === 54,
+    `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
   );
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),

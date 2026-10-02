@@ -641,8 +641,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 354, "specialty discovery stays 354");
-assert(listRealShops().length === 422, "catalog stays 422");
+assert(listDiscoveryShops().length === 364, "specialty discovery is 364 after Shoug A1");
+assert(listRealShops().length === 432, "catalog is 432 after Shoug A1");
 assert(listLiveDistrictIds().length === 52, "specialty districts stay 52");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 69,
@@ -650,9 +650,9 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 64, "five chain-only districts drop out of the page set");
 assert(listDriveThroughDirectoryShops().length === 78, "drive-through stays 78");
-assert(listListingShops().length === 358, "listing is specialty plus the 4 sit-down chains");
-assert(listPublicShops().length === 358, "public list includes the 4 sit-down chains");
-assert(listBrowseDirectoryShops().length === 368, "browse keeps local drive-through rows and sit-down chains");
+assert(listListingShops().length === 368, "listing is specialty plus the 4 sit-down chains");
+assert(listPublicShops().length === 368, "public list includes the 4 sit-down chains");
+assert(listBrowseDirectoryShops().length === 378, "browse keeps local drive-through rows, Shoug A1, and sit-down chains");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 4,
   "exactly 4 sit-down chains are listed",
@@ -1004,7 +1004,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "d723f9ca7d1091e92264698830218ce1cf58a2bb542a176b16eaad964909a002",
+  copyHash === "5567f920d4cb239b4855439f2010eb807f678a3d5b620c765277586aa887a63d",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1134,11 +1134,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "e0e0bb5cf3a9bfff2ff3bff3034f955688fcc11d7563c0ddea4be36a9a3706ec",
+  llmsHash === "79dad9c43c30310e5edd5b04af834703579d7aff7fdb2e9963eaaa686c9856dc",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("354 local, 4 chain branches"),
+  llms.includes("364 local, 4 chain branches"),
   "llms.txt names the 4 chain branches separately from specialty",
 );
 

@@ -510,6 +510,21 @@ const BATCH9_IDS = [
 /** BATCH10: Waqar (Al Aziziyah, #224) Places gallery — 4 frames, Google credit per frame. */
 const BATCH10_IDS = ["waqar-al-aziziyah"] as const;
 
+/** BATCH11: Shoug batch A1 (10 specialty cafés) Places galleries — 3 frames each, except Ōkawa (2 after the face frame was dropped). Google credit per frame. */
+const BATCH11_IDS = [
+  "fav-coffee-room-al-malqa",
+  "asfoura-al-malqa",
+  "bab-al-mohammadiyah",
+  "cherie-al-muruj",
+  "da-nonna-al-nakheel",
+  "okawa-al-narjis",
+  "nap-al-qirawan",
+  "ouia-al-qirawan",
+  "shml-al-qirawan",
+  "for-coffee-roasters-al-qirawan",
+] as const;
+const BATCH11_IDS_SET = new Set<string>(BATCH11_IDS);
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-rabi",
   "drive-al-rabi-2",
@@ -550,6 +565,7 @@ const batch7HeroIds = BATCH7_IDS.filter((id) => bakedHeroes[id]);
 const batch8HeroIds = BATCH8_IDS.filter((id) => bakedHeroes[id]);
 const batch9HeroIds = BATCH9_IDS.filter((id) => bakedHeroes[id]);
 const batch10HeroIds = BATCH10_IDS.filter((id) => bakedHeroes[id]);
+const batch11HeroIds = BATCH11_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -561,8 +577,9 @@ assert(
       batch7HeroIds.length +
       batch8HeroIds.length +
       batch9HeroIds.length +
-      batch10HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–10 merge in",
+      batch10HeroIds.length +
+      batch11HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–11 merge in",
 );
 function pendingRepullIn(ids: readonly string[]): string[] {
   return ids.filter((id) => GALLERY_PENDING_REPULL_IDS.has(id));
@@ -608,6 +625,7 @@ assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
 assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
 assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
 assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
+assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
 assert(bakedHeroes["waqar-al-aziziyah"]?.length === 4, "Waqar keeps the 4 QA-picked frames");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
@@ -617,6 +635,7 @@ assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 h
 assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
 assert(bakedHeroes["bind-specialty-coffee-ghirnatah"]?.length === 4, "BIND pack 1 heroes");
 function expectedHeroCount(id: string): number {
+  if (id === "okawa-al-narjis") return 2;
   if (id === "elixir-bunn-al-narjis") return 3;
   if (id === "mill-coffee-qurtubah") return 2;
   if (id === "hokkaido-al-hamra") return 3;
@@ -633,7 +652,8 @@ function expectedHeroCount(id: string): number {
     id === "trivali-roaster-al-naseem-gharbi" ||
     id === "essert-al-arid" ||
     id === "coffee-address-ar-rabwah-ihsaa" ||
-    id === "behind-al-muruj"
+    id === "behind-al-muruj" ||
+    BATCH11_IDS_SET.has(id)
   ) {
     return 3;
   }

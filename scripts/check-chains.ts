@@ -1014,7 +1014,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "d8c2e0f87c4a20cacf9caa62e240e60f6d0076bf90c6d3d0be1aeb0546eeed6f",
+  copyHash === "35ab235424030cef4f7d5af49de153978519ed88054e32dc63d6d25deefa8e0d",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1581,6 +1581,24 @@ assert(spelledNumberWord("قهوتين") == null, "two stays a word");
 assert(spelledNumberWord("one cafe") == null && spelledNumberWord("two cafes") == null, "EN one and two stay words");
 assert(spelledNumberWord("محمصة هجين التسعينات") == null, "التسعينات is not a count");
 
+/** 3–10 take a plural noun. 11+ may stay singular, and 1–2 stay words. */
+const AR_SINGULAR_AFTER_THREE_TO_TEN =
+  /(?<![0-9])(?:10|[3-9])(?![0-9])\s+(?:ال)?(?:بطاقة|قهوة|فرع|مقهى|مكان|محل|اسم)(?![\u0600-\u06FF])/;
+
+function singularNounAfterCount(text: string): string | null {
+  return text.match(AR_SINGULAR_AFTER_THREE_TO_TEN)?.[0] ?? null;
+}
+
+assert(singularNounAfterCount("الـ 3 بطاقة") === "3 بطاقة", "3 بطاقة is a singular noun");
+assert(singularNounAfterCount("5 قهوة") === "5 قهوة", "5 قهوة is a singular noun");
+assert(singularNounAfterCount("10 فرع") === "10 فرع", "10 فرع is a singular noun");
+assert(singularNounAfterCount("3 بطاقات") == null, "3 بطاقات is plural");
+assert(singularNounAfterCount("البطاقات الـ3") == null, "البطاقات الـ3 keeps the plural");
+assert(singularNounAfterCount("7 قهاوي") == null, "7 قهاوي is plural");
+assert(singularNounAfterCount("7 أماكن") == null, "7 أماكن is plural");
+assert(singularNounAfterCount("11 بطاقة") == null, "11+ may use the singular");
+assert(singularNounAfterCount("فرع واحد") == null, "one branch stays a word");
+
 function leadBeforeHeading(markdown: string, heading: string): string {
   const body = markdown.replace(/^#[^\n]*\n+/, "");
   const cut = body.indexOf(heading);
@@ -1599,6 +1617,11 @@ for (const id of NEIGHBORHOOD_IDS) {
   for (const [label, text] of surfaces) {
     const spelled = spelledNumberWord(text);
     assert(spelled == null, `${id} ${label} spells a count (${spelled}): ${text}`);
+    const singular = singularNounAfterCount(text);
+    assert(
+      singular == null,
+      `${id} ${label} uses a singular noun after 3–10 (${singular}): ${text}`,
+    );
   }
 }
 
@@ -1705,7 +1728,8 @@ assert(
 );
 assert(
   rawabiAr.includes("[بلة](/c/bala-al-rawabi)") &&
-    rawabiAr.includes("3 بطاقة") &&
+    rawabiAr.includes("البطاقات الـ3") &&
+    !rawabiAr.includes("3 بطاقة") &&
     rawabiAr.includes("[THE IT]") &&
     rawabiAr.includes("[إسرت]"),
   "Al Rawabi AR lead names the three cards",

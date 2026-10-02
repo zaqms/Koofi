@@ -382,7 +382,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-rawabi": {
     lead: `الروابي حي شرق الرياض بالقائمة. هذي أماكن الروابي اللي ضفناها.
 
-[THE IT](/c/the-it-al-rawabi) و[إسرت](/c/essert-al-rawabi) و[بلة](/c/bala-al-rawabi) الـ 3 بطاقة بهالصفحة اليوم. ما نخترع زيادة.`,
+[THE IT](/c/the-it-al-rawabi) و[إسرت](/c/essert-al-rawabi) و[بلة](/c/bala-al-rawabi) البطاقات الـ3 بهالصفحة اليوم. ما نخترع زيادة.`,
     hereIntro: `فيه **{count}** قهاوي من الروابي على wain.lol الحين:`,
     hereOutro: `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`,
     nearbyIntro: `إذا الروابي مو الوقف، هالقوائم شرق الرياض أقرب للموقع:`,
@@ -904,7 +904,10 @@ function leadWithLiveTotal(lead: string, count: number): string {
     .replace(new RegExp(`العدد (${AR_LEAD_TOTAL})`, "g"), `العدد ${word}`)
     .replace(new RegExp(`(${AR_LEAD_TOTAL}) قهاوي ضفناها`, "g"), `${word} قهاوي ضفناها`)
     .replace(/قهوة وحدة ضفناها/g, `${countedCafesAr(count)} ضفناها`)
-    .replace(new RegExp(`(${AR_LEAD_TOTAL}) بطاقة`, "g"), `${word} بطاقة`);
+    .replace(new RegExp(`(${AR_LEAD_TOTAL}) بطاقة(?![\\u0600-\\u06FF])`, "g"), () => {
+      const noun = count >= 3 && count <= 10 ? "بطاقات" : "بطاقة";
+      return `${word} ${noun}`;
+    });
 }
 
 function fillCount(template: string, count: number): string {

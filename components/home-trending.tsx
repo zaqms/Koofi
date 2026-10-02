@@ -11,13 +11,20 @@ type HomeTrendingProps = {
   shops: DirectoryShop[];
 };
 
-/** Home preview. Same three allowlist rows in EN and AR. District pages keep the full cards. */
+/** Home preview. Up to three rows, same set in EN and AR. Columns follow the row count. */
 const HOME_TRENDING_COUNT = 3;
+
+function trendingGridCols(count: number): string {
+  if (count <= 1) return "grid-cols-1";
+  if (count === 2) return "grid-cols-2";
+  return "grid-cols-3";
+}
 
 export function HomeTrending({ language, shops }: HomeTrendingProps) {
   const rows = shops.slice(0, HOME_TRENDING_COUNT);
   if (rows.length === 0) return null;
   const rtl = language === "ar";
+  const gridCols = trendingGridCols(rows.length);
 
   return (
     <section
@@ -36,7 +43,7 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
         </h2>
         <ViewAllLink href="#wain-riyadh-cafes" language={language} />
       </div>
-      <ul className="mt-3 grid grid-cols-3 items-stretch gap-1.5">
+      <ul className={`mt-3 grid ${gridCols} items-stretch gap-1.5`}>
         {rows.map((shop) => (
           <li key={shop.id} className="min-w-0">
             <Link

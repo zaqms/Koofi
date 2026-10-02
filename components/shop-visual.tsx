@@ -13,7 +13,7 @@ type ShopVisualProps = {
 
 const DARK_LOGO_PATHS = new Set([
   "/logos/tobys-estate-hittin.png",
-  "/logos/qamaria-hittin.webp",
+  "/logos/qamaria-hittin.jpg",
   "/logos/first-series-olaya.png",
   "/logos/just-another-hittin.jpg",
   "/logos/repository-coffee-roasters-al-narjis.jpg",

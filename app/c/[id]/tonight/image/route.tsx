@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og";
 import { getShop } from "@/lib/catalog";
+import { hasRtlText } from "@/lib/og-bidi";
+import { OG_RTL_ROW, ogFontMeasurer, ogRtlUnits } from "@/lib/og-rtl-text";
 import { loadTonightHeroDataUri } from "@/lib/tonight-hero";
 import {
   sanitizeTonightCardLine,
   safeTonightPhotoPath,
-  satoriArabicLine,
   tonightDistrict,
   tonightHeroForShop,
   TONIGHT_IMAGE_SIZE,
@@ -74,6 +75,26 @@ export async function GET(request: Request, context: ImageContext) {
       ? { name: "PassportSerif", data: serif, weight: 700 as const, style: "normal" as const }
       : null,
   ].filter((font): font is NonNullable<typeof font> => font !== null);
+
+  // Satori has no bidi and mis-sizes joined Arabic, so any line with Arabic
+  // is laid out unit by unit (lib/og-rtl-text.tsx); other text stays plain.
+  const measure = ogFontMeasurer(arabic);
+  // Full-width rows (name, line) so long text wraps; they hug the column's
+  // edge: right on AR cards, left on EN ones.
+  const rtlRow = (text: string, fill = false) =>
+    hasRtlText(text)
+      ? {
+          ...OG_RTL_ROW,
+          ...(fill
+            ? {
+                width: "100%",
+                justifyContent: language === "ar" ? "flex-start" : "flex-end",
+              }
+            : {}),
+        }
+      : {};
+  const rtlText = (text: string, fontSize: number) =>
+    hasRtlText(text) ? ogRtlUnits(text, fontSize, measure) : text;
 
   return new ImageResponse(
     (
@@ -155,13 +176,14 @@ export async function GET(request: Request, context: ImageContext) {
           <div
             style={{
               display: "flex",
+              ...rtlRow(eyebrow),
               color: "#e4c37a",
               fontSize: 30,
               letterSpacing: language === "ar" ? 0 : 6,
               textTransform: "uppercase",
             }}
           >
-            {language === "ar" ? satoriArabicLine(eyebrow) : eyebrow}
+            {rtlText(eyebrow, 30)}
           </div>
           <div
             style={{
@@ -179,17 +201,19 @@ export async function GET(request: Request, context: ImageContext) {
           <div
             style={{
               display: "flex",
+              ...rtlRow(shop.nameAr, true),
               marginTop: 10,
               fontSize: 38,
               lineHeight: 1.3,
               color: "#f3ead8",
             }}
           >
-            {satoriArabicLine(shop.nameAr)}
+            {rtlText(shop.nameAr, 38)}
           </div>
           <div
             style={{
               display: "flex",
+              ...rtlRow(district),
               marginTop: 22,
               border: "1.5px solid #e4c37a",
               borderRadius: 999,
@@ -199,19 +223,20 @@ export async function GET(request: Request, context: ImageContext) {
               background: "rgba(27,24,20,0.35)",
             }}
           >
-            {language === "ar" ? satoriArabicLine(district) : district}
+            {rtlText(district, 26)}
           </div>
           {line ? (
             <div
               style={{
                 display: "flex",
+                ...rtlRow(line, true),
                 marginTop: 28,
                 fontSize: 34,
                 lineHeight: 1.4,
                 color: "#fffaf3",
               }}
             >
-              {/[\u0600-\u06FF]/.test(line) ? satoriArabicLine(line) : line}
+              {rtlText(line, 34)}
             </div>
           ) : null}
           <div

@@ -684,8 +684,8 @@ assert(
 
 assert(
   districtEnMeta("al-aziziyah") ===
-    "One cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
-  "Al Aziziyah EN meta is unchanged",
+    "1 cafe in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, with a Maps link.",
+  "Al Aziziyah EN meta uses a digit",
 );
 assert(
   districtArMeta("al-aziziyah") ===
@@ -694,8 +694,8 @@ assert(
 );
 assert(
   districtEnMeta("al-masif") ===
-    "Ten cafes in Al Masif on wain.lol — a Riyadh neighborhood list, with Maps links.",
-  "Al Masif EN meta is unchanged",
+    "10 cafes in Al Masif on wain.lol — a Riyadh neighborhood list, with Maps links.",
+  "Al Masif EN meta uses a digit",
 );
 assert(
   districtEnMeta("olaya") ===
@@ -724,37 +724,37 @@ const wordingMatrix: {
     total: 1,
     local: 0,
     chains: 1,
-    enIntro: "{chain-only}There is **one** cafe from Al Olaya on the catalog today — one chain branch:{/chain-only}",
+    enIntro: "{chain-only}There is **1** cafe from Al Olaya on the catalog today — 1 chain branch:{/chain-only}",
     arIntro: "{chain-only}فيه **قهوة وحدة** من العليا بالكتالوج اليوم — فرع واحد:{/chain-only}",
-    enMeta: "One cafe in Al Olaya on wain.lol — chain branches only so far, with a Maps link.",
+    enMeta: "1 cafe in Al Olaya on wain.lol — chain branches only so far, with a Maps link.",
     arMeta: "قهوة وحدة بالعليا على wain.lol — فروع سلاسل بس للحين، وعليها رابط قوقل ماب.",
   },
   {
     total: 2,
     local: 0,
     chains: 2,
-    enIntro: "{chain-only}There are **two** cafes from Al Olaya on the catalog today — two chain branches:{/chain-only}",
+    enIntro: "{chain-only}There are **2** cafes from Al Olaya on the catalog today — 2 chain branches:{/chain-only}",
     arIntro: "{chain-only}فيه **قهوتين** من العليا بالكتالوج اليوم — فرعين:{/chain-only}",
-    enMeta: "Two cafes in Al Olaya on wain.lol — chain branches only so far, with Maps links.",
+    enMeta: "2 cafes in Al Olaya on wain.lol — chain branches only so far, with Maps links.",
     arMeta: "قهوتين بالعليا على wain.lol — فروع سلاسل بس للحين، وعليها روابط قوقل ماب.",
   },
   {
     total: 3,
     local: 2,
     chains: 1,
-    enIntro: "{chain-counts}There are **three** cafes from Al Olaya on the catalog today — two local cafes, one chain branch:{/chain-counts}{local-counts}There are **two** local cafes from Al Olaya on the catalog today:{/local-counts}",
-    arIntro: "{chain-counts}فيه **ثلاث قهاوي** من العليا بالكتالوج اليوم — قهوتين محليتين، وفرع واحد:{/chain-counts}{local-counts}فيه **قهوتين محليتين** من العليا بالكتالوج اليوم:{/local-counts}",
-    enMeta: "Three cafes in Al Olaya on wain.lol — local specialty plus chain branches, each with a Maps link.",
-    arMeta: "ثلاث قهاوي بالعليا على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.",
+    enIntro: "{chain-counts}There are **3** cafes from Al Olaya on the catalog today — 2 local cafes, 1 chain branch:{/chain-counts}{local-counts}There are **2** local cafes from Al Olaya on the catalog today:{/local-counts}",
+    arIntro: "{chain-counts}فيه **3 قهاوي** من العليا بالكتالوج اليوم — قهوتين محليتين، وفرع واحد:{/chain-counts}{local-counts}فيه **قهوتين محليتين** من العليا بالكتالوج اليوم:{/local-counts}",
+    enMeta: "3 cafes in Al Olaya on wain.lol — local specialty plus chain branches, each with a Maps link.",
+    arMeta: "3 قهاوي بالعليا على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.",
   },
   {
     total: 11,
     local: 10,
     chains: 1,
-    enIntro: "{chain-counts}There are **eleven** cafes from Al Olaya on the catalog today — ten local cafes, one chain branch:{/chain-counts}{local-counts}There are **ten** local cafes from Al Olaya on the catalog today:{/local-counts}",
-    arIntro: "{chain-counts}فيه **إحدى عشر قهاوي** من العليا بالكتالوج اليوم — عشر قهاوي محلية، وفرع واحد:{/chain-counts}{local-counts}فيه **عشر قهاوي محلية** من العليا بالكتالوج اليوم:{/local-counts}",
-    enMeta: "Eleven cafes in Al Olaya on wain.lol — local specialty plus chain branches, each with a Maps link.",
-    arMeta: "إحدى عشر قهاوي بالعليا على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.",
+    enIntro: "{chain-counts}There are **11** cafes from Al Olaya on the catalog today — 10 local cafes, 1 chain branch:{/chain-counts}{local-counts}There are **10** local cafes from Al Olaya on the catalog today:{/local-counts}",
+    arIntro: "{chain-counts}فيه **11 قهاوي** من العليا بالكتالوج اليوم — 10 قهاوي محلية، وفرع واحد:{/chain-counts}{local-counts}فيه **10 قهاوي محلية** من العليا بالكتالوج اليوم:{/local-counts}",
+    enMeta: "11 cafes in Al Olaya on wain.lol — local specialty plus chain branches, each with a Maps link.",
+    arMeta: "11 قهاوي بالعليا على wain.lol — المحلية المختصة ومعها فروع السلاسل، وكل وحدة عليها رابط قوقل ماب.",
   },
 ];
 for (const row of wordingMatrix) {
@@ -773,7 +773,7 @@ for (const row of wordingMatrix) {
 }
 assert(
   chainDistrictMetaEn("KKIA", 1, 0, 1, "at") ===
-    "One cafe at KKIA on wain.lol — chain branches only so far, with a Maps link.",
+    "1 cafe at KKIA on wain.lol — chain branches only so far, with a Maps link.",
   "KKIA chain meta says at KKIA",
 );
 assert(
@@ -783,12 +783,12 @@ assert(
 );
 assert(
   chainDistrictLeadEn("Al Olaya", 4, 3, 1) ===
-    "This page is the Al Olaya catalog on wain.lol: {chain-counts}four cafes — three local cafes, one chain branch{/chain-counts}{local-counts}three local cafes{/local-counts}.",
+    "This page is the Al Olaya catalog on wain.lol: {chain-counts}4 cafes — 3 local cafes, 1 chain branch{/chain-counts}{local-counts}3 local cafes{/local-counts}.",
   "EN chain lead states the live count and names no shop",
 );
 assert(
   chainDistrictLeadAr("العليا", 4, 3, 1) ===
-    "هذي صفحة العليا بالكتالوج على wain.lol: {chain-counts}أربع قهاوي — ثلاث قهاوي محلية، وفرع واحد{/chain-counts}{local-counts}ثلاث قهاوي محلية{/local-counts}.",
+    "هذي صفحة العليا بالكتالوج على wain.lol: {chain-counts}4 قهاوي — 3 قهاوي محلية، وفرع واحد{/chain-counts}{local-counts}3 قهاوي محلية{/local-counts}.",
   "AR chain lead states the live count and names no shop",
 );
 assert(
@@ -797,7 +797,7 @@ assert(
   "chain leads omit a zero clause",
 );
 assert(
-  districtEnMarkdown("namar").includes("on the catalog today — one chain branch:"),
+  districtEnMarkdown("namar").includes("on the catalog today — 1 chain branch:"),
   "Namar EN intro counts the dine-in chain",
 );
 assert(
@@ -1004,7 +1004,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "5567f920d4cb239b4855439f2010eb807f678a3d5b620c765277586aa887a63d",
+  copyHash === "48aa003a6ce7da90512b92621ca1a56c83fe55dde4f38e1f0228333165b837f3",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1466,10 +1466,10 @@ for (const id of NEIGHBORHOOD_IDS) {
   for (const bad of BAD_EN_INTRO) assert(!bad.test(en), `${id} EN intro mismatch: ${en}`);
   for (const bad of BAD_AR_INTRO) assert(!bad.test(ar), `${id} AR intro mismatch: ${ar}`);
   if (count === 1) {
-    assert(/\*\*one\*\* cafe\b/i.test(en) && !/\bcafes\b/i.test(en), `${id} EN singular intro: ${en}`);
+    assert(/\*\*1\*\* cafe\b/.test(en) && !/\bcafes\b/i.test(en), `${id} EN singular intro: ${en}`);
     assert(ar.includes("**قهوة وحدة**"), `${id} AR singular intro: ${ar}`);
   } else if (count === 2) {
-    assert(/\*\*two\*\* cafes\b/i.test(en), `${id} EN dual intro: ${en}`);
+    assert(/\*\*2\*\* cafes\b/.test(en), `${id} EN dual intro: ${en}`);
     assert(ar.includes("**قهوتين**"), `${id} AR dual intro: ${ar}`);
   } else if (count > 2) {
     assert(
@@ -1481,6 +1481,54 @@ for (const id of NEIGHBORHOOD_IDS) {
         ar.includes(`**${countWordAr(count)}** قهاوي`),
       `${id} AR plural intro: ${ar}`,
     );
+  }
+}
+
+const EN_SPELLED_NUMBER =
+  /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\b/i;
+const AR_SPELLED_NUMBERS = [
+  "إحدى عشر",
+  "اثنتي عشر",
+  "أحد عشر",
+  "اثنا عشر",
+  "ثلاثة",
+  "أربعة",
+  "خمسة",
+  "ستة",
+  "سبعة",
+  "ثمانية",
+  "تسعة",
+  "عشرة",
+  "ثلاث",
+  "أربع",
+  "خمس",
+  "ست",
+  "سبع",
+  "ثمان",
+  "تسع",
+  "عشر",
+];
+
+function spelledNumberWord(text: string): string | null {
+  const en = text.match(EN_SPELLED_NUMBER);
+  if (en) return en[0] ?? null;
+  for (const word of AR_SPELLED_NUMBERS) {
+    const re = new RegExp(`(?<![\\u0600-\\u06FF])${word}(?![\\u0600-\\u06FF])`);
+    if (re.test(text)) return word;
+  }
+  return null;
+}
+
+for (const id of NEIGHBORHOOD_IDS) {
+  const surfaces = [
+    ["EN intro", hereIntroParagraph(districtEnMarkdown(id))],
+    ["AR intro", hereIntroParagraph(districtArMarkdown(id))],
+    ["EN meta", districtEnMeta(id)],
+    ["AR meta", districtArMeta(id)],
+  ] as const;
+  for (const [label, text] of surfaces) {
+    const spelled = spelledNumberWord(text);
+    assert(spelled == null, `${id} ${label} spells a count (${spelled}): ${text}`);
   }
 }
 

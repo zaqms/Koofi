@@ -1,86 +1,45 @@
 /**
  * House counts shared by district intro, meta, and the Local only empty state.
- * Words through twelve, then western digits. Never "zero" or «صفر».
+ * English counts are western digits. Arabic keeps the grammatical singular and
+ * dual (قهوة وحدة / قهوتين, فرع واحد / فرعين) and uses western digits from 3 up.
+ * Never "zero" or «صفر».
  */
 
-const COUNT_WORDS = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-  "twelve",
-] as const;
-
-const AR_COUNT_WORDS = [
-  "صفر",
-  "وحدة",
-  "ثنتين",
-  "ثلاث",
-  "أربع",
-  "خمس",
-  "ست",
-  "سبع",
-  "ثمان",
-  "تسع",
-  "عشر",
-  "إحدى عشر",
-  "اثنتي عشر",
-] as const;
-
-const MASCULINE_COUNT = [
-  "صفر",
-  "واحد",
-  "اثنين",
-  "ثلاثة",
-  "أربعة",
-  "خمسة",
-  "ستة",
-  "سبعة",
-  "ثمانية",
-  "تسعة",
-  "عشرة",
-  "أحد عشر",
-  "اثنا عشر",
-] as const;
-
+/** English counts are digits, including 1 and 2. Zero is never shown. */
 export function countWord(n: number): string {
-  if (n >= 0 && n < COUNT_WORDS.length) return COUNT_WORDS[n] ?? String(n);
+  if (n <= 0) return "zero";
   return String(n);
 }
 
+/** 1 وحدة، 2 ثنتين، 3+ western digits. Zero is never shown. */
 export function countWordAr(n: number): string {
-  if (n >= 0 && n < AR_COUNT_WORDS.length) return AR_COUNT_WORDS[n] ?? String(n);
+  if (n <= 0) return "صفر";
+  if (n === 1) return "وحدة";
+  if (n === 2) return "ثنتين";
   return String(n);
 }
 
+/** 1 واحد، 2 اثنين، 3+ western digits. */
 function masculineCount(n: number): string {
-  if (n >= 0 && n < MASCULINE_COUNT.length) return MASCULINE_COUNT[n] ?? String(n);
+  if (n <= 0) return "صفر";
+  if (n === 1) return "واحد";
+  if (n === 2) return "اثنين";
   return String(n);
 }
 
-/** one cafe / two cafes / eleven cafes / 13 cafes. Zero is the bare plural. */
+/** 1 cafe / 2 cafes / 12 cafes. Zero is the bare plural. */
 export function countedCafesEn(n: number): string {
   if (n <= 0) return "cafes";
-  if (n === 1) return "one cafe";
+  if (n === 1) return "1 cafe";
   return `${countWord(n)} cafes`;
 }
 
 export function countedCafesEnHead(n: number): string {
   if (n <= 0) return "No cafes";
-  if (n === 1) return "One cafe";
-  const phrase = countedCafesEn(n);
-  return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+  return countedCafesEn(n);
 }
 
-/** قهوة وحدة / قهوتين / N قهاوي. 11+ follows the non-chain helper, including إحدى عشر قهاوي. */
+/** قهوة وحدة / قهوتين / N قهاوي. */
 export function countedCafesAr(n: number): string {
   if (n <= 0) return "قهاوي";
   if (n === 1) return "قهوة وحدة";
@@ -97,13 +56,13 @@ export function cafePluralAr(): string {
 
 export function localCafesEn(n: number): string | null {
   if (n <= 0) return null;
-  if (n === 1) return "one local cafe";
+  if (n === 1) return "1 local cafe";
   return `${countWord(n)} local cafes`;
 }
 
 export function chainBranchesEn(n: number): string | null {
   if (n <= 0) return null;
-  if (n === 1) return "one chain branch";
+  if (n === 1) return "1 chain branch";
   return `${countWord(n)} chain branches`;
 }
 
@@ -114,7 +73,7 @@ export function localCafesAr(n: number): string | null {
   return `${countedCafesAr(n)} محلية`;
 }
 
-/** فرع واحد / فرعين / N فروع. 11+ stays plural فروع, words through twelve. */
+/** فرع واحد / فرعين / N فروع. 3+ is a western digit. */
 export function chainBranchesAr(n: number): string | null {
   if (n <= 0) return null;
   if (n === 1) return "فرع واحد";

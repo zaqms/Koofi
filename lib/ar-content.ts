@@ -38,14 +38,14 @@ export const GATE_FORBIDDEN_CLAIMS_AR = [
 /** Locked 9 Sep 2026. Najdi paraphrase of the EN KAFD gold master. Do not rewrite. */
 export const GOLD_MASTER_KAFD_AR = {
   title: `مقاهي في كافد · ${PRODUCT_NAME}`,
-  meta: "قائمة قصيرة لقهاوي كافد على wain.lol — سبع أماكن في الرياض، وكل وحدة عليها رابط قوقل ماب.",
+  meta: `قائمة قصيرة لقهاوي كافد على wain.lol — ${countWordAr(7)} أماكن في الرياض، وكل وحدة عليها رابط قوقل ماب.`,
   markdown: `# مقاهي في كافد
 
 إذا أنت بكافد وتبي قهوة من غير ما تتمشى بالشاشة طول الوقت، هذي الصفحة لك. هذي قائمتنا للأماكن بهالجزء من الرياض اللي حطيناها على wain.lol للحين.
 
 ## وش فيه
 
-فيه **سبع** قهاوي من كافد بالقائمة الحين:
+فيه **${countWordAr(7)}** قهاوي من كافد بالقائمة الحين:
 
 - [١٢ كوب](/c/12-cups-roastery-and-cafe-kafd)
 - [كافي تيل](/c/cafe-tale-kafd)
@@ -76,14 +76,14 @@ wain.lol دليل قهوة صغير في الرياض. تقدر تطلب ثلا�
 /** Locked 9 Sep 2026. Najdi paraphrase of the EN Al Wurud gold master. Do not rewrite. */
 export const GOLD_MASTER_AL_WURUD_AR = {
   title: `مقاهي في الورود · ${PRODUCT_NAME}`,
-  meta: "أربع قهاوي بالورود على wain.lol — قائمة حي أهدأ في الرياض، مع روابط قوقل ماب.",
+  meta: `${countedCafesAr(4)} بالورود على wain.lol — قائمة حي أهدأ في الرياض، مع روابط قوقل ماب.`,
   markdown: `# مقاهي في الورود
 
 الورود أكثر شوارع سكنية من أبراج مكاتب — حي بالرياض تقدر تبي فيه قهوة هادية من غير ما تقطع البلد. هذي الصفحة المجموعة الصغيرة من أماكن الورود اللي ضفناها على wain.lol للحين.
 
 ## وش فيه
 
-**أربع** قهاوي من الورود بالكتالوج اليوم:
+**${countWordAr(4)}** قهاوي من الورود بالكتالوج اليوم:
 
 - [قهوة كارڤ](/c/carve-coffee-bar-al-wurud)
 - [إيا](/c/eya-specialty-coffee-al-wurud)
@@ -321,7 +321,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الحمراء. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "اثنتي عشر قهاوي بالحمراء على wain.lol — قائمة شرق الرياض فيها سيرين ورمثان وحرف، وكل وحدة عليها رابط قوقل ماب.",
+    meta: "{countCafe} بالحمراء على wain.lol — قائمة شرق الرياض فيها سيرين ورمثان وحرف، وكل وحدة عليها رابط قوقل ماب.",
   },
   "al-yarmouk": {
     lead: `اليرموك على الجهة الشرقية من الرياض، باتجاه الدائري الشرقي. إذا أنت بهالجهة وتبي قهوة من الكتالوج، هذي مجموعة اليرموك على wain.lol.
@@ -389,7 +389,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان تحبه؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهاوي ثنتين بالروابي على wain.lol — قائمة شرق الرياض فيها THE IT وإسرت، وكل وحدة عليها رابط قوقل ماب.",
+    meta: "{countCafe} بالروابي على wain.lol — قائمة شرق الرياض فيها THE IT وإسرت، وكل وحدة عليها رابط قوقل ماب.",
   },
   "al-fayha": {
     lead: `الفيحاء على الجهة الشرقية من الرياض. هذي قهاوي الفيحاء اللي حطيناها على wain.lol للحين — بس اللي بالكتالوج.
@@ -436,7 +436,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الندى. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهوة وحدة بالندى على wain.lol — قائمة شمال الرياض فيها برو92، وعليها رابط قوقل ماب.",
+    meta: "{countCafe} بالندى على wain.lol — قائمة شمال الرياض فيها برو92، وعليها رابط قوقل ماب.",
   },
   "diplomatic-quarter": {
     lead: `الحي الدبلوماسي قائمة لوحدها بالرياض — السفارات على كرت الخريطة. هذي مجموعة الحي الدبلوماسي اللي حطيناها على wain.lol للحين.
@@ -664,7 +664,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الجزيرة. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهوتين بالجزيرة على wain.lol — قائمة حي فيها د.كيف، وعليها روابط قوقل ماب.",
+    meta: "{countCafe} بالجزيرة على wain.lol — قائمة حي فيها د.كيف، وعليها روابط قوقل ماب.",
   },
   "an-nasim-ash-sharqi": {
     lead: `النسيم الشرقي على الجهة الشرقية من الرياض، بعد النهضة. إذا أنت بهالحي وتبي قهوة من الكتالوج، هذي مجموعة النسيم الشرقي على wain.lol.
@@ -908,7 +908,13 @@ function leadWithLiveTotal(lead: string, count: number): string {
 }
 
 function fillCount(template: string, count: number): string {
-  return template.replaceAll("{count}", countWordAr(count));
+  const phrase = countedCafesAr(count);
+  return template
+    .replaceAll("{countCafe}", phrase)
+    .replaceAll("{count} قهاوي", phrase)
+    .replaceAll("قهاوي {count}", phrase)
+    .replaceAll("قهوة {count}", phrase)
+    .replaceAll("{count}", countWordAr(count));
 }
 
 function chainBreakdownAr(local: number, chains: number): string {
@@ -1012,11 +1018,8 @@ export function districtArMeta(district: NeighborhoodId): string {
   const custom = DISTRICT_COPY_AR[district];
   if (custom?.meta) return fillCount(custom.meta, shops.length);
   const count = shops.length;
-  const word = countWordAr(count);
-  if (count === 1) {
-    return `قهوة وحدة بـ${name} على wain.lol — قائمة حي بالرياض، مع رابط قوقل ماب.`;
-  }
-  return `${word} قهاوي بـ${name} على wain.lol — قائمة حي بالرياض، مع روابط قوقل ماب.`;
+  const maps = count === 1 ? "مع رابط قوقل ماب." : "مع روابط قوقل ماب.";
+  return `${countedCafesAr(count)} بـ${name} على wain.lol — قائمة حي بالرياض، ${maps}`;
 }
 
 export function districtArMarkdown(district: NeighborhoodId): string {

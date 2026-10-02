@@ -10,6 +10,10 @@ import {
   listRealShops,
 } from "../lib/catalog";
 import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
+import {
+  listTrendingThisWeekShops,
+  TRENDING_THIS_WEEK_IDS,
+} from "../lib/trending-this-week";
 import { copy } from "../lib/copy";
 import {
   districtDescription,
@@ -1863,6 +1867,16 @@ assert(
     .map((shop) => shop.id)
     .join(",") === NEW_THIS_WEEK_IDS.join(","),
   "New this week strip keeps allowlist order",
+);
+assert(
+  TRENDING_THIS_WEEK_IDS.join(",") === "namq-al-malqa,waqar-al-aziziyah" &&
+    listTrendingThisWeekShops()
+      .map((shop) => shop.id)
+      .join(",") === TRENDING_THIS_WEEK_IDS.join(",") &&
+    listTrendingThisWeekShops()
+      .map((shop) => shop.id)
+      .join(",") !== NEW_THIS_WEEK_IDS.join(","),
+  "Trending this week is its own allowlist, not New this week",
 );
 assert(
   copy.newThisWeek.ar === "جديد هالأسبوع" &&

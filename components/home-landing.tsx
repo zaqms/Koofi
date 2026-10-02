@@ -15,6 +15,7 @@ import {
 } from "@/lib/catalog";
 import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
+import { listTrendingThisWeekShops } from "@/lib/trending-this-week";
 import { restoreOffHomeChipOpen } from "@/lib/chip-open";
 import {
   MEET_HALFWAY_CHIP,
@@ -76,7 +77,7 @@ export function HomeLanding({
         : mostPopularPath(language);
   const homeDiscovery = bareHome ? (
     <CityDiscovery>
-      <HomeTrending language={language} shops={listNewThisWeekShops()} />
+      <HomeTrending language={language} shops={listTrendingThisWeekShops()} />
       <BrowseNeighborhoods
         language={language}
         candidates={neighborhoodCandidates}

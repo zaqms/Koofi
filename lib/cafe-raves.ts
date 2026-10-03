@@ -144,7 +144,7 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
   ],
   "dips-plus-diriyah": [
     {
-      emoji: "🍋",
+      emoji: "🍰",
       name_ar: "تشيز كيك مدريد",
       name_en: "Madrid Cheesecake",
       reason_ar: "ينصحون فيه كثير.",
@@ -155,7 +155,7 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
   ],
   "eya-specialty-coffee-al-wurud": [
     {
-      emoji: "🌀",
+      emoji: "🥐",
       name_ar: "سينامون رول",
       name_en: "Cinnamon Roll",
       reason_ar: "ينمدح كثير في المراجعات.",

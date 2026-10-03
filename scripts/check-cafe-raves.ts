@@ -18,7 +18,10 @@ const DISPLAY_FIELDS = [
 ] as const;
 
 const PROMO_RE =
-  /خصم|عروض|عرض|تخفيض|مجاناً|مجانا|كود|\boffer\b|\bdiscount\b|\bdeal\b|\bpromo\b|\bsale\b|\bfree\b|\bcoupon\b|\bcode\b|%/i;
+  /خصم|عروض|عرض|تخفيض|مجاناً|مجانا|كود|\boffer\b|\bdiscount\b|\bdeal\b|\bpromo\b|\bsale\b|\bfree\b|\bcoupon\b|\bcode\b|\boff\b|%\s*off/i;
+
+/** Cocoa strength in a product name. A trailing "%" is the cacao share, not a discount. */
+const COCOA_NAME_RE = /hot chocolate|شوكلت|chocolate|cacao|كاكاو/i;
 
 const WEEN_RE = /\bween\b/i;
 
@@ -39,6 +42,14 @@ function catalogIds(): Set<string> {
     shops: { id: string }[];
   };
   return new Set(catalog.shops.map((shop) => shop.id));
+}
+
+function percentIsOffer(field: (typeof DISPLAY_FIELDS)[number], value: string): boolean {
+  if (!value.includes("%")) return false;
+  if (field === "reason_ar" || field === "reason_en" || field === "emoji") return true;
+  const cocoaName = COCOA_NAME_RE.test(value);
+  const everyPercentFollowsDigit = !/(^|[^\d])%/.test(value);
+  return !(cocoaName && everyPercentFollowsDigit);
 }
 
 function isCafeRave(value: unknown): value is CafeRave {
@@ -80,11 +91,15 @@ export function collectCafeRaveProblems(
       for (const field of DISPLAY_FIELDS) {
         const value = item[field].trim();
         if (!value) problems.push(`${where}: ${field} is empty`);
-        else if (PROMO_RE.test(value)) {
+        else if (PROMO_RE.test(value) || percentIsOffer(field, value)) {
           problems.push(`${where}: ${field} has promo or offer wording`);
         }
       }
       if (!item.evidence.trim()) problems.push(`${where}: evidence is empty`);
+      const sources = /^(\d+)\s+sources\b/.exec(item.evidence.trim());
+      if (!sources || Number(sources[1]) < 3) {
+        problems.push(`${where}: evidence must claim 3 or more sources`);
+      }
       if ([...item.reason_ar].length > REASON_MAX) {
         problems.push(`${where}: reason_ar is over ${REASON_MAX} characters`);
       }
@@ -107,7 +122,7 @@ function selfTest(ids: Set<string>): void {
     name_en: "Strawberry Matcha",
     reason_ar: "اللي الكل يذكره.",
     reason_en: "The one everyone keeps mentioning.",
-    evidence: "verified note",
+    evidence: "3 sources, verified note",
   };
   assert(
     collectCafeRaveProblems("clean", { "namq-al-malqa": [clean] }, ids).length ===
@@ -146,6 +161,48 @@ function selfTest(ids: Set<string>): void {
   console.log(
     `check-cafe-raves: bad fixture rejected (${problems.length} problems: 4 items, offer wording, ween)`,
   );
+
+  const percentOff: CafeRave = {
+    ...clean,
+    name_en: "Coffee 20% off",
+  };
+  const percentOffProblems = collectCafeRaveProblems(
+    "clean",
+    { "namq-al-malqa": [percentOff] },
+    ids,
+  );
+  assert(
+    percentOffProblems.some((problem) => problem.includes("promo or offer wording")),
+    `Coffee 20% off should be rejected: ${percentOffProblems.join("; ")}`,
+  );
+
+  const cocoa: CafeRave = {
+    ...clean,
+    name_ar: "هوت شوكلت 70%",
+    name_en: "70% Hot Chocolate",
+  };
+  assert(
+    collectCafeRaveProblems("clean", { "namq-al-malqa": [cocoa] }, ids).length === 0,
+    "cocoa percentage in a product name is not an offer",
+  );
+  const reasonPercent: CafeRave = {
+    ...cocoa,
+    reason_en: "About 70% cocoa.",
+  };
+  assert(
+    collectCafeRaveProblems("clean", { "namq-al-malqa": [reasonPercent] }, ids).some(
+      (problem) => problem.includes("reason_en"),
+    ),
+    "% stays banned in reason lines",
+  );
+  const thinEvidence: CafeRave = { ...clean, evidence: "2 sources, too thin" };
+  assert(
+    collectCafeRaveProblems("clean", { "namq-al-malqa": [thinEvidence] }, ids).some(
+      (problem) => problem.includes("3 or more sources"),
+    ),
+    "evidence must lead with 3 or more sources",
+  );
+  console.log("check-cafe-raves: percent-off rejected; cocoa 70% allowed; thin evidence rejected");
 }
 
 const ids = catalogIds();

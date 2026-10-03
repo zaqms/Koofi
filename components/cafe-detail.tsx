@@ -481,6 +481,26 @@ function DetailInfoRow({
   );
 }
 
+/** Keep Latin runs such as V60 and 70% in logical order inside Arabic RTL rows. */
+function isolateEmbeddedLtr(text: string): ReactNode {
+  const re = /[A-Za-z0-9]+(?:['.’-]*[A-Za-z0-9]+)*%?/g;
+  const nodes: ReactNode[] = [];
+  let last = 0;
+  for (const match of text.matchAll(re)) {
+    const index = match.index ?? 0;
+    if (index > last) nodes.push(text.slice(last, index));
+    nodes.push(
+      <bdi key={`${index}:${match[0]}`} dir="ltr">
+        {match[0]}
+      </bdi>,
+    );
+    last = index + match[0].length;
+  }
+  if (nodes.length === 0) return text;
+  if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+}
+
 function CafeRaveRows({
   items,
   language,
@@ -503,9 +523,11 @@ function CafeRaveRows({
             {item.emoji}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-sm leading-5 text-ink">{item.name}</span>
+            <span className="block text-sm leading-5 text-ink">
+              {isolateEmbeddedLtr(item.name)}
+            </span>
             <span className="mt-0.5 block text-[11px] leading-4 text-wain-soft-taupe">
-              {item.reason}
+              {isolateEmbeddedLtr(item.reason)}
             </span>
           </span>
         </div>

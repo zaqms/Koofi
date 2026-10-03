@@ -8,6 +8,7 @@ import type { ClaimStatus } from "@/lib/claims-types";
 import type { DirectoryShop } from "@/lib/directory";
 import { homePath } from "@/lib/product";
 import { SHOW_BEEN_HERE } from "@/lib/tonight";
+import type { CafeRaveLine } from "@/lib/cafe-raves";
 import type { Language, Shop } from "@/lib/types";
 
 type CafeCardProps = {
@@ -16,6 +17,7 @@ type CafeCardProps = {
   backHref?: string;
   siblings?: DirectoryShop[];
   districtHref?: string;
+  raves?: CafeRaveLine[];
 };
 
 type ClaimPayload = {
@@ -29,6 +31,7 @@ export function CafeCard({
   backHref,
   siblings = [],
   districtHref,
+  raves,
 }: CafeCardProps) {
   const resolvedBackHref = backHref ?? homePath(language);
   const [status, setStatus] = useState<ClaimStatus>("none");
@@ -61,6 +64,7 @@ export function CafeCard({
         backHref={resolvedBackHref}
         siblings={siblings}
         districtHref={districtHref}
+        {...(raves && raves.length > 0 ? { raves } : {})}
       />
       {SHOW_BEEN_HERE ? (
         <CardBeen shopId={shop.id} language={language} />

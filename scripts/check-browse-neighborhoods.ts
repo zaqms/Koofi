@@ -116,7 +116,7 @@ const WADI_REFILL_DISTRICTS = ["al-wadi"] as const;
 const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
 const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
-const EMPTY_DICTIONARY_DISTRICTS = ["as-suwaidi"] as const;
+const BISAT_BATCH_NEW_DISTRICTS = ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "As Sulimaniyah",
@@ -179,10 +179,10 @@ assert(
   "view-all rows stay on live catalog ids",
 );
 assert(
-  EMPTY_DICTIONARY_DISTRICTS.every(
-    (id) => !rowsEn.some((row) => row.id === id),
+  BISAT_BATCH_NEW_DISTRICTS.every((id) =>
+    rowsEn.some((row) => row.id === id && row.cafeCount === 1),
   ),
-  "0-shop dictionary districts stay out of live browse",
+  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) join live browse with one cafe each",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -364,11 +364,11 @@ for (const id of ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as cons
   assert(!az.some((row) => row.id === id), `A–Z hides chain-only ${id}`);
 }
 assert(
-  !az.some((row) => row.id === "as-suwaidi"),
-  "A–Z excludes 0-shop as-suwaidi",
+  az.some((row) => row.id === "as-suwaidi"),
+  "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 64, "A–Z drops the five chain-only districts");
+assert(az.length === 68, "A–Z drops the five chain-only districts (64 + 4 Bisat batch districts)");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(
@@ -717,8 +717,8 @@ assert(
   "enough official-pin centroids to fill the shortlist",
 );
 assert(
-  !riyadhCandidates.some((row) => row.id === "as-suwaidi"),
-  "0-shop districts stay out of the home rail",
+  riyadhCandidates.some((row) => row.id === "as-suwaidi" && row.centroid),
+  "As Suwaidi joins the home rail candidates with an official-pin centroid",
 );
 
 const hittinRow = riyadhCandidates.find((row) => row.id === "hittin");

@@ -651,18 +651,18 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 372, "specialty discovery is 372 after the Trending adds batch");
-assert(listRealShops().length === 433, "catalog is 433 after the Trending adds batch");
-assert(listLiveDistrictIds().length === 53, "specialty districts are 53 (Drip makes Tuwaiq live)");
+assert(listDiscoveryShops().length === 380, "specialty discovery is 380 after the Bisat batch");
+assert(listRealShops().length === 441, "catalog is 441 after the Bisat batch");
+assert(listLiveDistrictIds().length === 57, "specialty districts are 57 (Bisat batch adds Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi)");
 assert(
-  catalogDistrictIdsFrom(listRealShops()).length === 70,
-  "catalog rows cover 70 districts (24cafe adds Jarir, hidden)",
+  catalogDistrictIdsFrom(listRealShops()).length === 74,
+  "catalog rows cover 74 districts (Jarir hidden; 4 Bisat batch districts)",
 );
-assert(listLiveCatalogDistrictIds().length === 64, "five chain-only districts drop out of the page set");
+assert(listLiveCatalogDistrictIds().length === 68, "five chain-only districts drop out of the page set (64 + 4 Bisat batch)");
 assert(listDriveThroughDirectoryShops().length === 71, "drive-through is 71 after the placeId fix");
-assert(listListingShops().length === 379, "listing is specialty plus the 7 sit-down chains");
-assert(listPublicShops().length === 379, "public list includes the 7 sit-down chains");
-assert(listBrowseDirectoryShops().length === 389, "browse keeps local drive-through rows and the sit-down chains");
+assert(listListingShops().length === 387, "listing is specialty plus the 7 sit-down chains");
+assert(listPublicShops().length === 387, "public list includes the 7 sit-down chains");
+assert(listBrowseDirectoryShops().length === 397, "browse keeps local drive-through rows and the sit-down chains");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 7,
   "exactly 7 sit-down chains are listed",
@@ -1019,7 +1019,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "25fd36d97540ace8b71320d9a69e9d115eb8ee9c824130723305671c000bae02",
+  copyHash === "8ac51f4110b6a3a73382aa2c22c0d9185d383ca6cbbe76da7caccf8e1e948656",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1064,10 +1064,10 @@ console.log(
 );
 assert(
   paramIds.has("as-suwaidi") &&
-    !pageIds.has("as-suwaidi") &&
-    !sitemapLocs.has("https://wain.lol/coffee-shops/as-suwaidi") &&
+    pageIds.has("as-suwaidi") &&
+    sitemapLocs.has("https://wain.lol/coffee-shops/as-suwaidi") &&
     !districtPageHidden("as-suwaidi"),
-  "as-suwaidi keeps the prod URL: generated, not in the sitemap",
+  "as-suwaidi keeps the prod URL and is now a sitemap page (Alwaal Albari)",
 );
 const localDriveThrough = fixtureShop({
   id: "local-dt-only",
@@ -1149,11 +1149,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "cf92a0fcd4b0b05210e4796f46e206187aa7bb3d92aea8a2d23e8239bf24b412",
+  llmsHash === "b2efa2a60901a4494cbd9344698b8c0d6af488540b564df835172c128ac7991e",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("372 local, 7 chain branches"),
+  llms.includes("380 local, 7 chain branches"),
   "llms.txt names the 7 chain branches separately from specialty",
 );
 

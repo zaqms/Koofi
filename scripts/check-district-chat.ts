@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 53, `expected 53 live districts, got ${live.length}`);
+assert(live.length === 57, `expected 57 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -123,6 +123,21 @@ assert(
   parseIntent("ظهرة البديعة").neighborhoods.join(",") === "dhahrat-al-badiah",
   "ظهرة البديعة is a حي",
 );
+// Bisat batch (3 Oct): four new live districts resolve in EN and AR.
+for (const [text, id] of [
+  ["Umm Al Hamam Al Gharbi", "umm-al-hamam-al-gharbi"],
+  ["أم الحمام الغربي", "umm-al-hamam-al-gharbi"],
+  ["An Nafal", "an-nafal"],
+  ["النفل", "an-nafal"],
+  ["King Salman", "king-salman"],
+  ["الملك سلمان", "king-salman"],
+  ["As Suwaidi", "as-suwaidi"],
+  ["السويدي", "as-suwaidi"],
+] as const) {
+  assert(extractPrimaryDistrict(text) === id, `${text} → ${id}`);
+  assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
+}
+assert(extractPrimaryDistrict("King Fahd District") === "king-fahd", "King Salman does not steal King Fahd");
 
 assert(DISTRICT_POPULARITY_WEIGHTS.maps === 0.6, "maps weight locked at 0.6");
 assert(DISTRICT_POPULARITY_WEIGHTS.ig === 0.4, "IG weight locked at 0.4");

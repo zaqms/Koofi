@@ -12003,8 +12003,8 @@
     {
       "src": "/cafe-heroes/soliz-badr/1.jpg",
       "attribution": {
-        "displayName": "سوليز soliz",
-        "uri": "https://maps.google.com/maps/contrib/114634106395197414314"
+        "displayName": "GA",
+        "uri": "https://maps.google.com/maps/contrib/110083761858418433551"
       }
     },
     {
@@ -12017,15 +12017,15 @@
     {
       "src": "/cafe-heroes/soliz-badr/3.jpg",
       "attribution": {
-        "displayName": "GA",
-        "uri": "https://maps.google.com/maps/contrib/110083761858418433551"
+        "displayName": "صالحه المنيع",
+        "uri": "https://maps.google.com/maps/contrib/104766310136178366399"
       }
     },
     {
       "src": "/cafe-heroes/soliz-badr/4.jpg",
       "attribution": {
-        "displayName": "صالحه المنيع",
-        "uri": "https://maps.google.com/maps/contrib/104766310136178366399"
+        "displayName": "سوليز soliz",
+        "uri": "https://maps.google.com/maps/contrib/114634106395197414314"
       }
     }
   ],
@@ -12056,6 +12056,267 @@
       "attribution": {
         "displayName": "A’ albra",
         "uri": "https://maps.google.com/maps/contrib/116328192219284061161"
+      }
+    }
+  ],
+  "bisat-umm-al-hamam-al-gharbi": [
+    {
+      "src": "/cafe-heroes/bisat-umm-al-hamam-al-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "بساط - العروبة",
+        "uri": "https://maps.google.com/maps/contrib/115768216569278399786"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-umm-al-hamam-al-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "بساط - العروبة",
+        "uri": "https://maps.google.com/maps/contrib/115768216569278399786"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-umm-al-hamam-al-gharbi/3.jpg",
+      "attribution": {
+        "displayName": "بساط - العروبة",
+        "uri": "https://maps.google.com/maps/contrib/115768216569278399786"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-umm-al-hamam-al-gharbi/4.jpg",
+      "attribution": {
+        "displayName": "اكثم الصالح",
+        "uri": "https://maps.google.com/maps/contrib/106826087322536513815"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-umm-al-hamam-al-gharbi/5.jpg",
+      "attribution": {
+        "displayName": "بساط - العروبة",
+        "uri": "https://maps.google.com/maps/contrib/115768216569278399786"
+      }
+    }
+  ],
+  "bisat-an-nafal": [
+    {
+      "src": "/cafe-heroes/bisat-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "MG",
+        "uri": "https://maps.google.com/maps/contrib/105233472627300058347"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "SO.T",
+        "uri": "https://maps.google.com/maps/contrib/115176134973027713588"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "ميمي",
+        "uri": "https://maps.google.com/maps/contrib/114840565189562340855"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "BU YOUSEF",
+        "uri": "https://maps.google.com/maps/contrib/100693620783673982889"
+      }
+    }
+  ],
+  "bisat-hittin": [
+    {
+      "src": "/cafe-heroes/bisat-hittin/1.jpg",
+      "attribution": {
+        "displayName": "Sh",
+        "uri": "https://maps.google.com/maps/contrib/106346524851259389703"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-hittin/2.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-hittin/3.jpg",
+      "attribution": {
+        "displayName": "دحـيمم",
+        "uri": "https://maps.google.com/maps/contrib/116353017213187550272"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bisat-hittin/4.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    }
+  ],
+  "veo-al-malqa": [
+    {
+      "src": "/cafe-heroes/veo-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "Nawal “Alamri”",
+        "uri": "https://maps.google.com/maps/contrib/104154244808708541412"
+      }
+    },
+    {
+      "src": "/cafe-heroes/veo-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/veo-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "S A",
+        "uri": "https://maps.google.com/maps/contrib/114812912018455669054"
+      }
+    },
+    {
+      "src": "/cafe-heroes/veo-al-malqa/4.jpg",
+      "attribution": {
+        "displayName": "Eman",
+        "uri": "https://maps.google.com/maps/contrib/116183004187225958398"
+      }
+    }
+  ],
+  "rex-as-sahafah": [
+    {
+      "src": "/cafe-heroes/rex-as-sahafah/1.jpg",
+      "attribution": {
+        "displayName": "S A",
+        "uri": "https://maps.google.com/maps/contrib/100538579094869820858"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-as-sahafah/2.jpg",
+      "attribution": {
+        "displayName": "Rafi Alamri",
+        "uri": "https://maps.google.com/maps/contrib/106846052508802343093"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-as-sahafah/3.jpg",
+      "attribution": {
+        "displayName": "Manal Aldajani",
+        "uri": "https://maps.google.com/maps/contrib/115585406066898630320"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-as-sahafah/4.jpg",
+      "attribution": {
+        "displayName": "shoug Altaweel",
+        "uri": "https://maps.google.com/maps/contrib/104311968151229738276"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-as-sahafah/5.jpg",
+      "attribution": {
+        "displayName": "Mohammed Abdulrahman",
+        "uri": "https://maps.google.com/maps/contrib/111674030563251691401"
+      }
+    }
+  ],
+  "rex-hittin": [
+    {
+      "src": "/cafe-heroes/rex-hittin/1.jpg",
+      "attribution": {
+        "displayName": "M S M",
+        "uri": "https://maps.google.com/maps/contrib/114936379956681412808"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-hittin/2.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-hittin/3.jpg",
+      "attribution": {
+        "displayName": "R z",
+        "uri": "https://maps.google.com/maps/contrib/110660782465688762809"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-hittin/4.jpg",
+      "attribution": {
+        "displayName": "Khalid 9",
+        "uri": "https://maps.google.com/maps/contrib/105756355727479591904"
+      }
+    }
+  ],
+  "rex-king-salman": [
+    {
+      "src": "/cafe-heroes/rex-king-salman/1.jpg",
+      "attribution": {
+        "displayName": "ابراهيم البارقي",
+        "uri": "https://maps.google.com/maps/contrib/100092460647747222071"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-king-salman/2.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-king-salman/3.jpg",
+      "attribution": {
+        "displayName": "WEJDAN AZIZ",
+        "uri": "https://maps.google.com/maps/contrib/109907667192514301514"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rex-king-salman/4.jpg",
+      "attribution": {
+        "displayName": "Fatimah A",
+        "uri": "https://maps.google.com/maps/contrib/109746701111575017586"
+      }
+    }
+  ],
+  "alwaal-albari-as-suwaidi": [
+    {
+      "src": "/cafe-heroes/alwaal-albari-as-suwaidi/1.jpg",
+      "attribution": {
+        "displayName": "الوعل",
+        "uri": "https://maps.google.com/maps/contrib/108940982071268832282"
+      }
+    },
+    {
+      "src": "/cafe-heroes/alwaal-albari-as-suwaidi/2.jpg",
+      "attribution": {
+        "displayName": "الوعل",
+        "uri": "https://maps.google.com/maps/contrib/108940982071268832282"
+      }
+    },
+    {
+      "src": "/cafe-heroes/alwaal-albari-as-suwaidi/3.jpg",
+      "attribution": {
+        "displayName": "الوعل",
+        "uri": "https://maps.google.com/maps/contrib/108940982071268832282"
+      }
+    },
+    {
+      "src": "/cafe-heroes/alwaal-albari-as-suwaidi/4.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/alwaal-albari-as-suwaidi/5.jpg",
+      "attribution": {
+        "displayName": "TTT TTT",
+        "uri": "https://maps.google.com/maps/contrib/112186069771581175533"
       }
     }
   ]

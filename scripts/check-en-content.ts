@@ -164,6 +164,9 @@ for (const district of [
   "tuwaiq",
   "as-suwaidi",
   "al-falah",
+  "umm-al-hamam-al-gharbi",
+  "an-nafal",
+  "king-salman",
 ] as const) {
   const body = districtEnMarkdown(district);
   const lead = body.split("## What’s here")[0] ?? "";
@@ -186,8 +189,8 @@ assert(
   "al-rabwah EN must not keep the wrong Get Up card link",
 );
 assert(
-  shopsInDistrict("as-suwaidi").length === 0,
-  "as-suwaidi catalog is empty after the closed drop",
+  shopsInDistrict("as-suwaidi").map((shop) => shop.id).join(",") === "alwaal-albari-as-suwaidi",
+  "as-suwaidi catalog is Alwaal Albari only (dr.CAFE As Suwaidi stays dropped)",
 );
 assert(
   !districtEnMarkdown("al-masif").includes("/en/c/voom-al-masif"),

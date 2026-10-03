@@ -20,7 +20,7 @@ import { listingCardTags, MAX_LISTING_TAGS } from "../lib/listing-tags";
 import { neighborhoodLabel } from "../lib/neighborhoods";
 import { cafeArMarkdown } from "../lib/ar-content";
 import { cafeEnMarkdown } from "../lib/en-content";
-import { getShop } from "../lib/catalog";
+import { getShop, listRealShops } from "../lib/catalog";
 import { PRODUCT_NAME } from "../lib/product";
 import { SHOW_BEEN_HERE, SHOW_DETAIL_FAVORITE, SHOW_INVITE_CTA } from "../lib/tonight";
 
@@ -531,6 +531,19 @@ const BATCH12_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH12_IDS = Object.keys(BATCH12_HERO_COUNTS);
 
+/** BATCH13: Bisat/Rex/Veo/Alwaal batch (3 Oct 2026) Places galleries — 4 or 5 frames each, Google credit per frame. */
+const BATCH13_HERO_COUNTS: Record<string, number> = {
+  "bisat-umm-al-hamam-al-gharbi": 5,
+  "bisat-an-nafal": 4,
+  "bisat-hittin": 4,
+  "veo-al-malqa": 4,
+  "rex-as-sahafah": 5,
+  "rex-hittin": 4,
+  "rex-king-salman": 4,
+  "alwaal-albari-as-suwaidi": 5,
+};
+const BATCH13_IDS = Object.keys(BATCH13_HERO_COUNTS);
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-yasmin",
   // placeId fix 2026-10-02: the corrected place has no Places hours.
@@ -554,6 +567,7 @@ const batch9HeroIds = BATCH9_IDS.filter((id) => bakedHeroes[id]);
 const batch10HeroIds = BATCH10_IDS.filter((id) => bakedHeroes[id]);
 const batch11HeroIds = BATCH11_IDS.filter((id) => bakedHeroes[id]);
 const batch12HeroIds = BATCH12_IDS.filter((id) => bakedHeroes[id]);
+const batch13HeroIds = BATCH13_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -567,8 +581,9 @@ assert(
       batch9HeroIds.length +
       batch10HeroIds.length +
       batch11HeroIds.length +
-      batch12HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–12 merge in",
+      batch12HeroIds.length +
+      batch13HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–13 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -581,6 +596,28 @@ assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
 assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
 assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
 assert(batch12HeroIds.length === 9, "batch 12 Trending adds hero set is complete");
+assert(batch13HeroIds.length === 8, "batch 13 Bisat/Rex/Veo/Alwaal hero set is complete");
+// QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
+assert(
+  (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
+    "GA|FaisaL|صالحه المنيع|سوليز soliz",
+  "soliz-badr gallery order: current frames first, pre-opening storefront last",
+);
+// QA #237 L6: TORRE frame 2 is the clean lounge frame; the frame with a barista in the background moves to 4.
+assert(
+  [1, 2, 3, 4].map((n) => readFileSync(join("public/cafe-heroes/torre-al-rawabi", `${n}.jpg`)).length).join(",") ===
+    "148987,200646,245402,257603",
+  "torre-al-rawabi frame 2 is the clean lounge frame; the barista-background frame is 4",
+);
+// QA #237 L4: one Ōkawa spelling (the live An Narjis row) and one AR pattern on the Ōkawa rows.
+for (const id of ["okawa-al-narjis", "okawa-olaya", "okawa-king-fahd"]) {
+  const shop = getShop(id);
+  assert(shop?.nameEn === "Ōkawa" && shop?.nameAr === "أوكاوا", `${id} is Ōkawa / أوكاوا`);
+}
+assert(
+  !listRealShops().some((shop) => /King Fahad/.test(shop.nameEn)),
+  "no catalog name spells King Fahad (the district is King Fahd)",
+);
 assert(bakedHeroes["waqar-al-aziziyah"]?.length === 4, "Waqar keeps the 4 QA-picked frames");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
@@ -633,6 +670,7 @@ function expectedHeroCount(id: string): number {
   if (id === "hokkaido-al-hamra") return 3;
   if (id === "buljah-al-olaya") return 3;
   if (BATCH12_HERO_COUNTS[id] != null) return BATCH12_HERO_COUNTS[id]!;
+  if (BATCH13_HERO_COUNTS[id] != null) return BATCH13_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

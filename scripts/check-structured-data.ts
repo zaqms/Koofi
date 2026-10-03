@@ -231,10 +231,12 @@ assert(
     !sitemap.includes("/coffee-shops/for-two") &&
     !sitemap.includes("/coffee-shops/date<") &&
     !sitemap.includes("/en/coffee-shops/date<") &&
-    !sitemap.includes("soft-places") &&
-    !sitemap.includes("/coffee-shops/as-suwaidi<") &&
-    !sitemap.includes("/en/coffee-shops/as-suwaidi<"),
-  "sitemap excludes dating, Soft Places, and 0-shop districts",
+    !sitemap.includes("soft-places"),
+  "sitemap excludes dating and Soft Places",
+);
+assert(
+  sitemap.includes("/coffee-shops/as-suwaidi<") && sitemap.includes("/en/coffee-shops/as-suwaidi<"),
+  "sitemap lists As Suwaidi now that Alwaal Albari is live",
 );
 assert(
   sitemap.includes("https://wain.lol/neighborhoods<"),

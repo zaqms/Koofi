@@ -129,8 +129,8 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 64, `expected 64 district pages, got ${liveCatalog.length}`);
-assert(!liveCatalog.includes("as-suwaidi"), "as-suwaidi has 0 shops");
+assert(liveCatalog.length === 68, `expected 68 district pages, got ${liveCatalog.length}`);
+assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
 const browse = listNeighborhoodRows("en", listBrowseDirectoryShops());
@@ -143,8 +143,8 @@ assert(
   "browse rows match live catalog districts",
 );
 assert(
-  !browse.some((row) => row.id === "as-suwaidi"),
-  "As Suwaidi stays out of the neighborhood index",
+  browse.some((row) => row.id === "as-suwaidi" && row.cafeCount === 1),
+  "As Suwaidi joins the neighborhood index with one cafe",
 );
 
 const sitemap = listSitemapLocs().join("\n");
@@ -159,9 +159,9 @@ for (const id of liveCatalog) {
   );
 }
 assert(
-  !sitemap.includes("/coffee-shops/as-suwaidi") &&
-    !sitemap.includes("/en/coffee-shops/as-suwaidi"),
-  "sitemap excludes 0-shop as-suwaidi",
+  sitemap.includes("/coffee-shops/as-suwaidi") &&
+    sitemap.includes("/en/coffee-shops/as-suwaidi"),
+  "sitemap lists as-suwaidi AR + EN now that it has a cafe",
 );
 assert(
   !sitemap.includes("al-ndustrial-new") && !sitemap.includes("al-industrial-new"),
@@ -190,6 +190,36 @@ assert(
     "way-coffee-dhahrat-al-badiah",
   "Dhahrat Al Badiah catalog is WAY only",
 );
+
+// Bisat batch (3 Oct): four new live districts, one cafe each. Umm Al Hamam Al Gharbi and
+// As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.
+for (const [id, en, ar, shopId, onSheet] of [
+  ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi", true],
+  ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal", false],
+  ["king-salman", "King Salman", "الملك سلمان", "rex-king-salman", false],
+  ["as-suwaidi", "As Suwaidi", "السويدي", "alwaal-albari-as-suwaidi", true],
+] as const) {
+  const row = rows.find((r) => r.stableId === id);
+  if (onSheet) {
+    assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);
+    assert(row?.nameEn === en && row?.nameAr === ar, `${id} sheet EN/AR lock`);
+  } else {
+    assert(!row, `${id} is not on the locked sheet`);
+  }
+  assert(neighborhoodLabel(id, "en") === en, `${id} EN label is ${en}`);
+  assert(neighborhoodLabel(id, "ar") === ar, `${id} AR label is ${ar}`);
+  assert(liveCatalog.includes(id), `${id} is a live catalog district`);
+  assert(listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") === shopId,
+    `${id} catalog is ${shopId} only`,
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) &&
+      sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    `sitemap lists ${id} AR + EN`,
+  );
+}
 
 const aziziyah = rows.find((row) => row.stableId === "al-aziziyah");
 assert(aziziyah?.status === "dictionary_only", "Al Aziziyah sheet stays dictionary_only");

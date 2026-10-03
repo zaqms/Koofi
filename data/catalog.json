@@ -36315,7 +36315,7 @@
         "lat": 24.875037499999998,
         "lng": 46.6211406
       },
-      "logoUrl": "/logos/rex-al-arid.jpg",
+      "logoUrl": "/logos/rex-coffee.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJGaXJIqTlLj4Re0CaN9XLaIU",
       "dineIn": true,
@@ -39964,8 +39964,8 @@
     },
     {
       "id": "okawa-olaya",
-      "nameAr": "أوكاوا التخصصي",
-      "nameEn": "OKAWA Cafe Al Takhassusi",
+      "nameAr": "أوكاوا",
+      "nameEn": "Ōkawa",
       "city": "riyadh",
       "neighborhood": "olaya",
       "neighborhoodAr": "العليا",
@@ -40100,8 +40100,8 @@
     },
     {
       "id": "okawa-king-fahd",
-      "nameAr": "أوكاوا الملك فهد",
-      "nameEn": "OKAWA Cafe King Fahad",
+      "nameAr": "أوكاوا",
+      "nameEn": "Ōkawa",
       "city": "riyadh",
       "neighborhood": "king-fahd",
       "neighborhoodAr": "الملك فهد",
@@ -40768,6 +40768,836 @@
               "minute": 0
             },
             "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "bisat-umm-al-hamam-al-gharbi",
+      "nameAr": "بِساط",
+      "nameEn": "Bisat",
+      "city": "riyadh",
+      "neighborhood": "umm-al-hamam-al-gharbi",
+      "neighborhoodAr": "أم الحمام الغربي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d80fb0e1949:0x3b6f512d10c01bd8!8m2!3d24.6977213!4d46.6389596",
+      "pin": {
+        "lat": 24.6977213,
+        "lng": 46.6389596
+      },
+      "logoUrl": "/logos/bisat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJSRkO-4AdLz4R2BvAEC1Rbzs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:00 AM – 12:00 AM",
+          "Tuesday: 5:00 AM – 12:00 AM",
+          "Wednesday: 5:00 AM – 12:00 AM",
+          "Thursday: 5:00 AM – 12:00 AM",
+          "Friday: 5:00 AM – 12:00 AM",
+          "Saturday: 5:00 AM – 12:00 AM",
+          "Sunday: 5:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "bisat-an-nafal",
+      "nameAr": "بِساط",
+      "nameEn": "Bisat",
+      "city": "riyadh",
+      "neighborhood": "an-nafal",
+      "neighborhoodAr": "النفل",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd00219bfd13:0x1f202c729870410e!8m2!3d24.7794093!4d46.6808549",
+      "pin": {
+        "lat": 24.7794093,
+        "lng": 46.6808549
+      },
+      "logoUrl": "/logos/bisat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJE_2bIQD9Lj4RDkFwmHIsIB8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:00 AM – 2:00 AM",
+          "Tuesday: 5:00 AM – 2:00 AM",
+          "Wednesday: 5:00 AM – 2:00 AM",
+          "Thursday: 5:00 AM – 2:00 AM",
+          "Friday: 5:00 AM – 2:00 AM",
+          "Saturday: 5:00 AM – 2:00 AM",
+          "Sunday: 5:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "bisat-hittin",
+      "nameAr": "بِساط",
+      "nameEn": "Bisat",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "حطين",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3dfd6caad95:0x299143306b331e83!8m2!3d24.7646531!4d46.6092044",
+      "pin": {
+        "lat": 24.7646531,
+        "lng": 46.6092044
+      },
+      "logoUrl": "/logos/bisat.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJla3K1t_jLj4Rgx4zazBDkSk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "veo-al-malqa",
+      "nameAr": "فيو",
+      "nameEn": "VEO Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-malqa",
+      "neighborhoodAr": "الملقا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7673a008473:0x281d9b74b7a35bd7!8m2!3d24.7908988!4d46.5881155",
+      "pin": {
+        "lat": 24.7908988,
+        "lng": 46.5881155
+      },
+      "logoUrl": "/logos/veo-hittin.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJc4QAOmfnLj4R11ujt3SbHSg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "rex-as-sahafah",
+      "nameAr": "ريكس",
+      "nameEn": "Rex",
+      "city": "riyadh",
+      "neighborhood": "as-sahafah",
+      "neighborhoodAr": "الصحافة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee5b6f1c036df:0x114d742b4b7b72ac!8m2!3d24.8109014!4d46.6460923",
+      "pin": {
+        "lat": 24.8109014,
+        "lng": 46.6460923
+      },
+      "logoUrl": "/logos/rex-coffee.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ3zbA8bblLj4RrHJ7Syt0TRE",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 1:00 AM",
+          "Friday: 12:00 PM – 1:00 AM",
+          "Saturday: 8:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "rex-hittin",
+      "nameAr": "ريكس",
+      "nameEn": "Rex",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "حطين",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee13506d9b669:0x29be4e4267f345ad!8m2!3d24.7698977!4d46.5851666",
+      "pin": {
+        "lat": 24.7698977,
+        "lng": 46.5851666
+      },
+      "logoUrl": "/logos/rex-coffee.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJabbZBjXhLj4RrUXzZ0JOvik",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 1:00 AM",
+          "Friday: 12:00 PM – 1:00 AM",
+          "Saturday: 8:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "rex-king-salman",
+      "nameAr": "ريكس",
+      "nameEn": "Rex",
+      "city": "riyadh",
+      "neighborhood": "king-salman",
+      "neighborhoodAr": "الملك سلمان",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f036014130825:0xbfcdd0ecff6c8d02!8m2!3d24.7371909!4d46.6944962",
+      "pin": {
+        "lat": 24.7371909,
+        "lng": 46.6944962
+      },
+      "logoUrl": "/logos/rex-coffee.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJJQgTFGADLz4RAo1s_-zQzb8",
+      "dineIn": null,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:30 AM – 1:00 AM",
+          "Tuesday: 6:30 AM – 1:00 AM",
+          "Wednesday: 6:30 AM – 1:00 AM",
+          "Thursday: 6:30 AM – 1:00 AM",
+          "Friday: 12:00 PM – 1:00 AM",
+          "Saturday: 8:00 AM – 1:00 AM",
+          "Sunday: 6:30 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "alwaal-albari-as-suwaidi",
+      "nameAr": "الوعل البري",
+      "nameEn": "Alwaal Albari",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f051eb95d150d:0x2c88ad258793b679!8m2!3d24.5935137!4d46.6780331",
+      "pin": {
+        "lat": 24.5935137,
+        "lng": 46.6780331
+      },
+      "logoUrl": "/logos/alwaal-albari-al-olaya.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJDRVduR4FLz4RebaThyWtiCw",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
               "day": 0,
               "hour": 0,
               "minute": 0

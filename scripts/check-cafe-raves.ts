@@ -101,22 +101,46 @@ function hasArabicLetters(value: string): boolean {
   return false;
 }
 
+/** One dated review citation: `type YYYY-MM-DD url`. */
+const SOURCE_ENTRY_RE = /^([A-Za-z][\w-]*)\s+(\d{4}-\d{2}-\d{2})\s+(https?:\/\/\S+)$/;
+
+type SourceEntry = { type: string; date: string; url: string };
+
 /**
- * Source locators in an evidence note: http(s) URLs and maps:0x place ids.
- * The same URL listed again counts once. A different review date on that
- * URL is a different source, because the note is citing the review.
- * An undated repeat (the same blog URL pasted twice) does not.
+ * Citations after the first colon, split on `;`.
+ * Each one must be `type YYYY-MM-DD url`. The same place URL on a
+ * different date is a different review. An exact (date, url) repeat fails.
  */
-function uniqueSourceUrls(evidence: string): string[] {
-  const keys = new Set<string>();
-  for (const citation of evidence.split(/\s*;\s*/)) {
-    const date = citation.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0];
-    const urls = [
-      ...citation.matchAll(/https?:\/\/[^\s;]+|maps:0x[0-9a-f]+:0x[0-9a-f]+/gi),
-    ].map((match) => match[0].replace(/[),.;]+$/g, ""));
-    for (const url of urls) keys.add(date ? `${date} ${url}` : url);
+function parseSourceEntries(evidence: string): {
+  entries: SourceEntry[];
+  undated: boolean;
+  repeated: boolean;
+  distinct: number;
+} {
+  const colon = evidence.indexOf(":");
+  const body = colon === -1 ? evidence : evidence.slice(colon + 1);
+  const citations = body
+    .split(";")
+    .map((citation) => citation.trim())
+    .filter(Boolean);
+  const entries: SourceEntry[] = [];
+  let undated = false;
+  for (const citation of citations) {
+    const match = SOURCE_ENTRY_RE.exec(citation);
+    if (!match) {
+      undated = true;
+      continue;
+    }
+    entries.push({ type: match[1], date: match[2], url: match[3] });
   }
-  return [...keys];
+  const seen = new Set<string>();
+  let repeated = false;
+  for (const entry of entries) {
+    const key = `${entry.date}\n${entry.url}`;
+    if (seen.has(key)) repeated = true;
+    else seen.add(key);
+  }
+  return { entries, undated, repeated, distinct: seen.size };
 }
 
 function isCafeRave(value: unknown): value is CafeRave {
@@ -207,14 +231,16 @@ export function collectCafeRaveProblems(
       }
       if (!item.evidence.trim()) problems.push(`${where}: evidence is empty`);
       const sources = /^(\d+)\s+sources\b/.exec(item.evidence.trim());
-      const uniqueUrls = uniqueSourceUrls(item.evidence);
+      const parsed = parseSourceEntries(item.evidence);
       const claimed = sources ? Number(sources[1]) : null;
-      if (claimed === null || uniqueUrls.length < 3) {
-        problems.push(`${where}: evidence needs at least 3 unique source URLs`);
+      if (parsed.undated) problems.push(`${where}: evidence has an undated entry`);
+      if (parsed.repeated) problems.push(`${where}: evidence repeats a dated entry`);
+      if (claimed === null || parsed.distinct < 3) {
+        problems.push(`${where}: evidence needs at least 3 dated sources`);
       }
-      if (claimed !== null && claimed !== uniqueUrls.length) {
+      if (claimed !== null && claimed !== parsed.distinct) {
         problems.push(
-          `${where}: claimed ${claimed} sources but ${uniqueUrls.length} unique URLs`,
+          `${where}: claimed ${claimed} sources but ${parsed.distinct} dated sources`,
         );
       }
       if ([...item.reason_ar].length > REASON_MAX) {
@@ -240,7 +266,7 @@ function selfTest(ids: Set<string>): void {
     reason_ar: "اللي الكل يذكره.",
     reason_en: "The one everyone keeps mentioning.",
     evidence:
-      "3 sources: https://exa.ai/a ; https://exa.ai/b ; https://example.com/c",
+      "3 sources: google_review 2026-01-01 https://exa.ai/a ; google_review 2026-02-02 https://exa.ai/b ; google_review 2026-03-03 https://example.com/c",
   };
   assert(
     collectCafeRaveProblems("clean", { "namq-al-malqa": [clean] }, ids).length ===
@@ -316,36 +342,71 @@ function selfTest(ids: Set<string>): void {
   const thinEvidence: CafeRave = { ...clean, evidence: "2 sources, too thin" };
   assert(
     collectCafeRaveProblems("clean", { "namq-al-malqa": [thinEvidence] }, ids).some(
-      (problem) => problem.includes("at least 3 unique source URLs"),
+      (problem) => problem.includes("at least 3 dated sources"),
     ),
-    "evidence must include at least 3 unique source URLs",
+    "evidence must include at least 3 dated sources",
   );
   console.log("check-cafe-raves: percent-off rejected; cocoa 70% allowed; thin evidence rejected");
 
-  const repeatedUrl: CafeRave = {
+  const repeatedEntry: CafeRave = {
     ...clean,
     evidence:
-      "3 sources: https://cafesriyadh.com/woods ; https://cafesriyadh.com/woods ; https://exa.ai/place/woods",
+      "3 sources: google_review 2026-01-01 https://example.com/place ; google_review 2026-01-01 https://example.com/place ; google_review 2026-03-03 https://example.com/other",
   };
   const repeatedProblems = collectCafeRaveProblems(
     "clean",
-    { "namq-al-malqa": [repeatedUrl] },
+    { "namq-al-malqa": [repeatedEntry] },
     ids,
   );
   assert(
-    repeatedProblems.some((problem) => problem.includes("claimed 3 sources but 2 unique URLs")),
-    `a repeated URL should fail the unique count: ${repeatedProblems.join("; ")}`,
+    repeatedProblems.some((problem) => problem.includes("repeats a dated entry")),
+    `an exact repeated entry should fail: ${repeatedProblems.join("; ")}`,
   );
-  const datedReviews: CafeRave = {
+  console.log("check-cafe-raves: exact repeated entry rejected");
+
+  const undatedEntry: CafeRave = {
     ...clean,
     evidence:
-      "3 sources: google_review 2026-01-01 https://exa.ai/place/one ; google_review 2026-02-02 https://exa.ai/place/one ; google_review 2026-03-03 https://exa.ai/place/one",
+      "3 sources: google_review https://example.com/a ; google_review 2026-02-02 https://example.com/b ; google_review 2026-03-03 https://example.com/c",
+  };
+  const undatedProblems = collectCafeRaveProblems(
+    "clean",
+    { "namq-al-malqa": [undatedEntry] },
+    ids,
+  );
+  assert(
+    undatedProblems.some((problem) => problem.includes("undated entry")),
+    `an undated entry should fail: ${undatedProblems.join("; ")}`,
+  );
+  console.log("check-cafe-raves: undated entry rejected");
+
+  const claimedMismatch: CafeRave = {
+    ...clean,
+    evidence:
+      "4 sources: google_review 2026-01-01 https://example.com/a ; google_review 2026-02-02 https://example.com/b ; google_review 2026-03-03 https://example.com/c",
+  };
+  const mismatchProblems = collectCafeRaveProblems(
+    "clean",
+    { "namq-al-malqa": [claimedMismatch] },
+    ids,
+  );
+  assert(
+    mismatchProblems.some((problem) => problem.includes("claimed 4 sources but 3 dated sources")),
+    `a claimed-count mismatch should fail: ${mismatchProblems.join("; ")}`,
+  );
+  console.log("check-cafe-raves: claimed-count mismatch rejected");
+
+  const sameUrlDifferentDates: CafeRave = {
+    ...clean,
+    evidence:
+      "3 sources: google_review 2026-01-01 https://example.com/place ; google_review 2026-02-02 https://example.com/place ; google_review 2026-03-03 https://example.com/place",
   };
   assert(
-    collectCafeRaveProblems("clean", { "namq-al-malqa": [datedReviews] }, ids).length === 0,
-    "different review dates on one place URL stay distinct sources",
+    collectCafeRaveProblems("clean", { "namq-al-malqa": [sameUrlDifferentDates] }, ids).length ===
+      0,
+    "the same URL on different dates is three sources",
   );
-  console.log("check-cafe-raves: repeated URL rejected; dated reviews of one URL stay distinct");
+  console.log("check-cafe-raves: same URL with different dates allowed");
 
   const contained: CafeRave = { ...clean, reason_ar: "معروض على الطاولة." };
   assert(
@@ -451,7 +512,7 @@ function selfTest(ids: Set<string>): void {
   const evidenceUrl = problemsFor({
     ...clean,
     evidence:
-      "3 sources: https://exa.ai/example ; https://exa.ai/other ; https://cafesriyadh.com/post",
+      "3 sources: google_review 2026-01-01 https://exa.ai/example ; google_review 2026-02-02 https://exa.ai/other ; google_review 2026-03-03 https://cafesriyadh.com/post",
   });
   assert(evidenceUrl.length === 0, `URLs in evidence stay internal: ${evidenceUrl.join("; ")}`);
   console.log("check-cafe-raves: URLs in display text rejected; evidence URLs allowed");
@@ -489,10 +550,16 @@ assert(
 );
 
 const shippedItems = Object.values(cafeRaves).reduce((count, rows) => count + rows.length, 0);
-assert(Object.keys(cafeRaves).length === 10, "10 cafés still render a rave section");
-assert(shippedItems === 11, `11 items after deferring Woods and Idmi, got ${shippedItems}`);
-assert(!("woods-olaya" in cafeRaves), "Woods is deferred until a third distinct source");
-assert(!("idmi-olaya" in cafeRaves), "Idmi is deferred until a third distinct source");
+assert(Object.keys(cafeRaves).length === 8, "8 cafés still render a rave section");
+assert(shippedItems === 9, `9 items after the dated-source cut, got ${shippedItems}`);
+for (const deferred of [
+  "asfoura-al-malqa",
+  "da-nonna-al-nakheel",
+  "woods-olaya",
+  "idmi-olaya",
+]) {
+  assert(!(deferred in cafeRaves), `${deferred} is deferred`);
+}
 const sulalat = cafeRaves["sulalat-coffee-ar-rabwah"];
 assert(sulalat?.length === 1, "Sulalat keeps one item");
 assert(sulalat?.[0]?.name_en === "70% Hot Chocolate", "Sulalat keeps 70% Hot Chocolate");

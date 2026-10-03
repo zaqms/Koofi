@@ -519,7 +519,10 @@ function CafeRaveRows({
           key={`${index}:${item.emoji}:${item.name}`}
           className="flex w-full items-start gap-3 border-b border-wain-divider py-4 last:border-b-0"
         >
-          <span className="mt-0.5 text-[18px] leading-none" aria-hidden="true">
+          <span
+            className="mt-0.5 w-[18px] shrink-0 text-center text-[18px] leading-none"
+            aria-hidden="true"
+          >
             {item.emoji}
           </span>
           <span className="min-w-0 flex-1">

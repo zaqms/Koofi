@@ -572,7 +572,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   "king-fahd": {
     lead: `King Fahd District (الملك فهد) is its own district on the catalog — Al Olaya Street runs through it, but this is not the Al Olaya page. This is the King Fahd District set on wain.lol.
 
-[Markab](/en/c/markab-king-fahd) and [OKAWA Cafe King Fahad](/en/c/okawa-king-fahd) are the two cards we’ve added. Coffee first. We don’t invent extras.`,
+[Markab](/en/c/markab-king-fahd) and [Ōkawa](/en/c/okawa-king-fahd) are the two cards we’ve added. Coffee first. We don’t invent extras.`,
     hereIntro: `There is **{count}** cafe from King Fahd District on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
     nearbyIntro: `If King Fahd District isn’t the stop, these central Riyadh lists sit on the site:`,

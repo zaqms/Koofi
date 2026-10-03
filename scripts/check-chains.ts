@@ -1019,7 +1019,7 @@ assert(
 );
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "f5ced7d3d5d24914043f4d4ea368e8492dacbf92e2326faec30f27f71dcc756b",
+  copyHash === "8ac51f4110b6a3a73382aa2c22c0d9185d383ca6cbbe76da7caccf8e1e948656",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(

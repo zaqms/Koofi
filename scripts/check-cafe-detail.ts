@@ -20,7 +20,7 @@ import { listingCardTags, MAX_LISTING_TAGS } from "../lib/listing-tags";
 import { neighborhoodLabel } from "../lib/neighborhoods";
 import { cafeArMarkdown } from "../lib/ar-content";
 import { cafeEnMarkdown } from "../lib/en-content";
-import { getShop } from "../lib/catalog";
+import { getShop, listRealShops } from "../lib/catalog";
 import { PRODUCT_NAME } from "../lib/product";
 import { SHOW_BEEN_HERE, SHOW_DETAIL_FAVORITE, SHOW_INVITE_CTA } from "../lib/tonight";
 
@@ -597,6 +597,27 @@ assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
 assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
 assert(batch12HeroIds.length === 9, "batch 12 Trending adds hero set is complete");
 assert(batch13HeroIds.length === 8, "batch 13 Bisat/Rex/Veo/Alwaal hero set is complete");
+// QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
+assert(
+  (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
+    "GA|FaisaL|صالحه المنيع|سوليز soliz",
+  "soliz-badr gallery order: current frames first, pre-opening storefront last",
+);
+// QA #237 L6: TORRE frame 2 is the clean lounge frame; the frame with a barista in the background moves to 4.
+assert(
+  [1, 2, 3, 4].map((n) => readFileSync(join("public/cafe-heroes/torre-al-rawabi", `${n}.jpg`)).length).join(",") ===
+    "148987,200646,245402,257603",
+  "torre-al-rawabi frame 2 is the clean lounge frame; the barista-background frame is 4",
+);
+// QA #237 L4: one Ōkawa spelling (the live An Narjis row) and one AR pattern on the Ōkawa rows.
+for (const id of ["okawa-al-narjis", "okawa-olaya", "okawa-king-fahd"]) {
+  const shop = getShop(id);
+  assert(shop?.nameEn === "Ōkawa" && shop?.nameAr === "أوكاوا", `${id} is Ōkawa / أوكاوا`);
+}
+assert(
+  !listRealShops().some((shop) => /King Fahad/.test(shop.nameEn)),
+  "no catalog name spells King Fahad (the district is King Fahd)",
+);
 assert(bakedHeroes["waqar-al-aziziyah"]?.length === 4, "Waqar keeps the 4 QA-picked frames");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");

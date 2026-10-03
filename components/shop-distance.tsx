@@ -1,6 +1,6 @@
 "use client";
 
-import { shopDistanceDisplay } from "@/lib/shop-distance-label";
+import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import type { Language, Pin } from "@/lib/types";
 import { useVisitorLocation } from "@/lib/visitor-location";
 
@@ -16,16 +16,18 @@ type ShopDistanceProps = {
  */
 export function ShopDistance({ coords, language }: ShopDistanceProps) {
   const visitor = useVisitorLocation();
-  const origin =
-    visitor.status === "ready"
-      ? { lat: visitor.lat, lng: visitor.lng }
-      : null;
-  const display = shopDistanceDisplay({ origin, coords, language });
+  const display = shopDistanceForVisitor({
+    status: visitor.status,
+    lat: visitor.status === "ready" ? visitor.lat : undefined,
+    lng: visitor.status === "ready" ? visitor.lng : undefined,
+    coords,
+    language,
+  });
   if (display.kind === "hidden") return null;
 
-  if (display.kind === "missing") {
+  if (display.kind === "km") {
     return (
-      <span className="text-ink/45" data-shop-distance="missing">
+      <span dir="ltr" data-shop-distance="km" data-shop-distance-km={display.km.toFixed(3)}>
         {" · "}
         {display.label}
       </span>
@@ -33,7 +35,7 @@ export function ShopDistance({ coords, language }: ShopDistanceProps) {
   }
 
   return (
-    <span dir="ltr" data-shop-distance="km" data-shop-distance-km={display.km.toFixed(3)}>
+    <span className="text-ink/45" data-shop-distance={display.kind}>
       {" · "}
       {display.label}
     </span>

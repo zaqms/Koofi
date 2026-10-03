@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import { isUsableVisitorOrigin } from "./place-coords";
 import {
   decideVisitorLocationPeek,
   type GeoPermission,
@@ -9,7 +10,8 @@ import {
 export type VisitorLocation =
   | { status: "pending" }
   | { status: "ready"; lat: number; lng: number }
-  | { status: "unavailable" };
+  | { status: "unavailable" }
+  | { status: "denied" };
 
 export type { GeoPermission, VisitorLocationPeekAction } from "./visitor-location-peek";
 export { decideVisitorLocationPeek };
@@ -65,29 +67,72 @@ function writeRememberedGeoGranted(granted: boolean): void {
   }
 }
 
-function readPosition(): Promise<VisitorLocation> {
-  return new Promise((resolve) => {
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
-      resolve({ status: "unavailable" });
-      return;
-    }
+type PositionRead =
+  | { ok: true; lat: number; lng: number }
+  | { ok: false; denied: boolean };
 
+function readOnce(options: PositionOptions): Promise<PositionRead> {
+  return new Promise((resolve) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        writeRememberedGeoGranted(true);
         resolve({
-          status: "ready",
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          ok: true,
+          lat: Number(position.coords.latitude),
+          lng: Number(position.coords.longitude),
         });
       },
-      (error) => {
-        if (error.code === 1) writeRememberedGeoGranted(false);
-        resolve({ status: "unavailable" });
-      },
-      { enableHighAccuracy: false, maximumAge: 60_000, timeout: 8_000 },
+      (error) => resolve({ ok: false, denied: error.code === 1 }),
+      options,
     );
   });
+}
+
+function readyIfUsable(lat: number, lng: number): VisitorLocation | null {
+  const pin = { lat, lng };
+  if (!isUsableVisitorOrigin(pin)) return null;
+  writeRememberedGeoGranted(true);
+  return { status: "ready", lat: pin.lat, lng: pin.lng };
+}
+
+/**
+ * Fresh GPS first. A cached low-accuracy fix (carrier / IP) must not become
+ * `ready` — that painted "Location unavailable" on every official pin.
+ * Soft Places stays parked. Shop distance still uses official place pins only.
+ */
+async function readPosition(): Promise<VisitorLocation> {
+  if (typeof navigator === "undefined" || !navigator.geolocation) {
+    return { status: "unavailable" };
+  }
+
+  const gps = await readOnce({
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 12_000,
+  });
+  if (!gps.ok && gps.denied) {
+    writeRememberedGeoGranted(false);
+    return { status: "denied" };
+  }
+  if (gps.ok) {
+    const ready = readyIfUsable(gps.lat, gps.lng);
+    if (ready) return ready;
+  }
+
+  const coarse = await readOnce({
+    enableHighAccuracy: false,
+    maximumAge: 0,
+    timeout: 8_000,
+  });
+  if (!coarse.ok && coarse.denied) {
+    writeRememberedGeoGranted(false);
+    return { status: "denied" };
+  }
+  if (coarse.ok) {
+    const ready = readyIfUsable(coarse.lat, coarse.lng);
+    if (ready) return ready;
+  }
+
+  return { status: "unavailable" };
 }
 
 /** Permissions API only — never opens the browser prompt. */
@@ -115,12 +160,11 @@ export async function readGeolocationPermission(): Promise<GeoPermission> {
  * بيننا auto-Ready only — My pin / موقعي still calls requestVisitorLocation.
  */
 export async function peekReadyVisitorLocation(): Promise<VisitorLocation> {
-  if (snapshot.status === "ready") return snapshot;
+  if (readySnapshotUsable()) return snapshot;
   if (inflight) return inflight;
 
   const permission = await readGeolocationPermission();
-  const latest = getSnapshot();
-  if (latest.status === "ready") return latest;
+  if (readySnapshotUsable()) return snapshot;
   if (inflight) return inflight;
 
   const action = decideVisitorLocationPeek({
@@ -134,12 +178,22 @@ export async function peekReadyVisitorLocation(): Promise<VisitorLocation> {
 }
 
 /** One browser Geolocation read. Retry after deny so a chip tap can ask again. */
+function readySnapshotUsable(): boolean {
+  return (
+    snapshot.status === "ready" &&
+    isUsableVisitorOrigin({ lat: snapshot.lat, lng: snapshot.lng })
+  );
+}
+
 export function requestVisitorLocation(options?: {
   retry?: boolean;
 }): Promise<VisitorLocation> {
-  if (snapshot.status === "ready") return Promise.resolve(snapshot);
+  if (readySnapshotUsable()) return Promise.resolve(snapshot);
   if (inflight) return inflight;
-  if (snapshot.status === "unavailable" && !options?.retry) {
+  if (
+    (snapshot.status === "unavailable" || snapshot.status === "denied") &&
+    !options?.retry
+  ) {
     return Promise.resolve(snapshot);
   }
 

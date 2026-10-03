@@ -262,13 +262,15 @@ assert(
   missingEn.kind === "missing" && missingEn.label === "Location unavailable",
   "ready geo + no pin → EN fallback, not silent omit",
 );
+const nullIslandLabel = shopDistanceDisplay({
+  origin: { lat: 0, lng: 0 },
+  coords: { lat: 24.753476, lng: 46.6906575 },
+  language: "en",
+});
 assert(
-  shopDistanceDisplay({
-    origin: { lat: 0, lng: 0 },
-    coords: { lat: 24.753476, lng: 46.6906575 },
-    language: "en",
-  }).kind === "missing",
-  "Null Island visitor + shop pin → fallback, not ~12k km",
+  nullIslandLabel.kind === "permission" &&
+    nullIslandLabel.label === "Couldn't read your location.",
+  "Null Island visitor + shop pin → unread, not the shop-pin string",
 );
 
 const byId = new Map(listRealShops().map((shop) => [shop.id, shop]));
@@ -305,13 +307,14 @@ const card = read("components/directory-card.tsx");
 const distanceUi = read("components/shop-distance.tsx");
 const distanceLabel = read("lib/shop-distance-label.ts");
 assert(
-  card.includes("shopDistanceDisplay") &&
+  card.includes("shopDistanceForVisitor") &&
     card.includes('data-shop-distance={display.kind}') &&
     card.includes("data-shop-distance-km") &&
     distanceLabel.includes("shopDistanceDisplay") &&
-    distanceUi.includes("shopDistanceDisplay") &&
-    distanceUi.includes('data-shop-distance="missing"') &&
+    distanceLabel.includes("isUsableVisitorOrigin") &&
+    distanceUi.includes("shopDistanceForVisitor") &&
     distanceUi.includes('data-shop-distance="km"') &&
+    distanceUi.includes("data-shop-distance={display.kind}") &&
     distanceUi.includes("data-shop-distance-km"),
   "Matcha + DT cards share one distance slot with km or fallback",
 );

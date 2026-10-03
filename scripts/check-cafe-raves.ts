@@ -44,8 +44,11 @@ const URL_RE =
  */
 const AR_LATIN_ALLOWLIST = ["V60"] as const;
 
-/** Cocoa strength in a product name. A trailing "%" is the cacao share, not a discount. */
-const COCOA_NAME_RE = /hot chocolate|شوكلت|chocolate|cacao|كاكاو/i;
+/** Item names that are brand products. Extend this list in one place. */
+const BRAND_ITEM_DENYLIST = ["Cinnabon", "سينابون"] as const;
+
+const STOCK_REASON_EN = /everyone keeps mentioning/i;
+const STOCK_REASON_AR = /الكل يذكر/;
 
 const WEEN_RE = /\bween\b/i;
 
@@ -68,12 +71,15 @@ function catalogIds(): Set<string> {
   return new Set(catalog.shops.map((shop) => shop.id));
 }
 
-function percentIsOffer(field: (typeof DISPLAY_FIELDS)[number], value: string): boolean {
-  if (!value.includes("%")) return false;
-  if (field === "reason_ar" || field === "reason_en" || field === "emoji") return true;
-  const cocoaName = COCOA_NAME_RE.test(value);
-  const everyPercentFollowsDigit = !/(^|[^\d])%/.test(value);
-  return !(cocoaName && everyPercentFollowsDigit);
+function hasPercent(value: string): boolean {
+  return value.includes("%");
+}
+
+function hasBannedBrand(value: string): boolean {
+  return BRAND_ITEM_DENYLIST.some((token) => {
+    if (/[A-Za-z]/.test(token)) return new RegExp(`\\b${token}\\b`, "i").test(value);
+    return value.includes(token);
+  });
 }
 
 function normalizeName(value: string, foldCase: boolean): string {
@@ -162,6 +168,7 @@ export function collectCafeRaveProblems(
     problems.push("file contains ween as a whole word");
   }
 
+  let stockReasonItems = 0;
   for (const [slug, items] of Object.entries(data)) {
     if (!ids.has(slug)) {
       problems.push(`${slug}: key is not a catalog slug`);
@@ -187,8 +194,11 @@ export function collectCafeRaveProblems(
           problems.push(`${where}: ${field} is empty`);
           continue;
         }
-        if (AR_PROMO_RE.test(value) || EN_PROMO_RE.test(value) || percentIsOffer(field, value)) {
+        if (AR_PROMO_RE.test(value) || EN_PROMO_RE.test(value) || hasPercent(value)) {
           problems.push(`${where}: ${field} has promo or offer wording`);
+        }
+        if (hasBannedBrand(value)) {
+          problems.push(`${where}: ${field} names a banned brand`);
         }
         if (PAID_RE.test(value)) {
           problems.push(`${where}: ${field} has paid wording`);
@@ -249,7 +259,15 @@ export function collectCafeRaveProblems(
       if ([...item.reason_en].length > REASON_MAX) {
         problems.push(`${where}: reason_en is over ${REASON_MAX} characters`);
       }
+      if (STOCK_REASON_EN.test(item.reason_en) || STOCK_REASON_AR.test(item.reason_ar)) {
+        stockReasonItems += 1;
+      }
     });
+  }
+  if (stockReasonItems > 1) {
+    problems.push(
+      `stock reason appears ${stockReasonItems} times; everyone keeps mentioning / الكل يذكر at most once`,
+    );
   }
 
   return problems;
@@ -325,12 +343,13 @@ function selfTest(ids: Set<string>): void {
     name_ar: "هوت شوكلت 70%",
     name_en: "70% Hot Chocolate",
   };
+  const cocoaProblems = collectCafeRaveProblems("clean", { "namq-al-malqa": [cocoa] }, ids);
   assert(
-    collectCafeRaveProblems("clean", { "namq-al-malqa": [cocoa] }, ids).length === 0,
-    "cocoa percentage in a product name is not an offer",
+    cocoaProblems.some((problem) => problem.includes("promo or offer wording")),
+    `70% Hot Chocolate should be rejected: ${cocoaProblems.join("; ")}`,
   );
   const reasonPercent: CafeRave = {
-    ...cocoa,
+    ...clean,
     reason_en: "About 70% cocoa.",
   };
   assert(
@@ -346,7 +365,45 @@ function selfTest(ids: Set<string>): void {
     ),
     "evidence must include at least 3 dated sources",
   );
-  console.log("check-cafe-raves: percent-off rejected; cocoa 70% allowed; thin evidence rejected");
+  console.log("check-cafe-raves: percent-off rejected; 70% Hot Chocolate rejected; thin evidence rejected");
+
+  const stockTwice = collectCafeRaveProblems(
+    "clean",
+    {
+      "namq-al-malqa": [clean],
+      "nap-al-qirawan": [{ ...clean, name_en: "Another Cake", name_ar: "كيكة ثانية" }],
+    },
+    ids,
+  );
+  assert(
+    stockTwice.some((problem) => problem.includes("stock reason appears")),
+    `the stock reason should fail on a second item: ${stockTwice.join("; ")}`,
+  );
+  console.log("check-cafe-raves: stock reason rejected when it appears twice");
+
+  const brand: CafeRave = {
+    ...clean,
+    name_en: "Cinnabon Pecan",
+    name_ar: "سينابون بيكان",
+  };
+  const brandProblems = collectCafeRaveProblems("clean", { "cherie-al-muruj": [brand] }, ids);
+  assert(
+    brandProblems.some((problem) => problem.includes("name_en names a banned brand")) &&
+      brandProblems.some((problem) => problem.includes("name_ar names a banned brand")),
+    `Cinnabon should be rejected: ${brandProblems.join("; ")}`,
+  );
+  const cinnamon: CafeRave = {
+    ...clean,
+    name_en: "Pecan Cinnamon Roll",
+    name_ar: "سينامون رول بالبيكان",
+    reason_en: "People often order it.",
+    reason_ar: "ينطلب كثير.",
+  };
+  assert(
+    collectCafeRaveProblems("clean", { "cherie-al-muruj": [cinnamon] }, ids).length === 0,
+    "Pecan Cinnamon Roll is not the banned brand",
+  );
+  console.log("check-cafe-raves: Cinnabon rejected; Pecan Cinnamon Roll allowed");
 
   const repeatedEntry: CafeRave = {
     ...clean,
@@ -562,8 +619,8 @@ for (const deferred of [
 }
 const sulalat = cafeRaves["sulalat-coffee-ar-rabwah"];
 assert(sulalat?.length === 1, "Sulalat keeps one item");
-assert(sulalat?.[0]?.name_en === "70% Hot Chocolate", "Sulalat keeps 70% Hot Chocolate");
-assert(sulalat?.[0]?.name_ar === "هوت شوكلت 70%", "Sulalat AR name stays هوت شوكلت 70%");
+assert(sulalat?.[0]?.name_en === "Dark Hot Chocolate", "Sulalat name is Dark Hot Chocolate");
+assert(sulalat?.[0]?.name_ar === "هوت شوكلت داكن", "Sulalat AR name is هوت شوكلت داكن");
 assert(!source.includes("Gelato") && !source.includes("جيلاتو"), "Sulalat gelato is dropped");
 
 const packageJson = read("package.json");

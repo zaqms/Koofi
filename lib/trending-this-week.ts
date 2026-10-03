@@ -65,8 +65,19 @@ export function trendingWindowLabel(language: Language): string {
 
 export const TRENDING_THIS_WEEK = [
   {
+    id: "torre-al-rawabi",
+    lineAr: "توري مقهى جديد فتح بالروابي، وصار من أكثر الأماكن اللي انتكلم عنها هالأسبوع.",
+    lineEn: "TORRE is a new opening in Al Rawabi that people were talking about this week.",
+  },
+  {
+    id: "dm-cafe-roastery-as-sahafah",
+    lineAr: "دي ام بالصحافة كان من أول الأماكن اللي انذكرت مع ترند الكوكيز فوق الآيسكريم.",
+    lineEn:
+      "DM Café & Roastery in As Sahafah was one of the first spots named in the cookie-on-ice-cream trend.",
+  },
+  {
     id: "namq-al-malqa",
-    lineAr: "نمق كان من أكثر الأسماء اللي انتشرت بيوم القهوة العالمي",
+    lineAr: "نمق كان من أكثر الأسماء اللي انتشرت بيوم القهوة العالمي.",
     lineEn: "Namq was one of the most talked-about names on World Coffee Day.",
   },
   {

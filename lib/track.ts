@@ -24,6 +24,7 @@ export type AnalyticsEventName =
   | "neighborhoods_search"
   | "neighborhoods_sort"
   | "directory_sort"
+  | "chain_filter"
   | "district_match"
   | "chat_query"
   | "tonight_card_open"
@@ -51,6 +52,8 @@ export type ListingShareSource = "list" | "card";
 export type DistrictSelectSource = "home_pill" | "view_all";
 export type NeighborhoodsSortId = "nearby" | "popular" | "az";
 export type DirectorySortId = "nearby" | "new" | "az";
+export type ChainFilterListing = "district" | "category";
+export type ChainFilterState = "hidden" | "shown";
 export type ChatQueryVia = "typed" | "chip";
 export type MeetHalfwayPinWhich = "a" | "b" | "self";
 export type MeetHalfwayPinMethod = "geolocation" | "paste" | "maps_url";
@@ -124,6 +127,12 @@ export type AnalyticsParams = {
   chip_id?: string;
   chip_label?: string;
   district_id?: string;
+  /** Local-only toggle. `hidden` drops chains; `shown` puts them back. */
+  state?: ChainFilterState;
+  /** District page or a category chip. Does not carry into chat. */
+  listing?: ChainFilterListing;
+  chain_count?: number;
+  visible_count?: number;
   district_ar?: string;
   district_en?: string;
   district_slug?: string;

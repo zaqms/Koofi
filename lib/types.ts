@@ -70,6 +70,9 @@ export const NEIGHBORHOOD_IDS = [
   "manfuha",
   "tuwaiq",
   "as-suwaidi",
+  "al-falah",
+  "al-izdihar",
+  "dhahrat-al-badiah",
 ] as const;
 export type NeighborhoodId = (typeof NEIGHBORHOOD_IDS)[number];
 
@@ -131,7 +134,11 @@ export type Shop = {
   mapsShareUrl?: string;
   photoUrl?: string;
   logoUrl?: string;
-  /** Baked Maps+IG popularity. Used only by the Most Popular / popular moment lock. */
+  /**
+   * Sort key for Most Popular and district rank. Load time sets this to the
+   * baked Maps+IG index plus the TikTok bonus. Not shown. Shops with no
+   * baked index stay unranked.
+   */
   popularityIndex?: number;
   /**
    * Drive-through-lane shops are live on cafe cards + the Drive-through
@@ -139,7 +146,22 @@ export type Shop = {
    */
   catalogLane?: "drive-through";
   /**
-   * Dine-in for بيننا. Scout verdict wins over Places.
+   * Mass-market branch (Starbucks, Dunkin', dr.CAFE, …). Never specialty.
+   * `chainBrand` is a key in `CHAIN_BRANDS`. Absent on local cafés.
+   */
+  isChain?: true;
+  chainBrand?: string;
+  /**
+   * Manual seating call. Wins over Places `dineIn` on every refresh.
+   * `dineIn: false` keeps a drive-through lane; `true` is sit-down.
+   */
+  seatingVerdict?: {
+    dineIn: boolean;
+    source: "qa" | "scout";
+    date: string;
+  };
+  /**
+   * Dine-in for بيننا. A `seatingVerdict` wins over Places, then Scout.
    * `null` / missing = unresolved — fail-closed. Not a Soft Places vibe.
    */
   dineIn?: boolean | null;

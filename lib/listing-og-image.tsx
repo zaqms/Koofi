@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { LISTING_OG_SIZE, type ListingOgCopy } from "./listing-og";
+import { OG_RTL_ROW, ogFontMeasurer, ogRtlUnits } from "./og-rtl-text";
 import { PRODUCT_NAME } from "./product";
 
 const ARABIC_FONT =
@@ -29,6 +30,8 @@ export async function listingOpenGraphImage(copy: ListingOgCopy) {
   const align = rtl ? "flex-end" : "flex-start";
   const title = copy.title;
   const subtitle = copy.subtitle;
+  const measure = rtl ? ogFontMeasurer(font) : null;
+  const titlePx = titleSize(title);
 
   return new ImageResponse(
     (
@@ -64,29 +67,59 @@ export async function listingOpenGraphImage(copy: ListingOgCopy) {
             gap: 18,
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              fontSize: titleSize(copy.title),
-              fontWeight: 700,
-              lineHeight: 1.15,
-              letterSpacing: -0.5,
-              maxWidth: 1040,
-            }}
-          >
-            {title}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 30,
-              lineHeight: 1.4,
-              color: "#6b5c52",
-              maxWidth: 980,
-            }}
-          >
-            {subtitle}
-          </div>
+          {rtl ? (
+            <div
+              style={{
+                ...OG_RTL_ROW,
+                alignSelf: "flex-end",
+                width: 1040,
+                fontSize: titlePx,
+                fontWeight: 700,
+                lineHeight: 1.15,
+              }}
+            >
+              {ogRtlUnits(title, titlePx, measure)}
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                fontSize: titlePx,
+                fontWeight: 700,
+                lineHeight: 1.15,
+                letterSpacing: -0.5,
+                maxWidth: 1040,
+              }}
+            >
+              {title}
+            </div>
+          )}
+          {rtl ? (
+            <div
+              style={{
+                ...OG_RTL_ROW,
+                alignSelf: "flex-end",
+                width: 980,
+                fontSize: 30,
+                lineHeight: 1.4,
+                color: "#6b5c52",
+              }}
+            >
+              {ogRtlUnits(subtitle, 30, measure)}
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                fontSize: 30,
+                lineHeight: 1.4,
+                color: "#6b5c52",
+                maxWidth: 980,
+              }}
+            >
+              {subtitle}
+            </div>
+          )}
         </div>
         <div
           style={{

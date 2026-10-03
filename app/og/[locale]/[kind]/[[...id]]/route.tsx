@@ -19,7 +19,7 @@ function specFrom(
   id: string[] | undefined,
 ): ListingOgSpec | null {
   const extra = id ?? [];
-  if (kind === "home" || kind === "popular") {
+  if (kind === "home" || kind === "popular" || kind === "trending") {
     if (extra.length > 0) return null;
     return { kind, language };
   }

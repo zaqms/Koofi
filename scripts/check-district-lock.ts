@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 66, `expected 66 live catalog districts, got ${liveCatalog.length}`);
+assert(liveCatalog.length === 64, `expected 64 district pages, got ${liveCatalog.length}`);
 assert(!liveCatalog.includes("as-suwaidi"), "as-suwaidi has 0 shops");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -170,8 +170,38 @@ assert(
 assert(!sitemap.includes("soft-places"), "Soft Places stays parked in sitemap");
 
 const izdihar = rows.find((row) => row.stableId === "al-izdihar");
-assert(izdihar?.status === "dictionary_only", "Izdihar stays dictionary_only");
-assert(!liveCatalog.includes("al-izdihar" as NeighborhoodId), "do not invent Izdihar shops");
+assert(izdihar?.status === "dictionary_only", "Izdihar sheet stays dictionary_only");
+assert(izdihar?.nameEn === "Al Izdihar", "Izdihar EN lock");
+assert(izdihar?.nameAr === "الازدهار", "Izdihar AR lock");
+assert(liveCatalog.includes("al-izdihar"), "Slant makes Al Izdihar a live catalog district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "al-izdihar").map((shop) => shop.id).join(",") ===
+    "slant-specialty-coffee-al-izdihar",
+  "Al Izdihar catalog is Slant only",
+);
+
+const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
+assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");
+assert(dhahrat?.nameEn === "Dhahrat Al Badiah", "Dhahrat Al Badiah EN lock");
+assert(dhahrat?.nameAr === "ظهرة البديعة", "Dhahrat Al Badiah AR lock");
+assert(liveCatalog.includes("dhahrat-al-badiah"), "WAY makes Dhahrat Al Badiah a live catalog district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "dhahrat-al-badiah").map((shop) => shop.id).join(",") ===
+    "way-coffee-dhahrat-al-badiah",
+  "Dhahrat Al Badiah catalog is WAY only",
+);
+
+const aziziyah = rows.find((row) => row.stableId === "al-aziziyah");
+assert(aziziyah?.status === "dictionary_only", "Al Aziziyah sheet stays dictionary_only");
+assert(aziziyah?.nameEn === "Al Aziziyah", "Al Aziziyah EN lock");
+assert(aziziyah?.nameAr === "العزيزية", "Al Aziziyah AR lock");
+assert(liveCatalog.includes("al-aziziyah"), "Al Aziziyah stays a live catalog district");
+assert(listLiveDistrictIds().includes("al-aziziyah"), "Waqar makes Al Aziziyah a live specialty district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "al-aziziyah" && shop.catalogLane !== "drive-through").map((shop) => shop.id).join(",") ===
+    "waqar-al-aziziyah",
+  "Al Aziziyah specialty catalog is Waqar only",
+);
 
 assert(
   !readRepo("lib/browse-neighborhoods.ts").includes("BROWSE_EN_LABELS"),

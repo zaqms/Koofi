@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
 import { listDirectoryShopsForDistrict } from "@/lib/catalog";
 import { copy } from "@/lib/copy";
-import { cardPath, homePath } from "@/lib/product";
+import { cardPath, districtPath, homePath } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
 type CafeCardPageViewProps = {
@@ -26,9 +26,10 @@ export async function CafeCardPageView({
   const localeHref = inboundFrom
     ? `${cardPath(shop.id, other)}?from=${encodeURIComponent(inboundFrom)}`
     : cardPath(shop.id, other);
-  const siblings = listDirectoryShopsForDistrict(shop.neighborhood).filter(
-    (row) => row.id !== shop.id,
-  );
+  const listed = listDirectoryShopsForDistrict(shop.neighborhood);
+  const siblings = listed.filter((row) => row.id !== shop.id);
+  const districtHref =
+    listed.length > 0 ? districtPath(shop.neighborhood, language) : undefined;
 
   return (
     <main
@@ -57,6 +58,7 @@ export async function CafeCardPageView({
           language={language}
           backHref={home}
           siblings={siblings}
+          districtHref={districtHref}
         />
       </ShopUpvoteProvider>
       <CafeEnBlurb shop={shop} language={language} />

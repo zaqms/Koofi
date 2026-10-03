@@ -178,6 +178,9 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   manfuha: "pin",
   tuwaiq: "diamond",
   "as-suwaidi": "building",
+  "al-falah": "building",
+  "al-izdihar": "pin",
+  "dhahrat-al-badiah": "pin",
 };
 
 export type NeighborhoodRow = {

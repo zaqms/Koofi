@@ -5,10 +5,15 @@ import {
   listDirectoryShops,
   listDirectoryShopsForDistrict,
   listDiscoveryShops,
+  isDriveThroughLane,
   listDriveThroughDirectoryShops,
   listRealShops,
 } from "../lib/catalog";
 import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
+import {
+  listTrendingThisWeekShops,
+  TRENDING_THIS_WEEK_IDS,
+} from "../lib/trending-this-week";
 import { copy } from "../lib/copy";
 import {
   districtDescription,
@@ -174,9 +179,13 @@ assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
-assert(areas.length === 47, `expected 47 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 291, `specialty discovery 292→291 after dropping Vanilla Coffee Qurtubah, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 358, `catalog 359→358 after dropping Vanilla Coffee Qurtubah, got ${listRealShops().length}`);
+assert(areas.includes("al-falah"), "directory includes al-falah");
+assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
+assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
+assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
+assert(areas.length === 52, `expected 52 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 364, `specialty discovery is 364 after Shoug A1 on top of the placeId fix, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 425, `catalog is 425 (Shoug A1's 432 minus the 7 wrong-district drops), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -347,11 +356,7 @@ assert(
 );
 
 const qurtubah = filterDirectoryShops(shops, "qurtubah");
-assert(qurtubah.length === 11, `qurtubah has 11 shops, got ${qurtubah.length}`);
-assert(
-  !getShop("vanilla-coffee-qurtubah"),
-  "Vanilla Coffee Qurtubah stays dropped — food truck, not a specialty café",
-);
+assert(qurtubah.length === 12, `qurtubah has 12 shops, got ${qurtubah.length}`);
 assert(
   qurtubah.every((shop) => shop.neighborhood === "qurtubah"),
   "qurtubah filter stays in district",
@@ -366,6 +371,7 @@ for (const id of [
   "najd-alathiah-qurtubah",
   "klatch-qurtubah",
   "nosound-qurtubah",
+  "vanilla-coffee-qurtubah",
   "mill-coffee-qurtubah",
   "cofen-qurtubah",
 ]) {
@@ -471,7 +477,7 @@ assert(
 );
 
 const hamra = filterDirectoryShops(shops, "al-hamra");
-assert(hamra.length === 12, `al-hamra has 12 shops, got ${hamra.length}`);
+assert(hamra.length === 13, `al-hamra has 13 shops, got ${hamra.length}`);
 assert(
   hamra.every((shop) => shop.neighborhood === "al-hamra"),
   "al-hamra filter stays in district",
@@ -489,6 +495,7 @@ for (const id of [
   "glint-al-hamra",
   "re-matcha-al-hamra",
   "hokkaido-al-hamra",
+  "orkt-al-hamra",
 ]) {
   assert(
     hamra.some((shop) => shop.id === id),
@@ -765,8 +772,8 @@ for (const ask of ["الريان", "ريان", "rayyan", "al rayyan", "ar-rayyan
 }
 
 const rawabi = filterDirectoryShops(shops, "al-rawabi");
-assert(rawabi.length === 2, `al-rawabi has 2 shops, got ${rawabi.length}`);
-for (const id of ["the-it-al-rawabi", "essert-al-rawabi"]) {
+assert(rawabi.length === 3, `al-rawabi has 3 shops, got ${rawabi.length}`);
+for (const id of ["the-it-al-rawabi", "essert-al-rawabi", "bala-al-rawabi"]) {
   assert(rawabi.some((shop) => shop.id === id), `al-rawabi includes ${id}`);
 }
 assert(neighborhoodLabel("al-rawabi", "ar") === "الروابي", "al-rawabi Arabic label");
@@ -928,7 +935,20 @@ assert(
 );
 
 const rabi = filterDirectoryShops(shops, "al-rabi");
-assert(rabi.length === 2, `al-rabi has 2 shops, got ${rabi.length}`);
+assert(rabi.length === 11, `al-rabi has 11 shops, got ${rabi.length}`);
+for (const id of [
+  "kava-al-rabi",
+  "sociable-al-rabi",
+  "orne-cafe-al-rabi",
+  "atea-al-rabi",
+  "arco-al-rabi",
+  "diplab-al-rabi",
+  "and-coffee-al-rabi",
+  "wacafe-al-rabi",
+  "3bean-al-rabi",
+]) {
+  assert(rabi.some((shop) => shop.id === id), `al-rabi includes ${id}`);
+}
 assert(
   rabi.some((shop) => shop.id === "piccolo-al-rabi"),
   "al-rabi keeps piccolo-al-rabi",
@@ -1114,6 +1134,9 @@ const WAVE1_DISTRICTS: {
       "roasting-house-al-arid",
       "coffee-address-al-arid",
       "shiro-al-arid",
+      "rex-al-arid",
+      "essert-al-arid",
+      "hearth-al-arid",
     ],
   },
   {
@@ -1129,6 +1152,11 @@ const WAVE1_DISTRICTS: {
       "caf-lab-al-qirawan",
       "drive-al-qirawan",
       "scout-coffee-al-qirawan",
+      "ract-al-qirawan",
+      "nap-al-qirawan",
+      "ouia-al-qirawan",
+      "shml-al-qirawan",
+      "for-coffee-roasters-al-qirawan",
     ],
   },
 ];
@@ -1189,12 +1217,16 @@ const MURUJ_REFILL = {
     "rabka-al-muruj",
     "quokka-coffee-al-muruj",
     "some-coffee-bar-al-muruj",
+    "little-henri-al-muruj",
+    "otto-al-muruj",
+    "behind-al-muruj",
+    "cherie-al-muruj",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 6, `al-muruj has 6 shops, got ${rows.length}`);
+  assert(rows.length === 10, `al-muruj has 10 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1236,12 +1268,13 @@ const MOH_REFILL = {
     "hjeen-roasters-al-mohammadiyah",
     "hekaya-tale-al-mohammadiyah",
     "house-of-matcha-al-mohammadiyah",
+    "bab-al-mohammadiyah",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MOH_REFILL.id);
-  assert(rows.length === 4, `al-mohammadiyah has 4 shops, got ${rows.length}`);
+  assert(rows.length === 5, `al-mohammadiyah has 5 shops, got ${rows.length}`);
   assert(
     rows.every((shop) => shop.neighborhood === "al-mohammadiyah"),
     "al-mohammadiyah filter stays in district",
@@ -1426,22 +1459,51 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("badr");
-  assert(rows.length === 3, `badr has 3 DT-lane shops, got ${rows.length}`);
+  assert(rows.length === 1, `badr has 1 shop, got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "drive-badr"),
-    "badr includes drive-badr",
+    rows.some((shop) => shop.id === "shubak-al-bun-badr"),
+    "badr specialty page includes shubak-al-bun-badr",
   );
-  assert(
-    rows.some((shop) => shop.id === "drcafe-badr"),
-    "badr includes drcafe-badr",
+  const badrDriveThrough = listDriveThroughDirectoryShops().filter(
+    (shop) => shop.neighborhood === "badr",
   );
+  for (const id of ["drive-badr", "drive-badr-2", "drcafe-badr"]) {
+    assert(
+      badrDriveThrough.some((shop) => shop.id === id),
+      `badr drive-through directory includes ${id}`,
+    );
+  }
   assert(neighborhoodLabel("badr", "ar") === "بدر", "badr Arabic label");
   assert(neighborhoodLabel("badr", "en") === "Badr", "badr English label");
 }
 
 {
+  const rows = listDirectoryShopsForDistrict("al-aziziyah");
+  assert(rows.length === 1, `al-aziziyah has 1 specialty shop, got ${rows.length}`);
+  assert(
+    rows.some((shop) => shop.id === "waqar-al-aziziyah"),
+    "al-aziziyah specialty page includes waqar-al-aziziyah",
+  );
+  const aziziyahDriveThrough = listDriveThroughDirectoryShops().filter(
+    (shop) => shop.neighborhood === "al-aziziyah",
+  );
+  for (const id of ["drive-al-aziziyah", "drcafe-al-aziziyah"]) {
+    assert(
+      aziziyahDriveThrough.some((shop) => shop.id === id),
+      `al-aziziyah drive-through directory includes ${id}`,
+    );
+  }
+  assert(neighborhoodLabel("al-aziziyah", "ar") === "العزيزية", "al-aziziyah Arabic label");
+  assert(neighborhoodLabel("al-aziziyah", "en") === "Al Aziziyah", "al-aziziyah English label");
+}
+
+{
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 77, `Drive-through directory is 77, got ${dt.length}`);
+  assert(dt.length === 71, `Drive-through directory (moment tag) is 71, got ${dt.length}`);
+  assert(
+    listRealShops().filter(isDriveThroughLane).length === 54,
+    `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
+  );
   assert(
     dt.every((shop) => shop.momentTags.includes("drive-through")),
     "Drive-through directory is tagged only",
@@ -1459,32 +1521,87 @@ const MALAZ_REFILL = {
     "as-suwaidi has no live catalog row after the closed drop",
   );
   assert(
+    !getShop("voom-al-masif"),
+    "CLOSED_PERMANENTLY Voom Al Masif stays dropped",
+  );
+  // placeId fix 2026-10-02: these 7 were not in Al Rabi (real branches in
+  // Al Qadisiyyah, Tuwaiq, Al Falah, Uhud, Utaiqah, Al Mursalat, Al Aqiq).
+  // Dropped until Scout re-adds them under real-district slugs.
+  for (const id of [
+    "n5-caffe-al-rabi",
+    "n5-caffe-al-rabi-2",
+    "drive-al-rabi",
+    "drive-al-rabi-2",
+    "drive-al-rabi-3",
+    "drive-al-rabi-4",
+    "drive-al-rabi-5",
+  ]) {
+    assert(!getShop(id), `${id} stays dropped (wrong district)`);
+    for (const locale of ["", "/en"]) {
+      assert(
+        LEGACY_SHOP_REDIRECTS.some(
+          (row) => row.source === `${locale}/c/${id}` && row.statusCode === 308,
+        ),
+        `${locale}/c/${id} 308s after the drop`,
+      );
+    }
+  }
+  assert(
+    listDirectoryShopsForDistrict("al-rabi").length === 11,
+    "al-rabi specialty directory stays 11 (the dropped rows were DT lane)",
+  );
+  assert(
+    listDirectoryShopsForDistrict("al-masif").length === 10,
+    "al-masif specialty directory is 10 after the closed Voom drop",
+  );
+  assert(
     !listRealShops().some((shop) =>
       /starbucks/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
     ),
     "Starbucks stays dropped",
   );
   const namar = listDirectoryShopsForDistrict("namar");
-  assert(namar.length === 1 && namar[0]?.id === "drcafe-namar", "namar is DT-only dr.CAFE");
+  assert(
+    namar.length === 1 && namar[0]?.id === "drcafe-namar",
+    "namar lists the dine-in dr.CAFE",
+  );
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),
+    "drcafe-namar stays on the Drive-through directory",
+  );
   const jazirah = listDirectoryShopsForDistrict("al-jazirah");
-  assert(jazirah.length === 2, `al-jazirah has 2 DT-lane shops, got ${jazirah.length}`);
+  assert(jazirah.length === 0, "al-jazirah district page omits drive-through chains");
+  assert(
+    ["drcafe-al-jazirah", "drcafe-al-jazirah-2"].every((id) =>
+      listDriveThroughDirectoryShops().some((shop) => shop.id === id),
+    ),
+    "both Al Jazirah dr.CAFE rows stay on the Drive-through directory",
+  );
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
-    aziziyah.length === 2 && aziziyah.some((shop) => shop.id === "drcafe-al-aziziyah"),
-    "al-aziziyah includes drcafe-al-aziziyah",
+    aziziyah.length === 1 &&
+      aziziyah[0]?.id === "waqar-al-aziziyah" &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-al-aziziyah"),
+    "al-aziziyah page is specialty Waqar; drcafe-al-aziziyah stays on the Drive-through directory",
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
     gharbi.length === 3 &&
       gharbi.every((shop) => shop.neighborhood === "an-nasim-al-gharbi") &&
-      ["trivali-roaster-al-naseem-gharbi", "gusn-coffee-al-naseem-gharbi", "be-such-al-naseem-gharbi"].every(
-        (id) => gharbi.some((shop) => shop.id === id),
-      ),
-    "an-nasim-al-gharbi specialty page is the Scout-3 (DT-lane drops off)",
+      [
+        "trivali-roaster-al-naseem-gharbi",
+        "gusn-coffee-al-naseem-gharbi",
+        "be-such-al-naseem-gharbi",
+      ].every((id) => gharbi.some((shop) => shop.id === id)) &&
+      !gharbi.some((shop) => shop.id === "drcafe-an-nasim-al-gharbi") &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-an-nasim-al-gharbi"),
+    "an-nasim-al-gharbi lists the Scout-3; the kiosk dr.CAFE stays on Drive-through",
   );
   assert(
-    listDirectoryShopsForDistrict("kkia").some((shop) => shop.id === "drcafe-kkia"),
-    "kkia includes open dr.CAFE, not closed A PLUS",
+    listDirectoryShopsForDistrict("kkia").length === 0 &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-kkia") &&
+      !listRealShops().some((shop) => shop.id === "a-plus-kkia"),
+    "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
   assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);
@@ -1520,7 +1637,7 @@ const MALAZ_REFILL = {
   }
   assert(
     !listDirectoryShops().some((shop) => shop.id === "java-cafe-al-malaz"),
-    "DT-lane Java Malaz stays out of specialty directory",
+    "listed Java Malaz stays out of the specialty directory",
   );
   assert(
     listDirectoryShops().some((shop) => shop.id === "ulica-al-ghadeer"),
@@ -1544,8 +1661,8 @@ const MALAZ_REFILL = {
     "Matcha directory is matcha-tagged only",
   );
   const harvestLogos: Record<string, string> = {
-    "house-of-matcha-al-mohammadiyah": "/logos/house-of-matcha-al-mohammadiyah.webp",
-    "house-of-matcha-sulimaniyah": "/logos/house-of-matcha-sulimaniyah.webp",
+    "house-of-matcha-al-mohammadiyah": "/logos/house-of-matcha-al-mohammadiyah.png",
+    "house-of-matcha-sulimaniyah": "/logos/house-of-matcha-sulimaniyah.png",
     "the-matcha-bar-olaya": "/logos/the-matcha-bar-olaya.jpg",
     "with-heart-diriyah": "/logos/with-heart-diriyah.jpg",
     "opinion-al-mathar": "/logos/opinion-al-mathar.png",
@@ -1651,6 +1768,16 @@ assertDistinctPlaceHex(
   "Quokka Coffee",
 );
 assertDistinctPlaceHex(
+  ["las-cafe-al-malqa", "las-cafe-al-olaya"],
+  "LAS CAFE",
+);
+assert(
+  getShop("las-cafe-al-malqa")?.placeId !== getShop("lasani-cafe-al-malaz")?.placeId &&
+    getShop("las-cafe-al-malqa")?.logoUrl !== getShop("lasani-cafe-al-malaz")?.logoUrl &&
+    getShop("lasani-cafe-al-malaz")?.nameEn === "Lasani Cafe",
+  "LAS CAFE stays a different brand from Lasani Cafe",
+);
+assertDistinctPlaceHex(
   ["drip-olaya", "drip-al-hamra", "drip-al-ghadeer", "drip-al-qirawan"],
   "Drip",
 );
@@ -1742,6 +1869,16 @@ assert(
   "New this week strip keeps allowlist order",
 );
 assert(
+  TRENDING_THIS_WEEK_IDS.join(",") === "namq-al-malqa,waqar-al-aziziyah" &&
+    listTrendingThisWeekShops()
+      .map((shop) => shop.id)
+      .join(",") === TRENDING_THIS_WEEK_IDS.join(",") &&
+    listTrendingThisWeekShops()
+      .map((shop) => shop.id)
+      .join(",") !== NEW_THIS_WEEK_IDS.join(","),
+  "Trending this week is its own allowlist, not New this week",
+);
+assert(
   copy.newThisWeek.ar === "جديد هالأسبوع" &&
     copy.newThisWeekHint.ar === "انضافت للقائمة هالأسبوع.",
   "New this week Arabic copy stays locked",
@@ -1785,9 +1922,18 @@ const scoutPack: {
     | "diriyah"
     | "hittin"
     | "al-malqa"
+    | "as-sahafah"
+    | "al-falah"
+    | "al-mughrizat"
+    | "al-izdihar"
     | "ghirnatah"
     | "al-mathar"
-    | "at-taawun";
+    | "at-taawun"
+    | "al-narjis"
+    | "badr"
+    | "dhahrat-al-badiah"
+    | "al-aziziyah"
+    | "al-nakheel";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -1839,6 +1985,12 @@ const scoutPack: {
     neighborhood: "al-rabwah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    // Logo landed after the Scout pack; placeId + seating are the
+    // share-link place (2026-10-02 placeId fix), not the searchText hit.
+    logoUrl: "/logos/makhsousa-coffee-ar-rabwah.jpg",
+    placeId: "ChIJRzxqH6gHLz4R-mmdmTKMQX8",
+    dineIn: null,
+    outdoorSeating: null,
   },
   {
     id: "blog-coffee-ar-rabwah",
@@ -1895,6 +2047,12 @@ const scoutPack: {
     neighborhood: "qurtubah",
     vibe: ["قهوة"],
     moments: ["friend", "qahwa"],
+    // Logo landed after the Scout pack; placeId + seating are the
+    // share-link place (2026-10-02 placeId fix), not the searchText hit.
+    logoUrl: "/logos/lattio-lounge-qurtubah.jpg",
+    placeId: "ChIJKbOmC6P9Lj4Rz4myGJYGvm8",
+    dineIn: true,
+    outdoorSeating: null,
   },
   {
     id: "n5-caffe-qurtubah",
@@ -1934,6 +2092,13 @@ const scoutPack: {
   {
     id: "nosound-qurtubah",
     hex: "0x3e2efd1bf2459957:0x981f344c0bf6e54f",
+    neighborhood: "qurtubah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+  },
+  {
+    id: "vanilla-coffee-qurtubah",
+    hex: "0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
     neighborhood: "qurtubah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
@@ -3108,7 +3273,7 @@ const scoutPack: {
     neighborhood: "al-mohammadiyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/house-of-matcha-al-mohammadiyah.webp",
+    logoUrl: "/logos/house-of-matcha-al-mohammadiyah.png",
   },
   {
     id: "house-of-matcha-sulimaniyah",
@@ -3116,7 +3281,7 @@ const scoutPack: {
     neighborhood: "sulimaniyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/house-of-matcha-sulimaniyah.webp",
+    logoUrl: "/logos/house-of-matcha-sulimaniyah.png",
   },
   {
     id: "somatcha-an-nada",
@@ -3366,6 +3531,770 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: true,
   },
+  {
+    id: "bacha-coffee-solitaire",
+    hex: "0x3e2ee335437f23a5:0xaf69a1d8ac95ec91",
+    neighborhood: "as-sahafah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bacha-coffee-solitaire.jpg",
+    pin: { lat: 24.8010754, lng: 46.6513757 },
+    coordsInUrl: true,
+    placeId: "ChIJpSN_QzXjLj4RkeyVrNihaa8",
+  },
+  {
+    id: "mood-masters-al-falah",
+    hex: "0x3e2efd5f8fb7a897:0x3b0473a4fd421df0",
+    neighborhood: "al-falah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/mood-masters-al-falah.jpg",
+    pin: { lat: 24.8013342, lng: 46.7071301 },
+    coordsInUrl: true,
+    placeId: "ChIJl6i3j1_9Lj4R8B1C_aRzBDs",
+  },
+  {
+    id: "las-cafe-al-malqa",
+    hex: "0x3e2ee36d1476d3bd:0x50d860d1525fa4d7",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/las-cafe-al-malqa.jpg",
+    pin: { lat: 24.7816639, lng: 46.6009635 },
+    coordsInUrl: true,
+    placeId: "ChIJvdN2FG3jLj4R16RfUtFg2FA",
+  },
+  {
+    id: "las-cafe-al-olaya",
+    hex: "0x3e2f0330c46bced9:0xde8ee884837786cb",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/las-cafe-al-olaya.jpg",
+    pin: { lat: 24.6962467, lng: 46.6842978 },
+    coordsInUrl: true,
+    placeId: "ChIJ2c5rxDADLz4Ry4Z3g4Tojt4",
+  },
+  {
+    id: "little-henri-al-muruj",
+    hex: "0x3e2ee3006fa06689:0xd39d80b2d2e9dfff",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/little-henri-al-muruj.jpg",
+    pin: { lat: 24.7612516, lng: 46.6569467 },
+    coordsInUrl: true,
+    placeId: "ChIJiWagbwDjLj4R_9_p0rKAndM",
+  },
+  {
+    id: "beitkull-al-olaya",
+    hex: "0x3e2f031ab1bae0a3:0xaf7455ed04f85e37",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/beitkull-al-olaya.jpg",
+    pin: { lat: 24.6875566, lng: 46.6856358 },
+    coordsInUrl: true,
+    placeId: "ChIJo-C6sRoDLz4RN174BO1VdK8",
+  },
+  {
+    id: "satr-specialty-coffee-al-mughrizat",
+    hex: "0x3e2efd0047252cc7:0xdf1b91675d24ccf2",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/satr-specialty-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7718156, lng: 46.721079 },
+    coordsInUrl: true,
+    placeId: "ChIJxywlRwD9Lj4R8swkXWeRG98",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "covo-artisan-coffee-al-mughrizat",
+    hex: "0x3e2f033b7b4e1951:0xc301a658c1532f5b",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/covo-artisan-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7578045, lng: 46.718826 },
+    coordsInUrl: true,
+    placeId: "ChIJURlOezsDLz4RWy9TwVimAcM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bunatetu-al-mughrizat",
+    hex: "0x3e2f031e134f9b71:0xda100ec939a0ca1d",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bunatetu-al-mughrizat.jpg",
+    pin: { lat: 24.7587419, lng: 46.7270237 },
+    coordsInUrl: true,
+    placeId: "ChIJcZtPEx4DLz4RHcqgOckOENo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "dune-coffee-al-mughrizat",
+    hex: "0x3e2efd006d73d9ef:0xd7edbc70bcb8fa1d",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/dune-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7718484, lng: 46.7211227 },
+    coordsInUrl: true,
+    placeId: "ChIJ79lzbQD9Lj4RHfq4vHC87dc",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "tuxedo-coffee-al-mughrizat",
+    hex: "0x3e2f03faa5c8558f:0x7b003ca2f858d5af",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tuxedo-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7563118, lng: 46.7298746 },
+    coordsInUrl: true,
+    placeId: "ChIJj1XIpfoDLz4Rr9VY-KI8AHs",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bar-coffee-al-mughrizat",
+    hex: "0x3e2efd69e3c4383f:0x4a64c096e8cafa0a",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bar-coffee-al-mughrizat.jpg",
+    pin: { lat: 24.7713271, lng: 46.7203141 },
+    coordsInUrl: true,
+    placeId: "ChIJPzjE42n9Lj4RCvrK6JbAZEo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "adab-cafe-al-mughrizat",
+    hex: "0x3e2efd906ae5ab6b:0xdcf33862e333b438",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/adab-cafe-al-mughrizat.jpg",
+    pin: { lat: 24.7713919, lng: 46.720106 },
+    coordsInUrl: true,
+    placeId: "ChIJa6vlapD9Lj4ROLQz42I489w",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "booze-specialty-coffee-bar-al-mughrizat",
+    hex: "0x3e2efde761dd5555:0x236fead5004bc60c",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/booze-specialty-coffee-bar-al-mughrizat.jpg",
+    pin: { lat: 24.7662708, lng: 46.7153749 },
+    coordsInUrl: true,
+    placeId: "ChIJVVXdYef9Lj4RDMZLANXqbyM",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "latch-al-mughrizat",
+    hex: "0x3e2efda55294c451:0x29c17c734846e880",
+    neighborhood: "al-mughrizat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/latch-al-mughrizat.jpg",
+    pin: { lat: 24.7717194, lng: 46.7208678 },
+    coordsInUrl: true,
+    placeId: "ChIJUcSUUqX9Lj4RgOhGSHN8wSk",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "slant-specialty-coffee-al-izdihar",
+    hex: "0x3e2efdc71466de0b:0x117ba139fe9f43e3",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/slant-specialty-coffee-al-izdihar.jpg",
+    pin: { lat: 24.7728521, lng: 46.7217584 },
+    coordsInUrl: true,
+    placeId: "ChIJC95mFMf9Lj4R40Of_jmhexE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "gedeb-al-olaya",
+    hex: "0x3e2f036a28809b43:0x3df37ac10ce51d48",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/gedeb-al-olaya.jpg",
+    pin: { lat: 24.702485, lng: 46.6809347 },
+    coordsInUrl: true,
+    placeId: "ChIJQ5uAKGoDLz4RSB3lDMF68z0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bossco-roastery-al-olaya",
+    hex: "0x3e2f03d0a33345ed:0xedb519677804ff02",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bossco-roastery-al-olaya.jpg",
+    pin: { lat: 24.6951492, lng: 46.6846958 },
+    coordsInUrl: true,
+    placeId: "ChIJ7UUzo9ADLz4RAv8EeGcZte0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "lluvia-caffe-al-olaya",
+    hex: "0x3e49e934e277304b:0x6fc1d3970cd7f113",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/lluvia-caffe-al-olaya.jpg",
+    pin: { lat: 24.6956825, lng: 46.6843802 },
+    coordsInUrl: true,
+    placeId: "ChIJSzB34jTpST4RE_HXDJfTwW8",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "oromiffa-al-olaya",
+    hex: "0x3e2f033d6baac479:0x3055158d4554e1db",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/oromiffa-al-olaya.jpg",
+    pin: { lat: 24.7018287, lng: 46.6812624 },
+    coordsInUrl: true,
+    placeId: "ChIJecSqaz0DLz4R2-FURY0VVTA",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "buljah-al-olaya",
+    hex: "0x3e2f0312d8534d33:0x662777891909562",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/buljah-al-olaya.jpg",
+    pin: { lat: 24.706567099999997, lng: 46.679316199999995 },
+    coordsInUrl: true,
+    placeId: "ChIJM01T2BIDLz4RYpWQkXh3YgY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "19-gram-al-olaya",
+    hex: "0x3e2f030fa4d69acb:0xa78a5e20fb251c80",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/19-gram-al-olaya.jpg",
+    pin: { lat: 24.7064389, lng: 46.6792442 },
+    coordsInUrl: true,
+    placeId: "ChIJy5rWpA8DLz4RgBwl-yBeiqc",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "kulma-speciality-coffee-al-olaya",
+    hex: "0x3e2f038f2502627f:0xae635ea4481422f4",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/kulma-speciality-coffee-al-olaya.jpg",
+    pin: { lat: 24.699968700000003, lng: 46.6804388 },
+    coordsInUrl: true,
+    placeId: "ChIJf2ICJY8DLz4R9CIUSKReY64",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "morfi-al-olaya",
+    hex: "0x3e2f03d310cb94b1:0x6e57fa14b6721dcf",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/morfi-al-olaya.jpg",
+    pin: { lat: 24.706527899999998, lng: 46.6792618 },
+    coordsInUrl: true,
+    placeId: "ChIJsZTLENMDLz4Rzx1ythT6V24",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "jolt-al-olaya",
+    hex: "0x3e2f03eec5cd079f:0x5acf526f9dbca3d8",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jolt-al-olaya.jpg",
+    pin: { lat: 24.7118894, lng: 46.6745525 },
+    coordsInUrl: true,
+    placeId: "ChIJnwfNxe4DLz4R2KO8nW9Sz1o",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "key-cafe-al-olaya",
+    hex: "0x3e2f03875e70f481:0x80a5344587f8473f",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/key-cafe-al-olaya.jpg",
+    pin: { lat: 24.7078427, lng: 46.6746905 },
+    coordsInUrl: true,
+    placeId: "ChIJgfRwXocDLz4RP0f4h0U0pYA",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "alwaal-albari-al-olaya",
+    hex: "0x3e2f03dbc2f3ecc1:0x31f02d596206fece",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/alwaal-albari-al-olaya.png",
+    pin: { lat: 24.6932667, lng: 46.6714903 },
+    coordsInUrl: true,
+    placeId: "ChIJwezzwtsDLz4Rzv4GYlkt8DE",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "crops-al-narjis",
+    hex: "0x3e2efd68665bae8b:0x30c0a30ce0c43e96",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/crops-al-narjis.jpg",
+    pin: { lat: 24.841562999999997, lng: 46.6659942 },
+    coordsInUrl: true,
+    placeId: "ChIJi65bZmj9Lj4Rlj7E4AyjwDA",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bala-al-rawabi",
+    hex: "0x3e2f07c9527d9ca1:0x179e11b5785979ab",
+    neighborhood: "al-rawabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bala-al-rawabi.jpg",
+    pin: { lat: 24.7007403, lng: 46.8030872 },
+    coordsInUrl: true,
+    placeId: "ChIJoZx9UskHLz4Rq3lZeLURnhc",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "ract-al-qirawan",
+    hex: "0x3e2ee7c139e06f69:0x85a9fc52d9cabc89",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ract-al-qirawan.jpg",
+    pin: { lat: 24.8337927, lng: 46.5890864 },
+    coordsInUrl: true,
+    placeId: "ChIJaW_gOcHnLj4RibzK2VL8qYU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "orkt-al-hamra",
+    hex: "0x3e2eff35ab2b4ba9:0x2cd1dfc44b969cc5",
+    neighborhood: "al-hamra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/orkt-al-hamra.jpg",
+    pin: { lat: 24.787708199999997, lng: 46.767900999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJqUsrqzX_Lj4RxZyWS8Tf0Sw",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "rex-al-arid",
+    hex: "0x3e2ee5a422c9a519:0x8568cbd5379a407b",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rex-al-arid.jpg",
+    pin: { lat: 24.875037499999998, lng: 46.6211406 },
+    coordsInUrl: true,
+    placeId: "ChIJGaXJIqTlLj4Re0CaN9XLaIU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "veo-hittin",
+    hex: "0x3e2ee3544f6bd36b:0x9f35a339409906e0",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/veo-hittin.jpg",
+    pin: { lat: 24.7727506, lng: 46.607662399999995 },
+    coordsInUrl: true,
+    placeId: "ChIJa9NrT1TjLj4R4AaZQDmjNZ8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "essert-al-arid",
+    hex: "0x3e2ee519b340b15b:0x544e83e2ea999fb7",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/essert-al-rawabi.jpg",
+    pin: { lat: 24.861214699999998, lng: 46.6284055 },
+    coordsInUrl: true,
+    placeId: "ChIJW7FAsxnlLj4Rt5-Z6uKDTlQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "otto-al-muruj",
+    hex: "0x3e2ee35d465958d1:0xb1577230d15e267a",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.758682399999998, lng: 46.6671364 },
+    coordsInUrl: true,
+    placeId: "ChIJ0VhZRl3jLj4ReiZe0TByV7E",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "behind-al-muruj",
+    hex: "0x3e2ee3006bbd973f:0xadfceaef61610016",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/behind-al-muruj.jpg",
+    pin: { lat: 24.7561514, lng: 46.653934199999995 },
+    coordsInUrl: true,
+    placeId: "ChIJP5e9awDjLj4RFgBhYe_q_K0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "shubak-al-bun-badr",
+    hex: "0x3e2f0fce21e76aeb:0xc04a9af315f5345d",
+    neighborhood: "badr",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/shubak-al-bun-badr.jpg",
+    pin: { lat: 24.5404852, lng: 46.698298099999995 },
+    coordsInUrl: true,
+    placeId: "ChIJ62rnIc4PLz4RXTT1FfOaSsA",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "hearth-al-arid",
+    hex: "0x3e2eef8e7a83c7cf:0x87d5b0ef9485ed19",
+    neighborhood: "al-arid",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/hearth-al-arid.jpg",
+    pin: { lat: 24.8863463, lng: 46.6046896 },
+    coordsInUrl: true,
+    placeId: "ChIJz8eDeo7vLj4RGe2FlO-w1Yc",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "abeille-al-narjis",
+    hex: "0x3e2efb81a632f607:0x76dc92940ecf8dbc",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8298719, lng: 46.670774099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJB_YypoH7Lj4RvI3PDpSS3HY",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "way-coffee-dhahrat-al-badiah",
+    hex: "0x3e2f1b003158bdf5:0x91847fc7e4f6fc27",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.599526899999997, lng: 46.6425717 },
+    coordsInUrl: true,
+    placeId: "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "kava-al-rabi",
+    hex: "0x3e2efdb9b7726783:0x393a5268ea227e10",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8020465, lng: 46.672229099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJg2dyt7n9Lj4REH4i6mhSOjk",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "sociable-al-rabi",
+    hex: "0x3e2ee38daf8a1875:0x2ba8a611b0c0c96f",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/sociable-al-rabi.jpg",
+    pin: { lat: 24.7966244, lng: 46.6514974 },
+    coordsInUrl: true,
+    placeId: "ChIJdRiKr43jLj4Rb8nAsBGmqCs",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "orne-cafe-al-rabi",
+    hex: "0x3e2ee3a4fc04d53d:0xcacc2debf99c20b5",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/orne-cafe-al-rabi.jpg",
+    pin: { lat: 24.7882458, lng: 46.6479978 },
+    coordsInUrl: true,
+    placeId: "ChIJPdUE_KTjLj4RtSCc-estzMo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "atea-al-rabi",
+    hex: "0x3e2ee333ac56baa3:0x632e286d7c2502be",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/atea-al-rabi.jpg",
+    pin: { lat: 24.7980923, lng: 46.6666336 },
+    coordsInUrl: true,
+    placeId: "ChIJo7pWrDPjLj4RvgIlfG0oLmM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "arco-al-rabi",
+    hex: "0x3e2efd7ae2ad82bb:0x403e7005cc9304af",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/arco-al-rabi.jpg",
+    pin: { lat: 24.79198, lng: 46.672729499999996 },
+    coordsInUrl: true,
+    placeId: "ChIJu4Kt4nr9Lj4RrwSTzAVwPkA",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "diplab-al-rabi",
+    hex: "0x3e2ee3b55fa32465:0xa18563e65670394e",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/diplab-al-rabi.jpg",
+    pin: { lat: 24.788220300000003, lng: 46.6478262 },
+    coordsInUrl: true,
+    placeId: "ChIJZSSjX7XjLj4RTjlwVuZjhaE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "and-coffee-al-rabi",
+    hex: "0x3e2ee3968aeea065:0xa32780ba32c88f1b",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/and-coffee-al-rabi.jpg",
+    pin: { lat: 24.793794, lng: 46.6546812 },
+    coordsInUrl: true,
+    placeId: "ChIJZaDuipbjLj4RG4_IMrqAJ6M",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "wacafe-al-rabi",
+    hex: "0x3e2ee39665d2a067:0xd4fcbbe19975f70d",
+    neighborhood: "al-rabi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/wacafe-al-rabi.jpg",
+    pin: { lat: 24.7941798, lng: 46.6554988 },
+    coordsInUrl: true,
+    placeId: "ChIJZ6DSZZbjLj4RDfd1meG7_NQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "3bean-al-rabi",
+    hex: "0x3e2ee3dbef551423:0xc82874176841baa6",
+    neighborhood: "al-rabi",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/3bean-al-qirawan.jpg",
+    pin: { lat: 24.791734599999998, lng: 46.6722946 },
+    coordsInUrl: true,
+    placeId: "ChIJIxRV79vjLj4RprpBaBd0KMg",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "waqar-al-aziziyah",
+    hex: "0x3e2f0998d1d32f2b:0x7d22a04b551ef13c",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/waqar-al-aziziyah.jpg",
+    pin: { lat: 24.5854079, lng: 46.7714042 },
+    coordsInUrl: true,
+    placeId: "ChIJKy_T0ZgJLz4RPPEeVUugIn0",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "fav-coffee-room-al-malqa",
+    hex: "0x3e2ee7004c6e1c13:0x9d68a23fbbb456f3",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/fav-coffee-room-al-malqa.png",
+    pin: { lat: 24.8135096, lng: 46.5872023 },
+    coordsInUrl: true,
+    placeId: "ChIJExxuTADnLj4R81a0uz-iaJ0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "asfoura-al-malqa",
+    hex: "0x3e2ee55483715681:0x535c9c8273f81454",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/asfoura-al-malqa.jpg",
+    pin: { lat: 24.7986493, lng: 46.6114552 },
+    coordsInUrl: true,
+    placeId: "ChIJgVZxg1TlLj4RVBT4c4KcXFM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bab-al-mohammadiyah",
+    hex: "0x3e2ee300747e7f87:0x6c346a1fe01e3398",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bab-al-mohammadiyah.jpg",
+    pin: { lat: 24.7392724, lng: 46.6489027 },
+    coordsInUrl: true,
+    placeId: "ChIJh39-dADjLj4RmDMe4B9qNGw",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "cherie-al-muruj",
+    hex: "0x3e2ee3c1855d7fc3:0x9f9b53c13178e828",
+    neighborhood: "al-muruj",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/cherie-al-muruj.png",
+    pin: { lat: 24.7622854, lng: 46.6603825 },
+    coordsInUrl: true,
+    placeId: "ChIJw39dhcHjLj4RKOh4McFTm58",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "da-nonna-al-nakheel",
+    hex: "0x3e2ee3a7dd00f84f:0xd64c48b5838c6af3",
+    neighborhood: "al-nakheel",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/da-nonna-al-nakheel.jpg",
+    pin: { lat: 24.7511551, lng: 46.6387268 },
+    coordsInUrl: true,
+    placeId: "ChIJT_gA3afjLj4R82qMg7VITNY",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "okawa-al-narjis",
+    hex: "0x3e2efb751afe87a1:0x90435bec78a9e241",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/okawa-al-narjis.jpg",
+    pin: { lat: 24.8407563, lng: 46.673187 },
+    coordsInUrl: true,
+    placeId: "ChIJoYf-GnX7Lj4RQeKpeOxbQ5A",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "nap-al-qirawan",
+    hex: "0x3e2ee55f2a614199:0xdd5833210545ac9f",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/nap-al-qirawan.jpg",
+    pin: { lat: 24.8235343, lng: 46.5981034 },
+    coordsInUrl: true,
+    placeId: "ChIJmUFhKl_lLj4Rn6xFBSEzWN0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "ouia-al-qirawan",
+    hex: "0x3e2ee5b88e7d525d:0x3af2bf3f2c58050c",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ouia-al-qirawan.jpg",
+    pin: { lat: 24.8303379, lng: 46.5965801 },
+    coordsInUrl: true,
+    placeId: "ChIJXVJ9jrjlLj4RDAVYLD-_8jo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "shml-al-qirawan",
+    hex: "0x3e2ee55365ec1e99:0xa8f233c114e3ea38",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/shml-al-qirawan.jpg",
+    pin: { lat: 24.8284159, lng: 46.5966631 },
+    coordsInUrl: true,
+    placeId: "ChIJmR7sZVPlLj4ROOrjFMEz8qg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "for-coffee-roasters-al-qirawan",
+    hex: "0x3e2ee531c4915ebb:0x7b97b8c07e18f93d",
+    neighborhood: "al-qirawan",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/for-coffee-roasters-al-qirawan.jpg",
+    pin: { lat: 24.8431301, lng: 46.5963817 },
+    coordsInUrl: true,
+    placeId: "ChIJu16RxDHlLj4RPfkYfsC4l3s",
+    dineIn: true,
+    outdoorSeating: true,
+  },
 ];
 
 for (const row of scoutPack) {
@@ -3441,6 +4370,429 @@ assert(
     ),
   "Hello Cafe hours are Amjad's lock: every day 6:00 AM–2:00 AM next day, including Friday",
 );
+const lasOlaya = getShop("las-cafe-al-olaya");
+assert(
+  lasOlaya?.openingHours?.weekdayDescriptions?.every((line) =>
+    line.endsWith("Open 24 hours"),
+  ) &&
+    lasOlaya.openingHours.weekdayDescriptions.length === 7 &&
+    lasOlaya.openingHours.periods?.length === 1 &&
+    lasOlaya.openingHours.periods[0]?.open.day === 0 &&
+    lasOlaya.openingHours.periods[0]?.open.hour === 0 &&
+    lasOlaya.openingHours.periods[0]?.close == null,
+  "LAS CAFE Olaya hours are the Maps 24h lock only",
+);
+for (const id of [
+  "bacha-coffee-solitaire",
+  "mood-masters-al-falah",
+  "las-cafe-al-malqa",
+  "little-henri-al-muruj",
+  "beitkull-al-olaya",
+  "satr-specialty-coffee-al-mughrizat",
+  "covo-artisan-coffee-al-mughrizat",
+  "bunatetu-al-mughrizat",
+  "dune-coffee-al-mughrizat",
+  "tuxedo-coffee-al-mughrizat",
+  "bar-coffee-al-mughrizat",
+  "adab-cafe-al-mughrizat",
+  "booze-specialty-coffee-bar-al-mughrizat",
+  "latch-al-mughrizat",
+  "slant-specialty-coffee-al-izdihar",
+  "gedeb-al-olaya",
+  "bossco-roastery-al-olaya",
+  "lluvia-caffe-al-olaya",
+  "oromiffa-al-olaya",
+  "buljah-al-olaya",
+  "19-gram-al-olaya",
+  "kulma-speciality-coffee-al-olaya",
+  "morfi-al-olaya",
+  "jolt-al-olaya",
+  "key-cafe-al-olaya",
+  "alwaal-albari-al-olaya",
+  "hearth-al-arid",
+]) {
+  assert(!getShop(id)?.openingHours, `${id} has no invented weekly hours`);
+}
+
+function assertPlacesHours(
+  id: string,
+  weekdayDescriptions: readonly string[],
+  periods: readonly (readonly [number, number, number, number, number, number])[],
+) {
+  const hours = getShop(id)?.openingHours;
+  const actual = (hours?.periods ?? []).map((period) => [
+    period.open.day,
+    period.open.hour,
+    period.open.minute,
+    period.close?.day,
+    period.close?.hour,
+    period.close?.minute,
+  ]);
+  assert(
+    JSON.stringify(hours?.weekdayDescriptions) === JSON.stringify(weekdayDescriptions) &&
+      JSON.stringify(actual) === JSON.stringify(periods),
+    `${id} keeps the Places weekly hours`,
+  );
+}
+
+assertPlacesHours(
+  "crops-al-narjis",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 0, 0],
+    [1, 6, 0, 2, 0, 0],
+    [2, 6, 0, 3, 0, 0],
+    [3, 6, 0, 4, 0, 0],
+    [4, 6, 0, 5, 0, 0],
+    [5, 6, 0, 6, 0, 0],
+    [6, 6, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "bala-al-rawabi",
+  [
+    "Monday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 12:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 12:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 12, 0, 1, 0, 0],
+    [1, 12, 0, 2, 0, 0],
+    [2, 12, 0, 3, 0, 0],
+    [3, 12, 0, 4, 0, 0],
+    [4, 12, 0, 5, 1, 0],
+    [5, 12, 0, 6, 1, 0],
+    [6, 12, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "ract-al-qirawan",
+  [
+    "Monday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 4:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 4:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 4:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 16, 0, 1, 0, 0],
+    [1, 16, 0, 2, 0, 0],
+    [2, 16, 0, 3, 0, 0],
+    [3, 16, 0, 4, 0, 0],
+    [4, 16, 0, 5, 1, 0],
+    [5, 16, 0, 6, 1, 0],
+    [6, 16, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "orkt-al-hamra",
+  [
+    "Monday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Wednesday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 7:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 1:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 1:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Sunday: 7:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 7, 0, 1, 1, 0],
+    [1, 7, 0, 2, 1, 0],
+    [2, 7, 0, 3, 1, 0],
+    [3, 7, 0, 4, 1, 0],
+    [4, 7, 0, 5, 0, 0],
+    [5, 13, 0, 6, 2, 0],
+    [6, 13, 0, 0, 2, 0],
+  ],
+);
+assertPlacesHours(
+  "rex-al-arid",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 12:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 8:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 1, 0],
+    [1, 6, 0, 2, 1, 0],
+    [2, 6, 0, 3, 1, 0],
+    [3, 6, 0, 4, 1, 0],
+    [4, 6, 0, 5, 1, 0],
+    [5, 12, 0, 6, 1, 0],
+    [6, 8, 0, 0, 1, 0],
+  ],
+);
+assertPlacesHours(
+  "veo-hittin",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Friday: 12:30\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 2, 0],
+    [1, 6, 0, 2, 2, 0],
+    [2, 6, 0, 3, 2, 0],
+    [3, 6, 0, 4, 2, 0],
+    [4, 6, 0, 5, 2, 0],
+    [5, 12, 30, 6, 2, 0],
+    [6, 6, 0, 0, 2, 0],
+  ],
+);
+assertPlacesHours(
+  "essert-al-arid",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u200912:30\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Friday: 8:00\u202fAM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 1, 0],
+    [1, 6, 0, 2, 1, 0],
+    [2, 6, 0, 3, 0, 30],
+    [3, 6, 0, 4, 1, 0],
+    [4, 6, 0, 5, 2, 0],
+    [5, 8, 0, 6, 2, 0],
+    [6, 6, 0, 0, 1, 0],
+  ],
+);
+assertPlacesHours(
+  "otto-al-muruj",
+  [
+    "Monday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Tuesday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Wednesday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Thursday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Friday: 12:30\u2009\u2013\u200911:30\u202fPM",
+    "Saturday: 4:00\u2009\u2013\u200911:00\u202fPM",
+    "Sunday: 4:00\u2009\u2013\u200911:00\u202fPM",
+  ],
+  [
+    [0, 16, 0, 0, 23, 0],
+    [1, 16, 0, 1, 23, 0],
+    [2, 16, 0, 2, 23, 0],
+    [3, 16, 0, 3, 23, 0],
+    [4, 16, 0, 4, 23, 0],
+    [5, 12, 30, 5, 23, 30],
+    [6, 16, 0, 6, 23, 0],
+  ],
+);
+assertPlacesHours(
+  "behind-al-muruj",
+  [
+    "Monday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Tuesday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Wednesday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Thursday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Friday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Saturday: 1:00\u2009\u2013\u200911:00\u202fPM",
+    "Sunday: 1:00\u2009\u2013\u200911:00\u202fPM",
+  ],
+  [
+    [0, 13, 0, 0, 23, 0],
+    [1, 13, 0, 1, 23, 0],
+    [2, 13, 0, 2, 23, 0],
+    [3, 13, 0, 3, 23, 0],
+    [4, 13, 0, 4, 23, 0],
+    [5, 13, 0, 5, 23, 0],
+    [6, 13, 0, 6, 23, 0],
+  ],
+);
+assertPlacesHours(
+  "shubak-al-bun-badr",
+  [
+    "Monday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Tuesday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Wednesday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Thursday: 2:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "Saturday: 2:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 2:00\u202fPM\u2009\u2013\u20092:00\u202fAM",
+  ],
+  [
+    [0, 14, 0, 1, 2, 0],
+    [1, 14, 0, 2, 2, 0],
+    [2, 14, 0, 3, 2, 0],
+    [3, 14, 0, 4, 2, 0],
+    [4, 14, 0, 5, 0, 0],
+    [5, 14, 0, 6, 2, 0],
+    [6, 14, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "abeille-al-narjis",
+  [
+    "Monday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Tuesday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Wednesday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Thursday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Friday: 12:00\u202fPM\u2009\u2013\u200912:00\u202fAM",
+    "Saturday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+    "Sunday: 8:00\u202fAM\u2009\u2013\u200912:00\u202fAM",
+  ],
+  [
+    [0, 8, 0, 1, 0, 0],
+    [1, 8, 0, 2, 0, 0],
+    [2, 8, 0, 3, 0, 0],
+    [3, 8, 0, 4, 0, 0],
+    [4, 8, 0, 5, 0, 0],
+    [5, 12, 0, 6, 0, 0],
+    [6, 8, 0, 0, 0, 0],
+  ],
+);
+assertPlacesHours(
+  "way-coffee-dhahrat-al-badiah",
+  [
+    "Monday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Tuesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Wednesday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Thursday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Friday: 1:00\u202fPM\u2009\u2013\u20091:00\u202fAM",
+    "Saturday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+    "Sunday: 6:00\u202fAM\u2009\u2013\u20091:00\u202fAM",
+  ],
+  [
+    [0, 6, 0, 1, 1, 0],
+    [1, 6, 0, 2, 1, 0],
+    [2, 6, 0, 3, 1, 0],
+    [3, 6, 0, 4, 1, 0],
+    [4, 6, 0, 5, 1, 0],
+    [5, 13, 0, 6, 1, 0],
+    [6, 6, 0, 0, 1, 0],
+  ],
+);
+
+const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
+  "bacha-coffee-solitaire": {
+    nameEn: "Bacha Coffee Solitaire Mall",
+    nameAr: "باشا",
+  },
+  "mood-masters-al-falah": {
+    nameEn: "Mood Masters",
+    nameAr: "محمصة ومقهى مود ماسترز للقهوة المختصة",
+  },
+  "las-cafe-al-malqa": { nameEn: "LAS CAFE", nameAr: "لاس كافيه" },
+  "las-cafe-al-olaya": { nameEn: "LAS CAFE Olaya", nameAr: "لاس كافيه" },
+  "little-henri-al-muruj": { nameEn: "Little Henri", nameAr: "ليتل هنري" },
+  "beitkull-al-olaya": { nameEn: "Beitkull", nameAr: "قهوة بيت كُلْ" },
+  "satr-specialty-coffee-al-mughrizat": {
+    nameEn: "Satr Specialty Coffee",
+    nameAr: "سَطر | قهوة مختصة",
+  },
+  "covo-artisan-coffee-al-mughrizat": {
+    nameEn: "COVO Artisan Coffee",
+    nameAr: "كوفو",
+  },
+  "bunatetu-al-mughrizat": { nameEn: "BUNATETU", nameAr: "بوناتيتو" },
+  "dune-coffee-al-mughrizat": { nameEn: "Dune Coffee", nameAr: "كافي دون" },
+  "tuxedo-coffee-al-mughrizat": { nameEn: "TUXEDO Coffee", nameAr: "توكسيدو كوفي" },
+  "bar-coffee-al-mughrizat": { nameEn: "Bar Coffee", nameAr: "بار كافيه" },
+  "adab-cafe-al-mughrizat": { nameEn: "ADAB Cafe", nameAr: "مقهى أدب" },
+  "booze-specialty-coffee-bar-al-mughrizat": {
+    nameEn: "Booze Specialty Coffee Bar",
+    nameAr: "بوز",
+  },
+  "latch-al-mughrizat": { nameEn: "LATCH", nameAr: "لاتش" },
+  "slant-specialty-coffee-al-izdihar": {
+    nameEn: "Slant Specialty Coffee",
+    nameAr: "سلانت قهوة مختصة",
+  },
+  "gedeb-al-olaya": { nameEn: "Gedeb", nameAr: "قيدب" },
+  "bossco-roastery-al-olaya": { nameEn: "BOSS.CO Roastery", nameAr: "مقهى ومحمصة بوسكو" },
+  "lluvia-caffe-al-olaya": { nameEn: "lluvia Caffe", nameAr: "يوڤيا كافيه" },
+  "oromiffa-al-olaya": { nameEn: "Oromiffa", nameAr: "أورميفا" },
+  "buljah-al-olaya": { nameEn: "Buljah", nameAr: "بُلجة" },
+  "19-gram-al-olaya": { nameEn: "19 Gram", nameAr: "١٩ جرام" },
+  "kulma-speciality-coffee-al-olaya": { nameEn: "KULMA Speciality Coffee", nameAr: "مقهى كولما" },
+  "morfi-al-olaya": { nameEn: "MORFi", nameAr: "مورفي قهوة مختصة" },
+  "jolt-al-olaya": { nameEn: "JOLT", nameAr: "جولت" },
+  "key-cafe-al-olaya": { nameEn: "Key Cafe", nameAr: "كي" },
+  "alwaal-albari-al-olaya": { nameEn: "Alwaal Albari", nameAr: "الوعل البري" },
+  "crops-al-narjis": { nameEn: "Crops", nameAr: "كروبس" },
+  "bala-al-rawabi": { nameEn: "Bala", nameAr: "بلة" },
+  "ract-al-qirawan": { nameEn: "RACT", nameAr: "راكت" },
+  "orkt-al-hamra": { nameEn: "ORKT", nameAr: "أوركت" },
+  "rex-al-arid": { nameEn: "Rex", nameAr: "ريكس" },
+  "veo-hittin": { nameEn: "VEO Coffee", nameAr: "فيو" },
+  "essert-al-arid": { nameEn: "Essert", nameAr: "إسرت" },
+  "otto-al-muruj": { nameEn: "otto Speciality Coffee & Roastery", nameAr: "otto" },
+  "behind-al-muruj": { nameEn: "Behind", nameAr: "بيهايند" },
+  "shubak-al-bun-badr": { nameEn: "Shubak Al Bun", nameAr: "شباك البن" },
+  "hearth-al-arid": { nameEn: "HEARTH Café", nameAr: "هيرث" },
+  "abeille-al-narjis": { nameEn: "Abeille cafe", nameAr: "أبيي كافيه" },
+  "way-coffee-dhahrat-al-badiah": { nameEn: "WAY Coffee & Bakery", nameAr: "وي كافية" },
+  "kava-al-rabi": { nameEn: "KAVA", nameAr: "KAVA" },
+  "sociable-al-rabi": { nameEn: "Sociable", nameAr: "سوشبيل" },
+  "orne-cafe-al-rabi": { nameEn: "Ornè Cafè", nameAr: "اورن كافيه" },
+  "atea-al-rabi": { nameEn: "ATEA", nameAr: "آتِ" },
+  "arco-al-rabi": { nameEn: "Arco", nameAr: "اركو" },
+  "diplab-al-rabi": { nameEn: "diplab cafe", nameAr: "ديب لاب كافيه" },
+  "and-coffee-al-rabi": { nameEn: "& Coffee", nameAr: "كوفي اند" },
+  "wacafe-al-rabi": { nameEn: "Wacafe", nameAr: "وكف" },
+  "3bean-al-rabi": { nameEn: "3bean Coffee Roastery", nameAr: "محمصة ثري بين" },
+  "waqar-al-aziziyah": { nameEn: "Waqar", nameAr: "وقار" },
+};
+for (const [id, names] of Object.entries(canonicalNames)) {
+  const shop = getShop(id);
+  assert(shop?.nameEn === names.nameEn, `${id} canonical nameEn`);
+  assert(shop?.nameAr === names.nameAr, `${id} canonical nameAr`);
+}
+/** Ar Rabi Scout-10: weekly hours are the Places API regularOpeningHours bake (1 Oct 2026), never hand-filled. */
+for (const id of [
+  "kava-al-rabi",
+  "sociable-al-rabi",
+  "orne-cafe-al-rabi",
+  "atea-al-rabi",
+  "arco-al-rabi",
+  "diplab-al-rabi",
+  "and-coffee-al-rabi",
+  "wacafe-al-rabi",
+  "3bean-al-rabi",
+]) {
+  const hours = getShop(id)?.openingHours;
+  assert(
+    hours?.weekdayDescriptions?.length === 7 && (hours.periods?.length ?? 0) > 0,
+    `${id} carries the Places weekly hours`,
+  );
+}
+/** Waqar (Al Aziziyah): weekly hours are the Places API regularOpeningHours bake (2 Oct 2026), never Scout's guess. */
+{
+  const hours = getShop("waqar-al-aziziyah")?.openingHours;
+  assert(
+    hours?.weekdayDescriptions?.length === 7 && hours.periods?.length === 7,
+    "waqar-al-aziziyah carries the 7-day Places weekly hours",
+  );
+  assert(
+    hours?.weekdayDescriptions?.[4] === "Friday: 12:30\u202fPM\u2009\u2013\u20092:00\u202fAM",
+    "waqar-al-aziziyah Friday row is the Places row",
+  );
+}
 assert(
   !getShop("sand-clock-sulimaniyah"),
   "old sand-clock-sulimaniyah id is retired (Muruj hex moved)",
@@ -3764,7 +5116,7 @@ assert(
     join(process.cwd(), "components/meet-halfway-card.tsx"),
     "utf8",
   ).includes("MEET_HALFWAY_CHIP"),
-  "بيننا is a utility card above the chips",
+  "بيننا is a utility card under the category grid",
 );
 assert(
   !vibeChips.includes("ثلاث الليلة") && !vibeChips.includes("ON TONIGHT"),

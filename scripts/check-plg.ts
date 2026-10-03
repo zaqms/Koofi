@@ -1,5 +1,10 @@
 import popularityIndexFile from "../data/popularity-index.json";
+import { isChainShop } from "../lib/chain-brands";
 import { listRealShops } from "../lib/catalog";
+import {
+  chainPopularityIndex,
+  effectivePopularityIndex,
+} from "../lib/tiktok-popularity";
 import { isNearAskedNeighborhood } from "../lib/neighborhood-tight";
 import { parseIntent } from "../lib/parse-intent";
 import { pickCafes } from "../lib/picker";
@@ -270,12 +275,17 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 358,
-  `popularity map should have 358 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 425,
+  `popularity map should have 425 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
-  catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
-  "every live shop must carry the baked popularityIndex",
+  catalog.every((shop) =>
+    isChainShop(shop)
+      ? shop.popularityIndex === chainPopularityIndex()
+      : shop.popularityIndex ===
+        effectivePopularityIndex(popularityIndex[shop.id], shop.id),
+  ),
+  "every live shop must carry the baked popularityIndex plus the TikTok bonus, or the flat chain index",
 );
 assert(
   catalog.every((shop) => !shop.momentTags.includes("popular")),

@@ -1,10 +1,12 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { DistrictPage } from "@/components/district-page";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
+import { districtPageHidden, hiddenDistrictRedirect } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
+import { TrendingThisWeekPage } from "@/components/trending-this-week-page";
 import {
   categoryListingStaticParams,
   mostPopularMetadata,
@@ -13,8 +15,10 @@ import {
   chipIdFromCoffeeShopSlug,
   isCoffeeShopChipSlug,
   isMostPopularSlug,
+  isTrendingSlug,
   PRODUCT_NAME,
 } from "@/lib/product";
+import { trendingMetadata } from "@/lib/trending-page";
 import {
   districtItemListJsonLd,
   mostPopularItemListJsonLd,
@@ -38,13 +42,16 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
   if (isMostPopularSlug(slug)) {
     return mostPopularMetadata("ar");
   }
+  if (isTrendingSlug(slug)) {
+    return trendingMetadata("ar");
+  }
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
     if (!chipId) return { title: PRODUCT_NAME };
     return chipPageMetadata(chipId, "ar");
   }
   const district = resolveDistrictSlug(slug);
-  if (!district) {
+  if (!district || districtPageHidden(district)) {
     return { title: PRODUCT_NAME };
   }
   return districtMetadata(district, "ar", category);
@@ -63,6 +70,9 @@ export default async function CategoryDistrictPage({
       </>
     );
   }
+  if (isTrendingSlug(slug)) {
+    return <TrendingThisWeekPage language="ar" />;
+  }
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
     if (!chipId) notFound();
@@ -70,6 +80,7 @@ export default async function CategoryDistrictPage({
   }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();
+  if (districtPageHidden(district)) redirect(hiddenDistrictRedirect("ar"));
 
   return (
     <>

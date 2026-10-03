@@ -1,25 +1,44 @@
-import { listDirectoryShops, listRealShops } from "./catalog";
+import {
+  districtRowsAreUnlistedChains,
+  listDirectoryShops,
+  listRealShops,
+  listedDistrictIdsFrom,
+} from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { directoryNeighborhoods } from "./directory";
 import { districtCity } from "./district-city";
 import { NEIGHBORHOODS, isNeighborhoodId } from "./neighborhoods";
 import { parseIntent } from "./parse-intent";
-import { districtPath } from "./product";
+import { districtPath, neighborhoodsPath } from "./product";
 import type { City, Language, NeighborhoodId } from "./types";
 
 /**
- * Live catalog districts only. Izdihar / الازدهار is not a live حي —
- * do not invent it. Aliases live on `NEIGHBORHOODS` (EN + AR + typos).
+ * Live catalog districts only. The 21 Sep sheet still marks Izdihar
+ * dictionary_only; a real catalog shop makes الازدهار live in discovery.
+ * Do not invent extra Izdihar shops. Aliases live on `NEIGHBORHOODS`.
  */
 export function listLiveDistrictIds(): NeighborhoodId[] {
   return directoryNeighborhoods(listDirectoryShops());
 }
 
-/** Real catalog shops — sitemap / browse destinations. 0-shop ids stay out. */
+/**
+ * Sitemap and browse destinations. A district stays when any non-chain row
+ * remains, including a local drive-through fallback, or when a chain branch
+ * passes the sit-down gate. It drops only when every row is a non-qualifying
+ * chain. 0-shop ids stay out, the same as prod.
+ */
 export function listLiveCatalogDistrictIds(): NeighborhoodId[] {
-  return directoryNeighborhoods(
-    listRealShops().map((shop) => ({ neighborhood: shop.neighborhood })),
-  );
+  return listedDistrictIdsFrom(listRealShops());
+}
+
+/** Hide the URL only when every row is a non-qualifying chain branch. */
+export function districtPageHidden(id: NeighborhoodId): boolean {
+  return districtRowsAreUnlistedChains(listRealShops(districtCity(id)), id);
+}
+
+/** Temporary home for a hidden district URL until a dine-in row brings the page back. */
+export function hiddenDistrictRedirect(language: Language): string {
+  return neighborhoodsPath(language);
 }
 
 export function dictionaryDistrictIds(): NeighborhoodId[] {

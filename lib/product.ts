@@ -371,6 +371,19 @@ export function mostPopularPath(language: Language = "ar"): string {
   return language === "en" ? `/en${path}` : path;
 }
 
+/** Latin slug for the Trending This Week list. Same shape as other list pages. */
+export const TRENDING_SLUG = "trending";
+
+export function isTrendingSlug(slug: string): boolean {
+  return slug === TRENDING_SLUG;
+}
+
+/** Trending This Week list. AR keeps the Latin slug, same as districts. */
+export function trendingPath(language: Language = "ar"): string {
+  const path = `/${COFFEE_SHOPS_CATEGORY}/${TRENDING_SLUG}`;
+  return language === "en" ? `/en${path}` : path;
+}
+
 /**
  * Shareable بيننا landing. Must stay `/halfway`, never `/h` —
  * `/h/{id}` is the invite session URL after اعزم خويك.
@@ -410,6 +423,42 @@ export const LEGACY_CHIP_REDIRECTS = LEGACY_DATE_CHIP_SLUGS.flatMap((slug) => [
 ]);
 
 /**
+ * Cafe cards dropped from the catalog whose old /c/ URLs still get traffic.
+ * The 7 Al Rabi DT rows (2026-10-02 placeId fix) were not in Al Rabi: each
+ * share link is a real branch in another district, while the stored placeId
+ * was N5 Qurtubah / Drive Al Qirawan. They are dropped until Scout re-adds
+ * them under real-district slugs; repoint these when that lands.
+ * - N5 → the one live N5 card (whose Places data those rows were showing).
+ * - Drive Coffee → the Drive-through directory (five different real
+ *   branches, so no single card is the right target).
+ */
+const REMOVED_SHOP_TARGETS: ReadonlyArray<readonly [string, string]> = [
+  ["n5-caffe-al-rabi", `${CARD_PATH_PREFIX}/n5-caffe-qurtubah`],
+  ["n5-caffe-al-rabi-2", `${CARD_PATH_PREFIX}/n5-caffe-qurtubah`],
+  ["drive-al-rabi", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
+  ["drive-al-rabi-2", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
+  ["drive-al-rabi-3", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
+  ["drive-al-rabi-4", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
+  ["drive-al-rabi-5", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
+];
+
+const REMOVED_SHOP_REDIRECTS = REMOVED_SHOP_TARGETS.flatMap(([slug, target]) => {
+  const keepsSubpath = target.startsWith(`${CARD_PATH_PREFIX}/`);
+  return (["", "/en"] as const).flatMap((locale) => [
+    {
+      source: `${locale}${CARD_PATH_PREFIX}/${slug}`,
+      destination: `${locale}${target}`,
+      statusCode: 308 as const,
+    },
+    {
+      source: `${locale}${CARD_PATH_PREFIX}/${slug}/:path*`,
+      destination: `${locale}${target}${keepsSubpath ? "/:path*" : ""}`,
+      statusCode: 308 as const,
+    },
+  ]);
+});
+
+/**
  * Retired cafe-card ids. Same 308 pattern as chip slug retags.
  * Sand Clock’s live hex was mis-tagged sulimaniyah; keep the old /c/ URL
  * on the Muruj place so Maps identity does not swap.
@@ -435,6 +484,7 @@ export const LEGACY_SHOP_REDIRECTS = [
     destination: `/en${CARD_PATH_PREFIX}/sand-clock-al-muruj/:path*`,
     statusCode: 308 as const,
   },
+  ...REMOVED_SHOP_REDIRECTS,
 ] as const;
 
 export function coffeeShopChipPath(

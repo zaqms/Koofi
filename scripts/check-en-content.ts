@@ -163,6 +163,7 @@ for (const district of [
   "manfuha",
   "tuwaiq",
   "as-suwaidi",
+  "al-falah",
 ] as const) {
   const body = districtEnMarkdown(district);
   const lead = body.split("## What’s here")[0] ?? "";
@@ -187,6 +188,19 @@ assert(
 assert(
   shopsInDistrict("as-suwaidi").length === 0,
   "as-suwaidi catalog is empty after the closed drop",
+);
+assert(
+  !districtEnMarkdown("al-masif").includes("/en/c/voom-al-masif"),
+  "al-masif EN must not keep the closed card link",
+);
+assert(
+  shopsInDistrict("al-masif").length === 10,
+  "al-masif catalog is 10 after the closed drop",
+);
+assert(
+  districtEnMarkdown("al-aziziyah").includes("/en/c/waqar-al-aziziyah") &&
+    !districtEnMarkdown("al-aziziyah").includes("/en/c/drive-al-aziziyah"),
+  "al-aziziyah EN lists Waqar, not the DT-lane cards",
 );
 
 const kafdMeta = districtMetadata("kafd", "en");
@@ -559,6 +573,15 @@ for (const district of liveDistricts) {
 assert(
   !districtArMarkdown("as-suwaidi").includes("/c/drcafe-as-suwaidi"),
   "as-suwaidi AR must not keep the closed card link",
+);
+assert(
+  !districtArMarkdown("al-masif").includes("/c/voom-al-masif"),
+  "al-masif AR must not keep the closed card link",
+);
+assert(
+  districtArMarkdown("al-aziziyah").includes("/c/waqar-al-aziziyah") &&
+    !districtArMarkdown("al-aziziyah").includes("/c/drcafe-al-aziziyah"),
+  "al-aziziyah AR lists Waqar, not the DT-lane cards",
 );
 assert(
   !districtArMarkdown("al-rabwah").includes("/c/get-up-coffee-ar-rabwah"),

@@ -207,7 +207,16 @@ for (const row of rowsEn) {
     `${row.id} count matches catalog`,
   );
   if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
-    const expected = row.id === "al-takhassusi" ? 7 : row.id === "al-ghadeer" ? 9 : 8;
+    const expected =
+      row.id === "al-takhassusi"
+        ? 7
+        : row.id === "al-ghadeer"
+          ? 9
+          : row.id === "al-qirawan"
+            ? 13
+            : row.id === "al-arid"
+              ? 11
+              : 8;
     assert(
       row.cafeCount === expected,
       `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
@@ -219,18 +228,18 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 6,
-      `${row.id} Muruj refill has 6 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 10,
+      `${row.id} Muruj refill has 10 cafes, got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 4,
-      `${row.id} Mohammadiyah refill has 4 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 5,
+      `${row.id} Mohammadiyah refill has 5 cafes, got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 5,
-      `${row.id} Malaz refill has 5 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 6,
+      `${row.id} Malaz refill has 6 cafes, got ${row.cafeCount}`,
     );
   } else {
     assert(row.cafeCount > 0, `${row.id} has at least one cafe`);
@@ -333,31 +342,33 @@ assert(
   az.some((row) => row.id === "at-taawun"),
   "A–Z includes at-taawun",
 );
-assert(
-  az.some((row) => row.id === "al-mursalat"),
-  "A–Z includes al-mursalat",
-);
-assert(
-  az.some((row) => row.id === "al-murabba"),
-  "A–Z includes al-murabba",
-);
-assert(az.some((row) => row.id === "as-salam"), "A–Z includes as-salam");
 assert(az.some((row) => row.id === "badr"), "A–Z includes badr");
-assert(az.some((row) => row.id === "al-janadriyyah"), "A–Z includes al-janadriyyah");
-assert(az.some((row) => row.id === "namar"), "A–Z includes namar");
-assert(az.some((row) => row.id === "kkia"), "A–Z includes kkia");
-assert(az.some((row) => row.id === "al-jazirah"), "A–Z includes al-jazirah");
 assert(az.some((row) => row.id === "an-nasim-ash-sharqi"), "A–Z includes an-nasim-ash-sharqi");
-assert(az.some((row) => row.id === "an-nasim"), "A–Z includes an-nasim");
-assert(az.some((row) => row.id === "shubra"), "A–Z includes shubra");
-assert(az.some((row) => row.id === "manfuha"), "A–Z includes manfuha");
-assert(az.some((row) => row.id === "tuwaiq"), "A–Z includes tuwaiq");
+for (const id of [
+  "al-mursalat",
+  "al-murabba",
+  "as-salam",
+  "ghubairah",
+  "al-wisham",
+  "al-hazm",
+  "al-andalus",
+  "al-khaleej",
+  "ar-rimal",
+  "al-janadriyyah",
+  "namar",
+  "tuwaiq",
+] as const) {
+  assert(az.some((row) => row.id === id), `A–Z keeps ${id}`);
+}
+for (const id of ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const) {
+  assert(!az.some((row) => row.id === id), `A–Z hides chain-only ${id}`);
+}
 assert(
   !az.some((row) => row.id === "as-suwaidi"),
   "A–Z excludes 0-shop as-suwaidi",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 66, "A–Z is the 66 live catalog districts");
+assert(az.length === 64, "A–Z drops the five chain-only districts");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(
@@ -561,8 +572,8 @@ assert(
   "AR browse section is a true RTL twin",
 );
 assert(
-  browse.includes("border-y border-line"),
-  "subtle beige dividers above and below the strip",
+  !browse.includes("border-y border-line"),
+  "home neighborhoods separate with space, not a divider",
 );
 assert(
   browse.includes('data-view-all-cta={language}') ||

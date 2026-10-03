@@ -1,4 +1,5 @@
-import { getShop, listDirectoryShops, listRealShops } from "./catalog";
+import { chainBrandNameEn, isChainShop } from "./chain-brands";
+import { getShop, listListingDirectoryShops, listRealShops } from "./catalog";
 import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { districtCity } from "./district-city";
 import { coffeeShopsInDistrict } from "./directory-category";
@@ -104,6 +105,10 @@ export type PublicShopRecord = {
   hasMap?: string;
   geo?: GeoJsonLd;
   dateModified?: string;
+  /** Mass-market brand label. Omitted on local specialty rows. */
+  brand?: string;
+  /** True only for a mass-market chain branch. Omitted otherwise. */
+  isChain?: true;
 };
 
 export type ItemListJsonLd = {
@@ -176,10 +181,13 @@ function shopById(): Map<string, Shop> {
   return new Map(listRealShops().map((shop) => [shop.id, shop]));
 }
 
-/** Real shops in the same neighborhood-then-name order as the public directory. */
+/**
+ * Every listed row: local specialty plus dine-in chains, in directory order.
+ * With no chains this is the specialty directory.
+ */
 export function listPublicShops(): Shop[] {
   const byId = shopById();
-  return listDirectoryShops()
+  return listListingDirectoryShops()
     .map((row) => byId.get(row.id))
     .filter((shop): shop is Shop => shop !== undefined);
 }
@@ -304,6 +312,14 @@ export function publicShopRecord(
     ...(maps ? { hasMap: maps } : {}),
     ...(geo ? { geo } : {}),
     dateModified: EN_CONTENT_DATE_MODIFIED,
+    ...(isChainShop(shop)
+      ? {
+          isChain: true as const,
+          ...(chainBrandNameEn(shop.chainBrand)
+            ? { brand: chainBrandNameEn(shop.chainBrand) }
+            : {}),
+        }
+      : {}),
   });
 }
 
@@ -416,12 +432,20 @@ export function jsonHasForbiddenPublicFields(value: unknown): string[] {
   return [...found];
 }
 
+export function llmsCatalogCountLabel(local: number, chains: number): string {
+  if (chains === 0) return String(local);
+  return `${local} local, ${chains} chain branches`;
+}
+
 export function buildLlmsTxt(): string {
-  const count = listPublicShops().length;
+  const shops = listPublicShops();
+  const chains = shops.filter((shop) => isChainShop(shop)).length;
+  const local = shops.length - chains;
+  const countLabel = llmsCatalogCountLabel(local, chains);
   return [
     `# ${PRODUCT_NAME}`,
     "",
-    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${count}). Public catalog for people and agents.`,
+    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${countLabel}). Public catalog for people and agents.`,
     "",
     `${PRODUCT_NAME} is a ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
     "",
@@ -443,6 +467,11 @@ export function buildLlmsTxt(): string {
     "## Fields",
     "",
     "Catalog-only: Arabic and English names, neighborhood, canonical card URL on wain.lol, Maps URL when present (`sameAs` / `hasMap`), geo when official coordinates exist, `dateModified` when EN card/district copy was last locked.",
+    ...(chains > 0
+      ? [
+          "Mass-market branches also include `brand` and `isChain`. Local specialty rows omit both.",
+        ]
+      : []),
     "",
     "Not included: hours, ratings, phone, price, reviews, vote counts, or images.",
     "",

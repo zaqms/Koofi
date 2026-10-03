@@ -1019,7 +1019,7 @@ export const NEIGHBORHOODS: Record<
   manfuha: {
     id: "manfuha",
     ar: "منفوحة",
-    en: "Manfuhah",
+    en: "Manfuha",
     aliases: [
       "منفوحة",
       "منفوحه",
@@ -1048,6 +1048,48 @@ export const NEIGHBORHOODS: Record<
       "al suwaidi",
       "al-suwaidi",
       "As Suwaidi",
+    ],
+  },
+  "al-falah": {
+    id: "al-falah",
+    ar: "الفلاح",
+    en: "Al Falah",
+    aliases: [
+      "الفلاح",
+      "فلاح",
+      "falah",
+      "al falah",
+      "al-falah",
+      "alfalah",
+      "Al Falah",
+    ],
+  },
+  "al-izdihar": {
+    id: "al-izdihar",
+    ar: "الازدهار",
+    en: "Al Izdihar",
+    aliases: [
+      "الازدهار",
+      "ازدهار",
+      "izdihar",
+      "al izdihar",
+      "al-izdihar",
+      "alizdihar",
+      "Al Izdihar",
+    ],
+  },
+  "dhahrat-al-badiah": {
+    id: "dhahrat-al-badiah",
+    ar: "ظهرة البديعة",
+    en: "Dhahrat Al Badiah",
+    aliases: [
+      "ظهرة البديعة",
+      "ظهره البديعه",
+      "dhahrat al badiah",
+      "dhahrat-al-badiah",
+      "dhahrat al badi'ah",
+      "dhahratalbadiah",
+      "Dhahrat Al Badiah",
     ],
   },
 };

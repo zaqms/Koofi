@@ -59,6 +59,7 @@ export type DiscoveryCategory = {
 
 /**
  * Approved live set as of Sep 2026 (homepage + share URLs).
+ * Home grid is the 8-tile order (pastry stays on its share URL, off the grid).
  * Off-home rows (roaster / specialty / study / late / quiet) stay enabled
  * because their dedicated URLs already ship — they are not leftover
  * district arrays. After PR #164, districts use this same registry via
@@ -87,7 +88,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "أفضل قهوة", en: "Best Coffee" },
     icon: "coffee",
     enabled: true,
-    homeRank: 2,
+    homeRank: 4,
     surface: "home",
     directoryKind: "chip-filter",
     resultSort: false,
@@ -103,7 +104,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "قهوة وحلى", en: "Coffee and sweets" },
     icon: "pastry",
     enabled: true,
-    homeRank: 3,
+    homeRank: null,
     surface: "home",
     directoryKind: "chip-filter",
     resultSort: false,
@@ -119,7 +120,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "ماتشا", en: "Matcha" },
     icon: "matcha",
     enabled: true,
-    homeRank: 4,
+    homeRank: 3,
     surface: "home",
     directoryKind: "static-list",
     resultSort: true,
@@ -135,7 +136,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "طلبات السيارة", en: "Drive-through" },
     icon: "drive-through",
     enabled: true,
-    homeRank: 9,
+    homeRank: 8,
     surface: "home",
     directoryKind: "static-list",
     resultSort: true,
@@ -202,7 +203,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "للشغل", en: "Best for Work" },
     icon: "work",
     enabled: true,
-    homeRank: 8,
+    homeRank: 5,
     surface: "home",
     directoryKind: "chip-filter",
     resultSort: false,
@@ -250,7 +251,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "جلسات خارجية", en: "Outdoor seating" },
     icon: "outdoor",
     enabled: true,
-    homeRank: 6,
+    homeRank: 7,
     surface: "home",
     directoryKind: "chip-filter",
     resultSort: false,
@@ -266,7 +267,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "مع الأصحاب", en: "With friends" },
     icon: "with-friends",
     enabled: true,
-    homeRank: 7,
+    homeRank: 6,
     surface: "home",
     directoryKind: "chip-filter",
     resultSort: false,
@@ -282,7 +283,7 @@ export const DISCOVERY_CATEGORIES = [
     label: { ar: "قريب مني", en: "Nearby" },
     icon: "nearby",
     enabled: true,
-    homeRank: 5,
+    homeRank: 2,
     surface: "home",
     directoryKind: "nearby-geo",
     resultSort: false,

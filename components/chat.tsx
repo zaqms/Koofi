@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
+import { flushSync } from "react-dom";
 import { AddShopButton } from "@/components/add-shop-button";
 import { CitySelector } from "@/components/city-selector";
 import { ComingSoonCity } from "@/components/coming-soon-city";
@@ -17,11 +26,15 @@ import {
   pinFromHalfwayInput,
 } from "@/lib/halfway-place";
 import { pinsMidpoint } from "@/lib/halfway-results-payload";
+import { HomeHalfwayCard } from "@/components/home-halfway-card";
 import { HomeHero } from "@/components/home-hero";
+import { LegacyOpenerHero } from "@/components/legacy-opener-hero";
 import { MeetHalfwayCard } from "@/components/meet-halfway-card";
 import { VibeChips, type ChipPick } from "@/components/vibe-chips";
 import type { ChipOpenRestore } from "@/lib/chip-open";
 import { BrandHomeLink } from "@/components/brand-home-link";
+import { DetailBackIcon } from "@/components/cafe-detail-icons";
+import { setSearchScreenOpen } from "@/components/home-bare-tail";
 import { useBeenIds } from "@/lib/been";
 import { useCity } from "@/lib/city-context";
 import { copy } from "@/lib/copy";
@@ -334,10 +347,28 @@ type ChatProps = {
   selectedChipId?: string | null;
   /** Off-home share URLs serve three picks on the server. Not a home tile. */
   chipOpen?: ChipOpenRestore | null;
+  /** Home lists (trending, neighborhoods, cafés). Placed under Halfway on the opener. */
+  discovery?: ReactNode;
+  /** Bare `/` and `/en` only. Other chats keep the pre-#205 opener and composer. */
+  homeSurface?: boolean;
 };
 
 const threads: Partial<Record<string, LiveThread>> = {};
 const pendingSends: Partial<Record<string, PendingSend>> = {};
+
+/**
+ * Bare-home search is one history entry over `/` or `/en`.
+ * Popping it shows Home again and leaves `threads` alone.
+ */
+let searchPinnedHome = false;
+/** Set when this document pushed the search entry, so Back can pop it. */
+let searchPushedInApp = false;
+
+function historyIsSearch(): boolean {
+  if (typeof window === "undefined") return false;
+  const state = window.history.state as { wainSearch?: boolean } | null;
+  return state?.wainSearch === true;
+}
 
 function openerMessage(landing: Language): AssistantMessage {
   return {
@@ -420,6 +451,291 @@ function lastCompletedResultIndex(messages: readonly Message[]): number {
   return -1;
 }
 
+type SearchDraftHandle = {
+  text: string;
+  clear: () => void;
+};
+
+/**
+ * Focused text is a true 16px. iOS Safari auto-zooms from the rendered size
+ * after CSS `zoom`, so 16px at `zoom: 0.875` is treated as 14px. It also
+ * ignores `transform` for caret placement, so `scale(0.875)` leaves the caret
+ * off the glyphs. Neither may shrink this control or any ancestor.
+ * The line box and padding match the 14px decoy, so the caret and the ink
+ * share that box. Letter-spacing only tightens the run; it does not change
+ * the font size iOS measures.
+ */
+function composerFocusStyle(
+  padBlock: number,
+  padInline: number,
+  radius: number,
+): CSSProperties {
+  return {
+    boxSizing: "border-box",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    margin: 0,
+    width: "100%",
+    height: "100%",
+    fontSize: 16,
+    lineHeight: "20px",
+    paddingBlock: padBlock,
+    paddingInline: padInline,
+    letterSpacing: "-0.012em",
+    transform: "none",
+    // Transparent border keeps the content box on the decoy's content edge.
+    // The decoy paints the visible border.
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "transparent",
+    backgroundColor: "transparent",
+    outline: "none",
+    overflow: "hidden",
+    resize: "none",
+    borderRadius: radius,
+    caretColor: "#1e1714",
+  };
+}
+
+function composerInk(paint: boolean): CSSProperties {
+  return paint
+    ? { color: "#1e1714", WebkitTextFillColor: "#1e1714" }
+    : { color: "transparent", WebkitTextFillColor: "transparent" };
+}
+
+/** Show the 16px control and focus it in the same gesture. It is display:none at rest. */
+function focusComposer(
+  input: HTMLTextAreaElement | null,
+  setFocused: (focused: boolean) => void,
+) {
+  if (!input || document.activeElement === input) return;
+  flushSync(() => setFocused(true));
+  input.focus();
+  const end = input.value.length;
+  try {
+    input.setSelectionRange(end, end);
+  } catch {
+    // The control can reject a selection while a browser still treats it as hidden.
+  }
+}
+
+function ManualSearchFields({
+  landing,
+  busy,
+  awaitingMaps,
+  draftRef,
+  initialText,
+  onAskForShop,
+}: {
+  landing: Language;
+  busy: boolean;
+  awaitingMaps: boolean;
+  draftRef: { current: SearchDraftHandle };
+  initialText: string;
+  onAskForShop: () => void;
+}) {
+  const [value, setValue] = useState(initialText);
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const decoyRef = useRef<HTMLTextAreaElement>(null);
+  // Chromium's first paint of this field, after Home unmounts and again
+  // when the reply lands, antialiases the placeholder one level off the
+  // live field. A later border invalidation matches it.
+  // The color is restored in the same turn, so no frame shows a bare edge.
+  useEffect(() => {
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => {
+        const el = decoyRef.current;
+        if (!el) return;
+        el.style.borderColor = "transparent";
+        void el.offsetWidth;
+        el.style.borderColor = "";
+      });
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      cancelAnimationFrame(second);
+    };
+  }, [busy]);
+  const rtl = landing === "ar";
+  const placeholder = awaitingMaps
+    ? copy.mapsPlaceholder[landing]
+    : copy.placeholder[landing];
+
+  // The visible value is the only text that can be sent. Parent reads this
+  // ref; it is cleared when this field unmounts.
+  draftRef.current.text = value;
+  draftRef.current.clear = () => {
+    draftRef.current.text = "";
+    setValue("");
+  };
+
+  return (
+    <>
+      <label className="sr-only" htmlFor="koofi-ask">
+        {placeholder}
+      </label>
+      <div className="flex items-center gap-2">
+        <div
+          className="relative flex min-w-0 flex-1 items-center"
+          onClick={() => focusComposer(inputRef.current, setFocused)}
+        >
+          <textarea
+            ref={decoyRef}
+            aria-hidden
+            readOnly
+            tabIndex={-1}
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+                : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+            }
+            style={
+              focused && value
+                ? { color: "transparent", WebkitTextFillColor: "transparent" }
+                : undefined
+            }
+          />
+          <textarea
+            ref={inputRef}
+            id="koofi-ask"
+            value={value}
+            rows={1}
+            dir={rtl ? "rtl" : "ltr"}
+            onChange={(event) => {
+              const next = event.target.value;
+              draftRef.current.text = next;
+              setValue(next);
+            }}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
+            placeholder={placeholder}
+            className={
+              focused
+                ? "pointer-events-auto absolute z-10 placeholder:text-transparent outline-none"
+                : "hidden"
+            }
+            style={
+              focused
+                ? {
+                    ...composerFocusStyle(10, 12, 16),
+                    ...composerInk(value.length > 0),
+                  }
+                : { fontSize: 16 }
+            }
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={busy || !value.trim()}
+          className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+        >
+          {copy.send[landing]}
+        </button>
+      </div>
+      <div className="mt-2 text-start">
+        <AddShopButton
+          language={landing}
+          disabled={busy}
+          onAdd={onAskForShop}
+        />
+      </div>
+    </>
+  );
+}
+
+/** Home pin and Chat composer. The 14px textarea is paint only. */
+function AskComposerField({
+  pin,
+  rtl,
+  value,
+  placeholder,
+  onChange,
+  onEnter,
+}: {
+  pin: boolean;
+  rtl: boolean;
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
+  onEnter: () => void;
+}) {
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const paintClass = pin
+    ? focused
+      ? "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-bean bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
+      : "pointer-events-none h-12 min-h-12 flex-1 resize-none overflow-hidden rounded-full border border-line bg-foam px-4 py-3 text-start text-sm leading-5 outline-none"
+    : focused
+      ? "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-bean bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none"
+      : "pointer-events-none min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none";
+
+  return (
+    <div
+      className="relative flex min-w-0 flex-1 items-center"
+      onClick={() => focusComposer(inputRef.current, setFocused)}
+    >
+      <textarea
+        aria-hidden
+        readOnly
+        tabIndex={-1}
+        value={value}
+        rows={1}
+        dir={rtl ? "rtl" : "ltr"}
+        placeholder={placeholder}
+        className={paintClass}
+        style={
+          focused && value
+            ? { color: "transparent", WebkitTextFillColor: "transparent" }
+            : undefined
+        }
+      />
+      <textarea
+        ref={inputRef}
+        id="koofi-ask"
+        value={value}
+        rows={1}
+        dir={rtl ? "rtl" : "ltr"}
+        onChange={(event) => onChange(event.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            onEnter();
+          }
+        }}
+        placeholder={placeholder}
+        className={
+          focused
+            ? "pointer-events-auto absolute z-10 placeholder:text-transparent outline-none"
+            : "hidden"
+        }
+        style={
+          focused
+            ? {
+                ...composerFocusStyle(pin ? 12 : 10, pin ? 16 : 12, pin ? 9999 : 16),
+                ...composerInk(value.length > 0),
+              }
+            : { fontSize: 16 }
+        }
+      />
+    </div>
+  );
+}
+
 export function Chat({
   landing,
   restore,
@@ -428,6 +744,8 @@ export function Chat({
   localeHref,
   selectedChipId,
   chipOpen,
+  discovery = null,
+  homeSurface = false,
 }: ChatProps) {
   const router = useRouter();
   const { cityId, isComingSoon } = useCity();
@@ -525,6 +843,14 @@ export function Chat({
   const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
+  const searchDraftRef = useRef<SearchDraftHandle>({
+    text: "",
+    clear: () => undefined,
+  });
+  const searchWasOpenRef = useRef(false);
+  const [pinnedHome, setPinnedHome] = useState(
+    () => !historyIsSearch() && searchPinnedHome,
+  );
   const inFlightRef = useRef(Boolean(pendingSends[threadKey]));
   const halfwayLocationsRef = useRef<HalfwayPinInput[] | null>(
     pendingSends[threadKey]?.halfway?.locations ??
@@ -900,37 +1226,13 @@ export function Chat({
     };
   }, [threadKey, pendingId]);
 
-  useEffect(() => {
-    const list = listRef.current;
-    const footer = footerRef.current;
-    if (!list) return;
-    const el = list;
-
-    function pinToEnd() {
-      el.scrollTop = el.scrollHeight;
-    }
-
-    function nearEnd() {
-      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
-    }
-
-    pinToEnd();
-    if (typeof ResizeObserver === "undefined") return;
-
-    const observer = new ResizeObserver(() => {
-      if (busy || nearEnd()) pinToEnd();
-    });
-    observer.observe(el);
-    if (footer) observer.observe(footer);
-    return () => observer.disconnect();
-  }, [messages, busy, meetHalfwayOpen]);
-
   function send(
     text: string,
     options?: { suggesting?: boolean; via?: "typed" | "chip" },
   ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
+    unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
     trackChatQuery({ text: trimmed, locale: landing, via });
@@ -991,8 +1293,15 @@ export function Chat({
     setPendingId(pending.id);
   }
 
+  function unpinSearchHome() {
+    if (!searchPinnedHome) return;
+    searchPinnedHome = false;
+    setPinnedHome(false);
+  }
+
   function askForShop() {
     if (busy || inFlightRef.current) return;
+    unpinSearchHome();
     setAwaitingMaps(true);
     setMessages((current) => [
       ...current,
@@ -1019,6 +1328,7 @@ export function Chat({
 
   async function sendNearby(label: string) {
     if (inFlightRef.current) return;
+    unpinSearchHome();
 
     const userMessage: UserMessage = {
       id: crypto.randomUUID(),
@@ -1444,6 +1754,10 @@ export function Chat({
   }
 
   function openRoutedChip(chipId: string) {
+    // Home tiles are links to their own routes. Handling the chip on `/` or
+    // `/en` writes that screen into the cached home entry, so Back misses
+    // the new home and can reopen the pre-#205 opener.
+    if (homeSurface) return;
     if (isStaticDirectoryChip(chipId)) {
       setMeetHalfwayOpen(false);
       return;
@@ -1484,14 +1798,15 @@ export function Chat({
   openRoutedChipRef.current = openRoutedChip;
 
   function sendChip(chip: ChipPick) {
-    setPickedChipId(chip.id);
-    routedChipOpenedRef.current = chip.id;
     trackEvent(
       "chip_tap",
       { chip_id: chip.id, chip_label: chip.label, locale: landing },
       { dedupeKey: `chip_tap:${chip.id}` },
     );
-    openRoutedChip(chip.id);
+    // Every tile is a link to its own route. Applying it here (thread,
+    // Halfway open/close, picked chip) writes that screen into the current
+    // history entry. Back restores it, and a cleared thread paints the
+    // pre-#205 opener. The destination route opens the chip itself.
   }
 
   useEffect(() => {
@@ -1536,6 +1851,16 @@ export function Chat({
     halfwayShownRef.current = [];
   }
 
+  // Close/X must leave for the one home. Collapsing in place on any
+  // non-home route paints the pre-#205 opener and caches it for Back.
+  function dismissHalfway() {
+    if (!homeSurface) {
+      router.replace(homePath(landing));
+      return;
+    }
+    setMeetHalfwayOpen(false);
+  }
+
   const hasThread =
     busy ||
     messages.some(
@@ -1543,10 +1868,19 @@ export function Chat({
         message.role === "user" ||
         (message.role === "assistant" && message.id !== "opener"),
     );
+  // Back to Home hides the thread visually. Messages stay in `threads`.
+  const threadVisible = hasThread && (!homeSurface || !pinnedHome);
   const halfwayResult = lastHalfwayResult(messages);
   // بيننا first-class screens (invite / waiting / results). Ask composer +
   // أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen && !sessionExpired && !isComingSoon;
+  const showHomeOpener =
+    !threadVisible &&
+    !meetHalfwayOpen &&
+    !sessionExpired &&
+    !isComingSoon &&
+    !isOffHomeChipId(selectedChipId ?? "");
+  const pinComposer = homeSurface && showHomeOpener && showAskComposer;
   const isHalfwayHost = Boolean(sessionHostWait(halfwayInvite));
   const halfwayGuest = Boolean(halfwayInvite) && !isHalfwayHost;
   const halfwayPicker = meetHalfwayOpen && !sessionExpired ? (
@@ -1600,24 +1934,240 @@ export function Chat({
     resultFriend,
     landing,
   );
+  const shownMessages =
+    homeSurface && !threadVisible
+      ? messages.filter((message) => message.id === "opener")
+      : messages;
+  const searchScreen = homeSurface && threadVisible && !showHalfwayResults;
+
+  useEffect(() => {
+    // Manual Search scrolls the document. Pinning this nested overflow
+    // port on every resize fights iOS keyboard/focus scrolling and flickers.
+    if (searchScreen) return;
+    const list = listRef.current;
+    const footer = footerRef.current;
+    if (!list) return;
+    const el = list;
+
+    function pinToEnd() {
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function nearEnd() {
+      return el.scrollHeight - el.scrollTop - el.clientHeight < 96;
+    }
+
+    pinToEnd();
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      if (busy || nearEnd()) pinToEnd();
+    });
+    observer.observe(el);
+    if (footer) observer.observe(footer);
+    return () => observer.disconnect();
+  }, [messages, busy, meetHalfwayOpen, searchScreen]);
+
+  useLayoutEffect(() => {
+    const wasOpen = searchWasOpenRef.current;
+    searchWasOpenRef.current = searchScreen;
+    if (!wasOpen || searchScreen) return;
+    // The field is gone. Keep its text for the Home composer, and drop
+    // the copy this screen would otherwise send on the next Enter.
+    const carried = searchDraftRef.current.text;
+    searchDraftRef.current.text = "";
+    searchDraftRef.current.clear = () => undefined;
+    setDraft(carried);
+  }, [searchScreen]);
+
+  useLayoutEffect(() => {
+    if (!searchScreen) return;
+    const form = footerRef.current;
+    const vv = window.visualViewport;
+    if (!form || !vv) return;
+    const field = form;
+    const viewport = vv;
+
+    // Current overlap of the layout viewport by the visual viewport.
+    // Read on every event. A sample taken while the keyboard is still
+    // closing (this screen often opens right after a Home submit) goes
+    // stale and the next lift is short.
+    const cover = () =>
+      Math.max(0, window.innerHeight - viewport.offsetTop - viewport.height);
+
+    function sync() {
+      const extra = cover();
+      // Padding, not translateY. An ancestor transform is applied again to
+      // the iOS caret, which throws it off the field (up by about the
+      // keyboard height). Padding moves the field in layout, which the
+      // caret follows.
+      field.style.transition = "none";
+      field.style.transform = "";
+      if (extra < 1) {
+        field.style.paddingBottom = "";
+        return;
+      }
+      field.style.paddingBottom = `calc(${extra}px + max(0.75rem, env(safe-area-inset-bottom)))`;
+    }
+
+    sync();
+    viewport.addEventListener("resize", sync);
+    viewport.addEventListener("scroll", sync);
+    field.addEventListener("focusin", sync);
+    return () => {
+      viewport.removeEventListener("resize", sync);
+      viewport.removeEventListener("scroll", sync);
+      field.removeEventListener("focusin", sync);
+      field.style.transition = "";
+      field.style.transform = "";
+      field.style.paddingBottom = "";
+    };
+  }, [searchScreen]);
+
+  useLayoutEffect(() => {
+    if (!homeSurface) return;
+    setSearchScreenOpen(searchScreen);
+    return () => setSearchScreenOpen(false);
+  }, [homeSurface, searchScreen]);
+
+  useEffect(() => {
+    if (!homeSurface) return;
+    function onPop() {
+      if (window.location.pathname !== homePath(landing)) return;
+      const searching = historyIsSearch();
+      searchPinnedHome = !searching;
+      setPinnedHome(!searching);
+      if (!searching) window.scrollTo(0, 0);
+    }
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [homeSurface, landing]);
+
+  useLayoutEffect(() => {
+    if (!homeSurface || !threadVisible) return;
+    if (historyIsSearch()) return;
+    const current = window.history.state;
+    const base =
+      current && typeof current === "object"
+        ? { ...(current as Record<string, unknown>) }
+        : {};
+    window.history.pushState(
+      { ...base, wainSearch: true },
+      "",
+      window.location.href,
+    );
+    searchPushedInApp = true;
+  }, [homeSurface, threadVisible]);
+
+  function backToHome(event: MouseEvent<HTMLAnchorElement>) {
+    if (
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+    event.preventDefault();
+    if (historyIsSearch()) {
+      if (searchPushedInApp) {
+        window.history.back();
+        return;
+      }
+      searchPinnedHome = true;
+      setPinnedHome(true);
+      window.scrollTo(0, 0);
+      router.replace(homePath(landing));
+      return;
+    }
+    searchPinnedHome = true;
+    setPinnedHome(true);
+    window.scrollTo(0, 0);
+    const path = homePath(landing);
+    if (window.location.pathname !== path) router.push(path);
+  }
+
+  function plainHomeClick(event: MouseEvent<HTMLAnchorElement>): boolean {
+    return (
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey &&
+      event.button === 0
+    );
+  }
+
+  function onBrandHomeClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!plainHomeClick(event)) return;
+    // Wordmark on a category, district, pack, invite, or Halfway surface
+    // used to call startOver() before the link transition. That urgent
+    // update paints LegacyOpenerHero into this history entry; Back restores
+    // the pre-#205 opener. Leave for canonical / or /en instead.
+    if (!homeSurface) {
+      event.preventDefault();
+      router.replace(homePath(landing));
+      return;
+    }
+    if (historyIsSearch()) {
+      startOver();
+      event.preventDefault();
+      if (searchPushedInApp) {
+        window.history.back();
+      } else {
+        router.replace(homePath(landing));
+      }
+      return;
+    }
+    startOver();
+  }
+
+  const halfwayClosedOntoOldHome =
+    !homeSurface && halfwaySurface && !meetHalfwayOpen && !sessionExpired;
+
+  useEffect(() => {
+    if (!halfwayClosedOntoOldHome) return;
+    router.replace(homePath(landing));
+  }, [halfwayClosedOntoOldHome, landing, router]);
+
+  if (halfwayClosedOntoOldHome) {
+    return (
+      <div
+        className="min-h-dvh bg-paper"
+        dir={landing === "ar" ? "rtl" : "ltr"}
+        lang={landing}
+        data-canonical-home-redirect=""
+      />
+    );
+  }
 
   return (
     <div
       className={
-        hasThread || meetHalfwayOpen
+        threadVisible || meetHalfwayOpen
           ? "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-paper"
-          : "mx-auto flex w-full max-w-lg flex-col bg-paper"
+          : homeSurface
+            ? "relative mx-auto flex w-full max-w-lg flex-col bg-paper"
+            : "mx-auto flex w-full max-w-lg flex-col bg-paper"
       }
       dir={landing === "ar" ? "rtl" : "ltr"}
       lang={landing}
     >
-      <header className="shrink-0 px-4 py-3">
+      <header
+        className={
+          homeSurface && showHomeOpener
+            ? "absolute inset-x-0 top-0 z-20 bg-transparent px-4 pt-[max(0.65rem,env(safe-area-inset-top))] pb-2"
+            : homeSurface
+              ? "shrink-0 px-4 py-2"
+              : "shrink-0 px-4 py-3"
+        }
+      >
         {showHalfwayResults ? (
           <div className="flex items-center justify-between gap-3" dir="ltr">
             <div className="flex items-center gap-1">
               <button
                 type="button"
-                onClick={() => setMeetHalfwayOpen(false)}
+                onClick={dismissHalfway}
                 className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
                 aria-label={copy.meetHalfwayClose[landing]}
               >
@@ -1635,22 +2185,38 @@ export function Chat({
             <BrandHomeLink
               language={landing}
               className="items-end text-lg font-semibold"
-              onClick={startOver}
+              onClick={onBrandHomeClick}
             />
           </div>
         ) : (
+          <>
+            {searchScreen ? (
+              <Link
+                href={homePath(landing)}
+                data-back-home=""
+                onClick={backToHome}
+                className="mb-1 inline-flex items-center gap-1 py-1 text-sm text-ink"
+              >
+                <DetailBackIcon className="size-4 rtl:scale-x-[-1]" />
+                <span>{copy.backHome[landing]}</span>
+              </Link>
+            ) : null}
           <div className="flex items-center justify-between gap-3">
             <BrandHomeLink
               language={landing}
               className="text-lg font-semibold"
-              onClick={startOver}
+              onClick={onBrandHomeClick}
             />
             <div className="flex items-center gap-3">
               {meetHalfwayOpen ? null : <CitySelector language={landing} />}
               {restore && !meetHalfwayOpen ? null : (
                 <Link
                   href={localeHref ?? (landing === "ar" ? "/en" : "/")}
-                  className="text-xs text-ink-soft underline-offset-2 hover:underline"
+                  className={
+                    homeSurface
+                      ? "inline-flex h-8 items-center rounded-full border border-line bg-foam px-3 text-[12px] leading-none text-ink"
+                      : "text-xs text-ink-soft underline-offset-2 hover:underline"
+                  }
                 >
                   {copy.switchLanguage[landing]}
                 </Link>
@@ -1658,7 +2224,7 @@ export function Chat({
               {meetHalfwayOpen ? (
                 <button
                   type="button"
-                  onClick={() => setMeetHalfwayOpen(false)}
+                  onClick={dismissHalfway}
                   className="flex size-9 items-center justify-center rounded-full text-ink-soft hover:bg-paper-deep hover:text-ink"
                   aria-label={copy.meetHalfwayClose[landing]}
                 >
@@ -1669,6 +2235,7 @@ export function Chat({
               ) : null}
             </div>
           </div>
+          </>
         )}
       </header>
 
@@ -1775,13 +2342,17 @@ export function Chat({
       <div
         ref={listRef}
         className={
-          hasThread
-            ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
-            : "shrink-0 space-y-2 px-4 pt-6 pb-1"
+          searchScreen
+            ? "min-h-0 flex-1 space-y-3 px-4 py-4"
+            : threadVisible
+              ? "min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
+              : homeSurface && showHomeOpener
+                ? "shrink-0 space-y-2 px-4 pt-0 pb-0"
+                : "shrink-0 space-y-2 px-4 pt-6 pb-1"
         }
         aria-live="polite"
       >
-        {messages.map((message, index) =>
+        {shownMessages.map((message, index) =>
           message.role === "user" ? (
             <div key={message.id} className="flex justify-end">
               <p
@@ -1806,10 +2377,47 @@ export function Chat({
                 </p>
               ) : null}
               {message.id === "opener" &&
-              !hasThread &&
+              !threadVisible &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
-                <div className="space-y-5">
+                homeSurface ? (
+                <div>
                   <HomeHero language={landing} />
+                  {selectedChipId !== null ? (
+                    <div className="mt-8">
+                      <VibeChips
+                        language={landing}
+                        disabled={busy}
+                        variant="home"
+                        selectedId={
+                          selectedChipId === undefined
+                            ? (pickedChipId ?? "popular")
+                            : selectedChipId
+                        }
+                        onPick={sendChip}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="mt-8 mb-12">
+                    <HomeHalfwayCard
+                      language={landing}
+                      disabled={busy}
+                      selected={
+                        (selectedChipId === undefined
+                          ? pickedChipId
+                          : selectedChipId) === MEET_HALFWAY_CHIP.id
+                      }
+                      onPick={sendChip}
+                    />
+                  </div>
+                  {halfwayInviteExpired ? (
+                    <p className="text-xs leading-5 text-ink-soft">
+                      {copy.meetHalfwayInviteExpired[landing]}
+                    </p>
+                  ) : null}
+                </div>
+                ) : (
+                <div className="space-y-5">
+                  <LegacyOpenerHero language={landing} />
                   <MeetHalfwayCard
                     language={landing}
                     disabled={busy}
@@ -1838,6 +2446,7 @@ export function Chat({
                     </p>
                   ) : null}
                 </div>
+                )
               ) : (
                 <div className="flex justify-start">
                   <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
@@ -1855,7 +2464,7 @@ export function Chat({
                   ask={
                     restore && message.id === `pack-picks-${restore.packId}`
                       ? restore.ask
-                      : askBeforePicks(messages, index)
+                      : askBeforePicks(shownMessages, index)
                   }
                   packId={
                     restore && message.id === `pack-picks-${restore.packId}`
@@ -1866,7 +2475,7 @@ export function Chat({
                 />
               ) : null}
               {!busy &&
-              index === lastCompletedResultIndex(messages) &&
+              index === lastCompletedResultIndex(shownMessages) &&
               (message.picks?.length || isEmptyCatalogMessage(message)) ? (
                 <ResultsFeedbackBlock
                   language={message.language}
@@ -1879,7 +2488,7 @@ export function Chat({
                   }
                   resetKey={message.id}
                   shopIds={message.picks?.map((pick) => pick.id)}
-                  queryText={askBeforePicks(messages, index)}
+                  queryText={askBeforePicks(shownMessages, index)}
                 />
               ) : null}
               {index === messages.length - 1 &&
@@ -1933,56 +2542,98 @@ export function Chat({
             </p>
           </div>
         ) : null}
-        {hasThread ? <div aria-hidden className="h-3 shrink-0" /> : null}
+        {threadVisible ? <div aria-hidden className="h-3 shrink-0" /> : null}
       </div>
       )}
+
+      {showHomeOpener && discovery ? discovery : null}
 
       {showAskComposer ? (
         <form
           ref={footerRef}
           className={
-            hasThread
-              ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-              : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            pinComposer
+              ? "fixed inset-x-0 bottom-0 z-30 bg-paper px-3 pt-1.5 shadow-[0_-10px_28px_rgba(30,23,20,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+              : threadVisible
+                ? "sticky bottom-0 z-10 shrink-0 border-t border-line bg-paper px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+                : "shrink-0 px-3 pt-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           }
           onSubmit={(event) => {
             event.preventDefault();
+            if (searchScreen) {
+              const text = searchDraftRef.current.text;
+              // send() drops an in-flight Enter and keeps the field.
+              // Clearing first wiped text the request never accepted.
+              if (!text.trim() || inFlightRef.current) return;
+              searchDraftRef.current.clear();
+              send(text);
+              return;
+            }
             send(draft);
           }}
         >
+          <div className={pinComposer ? "mx-auto w-full max-w-lg" : undefined}>
+          {searchScreen ? (
+            <ManualSearchFields
+              landing={landing}
+              busy={busy}
+              awaitingMaps={awaitingMaps}
+              draftRef={searchDraftRef}
+              initialText={draft}
+              onAskForShop={askForShop}
+            />
+          ) : (
+          <>
           <label className="sr-only" htmlFor="koofi-ask">
             {awaitingMaps
               ? copy.mapsPlaceholder[landing]
               : copy.placeholder[landing]}
           </label>
           <div className="flex items-center gap-2">
-            <textarea
-              id="koofi-ask"
+            <AskComposerField
+              pin={pinComposer}
+              rtl={landing === "ar"}
               value={draft}
-              rows={1}
-              dir={landing === "ar" ? "rtl" : "ltr"}
-              onChange={(event) => setDraft(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && !event.shiftKey) {
-                  event.preventDefault();
-                  send(draft);
-                }
-              }}
               placeholder={
                 awaitingMaps
                   ? copy.mapsPlaceholder[landing]
                   : copy.placeholder[landing]
               }
-              className="min-h-14 flex-1 resize-none overflow-visible rounded-2xl border border-line bg-foam px-3 py-2.5 text-start text-sm leading-5 outline-none focus:border-bean"
+              onChange={setDraft}
+              onEnter={() => send(draft)}
             />
-            <button
-              type="submit"
-              disabled={busy || !draft.trim()}
-              className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
-            >
-              {copy.send[landing]}
-            </button>
+            {pinComposer ? (
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                aria-label={copy.send[landing]}
+                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-bean text-foam disabled:opacity-50"
+              >
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  className="size-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 19V5" />
+                  <path d="m6 11 6-6 6 6" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={busy || !draft.trim()}
+                className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
+              >
+                {copy.send[landing]}
+              </button>
+            )}
           </div>
+          {pinComposer ? null : (
           <div className="mt-2 text-start">
             <AddShopButton
               language={landing}
@@ -1990,8 +2641,13 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
+          )}
+          </>
+          )}
+          </div>
         </form>
       ) : null}
+      {!showHomeOpener && !threadVisible && discovery ? discovery : null}
     </div>
   );
 }

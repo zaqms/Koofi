@@ -24,11 +24,12 @@ const DISPLAY_FIELDS = [
  * Arabic promo tokens are word-bounded with Unicode lookaround.
  * `\b` does not treat Arabic letters as word characters, so a substring
  * check false-flags words such as معروض. Longer alternatives come first.
+ * Clitics that glue on (بخصم، الخصم، عروضهم، بعرض) count as the same word.
  */
 const AR_PROMO_RE =
-  /(?<![\p{L}\p{N}_])(?:عروض|خصم|تخفيض|مجاناً|مجانا|كود|عرض)(?![\p{L}\p{N}_])/u;
+  /(?<![\p{L}\p{N}_])(?:و|ف)?(?:بال|وال|فال|لل|ال|ب|ك|ل)?(?:عروض|خصم|تخفيض|مجاناً|مجانا|كود|عرض)(?:هم|هن|ها|كم|كن|نا|ي|ه)?(?![\p{L}\p{N}_])/u;
 const EN_PROMO_RE =
-  /\boffer\b|\bdiscount\b|\bdeal\b|\bpromo\b|\bsale\b|\bfree\b|\bcoupon\b|\bcode\b|\boff\b|%\s*off/i;
+  /\boffers?\b|\bdiscounts?\b|\bdeals?\b|\bpromo\b|\bsale\b|\bfree\b|\bcoupon\b|\bcode\b|\boff\b|%\s*off/i;
 
 /** Paid placement wording. `ad` and `advert` are whole words so "addition" is fine. */
 const PAID_RE =
@@ -44,8 +45,13 @@ const URL_RE =
  */
 const AR_LATIN_ALLOWLIST = ["V60"] as const;
 
-/** Item names that are brand products. Extend this list in one place. */
-const BRAND_ITEM_DENYLIST = ["Cinnabon", "سينابون"] as const;
+/**
+ * Cinnabon spellings. Latin is case-insensitive and allows one n and a
+ * plural s (Cinabon, Cinnabons). Arabic covers سينابون، سنابون، and سينابن.
+ * سينامون (cinnamon) does not match.
+ */
+const EN_BRAND_RE = /\bcinn?abons?\b/i;
+const AR_BRAND_RE = /س(?:ي)?ناب(?:و)?ن/;
 
 const STOCK_REASON_EN = /everyone keeps mentioning/i;
 const STOCK_REASON_AR = /الكل يذكر/;
@@ -71,15 +77,15 @@ function catalogIds(): Set<string> {
   return new Set(catalog.shops.map((shop) => shop.id));
 }
 
+/** ASCII %, Arabic ٪ (U+066A), and full-width ％ (U+FF05). */
+const PERCENT_RE = /[%\u066A\uFF05]/;
+
 function hasPercent(value: string): boolean {
-  return value.includes("%");
+  return PERCENT_RE.test(value);
 }
 
 function hasBannedBrand(value: string): boolean {
-  return BRAND_ITEM_DENYLIST.some((token) => {
-    if (/[A-Za-z]/.test(token)) return new RegExp(`\\b${token}\\b`, "i").test(value);
-    return value.includes(token);
-  });
+  return EN_BRAND_RE.test(value) || AR_BRAND_RE.test(value);
 }
 
 function normalizeName(value: string, foldCase: boolean): string {
@@ -87,11 +93,48 @@ function normalizeName(value: string, foldCase: boolean): string {
   return foldCase ? collapsed.toLocaleLowerCase("en") : collapsed;
 }
 
+/**
+ * One emoji grapheme that is an actual pictograph.
+ * ©, ®, and ™ are Extended_Pictographic in Unicode but default to text,
+ * so the slot also requires Emoji_Presentation. Bullets and other
+ * non-pictographic symbols fail the pictograph check.
+ */
 function isOneEmojiGrapheme(value: string): boolean {
   const segments = [
     ...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(value),
   ];
-  return segments.length === 1 && /\p{Extended_Pictographic}/u.test(segments[0].segment);
+  if (segments.length !== 1) return false;
+  const grapheme = segments[0].segment;
+  return (
+    /\p{Extended_Pictographic}/u.test(grapheme) &&
+    /\p{Emoji_Presentation}/u.test(grapheme)
+  );
+}
+
+function formatRunDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+/** Real calendar day, from 2015 through the run date. Later days are future. */
+function evidenceDateProblem(iso: string, now: Date): string | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!match) return `${iso} is not a real calendar date`;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const stamp = new Date(Date.UTC(year, month - 1, day));
+  const real =
+    stamp.getUTCFullYear() === year &&
+    stamp.getUTCMonth() === month - 1 &&
+    stamp.getUTCDate() === day;
+  if (!real) return `${iso} is not a real calendar date`;
+  if (stamp.getTime() < Date.UTC(2015, 0, 1)) return `${iso} is before 2015`;
+  const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  if (stamp.getTime() > today) return `${iso} is in the future`;
+  return null;
 }
 
 function stripAllowlistedLatin(value: string): string {
@@ -162,6 +205,7 @@ export function collectCafeRaveProblems(
   source: string,
   data: Record<string, readonly unknown[]>,
   ids: Set<string>,
+  now = new Date(),
 ): string[] {
   const problems: string[] = [];
   if (WEEN_RE.test(source)) {
@@ -245,6 +289,10 @@ export function collectCafeRaveProblems(
       const claimed = sources ? Number(sources[1]) : null;
       if (parsed.undated) problems.push(`${where}: evidence has an undated entry`);
       if (parsed.repeated) problems.push(`${where}: evidence repeats a dated entry`);
+      for (const entry of parsed.entries) {
+        const dateProblem = evidenceDateProblem(entry.date, now);
+        if (dateProblem) problems.push(`${where}: evidence date ${dateProblem}`);
+      }
       if (claimed === null || parsed.distinct < 3) {
         problems.push(`${where}: evidence needs at least 3 dated sources`);
       }
@@ -367,6 +415,22 @@ function selfTest(ids: Set<string>): void {
   );
   console.log("check-cafe-raves: percent-off rejected; 70% Hot Chocolate rejected; thin evidence rejected");
 
+  for (const [field, value] of [
+    ["name_ar", "هوت شوكلت ٢٠\u066A"],
+    ["name_en", "70\uFF05 Hot Chocolate"],
+  ] as const) {
+    const percentProblems = collectCafeRaveProblems(
+      "clean",
+      { "namq-al-malqa": [{ ...clean, [field]: value }] },
+      ids,
+    );
+    assert(
+      percentProblems.some((problem) => problem.includes("promo or offer wording")),
+      `"${value}" should be rejected: ${percentProblems.join("; ")}`,
+    );
+  }
+  console.log("check-cafe-raves: Arabic ٪ and full-width ％ rejected");
+
   const stockTwice = collectCafeRaveProblems(
     "clean",
     {
@@ -404,6 +468,44 @@ function selfTest(ids: Set<string>): void {
     "Pecan Cinnamon Roll is not the banned brand",
   );
   console.log("check-cafe-raves: Cinnabon rejected; Pecan Cinnamon Roll allowed");
+
+  for (const name of ["Cinabon", "Cinnabons", "cInAbOn"]) {
+    const variantProblems = collectCafeRaveProblems(
+      "clean",
+      { "cherie-al-muruj": [{ ...clean, name_en: name }] },
+      ids,
+    );
+    assert(
+      variantProblems.some((problem) => problem.includes("names a banned brand")),
+      `"${name}" should be rejected: ${variantProblems.join("; ")}`,
+    );
+  }
+  for (const name of ["سنابون", "سينابن", "السينابون"]) {
+    const variantProblems = collectCafeRaveProblems(
+      "clean",
+      { "cherie-al-muruj": [{ ...clean, name_ar: name }] },
+      ids,
+    );
+    assert(
+      variantProblems.some((problem) => problem.includes("names a banned brand")),
+      `"${name}" should be rejected: ${variantProblems.join("; ")}`,
+    );
+  }
+  const cinnamonRoll: CafeRave = {
+    ...clean,
+    name_en: "Cinnamon Roll",
+    name_ar: "سينامون رول",
+    reason_en: "Often praised in reviews.",
+    reason_ar: "ينمدح كثير في المراجعات.",
+  };
+  assert(
+    collectCafeRaveProblems("clean", { "eya-specialty-coffee-al-wurud": [cinnamonRoll] }, ids)
+      .length === 0,
+    "Cinnamon Roll / سينامون رول is not the banned brand",
+  );
+  console.log(
+    "check-cafe-raves: Cinabon, Cinnabons, سينابون, سنابون, and سينابن rejected; سينامون رول allowed",
+  );
 
   const repeatedEntry: CafeRave = {
     ...clean,
@@ -465,6 +567,49 @@ function selfTest(ids: Set<string>): void {
   );
   console.log("check-cafe-raves: same URL with different dates allowed");
 
+  function dated(evidence: string): string[] {
+    return collectCafeRaveProblems("clean", { "namq-al-malqa": [{ ...clean, evidence }] }, ids);
+  }
+  const runDate = formatRunDate(new Date());
+  const tomorrowDate = new Date();
+  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+  const tomorrow = formatRunDate(tomorrowDate);
+  for (const badDate of ["2026-02-31", "2025-02-29", "2026-13-01"]) {
+    const dateProblems = dated(
+      `3 sources: google_review ${badDate} https://example.com/a ; google_review 2026-01-02 https://example.com/b ; google_review 2026-01-03 https://example.com/c`,
+    );
+    assert(
+      dateProblems.some((problem) => problem.includes(`${badDate} is not a real calendar date`)),
+      `${badDate} should be rejected: ${dateProblems.join("; ")}`,
+    );
+  }
+  const futureProblems = dated(
+    `3 sources: google_review ${tomorrow} https://example.com/a ; google_review 2026-01-02 https://example.com/b ; google_review 2026-01-03 https://example.com/c`,
+  );
+  assert(
+    futureProblems.some((problem) => problem.includes(`${tomorrow} is in the future`)),
+    `a future evidence date should fail: ${futureProblems.join("; ")}`,
+  );
+  const earlyProblems = dated(
+    "3 sources: google_review 2014-12-31 https://example.com/a ; google_review 2026-01-02 https://example.com/b ; google_review 2026-01-03 https://example.com/c",
+  );
+  assert(
+    earlyProblems.some((problem) => problem.includes("2014-12-31 is before 2015")),
+    `a pre-2015 evidence date should fail: ${earlyProblems.join("; ")}`,
+  );
+  for (const okDate of ["2024-02-29", "2015-01-01", runDate]) {
+    const okProblems = dated(
+      `3 sources: google_review ${okDate} https://example.com/a ; google_review 2026-01-02 https://example.com/b ; google_review 2026-01-03 https://example.com/c`,
+    );
+    assert(
+      okProblems.length === 0,
+      `${okDate} should be a valid evidence date: ${okProblems.join("; ")}`,
+    );
+  }
+  console.log(
+    "check-cafe-raves: impossible, future, and pre-2015 evidence dates rejected",
+  );
+
   const contained: CafeRave = { ...clean, reason_ar: "معروض على الطاولة." };
   assert(
     collectCafeRaveProblems("clean", { "namq-al-malqa": [contained] }, ids).length === 0,
@@ -476,6 +621,42 @@ function selfTest(ids: Set<string>): void {
       problem.includes("promo or offer wording"),
     ),
     "a standalone عرض is still promo wording",
+  );
+  for (const reason of ["بخصم", "الخصم", "عروضهم", "بعرض", "والعروض"]) {
+    const cliticProblems = collectCafeRaveProblems(
+      "clean",
+      { "namq-al-malqa": [{ ...clean, reason_ar: reason }] },
+      ids,
+    );
+    assert(
+      cliticProblems.some((problem) => problem.includes("promo or offer wording")),
+      `"${reason}" should be rejected: ${cliticProblems.join("; ")}`,
+    );
+  }
+  for (const reason of ["Weekend offers", "Two deals", "A discount today"]) {
+    const enPromoProblems = collectCafeRaveProblems(
+      "clean",
+      { "namq-al-malqa": [{ ...clean, reason_en: reason }] },
+      ids,
+    );
+    assert(
+      enPromoProblems.some((problem) => problem.includes("promo or offer wording")),
+      `"${reason}" should be rejected: ${enPromoProblems.join("; ")}`,
+    );
+  }
+  for (const reason of ["A special offering.", "The dealership is nearby."]) {
+    const allowedPromo = collectCafeRaveProblems(
+      "clean",
+      { "namq-al-malqa": [{ ...clean, reason_en: reason }] },
+      ids,
+    );
+    assert(
+      allowedPromo.length === 0,
+      `"${reason}" should stay allowed: ${allowedPromo.join("; ")}`,
+    );
+  }
+  console.log(
+    "check-cafe-raves: بخصم، الخصم، عروضهم، offers, deals, and discount rejected; معروض and offering allowed",
   );
 
   function problemsFor(row: CafeRave, extra?: CafeRave): string[] {
@@ -521,6 +702,21 @@ function selfTest(ids: Set<string>): void {
     );
   }
   console.log("check-cafe-raves: non-emoji slots rejected (AB, two emoji, x)");
+
+  for (const emoji of ["©", "®", "™", "★", "•", "✔"]) {
+    const symbolProblems = problemsFor({ ...clean, emoji });
+    assert(
+      symbolProblems.some((problem) => problem.includes("exactly one emoji")),
+      `"${emoji}" should fail the emoji slot: ${symbolProblems.join("; ")}`,
+    );
+  }
+  assert(
+    problemsFor({ ...clean, emoji: "🍰" }).length === 0,
+    "a pictographic emoji still passes",
+  );
+  console.log(
+    "check-cafe-raves: © ® ™ and other non-pictographic symbols rejected",
+  );
 
   const latinAr = problemsFor({ ...clean, name_ar: "لاتيه latte" });
   assert(
@@ -607,8 +803,34 @@ assert(
 );
 
 const shippedItems = Object.values(cafeRaves).reduce((count, rows) => count + rows.length, 0);
-assert(Object.keys(cafeRaves).length === 8, "8 cafés still render a rave section");
-assert(shippedItems === 9, `9 items after the dated-source cut, got ${shippedItems}`);
+const liveCafes = [
+  "namq-al-malqa",
+  "bab-al-mohammadiyah",
+  "cherie-al-muruj",
+  "okawa-al-narjis",
+  "nap-al-qirawan",
+  "ouia-al-qirawan",
+  "for-coffee-roasters-al-qirawan",
+  "sulalat-coffee-ar-rabwah",
+] as const;
+const batch02Cafes = [
+  "mkth-ghirnatah",
+  "archi-al-bujairi-diriyah",
+  "semi-specialty-cafe-ghirnatah",
+  "dips-plus-diriyah",
+  "eya-specialty-coffee-al-wurud",
+] as const;
+for (const slug of liveCafes) {
+  assert(slug in cafeRaves, `${slug} still renders a rave section`);
+}
+for (const slug of batch02Cafes) {
+  assert(slug in cafeRaves, `${slug} renders a rave section`);
+}
+assert(
+  Object.keys(cafeRaves).length === liveCafes.length + batch02Cafes.length,
+  "8 live cafés plus the batch-02 cafés render a rave section",
+);
+assert(shippedItems === 14, `14 items after batch 02, got ${shippedItems}`);
 for (const deferred of [
   "asfoura-al-malqa",
   "da-nonna-al-nakheel",
@@ -617,6 +839,9 @@ for (const deferred of [
 ]) {
   assert(!(deferred in cafeRaves), `${deferred} is deferred`);
 }
+const eya = cafeRaves["eya-specialty-coffee-al-wurud"];
+assert(eya?.[0]?.name_en === "Cinnamon Roll", "Eya name is Cinnamon Roll");
+assert(eya?.[0]?.name_ar === "سينامون رول", "Eya AR name is سينامون رول");
 const sulalat = cafeRaves["sulalat-coffee-ar-rabwah"];
 assert(sulalat?.length === 1, "Sulalat keeps one item");
 assert(sulalat?.[0]?.name_en === "Dark Hot Chocolate", "Sulalat name is Dark Hot Chocolate");

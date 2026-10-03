@@ -199,8 +199,8 @@ assert(liveCatalog.includes("al-aziziyah"), "Al Aziziyah stays a live catalog di
 assert(listLiveDistrictIds().includes("al-aziziyah"), "Waqar makes Al Aziziyah a live specialty district");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-aziziyah" && shop.catalogLane !== "drive-through").map((shop) => shop.id).join(",") ===
-    "waqar-al-aziziyah",
-  "Al Aziziyah specialty catalog is Waqar only",
+    "waqar-al-aziziyah,sama-cafe-al-aziziyah",
+  "Al Aziziyah specialty catalog is Waqar and SAMA",
 );
 
 assert(

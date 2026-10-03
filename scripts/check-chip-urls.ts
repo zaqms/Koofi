@@ -451,8 +451,8 @@ assert(
 );
 assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");
 assert(
-  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 26,
-  "Matcha route directory is the 26 tagged shops",
+  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 29,
+  "Matcha route directory is the 29 tagged shops",
 );
 assert(
   chipDirectoryMoment("drive-through") === "drive-through",

@@ -11,12 +11,15 @@ type HomeTrendingProps = {
   shops: DirectoryShop[];
 };
 
-/** Home preview. Up to three rows, same set in EN and AR. Columns follow the row count. */
-const HOME_TRENDING_COUNT = 3;
+/**
+ * Home preview. Up to four rows, same set in EN and AR. Columns follow the row count:
+ * 1, 2, 3 across, and four as an even two-by-two grid (four across is too tight at 390px).
+ */
+const HOME_TRENDING_COUNT = 4;
 
 function trendingGridCols(count: number): string {
   if (count <= 1) return "grid-cols-1";
-  if (count === 2) return "grid-cols-2";
+  if (count === 2 || count === 4) return "grid-cols-2";
   return "grid-cols-3";
 }
 

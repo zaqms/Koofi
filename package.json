@@ -9,7 +9,8 @@
     "prebuild": "npx tsx scripts/generate-sitemap.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check-cafe-raves": "npx tsx scripts/check-cafe-raves.ts"
   },
   "dependencies": {
     "@datafast/ai-crawl": "^1.0.9",

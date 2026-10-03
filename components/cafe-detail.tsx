@@ -24,6 +24,7 @@ import {
   neighborhoodCafesHeading,
   type CafeDetailHeroPhoto,
 } from "@/lib/cafe-detail";
+import type { CafeRaveLine } from "@/lib/cafe-raves";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
 import { listingLocationOrder } from "@/lib/listing-location";
@@ -43,6 +44,7 @@ type CafeDetailProps = {
   backHref: string;
   siblings: DirectoryShop[];
   districtHref?: string;
+  raves?: CafeRaveLine[];
 };
 
 const heroSquareClass =
@@ -60,6 +62,7 @@ export function CafeDetail({
   backHref,
   siblings,
   districtHref,
+  raves,
 }: CafeDetailProps) {
   const dir = language === "ar" ? "rtl" : "ltr";
   const name = shopDisplayName(shop, language);
@@ -72,6 +75,7 @@ export function CafeDetail({
   const description = cafeDetailDescription(shop);
   const status = cafeDetailHoursStatus(shop, language);
   const coords = officialShopCoords(shop);
+  const raveItems = raves ?? [];
 
   return (
     <article
@@ -168,6 +172,9 @@ export function CafeDetail({
               value={tags.join(" · ")}
               language={language}
             />
+          ) : null}
+          {raveItems.length > 0 ? (
+            <CafeRaveRows items={raveItems} language={language} />
           ) : null}
         </div>
 
@@ -470,6 +477,39 @@ function DetailInfoRow({
   return (
     <div className={rowClass} lang={language}>
       {inner}
+    </div>
+  );
+}
+
+function CafeRaveRows({
+  items,
+  language,
+}: {
+  items: CafeRaveLine[];
+  language: Language;
+}) {
+  return (
+    <div data-cafe-raves="" lang={language}>
+      <h2 className="flex w-full items-start gap-3 border-b border-wain-divider py-4 text-[11px] leading-4 text-wain-soft-taupe">
+        <span className="size-[18px] shrink-0" aria-hidden="true" />
+        <span className="min-w-0 flex-1">{copy.detailRaves[language]}</span>
+      </h2>
+      {items.map((item, index) => (
+        <div
+          key={`${index}:${item.emoji}:${item.name}`}
+          className="flex w-full items-start gap-3 border-b border-wain-divider py-4 last:border-b-0"
+        >
+          <span className="mt-0.5 text-[18px] leading-none" aria-hidden="true">
+            {item.emoji}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm leading-5 text-ink">{item.name}</span>
+            <span className="mt-0.5 block text-[11px] leading-4 text-wain-soft-taupe">
+              {item.reason}
+            </span>
+          </span>
+        </div>
+      ))}
     </div>
   );
 }

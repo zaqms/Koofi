@@ -87,6 +87,22 @@ assert(extractPrimaryDistrict("Hittin") === "hittin", "Hittin");
 assert(extractPrimaryDistrict("hittin") === "hittin", "hittin");
 assert(extractPrimaryDistrict("حطين") === "hittin", "حطين");
 assert(extractPrimaryDistrict("hitin") === "hittin", "hitin typo");
+// #239 QA: Arabic diacritics and tatweel never split a word («بِساط» reads as «بساط»).
+assert(extractPrimaryDistrict("حِطِّين") === "hittin", "حِطِّين with kasra/shadda");
+assert(extractPrimaryDistrict("قهوة في السُّوَيدي") === "as-suwaidi", "السُّوَيدي with damma/fatha/shadda");
+assert(extractPrimaryDistrict("حطــين") === "hittin", "حطــين with tatweel");
+assert(parseIntent("بِساط حِطّين").neighborhoods.includes("hittin"), "parseIntent strips diacritics");
+for (const q of ["بساط", "بِساط", "bisat"]) {
+  const ids = matchCatalogShops(q, listRealShops()).map((shop) => shop.id);
+  assert(
+    ["bisat-umm-al-hamam-al-gharbi", "bisat-an-nafal", "bisat-hittin"].every((id) => ids.includes(id)),
+    `"${q}" finds the 3 بِساط rows, got ${ids.join(",")}`,
+  );
+}
+assert(
+  pickCafes({ text: "بِساط حِطّين" }).picks[0]?.shop.id === "bisat-hittin",
+  "«بِساط حِطّين» leads with Bisat Hittin",
+);
 assert(extractPrimaryDistrict("al narjis") === "al-narjis", "al narjis");
 assert(extractPrimaryDistrict("Al Narjis") === "al-narjis", "Al Narjis");
 assert(extractPrimaryDistrict("النرجس") === "al-narjis", "النرجس");

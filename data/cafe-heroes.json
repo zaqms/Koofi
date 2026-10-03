@@ -12159,9 +12159,10 @@
   "veo-al-malqa": [
     {
       "src": "/cafe-heroes/veo-al-malqa/1.jpg",
+      "focus": "50% 78%",
       "attribution": {
-        "displayName": "Nawal “Alamri”",
-        "uri": "https://maps.google.com/maps/contrib/104154244808708541412"
+        "displayName": "S A",
+        "uri": "https://maps.google.com/maps/contrib/114812912018455669054"
       }
     },
     {
@@ -12174,15 +12175,15 @@
     {
       "src": "/cafe-heroes/veo-al-malqa/3.jpg",
       "attribution": {
-        "displayName": "S A",
-        "uri": "https://maps.google.com/maps/contrib/114812912018455669054"
+        "displayName": "Eman",
+        "uri": "https://maps.google.com/maps/contrib/116183004187225958398"
       }
     },
     {
       "src": "/cafe-heroes/veo-al-malqa/4.jpg",
       "attribution": {
-        "displayName": "Eman",
-        "uri": "https://maps.google.com/maps/contrib/116183004187225958398"
+        "displayName": "Nawal “Alamri”",
+        "uri": "https://maps.google.com/maps/contrib/104154244808708541412"
       }
     }
   ],

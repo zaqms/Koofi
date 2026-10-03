@@ -53,6 +53,8 @@ function normalize(text: string): string {
     .replace(/[إأآ]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/ة/g, "ه")
+    // Arabic diacritics (fatha, kasra, shadda, sukun…) and tatweel: «بِساط» reads as «بساط».
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
     .replace(/[^\p{L}\p{N}\s-]/gu, " ")
     .replace(/(^|\s)ال(?=\p{L})/gu, "$1")
     .replace(/\s+/g, " ")

@@ -159,7 +159,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "the-matcha-bar-olaya": ["ذا ماتشا بار"],
   "with-heart-diriyah": ["ويث هارت"],
   "remis-matcha-club-hittin": ["ريمي"],
-  "okawa-cafe-al-malqa": ["اوكاوا"],
+  "okawa-cafe-al-malqa": ["okawa", "اوكاوا"],
   "okawa-al-narjis": ["okawa", "اوكاوا"],
   "okawa-olaya": ["okawa", "اوكاوا"],
   "okawa-king-fahd": ["okawa", "اوكاوا"],

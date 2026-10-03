@@ -40,6 +40,7 @@ import {
   listDiscoveryShops,
   listDriveThroughDirectoryShops,
   listListingShops,
+  listDirectoryShops,
   listRealShops,
   listedDistrictIdsFrom,
   bakedPopularityFor,
@@ -62,6 +63,7 @@ import {
   chainDistrictMetaEn,
   districtEnMarkdown,
   districtEnMeta,
+  NEARBY_DISTRICTS,
 } from "../lib/en-content";
 import { chainOnlyBlock, countedCafesAr, countWord, countWordAr } from "../lib/cafe-count";
 import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
@@ -1017,9 +1019,54 @@ assert(
     ),
   "Al Yarmuk 'The count is …' / العدد matches the listed shops",
 );
+// #239 QA: handwritten district intro copy never names a chain. With Local only on, only
+// {chain-only} / {chain-counts} blocks and {chain} list rows hide, so a chain name or /c/ link
+// anywhere else stays visible. Meta descriptions are checked too.
+{
+  const chainRows = listRealShops().filter((shop) => shop.isChain);
+  const chainIds = new Set(chainRows.map((shop) => shop.id));
+  const chainNames = [...new Set(chainRows.flatMap((shop) => [shop.nameEn, shop.nameAr]))].filter(
+    (name) => name && name.length > 2,
+  );
+  const localOnlyView = (markdown: string) =>
+    markdown
+      .replace(/\{chain-only\}[\s\S]*?\{\/chain-only\}/g, "")
+      .replace(/\{chain-counts\}[\s\S]*?\{\/chain-counts\}/g, "")
+      .split("\n")
+      .filter((line) => !line.startsWith("- {chain}"))
+      .join("\n");
+  const offenders: string[] = [];
+  for (const district of NEIGHBORHOOD_IDS) {
+    if (districtPageHidden(district)) continue;
+    const views = [
+      ["en", localOnlyView(districtEnMarkdown(district)) + "\n" + districtEnMeta(district)],
+      ["ar", localOnlyView(districtArMarkdown(district)) + "\n" + districtArMeta(district)],
+    ] as const;
+    for (const [lang, text] of views) {
+      for (const match of text.matchAll(/\/c\/([a-z0-9-]+)/g)) {
+        if (chainIds.has(match[1])) offenders.push(`${district} ${lang} links chain ${match[1]}`);
+      }
+      for (const name of chainNames) {
+        if (text.includes(name)) offenders.push(`${district} ${lang} names chain "${name}"`);
+      }
+    }
+  }
+  assert(offenders.length === 0, `district intro copy names no chains with Local only on: ${offenders.join("; ")}`);
+  const tuwaiqEn = districtEnMarkdown("tuwaiq");
+  const tuwaiqAr = districtArMarkdown("tuwaiq");
+  assert(
+    tuwaiqEn.includes("[Drip](/en/c/drip-tuwaiq) is the local cafe on this list today.") &&
+      tuwaiqAr.includes("[دريب](/c/drip-tuwaiq) القهوة المحلية بهالقائمة اليوم."),
+    "Tuwaiq intro names only the local cafe (Drip)",
+  );
+  assert(
+    tuwaiqEn.includes("- {chain} [dr.CAFE](/en/c/drcafe-tuwaiq)"),
+    "Tuwaiq dr.CAFE stays a {chain} list row (hidden with Local only on)",
+  );
+}
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "8ac51f4110b6a3a73382aa2c22c0d9185d383ca6cbbe76da7caccf8e1e948656",
+  copyHash === "ab3b3a8dcc24d83fbcd3a9cb92bf55ad4c72022399492147dde6a7c1a1f41120",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1445,14 +1492,48 @@ assert(
   "Local only hides chain counts and chain-only intros",
 );
 
-assert(
-  districtEnMarkdown("as-suwaidi").includes("sits on the southwest side"),
-  "As Suwaidi EN lead matches prod",
-);
-assert(
-  districtArMarkdown("as-suwaidi").includes("بجنوب غرب الرياض"),
-  "As Suwaidi AR lead matches prod",
-);
+// #239 QA: As Suwaidi copy drops the "southwest" framing (its nearby list includes Al Malaz,
+// which is central/east) and says why the list shows 3: Al Wisham's only cafe is a drive-thru.
+{
+  const suwaidiEn = districtEnMarkdown("as-suwaidi");
+  const suwaidiAr = districtArMarkdown("as-suwaidi");
+  assert(
+    suwaidiEn.includes("As Suwaidi (السويدي) is a Riyadh neighborhood.") &&
+      suwaidiAr.includes("السويدي حي بالرياض."),
+    "As Suwaidi EN/AR lead is the neutral #239 copy",
+  );
+  assert(
+    !/south-?west/i.test(suwaidiEn) && !suwaidiAr.includes("جنوب غرب") && !suwaidiAr.includes("جنوب الغرب"),
+    "As Suwaidi copy has no southwest framing",
+  );
+  const suwaidiNearby = (markdown: string, heading: string) =>
+    (markdown.split(heading)[1] ?? "").split("\n## ")[0].split("\n").filter((line) => line.startsWith("- "));
+  const nearbyEn = suwaidiNearby(suwaidiEn, "## Other neighborhoods nearby");
+  assert(
+    nearbyEn.length === 3 && !nearbyEn.some((line) => line.includes("al-wisham")),
+    `As Suwaidi nearby renders 3 (Al Wisham left out), got ${nearbyEn.length}`,
+  );
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === "al-wisham").length > 0 &&
+      !listDirectoryShops().some((shop) => shop.neighborhood === "al-wisham"),
+    "Al Wisham has catalog rows but no listed (non-drive-thru) cafe, which is why it drops from nearby",
+  );
+  assert(
+    suwaidiEn.includes("these three lists are the closest on the site. Al Wisham is close too, but its only cafe is a drive-thru") &&
+      suwaidiAr.includes("هذي أقرب 3 قوائم بالموقع. الوشام قريب بعد، بس قهوته الوحيدة درايف ثرو"),
+    "As Suwaidi nearby intro says 3 lists and why (AR digits from 3)",
+  );
+  // Five pages show 3 nearby, each because one listed neighbor only has drive-thru rows.
+  const listed = new Set(listDirectoryShops().map((shop) => shop.neighborhood));
+  const shortNearby = (Object.keys(NEARBY_DISTRICTS) as NeighborhoodId[])
+    .filter((id) => listed.has(id))
+    .filter((id) => NEARBY_DISTRICTS[id].filter((n) => listed.has(n) && n !== id).length < 4)
+    .sort();
+  assert(
+    shortNearby.join(",") === "al-aziziyah,as-suwaidi,badr,king-salman,tuwaiq",
+    `nearby lists with 3 rows: ${shortNearby.join(",")}`,
+  );
+}
 
 const BAD_EN_INTRO = [
   /\bone cafes\b/i,

@@ -1690,7 +1690,8 @@ const MALAZ_REFILL = {
     "opinion-al-mathar": "/logos/opinion-al-mathar.png",
     "opinion-hittin": "/logos/opinion-hittin.png",
     "remis-matcha-club-hittin": "/logos/remis-matcha-club-hittin.png",
-    "okawa-cafe-al-malqa": "/logos/okawa-cafe-al-malqa.jpg",
+    // #239 QA: Al Malqa uses the shared Ōkawa logo (its own file was 100px and is gone).
+    "okawa-cafe-al-malqa": "/logos/okawa-al-narjis.jpg",
     "re-matcha-al-hamra": "/logos/re-matcha-al-hamra.jpg",
     "flow-matcha-at-taawun": "/logos/flow-matcha-at-taawun.jpg",
     "hokkaido-al-hamra": "/logos/hokkaido-al-hamra.png",
@@ -3413,7 +3414,7 @@ const scoutPack: {
     neighborhood: "al-malqa",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/okawa-cafe-al-malqa.jpg",
+    logoUrl: "/logos/okawa-al-narjis.jpg",
   },
   {
     id: "re-matcha-al-hamra",

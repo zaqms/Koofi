@@ -838,14 +838,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   tuwaiq: {
     lead: `Tuwaiq (طويق) sits on the southwest side of Riyadh. This page is the Tuwaiq set on wain.lol so far.
 
-Names on this list include [Drip](/en/c/drip-tuwaiq) and [dr.CAFE](/en/c/drcafe-tuwaiq). We don’t invent extras to fill the page.`,
+[Drip](/en/c/drip-tuwaiq) is the local cafe on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Tuwaiq on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    nearbyIntro: `If Tuwaiq isn’t the stop, these southwest lists sit next door on the site:`,
+    nearbyIntro: `If Tuwaiq isn’t the stop, these are the nearest lists on the site so far. Al Hazm is close too, but its only cafe is a drive-thru, so it isn’t listed here:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Tuwaiq. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Tuwaiq on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in Tuwaiq on wain.lol — a Riyadh neighborhood list including Drip, with a Maps link.",
   },
   "al-falah": {
     lead: `Al Falah (الفلاح) sits on the north side of Riyadh. This page is the Al Falah set on wain.lol so far.
@@ -920,12 +920,12 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "{countCafe} in King Salman on wain.lol — a Riyadh neighborhood list including Rex, with a Maps link.",
   },
   "as-suwaidi": {
-    lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.
+    lead: `As Suwaidi (السويدي) is a Riyadh neighborhood. This page is the As Suwaidi set on wain.lol so far.
 
 [Alwaal Albari](/en/c/alwaal-albari-as-suwaidi) is the cafe on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from As Suwaidi on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    nearbyIntro: `If As Suwaidi isn’t the stop, these southwest lists sit next door on the site:`,
+    nearbyIntro: `If As Suwaidi isn’t the stop, these three lists are the closest on the site. Al Wisham is close too, but its only cafe is a drive-thru, so it isn’t listed here:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Suwaidi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,

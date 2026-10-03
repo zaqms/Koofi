@@ -21,6 +21,7 @@ import { neighborhoodLabel } from "../lib/neighborhoods";
 import { cafeArMarkdown } from "../lib/ar-content";
 import { cafeEnMarkdown } from "../lib/en-content";
 import { getShop, listRealShops } from "../lib/catalog";
+import { matchCatalogShops } from "../lib/shop-name";
 import { PRODUCT_NAME } from "../lib/product";
 import { SHOW_BEEN_HERE, SHOW_DETAIL_FAVORITE, SHOW_INVITE_CTA } from "../lib/tonight";
 
@@ -554,8 +555,8 @@ const bakedHeroes = cafeHeroesFile as Record<
   string,
   { src: string; focus?: unknown }[]
 >;
-/** Slugs allowed to set a per-frame hero focus. Waqar only, until QA expands this. */
-const HERO_FOCUS_SLUGS = new Set(["waqar-al-aziziyah"]);
+/** Slugs allowed to set a per-frame hero focus. Waqar, plus VEO Al Malqa (#239 QA). Expand only with QA. */
+const HERO_FOCUS_SLUGS = new Set(["waqar-al-aziziyah", "veo-al-malqa"]);
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
@@ -609,11 +610,36 @@ assert(
     "148987,200646,245402,257603",
   "torre-al-rawabi frame 2 is the clean lounge frame; the barista-background frame is 4",
 );
-// QA #237 L4: one Ōkawa spelling (the live An Narjis row) and one AR pattern on the Ōkawa rows.
-for (const id of ["okawa-al-narjis", "okawa-olaya", "okawa-king-fahd"]) {
+// QA #237 L4 + #239: one Ōkawa spelling (the live An Narjis row), one AR pattern and one logo on every Ōkawa row.
+const OKAWA_IDS = ["okawa-al-narjis", "okawa-olaya", "okawa-king-fahd", "okawa-cafe-al-malqa"];
+for (const id of OKAWA_IDS) {
   const shop = getShop(id);
   assert(shop?.nameEn === "Ōkawa" && shop?.nameAr === "أوكاوا", `${id} is Ōkawa / أوكاوا`);
+  assert(shop?.logoUrl === "/logos/okawa-al-narjis.jpg", `${id} uses the shared Ōkawa logo`);
 }
+assert(
+  !existsSync(join("public/logos", "okawa-cafe-al-malqa.jpg")),
+  "the 100px okawa-cafe-al-malqa.jpg logo is deleted (nothing references it)",
+);
+for (const q of ["okawa", "Okawa", "Ōkawa", "اوكاوا", "أوكاوا"]) {
+  const ids = matchCatalogShops(q, listRealShops()).map((shop) => shop.id);
+  assert(OKAWA_IDS.every((id) => ids.includes(id)), `plain "${q}" search finds all 4 Ōkawa rows, got ${ids.join(",")}`);
+}
+// #239 QA: VEO Al Malqa leads with the VEO cup frame; the frame with a masked barista in the mid-ground moves last.
+assert(
+  (bakedHeroes["veo-al-malqa"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
+    "S A|abdullah faisal|Eman|Nawal “Alamri”",
+  "veo-al-malqa gallery order: VEO cup, terrace, pastry, interior-with-barista last",
+);
+assert(
+  (bakedHeroes["veo-al-malqa"] as { focus?: string }[])[0]?.focus === "50% 78%",
+  "veo-al-malqa frame 1 crops low so the VEO sign and cup sit in the hero",
+);
+assert(
+  [1, 2, 3, 4].map((n) => readFileSync(join("public/cafe-heroes/veo-al-malqa", `${n}.jpg`)).length).join(",") ===
+    "211103,254234,179137,202564",
+  "veo-al-malqa files follow the new order (1 = cup frame)",
+);
 assert(
   !listRealShops().some((shop) => /King Fahad/.test(shop.nameEn)),
   "no catalog name spells King Fahad (the district is King Fahd)",

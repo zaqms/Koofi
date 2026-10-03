@@ -263,6 +263,72 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
         "3 sources, same branch (batch-03 2026-10-03): google_review 2026-05-11 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee333ac56baa3:0x632e286d7c2502be ; google_review 2026-02-26 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee333ac56baa3:0x632e286d7c2502be ; google_review 2025-12-13 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee333ac56baa3:0x632e286d7c2502be",
     },
   ],
+  "percent-arabica-hittin": [
+    {
+      emoji: "🍫",
+      name_ar: "براوني",
+      name_en: "Brownie",
+      reason_ar: "عجب المراجعين.",
+      reason_en: "Reviewers enjoyed it.",
+      evidence:
+        "3 sources, same branch (batch-04 2026-10-03): google_review 2026-03-02 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3a860ee67a7:0x757ee5e74a69274b ; google_review 2026-03-03 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3a860ee67a7:0x757ee5e74a69274b ; google_review 2026-09-01 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3a860ee67a7:0x757ee5e74a69274b",
+    },
+  ],
+  "good-neighbor-olaya": [
+    {
+      emoji: "🍨",
+      name_ar: "آيس كريم ساندويتش",
+      name_en: "Ice Cream Sandwich",
+      reason_ar: "من الحلا اللي ينذكر هنا.",
+      reason_en: "One of the desserts people mention.",
+      evidence:
+        "3 sources, same branch (batch-04 2026-10-03): google_review 2026-07-19 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03fcd238f7e5:0x42c413083e9df746 ; google_review 2026-06-06 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03fcd238f7e5:0x42c413083e9df746 ; press 2026-08-29 https://www.arabnews.com/food-health/where-we-are-going-today-good-neighbor-cafe-in-riyadh-2656250",
+    },
+  ],
+  "sors-hittin": [
+    {
+      emoji: "🍞",
+      name_ar: "فرنش توست سولتد كراميل",
+      name_en: "Salted Caramel French Toast",
+      reason_ar: "المراجعين ينصحون فيه.",
+      reason_en: "Reviewers recommend it.",
+      evidence:
+        "3 sources, same branch (batch-04 2026-10-03): google_review 2025-08-08 https://exa.ai/library/place/54f7dkpyc99 ; google_review 2024-07-14 https://exa.ai/library/place/54f7dkpyc99 ; google_review 2022-01-22 https://exa.ai/library/place/54f7dkpyc99",
+    },
+  ],
+  "peaks-digital-city-al-nakheel": [
+    {
+      emoji: "🥪",
+      name_ar: "ساندويتش بوراتا",
+      name_en: "Burrata Sandwich",
+      reason_ar: "الزوار يمدحونه.",
+      reason_en: "Visitors speak well of it.",
+      evidence:
+        "3 sources, same branch (batch-04 2026-10-03): google_review 2026-02-16 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee380585f0151:0xab784cd32a1e3d85 ; google_review 2025-06-23 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee380585f0151:0xab784cd32a1e3d85 ; google_review 2025-12-24 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee380585f0151:0xab784cd32a1e3d85",
+    },
+  ],
+  "jather-al-hamra": [
+    {
+      emoji: "🍵",
+      name_ar: "ماتشا لاتيه",
+      name_en: "Matcha Latte",
+      reason_ar: "تقييمها زين في المراجعات.",
+      reason_en: "Rated well in reviews.",
+      evidence:
+        "3 sources, same branch (batch-04 2026-10-03): google_review 2026-05-02 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03005afeefe3:0xfb9336e4d0f8a037 ; google_review 2025-08-08 https://exa.ai/library/place/cdl60lk9yhy ; google_review 2025-01-18 https://exa.ai/library/place/cdl60lk9yhy",
+    },
+  ],
+  "one-gram-sulimaniyah": [
+    {
+      emoji: "🍰",
+      name_ar: "تشيز كيك بيكان",
+      name_en: "Pecan Cheesecake",
+      reason_ar: "توصفه المراجعات بإنه لذيذ.",
+      reason_en: "Described as tasty in reviews.",
+      evidence:
+        "4 sources, same branch (batch-04 2026-10-03): google_review 2026-04-11 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0300779b6af3:0x8cfcba3b84b71d7f ; google_review 2026-04-17 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0300779b6af3:0x8cfcba3b84b71d7f ; google_review 2026-05-11 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0300779b6af3:0x8cfcba3b84b71d7f ; google_review 2026-02-16 https://exa.ai/library/place/3slp805sz5k",
+    },
+  ],
 };
 
 /** Display lines only. `evidence` is dropped here and must not be rendered. */

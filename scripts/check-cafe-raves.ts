@@ -21,23 +21,66 @@ const DISPLAY_FIELDS = [
 ] as const;
 
 /**
- * Arabic promo tokens are word-bounded with Unicode lookaround.
- * `\b` does not treat Arabic letters as word characters, so a substring
- * check false-flags words such as معروض. Longer alternatives come first.
- * Clitics that glue on (بخصم، الخصم، عروضهم، بعرض) count as the same word.
+ * Every display-field rule runs on a matching copy, never on the shipped text:
+ * NFKC (folds Arabic presentation forms), then tatweel, zero-width joiners and
+ * spaces (ZWNJ/ZWJ/ZWSP/WJ/BOM) and Arabic diacritics are removed, and
+ * أ/إ/آ fold to ا, ة to ه, ى to ي. So «عـرض», «مجانًا» and «اﻟﻜﻞ» match.
  */
-const AR_PROMO_RE =
-  /(?<![\p{L}\p{N}_])(?:و|ف)?(?:بال|وال|فال|لل|ال|ب|ك|ل)?(?:عروض|خصم|تخفيض|مجاناً|مجانا|كود|عرض)(?:هم|هن|ها|كم|كن|نا|ي|ه)?(?![\p{L}\p{N}_])/u;
+const INVISIBLE_RE = /[\u0640\u200B-\u200D\u2060\uFEFF\u00AD]/gu;
+const AR_MARKS_RE = /[\u064B-\u065F\u0670]/gu;
+
+export function matchText(value: string): string {
+  return value
+    .normalize("NFKC")
+    .replace(INVISIBLE_RE, "")
+    .replace(AR_MARKS_RE, "")
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي");
+}
+
+/** Brand matching also drops spaces, hyphens, dots and underscores: "Cinna-bon", «سينا بون». */
+export function squeezeText(value: string): string {
+  return matchText(value).replace(/[\s\-\u2010-\u2015._·'’]+/gu, "").toLocaleLowerCase("en");
+}
+
+const AR_WORD_START = "(?<![\\p{L}\\p{N}_])";
+const AR_WORD_END = "(?![\\p{L}\\p{N}_])";
+const AR_PREFIX = "(?:و|ف)?(?:بال|وال|فال|كال|لل|ال|ب|ك|ل)?";
+const AR_SUFFIX = "(?:هم|هن|ها|كم|كن|نا|ي|ه)?";
+/**
+ * Arabic promo tokens are whole words with Unicode lookaround (`\b` does not
+ * treat Arabic letters as word characters). Clitic prefixes always count
+ * (بخصم، الخصم، بعرض، والعروض). Possessive suffixes count for the plural and
+ * discount words (عروضهم، خصمكم). Bare «عرض» also takes the promo possessives
+ * عرضهم، عرضنا، عرضكم، عرضه (and هن/كن), but not «عرضي» or «عرضها», which are
+ * ordinary words: «عرضي» (crosswise, as in «كيكة العرضي»), «عرضها» (its width).
+ * Patterns are written in matchText() form (ة → ه, no hamza, no tanween).
+ */
+const AR_PROMO_RE = new RegExp(
+  `${AR_WORD_START}${AR_PREFIX}(?:` +
+    `(?:عروض|خصومات|خصم|تخفيضات|تخفيض|كوبون|كود)${AR_SUFFIX}` +
+    `|عرض(?:هم|هن|كم|كن|نا|ه)?` +
+    `|(?:مجانا|مجاني|مجانيه|ببلاش)` +
+    `)${AR_WORD_END}`,
+  "u",
+);
+/** "off" is promo unless it is the "off-menu" compound. */
 const EN_PROMO_RE =
-  /\boffers?\b|\bdiscounts?\b|\bdeals?\b|\bpromo\b|\bsale\b|\bfree\b|\bcoupon\b|\bcode\b|\boff\b|%\s*off/i;
+  /\boffers?\b|\bdiscounts?\b|\bdeals?\b|\bpromo\b|\bsale\b|\bfree\b|\bcoupons?\b|\bcode\b|\bbogo\b|\bbuy one,? get one\b|\boff\b(?![-\u2010\u2011\s]?menu\b)|%\s*off/i;
 
 /** Paid placement wording. `ad` and `advert` are whole words so "addition" is fine. */
-const PAID_RE =
-  /\bsponsored\b|\bpaid partnership\b|\badvert\b|\bad\b|(?<![\p{L}\p{N}_])(?:إعلان|ممول)(?![\p{L}\p{N}_])/iu;
+const EN_PAID_RE =
+  /\bsponsored\b|\bpaid partnership\b|\bpartners?\b|\bpartnership\b|\badvert\b|\bad\b/i;
+const AR_PAID_RE = new RegExp(
+  `${AR_WORD_START}(?:${AR_PREFIX}(?:اعلان|اعلاني|اعلانيه|ممول|ممولة|مموله)|برعايه|برعايتهم|برعايتنا)${AR_WORD_END}`,
+  "u",
+);
 
-/** URLs and domain-shaped text in visitor-facing fields. Evidence is not scanned. */
+/** URLs, domain-shaped text and @handles in visitor-facing fields. Evidence is not scanned. */
 const URL_RE =
-  /https?:\/\/|\bhttps?\b|www\.|\.(?:com|net|org|sa|io|co|app|lol|me)\b/i;
+  /https?:\/\/|\bhttps?\b|www\.|\.(?:com|net|org|sa|io|co|app|lol|me|ai|store|shop|cafe|xyz)\b/i;
+const HANDLE_RE = /(?<![\p{L}\p{N}_])@[\p{L}\p{N}_.]{2,}/u;
 
 /**
  * Latin brand tokens allowed inside Arabic name/reason fields.
@@ -46,15 +89,25 @@ const URL_RE =
 const AR_LATIN_ALLOWLIST = ["V60"] as const;
 
 /**
- * Cinnabon spellings. Latin is case-insensitive and allows one n and a
- * plural s (Cinabon, Cinnabons). Arabic covers سينابون، سنابون، and سينابن.
- * سينامون (cinnamon) does not match.
+ * Cinnabon spellings, matched on squeezeText() so spaces, hyphens, tatweel and
+ * ZWNJ/ZWJ can't split the word ("Cinna bon", "Cinna-bon", «سينا بون», «سيـنابون»).
+ * Latin allows one n, a doubled b and a plural s; Arabic covers سينابون، سنابون،
+ * سينابن and سينابونز. سينامون (cinnamon) does not match.
  */
-const EN_BRAND_RE = /\bcinn?abons?\b/i;
-const AR_BRAND_RE = /س(?:ي)?ناب(?:و)?ن/;
+const EN_BRAND_RE = /cinn?abb?ons?/;
+const AR_BRAND_RE = /سي?نابو?نز?/;
 
-const STOCK_REASON_EN = /everyone keeps mentioning/i;
-const STOCK_REASON_AR = /الكل يذكر/;
+/**
+ * Universal-claim stock lines ("everyone keeps mentioning it", «الكل يذكرها»)
+ * and their rewordings. Matched on matchText(), at most once across the file.
+ */
+const STOCK_REASON_EN =
+  /\b(?:everyone|everybody|every (?:visitor|reviewer|review|guest)|all (?:the )?(?:reviewers|reviews|visitors|guests)|all over the reviews)\b/i;
+const STOCK_REASON_AR =
+  /(?<![\p{L}\p{N}_])(?:الكل|الجميع|كل الناس|كل الزوار|كل المراجعين|كل المراجعات|كلهم|كل من زار)(?![\p{L}\p{N}_])/u;
+
+/** Arabic-Indic (٠–٩) and Extended Arabic-Indic (۰–۹) digits; English fields use 0–9. */
+const ARABIC_INDIC_DIGIT_RE = /[\u0660-\u0669\u06F0-\u06F9]/;
 
 const WEEN_RE = /\bween\b/i;
 
@@ -85,7 +138,30 @@ function hasPercent(value: string): boolean {
 }
 
 function hasBannedBrand(value: string): boolean {
-  return EN_BRAND_RE.test(value) || AR_BRAND_RE.test(value);
+  const squeezed = squeezeText(value);
+  return EN_BRAND_RE.test(squeezed) || AR_BRAND_RE.test(squeezed);
+}
+
+function hasPromo(value: string): boolean {
+  const text = matchText(value);
+  return AR_PROMO_RE.test(text) || EN_PROMO_RE.test(text) || hasPercent(text);
+}
+
+function hasPaid(value: string): boolean {
+  const text = matchText(value);
+  return EN_PAID_RE.test(text) || AR_PAID_RE.test(text);
+}
+
+function hasUrl(value: string): boolean {
+  return URL_RE.test(matchText(value));
+}
+
+function hasHandle(value: string): boolean {
+  return HANDLE_RE.test(matchText(value));
+}
+
+function isStockReason(reasonEn: string, reasonAr: string): boolean {
+  return STOCK_REASON_EN.test(matchText(reasonEn)) || STOCK_REASON_AR.test(matchText(reasonAr));
 }
 
 function normalizeName(value: string, foldCase: boolean): string {
@@ -94,21 +170,33 @@ function normalizeName(value: string, foldCase: boolean): string {
 }
 
 /**
- * One emoji grapheme that is an actual pictograph.
- * ©, ®, and ™ are Extended_Pictographic in Unicode but default to text,
- * so the slot also requires Emoji_Presentation. Bullets and other
- * non-pictographic symbols fail the pictograph check.
+ * One emoji grapheme that is an actual pictograph:
+ * - default-emoji pictographs (🍵, and ZWJ sequences such as 👩‍🍳), or
+ * - a text-default pictograph turned emoji by VS16 U+FE0F (❤️ 🌶️ 🍽️), or
+ * - a flag: exactly two regional indicators (🇸🇦).
+ * ©, ®, ™ never pass, even with VS16. Bare ★ • ✔ (no VS16) and letters fail.
  */
-function isOneEmojiGrapheme(value: string): boolean {
+const TEXT_SYMBOLS = new Set(["\u00A9", "\u00AE", "\u2122"]);
+
+/** Alcohol-coded drink emoji. Kombucha stays 🥤. */
+const EMOJI_DENYLIST = new Set(["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸"]);
+
+export function isOneEmojiGrapheme(value: string): boolean {
   const segments = [
     ...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(value),
   ];
   if (segments.length !== 1) return false;
   const grapheme = segments[0].segment;
-  return (
-    /\p{Extended_Pictographic}/u.test(grapheme) &&
-    /\p{Emoji_Presentation}/u.test(grapheme)
-  );
+  const chars = [...grapheme];
+  if (chars.some((char) => TEXT_SYMBOLS.has(char))) return false;
+  if (chars.length === 2 && chars.every((char) => /\p{Regional_Indicator}/u.test(char))) {
+    return true;
+  }
+  if (!/\p{Extended_Pictographic}/u.test(grapheme)) return false;
+  // Only emoji parts may appear: pictographs, VS16, ZWJ, skin tones, keycap, tags.
+  const allowed = /^(?:\p{Extended_Pictographic}|\p{Emoji_Modifier}|\uFE0F|\u200D|\u20E3|[\u{E0020}-\u{E007F}])$/u;
+  if (!chars.every((char) => allowed.test(char))) return false;
+  return /\p{Emoji_Presentation}/u.test(grapheme) || grapheme.includes("\uFE0F");
 }
 
 function formatRunDate(date: Date): string {
@@ -238,21 +326,27 @@ export function collectCafeRaveProblems(
           problems.push(`${where}: ${field} is empty`);
           continue;
         }
-        if (AR_PROMO_RE.test(value) || EN_PROMO_RE.test(value) || hasPercent(value)) {
+        if (hasPromo(value)) {
           problems.push(`${where}: ${field} has promo or offer wording`);
         }
         if (hasBannedBrand(value)) {
           problems.push(`${where}: ${field} names a banned brand`);
         }
-        if (PAID_RE.test(value)) {
+        if (hasPaid(value)) {
           problems.push(`${where}: ${field} has paid wording`);
         }
-        if (URL_RE.test(value)) {
+        if (hasUrl(value)) {
           problems.push(`${where}: ${field} has a URL or domain`);
+        }
+        if (hasHandle(value)) {
+          problems.push(`${where}: ${field} has an @handle`);
         }
       }
       if (item.emoji.trim() && !isOneEmojiGrapheme(item.emoji.trim())) {
         problems.push(`${where}: emoji must be exactly one emoji`);
+      }
+      if (EMOJI_DENYLIST.has(item.emoji.trim())) {
+        problems.push(`${where}: emoji is on the denylist`);
       }
       const nameEn = [...item.name_en].length;
       const nameAr = [...item.name_ar].length;
@@ -266,8 +360,15 @@ export function collectCafeRaveProblems(
         problems.push(`${where}: English fields contain Arabic letters`);
       }
       if (
-        /[A-Za-z]/.test(stripAllowlistedLatin(item.name_ar)) ||
-        /[A-Za-z]/.test(stripAllowlistedLatin(item.reason_ar))
+        ARABIC_INDIC_DIGIT_RE.test(item.name_en) ||
+        ARABIC_INDIC_DIGIT_RE.test(item.reason_en)
+      ) {
+        problems.push(`${where}: English fields contain Arabic-Indic digits`);
+      }
+      // \p{Script=Latin} also catches accented letters such as é and ñ.
+      if (
+        /\p{Script=Latin}/u.test(stripAllowlistedLatin(item.name_ar)) ||
+        /\p{Script=Latin}/u.test(stripAllowlistedLatin(item.reason_ar))
       ) {
         problems.push(
           `${where}: Arabic fields contain Latin letters outside ${AR_LATIN_ALLOWLIST.join(", ")}`,
@@ -307,14 +408,14 @@ export function collectCafeRaveProblems(
       if ([...item.reason_en].length > REASON_MAX) {
         problems.push(`${where}: reason_en is over ${REASON_MAX} characters`);
       }
-      if (STOCK_REASON_EN.test(item.reason_en) || STOCK_REASON_AR.test(item.reason_ar)) {
+      if (isStockReason(item.reason_en, item.reason_ar)) {
         stockReasonItems += 1;
       }
     });
   }
   if (stockReasonItems > 1) {
     problems.push(
-      `stock reason appears ${stockReasonItems} times; everyone keeps mentioning / الكل يذكر at most once`,
+      `stock reason appears ${stockReasonItems} times; universal claims (everyone … / الكل …) at most once`,
     );
   }
 
@@ -769,6 +870,139 @@ function selfTest(ids: Set<string>): void {
   });
   assert(evidenceUrl.length === 0, `URLs in evidence stay internal: ${evidenceUrl.join("; ")}`);
   console.log("check-cafe-raves: URLs in display text rejected; evidence URLs allowed");
+
+  // --- #238 QA follow-ups: each rule has a positive and a negative fixture. ---
+  const plain: CafeRave = { ...clean, reason_en: "Often mentioned.", reason_ar: "تنذكر كثير." };
+  function rejects(row: Partial<CafeRave>, needle: string, label: string): void {
+    const found = problemsFor({ ...plain, ...row });
+    assert(
+      found.some((problem) => problem.includes(needle)),
+      `${label} should fail with "${needle}": ${found.join("; ") || "no problems"}`,
+    );
+  }
+  function allows(row: Partial<CafeRave>, label: string): void {
+    const found = problemsFor({ ...plain, ...row });
+    assert(found.length === 0, `${label} should pass: ${found.join("; ")}`);
+  }
+
+  // عرض is whole-word: possessive/adjective forms are ordinary words.
+  for (const word of ["عرضي", "كيكة العرضي", "عرضها", "بالعرضي"]) {
+    allows({ name_ar: word }, `«${word}»`);
+  }
+  for (const word of ["عرض", "بعرض", "العرض", "والعرض", "عـرض", "بالعـــرض", "عَرض", "عروضنا", "خصمكم", "عرضهم", "عرضنا", "عرضكم", "عرضه"]) {
+    rejects({ reason_ar: word }, "promo or offer wording", `«${word}»`);
+  }
+  console.log("check-cafe-raves: عرضي / كيكة العرضي / عرضها allowed; عرض بعرض العرض والعرض عـرض and عرضهم عرضنا عرضكم عرضه rejected");
+
+  // Promo and paid additions.
+  for (const word of ["خصومات", "بخصومات", "مجانًا", "مجانا", "مجاناً", "قهوة مجانية", "برعاية", "كإعلان", "كاعلان", "الإعلان"]) {
+    const found = problemsFor({ ...plain, reason_ar: word });
+    assert(
+      found.some((problem) => problem.includes("promo or offer wording") || problem.includes("paid wording")),
+      `«${word}» should fail as promo/paid: ${found.join("; ") || "no problems"}`,
+    );
+  }
+  for (const word of ["BOGO", "bogo Friday", "Buy one get one"]) {
+    rejects({ reason_en: word }, "promo or offer wording", `"${word}"`);
+  }
+  for (const word of ["Our Partner", "Partners pick", "partnership"]) {
+    rejects({ reason_en: word }, "paid wording", `"${word}"`);
+  }
+  for (const word of ["Try it at wain.ai", "brew.cafe"]) {
+    rejects({ name_en: word }, "URL or domain", `"${word}"`);
+  }
+  rejects({ reason_en: "Ask @wainlol" }, "@handle", "an @handle in EN");
+  rejects({ reason_ar: "تابعهم @قهوة_الرياض" }, "@handle", "an @handle in AR");
+  allows({ reason_en: "Often ordered at brunch." }, "no @handle");
+  for (const [field, word] of [
+    ["name_en", "Off-Menu Latte"],
+    ["name_en", "Off menu cortado"],
+    ["reason_en", "An off-menu favourite."],
+    ["reason_en", "Partnered well with the cake."],
+    ["reason_en", "A good email-worthy cake."],
+    ["name_ar", "مجانين القهوة"],
+  ] as const) {
+    allows({ [field]: word }, `"${word}"`);
+  }
+  rejects({ name_en: "Coffee 2 for 1, 50 off" }, "promo or offer wording", "bare off");
+  rejects({ name_en: "Latte off today" }, "promo or offer wording", "off today");
+  console.log(
+    "check-cafe-raves: خصومات مجانًا BOGO برعاية كإعلان Partner .ai @handle rejected; off-menu allowed",
+  );
+
+  // Emoji slot: VS16, ZWJ sequences, skin tones and flags pass.
+  for (const emoji of ["❤️", "🌶️", "🍽️", "☕", "🇸🇦", "👩‍🍳", "🧑🏽‍🍳", "❤️‍🔥"]) {
+    allows({ emoji }, `emoji ${emoji}`);
+  }
+  for (const emoji of ["❤", "🌶", "©️", "®️", "™️", "🇸", "🇸🇦🇸🇦", "☕️☕️", "1️⃣x", "A️"]) {
+    rejects({ emoji }, "exactly one emoji", `emoji ${JSON.stringify(emoji)}`);
+  }
+  console.log("check-cafe-raves: ❤️ 🌶️ 🍽️ 🇸🇦 and ZWJ emoji allowed; bare ❤ / 🌶, ©️ and lone indicators rejected");
+
+  for (const emoji of ["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸"]) {
+    rejects({ emoji }, "emoji is on the denylist", `emoji ${emoji}`);
+  }
+  allows({ emoji: "🥤" }, "🥤 is not on the denylist");
+  console.log("check-cafe-raves: 🍺 🍻 🍹 🍾 🍷 🥂 🍸 denied; 🥤 allowed");
+
+  // Cinnabon evasions are caught after normalisation; cinnamon stays allowed.
+  for (const name of ["Cinna bon", "Cinna-bon", "C-i-n-n-a-b-o-n", "Cinna\u200Cbon", "Cinna\u200Dbon", "CINNA.BON", "Ｃｉｎｎａｂｏｎ"]) {
+    rejects({ name_en: name }, "names a banned brand", JSON.stringify(name));
+  }
+  for (const name of ["سينابون", "سينا بون", "سينـــابون", "سي\u200Cنابون", "سينا-بون", "ال سينابون"]) {
+    rejects({ name_ar: name }, "names a banned brand", JSON.stringify(name));
+  }
+  allows({ name_en: "Cinnamon Bun", name_ar: "سينامون بن" }, "Cinnamon Bun / سينامون بن");
+  allows({ name_en: "Cinnamon Roll", name_ar: "سينامون رول" }, "Cinnamon Roll / سينامون رول");
+  console.log("check-cafe-raves: Cinnabon spaced / hyphenated / tatweel / ZWNJ / full-width rejected; cinnamon allowed");
+
+  // Script mixing.
+  rejects({ name_ar: "كريم بروليé" }, "Latin letters", "é in an Arabic name");
+  rejects({ reason_ar: "ينطلب كثير café." }, "Latin letters", "café in an Arabic reason");
+  allows({ name_en: "Crème Brûlée", name_ar: "كريم بروليه" }, "é in an English name");
+  rejects({ name_en: "Latte ٣" }, "Arabic-Indic digits", "٣ in an English name");
+  rejects({ reason_en: "Top ۳ pick." }, "Arabic-Indic digits", "۳ in an English reason");
+  allows({ name_en: "3 Milk Cake", name_ar: "كيكة ٣ حليب" }, "ASCII digits in EN, Arabic-Indic in AR");
+  console.log("check-cafe-raves: é in AR rejected; Arabic-Indic digits in EN rejected; Crème Brûlée in EN allowed");
+
+  // Reworded stock lines count toward the at-most-once limit.
+  for (const [reason_en, reason_ar] of [
+    ["Everybody orders it.", "ينطلب كثير."],
+    ["Every reviewer mentions it.", "ينطلب كثير."],
+    ["All the reviews mention it.", "ينطلب كثير."],
+    ["Often mentioned.", "الجميع يذكرها."],
+    ["Often mentioned.", "كل الناس يطلبونها."],
+    ["Often mentioned.", "كلهم يمدحونها."],
+    ["Often mentioned.", "الكـل يذكره."],
+  ] as const) {
+    const twice = collectCafeRaveProblems(
+      "clean",
+      {
+        "namq-al-malqa": [clean],
+        "nap-al-qirawan": [{ ...clean, name_en: "Another Cake", name_ar: "كيكة ثانية", reason_en, reason_ar }],
+      },
+      ids,
+    );
+    assert(
+      twice.some((problem) => problem.includes("stock reason appears")),
+      `"${reason_en}" / «${reason_ar}» should count as a stock line: ${twice.join("; ")}`,
+    );
+  }
+  const notStock = collectCafeRaveProblems(
+    "clean",
+    {
+      "namq-al-malqa": [clean],
+      "nap-al-qirawan": [
+        { ...clean, name_en: "Another Cake", name_ar: "كيكة ثانية", reason_en: "Every visit, a new batch.", reason_ar: "كل مرة تنطلب." },
+      ],
+    },
+    ids,
+  );
+  assert(
+    !notStock.some((problem) => problem.includes("stock reason appears")),
+    `"Every visit" / «كل مرة» is not a universal claim: ${notStock.join("; ")}`,
+  );
+  console.log("check-cafe-raves: reworded stock lines (everybody, every reviewer, الجميع, كل الناس, كلهم) counted");
 }
 
 const ids = catalogIds();
@@ -820,28 +1054,59 @@ const batch02Cafes = [
   "dips-plus-diriyah",
   "eya-specialty-coffee-al-wurud",
 ] as const;
+const batch03Cafes = [
+  "essert-al-rawabi",
+  "essert-al-arid",
+  "iota-al-ghadeer",
+  "oromiffa-al-olaya",
+  "carve-coffee-bar-al-wurud",
+  "moff-ghirnatah",
+  "rex-king-salman",
+  "nosound-al-narjis",
+  "atea-al-rabi",
+] as const;
 for (const slug of liveCafes) {
   assert(slug in cafeRaves, `${slug} still renders a rave section`);
 }
 for (const slug of batch02Cafes) {
   assert(slug in cafeRaves, `${slug} renders a rave section`);
 }
+for (const slug of batch03Cafes) {
+  assert(slug in cafeRaves, `${slug} renders a rave section (batch 03)`);
+  assert(cafeRaves[slug]?.length === 1, `${slug} ships one item in batch 03`);
+}
 assert(
-  Object.keys(cafeRaves).length === liveCafes.length + batch02Cafes.length,
-  "8 live cafés plus the batch-02 cafés render a rave section",
+  Object.keys(cafeRaves).length === liveCafes.length + batch02Cafes.length + batch03Cafes.length,
+  "8 live cafés plus the batch-02 and batch-03 cafés render a rave section",
 );
-assert(shippedItems === 14, `14 items after batch 02, got ${shippedItems}`);
+assert(shippedItems === 23, `23 items after batch 03, got ${shippedItems}`);
 for (const deferred of [
   "asfoura-al-malqa",
   "da-nonna-al-nakheel",
   "woods-olaya",
   "idmi-olaya",
+  "waqar-al-aziziyah",
+  "fav-coffee-room-al-malqa",
+  "shml-al-qirawan",
+  "urth-caffe-tahlia-sulimaniyah",
+  "kava-al-rabi",
+  "okawa-king-fahd",
+  // Flat White is a standard espresso drink (generic, V60 precedent).
+  "volume-coffee-roasters-al-narjis",
 ]) {
   assert(!(deferred in cafeRaves), `${deferred} is deferred`);
 }
+assert(
+  !("volume-coffee-roasters-al-narjis" in cafeRaves),
+  "volume-coffee-roasters-al-narjis is deferred: Flat White is a standard espresso drink (generic, V60 precedent)",
+);
 const eya = cafeRaves["eya-specialty-coffee-al-wurud"];
 assert(eya?.[0]?.name_en === "Cinnamon Roll", "Eya name is Cinnamon Roll");
 assert(eya?.[0]?.name_ar === "سينامون رول", "Eya AR name is سينامون رول");
+assert(
+  !(eya?.[0]?.evidence ?? "").includes("/@") && !(eya?.[0]?.evidence ?? "").includes("!16s"),
+  "Eya Maps links use the clean place form",
+);
 const sulalat = cafeRaves["sulalat-coffee-ar-rabwah"];
 assert(sulalat?.length === 1, "Sulalat keeps one item");
 assert(sulalat?.[0]?.name_en === "Dark Hot Chocolate", "Sulalat name is Dark Hot Chocolate");

@@ -13428,31 +13428,6 @@
       "example": false
     },
     {
-      "id": "vanilla-coffee-qurtubah",
-      "nameAr": "فانيلا كوفي",
-      "nameEn": "Vanilla Coffee",
-      "city": "riyadh",
-      "neighborhood": "qurtubah",
-      "neighborhoodAr": "قرطبة",
-      "vibeTags": [
-        "قهوة"
-      ],
-      "momentTags": [
-        "qahwa"
-      ],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
-      "pin": {
-        "lat": 24.818295,
-        "lng": 46.7418064
-      },
-      "popularityIndex": 0,
-      "placeId": "ChIJ19ekbW_9Lj4R-xReXv-RxWk",
-      "dineIn": true,
-      "outdoorSeating": null,
-      "pickupOnly": null,
-      "example": false
-    },
-    {
       "id": "mill-coffee-qurtubah",
       "nameAr": "محمصة ميل",
       "nameEn": "Mill Coffee Roastery",

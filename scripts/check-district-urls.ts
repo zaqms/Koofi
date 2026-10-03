@@ -184,8 +184,8 @@ assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 assert(areas.length === 52, `expected 52 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 364, `specialty discovery is 364 after Shoug A1 on top of the placeId fix, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 425, `catalog is 425 (Shoug A1's 432 minus the 7 wrong-district drops), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 363, `specialty discovery is 363 after dropping Vanilla Coffee Qurtubah, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 424, `catalog is 424 after dropping Vanilla Coffee Qurtubah, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -356,7 +356,22 @@ assert(
 );
 
 const qurtubah = filterDirectoryShops(shops, "qurtubah");
-assert(qurtubah.length === 12, `qurtubah has 12 shops, got ${qurtubah.length}`);
+assert(qurtubah.length === 11, `qurtubah has 11 shops, got ${qurtubah.length}`);
+assert(
+  !getShop("vanilla-coffee-qurtubah"),
+  "Vanilla Coffee Qurtubah stays dropped — food truck, not a specialty café",
+);
+for (const locale of ["", "/en"]) {
+  assert(
+    LEGACY_SHOP_REDIRECTS.some(
+      (row) =>
+        row.source === `${locale}/c/vanilla-coffee-qurtubah` &&
+        row.destination === `${locale}/coffee-shops/qurtubah` &&
+        row.statusCode === 308,
+    ),
+    `${locale}/c/vanilla-coffee-qurtubah 308s to the Qurtubah district page`,
+  );
+}
 assert(
   qurtubah.every((shop) => shop.neighborhood === "qurtubah"),
   "qurtubah filter stays in district",
@@ -371,7 +386,6 @@ for (const id of [
   "najd-alathiah-qurtubah",
   "klatch-qurtubah",
   "nosound-qurtubah",
-  "vanilla-coffee-qurtubah",
   "mill-coffee-qurtubah",
   "cofen-qurtubah",
 ]) {
@@ -2092,13 +2106,6 @@ const scoutPack: {
   {
     id: "nosound-qurtubah",
     hex: "0x3e2efd1bf2459957:0x981f344c0bf6e54f",
-    neighborhood: "qurtubah",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-  },
-  {
-    id: "vanilla-coffee-qurtubah",
-    hex: "0x3e2efd6f6da4d7d7:0x69c591ff5e5e14fb",
     neighborhood: "qurtubah",
     vibe: ["قهوة"],
     moments: ["qahwa"],

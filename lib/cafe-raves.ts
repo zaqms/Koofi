@@ -285,17 +285,6 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
         "3 sources, same branch (batch-04 2026-10-03): google_review 2026-07-19 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03fcd238f7e5:0x42c413083e9df746 ; google_review 2026-06-06 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03fcd238f7e5:0x42c413083e9df746 ; press 2026-08-29 https://www.arabnews.com/food-health/where-we-are-going-today-good-neighbor-cafe-in-riyadh-2656250",
     },
   ],
-  "sors-hittin": [
-    {
-      emoji: "🍞",
-      name_ar: "فرنش توست سولتد كراميل",
-      name_en: "Salted Caramel French Toast",
-      reason_ar: "المراجعين ينصحون فيه.",
-      reason_en: "Reviewers recommend it.",
-      evidence:
-        "3 sources, same branch (batch-04 2026-10-03): google_review 2025-08-08 https://exa.ai/library/place/54f7dkpyc99 ; google_review 2024-07-14 https://exa.ai/library/place/54f7dkpyc99 ; google_review 2022-01-22 https://exa.ai/library/place/54f7dkpyc99",
-    },
-  ],
   "peaks-digital-city-al-nakheel": [
     {
       emoji: "🥪",

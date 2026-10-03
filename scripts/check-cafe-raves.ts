@@ -188,11 +188,11 @@ function normalizeName(value: string, foldCase: boolean): string {
  */
 const TEXT_SYMBOLS = new Set(["\u00A9", "\u00AE", "\u2122"]);
 
-/** Alcohol-coded drink emoji. Kombucha stays 🥤. Looked up without VS15/VS16. */
+/** Alcohol-coded drink emoji. Kombucha stays 🥤. Looked up after stripping ZWJ, skin tones, and VS15/VS16. */
 const EMOJI_DENYLIST = new Set(["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸", "🥃", "🍶"]);
 
 export function isDeniedEmoji(value: string): boolean {
-  return EMOJI_DENYLIST.has(value.trim().replace(/[\uFE0E\uFE0F]/gu, ""));
+  return EMOJI_DENYLIST.has(value.trim().replace(/[\u200D\uFE0E\uFE0F\u{1F3FB}-\u{1F3FF}]/gu, ""));
 }
 
 export function isOneEmojiGrapheme(value: string): boolean {
@@ -953,13 +953,33 @@ function selfTest(ids: Set<string>): void {
   }
   console.log("check-cafe-raves: ❤️ 🌶️ 🍽️ 🇸🇦 and ZWJ emoji allowed; bare ❤ / 🌶, ©️ and lone indicators rejected");
 
-  for (const emoji of ["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸", "🥃", "🍶", "🍷\uFE0F", "🍺\uFE0F", "🥃\uFE0F", "🍶\uFE0F", "🍸\uFE0E"]) {
+  for (const emoji of [
+    "🍺",
+    "🍻",
+    "🍹",
+    "🍾",
+    "🍷",
+    "🥂",
+    "🍸",
+    "🥃",
+    "🍶",
+    "🍷\uFE0F",
+    "🍺\uFE0F",
+    "🥃\uFE0F",
+    "🍶\uFE0F",
+    "🍸\uFE0E",
+    "🍺\u200D",
+    "🍻\u{1F3FD}",
+    "🍷\uFE0F\u200D",
+  ]) {
     rejects({ emoji }, "emoji is on the denylist", `emoji ${JSON.stringify(emoji)}`);
   }
-  for (const emoji of ["🥤", "🧋", "🧃", "☕", "☕\uFE0F", "🍵", "🫖"]) {
+  for (const emoji of ["🥤", "🧋", "🧃", "☕", "☕\uFE0F", "🍵", "🫖", "🍰", "🍫", "🍨", "🥪"]) {
     allows({ emoji }, `${emoji} is not on the denylist`);
   }
-  console.log("check-cafe-raves: 🍺 🍻 🍹 🍾 🍷 🥂 🍸 🥃 🍶 (also with VS15/VS16) denied; 🥤 🧋 ☕️ allowed");
+  console.log(
+    "check-cafe-raves: 🍺 🍻 🍹 🍾 🍷 🥂 🍸 🥃 🍶 (VS15/VS16, ZWJ, skin tone) denied; 🥤 🧋 ☕️ 🍵 🍰 🍫 🍨 🥪 allowed",
+  );
 
   // «عرضة» (ة) is an ordinary word; «عرضه» (ه, "his offer") stays promo.
   for (const word of ["عرضة", "العرضة", "العرضة النجدية", "والعرضة", "عَرْضَة", "عرضـة"]) {
@@ -1093,7 +1113,6 @@ const batch03Cafes = [
 const batch04Cafes = [
   "percent-arabica-hittin",
   "good-neighbor-olaya",
-  "sors-hittin",
   "peaks-digital-city-al-nakheel",
   "jather-al-hamra",
   "one-gram-sulimaniyah",
@@ -1121,8 +1140,8 @@ assert(
     liveCafes.length + batch02Cafes.length + batch03Cafes.length + batch04Cafes.length,
   "8 live cafés plus the batch-02, batch-03 and batch-04 cafés render a rave section",
 );
-assert(Object.keys(cafeRaves).length === 28, `28 cafés after batch 04, got ${Object.keys(cafeRaves).length}`);
-assert(shippedItems === 29, `29 items after batch 04, got ${shippedItems}`);
+assert(Object.keys(cafeRaves).length === 27, `27 cafés after batch 04, got ${Object.keys(cafeRaves).length}`);
+assert(shippedItems === 28, `28 items after batch 04, got ${shippedItems}`);
 for (const deferred of [
   "asfoura-al-malqa",
   "da-nonna-al-nakheel",
@@ -1159,6 +1178,8 @@ for (const deferred of [
   "rex-hittin",
   "diplab-al-rabi",
   "jae-specialty-coffee-ghirnatah",
+  // sources stale (2022/2024/2025); 2026 Maps reviews of the French toast are negative
+  "sors-hittin",
 ]) {
   assert(!(deferred in cafeRaves), `${deferred} is deferred`);
 }

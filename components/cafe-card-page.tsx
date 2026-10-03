@@ -5,6 +5,7 @@ import { DocumentLocale } from "@/components/document-locale";
 import { ShopUpvoteProvider } from "@/components/shop-upvote-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
+import { cafeRaveLines } from "@/lib/cafe-raves";
 import { listDirectoryShopsForDistrict } from "@/lib/catalog";
 import { copy } from "@/lib/copy";
 import { cardPath, districtPath, homePath } from "@/lib/product";
@@ -30,6 +31,7 @@ export async function CafeCardPageView({
   const siblings = listed.filter((row) => row.id !== shop.id);
   const districtHref =
     listed.length > 0 ? districtPath(shop.neighborhood, language) : undefined;
+  const raves = cafeRaveLines(shop.id, language);
 
   return (
     <main
@@ -59,6 +61,7 @@ export async function CafeCardPageView({
           backHref={home}
           siblings={siblings}
           districtHref={districtHref}
+          {...(raves.length > 0 ? { raves } : {})}
         />
       </ShopUpvoteProvider>
       <CafeEnBlurb shop={shop} language={language} />

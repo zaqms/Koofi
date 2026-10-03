@@ -498,6 +498,10 @@ export const copy = {
     ar: "التصنيف",
     en: "Vibe",
   },
+  detailRaves: {
+    ar: "وش يمدحون هنا؟",
+    en: "People rave about",
+  },
   detailSeeAll: {
     ar: "عرض الكل",
     en: "See all",

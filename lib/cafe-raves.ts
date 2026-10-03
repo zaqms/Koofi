@@ -129,26 +129,6 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
       evidence: "4 sources, same branch (Scout pilot 2026-10-03, Ajz QA): google_review 2025-12-17 maps:0x3e2f053ded08e019:0x47baea5401db03e8 ; google_review 2025-10-16 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-01-10 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-02-17 https://exa.ai/library/place/wdnxbtnwzxm",
     },
   ],
-  "woods-olaya": [
-    {
-      emoji: "☕",
-      name_ar: "V60",
-      name_en: "V60",
-      reason_ar: "الزوار يمدحونها.",
-      reason_en: "Visitors keep praising it.",
-      evidence: "3 sources, same branch (Scout pilot 2026-10-03, Ajz QA): blog https://cafesriyadh.com/2022/%d9%85%d9%82%d9%87%d9%89-%d9%88%d9%85%d8%ad%d9%85%d8%b5%d8%a9-%d9%88%d9%88%d8%af%d8%b2-%d8%a7%d9%84%d8%b1%d9%8a%d8%a7%d8%b6/ ; blog https://cafesriyadh.com/2022/%d9%85%d9%82%d9%87%d9%89-%d9%88%d9%85%d8%ad%d9%85%d8%b5%d8%a9-%d9%88%d9%88%d8%af%d8%b2-%d8%a7%d9%84%d8%b1%d9%8a%d8%a7%d8%b6/ ; google_review 2026-01-01 https://exa.ai/library/place/jnthmj2tbb0",
-    },
-  ],
-  "idmi-olaya": [
-    {
-      emoji: "☕",
-      name_ar: "فلات وايت",
-      name_en: "Flat White",
-      reason_ar: "الكل يذكره.",
-      reason_en: "The one everyone keeps mentioning.",
-      evidence: "4 sources, same branch (Scout pilot 2026-10-03, Ajz QA): blog https://cafesriyadh.com/2020/%D9%85%D8%AD%D9%85%D8%B5%D8%A9-%D9%88%D9%85%D9%82%D9%87%D9%89-%D8%A5%D8%AF%D9%85%D9%8A/ ; blog https://cafesriyadh.com/2020/%D9%85%D8%AD%D9%85%D8%B5%D8%A9-%D9%88%D9%85%D9%82%D9%87%D9%89-%D8%A5%D8%AF%D9%85%D9%8A/ ; blog https://cafesriyadh.com/2020/%D9%85%D8%AD%D9%85%D8%B5%D8%A9-%D9%88%D9%85%D9%82%D9%87%D9%89-%D8%A5%D8%AF%D9%85%D9%8A/ ; google_review 2021-01-26 https://exa.ai/library/place/6d4wfq5sj1v",
-    },
-  ],
 };
 
 /** Display lines only. `evidence` is dropped here and must not be rendered. */

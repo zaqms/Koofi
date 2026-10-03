@@ -101,6 +101,24 @@ function hasArabicLetters(value: string): boolean {
   return false;
 }
 
+/**
+ * Source locators in an evidence note: http(s) URLs and maps:0x place ids.
+ * The same URL listed again counts once. A different review date on that
+ * URL is a different source, because the note is citing the review.
+ * An undated repeat (the same blog URL pasted twice) does not.
+ */
+function uniqueSourceUrls(evidence: string): string[] {
+  const keys = new Set<string>();
+  for (const citation of evidence.split(/\s*;\s*/)) {
+    const date = citation.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0];
+    const urls = [
+      ...citation.matchAll(/https?:\/\/[^\s;]+|maps:0x[0-9a-f]+:0x[0-9a-f]+/gi),
+    ].map((match) => match[0].replace(/[),.;]+$/g, ""));
+    for (const url of urls) keys.add(date ? `${date} ${url}` : url);
+  }
+  return [...keys];
+}
+
 function isCafeRave(value: unknown): value is CafeRave {
   if (!value || typeof value !== "object") return false;
   const row = value as Record<string, unknown>;
@@ -189,8 +207,15 @@ export function collectCafeRaveProblems(
       }
       if (!item.evidence.trim()) problems.push(`${where}: evidence is empty`);
       const sources = /^(\d+)\s+sources\b/.exec(item.evidence.trim());
-      if (!sources || Number(sources[1]) < 3) {
-        problems.push(`${where}: evidence must claim 3 or more sources`);
+      const uniqueUrls = uniqueSourceUrls(item.evidence);
+      const claimed = sources ? Number(sources[1]) : null;
+      if (claimed === null || uniqueUrls.length < 3) {
+        problems.push(`${where}: evidence needs at least 3 unique source URLs`);
+      }
+      if (claimed !== null && claimed !== uniqueUrls.length) {
+        problems.push(
+          `${where}: claimed ${claimed} sources but ${uniqueUrls.length} unique URLs`,
+        );
       }
       if ([...item.reason_ar].length > REASON_MAX) {
         problems.push(`${where}: reason_ar is over ${REASON_MAX} characters`);
@@ -214,7 +239,8 @@ function selfTest(ids: Set<string>): void {
     name_en: "Strawberry Matcha",
     reason_ar: "اللي الكل يذكره.",
     reason_en: "The one everyone keeps mentioning.",
-    evidence: "3 sources, verified note",
+    evidence:
+      "3 sources: https://exa.ai/a ; https://exa.ai/b ; https://example.com/c",
   };
   assert(
     collectCafeRaveProblems("clean", { "namq-al-malqa": [clean] }, ids).length ===
@@ -290,11 +316,36 @@ function selfTest(ids: Set<string>): void {
   const thinEvidence: CafeRave = { ...clean, evidence: "2 sources, too thin" };
   assert(
     collectCafeRaveProblems("clean", { "namq-al-malqa": [thinEvidence] }, ids).some(
-      (problem) => problem.includes("3 or more sources"),
+      (problem) => problem.includes("at least 3 unique source URLs"),
     ),
-    "evidence must lead with 3 or more sources",
+    "evidence must include at least 3 unique source URLs",
   );
   console.log("check-cafe-raves: percent-off rejected; cocoa 70% allowed; thin evidence rejected");
+
+  const repeatedUrl: CafeRave = {
+    ...clean,
+    evidence:
+      "3 sources: https://cafesriyadh.com/woods ; https://cafesriyadh.com/woods ; https://exa.ai/place/woods",
+  };
+  const repeatedProblems = collectCafeRaveProblems(
+    "clean",
+    { "namq-al-malqa": [repeatedUrl] },
+    ids,
+  );
+  assert(
+    repeatedProblems.some((problem) => problem.includes("claimed 3 sources but 2 unique URLs")),
+    `a repeated URL should fail the unique count: ${repeatedProblems.join("; ")}`,
+  );
+  const datedReviews: CafeRave = {
+    ...clean,
+    evidence:
+      "3 sources: google_review 2026-01-01 https://exa.ai/place/one ; google_review 2026-02-02 https://exa.ai/place/one ; google_review 2026-03-03 https://exa.ai/place/one",
+  };
+  assert(
+    collectCafeRaveProblems("clean", { "namq-al-malqa": [datedReviews] }, ids).length === 0,
+    "different review dates on one place URL stay distinct sources",
+  );
+  console.log("check-cafe-raves: repeated URL rejected; dated reviews of one URL stay distinct");
 
   const contained: CafeRave = { ...clean, reason_ar: "معروض على الطاولة." };
   assert(
@@ -399,7 +450,8 @@ function selfTest(ids: Set<string>): void {
   }
   const evidenceUrl = problemsFor({
     ...clean,
-    evidence: "3 sources, https://exa.ai/example and cafesriyadh.com",
+    evidence:
+      "3 sources: https://exa.ai/example ; https://exa.ai/other ; https://cafesriyadh.com/post",
   });
   assert(evidenceUrl.length === 0, `URLs in evidence stay internal: ${evidenceUrl.join("; ")}`);
   console.log("check-cafe-raves: URLs in display text rejected; evidence URLs allowed");
@@ -437,8 +489,10 @@ assert(
 );
 
 const shippedItems = Object.values(cafeRaves).reduce((count, rows) => count + rows.length, 0);
-assert(Object.keys(cafeRaves).length === 12, "12 cafés still render a rave section");
-assert(shippedItems === 13, `13 items after dropping Sulalat gelato, got ${shippedItems}`);
+assert(Object.keys(cafeRaves).length === 10, "10 cafés still render a rave section");
+assert(shippedItems === 11, `11 items after deferring Woods and Idmi, got ${shippedItems}`);
+assert(!("woods-olaya" in cafeRaves), "Woods is deferred until a third distinct source");
+assert(!("idmi-olaya" in cafeRaves), "Idmi is deferred until a third distinct source");
 const sulalat = cafeRaves["sulalat-coffee-ar-rabwah"];
 assert(sulalat?.length === 1, "Sulalat keeps one item");
 assert(sulalat?.[0]?.name_en === "70% Hot Chocolate", "Sulalat keeps 70% Hot Chocolate");

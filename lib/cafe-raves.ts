@@ -109,6 +109,61 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
       evidence: "4 sources, same branch (Scout pilot-v2 2026-10-03): google_review 2025-12-17 https://www.google.com/maps/place/Sulalat+Coffee/data=!4m2!3m1!1s0x3e2f053ded08e019:0x47baea5401db03e8 ; google_review 2025-10-16 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-01-10 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-02-17 https://exa.ai/library/place/wdnxbtnwzxm",
     },
   ],
+  "mkth-ghirnatah": [
+    {
+      emoji: "🍰",
+      name_ar: "تشيز كيك مدريد",
+      name_en: "Madrid Cheesecake",
+      reason_ar: "ينمدح كثير في المراجعات.",
+      reason_en: "Often praised in reviews.",
+      evidence:
+        "3 sources, same branch (batch-02 2026-10-03): google_review 2026-07-02 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd82bc3dfa81:0xe2d11f39f26b7f5 ; google_review 2026-06-05 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd82bc3dfa81:0xe2d11f39f26b7f5 ; google_review 2026-06-27 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd82bc3dfa81:0xe2d11f39f26b7f5",
+    },
+  ],
+  "archi-al-bujairi-diriyah": [
+    {
+      emoji: "🍞",
+      name_ar: "فرنش توست بيكان",
+      name_en: "Pecan French Toast",
+      reason_ar: "ينصحون فيه كثير.",
+      reason_en: "Often recommended.",
+      evidence:
+        "3 sources, same branch (batch-02 2026-10-03): google_review 2026-02-08 https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2ee1256ea46553:0x57b2b39e05a4ac4f ; google_review 2026-01-02 https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2ee1256ea46553:0x57b2b39e05a4ac4f ; google_review 2026-03-26 https://www.google.com/maps/place/Archi/data=!4m2!3m1!1s0x3e2ee1256ea46553:0x57b2b39e05a4ac4f",
+    },
+  ],
+  "semi-specialty-cafe-ghirnatah": [
+    {
+      emoji: "🍵",
+      name_ar: "ماتشا لاتيه",
+      name_en: "Matcha Latte",
+      reason_ar: "من المفضلات في المراجعات.",
+      reason_en: "A favourite in reviews.",
+      evidence:
+        "5 sources, same branch (batch-02 2026-10-03): google_review 2026-04-27 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b ; google_review 2026-07-06 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b ; google_review 2026-02-20 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b ; google_review 2025-07-11 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd58923c0c87:0x5d458c2228b6cb1b ; google_review 2023-06-23 https://exa.ai/library/place/2fvjscdpqtw",
+    },
+  ],
+  "dips-plus-diriyah": [
+    {
+      emoji: "🍰",
+      name_ar: "تشيز كيك مدريد",
+      name_en: "Madrid Cheesecake",
+      reason_ar: "ينصحون فيه كثير.",
+      reason_en: "Often recommended.",
+      evidence:
+        "3 sources, same branch (batch-02 2026-10-03): google_review 2025-05-31 https://exa.ai/library/place/zg3b52gv6kl ; google_review 2025-05-25 https://exa.ai/library/place/zg3b52gv6kl ; google_review 2025-05-17 https://exa.ai/library/place/zg3b52gv6kl",
+    },
+  ],
+  "eya-specialty-coffee-al-wurud": [
+    {
+      emoji: "🥐",
+      name_ar: "سينامون رول",
+      name_en: "Cinnamon Roll",
+      reason_ar: "ينمدح كثير في المراجعات.",
+      reason_en: "Often praised in reviews.",
+      evidence:
+        "3 sources, same branch (batch-02 2026-10-03): google_review 2026-08-23 https://www.google.com/maps/place/EYA+Specialty+Coffee/@40.1723711,-105.0976375,8z/data=!3m1!4b1!4m6!3m5!1s0x3e2f039614f0eaf7:0xf5e98e2b356e7370!8m2!3d24.7321395!4d46.6776488!16s%2Fg%2F11vb7lsy36 ; google_review 2026-04-14 https://www.google.com/maps/place/EYA+Specialty+Coffee/@40.1723711,-105.0976375,8z/data=!3m1!4b1!4m6!3m5!1s0x3e2f039614f0eaf7:0xf5e98e2b356e7370!8m2!3d24.7321395!4d46.6776488!16s%2Fg%2F11vb7lsy36 ; google_review 2026-08-27 https://www.google.com/maps/place/EYA+Specialty+Coffee/@40.1723711,-105.0976375,8z/data=!3m1!4b1!4m6!3m5!1s0x3e2f039614f0eaf7:0xf5e98e2b356e7370!8m2!3d24.7321395!4d46.6776488!16s%2Fg%2F11vb7lsy36",
+    },
+  ],
 };
 
 /** Display lines only. `evidence` is dropped here and must not be rendered. */

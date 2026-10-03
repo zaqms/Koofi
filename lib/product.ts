@@ -440,6 +440,8 @@ const REMOVED_SHOP_TARGETS: ReadonlyArray<readonly [string, string]> = [
   ["drive-al-rabi-3", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
   ["drive-al-rabi-4", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
   ["drive-al-rabi-5", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
+  // Vanilla Coffee Qurtubah dropped (food truck, not a specialty café) → its district page.
+  ["vanilla-coffee-qurtubah", `/${COFFEE_SHOPS_CATEGORY}/qurtubah`],
 ];
 
 const REMOVED_SHOP_REDIRECTS = REMOVED_SHOP_TARGETS.flatMap(([slug, target]) => {

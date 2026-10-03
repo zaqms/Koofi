@@ -195,7 +195,6 @@ const BATCH3_IDS = [
   "najd-alathiah-qurtubah",
   "klatch-qurtubah",
   "nosound-qurtubah",
-  "vanilla-coffee-qurtubah",
   "mill-coffee-qurtubah",
   "cofen-qurtubah",
   "mud-speciality-coffee-an-nazhah",
@@ -556,7 +555,7 @@ assert(
   "batch 1–5 cafe-heroes stay; batches 6–11 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
-assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(batch5HeroIds.length === 97, "batch 5 hero set is 97 after the N5 Al Rabi drops");
 assert(batch6HeroIds.length === 37, "batch 6 hero set is 37 after the As Suwaidi and Drive Al Rabi drops");
@@ -608,7 +607,6 @@ const PLACEID_FIX_HERO_COUNTS: Record<string, number> = {
   "najd-roastery-al-munsiyah": 2,
   "nosound-al-yarmouk": 3,
   "shovel-al-arid": 3,
-  "vanilla-coffee-qurtubah": 1,
 };
 function expectedHeroCount(id: string): number {
   if (PLACEID_FIX_HERO_COUNTS[id]) return PLACEID_FIX_HERO_COUNTS[id];
@@ -897,8 +895,6 @@ for (const id of [
   "sombrero-sulimaniyah",
   "coffee-planet-kafd",
   "kmr-diriyah",
-  // placeId fix 2026-10-02: corrected Vanilla place has no Places hours.
-  "vanilla-coffee-qurtubah",
 ]) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
@@ -930,8 +926,7 @@ assert(mkth && (mkth.openingHours?.periods?.length ?? 0) > 0, "MKTH has baked pe
 assert(cafeDetailHeroPhotos(tobys).length === 4, "Toby's uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(mkth).length === 4, "MKTH uses baked cafe-heroes");
 
-// vanilla-coffee-qurtubah: corrected place (2026-10-02 placeId fix) has no Places hours.
-for (const id of BATCH3_IDS.filter((id) => id !== "vanilla-coffee-qurtubah")) {
+for (const id of BATCH3_IDS) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
   assert(

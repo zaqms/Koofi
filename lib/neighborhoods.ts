@@ -1092,6 +1092,12 @@ export const NEIGHBORHOODS: Record<
       "Dhahrat Al Badiah",
     ],
   },
+  jarir: {
+    id: "jarir",
+    ar: "جرير",
+    en: "Jarir",
+    aliases: ["جرير", "حي جرير", "jarir", "jareer", "al jarir", "Jarir"],
+  },
 };
 
 export function neighborhoodLabel(

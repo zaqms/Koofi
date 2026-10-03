@@ -846,6 +846,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "dm-cafe-roastery-as-sahafah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
+    "sharedBrandAccount": false
+  },
   "draft-cafe-kafd": {
     "handle": "@draftcafe",
     "followers": 916,
@@ -1006,6 +1013,13 @@
     "status": "found",
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
+  },
+  "drip-tuwaiq": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
+    "sharedBrandAccount": false
   },
   "drive-al-andalus": {
     "handle": "@drive.sa",
@@ -1411,6 +1425,13 @@
     "followers": 945,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hintiya-al-narjis": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
     "sharedBrandAccount": false
   },
   "hjeen-roaster-al-narjis": {
@@ -2078,6 +2099,20 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "okawa-king-fahd": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
+    "sharedBrandAccount": false
+  },
+  "okawa-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
+    "sharedBrandAccount": false
+  },
   "on-al-rawdah": {
     "handle": null,
     "followers": null,
@@ -2330,6 +2365,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "respire-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
+    "sharedBrandAccount": false
+  },
   "rex-al-arid": {
     "handle": null,
     "followers": null,
@@ -2405,6 +2447,13 @@
     "followers": 109,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "sama-cafe-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
     "sharedBrandAccount": false
   },
   "sand-clock-al-muruj": {
@@ -2589,6 +2638,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "soliz-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
+    "sharedBrandAccount": false
+  },
   "somatcha-an-nada": {
     "handle": "@somatcha.me",
     "followers": 27000,
@@ -2748,6 +2804,13 @@
     "followers": null,
     "status": "none",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "torre-al-rawabi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-03",
     "sharedBrandAccount": false
   },
   "trieste-kafd": {

@@ -183,9 +183,9 @@ assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
-assert(areas.length === 52, `expected 52 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 363, `specialty discovery is 363 after dropping Vanilla Coffee Qurtubah, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 424, `catalog is 424 after dropping Vanilla Coffee Qurtubah, got ${listRealShops().length}`);
+assert(areas.length === 53, `expected 53 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 372, `specialty discovery is 372 after the Trending adds batch, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 433, `catalog is 433 (424 plus the 9 Trending adds), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -786,8 +786,8 @@ for (const ask of ["الريان", "ريان", "rayyan", "al rayyan", "ar-rayyan
 }
 
 const rawabi = filterDirectoryShops(shops, "al-rawabi");
-assert(rawabi.length === 3, `al-rawabi has 3 shops, got ${rawabi.length}`);
-for (const id of ["the-it-al-rawabi", "essert-al-rawabi", "bala-al-rawabi"]) {
+assert(rawabi.length === 4, `al-rawabi has 4 shops, got ${rawabi.length}`);
+for (const id of ["the-it-al-rawabi", "essert-al-rawabi", "bala-al-rawabi", "torre-al-rawabi"]) {
   assert(rawabi.some((shop) => shop.id === id), `al-rawabi includes ${id}`);
 }
 assert(neighborhoodLabel("al-rawabi", "ar") === "الروابي", "al-rawabi Arabic label");
@@ -1048,7 +1048,8 @@ for (const ask of [
 }
 
 const kingFahd = filterDirectoryShops(shops, "king-fahd");
-assert(kingFahd.length === 1, `king-fahd has 1 shop, got ${kingFahd.length}`);
+assert(kingFahd.length === 2, `king-fahd has 2 shops, got ${kingFahd.length}`);
+assert(kingFahd.some((shop) => shop.id === "okawa-king-fahd"), "king-fahd includes okawa-king-fahd");
 assert(
   kingFahd.some((shop) => shop.id === "markab-king-fahd"),
   "king-fahd includes markab-king-fahd",
@@ -1473,7 +1474,8 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("badr");
-  assert(rows.length === 1, `badr has 1 shop, got ${rows.length}`);
+  assert(rows.length === 2, `badr has 2 shops, got ${rows.length}`);
+  assert(rows.some((shop) => shop.id === "soliz-badr"), "badr specialty page includes soliz-badr");
   assert(
     rows.some((shop) => shop.id === "shubak-al-bun-badr"),
     "badr specialty page includes shubak-al-bun-badr",
@@ -1493,7 +1495,8 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-aziziyah");
-  assert(rows.length === 1, `al-aziziyah has 1 specialty shop, got ${rows.length}`);
+  assert(rows.length === 2, `al-aziziyah has 2 specialty shops, got ${rows.length}`);
+  assert(rows.some((shop) => shop.id === "sama-cafe-al-aziziyah"), "al-aziziyah specialty page includes sama-cafe-al-aziziyah");
   assert(
     rows.some((shop) => shop.id === "waqar-al-aziziyah"),
     "al-aziziyah specialty page includes waqar-al-aziziyah",
@@ -1593,10 +1596,11 @@ const MALAZ_REFILL = {
   );
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
-    aziziyah.length === 1 &&
-      aziziyah[0]?.id === "waqar-al-aziziyah" &&
+    aziziyah.length === 2 &&
+      aziziyah.some((shop) => shop.id === "waqar-al-aziziyah") &&
+      aziziyah.some((shop) => shop.id === "sama-cafe-al-aziziyah") &&
       listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-al-aziziyah"),
-    "al-aziziyah page is specialty Waqar; drcafe-al-aziziyah stays on the Drive-through directory",
+    "al-aziziyah page is specialty Waqar and SAMA; drcafe-al-aziziyah stays on the Drive-through directory",
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
@@ -1669,7 +1673,7 @@ const MALAZ_REFILL = {
   assert(chipDirectoryMoment("popular") === null, "popular chip is not a moment filter");
   assert(chipDirectoryMoment("nearby") === null, "nearby chip is not a moment filter");
   const matchaRows = filterDirectoryShopsByMoment(shops, "matcha");
-  assert(matchaRows.length === 26, `Matcha directory is 26 tagged shops, got ${matchaRows.length}`);
+  assert(matchaRows.length === 29, `Matcha directory is 29 tagged shops, got ${matchaRows.length}`);
   assert(
     matchaRows.every((shop) => shop.momentTags.includes("matcha")),
     "Matcha directory is matcha-tagged only",
@@ -2976,7 +2980,7 @@ const scoutPack: {
     neighborhood: "al-ghadeer",
     vibe: ["قهوة"],
     moments: ["qahwa", "drive-through"],
-    logoUrl: "/logos/drive-al-ghadeer.jpg",
+    logoUrl: "/logos/drive-coffee.png",
   },
   {
     id: "ghandoura-al-ghadeer",
@@ -3028,7 +3032,7 @@ const scoutPack: {
     neighborhood: "al-arid",
     vibe: ["قهوة"],
     moments: ["qahwa", "drive-through"],
-    logoUrl: "/logos/drive-al-arid.jpg",
+    logoUrl: "/logos/drive-coffee.png",
     pin: { lat: 24.8989508, lng: 46.6184764 },
   },
   {
@@ -3118,7 +3122,7 @@ const scoutPack: {
     neighborhood: "al-qirawan",
     vibe: ["قهوة"],
     moments: ["qahwa", "drive-through"],
-    logoUrl: "/logos/drive-al-qirawan.jpg",
+    logoUrl: "/logos/drive-coffee.png",
     pin: { lat: 24.8458534, lng: 46.6049121 },
   },
   {
@@ -3974,6 +3978,7 @@ const scoutPack: {
     neighborhood: "al-muruj",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/otto-al-muruj.jpg",
     pin: { lat: 24.758682399999998, lng: 46.6671364 },
     coordsInUrl: true,
     placeId: "ChIJ0VhZRl3jLj4ReiZe0TByV7E",
@@ -4037,6 +4042,7 @@ const scoutPack: {
     neighborhood: "dhahrat-al-badiah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/way-coffee-dhahrat-al-badiah.jpg",
     pin: { lat: 24.599526899999997, lng: 46.6425717 },
     coordsInUrl: true,
     placeId: "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",

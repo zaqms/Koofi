@@ -382,7 +382,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-rawabi": {
     lead: `الروابي حي شرق الرياض بالقائمة. هذي أماكن الروابي اللي ضفناها.
 
-[THE IT](/c/the-it-al-rawabi) و[إسرت](/c/essert-al-rawabi) و[بلة](/c/bala-al-rawabi) البطاقات الـ3 بهالصفحة اليوم. ما نخترع زيادة.`,
+[THE IT](/c/the-it-al-rawabi) و[إسرت](/c/essert-al-rawabi) و[بلة](/c/bala-al-rawabi) و[توري](/c/torre-al-rawabi) البطاقات الـ4 بهالصفحة اليوم. ما نخترع زيادة.`,
     hereIntro: `فيه **{count}** قهاوي من الروابي على wain.lol الحين:`,
     hereOutro: `افتح البطاقة إذا واحدة تمشي، بعدين **ودّني هناك** للدبوس والساعات على قوقل ماب.`,
     nearbyIntro: `إذا الروابي مو الوقف، هالقوائم شرق الرياض أقرب للموقع:`,
@@ -453,7 +453,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "king-fahd": {
     lead: `الملك فهد حي لوحده بالكتالوج — شارع العليا يمر منه، بس هذي مو صفحة العليا. هذي مجموعة الملك فهد على wain.lol.
 
-[مركب](/c/markab-king-fahd) البطاقة اللي ضفناها. قهوة أول. ما نخترع زيادة.`,
+[مركب](/c/markab-king-fahd) و[أوكاوا الملك فهد](/c/okawa-king-fahd) البطاقتين اللي ضفناها. قهوة أول. ما نخترع زيادة.`,
     hereIntro: `فيه قهوة **{count}** من الملك فهد بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة إذا تبي الدبوس. **ودّني هناك** يوديك قوقل ماب.`,
     nearbyIntro: `إذا الملك فهد مو الوقف، هالقوائم الوسط بالموقع:`,
@@ -535,7 +535,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
     meta: "قهوة {count} بالوشام على wain.lol — قائمة حي فيها أرابيكا كافيه، وعليها رابط قوقل ماب.",
   },
   badr: {
-    lead: `[شباك البن](/c/shubak-al-bun-badr) بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
+    lead: `[شباك البن](/c/shubak-al-bun-badr) و[سوليز](/c/soliz-badr) البطاقتين بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
     hereIntro: `فيه قهوة **{count}** من بدر بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
     nearbyIntro: `إذا بدر مو الوقف، هالقوائم جنوب الوسط جنبكم بالموقع:`,
@@ -547,7 +547,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "al-aziziyah": {
     lead: `العزيزية حي بجنوب الرياض. هذي مجموعة العزيزية على wain.lol للحين.
 
-[وقار](/c/waqar-al-aziziyah) بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
+[وقار](/c/waqar-al-aziziyah) و[سما كافيه](/c/sama-cafe-al-aziziyah) البطاقتين بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
     hereIntro: `فيه قهوة **{count}** من العزيزية بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
     nearbyIntro: `إذا العزيزية مو الوقف، هالقوائم جنوب الوسط جنبكم بالموقع:`,
@@ -719,7 +719,7 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   tuwaiq: {
     lead: `طويق حي بجنوب غرب الرياض. هذي مجموعة طويق على wain.lol للحين.
 
-[د.كيف كافيه](/c/drcafe-tuwaiq) الاسم بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
+بالقائمة [دريب](/c/drip-tuwaiq) و[د.كيف كافيه](/c/drcafe-tuwaiq). ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
     hereIntro: `فيه قهوة **{count}** من طويق بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
     nearbyIntro: `إذا طويق مو الوقف، هالقوائم جنوب الغرب جنبكم بالموقع:`,

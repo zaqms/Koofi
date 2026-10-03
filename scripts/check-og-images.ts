@@ -27,10 +27,9 @@ function assert(cond: unknown, message: string): asserts cond {
 // Known not-Satori-safe catalog images, waiting on a real asset. The card
 // renders without the tile (no 500). Remove an entry once its file is fixed;
 // the check fails if a listed file becomes safe, so this list only shrinks.
-const PENDING_OG_SAFE_IMAGE = new Set<string>([
-  // 16x16 favicon saved as .png (bytes are ICO); 18 Drive Coffee branches.
-  "/logos/drive-coffee-site.png",
-]);
+// Empty since 3 Oct 2026: the Drive Coffee favicon (/logos/drive-coffee-site.png,
+// ICO bytes) was replaced by the official @drive.sa mark /logos/drive-coffee.png.
+const PENDING_OG_SAFE_IMAGE = new Set<string>([]);
 
 // Sniffer: the formats Satori can and can't draw.
 const PNG = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0]);

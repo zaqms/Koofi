@@ -517,6 +517,20 @@ const BATCH11_IDS = [
 ] as const;
 const BATCH11_IDS_SET = new Set<string>(BATCH11_IDS);
 
+/** BATCH12: Trending adds batch (3 Oct 2026) Places galleries — 4 or 5 frames each, Google credit per frame. */
+const BATCH12_HERO_COUNTS: Record<string, number> = {
+  "torre-al-rawabi": 4,
+  "dm-cafe-roastery-as-sahafah": 5,
+  "okawa-olaya": 4,
+  "okawa-king-fahd": 4,
+  "hintiya-al-narjis": 5,
+  "sama-cafe-al-aziziyah": 4,
+  "drip-tuwaiq": 4,
+  "soliz-badr": 4,
+  "respire-al-malqa": 4,
+};
+const BATCH12_IDS = Object.keys(BATCH12_HERO_COUNTS);
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-yasmin",
   // placeId fix 2026-10-02: the corrected place has no Places hours.
@@ -539,6 +553,7 @@ const batch8HeroIds = BATCH8_IDS.filter((id) => bakedHeroes[id]);
 const batch9HeroIds = BATCH9_IDS.filter((id) => bakedHeroes[id]);
 const batch10HeroIds = BATCH10_IDS.filter((id) => bakedHeroes[id]);
 const batch11HeroIds = BATCH11_IDS.filter((id) => bakedHeroes[id]);
+const batch12HeroIds = BATCH12_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -551,8 +566,9 @@ assert(
       batch8HeroIds.length +
       batch9HeroIds.length +
       batch10HeroIds.length +
-      batch11HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–11 merge in",
+      batch11HeroIds.length +
+      batch12HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–12 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -564,6 +580,7 @@ assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
 assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
 assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
 assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
+assert(batch12HeroIds.length === 9, "batch 12 Trending adds hero set is complete");
 assert(bakedHeroes["waqar-al-aziziyah"]?.length === 4, "Waqar keeps the 4 QA-picked frames");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
@@ -615,6 +632,7 @@ function expectedHeroCount(id: string): number {
   if (id === "mill-coffee-qurtubah") return 2;
   if (id === "hokkaido-al-hamra") return 3;
   if (id === "buljah-al-olaya") return 3;
+  if (BATCH12_HERO_COUNTS[id] != null) return BATCH12_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

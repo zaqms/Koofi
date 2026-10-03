@@ -11,7 +11,7 @@ import { TrendingThisWeekList } from "../components/trending-this-week-page";
 import { getShop, listRealShops } from "../lib/catalog";
 import { listingOgCopy } from "../lib/listing-og";
 import { NEW_THIS_WEEK_IDS, listNewThisWeekShops } from "../lib/new-this-week";
-import { trendingPath } from "../lib/product";
+import { LOCKED_OPENER, LOCKED_OPENER_EN, trendingPath } from "../lib/product";
 import { listSitemapLocs } from "../lib/sitemap-xml";
 import {
   listPublicShops,
@@ -32,7 +32,20 @@ function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
 }
 
-const EXPECTED = ["namq-al-malqa", "waqar-al-aziziyah"] as const;
+/** renderToStaticMarkup escapes "&" (DM Café & Roastery). */
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, "&amp;");
+}
+
+const LINE_PROMO =
+  /\b(paid|promo|sponsored|offers?|discounts?|deals?|free|new menu)\b|%|عرض|عروض|خصم|مجان|برعاية|سبونسر|منيو جديد/i;
+
+const EXPECTED = [
+  "torre-al-rawabi",
+  "dm-cafe-roastery-as-sahafah",
+  "namq-al-malqa",
+  "waqar-al-aziziyah",
+] as const;
 
 assert(
   TRENDING_THIS_WEEK_WINDOW.from === "2026-09-25" &&
@@ -41,7 +54,7 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") === EXPECTED.join(","),
-  "Trending allowlist order is namq-al-malqa then waqar-al-aziziyah",
+  "Trending allowlist order is TORRE, DM, Namq, then Waqar",
 );
 assert(
   TRENDING_THIS_WEEK.map((row) => row.id).join(",") === EXPECTED.join(","),
@@ -100,11 +113,25 @@ assert(
   "lines render on the Trending page, not on the home tiles",
 );
 assert(
-  TRENDING_THIS_WEEK[0]?.lineAr ===
-    "نمق كان من أكثر الأسماء اللي انتشرت بيوم القهوة العالمي" &&
-    TRENDING_THIS_WEEK[0]?.lineEn ===
+  TRENDING_THIS_WEEK[2]?.lineAr ===
+    "نمق كان من أكثر الأسماء اللي انتشرت بيوم القهوة العالمي." &&
+    TRENDING_THIS_WEEK[2]?.lineEn ===
       "Namq was one of the most talked-about names on World Coffee Day.",
   "Namq's line no longer promotes the expired owner offer",
+);
+assert(
+  TRENDING_THIS_WEEK[0]?.lineAr ===
+    "توري مقهى جديد فتح بالروابي، وصار من أكثر الأماكن اللي انتكلم عنها هالأسبوع." &&
+    TRENDING_THIS_WEEK[0]?.lineEn ===
+      "TORRE is a new opening in Al Rawabi that people were talking about this week.",
+  "TORRE's line is the neutral new-opening reason",
+);
+assert(
+  TRENDING_THIS_WEEK[1]?.lineAr ===
+    "دي ام بالصحافة كان من أول الأماكن اللي انذكرت مع ترند الكوكيز فوق الآيسكريم." &&
+    TRENDING_THIS_WEEK[1]?.lineEn ===
+      "DM Café & Roastery in As Sahafah was one of the first spots named in the cookie-on-ice-cream trend.",
+  "DM's line is the neutral cookie-on-ice-cream reason",
 );
 assert(
   trendingWindowLabel("ar") === "25 سبتمبر – 2 أكتوبر" &&
@@ -114,6 +141,17 @@ assert(
 for (const row of TRENDING_THIS_WEEK) {
   assert(row.lineAr.length > 0 && row.lineEn.length > 0, `${row.id} keeps both lines`);
   assert(!/\bween\b/i.test(row.lineEn), `${row.id} line does not say ween`);
+  assert(!/وين/.test(row.lineAr), `${row.id} Arabic line does not say ween`);
+  assert(row.lineAr.endsWith("."), `${row.id} Arabic line ends with a period`);
+  assert(
+    !row.lineAr.includes(LOCKED_OPENER) && !row.lineEn.includes(LOCKED_OPENER_EN),
+    `${row.id} line does not reuse a locked opener`,
+  );
+  assert(
+    !/(^|[^0-9])[12]([^0-9]|$)|[١٢]/.test(row.lineAr),
+    `${row.id} Arabic line writes one and two as words`,
+  );
+  assert(!LINE_PROMO.test(row.lineAr) && !LINE_PROMO.test(row.lineEn), `${row.id} line has no offer or menu hype`);
 }
 
 const home = readFileSync("components/home-landing.tsx", "utf8");
@@ -149,22 +187,30 @@ assert(
 assert(
   trendingUi.includes("grid-cols-1") &&
     trendingUi.includes("grid-cols-2") &&
-    trendingUi.includes("grid-cols-3"),
-  "Trending column count can follow 1, 2, or 3 rows",
+    trendingUi.includes("grid-cols-3") &&
+    trendingUi.includes("count === 2 || count === 4"),
+  "Trending column count follows 1, 2, or 3 rows, and four sit two-by-two",
 );
+assert(trendingUi.includes("const HOME_TRENDING_COUNT = 4;"), "home shows up to four Trending tiles");
 
 const names = listRealShops().flatMap((shop) => [
   shop.id,
   shop.nameEn,
   shop.nameAr,
 ]);
+const torre = getShop("torre-al-rawabi");
+const dm = getShop("dm-cafe-roastery-as-sahafah");
 assert(
-  !names.some((name) => /\btorre\b/i.test(name)),
-  "TORRE is not in the catalog",
+  torre?.neighborhood === "al-rawabi" && torre.nameEn === "TORRE Cafe" && !torre.isChain,
+  "TORRE is a real Al Rawabi café row",
 );
 assert(
-  !names.some((name) => /dm café|dm cafe|^dm\b/i.test(name)),
-  "DM Café is not in the catalog",
+  dm?.neighborhood === "as-sahafah" && dm.nameEn === "DM Café & Roastery" && !dm.isChain,
+  "DM Café & Roastery is a real As Sahafah café row, not a chain",
+);
+assert(
+  names.filter((name) => /\btorre\b/i.test(name)).length === 2,
+  "TORRE has exactly one catalog row",
 );
 
 function trendingIds(language: Language): string[] {
@@ -176,10 +222,10 @@ function trendingIds(language: Language): string[] {
   );
   for (const row of TRENDING_THIS_WEEK) {
     assert(!html.includes(row.lineAr), `${language} does not render the Arabic line`);
-    assert(!html.includes(row.lineEn), `${language} does not render the English line`);
+    assert(!html.includes(escapeHtml(row.lineEn)), `${language} does not render the English line`);
   }
-  assert(html.includes("grid-cols-2"), `${language} uses two columns for two rows`);
-  assert(!html.includes("grid-cols-3"), `${language} does not keep an empty third column`);
+  assert(html.includes("grid-cols-2"), `${language} lays four rows out two-by-two`);
+  assert(!html.includes("grid-cols-3"), `${language} does not leave a lone tile on a second row`);
   assert(
     html.includes(language === "ar" ? "ترند الأسبوع" : "Trending this week"),
     `${language} keeps the existing heading`,
@@ -189,11 +235,11 @@ function trendingIds(language: Language): string[] {
 
 assert(
   trendingIds("ar").join(",") === EXPECTED.join(","),
-  "AR Trending renders namq-al-malqa then waqar-al-aziziyah",
+  "AR home Trending renders all four in allowlist order",
 );
 assert(
   trendingIds("en").join(",") === EXPECTED.join(","),
-  "EN Trending renders namq-al-malqa then waqar-al-aziziyah",
+  "EN home Trending renders all four in allowlist order",
 );
 
 const PROMO = /\b(paid|promo|sponsored|offer)\b|عروض|برعاية|سبونسر/i;
@@ -213,7 +259,7 @@ for (const language of ["ar", "en"] as const) {
   assert(!PROMO.test(html), `${language} page has no promo or offer wording`);
   for (const row of TRENDING_THIS_WEEK) {
     const line = language === "ar" ? row.lineAr : row.lineEn;
-    assert(html.includes(line), `${language} renders ${row.id} reason`);
+    assert(html.includes(escapeHtml(line)), `${language} renders ${row.id} reason`);
   }
   const home = renderToStaticMarkup(
     createElement(HomeTrending, {
@@ -282,7 +328,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1017, `sitemap is 1017 after the Vanilla Coffee Qurtubah drop, got ${locs.length}`);
+assert(locs.length === 1035, `sitemap is 1035 (1017 plus 9 Trending adds × AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

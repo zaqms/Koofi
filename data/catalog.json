@@ -22909,7 +22909,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3007631ac4b:0x22a7ddce0ec9d709",
-      "logoUrl": "/logos/drive-al-ghadeer.jpg",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "placeId": "ChIJS6wxdgDjLj4RCdfJDs7dpyI",
       "dineIn": true,
@@ -23428,7 +23428,7 @@
         "lat": 24.8989508,
         "lng": 46.6184764
       },
-      "logoUrl": "/logos/drive-al-arid.jpg",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "placeId": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
       "dineIn": null,
@@ -24514,7 +24514,7 @@
         "lat": 24.8458534,
         "lng": 46.6049121
       },
-      "logoUrl": "/logos/drive-al-qirawan.jpg",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
       "dineIn": true,
@@ -28344,8 +28344,8 @@
       "nameAr": "24Cafe",
       "nameEn": "24Cafe",
       "city": "riyadh",
-      "neighborhood": "al-rabi",
-      "neighborhoodAr": "الربيع",
+      "neighborhood": "jarir",
+      "neighborhoodAr": "جرير",
       "vibeTags": [
         "طلبات السيارة"
       ],
@@ -30180,7 +30180,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f7d093e89ad:0x25634e4237928efe",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
@@ -30227,7 +30227,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f090039040fbf:0x3442fdc0f56cedb4",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJvw8EOQAJLz4RtO1s9cD9QjQ",
@@ -30274,7 +30274,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11006ee73071:0x6ac1ed1f9c42da4a",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJcTDnbgARLz4RStpCnB_twWo",
@@ -30321,7 +30321,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010060d8ffc3:0x5fb35dec54089a48",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJw__YYAABLz4RSJoIVOxds18",
@@ -30368,7 +30368,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01004769df7d:0xfb56f6756c523dac",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJfd9pRwABLz4RrD1SbHX2Vvs",
@@ -30416,7 +30416,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010068e50f15:0xdaae116aad4b79ad",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJFQ_laAABLz4RrXlLrWoRrto",
@@ -30464,7 +30464,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ef9002b269119:0x68698a697541607d",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
@@ -30512,7 +30512,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7000f67c713:0x87b0608ff8dcbc50",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
@@ -30539,7 +30539,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3005d8dc955:0xd52930e780f1a55c",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJVcmNXQDjLj4RXKXxgOcwKdU",
@@ -30566,7 +30566,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50058d3a89f:0x57c1ed8a3852218d",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJn6jTWADlLj4RjSFSOIrtwVc",
@@ -30614,7 +30614,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f001887555b:0xeea0e18c273e881f",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJW1WHGAAPLz4RH4g-J4zhoO4",
@@ -30661,7 +30661,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3000519787f:0xd54d0d43ff709a3d",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJf3gZBQDjLj4RPZpw_0MNTdU",
@@ -30709,7 +30709,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e5500720fb481:0xfeb986d1f94e48d3",
-      "logoUrl": "/logos/drive-coffee-site.png",
+      "logoUrl": "/logos/drive-coffee.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJgbQPcgBVLj4R00hO-dGGuf4",
@@ -36687,6 +36687,7 @@
         "lat": 24.758682399999998,
         "lng": 46.6671364
       },
+      "logoUrl": "/logos/otto-al-muruj.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ0VhZRl3jLj4ReiZe0TByV7E",
       "dineIn": true,
@@ -37207,6 +37208,7 @@
         "lat": 24.599526899999997,
         "lng": 46.6425717
       },
+      "logoUrl": "/logos/way-coffee-dhahrat-al-badiah.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",
       "dineIn": true,
@@ -39696,6 +39698,1073 @@
             "open": {
               "day": 6,
               "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "torre-al-rawabi",
+      "nameAr": "توري",
+      "nameEn": "TORRE Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-rawabi",
+      "neighborhoodAr": "الروابي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa",
+        "matcha"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f075afd52a2e1:0x54036a0ff3e37c17!8m2!3d24.7042687!4d46.7862529",
+      "pin": {
+        "lat": 24.7042687,
+        "lng": 46.7862529
+      },
+      "logoUrl": "/logos/torre-al-rawabi.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ4aJS_VoHLz4RF3zj8w9qA1Q",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-03"
+      },
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:00 AM – 1:30 AM",
+          "Tuesday: 5:00 AM – 1:30 AM",
+          "Wednesday: 5:00 AM – 1:30 AM",
+          "Thursday: 5:00 AM – 1:30 AM",
+          "Friday: 12:30 PM – 1:30 AM",
+          "Saturday: 5:00 AM – 12:00 AM",
+          "Sunday: 5:00 AM – 1:30 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "dm-cafe-roastery-as-sahafah",
+      "nameAr": "مقهى ومحمصة دي ام",
+      "nameEn": "DM Café & Roastery",
+      "city": "riyadh",
+      "neighborhood": "as-sahafah",
+      "neighborhoodAr": "الصحافة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3003cb6e8f3:0x6a2581c3a262acbc!8m2!3d24.7952635!4d46.6334116",
+      "pin": {
+        "lat": 24.7952635,
+        "lng": 46.6334116
+      },
+      "logoUrl": "/logos/dm-cafe-roastery-as-sahafah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ8-i2PADjLj4RvKxiosOBJWo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 1:00 PM – 2:00 AM",
+          "Saturday: 6:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "okawa-olaya",
+      "nameAr": "أوكاوا التخصصي",
+      "nameEn": "OKAWA Cafe Al Takhassusi",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "matcha",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f039bcb141999:0x61e9f01f10ce4a4f!8m2!3d24.6761875!4d46.6786875",
+      "pin": {
+        "lat": 24.6761875,
+        "lng": 46.6786875
+      },
+      "logoUrl": "/logos/okawa-al-narjis.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJmRkUy5sDLz4RT0rOEB_w6WE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 6:00 – 11:30 AM, 12:15 PM – 2:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 11,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 15
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "okawa-king-fahd",
+      "nameAr": "أوكاوا الملك فهد",
+      "nameEn": "OKAWA Cafe King Fahad",
+      "city": "riyadh",
+      "neighborhood": "king-fahd",
+      "neighborhoodAr": "الملك فهد",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "matcha",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d54d8b5b423:0x523c8eb22453b954!8m2!3d24.7383853!4d46.6674869",
+      "pin": {
+        "lat": 24.7383853,
+        "lng": 46.6674869
+      },
+      "logoUrl": "/logos/okawa-al-narjis.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJI7S12FQdLz4RVLlTJLKOPFI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 2:00 AM",
+          "Tuesday: 7:00 AM – 2:00 AM",
+          "Wednesday: 7:00 AM – 2:00 AM",
+          "Thursday: 7:00 AM – 2:00 AM",
+          "Friday: 7:00 – 11:30 AM, 12:15 PM – 2:00 AM",
+          "Saturday: 7:00 AM – 2:00 AM",
+          "Sunday: 7:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 11,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 15
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "hintiya-al-narjis",
+      "nameAr": "حنطية",
+      "nameEn": "Hintiya",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee5cf935e7441:0x46c027b18ea4d829!8m2!3d24.8313653!4d46.6691734",
+      "pin": {
+        "lat": 24.8313653,
+        "lng": 46.6691734
+      },
+      "logoUrl": "/logos/hintiya-al-narjis.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJQXRek8_lLj4RKdikjrEnwEY",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 6:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "sama-cafe-al-aziziyah",
+      "nameAr": "سما كافيه",
+      "nameEn": "SAMA Cafe Coffee Bar",
+      "city": "riyadh",
+      "neighborhood": "al-aziziyah",
+      "neighborhoodAr": "العزيزية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f09acea3ea3db:0x6a38d45fe9f84074!8m2!3d24.5828684!4d46.7800689",
+      "pin": {
+        "lat": 24.5828684,
+        "lng": 46.7800689
+      },
+      "logoUrl": "/logos/sama-cafe-al-aziziyah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ26M-6qwJLz4RdED46V_UOGo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 1:00 AM",
+          "Friday: 6:00 AM – 1:00 AM",
+          "Saturday: 6:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "drip-tuwaiq",
+      "nameAr": "دريب",
+      "nameEn": "Drip",
+      "city": "riyadh",
+      "neighborhood": "tuwaiq",
+      "neighborhoodAr": "طويق",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f19f56ed35b29:0x9041ccee29311bb6!8m2!3d24.5593186!4d46.5652973",
+      "pin": {
+        "lat": 24.5593186,
+        "lng": 46.5652973
+      },
+      "logoUrl": "/logos/drip-al-qirawan.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJKVvTbvUZLz4RthsxKe7MQZA",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 6:00 AM – 1:30 AM",
+          "Saturday: 6:00 AM – 12:30 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "soliz-badr",
+      "nameAr": "سوليز",
+      "nameEn": "Soliz",
+      "city": "riyadh",
+      "neighborhood": "badr",
+      "neighborhoodAr": "بدر",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fd7bde4b635:0xff3f8cf866f21f93!8m2!3d24.5530875!4d46.7017083",
+      "pin": {
+        "lat": 24.5530875,
+        "lng": 46.7017083
+      },
+      "logoUrl": "/logos/soliz-badr.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJNbbkvdcPLz4Rkx_yZviMP_8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: 12:00 – 6:00 AM, 12:00 PM – 12:00 AM",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "respire-al-malqa",
+      "nameAr": "تنفس",
+      "nameEn": "Respire",
+      "city": "riyadh",
+      "neighborhood": "al-malqa",
+      "neighborhoodAr": "الملقا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee33c22766fe7:0xa08f10c1f63bd285!8m2!3d24.8056239!4d46.6135492",
+      "pin": {
+        "lat": 24.8056239,
+        "lng": 46.6135492
+      },
+      "logoUrl": "/logos/respire-al-malqa.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ5292IjzjLj4RhdI79sEQj6A",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 8:00 AM – 12:00 AM",
+          "Tuesday: 8:00 AM – 12:00 AM",
+          "Wednesday: 8:00 AM – 12:00 AM",
+          "Thursday: 8:00 AM – 12:00 AM",
+          "Friday: 4:00 PM – 12:00 AM",
+          "Saturday: 4:00 PM – 12:00 AM",
+          "Sunday: 8:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
               "minute": 0
             },
             "close": {

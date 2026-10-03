@@ -235,6 +235,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
   "al-izdihar": ["al-mughrizat", "olaya", "sulimaniyah", "qurtubah"],
   "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "al-takhassusi", "al-mathar"],
+  jarir: ["al-malaz", "al-murabba", "al-rabwah", "ghubairah"],
 };
 
 type DistrictLead = {
@@ -497,7 +498,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-rawabi": {
     lead: `Ar Rawabi (الروابي) is an east Riyadh neighborhood on the list. Here are the Rawabi places we’ve added.
 
-[THE IT](/en/c/the-it-al-rawabi), [Essert](/en/c/essert-al-rawabi), and [Bala](/en/c/bala-al-rawabi) are the 3 cards on this page today. We don’t invent extras.`,
+[THE IT](/en/c/the-it-al-rawabi), [Essert](/en/c/essert-al-rawabi), [Bala](/en/c/bala-al-rawabi), and [TORRE Cafe](/en/c/torre-al-rawabi) are the 4 cards on this page today. We don’t invent extras.`,
     hereIntro: `There are **{count}** cafes from Ar Rawabi on wain.lol right now:`,
     hereOutro: `Open a card when one fits, then **Take me there** for the pin and hours on Google Maps.`,
     nearbyIntro: `If Ar Rawabi isn’t the stop, these east-Riyadh lists sit closer in on the site:`,
@@ -568,7 +569,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   "king-fahd": {
     lead: `King Fahd District (الملك فهد) is its own district on the catalog — Al Olaya Street runs through it, but this is not the Al Olaya page. This is the King Fahd District set on wain.lol.
 
-[Markab](/en/c/markab-king-fahd) is the card we’ve added. Coffee first. We don’t invent extras.`,
+[Markab](/en/c/markab-king-fahd) and [OKAWA Cafe King Fahad](/en/c/okawa-king-fahd) are the two cards we’ve added. Coffee first. We don’t invent extras.`,
     hereIntro: `There is **{count}** cafe from King Fahd District on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
     nearbyIntro: `If King Fahd District isn’t the stop, these central Riyadh lists sit on the site:`,
@@ -650,7 +651,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "{countCafe} in Al Wisham on wain.lol — a Riyadh neighborhood list including Arabica coffee, with a Maps link.",
   },
   badr: {
-    lead: `[Shubak Al Bun](/en/c/shubak-al-bun-badr) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    lead: `[Shubak Al Bun](/en/c/shubak-al-bun-badr) and [Soliz](/en/c/soliz-badr) are the two cards on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Badr on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Badr isn’t the stop, these south-central lists sit next door on the site:`,
@@ -662,7 +663,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-aziziyah": {
     lead: `Al Aziziyah (العزيزية) sits on the south side of Riyadh. This page is the Al Aziziyah set on wain.lol so far.
 
-[Waqar](/en/c/waqar-al-aziziyah) is the cafe on this list today. We don’t invent extras to fill the page.`,
+[Waqar](/en/c/waqar-al-aziziyah) and [SAMA Cafe Coffee Bar](/en/c/sama-cafe-al-aziziyah) are the two cards on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Al Aziziyah on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Aziziyah isn’t the stop, these south-central lists sit next door on the site:`,
@@ -834,7 +835,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   tuwaiq: {
     lead: `Tuwaiq (طويق) sits on the southwest side of Riyadh. This page is the Tuwaiq set on wain.lol so far.
 
-[dr.CAFE](/en/c/drcafe-tuwaiq) is the name on this list today. We don’t invent extras to fill the page.`,
+Names on this list include [Drip](/en/c/drip-tuwaiq) and [dr.CAFE](/en/c/drcafe-tuwaiq). We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Tuwaiq on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Tuwaiq isn’t the stop, these southwest lists sit next door on the site:`,

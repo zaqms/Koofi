@@ -128,14 +128,6 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
       reason_en: "The one everyone keeps mentioning.",
       evidence: "4 sources, same branch (Scout pilot 2026-10-03, Ajz QA): google_review 2025-12-17 maps:0x3e2f053ded08e019:0x47baea5401db03e8 ; google_review 2025-10-16 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-01-10 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-02-17 https://exa.ai/library/place/wdnxbtnwzxm",
     },
-    {
-      emoji: "🍨",
-      name_ar: "جيلاتو",
-      name_en: "Gelato",
-      reason_ar: "ينذكر كثير.",
-      reason_en: "Mentioned again and again.",
-      evidence: "3 sources, same branch (Scout pilot 2026-10-03, Ajz QA): google_review 2025-12-17 maps:0x3e2f053ded08e019:0x47baea5401db03e8 ; google_review 2025-10-16 https://exa.ai/library/place/wdnxbtnwzxm ; google_review 2026-01-10 https://exa.ai/library/place/wdnxbtnwzxm",
-    },
   ],
   "woods-olaya": [
     {

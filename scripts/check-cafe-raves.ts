@@ -236,6 +236,15 @@ assert(
   `lib/cafe-raves.ts failed:\n${shipped.join("\n")}`,
 );
 
+const shippedItems = Object.values(cafeRaves).reduce((count, rows) => count + rows.length, 0);
+assert(Object.keys(cafeRaves).length === 12, "12 cafés still render a rave section");
+assert(shippedItems === 13, `13 items after dropping Sulalat gelato, got ${shippedItems}`);
+const sulalat = cafeRaves["sulalat-coffee-ar-rabwah"];
+assert(sulalat?.length === 1, "Sulalat keeps one item");
+assert(sulalat?.[0]?.name_en === "70% Hot Chocolate", "Sulalat keeps 70% Hot Chocolate");
+assert(sulalat?.[0]?.name_ar === "هوت شوكلت 70%", "Sulalat AR name stays هوت شوكلت 70%");
+assert(!source.includes("Gelato") && !source.includes("جيلاتو"), "Sulalat gelato is dropped");
+
 const packageJson = read("package.json");
 assert(
   packageJson.includes("check-cafe-raves"),

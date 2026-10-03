@@ -169,8 +169,8 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
       emoji: "🍰",
       name_ar: "تشيز كيك تيراميسو",
       name_en: "Tiramisu Cheesecake",
-      reason_ar: "ناس كثير يرجعون عشانه.",
-      reason_en: "People come back for it.",
+      reason_ar: "ينمدح كثير في المراجعات.",
+      reason_en: "Often praised in reviews.",
       evidence:
         "6 sources, same branch (batch-03 2026-10-03): google_review 2025-08-15 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46 ; google_review 2026-07-22 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46 ; google_review 2026-06-17 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46 ; google_review 2026-07-04 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46 ; google_review 2026-07-08 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f07004f893d2f:0x9a3b291a0c19ec46 ; google_review 2025-10-25 https://exa.ai/library/place/13ww6xqg3tw",
     },
@@ -180,8 +180,8 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
       emoji: "🍰",
       name_ar: "تشيز كيك تيراميسو",
       name_en: "Tiramisu Cheesecake",
-      reason_ar: "ينصحون فيه في المراجعات.",
-      reason_en: "Recommended in reviews.",
+      reason_ar: "ينمدح في المراجعات.",
+      reason_en: "Praised in reviews.",
       evidence:
         "4 sources, same branch (batch-03 2026-10-03): google_review 2026-08-02 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee519b340b15b:0x544e83e2ea999fb7 ; google_review 2026-06-28 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee519b340b15b:0x544e83e2ea999fb7 ; google_review 2026-09-02 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee519b340b15b:0x544e83e2ea999fb7 ; google_review 2026-08-17 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee519b340b15b:0x544e83e2ea999fb7",
     },
@@ -219,24 +219,13 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
         "4 sources, same branch (batch-03 2026-10-03): google_review 2026-03-26 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03f29ecc644d:0x7dd172c26784c870 ; google_review 2026-03-28 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03f29ecc644d:0x7dd172c26784c870 ; google_review 2025-09-17 https://exa.ai/library/place/8w2fxpswnz5 ; google_review 2025-01-02 https://exa.ai/library/place/8w2fxpswnz5",
     },
   ],
-  "volume-coffee-roasters-al-narjis": [
-    {
-      emoji: "☕",
-      name_ar: "فلات وايت",
-      name_en: "Flat White",
-      reason_ar: "تقييمه حلو عند الزوار.",
-      reason_en: "Well rated by visitors.",
-      evidence:
-        "3 sources, same branch (batch-03 2026-10-03): google_review 2026-03-22 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efbe2a3a41bd3:0xbeab0755de03239c ; google_review 2026-01-03 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efbe2a3a41bd3:0xbeab0755de03239c ; google_review 2026-01-31 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efbe2a3a41bd3:0xbeab0755de03239c",
-    },
-  ],
   "moff-ghirnatah": [
     {
       emoji: "🍮",
       name_ar: "بودينق تمر",
       name_en: "Date Pudding",
-      reason_ar: "الزوار ينصحون فيه.",
-      reason_en: "Often recommended by visitors.",
+      reason_ar: "الزوار يمدحونه كثير.",
+      reason_en: "Often praised by visitors.",
       evidence:
         "4 sources, same branch (batch-03 2026-10-03): google_review 2026-07-28 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effcc20be29f5:0xd0883a18ee9a503 ; google_review 2026-07-09 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effcc20be29f5:0xd0883a18ee9a503 ; google_review 2026-02-23 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2effcc20be29f5:0xd0883a18ee9a503 ; google_review 2026-02-19 https://exa.ai/library/place/1rdk6rrtvwb",
     },
@@ -246,7 +235,7 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
       emoji: "🍮",
       name_ar: "ديت بروليه",
       name_en: "Date Brûlée",
-      reason_ar: "حلا يتكلمون عنه كثير.",
+      reason_ar: "حلا يتكلمون عنه.",
       reason_en: "A dessert people talk about.",
       evidence:
         "4 sources, same branch (batch-03 2026-10-03): google_review 2026-09-01 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f036014130825:0xbfcdd0ecff6c8d02 ; google_review 2026-09-04 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f036014130825:0xbfcdd0ecff6c8d02 ; google_review 2026-04-10 https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f036014130825:0xbfcdd0ecff6c8d02 ; google_review 2026-02-11 https://exa.ai/library/place/8lt6fbwmmh3",
@@ -254,7 +243,7 @@ export const cafeRaves: Record<string, readonly CafeRave[]> = {
   ],
   "nosound-al-narjis": [
     {
-      emoji: "🫖",
+      emoji: "🥤",
       name_ar: "كمبوتشا",
       name_en: "Kombucha",
       reason_ar: "من الطلبات المحبوبة هنا.",

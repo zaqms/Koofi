@@ -52,14 +52,16 @@ const AR_SUFFIX = "(?:هم|هن|ها|كم|كن|نا|ي|ه)?";
  * Arabic promo tokens are whole words with Unicode lookaround (`\b` does not
  * treat Arabic letters as word characters). Clitic prefixes always count
  * (بخصم، الخصم، بعرض، والعروض). Possessive suffixes count for the plural and
- * discount words (عروضهم، خصمكم) but not for bare «عرض», whose suffixed forms
- * are ordinary words: «عرضي» (crosswise, as in «كيكة العرضي»), «عرضها» (its width).
+ * discount words (عروضهم، خصمكم). Bare «عرض» also takes the promo possessives
+ * عرضهم، عرضنا، عرضكم، عرضه (and هن/كن), but not «عرضي» or «عرضها», which are
+ * ordinary words: «عرضي» (crosswise, as in «كيكة العرضي»), «عرضها» (its width).
  * Patterns are written in matchText() form (ة → ه, no hamza, no tanween).
  */
 const AR_PROMO_RE = new RegExp(
   `${AR_WORD_START}${AR_PREFIX}(?:` +
     `(?:عروض|خصومات|خصم|تخفيضات|تخفيض|كوبون|كود)${AR_SUFFIX}` +
-    `|(?:عرض|مجانا|مجاني|مجانيه|ببلاش)` +
+    `|عرض(?:هم|هن|كم|كن|نا|ه)?` +
+    `|(?:مجانا|مجاني|مجانيه|ببلاش)` +
     `)${AR_WORD_END}`,
   "u",
 );
@@ -175,6 +177,9 @@ function normalizeName(value: string, foldCase: boolean): string {
  * ©, ®, ™ never pass, even with VS16. Bare ★ • ✔ (no VS16) and letters fail.
  */
 const TEXT_SYMBOLS = new Set(["\u00A9", "\u00AE", "\u2122"]);
+
+/** Alcohol-coded drink emoji. Kombucha stays 🥤. */
+const EMOJI_DENYLIST = new Set(["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸"]);
 
 export function isOneEmojiGrapheme(value: string): boolean {
   const segments = [
@@ -339,6 +344,9 @@ export function collectCafeRaveProblems(
       }
       if (item.emoji.trim() && !isOneEmojiGrapheme(item.emoji.trim())) {
         problems.push(`${where}: emoji must be exactly one emoji`);
+      }
+      if (EMOJI_DENYLIST.has(item.emoji.trim())) {
+        problems.push(`${where}: emoji is on the denylist`);
       }
       const nameEn = [...item.name_en].length;
       const nameAr = [...item.name_ar].length;
@@ -881,10 +889,10 @@ function selfTest(ids: Set<string>): void {
   for (const word of ["عرضي", "كيكة العرضي", "عرضها", "بالعرضي"]) {
     allows({ name_ar: word }, `«${word}»`);
   }
-  for (const word of ["عرض", "بعرض", "العرض", "والعرض", "عـرض", "بالعـــرض", "عَرض", "عروضنا", "خصمكم"]) {
+  for (const word of ["عرض", "بعرض", "العرض", "والعرض", "عـرض", "بالعـــرض", "عَرض", "عروضنا", "خصمكم", "عرضهم", "عرضنا", "عرضكم", "عرضه"]) {
     rejects({ reason_ar: word }, "promo or offer wording", `«${word}»`);
   }
-  console.log("check-cafe-raves: عرضي / كيكة العرضي / عرضها allowed; عرض بعرض العرض والعرض عـرض rejected");
+  console.log("check-cafe-raves: عرضي / كيكة العرضي / عرضها allowed; عرض بعرض العرض والعرض عـرض and عرضهم عرضنا عرضكم عرضه rejected");
 
   // Promo and paid additions.
   for (const word of ["خصومات", "بخصومات", "مجانًا", "مجانا", "مجاناً", "قهوة مجانية", "برعاية", "كإعلان", "كاعلان", "الإعلان"]) {
@@ -930,6 +938,12 @@ function selfTest(ids: Set<string>): void {
     rejects({ emoji }, "exactly one emoji", `emoji ${JSON.stringify(emoji)}`);
   }
   console.log("check-cafe-raves: ❤️ 🌶️ 🍽️ 🇸🇦 and ZWJ emoji allowed; bare ❤ / 🌶, ©️ and lone indicators rejected");
+
+  for (const emoji of ["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸"]) {
+    rejects({ emoji }, "emoji is on the denylist", `emoji ${emoji}`);
+  }
+  allows({ emoji: "🥤" }, "🥤 is not on the denylist");
+  console.log("check-cafe-raves: 🍺 🍻 🍹 🍾 🍷 🥂 🍸 denied; 🥤 allowed");
 
   // Cinnabon evasions are caught after normalisation; cinnamon stays allowed.
   for (const name of ["Cinna bon", "Cinna-bon", "C-i-n-n-a-b-o-n", "Cinna\u200Cbon", "Cinna\u200Dbon", "CINNA.BON", "Ｃｉｎｎａｂｏｎ"]) {
@@ -1046,7 +1060,6 @@ const batch03Cafes = [
   "iota-al-ghadeer",
   "oromiffa-al-olaya",
   "carve-coffee-bar-al-wurud",
-  "volume-coffee-roasters-al-narjis",
   "moff-ghirnatah",
   "rex-king-salman",
   "nosound-al-narjis",
@@ -1066,7 +1079,7 @@ assert(
   Object.keys(cafeRaves).length === liveCafes.length + batch02Cafes.length + batch03Cafes.length,
   "8 live cafés plus the batch-02 and batch-03 cafés render a rave section",
 );
-assert(shippedItems === 24, `24 items after batch 03, got ${shippedItems}`);
+assert(shippedItems === 23, `23 items after batch 03, got ${shippedItems}`);
 for (const deferred of [
   "asfoura-al-malqa",
   "da-nonna-al-nakheel",
@@ -1078,9 +1091,15 @@ for (const deferred of [
   "urth-caffe-tahlia-sulimaniyah",
   "kava-al-rabi",
   "okawa-king-fahd",
+  // Flat White is a standard espresso drink (generic, V60 precedent).
+  "volume-coffee-roasters-al-narjis",
 ]) {
   assert(!(deferred in cafeRaves), `${deferred} is deferred`);
 }
+assert(
+  !("volume-coffee-roasters-al-narjis" in cafeRaves),
+  "volume-coffee-roasters-al-narjis is deferred: Flat White is a standard espresso drink (generic, V60 precedent)",
+);
 const eya = cafeRaves["eya-specialty-coffee-al-wurud"];
 assert(eya?.[0]?.name_en === "Cinnamon Roll", "Eya name is Cinnamon Roll");
 assert(eya?.[0]?.name_ar === "سينامون رول", "Eya AR name is سينامون رول");

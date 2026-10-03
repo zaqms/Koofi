@@ -183,9 +183,12 @@ assert(areas.includes("al-falah"), "directory includes al-falah");
 assert(areas.includes("al-izdihar"), "directory includes al-izdihar");
 assert(areas.includes("dhahrat-al-badiah"), "directory includes dhahrat-al-badiah");
 assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
-assert(areas.length === 53, `expected 53 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 372, `specialty discovery is 372 after the Trending adds batch, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 433, `catalog is 433 (424 plus the 9 Trending adds), got ${listRealShops().length}`);
+for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
+  assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
+}
+assert(areas.length === 57, `expected 57 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 380, `specialty discovery is 380 after the Bisat batch, got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 441, `catalog is 441 (433 plus the 8 Bisat batch rows), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1534,8 +1537,9 @@ const MALAZ_REFILL = {
     "CLOSED_PERMANENTLY dr.CAFE As Suwaidi stays dropped",
   );
   assert(
-    listDirectoryShopsForDistrict("as-suwaidi").length === 0,
-    "as-suwaidi has no live catalog row after the closed drop",
+    listDirectoryShopsForDistrict("as-suwaidi").map((shop) => shop.id).join(",") ===
+      "alwaal-albari-as-suwaidi",
+    "as-suwaidi lists Alwaal Albari only (dr.CAFE As Suwaidi stays dropped)",
   );
   assert(
     !getShop("voom-al-masif"),
@@ -1952,7 +1956,11 @@ const scoutPack: {
     | "badr"
     | "dhahrat-al-badiah"
     | "al-aziziyah"
-    | "al-nakheel";
+    | "al-nakheel"
+    | "umm-al-hamam-al-gharbi"
+    | "an-nafal"
+    | "king-salman"
+    | "as-suwaidi";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -3940,7 +3948,7 @@ const scoutPack: {
     neighborhood: "al-arid",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/rex-al-arid.jpg",
+    logoUrl: "/logos/rex-coffee.jpg",
     pin: { lat: 24.875037499999998, lng: 46.6211406 },
     coordsInUrl: true,
     placeId: "ChIJGaXJIqTlLj4Re0CaN9XLaIU",
@@ -4308,6 +4316,118 @@ const scoutPack: {
     placeId: "ChIJu16RxDHlLj4RPfkYfsC4l3s",
     dineIn: true,
     outdoorSeating: true,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "bisat-umm-al-hamam-al-gharbi",
+    hex: "0x3e2f1d80fb0e1949:0x3b6f512d10c01bd8",
+    neighborhood: "umm-al-hamam-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bisat.jpg",
+    pin: { lat: 24.6977213, lng: 46.6389596 },
+    coordsInUrl: true,
+    placeId: "ChIJSRkO-4AdLz4R2BvAEC1Rbzs",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "bisat-an-nafal",
+    hex: "0x3e2efd00219bfd13:0x1f202c729870410e",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bisat.jpg",
+    pin: { lat: 24.7794093, lng: 46.6808549 },
+    coordsInUrl: true,
+    placeId: "ChIJE_2bIQD9Lj4RDkFwmHIsIB8",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "bisat-hittin",
+    hex: "0x3e2ee3dfd6caad95:0x299143306b331e83",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bisat.jpg",
+    pin: { lat: 24.7646531, lng: 46.6092044 },
+    coordsInUrl: true,
+    placeId: "ChIJla3K1t_jLj4Rgx4zazBDkSk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "veo-al-malqa",
+    hex: "0x3e2ee7673a008473:0x281d9b74b7a35bd7",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/veo-hittin.jpg",
+    pin: { lat: 24.7908988, lng: 46.5881155 },
+    coordsInUrl: true,
+    placeId: "ChIJc4QAOmfnLj4R11ujt3SbHSg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "rex-as-sahafah",
+    hex: "0x3e2ee5b6f1c036df:0x114d742b4b7b72ac",
+    neighborhood: "as-sahafah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rex-coffee.jpg",
+    pin: { lat: 24.8109014, lng: 46.6460923 },
+    coordsInUrl: true,
+    placeId: "ChIJ3zbA8bblLj4RrHJ7Syt0TRE",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "rex-hittin",
+    hex: "0x3e2ee13506d9b669:0x29be4e4267f345ad",
+    neighborhood: "hittin",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rex-coffee.jpg",
+    pin: { lat: 24.7698977, lng: 46.5851666 },
+    coordsInUrl: true,
+    placeId: "ChIJabbZBjXhLj4RrUXzZ0JOvik",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "rex-king-salman",
+    hex: "0x3e2f036014130825:0xbfcdd0ecff6c8d02",
+    neighborhood: "king-salman",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rex-coffee.jpg",
+    pin: { lat: 24.7371909, lng: 46.6944962 },
+    coordsInUrl: true,
+    placeId: "ChIJJQgTFGADLz4RAo1s_-zQzb8",
+    dineIn: null,
+    outdoorSeating: true,
+  },
+  // Bisat batch (3 Oct 2026): Places pin, placeId and seating.
+  {
+    id: "alwaal-albari-as-suwaidi",
+    hex: "0x3e2f051eb95d150d:0x2c88ad258793b679",
+    neighborhood: "as-suwaidi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/alwaal-albari-al-olaya.png",
+    pin: { lat: 24.5935137, lng: 46.6780331 },
+    coordsInUrl: true,
+    placeId: "ChIJDRVduR4FLz4RebaThyWtiCw",
+    dineIn: true,
+    outdoorSeating: null,
   },
 ];
 
@@ -4898,9 +5018,9 @@ for (const id of areas) {
   );
 }
 assert(
-  !sitemap.includes("/coffee-shops/as-suwaidi<") &&
-    !sitemap.includes("/en/coffee-shops/as-suwaidi<"),
-  "sitemap excludes 0-shop as-suwaidi",
+  sitemap.includes("/coffee-shops/as-suwaidi<") &&
+    sitemap.includes("/en/coffee-shops/as-suwaidi<"),
+  "sitemap lists as-suwaidi now that Alwaal Albari is live",
 );
 assert(!sitemap.includes("/n/"), "sitemap must drop retired /n/ paths");
 assert(!sitemap.includes("/en/n/"), "sitemap must drop retired /en/n/ paths");

@@ -231,11 +231,14 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   shubra: ["badr", "al-aziziyah", "al-hazm", "al-malaz"],
   manfuha: ["ghubairah", "al-malaz", "al-murabba", "al-aziziyah"],
   tuwaiq: ["al-hazm", "badr", "al-malaz", "king-fahd"],
-  "as-suwaidi": ["al-hazm", "al-malaz", "al-murabba", "sulimaniyah"],
+  "as-suwaidi": ["dhahrat-al-badiah", "al-wisham", "badr", "al-malaz"],
   "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
   "al-izdihar": ["al-mughrizat", "olaya", "sulimaniyah", "qurtubah"],
   "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "al-takhassusi", "al-mathar"],
   jarir: ["al-malaz", "al-murabba", "al-rabwah", "ghubairah"],
+  "umm-al-hamam-al-gharbi": ["diplomatic-quarter", "al-mathar", "al-rahmaniyyah", "al-takhassusi"],
+  "an-nafal": ["al-rabi", "al-masif", "al-wadi", "at-taawun"],
+  "king-salman": ["al-mursalat", "an-nazhah", "al-wurud", "king-fahd"],
 };
 
 type DistrictLead = {
@@ -880,14 +883,53 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "{countCafe} in Dhahrat Al Badiah on wain.lol — a Riyadh neighborhood list including WAY Coffee & Bakery, with a Maps link.",
   },
+  "umm-al-hamam-al-gharbi": {
+    lead: `Umm Al Hamam Al Gharbi (أم الحمام الغربي) sits on the west side of central Riyadh. This page is the Umm Al Hamam Al Gharbi set on wain.lol so far.
+
+[Bisat](/en/c/bisat-umm-al-hamam-al-gharbi) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Umm Al Hamam Al Gharbi on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Umm Al Hamam Al Gharbi isn’t the stop, these west-central lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Umm Al Hamam Al Gharbi. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in Umm Al Hamam Al Gharbi on wain.lol — a Riyadh neighborhood list including Bisat, with a Maps link.",
+  },
+  "an-nafal": {
+    lead: `An Nafal (النفل) sits on the north side of Riyadh. This page is the An Nafal set on wain.lol so far.
+
+[Bisat](/en/c/bisat-an-nafal) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from An Nafal on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If An Nafal isn’t the stop, these north lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nafal. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in An Nafal on wain.lol — a Riyadh neighborhood list including Bisat, with a Maps link.",
+  },
+  "king-salman": {
+    lead: `King Salman (الملك سلمان) is a north-central Riyadh حي. This page is the King Salman set on wain.lol so far.
+
+[Rex](/en/c/rex-king-salman) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from King Salman on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If King Salman isn’t the stop, these north-central lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like King Salman. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in King Salman on wain.lol — a Riyadh neighborhood list including Rex, with a Maps link.",
+  },
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) sits on the southwest side of Riyadh. This page is the As Suwaidi set on wain.lol so far.
 
-No cafes from this neighborhood are on the catalog today. We don’t invent extras to fill the page.`,
+[Alwaal Albari](/en/c/alwaal-albari-as-suwaidi) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from As Suwaidi on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If As Suwaidi isn’t the stop, these southwest lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Suwaidi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in As Suwaidi on wain.lol — a Riyadh neighborhood list including Alwaal Albari, with a Maps link.",
   },
 };
 

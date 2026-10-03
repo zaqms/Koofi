@@ -181,6 +181,9 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   "al-falah": "building",
   "al-izdihar": "pin",
   "dhahrat-al-badiah": "pin",
+  "umm-al-hamam-al-gharbi": "pin",
+  "an-nafal": "pin",
+  "king-salman": "pin",
   jarir: "pin",
 };
 

@@ -282,7 +282,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1019, `sitemap is 1019, got ${locs.length}`);
+assert(locs.length === 1017, `sitemap is 1017 after the Vanilla Coffee Qurtubah drop, got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

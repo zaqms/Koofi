@@ -171,7 +171,7 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 
 | Event | When | Parameters |
 | --- | --- | --- |
-| `chat_query` | A user ask is submitted through the composer (`send`) | `query_text` (exact typed / submitted text), `locale`, `via` (`typed` / `chip`), `text_length` |
+| `chat_query` | A user ask is submitted through the composer (`send`) | `locale`, `via` (`typed` / `chip`), `text_length`, `text_length_bucket` (`1-10` / `11-25` / `26-50` / `51+`). The typed text itself is not sent. |
 | `district_match` | A typed ask resolved to a live district and returned in-district picks | `district_slug`, `locale` |
 | `chip_tap` | A vibe or Nearby chip is tapped | `chip_id`, `chip_label`, `locale` |
 | `district_select` | A list حي filter is chosen | `district_id`, `district_ar`, `district_en`, `locale` |
@@ -240,6 +240,8 @@ npm run refresh-tiktok-followers -- path/to/tiktok-followers.json
 ```
 
 The script checks shop ids, requires followers on `found` rows, and rejects followers on every other status.
+
+> **Privacy (Oct 2026):** the dataLayer no longer carries `query_text` (chat asks, district search) or `feedback_text` (results notes). Map `text_length` / `text_length_bucket` instead; a `DL - query_text` variable now reads empty.
 
 Repo code cannot create GTM tags. In container **GTM-W3TM4552**:
 

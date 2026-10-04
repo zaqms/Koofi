@@ -1,3 +1,4 @@
+import { redactAnalyticsParams } from "./analytics-redact";
 import {
   halfwayResultCafesFromPicks,
   type HalfwayResultCafe,
@@ -114,8 +115,6 @@ export type AnalyticsParams = {
   feature?: ResultsFeedbackFeature;
   /** Alias of locale for the shared results-feedback payload. */
   language?: Language;
-  /** Optional free-text after Something else. */
-  feedback_text?: string;
   /** True when this push is the optional note, not the Yes/No count. */
   feedback_note?: boolean;
   timestamp?: string;
@@ -123,7 +122,9 @@ export type AnalyticsParams = {
   category_slug?: string;
   city?: City;
   sort?: NeighborhoodsSortId | DirectorySortId;
+  /** Typed-text length only — raw ask / search / note text is never sent. */
   text_length?: number;
+  text_length_bucket?: TextLengthBucket;
   chip_id?: string;
   chip_label?: string;
   district_id?: string;
@@ -136,7 +137,6 @@ export type AnalyticsParams = {
   district_ar?: string;
   district_en?: string;
   district_slug?: string;
-  query_text?: string;
   via?: ChatQueryVia;
   channel?: ViralShareChannel;
   which?: MeetHalfwayPinWhich;
@@ -177,8 +177,19 @@ function shouldDedupe(key: string): boolean {
   return false;
 }
 
+export type TextLengthBucket = "1-10" | "11-25" | "26-50" | "51+";
+
+/** Coarse length bucket for typed text (asks, district search, notes). */
+export function textLengthBucket(length: number): TextLengthBucket {
+  if (length <= 10) return "1-10";
+  if (length <= 25) return "11-25";
+  if (length <= 50) return "26-50";
+  return "51+";
+}
+
 /**
  * Params for a submitted chat ask. Null for empty / whitespace-only text.
+ * Sends the length + bucket only — never the typed text.
  * Used only from the send path — opener render and chip UI do not call this.
  */
 export function chatQueryParams(input: {
@@ -186,13 +197,13 @@ export function chatQueryParams(input: {
   locale: Language;
   via?: ChatQueryVia;
 }): AnalyticsParams | null {
-  const query_text = input.text.trim();
-  if (!query_text) return null;
+  const text = input.text.trim();
+  if (!text) return null;
   return {
-    query_text,
     locale: input.locale,
     via: input.via ?? "typed",
-    text_length: query_text.length,
+    text_length: text.length,
+    text_length_bucket: textLengthBucket(text.length),
   };
 }
 
@@ -203,9 +214,10 @@ export function trackChatQuery(input: {
   via?: ChatQueryVia;
 }): boolean {
   const params = chatQueryParams(input);
-  if (!params || !params.query_text) return false;
+  if (!params || !params.text_length) return false;
   trackEvent("chat_query", params, {
-    dedupeKey: `chat_query:${params.via}:${params.query_text}`,
+    // Local dedupe only — the key is never pushed.
+    dedupeKey: `chat_query:${params.via}:${input.text.trim()}`,
   });
   return true;
 }
@@ -215,9 +227,14 @@ export function neighborhoodsSearchParams(input: {
   locale: Language;
   city: City;
 }): AnalyticsParams | null {
-  const query_text = input.query.trim();
-  if (!query_text) return null;
-  return { query_text, locale: input.locale, city: input.city };
+  const text = input.query.trim();
+  if (!text) return null;
+  return {
+    locale: input.locale,
+    city: input.city,
+    text_length: text.length,
+    text_length_bucket: textLengthBucket(text.length),
+  };
 }
 
 /** Fire neighborhoods_search after the View All search debounce. Skip empty. */
@@ -227,9 +244,10 @@ export function trackNeighborhoodsSearch(input: {
   city: City;
 }): boolean {
   const params = neighborhoodsSearchParams(input);
-  if (!params?.query_text) return false;
+  if (!params?.text_length) return false;
   trackEvent("neighborhoods_search", params, {
-    dedupeKey: `neighborhoods_search:${params.locale}:${params.city}:${params.query_text}`,
+    // Local dedupe only — the key is never pushed.
+    dedupeKey: `neighborhoods_search:${params.locale}:${params.city}:${input.query.trim()}`,
   });
   return true;
 }
@@ -244,11 +262,15 @@ export function districtMatchParams(input: {
   return { district_slug, locale: input.locale };
 }
 
-/** Client dataLayer only. Results-feedback free-text is not written to Neon. */
+/**
+ * Client dataLayer only. Results-feedback free-text is not written to Neon
+ * and is not pushed either — only its length + bucket on the note push.
+ */
 export function resultsFeedbackParams(input: {
   locale: Language;
   feedback: MeetHalfwayFeedbackHelpful;
   feedback_reason?: ResultsFeedbackReason;
+  /** Read for its length only; the text itself is never pushed. */
   feedback_text?: string;
   feedback_note?: boolean;
   source: ResultsFeedbackSource;
@@ -258,11 +280,13 @@ export function resultsFeedbackParams(input: {
   packId?: string;
   shopIds?: string[];
   shopId?: string;
+  /** Accepted from callers but never pushed (raw ask text). */
   queryText?: string;
   categoryId?: string;
   categorySlug?: string;
 }): AnalyticsParams {
   const halfway = input.source === "halfway_results";
+  const noteLength = input.feedback_text?.trim().length ?? 0;
   const shop_ids =
     input.shopIds && input.shopIds.length > 0
       ? input.shopIds.join(",")
@@ -286,7 +310,9 @@ export function resultsFeedbackParams(input: {
           reason: input.feedback_reason,
         }
       : {}),
-    ...(input.feedback_text ? { feedback_text: input.feedback_text } : {}),
+    ...(noteLength
+      ? { text_length: noteLength, text_length_bucket: textLengthBucket(noteLength) }
+      : {}),
     ...(input.feedback_note ? { feedback_note: true } : {}),
     ...(typeof input.count === "number" ? { count: input.count } : {}),
     ...(input.packId
@@ -298,7 +324,6 @@ export function resultsFeedbackParams(input: {
       : {}),
     ...(shop_ids ? { shop_ids } : {}),
     ...(input.shopId ? { shop_id: input.shopId } : {}),
-    ...(input.queryText ? { query_text: input.queryText } : {}),
     ...(input.categoryId ? { category_id: input.categoryId } : {}),
     ...(input.categorySlug
       ? { category_slug: input.categorySlug, district_slug: input.categorySlug }
@@ -367,8 +392,10 @@ export function trackDistrictMatch(input: {
 
 /**
  * Push a named event to the GTM dataLayer. No-op during SSR.
- * chat_query sends the exact submitted ask (cafe / neighborhood text).
- * Do not send assistant replies, session ids, or other personal identifiers.
+ * No typed text (asks, searches, notes): lengths only. بيننا invite ids go
+ * out as `[invite]`, and URL/path params lose /h/{id} + query strings
+ * (lib/analytics-redact). Do not send assistant replies, session ids, or
+ * other personal identifiers.
  */
 export function trackEvent(
   name: AnalyticsEventName,
@@ -383,5 +410,5 @@ export function trackEvent(
   if (shouldDedupe(dedupeKey)) return;
 
   browserWindow.dataLayer = browserWindow.dataLayer || [];
-  browserWindow.dataLayer.push({ event: name, ...params });
+  browserWindow.dataLayer.push({ event: name, ...redactAnalyticsParams(name, params) });
 }

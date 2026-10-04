@@ -44,8 +44,6 @@ import {
 } from "@/lib/directory-category";
 import { readLearnSession } from "@/lib/learn-session";
 import {
-  decodeHalfwayInviteId,
-  encodeHalfwayInviteId,
   guestPinFromLocations,
   halfwayInviteHasGuest,
   halfwayInvitePath,
@@ -57,6 +55,7 @@ import {
   clearHalfwayWaiting,
   consumeHalfwayFresh,
   markHalfwayFresh,
+  isHalfwayWaitingLive,
   readHalfwayWaiting,
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
@@ -179,7 +178,7 @@ function sessionHostWait(
   const saved = readHalfwayWaiting();
   if (!saved) return null;
   if (halfwayInvite && saved.id !== halfwayInvite.id) return null;
-  if (!decodeHalfwayInviteId(saved.id)) {
+  if (!isHalfwayWaitingLive(saved)) {
     clearHalfwayWaiting();
     return null;
   }
@@ -1423,59 +1422,50 @@ export function Chat({
         url: `${origin}${halfwayInviteSharePath(halfwayWaitingId)}`,
       };
     }
-    const pin = pinFromInput(me);
-    let id = encodeHalfwayInviteId({
-      locale: landing,
-      locations: pin ? [pin] : [],
-    });
-    if (!id) {
-      try {
-        const response = await fetch("/api/halfway/invite", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            locale: landing,
-            lat: me.lat,
-            lng: me.lng,
-            text: me.text,
-            seed: true,
-          }),
-        });
-        const data = (await response.json()) as {
-          id?: string;
-          reply?: string;
-        };
-        id = typeof data.id === "string" ? data.id : null;
-        if (!id) {
-          showHalfwayPinFail(
-            [me],
-            typeof data.reply === "string" ? data.reply : undefined,
-          );
-          return null;
-        }
-      } catch {
-        showHalfwayPinFail([me]);
+    // Server mints an opaque random id and keeps A's pin. The URL never
+    // carries coordinates.
+    let pin = pinFromInput(me);
+    let id: string | null = null;
+    let exp: number | undefined;
+    try {
+      const response = await fetch("/api/halfway/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          locale: landing,
+          lat: me.lat,
+          lng: me.lng,
+          text: me.text,
+          seed: true,
+        }),
+      });
+      const data = (await response.json()) as {
+        id?: string;
+        reply?: string;
+        exp?: number;
+        locations?: { lat?: number; lng?: number }[];
+      };
+      id = typeof data.id === "string" ? data.id : null;
+      exp = typeof data.exp === "number" ? data.exp : undefined;
+      const hostRow = data.locations?.[0];
+      if (!pin && typeof hostRow?.lat === "number" && typeof hostRow?.lng === "number") {
+        pin = { lat: hostRow.lat, lng: hostRow.lng };
+      }
+      if (!id) {
+        showHalfwayPinFail(
+          [me],
+          typeof data.reply === "string" ? data.reply : undefined,
+        );
         return null;
       }
-    } else {
-      try {
-        await fetch("/api/halfway/invite", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id, seed: true }),
-        });
-      } catch {
-        // Overlay write is best-effort; the /h/{id} URL still has A's pin.
-      }
-    }
-    if (!id) {
+    } catch {
       showHalfwayPinFail([me]);
       return null;
     }
     const origin = window.location.origin.replace(/\/$/, "");
     const url = `${origin}${halfwayInviteSharePath(id)}`;
     if (pin) {
-      writeHalfwayWaiting({ id, locale: landing, me: pin });
+      writeHalfwayWaiting({ id, locale: landing, me: pin, ...(exp ? { exp } : {}) });
       setHalfwayWaitingMe(pin);
     }
     setHalfwayJoined(false);
@@ -1499,7 +1489,10 @@ export function Chat({
       halfwayInviteShareText({ language: landing, url: created.url }),
     );
     if (window.location.pathname !== halfwayInvitePath(created.id, landing)) {
-      router.replace(halfwayInvitePath(created.id, landing));
+      // Full document load, not router.replace: /h/* is served without
+      // GTM / DataFast, and an in-app history change would hand the invite
+      // URL to tags that read document.location (GTM history trigger).
+      window.location.replace(halfwayInvitePath(created.id, landing));
     }
   }
 

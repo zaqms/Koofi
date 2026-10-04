@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
+import { ANALYTICS_REDACT_BOOTSTRAP, TRACKERS_HEADER } from "@/lib/analytics-redact";
+import { RedactedAnalytics } from "@/components/redacted-analytics";
 import { CityProvider } from "@/lib/city-context";
 import { cityLabel, DEFAULT_LIVE_CITY } from "@/lib/cities";
 import { HIDE_CHAINS_STORAGE_KEY } from "@/lib/chain-filter";
@@ -59,7 +60,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const language = localeFromRequestHeaders(await headers());
+  const headerList = await headers();
+  const language = localeFromRequestHeaders(headerList);
+  // بيننا invite pages (/h/*) load no GTM (GA4 + X + OpenAI pixels) and no
+  // DataFast: those tags read document.location directly. See proxy.ts.
+  const trackers = headerList.get(TRACKERS_HEADER) !== "off";
   return (
     <html
       lang={htmlLang(language)}
@@ -72,34 +77,43 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{if(localStorage.getItem(${JSON.stringify(HIDE_CHAINS_STORAGE_KEY)})==="1")document.documentElement.setAttribute("data-hide-chains","")}catch(e){}})();`,
           }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        {trackers ? (
+          <script dangerouslySetInnerHTML={{ __html: ANALYTICS_REDACT_BOOTSTRAP }} />
+        ) : null}
+        {trackers ? (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
+            }}
+          />
+        ) : null}
       </head>
       <body className="min-h-dvh bg-paper text-ink antialiased">
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        {trackers ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        ) : null}
         <CityProvider>{children}</CityProvider>
-        <Analytics />
+        <RedactedAnalytics />
       </body>
-      <Script
-        src="https://datafa.st/js/script.js"
-        strategy="afterInteractive"
-        data-website-id="dfid_qZyLQNdTVNdYA3lB44WTe"
-        data-domain="wain.lol"
-      />
+      {trackers ? (
+        <Script
+          src="https://datafa.st/js/script.js"
+          strategy="afterInteractive"
+          data-website-id="dfid_qZyLQNdTVNdYA3lB44WTe"
+          data-domain="wain.lol"
+        />
+      ) : null}
     </html>
   );
 }

@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import { getShop } from "./catalog";
 import { ENV_KEYS, readEnv } from "./env";
-import { allowRate, feedbackStorageKind } from "./feedback";
+import { allowRate } from "./feedback";
 import {
   HALFWAY_INVITE_EXPIRED_ID,
   HALFWAY_INVITE_MAX_PINS,
@@ -33,20 +33,40 @@ export type HalfwayInviteSession = {
   host?: Pin[];
 };
 
-const SCHEMA = [
-  `CREATE TABLE IF NOT EXISTS halfway_invites (
-  id TEXT PRIMARY KEY,
-  locations JSONB NOT NULL,
-  shop_ids JSONB,
-  expires_at TIMESTAMPTZ NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-)`,
-  `ALTER TABLE halfway_invites ADD COLUMN IF NOT EXISTS shop_ids JSONB`,
-  `ALTER TABLE halfway_invites ADD COLUMN IF NOT EXISTS locale TEXT`,
-  `ALTER TABLE halfway_invites ADD COLUMN IF NOT EXISTS host_locations JSONB`,
-  `ALTER TABLE halfway_invites ADD COLUMN IF NOT EXISTS legacy_key TEXT`,
-  `CREATE UNIQUE INDEX IF NOT EXISTS halfway_invites_legacy_key_idx ON halfway_invites (legacy_key)`,
+/**
+ * No DDL at request time. The table, its columns and indexes come from a
+ * one-time manual migration: sql/halfway-invites-privacy.sql (runner:
+ * scripts/migrate-halfway-invites.ts). The store only checks, read-only,
+ * that the migration is in place; until then it reports "missing": new
+ * invites get the friendly error and legacy links fall back to the old
+ * tracker-free page.
+ */
+/** Columns + index the store needs; checked (read-only) before use. */
+export const HALFWAY_MIGRATION_COLUMNS = [
+  "shop_ids",
+  "locale",
+  "host_locations",
+  "legacy_key",
 ] as const;
+export const HALFWAY_LEGACY_KEY_INDEX = "halfway_invites_legacy_key_idx";
+const MIGRATION_RECHECK_MS = 60 * 1000;
+
+/**
+ * Where بيننا sessions live.
+ *  - Vercel production: Neon (DATABASE_URL), else missing.
+ *  - Vercel preview / development: missing, unless HALFWAY_ALLOW_NONPROD_DB=1.
+ *    Preview shares the production DATABASE_URL today, so a preview must
+ *    never write invite rows by default (Neon preview branch: Amjad's call).
+ *  - Local (no VERCEL): memory, unless HALFWAY_ALLOW_NONPROD_DB=1 and a
+ *    DATABASE_URL (a pulled .env.local must not reach the prod DB).
+ */
+export function halfwayStoreKind(): "neon" | "memory" | "missing" {
+  const hasDb = Boolean(readEnv(ENV_KEYS.DATABASE_URL));
+  const optIn = readEnv(ENV_KEYS.HALFWAY_ALLOW_NONPROD_DB) === "1";
+  if (process.env.VERCEL_ENV === "production") return hasDb ? "neon" : "missing";
+  if (process.env.VERCEL) return hasDb && optIn ? "neon" : "missing";
+  return hasDb && optIn ? "neon" : "memory";
+}
 
 const memoryInvites = (() => {
   const globalStore = globalThis as typeof globalThis & {
@@ -71,6 +91,8 @@ const memoryLegacy = (() => {
 
 let sqlClient: NeonQueryFunction<false, false> | null = null;
 let schemaReady = false;
+let migrationCheckedAt = 0;
+let migrationWarned = false;
 
 function getSql(): NeonQueryFunction<false, false> | null {
   const url = readEnv(ENV_KEYS.DATABASE_URL);
@@ -79,15 +101,41 @@ function getSql(): NeonQueryFunction<false, false> | null {
   return sqlClient;
 }
 
+/** Read-only: are the table, r2 columns + legacy_key unique index there? */
+async function migrationApplied(sql: NeonQueryFunction<false, false>): Promise<boolean> {
+  const columns = (await sql`
+    SELECT column_name FROM information_schema.columns
+    WHERE table_schema = current_schema()
+      AND table_name = 'halfway_invites'
+      AND column_name = ANY(${[...HALFWAY_MIGRATION_COLUMNS]})
+  `) as { column_name: string }[];
+  if (columns.length < HALFWAY_MIGRATION_COLUMNS.length) return false;
+  const indexes = (await sql`
+    SELECT 1 FROM pg_indexes
+    WHERE schemaname = current_schema()
+      AND tablename = 'halfway_invites'
+      AND indexname = ${HALFWAY_LEGACY_KEY_INDEX}
+    LIMIT 1
+  `) as unknown[];
+  return indexes.length > 0;
+}
+
 async function ensureStore(): Promise<"ready" | "missing"> {
-  const kind = feedbackStorageKind();
+  const kind = halfwayStoreKind();
   if (kind === "missing") return "missing";
   if (kind === "memory") return "ready";
   if (schemaReady) return "ready";
+  const now = Date.now();
+  if (migrationCheckedAt && now - migrationCheckedAt < MIGRATION_RECHECK_MS) return "missing";
   const sql = getSql();
   if (!sql) return "missing";
-  for (const statement of SCHEMA) {
-    await sql.query(statement);
+  if (!(await migrationApplied(sql))) {
+    migrationCheckedAt = now;
+    if (!migrationWarned) {
+      migrationWarned = true;
+      console.warn("wain_halfway_store_unmigrated: apply sql/halfway-invites-privacy.sql");
+    }
+    return "missing";
   }
   schemaReady = true;
   return "ready";
@@ -195,7 +243,7 @@ async function readStoredRecord(
 ): Promise<HalfwayInviteSession | null> {
   if ((await ensureStore()) === "missing") return null;
 
-  if (feedbackStorageKind() === "memory") {
+  if (halfwayStoreKind() === "memory") {
     return memoryInvites.get(id) ?? null;
   }
 
@@ -233,7 +281,7 @@ async function readStoredSession(
   const row = await readStoredRecord(id);
   if (!row) return null;
   if (row.expiresAt <= now) {
-    if (feedbackStorageKind() === "memory") memoryInvites.delete(id);
+    if (halfwayStoreKind() === "memory") memoryInvites.delete(id);
     return null;
   }
   return row;
@@ -243,7 +291,7 @@ async function writeStoredSession(
   id: string,
   session: HalfwayInviteSession,
 ): Promise<void> {
-  if (feedbackStorageKind() === "memory") {
+  if (halfwayStoreKind() === "memory") {
     memoryInvites.set(id, session);
     return;
   }
@@ -267,6 +315,66 @@ async function writeStoredSession(
   `;
 }
 
+/** Rows go 24 h after expiry: the "expired" screen still works for a day. */
+export const HALFWAY_SWEEP_GRACE_MS = 24 * 60 * 60 * 1000;
+const HALFWAY_SWEEP_INTERVAL_MS = 15 * 60 * 1000;
+const HALFWAY_SWEEP_BATCH = 500;
+let lastSweepAt = 0;
+
+/**
+ * Delete expired بيننا rows (host + guest pins, shop_ids, legacy_key)
+ * once they are `graceMs` past expiry. Bounded batch, oldest first.
+ * Returns how many rows went. Memory mode clears the same rows.
+ */
+export async function sweepExpiredHalfwayInvites(options?: {
+  now?: number;
+  graceMs?: number;
+  limit?: number;
+}): Promise<number> {
+  if ((await ensureStore()) === "missing") return 0;
+  const now = options?.now ?? Date.now();
+  const cutoff = now - (options?.graceMs ?? HALFWAY_SWEEP_GRACE_MS);
+  const limit = Math.max(1, Math.min(options?.limit ?? HALFWAY_SWEEP_BATCH, 5000));
+
+  if (halfwayStoreKind() === "memory") {
+    const gone = new Set<string>();
+    for (const [id, session] of memoryInvites) {
+      if (gone.size >= limit) break;
+      if (session.expiresAt <= cutoff) gone.add(id);
+    }
+    for (const id of gone) memoryInvites.delete(id);
+    for (const [key, id] of memoryLegacy) {
+      if (gone.has(id)) memoryLegacy.delete(key);
+    }
+    return gone.size;
+  }
+
+  const sql = getSql();
+  if (!sql) return 0;
+  const rows = (await sql`
+    DELETE FROM halfway_invites
+    WHERE id IN (
+      SELECT id FROM halfway_invites
+      WHERE expires_at < ${new Date(cutoff).toISOString()}
+      ORDER BY expires_at
+      LIMIT ${limit}
+    )
+    RETURNING id
+  `) as { id: string }[];
+  return rows.length;
+}
+
+/** At most one sweep per instance every 15 min, piggybacked on writes. Never throws. */
+async function maybeSweepExpiredHalfwayInvites(now: number): Promise<void> {
+  if (now - lastSweepAt < HALFWAY_SWEEP_INTERVAL_MS) return;
+  lastSweepAt = now;
+  try {
+    await sweepExpiredHalfwayInvites({ now });
+  } catch {
+    // Cleanup must never break an invite.
+  }
+}
+
 /**
  * New بيننا invite: random opaque id, host pin stored server-side.
  * Same 45-minute waiting TTL the old token carried.
@@ -287,6 +395,7 @@ export async function createHalfwayInviteSession(input: {
     host: [input.host],
   };
   await writeStoredSession(id, session);
+  await maybeSweepExpiredHalfwayInvites(now);
   return { id, session };
 }
 
@@ -297,7 +406,7 @@ function legacyKey(token: string): string {
 async function findMigratedId(token: string): Promise<string | null> {
   if ((await ensureStore()) === "missing") return null;
   const key = legacyKey(token);
-  if (feedbackStorageKind() === "memory") return memoryLegacy.get(key) ?? null;
+  if (halfwayStoreKind() === "memory") return memoryLegacy.get(key) ?? null;
   const sql = getSql();
   if (!sql) return null;
   const rows = (await sql`
@@ -357,7 +466,7 @@ export async function migrateLegacyHalfwayInvite(
   const key = legacyKey(token);
   const id = mintHalfwayInviteId();
 
-  if (feedbackStorageKind() === "memory") {
+  if (halfwayStoreKind() === "memory") {
     const raced = memoryLegacy.get(key);
     if (raced) return { ok: true, id: raced };
     memoryInvites.set(id, session);
@@ -381,6 +490,7 @@ export async function migrateLegacyHalfwayInvite(
     ON CONFLICT (legacy_key) DO NOTHING
   `;
   const winner = await findMigratedId(token);
+  await maybeSweepExpiredHalfwayInvites(now);
   return winner ? { ok: true, id: winner } : { ok: false, reason: "missing" };
 }
 

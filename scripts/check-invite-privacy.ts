@@ -1,22 +1,33 @@
 /**
- * بيننا invite privacy: random opaque ids, legacy redirect, analytics
- * redaction, no raw typed text in the dataLayer. Memory store only —
- * DATABASE_URL is cleared, no network, Places 0.
+ * بيننا invite privacy: random opaque ids, legacy redirect + input
+ * validation, clean-URL redirect / tracker gating (real proxy() + the
+ * inline bootstrap in a VM), expired-row sweep, store-mode + webhook
+ * env gates, no raw typed text in the dataLayer. Memory store only:
+ * DATABASE_URL is cleared, fetch is stubbed, Places 0.
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runInNewContext } from "node:vm";
 
 delete process.env.DATABASE_URL;
 delete process.env.POSTGRES_URL;
 delete process.env.VERCEL;
+delete process.env.VERCEL_ENV;
+delete process.env.HALFWAY_ALLOW_NONPROD_DB;
+delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
 
+import { NextRequest, type NextFetchEvent } from "next/server";
 import {
   ANALYTICS_REDACT_BOOTSTRAP,
+  gtmLoaderSnippet,
   isInvitePathname,
+  isTrackerFreePathname,
   redactAnalyticsParams,
   redactAnalyticsPath,
+  redactAnalyticsReferrer,
   redactAnalyticsUrl,
+  trackersAllowed,
+  TRACKERS_HEADER,
 } from "../lib/analytics-redact";
 import {
   encodeHalfwayInviteId,
@@ -26,16 +37,25 @@ import {
   parseHalfwayInviteToken,
 } from "../lib/halfway-invite";
 import {
+  isLegacyInviteToken,
+  LEGACY_SEARCH_HEADER,
   legacyInviteRedirectTarget,
   matchLegacyInvitePath,
+  sanitizeLegacySearch,
 } from "../lib/halfway-invite-legacy";
 import {
+  canonicalHalfwayInviteId,
   createHalfwayInviteSession,
   freezeHalfwayInviteResults,
+  halfwayStoreKind,
   migrateLegacyHalfwayInvite,
+  readHalfwayInviteSession,
   resolveHalfwayInviteSession,
+  sweepExpiredHalfwayInvites,
 } from "../lib/halfway-invite-store";
+import { proxy } from "../proxy";
 import { listRealShops } from "../lib/catalog";
+import { meetHalfwayChatPicks } from "../lib/meet-halfway";
 import { halfwayInvitePath, halfwayInviteSharePath } from "../lib/product";
 import {
   chatQueryParams,
@@ -253,24 +273,93 @@ async function main() {
     "proxy redirects legacy links before DataFast crawler tracking",
   );
 
+  // ---- (b2) legacy route: reachable without the proxy, so validate input ----
+  const badTokens = ["not-a-token", `${"a".repeat(700)}.${"b".repeat(10)}`, "a.b/c", "..", "%2e%2e"];
+  for (const bad of badTokens) {
+    const res404 = await legacyRoute.GET(
+      new Request(`http://localhost/api/halfway/legacy/x`, { headers: { "x-forwarded-for": "203.0.113.9" } }),
+      { params: Promise.resolve({ token: bad }) },
+    );
+    assert(res404.status === 404 && !res404.headers.get("location"), `legacy route rejects bad token ${bad.slice(0, 20)}`);
+  }
+  const dirtyLegacy = await legacyRoute.GET(
+    new Request(`http://localhost/api/halfway/legacy/${legacyToken}`, {
+      headers: {
+        "x-forwarded-for": "203.0.113.8",
+        "x-wain-legacy-lang": "fr",
+        "x-wain-legacy-search": `?from=wa&lat=${HOST.lat}&next=https://evil.example&utm_source=x&legacy=1`,
+      },
+    }),
+    { params: Promise.resolve({ token: legacyToken }) },
+  );
+  const dirtyLocation = dirtyLegacy.headers.get("location") ?? "";
+  assert(
+    dirtyLocation === `/h/${newId}?from=wa&utm_source=x`,
+    `legacy search header is allowlisted (from + utm only), lang en|ar only: ${dirtyLocation}`,
+  );
+  assert(
+    sanitizeLegacySearch(`?from=${"x".repeat(600)}`).toString() === "" &&
+      sanitizeLegacySearch(`?from=${"y".repeat(65)}`).toString() === "",
+    "oversized legacy search / values dropped",
+  );
+  assert(isLegacyInviteToken(legacyToken) && !isLegacyInviteToken(`${"a".repeat(601)}.b`), "token length cap");
+
+  // Legacy mints are rate-limited per IP (chat passes the IP too).
+  let limited = false;
+  for (let i = 0; i < 40 && !limited; i += 1) {
+    const fresh = encodeHalfwayInviteId({
+      locale: "ar",
+      locations: [{ lat: 24.6 + i / 1000, lng: 46.7 }],
+    });
+    assert(fresh, "fresh legacy fixture");
+    const outcome = await canonicalHalfwayInviteId(fresh, { ip: "198.51.100.77" });
+    if (!outcome.ok && outcome.reason === "rate_limited") limited = true;
+  }
+  assert(limited, "legacy migration via canonicalHalfwayInviteId is rate-limited per IP");
+  const chatRouteSrc = read("app/api/chat/route.ts");
+  assert(
+    /canonicalHalfwayInviteId\([^)]*\{\s*ip:\s*clientIp\(request\)/.test(chatRouteSrc),
+    "/api/chat passes the client IP when it canonicalizes a legacy id",
+  );
+  const legacyRouteSrc = read("app/api/halfway/legacy/[token]/route.ts");
+  assert(legacyRouteSrc.includes("isLegacyInviteToken(token)"), "legacy route validates the token");
+
   // ---- (c) analytics redaction ----
   assert(redactAnalyticsPath("/h/xyz") === "/h/[invite]", "path redaction");
   assert(redactAnalyticsUrl("/h/xyz?foo=bar") === "/h/[invite]", "/h/xyz?foo=bar → /h/[invite]");
   assert(
-    redactAnalyticsUrl("https://wain.lol/en/h/xyz?foo=bar#x") === "https://wain.lol/en/h/[invite]",
-    "absolute EN invite URL redacted, query + hash dropped",
+    redactAnalyticsUrl("https://wain.lol/en/h/xyz?utm_source=a&foo=bar#x") === "https://wain.lol/en/h/[invite]",
+    "absolute EN invite URL redacted, whole query + hash dropped (even utm)",
   );
   assert(
     redactAnalyticsUrl(`https://wain.lol/h/${legacyToken}?from=wa`) === "https://wain.lol/h/[invite]",
     "legacy token redacted",
   );
-  assert(redactAnalyticsUrl("https://wain.lol/c/x?utm_source=a") === "https://wain.lol/c/x", "all queries dropped");
+  assert(
+    redactAnalyticsUrl("https://wain.lol/c/x?utm_source=a&gclid=G1&lat=24.7&q=hi&from=wa#h") ===
+      "https://wain.lol/c/x?utm_source=a&gclid=G1&from=wa",
+    "non-invite pages keep utm / gclid / from, drop everything else",
+  );
+  assert(
+    redactAnalyticsUrl("https://wain.lol/owner/edit?shop=a&token=SECRET&utm_source=x") ===
+      "https://wain.lol/owner/edit",
+    "owner magic link loses its query",
+  );
+  assert(
+    redactAnalyticsReferrer("https://wain.lol/c/x?utm_source=a&gclid=G1") === "https://wain.lol/c/x",
+    "referrers never carry a query",
+  );
   assert(redactAnalyticsUrl("https://wain.lol/hawaf") === "https://wain.lol/hawaf", "non-invite paths untouched");
   assert(isInvitePathname("/h/abc") && isInvitePathname("/en/h/abc") && !isInvitePathname("/hittin"), "invite page match");
   assert(
     redactVercelAnalyticsEvent({ type: "pageview", url: "https://wain.lol/h/xyz?foo=bar" })?.url ===
       "https://wain.lol/h/[invite]",
     "Vercel Analytics beforeSend redacts",
+  );
+  assert(
+    redactVercelAnalyticsEvent({ type: "pageview", url: "https://wain.lol/en?utm_campaign=c&foo=1" })?.url ===
+      "https://wain.lol/en?utm_campaign=c",
+    "Vercel Analytics keeps utm on normal pages",
   );
   const params = redactAnalyticsParams("meet_halfway_results", {
     pack_id: first.id,
@@ -289,41 +378,304 @@ async function main() {
     "halfway share pack id redacted",
   );
 
-  // Inline gtag bootstrap (runs before GTM) — same mapping.
-  const pushed: unknown[][] = [];
-  const noop = (() => {}) as (...args: unknown[]) => void;
-  const history = { pushState: noop, replaceState: noop };
-  const assigned: string[] = [];
-  const href = `https://wain.lol/c/olaya-cafe?utm_source=x&lat=${HOST.lat}`;
-  const sandbox = {
-    window: {} as Record<string, unknown>,
-    document: { referrer: `https://wain.lol/h/${first.id}?from=wa` },
-    URL,
-  };
-  const win = sandbox.window;
-  win.location = { href, assign: (u: string) => assigned.push(u) };
-  win.history = history;
-  win.dataLayer = { push: (args: unknown[]) => pushed.push(Array.from(args)) };
-  runInNewContext(ANALYTICS_REDACT_BOOTSTRAP, sandbox);
-  const firstSet = pushed[0] as [string, Record<string, string>];
-  assert(firstSet?.[0] === "set", "bootstrap gtag('set') before GTM");
-  assert(firstSet[1].page_location === "https://wain.lol/c/olaya-cafe", "bootstrap page_location: no query");
-  assert(firstSet[1].page_path === "/c/olaya-cafe", "bootstrap page_path");
-  assert(firstSet[1].page_referrer === "https://wain.lol/h/[invite]", "bootstrap page_referrer redacted");
-  (win.history as typeof history).pushState({}, "", "/h/xyz?foo=bar");
-  assert(assigned[0] === "/h/xyz?foo=bar" && pushed.length === 1, "in-app nav into /h/ becomes a full load (no GTM there)");
-  (win.history as typeof history).pushState({}, "", "/en/hawaf?x=1");
-  const navSet = pushed[1] as [string, Record<string, string>];
-  assert(navSet?.[1].page_location === "https://wain.lol/en/hawaf", "SPA nav re-sets a clean page_location");
+  // Clean-URL predicate.
+  assert(trackersAllowed("/en", "?utm_source=x&gclid=1&from=wa") && trackersAllowed("/c/x", ""), "attribution-only query is clean");
+  assert(!trackersAllowed("/en", "?foo=1") && !trackersAllowed("/en", "?lat=24.7"), "unknown keys are dirty");
+  for (const path of ["/h/abc", "/en/h/abc", "/h", "/owner/edit", "/en/owner/edit", "/ops", "/ops/claims"]) {
+    assert(!trackersAllowed(path, "") && isTrackerFreePathname(path), `${path} is tracker-free`);
+  }
+  assert(trackersAllowed("/owner", "?shop=x") && trackersAllowed("/hittin", ""), "owner landing + /hittin are trackable");
 
-  const layoutSrc = read("app/layout.tsx");
-  assert(layoutSrc.includes("TRACKERS_HEADER") && layoutSrc.includes("trackers ?"), "layout gates GTM + DataFast");
+  // ---- (c2) proxy behaviour (real proxy(), NextRequest) ----
+  const realFetch = globalThis.fetch;
+  const beacons: string[] = [];
+  globalThis.fetch = (async (_url: string | URL, init?: RequestInit) => {
+    beacons.push(String(init?.body ?? ""));
+    return new Response("ok");
+  }) as typeof fetch;
+  const pending: Promise<unknown>[] = [];
+  const fakeEvent = { waitUntil: (p: Promise<unknown>) => void pending.push(p) } as unknown as NextFetchEvent;
+  const doc = { accept: "text/html,application/xhtml+xml", "sec-fetch-dest": "document" };
+  const run = (url: string, headers: Record<string, string> = doc, method = "GET") =>
+    proxy(new NextRequest(`https://wain.lol${url}`, { headers, method }), fakeEvent);
+  const trackersOf = (res: Response) => res.headers.get(`x-middleware-request-${TRACKERS_HEADER}`);
+  try {
+    type Case = { url: string; trackers?: "on" | "off"; redirect?: string; headers?: Record<string, string> };
+    const cases: Case[] = [
+      { url: "/", trackers: "on" },
+      { url: "/en?utm_source=x&gclid=G", trackers: "on" },
+      { url: "/c/olaya?from=wa", trackers: "on" },
+      { url: "/owner?shop=abc", trackers: "on" },
+      { url: "/en?foo=1&utm_source=x", redirect: "/en?utm_source=x" },
+      { url: `/c/olaya?lat=${HOST.lat}&lng=${HOST.lng}`, redirect: "/c/olaya" },
+      { url: "/hawaf?q=%D9%82%D9%87%D9%88%D8%A9&gclid=G&from=wa", redirect: "/hawaf?gclid=G&from=wa" },
+      { url: "/h/abc?foo=1", trackers: "off" },
+      { url: `/en/h/${first.id}?from=wa`, trackers: "off" },
+      { url: "/owner/edit?shop=a&token=SECRET", trackers: "off" },
+      { url: "/en/owner/edit?shop=a&token=SECRET", trackers: "off" },
+      { url: "/ops/claims?err=x", trackers: "off" },
+      // Never redirected: platform params, route handlers, non-document fetches.
+      { url: "/en?_vercel_share=abc", trackers: "off" },
+      { url: "/go/maps?lat=24.7&lng=46.6", trackers: "off" },
+      { url: "/c/olaya/opengraph-image?x=1", trackers: "off" },
+      { url: "/en?foo=1", trackers: "off", headers: { rsc: "1", accept: "*/*" } },
+      { url: "/en?foo=1", trackers: "off", headers: { accept: "*/*", "sec-fetch-dest": "empty" } },
+      { url: "/en?foo=1&_rsc=abc", trackers: "off", headers: { accept: "*/*" } },
+    ];
+    for (const c of cases) {
+      const res = await run(c.url, c.headers);
+      if (c.redirect) {
+        assert(res.status === 307, `${c.url}: 307 (${res.status})`);
+        assert(new URL(res.headers.get("location") ?? "").pathname + new URL(res.headers.get("location") ?? "").search === c.redirect, `${c.url} → ${c.redirect} (${res.headers.get("location")})`);
+        assert(res.headers.get("cache-control") === "no-store" && res.headers.get("referrer-policy") === "no-referrer", `${c.url}: redirect is no-store + no-referrer`);
+        assert(!trackersOf(res), `${c.url}: redirect carries no layout`);
+        continue;
+      }
+      assert(res.status === 200 && !res.headers.get("location"), `${c.url}: not redirected (${res.status})`);
+      assert(trackersOf(res) === c.trackers, `${c.url}: trackers ${c.trackers} (${trackersOf(res)})`);
+      const policy = res.headers.get("referrer-policy");
+      assert(c.trackers === "on" ? policy === null : policy === "strict-origin", `${c.url}: referrer policy ${policy}`);
+    }
+    // The client can't force trackers on.
+    const forced = await run("/h/abc", { ...doc, [TRACKERS_HEADER]: "on" });
+    assert(trackersOf(forced) === "off", "proxy overwrites a client-sent trackers header");
+    // Legacy link is rewritten to the route handler, before anything else.
+    const legacyRes = await run(`/en/h/${legacyToken}?from=wa&foo=1`);
+    const rewrite = legacyRes.headers.get("x-middleware-rewrite") ?? "";
+    assert(rewrite.includes(`/api/halfway/legacy/${legacyToken}`) && !rewrite.includes("?"), `legacy rewrite (${rewrite})`);
+    assert(legacyRes.headers.get(`x-middleware-request-${LEGACY_SEARCH_HEADER}`) === "?from=wa&foo=1", "legacy search handed to the route");
+
+    // DataFast server beacon: only on clean URLs, redacted.
+    const bot = { ...doc, "user-agent": "Mozilla/5.0 (compatible; GPTBot/1.2; +https://openai.com/gptbot)", referer: "https://chatgpt.com/?q=secret" };
+    beacons.length = 0;
+    await run(`/h/${first.id}`, bot);
+    await run("/owner/edit?shop=a&token=SECRET", bot);
+    await run("/en?foo=1", { ...bot, accept: "*/*", "sec-fetch-dest": "empty" });
+    await Promise.allSettled(pending.splice(0));
+    assert(beacons.length === 0, `no crawler beacon on tracker-free / dirty URLs (${beacons.length})`);
+    await run("/c/olaya?utm_source=x", bot);
+    await Promise.allSettled(pending.splice(0));
+    const beacon = beacons.join("\n");
+    assert(!beacon.includes("secret") && !beacon.includes(first.id) && !beacon.includes("token=SECRET"), "crawler beacon carries no private URL / referrer query");
+    console.log(`  proxy: ${cases.length + 2} cases, crawler beacons on clean URL: ${beacons.length}`);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+
+  // ---- (c3) inline bootstrap in a VM (runs before GTM, fail-closed) ----
+  type Sandbox = {
+    window: Record<string, unknown>;
+    pushed: unknown[][];
+    assigned: string[];
+    replaced: string[];
+    native: string[];
+  };
+  const boot = (href: string, referrer = ""): Sandbox => {
+    const box: Sandbox = { window: {}, pushed: [], assigned: [], replaced: [], native: [] };
+    const win = box.window;
+    win.location = {
+      href,
+      assign: (u: string) => box.assigned.push(u),
+      replace: (u: string) => box.replaced.push(u),
+    };
+    win.history = {
+      pushState: (_s: unknown, _t: unknown, u: string) => box.native.push(`push:${u}`),
+      replaceState: (_s: unknown, _t: unknown, u: string) => box.native.push(`replace:${u}`),
+    };
+    win.dataLayer = { push: (args: unknown[]) => box.pushed.push(Array.from(args)) };
+    runInNewContext(ANALYTICS_REDACT_BOOTSTRAP, {
+      window: win,
+      document: { referrer },
+      URL,
+      URLSearchParams,
+    });
+    return box;
+  };
+  const cleanBox = boot(
+    "https://wain.lol/c/olaya-cafe?utm_source=x&gclid=G1&from=wa",
+    `https://wain.lol/h/${first.id}?from=wa`,
+  );
+  assert(cleanBox.window.__wainTrackers === true, "clean URL: bootstrap allows trackers");
+  const firstSet = cleanBox.pushed[0] as [string, Record<string, string>];
+  assert(firstSet?.[0] === "set", "bootstrap gtag('set') before GTM");
   assert(
-    layoutSrc.indexOf("ANALYTICS_REDACT_BOOTSTRAP") < layoutSrc.indexOf("googletagmanager.com/gtm.js"),
-    "redaction bootstrap runs before the GTM snippet",
+    firstSet[1].page_location === "https://wain.lol/c/olaya-cafe?utm_source=x&gclid=G1&from=wa",
+    `bootstrap page_location keeps utm / gclid / from (${firstSet[1].page_location})`,
+  );
+  assert(firstSet[1].page_path === "/c/olaya-cafe", "bootstrap page_path");
+  assert(firstSet[1].page_referrer === "https://wain.lol/h/[invite]", "bootstrap page_referrer redacted, no query");
+  const hist = cleanBox.window.history as Record<string, (s: unknown, t: unknown, u: string) => void>;
+  hist.pushState({}, "", "/h/xyz?foo=bar");
+  assert(cleanBox.assigned[0] === "/h/xyz?foo=bar" && cleanBox.native.length === 0, "pushState into /h/ → full load (assign)");
+  hist.replaceState({}, "", "/en?lat=24.7");
+  assert(cleanBox.replaced[0] === "/en?lat=24.7" && cleanBox.native.length === 0, "replaceState to a dirty URL → location.replace");
+  hist.pushState({}, "", "/owner/edit?shop=a&token=T");
+  assert(cleanBox.assigned[1] === "/owner/edit?shop=a&token=T", "pushState into owner/edit → full load");
+  hist.pushState({}, "", "/en/hawaf?utm_source=y");
+  const navSet = cleanBox.pushed[1] as [string, Record<string, string>];
+  assert(
+    navSet?.[1].page_location === "https://wain.lol/en/hawaf?utm_source=y" && cleanBox.native[0] === "push:/en/hawaf?utm_source=y",
+    "clean SPA nav goes through and re-sets page_location",
+  );
+  assert(cleanBox.pushed.length === 2, "dirty navigations set nothing");
+  for (const dirtyHref of [
+    "https://wain.lol/en?foo=1",
+    `https://wain.lol/h/${first.id}`,
+    "https://wain.lol/owner/edit?shop=a&token=T",
+    "https://wain.lol/ops",
+  ]) {
+    const dirtyBox = boot(dirtyHref);
+    assert(dirtyBox.window.__wainTrackers === false && dirtyBox.pushed.length === 0, `dirty ${dirtyHref}: no trackers, no set`);
+  }
+  // Fail closed: a throwing environment leaves trackers off.
+  const broken: Record<string, unknown> = { location: { get href() { throw new Error("x"); } } };
+  runInNewContext(ANALYTICS_REDACT_BOOTSTRAP, { window: broken, document: {}, URL, URLSearchParams });
+  assert(broken.__wainTrackers === false, "bootstrap fails closed");
+
+  // GTM loader only runs on the bootstrap's verdict.
+  const loaderRun = (verdict: unknown) => {
+    const inserted: string[] = [];
+    const win: Record<string, unknown> = { __wainTrackers: verdict };
+    const docStub = {
+      getElementsByTagName: () => [{ parentNode: { insertBefore: (el: { src: string }) => inserted.push(el.src) } }],
+      createElement: () => ({ src: "" }),
+    };
+    runInNewContext(gtmLoaderSnippet("GTM-TEST"), { window: win, document: docStub });
+    return inserted;
+  };
+  assert(loaderRun(true)[0] === "https://www.googletagmanager.com/gtm.js?id=GTM-TEST", "GTM loads when clean");
+  for (const verdict of [false, undefined, "true", 1]) {
+    assert(loaderRun(verdict).length === 0, `GTM stays off for verdict ${String(verdict)}`);
+  }
+
+  // ---- (c4) source: every tracker is behind the gate ----
+  const layoutSrc = read("app/layout.tsx");
+  assert(layoutSrc.includes(`headerList.get(TRACKERS_HEADER) === "on"`), "layout fails closed (header must be \"on\")");
+  assert(layoutSrc.includes("gtmLoaderSnippet(GTM_ID)"), "layout uses the gated GTM loader");
+  assert(
+    layoutSrc.indexOf("ANALYTICS_REDACT_BOOTSTRAP }}") < layoutSrc.indexOf("gtmLoaderSnippet(GTM_ID)"),
+    "redaction bootstrap runs before the GTM loader",
   );
   assert(layoutSrc.includes("<RedactedAnalytics />") && !layoutSrc.includes("<Analytics />"), "Vercel Analytics goes through beforeSend");
-  assert(proxySrc.includes('invitePage ? "off" : "on"'), "proxy turns trackers off on /h/*");
+  const TRACKER_RE = /googletagmanager\.com|datafa\.st\/js|gtmLoaderSnippet\(|ANALYTICS_REDACT_BOOTSTRAP \}/g;
+  const allowed = new Set(["app/layout.tsx", "lib/analytics-redact.ts"]);
+  const walk = (dir: string): string[] =>
+    readdirSync(join(root, dir), { withFileTypes: true }).flatMap((entry) => {
+      const rel = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) return walk(rel);
+      return /\.(tsx?|jsx?|mjs)$/.test(entry.name) ? [rel] : [];
+    });
+  const sources = [...walk("app"), ...walk("components"), ...walk("lib"), "proxy.ts", "next.config.ts"];
+  for (const file of sources) {
+    const text = read(file);
+    if (!TRACKER_RE.test(text)) continue;
+    TRACKER_RE.lastIndex = 0;
+    assert(allowed.has(file), `tracker script referenced outside the gated files: ${file}`);
+  }
+  // Each layout tracker sits inside a `{trackers ? (` branch.
+  const layoutLines = layoutSrc.split("\n");
+  let gatedCount = 0;
+  for (const [index, line] of layoutLines.entries()) {
+    if (!/googletagmanager\.com|datafa\.st\/js|gtmLoaderSnippet\(|ANALYTICS_REDACT_BOOTSTRAP \}/.test(line)) continue;
+    const before = layoutLines.slice(0, index).join("\n");
+    const open = before.lastIndexOf("{trackers ? (");
+    assert(open >= 0 && open > before.lastIndexOf(") : null}"), `layout line ${index + 1} sits inside an open {trackers ? (…) : null} branch`);
+    gatedCount += 1;
+  }
+  assert(gatedCount === 4, `4 gated tracker spots in the layout (${gatedCount})`);
+  const proxySrc2 = read("proxy.ts");
+  assert(proxySrc2.includes('clean ? "on" : "off"') && proxySrc2.includes("cleanUrlRedirect(request)"), "proxy sets trackers from the clean-URL predicate");
+  assert(
+    proxySrc2.indexOf("NextResponse.rewrite") < proxySrc2.indexOf("cleanUrlRedirect(request)") &&
+      proxySrc2.indexOf("cleanUrlRedirect(request)") < proxySrc2.indexOf("trackAICrawlerRequest(request"),
+    "proxy order: legacy rewrite → clean redirect → DataFast",
+  );
+
+  // ---- (c5) store mode + expired-row sweep + prod-only webhook ----
+  const envKeys = ["VERCEL", "VERCEL_ENV", "DATABASE_URL", "POSTGRES_URL", "HALFWAY_ALLOW_NONPROD_DB"] as const;
+  const savedEnv = Object.fromEntries(envKeys.map((key) => [key, process.env[key]]));
+  const setEnv = (values: Partial<Record<(typeof envKeys)[number], string>>) => {
+    for (const key of envKeys) delete process.env[key];
+    Object.assign(process.env, values);
+  };
+  const db = "postgres://user:pw@example.invalid/db";
+  const matrix: Array<[Partial<Record<(typeof envKeys)[number], string>>, string]> = [
+    [{}, "memory"],
+    [{ DATABASE_URL: db }, "memory"],
+    [{ DATABASE_URL: db, HALFWAY_ALLOW_NONPROD_DB: "1" }, "neon"],
+    [{ VERCEL: "1", VERCEL_ENV: "preview", DATABASE_URL: db }, "missing"],
+    [{ VERCEL: "1", VERCEL_ENV: "preview", DATABASE_URL: db, HALFWAY_ALLOW_NONPROD_DB: "1" }, "neon"],
+    [{ VERCEL: "1", VERCEL_ENV: "preview" }, "missing"],
+    [{ VERCEL: "1", VERCEL_ENV: "development", DATABASE_URL: db }, "missing"],
+    [{ VERCEL: "1", VERCEL_ENV: "production", DATABASE_URL: db }, "neon"],
+    [{ VERCEL: "1", VERCEL_ENV: "production" }, "missing"],
+  ];
+  try {
+    for (const [values, expected] of matrix) {
+      setEnv(values);
+      assert(halfwayStoreKind() === expected, `store kind ${JSON.stringify(values)} → ${expected} (${halfwayStoreKind()})`);
+    }
+    // Preview with the prod DATABASE_URL: no invite is written anywhere.
+    setEnv({ VERCEL: "1", VERCEL_ENV: "preview", DATABASE_URL: db });
+    assert((await createHalfwayInviteSession({ locale: "ar", host: HOST })) === null, "preview without opt-in writes nothing");
+  } finally {
+    setEnv({});
+    for (const key of envKeys) if (savedEnv[key] !== undefined) process.env[key] = savedEnv[key];
+  }
+  assert(halfwayStoreKind() === "memory", "env restored (memory)");
+
+  const sweepNow = Date.now();
+  const stale = await createHalfwayInviteSession({ locale: "ar", host: HOST, now: sweepNow - 26 * 60 * 60 * 1000 });
+  const recent = await createHalfwayInviteSession({ locale: "ar", host: HOST, now: sweepNow - 2 * 60 * 60 * 1000 });
+  const live = await createHalfwayInviteSession({ locale: "ar", host: HOST, now: sweepNow });
+  const staleLegacy = encodeHalfwayInviteId({ locale: "en", locations: [GUEST], now: sweepNow - 30 * 60 * 1000 });
+  assert(stale && recent && live && staleLegacy, "sweep fixtures");
+  const staleLegacyMint = await migrateLegacyHalfwayInvite(staleLegacy, { now: sweepNow - 30 * 60 * 1000 });
+  assert(staleLegacyMint.ok, "legacy fixture minted");
+  const swept = await sweepExpiredHalfwayInvites({ now: sweepNow });
+  assert(swept >= 1, `sweep deleted rows past expiry + 24 h (${swept})`);
+  assert(!(await readHalfwayInviteSession(stale.id, 0)), "row expired > 24 h ago is gone");
+  assert(await readHalfwayInviteSession(recent.id, 0), "row expired < 24 h ago is kept (expired screen still works)");
+  assert(await readHalfwayInviteSession(live.id, 0), "live row kept");
+  const sweptLater = await sweepExpiredHalfwayInvites({ now: sweepNow + 48 * 60 * 60 * 1000 });
+  assert(sweptLater >= 2, `later sweep clears the rest (${sweptLater})`);
+  const afterSweep = await migrateLegacyHalfwayInvite(staleLegacy, { now: sweepNow + 48 * 60 * 60 * 1000 });
+  assert(!afterSweep.ok && afterSweep.reason === "expired", "swept legacy mapping is gone too (no resurrection)");
+  const storeSrc = read("lib/halfway-invite-store.ts");
+  assert(!/\b(ALTER|CREATE)\s+(TABLE|UNIQUE|INDEX)/i.test(storeSrc), "store runs no DDL at request time");
+  assert(/DELETE FROM halfway_invites/.test(storeSrc), "store sweeps expired rows");
+  const migrationSql = read("sql/halfway-invites-privacy.sql");
+  for (const needle of ["ADD COLUMN IF NOT EXISTS locale", "ADD COLUMN IF NOT EXISTS host_locations", "ADD COLUMN IF NOT EXISTS legacy_key", "halfway_invites_legacy_key_idx", "halfway_invites_expires_at_idx"]) {
+    assert(migrationSql.includes(needle), `migration has ${needle}`);
+  }
+
+  const { notifyHalfwayResults } = await import("../lib/halfway-results-webhook");
+  const hookFetch = globalThis.fetch;
+  const savedHook = { key: process.env.HALFWAY_RESULTS_WEBHOOK_KEY, env: process.env.VERCEL_ENV };
+  let hookPosts = 0;
+  globalThis.fetch = (async () => {
+    hookPosts += 1;
+    return new Response("ok");
+  }) as typeof fetch;
+  try {
+    process.env.HALFWAY_RESULTS_WEBHOOK_KEY = "test-key";
+    const pinPair = [{ pin: HOST }, { pin: GUEST }];
+    const picks = meetHalfwayChatPicks({ locations: pinPair, language: "en" });
+    assert(picks.length > 0, "webhook fixture picks");
+    for (const env of ["preview", "development", undefined]) {
+      if (env) process.env.VERCEL_ENV = env;
+      else delete process.env.VERCEL_ENV;
+      const outcome = await notifyHalfwayResults({ locale: "en", picks, midpoint: HOST, locations: pinPair, source: "invite" });
+      assert(outcome === "skipped", `webhook stubs on ${env ?? "local"} even with the key (${outcome})`);
+    }
+    assert(hookPosts === 0, "no webhook POST outside production");
+  } finally {
+    globalThis.fetch = hookFetch;
+    if (savedHook.key === undefined) delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
+    else process.env.HALFWAY_RESULTS_WEBHOOK_KEY = savedHook.key;
+    if (savedHook.env === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = savedHook.env;
+  }
 
   // ---- (d) no raw typed text reaches the dataLayer ----
   const ask = "قهوة هادية قريب من الملقا";

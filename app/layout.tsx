@@ -3,7 +3,11 @@ import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import { headers } from "next/headers";
 import Script from "next/script";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
-import { ANALYTICS_REDACT_BOOTSTRAP, TRACKERS_HEADER } from "@/lib/analytics-redact";
+import {
+  ANALYTICS_REDACT_BOOTSTRAP,
+  gtmLoaderSnippet,
+  TRACKERS_HEADER,
+} from "@/lib/analytics-redact";
 import { RedactedAnalytics } from "@/components/redacted-analytics";
 import { CityProvider } from "@/lib/city-context";
 import { cityLabel, DEFAULT_LIVE_CITY } from "@/lib/cities";
@@ -62,9 +66,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const headerList = await headers();
   const language = localeFromRequestHeaders(headerList);
-  // بيننا invite pages (/h/*) load no GTM (GA4 + X + OpenAI pixels) and no
-  // DataFast: those tags read document.location directly. See proxy.ts.
-  const trackers = headerList.get(TRACKERS_HEADER) !== "off";
+  // GTM (GA4 + X + OpenAI + Google Ads) and DataFast load only on a clean
+  // URL: not /h/*, /owner/edit or /ops, and no query keys outside the
+  // allowlist. Those tags read document.location directly. The proxy sets
+  // this header on every page request; anything else fails closed.
+  // See proxy.ts and lib/analytics-redact.ts.
+  const trackers = headerList.get(TRACKERS_HEADER) === "on";
   return (
     <html
       lang={htmlLang(language)}
@@ -81,15 +88,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <script dangerouslySetInnerHTML={{ __html: ANALYTICS_REDACT_BOOTSTRAP }} />
         ) : null}
         {trackers ? (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-            }}
-          />
+          <script dangerouslySetInnerHTML={{ __html: gtmLoaderSnippet(GTM_ID) }} />
         ) : null}
       </head>
       <body className="min-h-dvh bg-paper text-ink antialiased">

@@ -1,9 +1,12 @@
 import { NextResponse, type NextFetchEvent, type NextRequest } from "next/server";
 import { trackAICrawlerRequest } from "@datafast/ai-crawl";
 import { LOCALE_HEADER, localeFromPathname } from "@/lib/locale";
+import { cleanUrlRedirect } from "@/lib/clean-url-redirect";
 import {
   isInvitePathname,
+  redactAnalyticsReferrer,
   redactAnalyticsUrl,
+  trackersAllowed,
   TRACKERS_HEADER,
 } from "@/lib/analytics-redact";
 import {
@@ -21,7 +24,7 @@ const redactedDataFastFetch: typeof fetch = (input, init) => {
       const body = JSON.parse(init.body) as { href?: unknown; referrer?: unknown };
       if (typeof body.href === "string") body.href = redactAnalyticsUrl(body.href);
       if (typeof body.referrer === "string") {
-        body.referrer = redactAnalyticsUrl(body.referrer) || null;
+        body.referrer = redactAnalyticsReferrer(body.referrer) || null;
       }
       return fetch(input, { ...init, body: JSON.stringify(body) });
     } catch {
@@ -52,7 +55,11 @@ export function proxy(request: NextRequest, event: NextFetchEvent) {
     return NextResponse.rewrite(target, { request: { headers: legacyHeaders } });
   }
 
-  if (!invitePage) {
+  const redirect = cleanUrlRedirect(request);
+  if (redirect) return redirect;
+
+  const clean = trackersAllowed(pathname, searchParams);
+  if (clean) {
     try {
       trackAICrawlerRequest(request, event, {
         websiteId: "dfid_qZyLQNdTVNdYA3lB44WTe",
@@ -64,13 +71,14 @@ export function proxy(request: NextRequest, event: NextFetchEvent) {
   }
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(LOCALE_HEADER, localeFromPathname(pathname));
-  // Root layout skips GTM + DataFast on invite pages (never trust the client's value).
-  requestHeaders.set(TRACKERS_HEADER, invitePage ? "off" : "on");
+  // Root layout loads GTM + DataFast only on a clean URL (never trust the
+  // client's value: this always overwrites it).
+  requestHeaders.set(TRACKERS_HEADER, clean ? "on" : "off");
   const response = NextResponse.next({
     request: { headers: requestHeaders },
   });
-  if (invitePage) {
-    // Links / navigations out of an invite page carry only the origin.
+  if (!clean) {
+    // Links / navigations out of a private URL carry only the origin.
     response.headers.set("Referrer-Policy", "strict-origin");
   }
   return response;

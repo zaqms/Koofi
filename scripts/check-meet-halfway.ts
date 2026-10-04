@@ -1876,6 +1876,7 @@ assert(
 void (async () => {
   const previousFetch = globalThis.fetch;
   const previousKey = process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
+  const previousVercelEnv = process.env.VERCEL_ENV;
   const sent: Array<{ url: string; auth: string | null; body: unknown }> = [];
   globalThis.fetch = (async (url: string | URL, init?: RequestInit) => {
     sent.push({
@@ -1900,6 +1901,23 @@ void (async () => {
     assert(sent.length === 0, "stub does not POST");
 
     process.env.HALFWAY_RESULTS_WEBHOOK_KEY = "test-halfway-webhook-key";
+    // Key present but not Vercel Production (preview / local): stub, no POST.
+    for (const env of [undefined, "preview", "development"]) {
+      if (env === undefined) delete process.env.VERCEL_ENV;
+      else process.env.VERCEL_ENV = env;
+      const previewRun = await notifyHalfwayResults({
+        locale: "en",
+        picks: resultPicks,
+        sessionId: "session-token",
+        midpoint,
+        locations: two,
+        source: "invite",
+      });
+      assert(previewRun === "skipped", `non-production (${env ?? "local"}) stubs even with the key`);
+    }
+    assert(sent.length === 0, "non-production never POSTs");
+
+    process.env.VERCEL_ENV = "production";
     const posted = await notifyHalfwayResults({
       locale: "en",
       picks: resultPicks,
@@ -1982,6 +2000,8 @@ void (async () => {
     globalThis.fetch = previousFetch;
     if (previousKey === undefined) delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
     else process.env.HALFWAY_RESULTS_WEBHOOK_KEY = previousKey;
+    if (previousVercelEnv === undefined) delete process.env.VERCEL_ENV;
+    else process.env.VERCEL_ENV = previousVercelEnv;
   }
 
   console.log("meet-halfway pin-first lock ok");

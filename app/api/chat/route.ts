@@ -9,6 +9,7 @@ import {
 } from "@/lib/cities";
 import { copy } from "@/lib/copy";
 import { isOffTopicAsk } from "@/lib/off-topic-intent";
+import { clientIp } from "@/lib/feedback";
 import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import {
@@ -101,7 +102,11 @@ export async function POST(request: Request) {
     let sessionId = rawSessionId;
     if (rawSessionId) {
       try {
-        const canonical = await canonicalHalfwayInviteId(rawSessionId);
+        // Same per-IP limit as the legacy redirect: crafted legacy tokens
+        // can't mint rows without it.
+        const canonical = await canonicalHalfwayInviteId(rawSessionId, {
+          ip: clientIp(request),
+        });
         if (canonical.ok) sessionId = canonical.id;
       } catch {
         sessionId = rawSessionId;

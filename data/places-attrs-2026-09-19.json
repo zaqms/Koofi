@@ -4265,11 +4265,11 @@
       "nameEn": "Drive Coffee",
       "nameAr": "درايف كوفي",
       "neighborhood": "al-arid",
-      "place_id": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
-      "place_name": "Drive coffee",
-      "dine_in": true,
+      "place_id": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
+      "place_name": "Drive coffee درايف كوفي",
+      "dine_in": false,
       "outdoor_seating": null,
-      "takeout": true,
+      "takeout": null,
       "delivery": true,
       "curbside_pickup": null,
       "moment_tags": [
@@ -6236,8 +6236,8 @@
       "error": 0
     },
     "dine_in": {
-      "true": 287,
-      "false": 4,
+      "true": 286,
+      "false": 5,
       "null": 52
     },
     "outdoor_seating": {
@@ -6245,10 +6245,10 @@
       "false": 43,
       "null": 159
     },
-    "eligible_baynana": 289,
-    "ineligible": 16,
+    "eligible_baynana": 288,
+    "ineligible": 17,
     "unsure": 38,
     "drive_through_tagged": 78,
-    "drive_through_but_dine_in": 50
+    "drive_through_but_dine_in": 49
   }
 }

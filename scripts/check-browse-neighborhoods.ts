@@ -215,7 +215,7 @@ for (const row of rowsEn) {
           : row.id === "al-qirawan"
             ? 13
             : row.id === "al-arid"
-              ? 11
+              ? 10 // drive-al-arid is a chain with unknown dine-in (4 Oct 2026)
               : 8;
     assert(
       row.cafeCount === expected,
@@ -350,17 +350,25 @@ for (const id of [
   "as-salam",
   "ghubairah",
   "al-wisham",
-  "al-hazm",
-  "al-andalus",
-  "al-khaleej",
-  "ar-rimal",
-  "al-janadriyyah",
   "namar",
   "tuwaiq",
 ] as const) {
   assert(az.some((row) => row.id === id), `A–Z keeps ${id}`);
 }
-for (const id of ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const) {
+// Drive Coffee is a chain (4 Oct 2026). These five districts only had a
+// Drive drive-through lane row, so they drop like the dr.CAFE-only ones.
+for (const id of [
+  "kkia",
+  "al-jazirah",
+  "an-nasim",
+  "shubra",
+  "manfuha",
+  "al-hazm",
+  "al-andalus",
+  "al-khaleej",
+  "ar-rimal",
+  "al-janadriyyah",
+] as const) {
   assert(!az.some((row) => row.id === id), `A–Z hides chain-only ${id}`);
 }
 assert(
@@ -368,7 +376,7 @@ assert(
   "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 68, "A–Z drops the five chain-only districts (64 + 4 Bisat batch districts)");
+assert(az.length === 63, "A–Z drops the ten chain-only districts (64 + 4 Bisat batch − 5 Drive-only districts)");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

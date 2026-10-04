@@ -187,7 +187,7 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 57, `expected 57 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 380, `specialty discovery is 380 after the Bisat batch, got ${listDiscoveryShops().length}`);
+assert(listDiscoveryShops().length === 377, `specialty discovery is 377 (380 − 3 Drive Coffee rows now chains), got ${listDiscoveryShops().length}`);
 assert(listRealShops().length === 441, `catalog is 441 (433 plus the 8 Bisat batch rows), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
@@ -1134,7 +1134,6 @@ const WAVE1_DISTRICTS: {
       "drip-al-ghadeer",
       "blumen-al-ghadeer",
       "brsk-al-ghadeer",
-      "drive-al-ghadeer",
       "ghandoura-al-ghadeer",
       "iota-al-ghadeer",
     ],
@@ -1148,7 +1147,6 @@ const WAVE1_DISTRICTS: {
       "kicksters-lab-al-arid",
       "shovel-al-arid",
       "archi-al-arid",
-      "drive-al-arid",
       "roasting-house-al-arid",
       "coffee-address-al-arid",
       "shiro-al-arid",
@@ -1168,7 +1166,6 @@ const WAVE1_DISTRICTS: {
       "drip-al-qirawan",
       "coffee-side-al-qirawan",
       "caf-lab-al-qirawan",
-      "drive-al-qirawan",
       "scout-coffee-al-qirawan",
       "ract-al-qirawan",
       "nap-al-qirawan",
@@ -1704,6 +1701,23 @@ const MALAZ_REFILL = {
     assert(shop.logoUrl === logoUrl, `${id} keeps the harvested mark`);
   }
 }
+
+// Drive Coffee is a chain (4 Oct 2026): out of the specialty directory above.
+// Ghadeer and Qirawan list it as a {chain} row (dine-in true); Arid's row has
+// dine-in unknown, so it stays off the district list like other chains.
+for (const id of ["drive-al-ghadeer", "drive-al-arid", "drive-al-qirawan"]) {
+  assert(!shops.some((shop) => shop.id === id), `${id} is not in specialty discovery (chain)`);
+  assert(getShop(id)?.isChain === true && getShop(id)?.chainBrand === "drive", `${id} is tagged drive`);
+}
+assert(
+  listDirectoryShopsForDistrict("al-ghadeer").some((shop) => shop.id === "drive-al-ghadeer" && shop.isChain) &&
+    listDirectoryShopsForDistrict("al-qirawan").some((shop) => shop.id === "drive-al-qirawan" && shop.isChain),
+  "Al Ghadeer and Al Qirawan list Drive Coffee as a chain row",
+);
+assert(
+  !listDirectoryShopsForDistrict("al-arid").some((shop) => shop.id === "drive-al-arid"),
+  "Al Arid drops Drive Coffee (chain, dine-in unknown)",
+);
 
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);

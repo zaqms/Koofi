@@ -4,11 +4,14 @@ import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { districtCity } from "./district-city";
 import { coffeeShopsInDistrict } from "./directory-category";
 import { EN_CONTENT_DATE_MODIFIED } from "./en-content";
+import { listFixedListShops } from "./fixed-lists";
+import { fixedListHeading, isFixedListId, type FixedListId } from "./fixed-list-ids";
 import { listPopularPublicShops } from "./most-popular";
 import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import {
   cardPath,
+  chipSharePath,
   districtPath,
   mostPopularHeading,
   mostPopularPath,
@@ -340,6 +343,33 @@ export function districtItemListJsonLd(
     url: districtCanonicalUrl(district, language),
     numberOfItems: shops.length,
     dateModified: EN_CONTENT_DATE_MODIFIED,
+    itemListElement: shops.map((shop, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: shopCanonicalUrl(shop.id, language),
+      item: shopJsonLd(shop, language, { includeContext: false }),
+    })),
+  };
+}
+
+/**
+ * ItemList for Outdoor, Best coffee, and Work. Nearby stays out —
+ * the ranked list depends on the visitor, and the no-location HTML
+ * is a popular fallback, not "nearby".
+ */
+export function fixedListItemListJsonLd(
+  id: string,
+  language: Language,
+): ItemListJsonLd | null {
+  if (!isFixedListId(id) || id === "nearby") return null;
+  const listId: FixedListId = id;
+  const shops = listFixedListShops(listId);
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@type": "ItemList",
+    name: fixedListHeading(listId, language),
+    url: `${PUBLIC_SITE_URL}${chipSharePath(listId, language)}`,
+    numberOfItems: shops.length,
     itemListElement: shops.map((shop, index) => ({
       "@type": "ListItem",
       position: index + 1,

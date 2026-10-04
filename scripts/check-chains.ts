@@ -70,6 +70,13 @@ import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
 import { isHalfwayEligible, filterHalfwayEligible } from "../lib/halfway-eligibility";
 import { rankByPopularity } from "../lib/district-rank";
 import { listPopularDirectoryShops } from "../lib/most-popular";
+import {
+  listBestCoffeeShops,
+  listNearbyShops,
+  listOutdoorShops,
+  listWorkShops,
+} from "../lib/fixed-lists";
+import { fixedListAllowsChains } from "../lib/fixed-list-ids";
 import { formatReply, pickCafes } from "../lib/picker";
 import { districtPath } from "../lib/product";
 import { dedupeSameBrand, shopBrandKey } from "../lib/shop-brand";
@@ -481,10 +488,10 @@ assert(
   "live 24cafe is tagged 24cafe",
 );
 const taggedLive = listRealShops().filter((shop) => shop.isChain === true);
-assert(taggedLive.length === 27, "exactly 27 existing rows are tagged");
+assert(taggedLive.length === 28, "exactly 28 existing rows are tagged (27 + dr.CAFE As Suwaidi)");
 assert(
-  taggedLive.filter((shop) => shop.chainBrand === "dr-cafe").length === 18,
-  "18 dr.CAFE rows are tagged",
+  taggedLive.filter((shop) => shop.chainBrand === "dr-cafe").length === 19,
+  "19 dr.CAFE rows are tagged (18 + As Suwaidi, Batch D1)",
 );
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "java").length === 6,
@@ -495,6 +502,8 @@ assert(
   "3 24cafe rows are tagged",
 );
 const dineInLaneRemoved = [
+  // Batch D1 (4 Oct): sit-down + drive-through branch, added without the lane.
+  "drcafe-as-suwaidi",
   "drcafe-namar",
   "drcafe-tuwaiq",
   "drcafe-sulimaniyah",
@@ -653,21 +662,21 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 389, "specialty discovery is 389 after Batch D2 Al Falah (380 + 9)");
-assert(listRealShops().length === 450, "catalog is 450 after Batch D2 Al Falah (441 + 9)");
+assert(listDiscoveryShops().length === 395, "specialty discovery is 395 after Batch D1 and Batch D2 (380 + 6 local As Suwaidi + 9 Al Falah)");
+assert(listRealShops().length === 457, "catalog is 457 after Batch D1 and Batch D2 (441 + 7 + 9)");
 assert(listLiveDistrictIds().length === 57, "specialty districts are 57 (Bisat batch adds Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 74,
   "catalog rows cover 74 districts (Jarir hidden; 4 Bisat batch districts)",
 );
 assert(listLiveCatalogDistrictIds().length === 68, "five chain-only districts drop out of the page set (64 + 4 Bisat batch)");
-assert(listDriveThroughDirectoryShops().length === 71, "drive-through is 71 after the placeId fix");
-assert(listListingShops().length === 396, "listing is specialty plus the 7 sit-down chains");
-assert(listPublicShops().length === 396, "public list includes the 7 sit-down chains");
-assert(listBrowseDirectoryShops().length === 406, "browse keeps local drive-through rows and the sit-down chains");
+assert(listDriveThroughDirectoryShops().length === 73, "drive-through is 73 after Batch D1 (Coffee Address + dr.CAFE As Suwaidi)");
+assert(listListingShops().length === 403, "listing is specialty plus the 8 sit-down chains");
+assert(listPublicShops().length === 403, "public list includes the 8 sit-down chains");
+assert(listBrowseDirectoryShops().length === 413, "browse keeps local drive-through rows and the sit-down chains");
 assert(
-  listListingShops().filter((shop) => shop.isChain).length === 7,
-  "exactly 7 sit-down chains are listed",
+  listListingShops().filter((shop) => shop.isChain).length === 8,
+  "exactly 8 sit-down chains are listed (7 + dr.CAFE As Suwaidi)",
 );
 assert(
   listDirectoryShopsForDistrict("al-malaz").some((shop) => shop.id === "java-cafe-al-malaz") &&
@@ -847,7 +856,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz,tuwaiq",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz,tuwaiq,as-suwaidi",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -1066,7 +1075,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "77b6ed9de56c43a0052f85c01ffa51e327570d03b2264ea1fdff27d37d4e885a",
+  copyHash === "cc484560ee0a74476039ffddd160ffb84b3b230b2053621a276312bbe37dc13b",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1182,12 +1191,12 @@ assert(
 );
 const driveThrough = listDriveThroughDirectoryShops();
 assert(
-  driveThrough.filter((shop) => shop.isChain === true).length === 27,
-  "the drive-through directory includes the 27 tagged branches",
+  driveThrough.filter((shop) => shop.isChain === true).length === 28,
+  "the drive-through directory includes the 28 tagged branches",
 );
 assert(
-  applyHideChains(driveThrough, true).length === 44,
-  "drive-through local-only keeps the 44 non-chain rows",
+  applyHideChains(driveThrough, true).length === 45,
+  "drive-through local-only keeps the 45 non-chain rows (44 + Coffee Address As Suwaidi)",
 );
 assert(
   !chainFilterShowsEmpty(driveThrough, true),
@@ -1196,12 +1205,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "890d377307bb155311dcf1c69b2205614d54431183887a8bf662c8085c183b56",
+  llmsHash === "f8ce4547fe5856f26c42ea9623fc64da14eabd08ef6bb4b7ca491c1740c6d935",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("389 local, 7 chain branches"),
-  "llms.txt names the 7 chain branches separately from specialty",
+  llms.includes("395 local, 8 chain branches"),
+  "llms.txt names the 8 chain branches separately from specialty",
 );
 
 assert(
@@ -1939,5 +1948,26 @@ for (const district of hiddenDistrictCafes) {
     }
   }
 }
+
+assert(fixedListAllowsChains("nearby") && fixedListAllowsChains("outdoor"), "Nearby and Outdoor show chains behind Local only");
+assert(!fixedListAllowsChains("coffee") && !fixedListAllowsChains("work"), "Best coffee and Work are local only");
+assert(listNearbyShops().some((shop) => isChainShop(shop)), "Nearby pool includes listed chains");
+assert(listOutdoorShops().some((shop) => isChainShop(shop)), "Outdoor pool includes listed chains");
+assert(
+  listBestCoffeeShops().every((shop) => !isChainShop(shop)) &&
+    listWorkShops().every((shop) => !isChainShop(shop)),
+  "Best coffee and Work contain zero chains",
+);
+assert(
+  read("components/fixed-list-body.tsx").includes("data-chain-filter") &&
+    read("components/fixed-list-body.tsx").includes("HIDE_CHAINS") === false &&
+    read("components/fixed-list-body.tsx").includes("writeHideChains") &&
+    !read("components/fixed-list-body.tsx").includes("URLSearchParams"),
+  "fixed lists reuse the Local only toggle, localStorage, no URL param",
+);
+assert(
+  listPopularDirectoryShops().every((shop) => !shop.isChain),
+  "Most Popular stays local",
+);
 
 console.log("check-chains: ok");

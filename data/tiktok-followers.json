@@ -727,6 +727,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
   },
+  "coffee-address-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
   "coffee-planet-kafd": {
     "handle": "@coffeeplanetksa",
     "followers": 9801,
@@ -978,6 +985,13 @@
     "status": "found",
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
+  },
+  "drcafe-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
   },
   "drcafe-badr": {
     "handle": "@drcafeksa",
@@ -1236,6 +1250,13 @@
     "followers": null,
     "status": "unverified",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "era-coffee-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
     "sharedBrandAccount": false
   },
   "essert-al-arid": {
@@ -1523,6 +1544,13 @@
     "followers": null,
     "status": "unverified",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "hot-sip-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
     "sharedBrandAccount": false
   },
   "house-of-matcha-al-mohammadiyah": {
@@ -2036,6 +2064,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
   },
+  "naham-specialty-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
   "najd-alathiah-qurtubah": {
     "handle": null,
     "followers": null,
@@ -2323,6 +2358,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "plant-cafe-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
   "public-al-naseem-sharqi": {
     "handle": "@public.sa",
     "followers": 245,
@@ -2601,6 +2643,13 @@
     "followers": null,
     "status": "none",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "seen-cafe-as-suwaidi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
     "sharedBrandAccount": false
   },
   "semi-specialty-cafe-ghirnatah": {

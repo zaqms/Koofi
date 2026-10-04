@@ -24,6 +24,7 @@ import {
   listingSharePath,
   packSharePath,
   VIBE_CHIPS,
+  isFixedListChip,
 } from "../lib/product";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { matchCatalogShops } from "../lib/shop-name";
@@ -210,6 +211,14 @@ assert(
     essertOld.some((shop) => shop.id === "essert-al-arid"),
   "Essert search finds both rows by ايزرت and the previous إسرت spelling",
 );
+// #247 QA L4: Era is «إرا» in the catalog; people also type «ايرا» / «إيرا».
+for (const q of ["ايرا", "إيرا", "قهوة ايرا", "إرا"]) {
+  const hits = matchCatalogShops(q, catalog);
+  assert(
+    hits[0]?.id === "era-coffee-as-suwaidi",
+    `"${q}" resolves to Era As Suwaidi, got ${hits.map((shop) => shop.id).join(",")}`,
+  );
+}
 const hintia = matchCatalogShops("Hintia", catalog);
 const hintiya = matchCatalogShops("Hintiya", catalog);
 assert(
@@ -291,8 +300,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 450,
-  `popularity map should have 450 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 457,
+  `popularity map should have 457 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) =>
@@ -420,7 +429,8 @@ assertPopularLock("اللي عليها طلب", "ar");
 assertPopularLock("popular", "en");
 
 const bestCoffee = pickCafes({ text: "Best Coffee", language: "en" });
-assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee stays qahwa");
+assert(isFixedListChip("coffee"), "Best coffee page is a fixed list");
+assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee chat ask stays qahwa until it shares the list rule");
 assert(
   bestCoffee.picks.every((pick) => pick.shop.momentTags.includes("qahwa")),
   "Best Coffee still ranks qahwa-tagged shops",

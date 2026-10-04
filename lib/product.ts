@@ -27,6 +27,7 @@ export {
   isCoffeeShopChipSlug,
   isDirectoryResultSortChip,
   isDriveThroughDirectoryChip,
+  isFixedListChip,
   isHomeChipId,
   isOffHomeChipId,
   isStaticDirectoryChip,

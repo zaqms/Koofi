@@ -26,6 +26,8 @@ type BrowseNeighborhoodsProps = {
   language: Language;
   city?: CityId;
   candidates: readonly HomeNeighborhoodCandidate[];
+  /** Inside another padded section (Nearby without a location). */
+  embedded?: boolean;
 };
 
 function trackDistrict(
@@ -181,6 +183,7 @@ export function BrowseNeighborhoods({
   language,
   city,
   candidates,
+  embedded = false,
 }: BrowseNeighborhoodsProps) {
   const { cityId: selectedCityId } = useCity();
   const selected = city ?? selectedCityId;
@@ -208,7 +211,11 @@ export function BrowseNeighborhoods({
 
   return (
     <section
-      className="mx-auto mt-12 w-full max-w-md bg-paper px-4 pt-0 pb-0"
+      className={
+        embedded
+          ? "mt-5 w-full"
+          : "mx-auto mt-12 w-full max-w-md bg-paper px-4 pt-0 pb-0"
+      }
       dir={rtl ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby="browse-neighborhoods"

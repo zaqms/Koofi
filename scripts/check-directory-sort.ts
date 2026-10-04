@@ -57,6 +57,17 @@ assert(DIRECTORY_SORT_COPY.new === copy.directorySortNew, "New copy is directory
 assert(isDirectoryResultSortChip("matcha"), "Matcha results get the shared sorter");
 assert(isDirectoryResultSortChip("drive-through"), "DT results get the shared sorter");
 assert(!isDirectoryResultSortChip("popular"), "Most Popular stays unsorted");
+assert(
+  !isDirectoryResultSortChip("nearby") &&
+    !isDirectoryResultSortChip("outdoor") &&
+    !isDirectoryResultSortChip("coffee") &&
+    !isDirectoryResultSortChip("work"),
+  "fixed lists do not extend Matcha/DT sort keys — popular stays off DIRECTORY_RESULT_SORTS",
+);
+assert(
+  read("components/fixed-list-body.tsx").includes('["popular", "nearby"]'),
+  "Outdoor, Best coffee, and Work sort Popular then Nearby inside the list",
+);
 assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();

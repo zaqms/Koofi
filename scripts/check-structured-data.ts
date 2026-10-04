@@ -28,6 +28,7 @@ import {
 import {
   buildLlmsTxt,
   districtItemListJsonLd,
+  fixedListItemListJsonLd,
   mostPopularItemListJsonLd,
   jsonHasForbiddenPublicFields,
   listPublicShops,
@@ -704,6 +705,21 @@ assert(
   llms.includes("WebSite"),
   "llms.txt mentions home WebSite JSON-LD",
 );
+
+assert(
+  readRepo("app/[category]/[slug]/page.tsx").includes("fixedListItemListJsonLd") &&
+    readRepo("app/en/[category]/[slug]/page.tsx").includes("fixedListItemListJsonLd"),
+  "fixed list pages inject ItemList",
+);
+const outdoorList = fixedListItemListJsonLd("outdoor", "ar");
+const coffeeList = fixedListItemListJsonLd("coffee", "en");
+const workList = fixedListItemListJsonLd("work", "ar");
+assert(fixedListItemListJsonLd("nearby", "ar") == null, "nearby has no ItemList");
+assert(outdoorList?.numberOfItems === 179, "outdoor ItemList is 179");
+assert(coffeeList?.numberOfItems === 66, "best coffee ItemList is 66");
+assert(workList?.numberOfItems === 65, "work ItemList is 65");
+assert(outdoorList?.name === "قهاوي فيها جلسات خارجية في الرياض", "outdoor ItemList name is the H1");
+assert(!JSON.stringify(coffeeList).includes("noindex"), "best coffee list stays indexable");
 
 console.log(
   `check-structured-data: ok (${shops.length} shops, sample ${sample.id}, ${aboutAr.length} about FAQs)`,

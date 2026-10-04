@@ -1,3 +1,4 @@
+import { isFixedListId } from "./fixed-list-ids";
 import type { Language, MomentTag } from "./types";
 
 /**
@@ -15,13 +16,17 @@ export type DiscoveryEligibility =
   | { rule: "popularity-index" }
   | { rule: "moment-tag"; momentTag: MomentTag }
   | { rule: "drive-through-tagged"; momentTag: "drive-through" }
-  | { rule: "nearby-haversine" };
+  | { rule: "nearby-haversine" }
+  | { rule: "places-outdoor-seating" }
+  | { rule: "roaster-tag" }
+  | { rule: "work-tag+dineIn" };
 
 export type DiscoveryDirectoryKind =
   | "static-list"
   | "three-pick"
   | "chip-filter"
-  | "nearby-geo";
+  | "nearby-geo"
+  | "fixed-list";
 
 export type DiscoverySurface = "home" | "off-home";
 
@@ -90,9 +95,9 @@ export const DISCOVERY_CATEGORIES = [
     enabled: true,
     homeRank: 4,
     surface: "home",
-    directoryKind: "chip-filter",
+    directoryKind: "fixed-list",
     resultSort: false,
-    eligibility: { rule: "moment-tag", momentTag: "qahwa" },
+    eligibility: { rule: "roaster-tag" },
     momentTag: "qahwa",
     vibeOrder: 2,
     slugOrder: 2,
@@ -205,9 +210,9 @@ export const DISCOVERY_CATEGORIES = [
     enabled: true,
     homeRank: 5,
     surface: "home",
-    directoryKind: "chip-filter",
+    directoryKind: "fixed-list",
     resultSort: false,
-    eligibility: { rule: "moment-tag", momentTag: "work" },
+    eligibility: { rule: "work-tag+dineIn" },
     momentTag: "work",
     vibeOrder: 9,
     slugOrder: 9,
@@ -253,9 +258,9 @@ export const DISCOVERY_CATEGORIES = [
     enabled: true,
     homeRank: 7,
     surface: "home",
-    directoryKind: "chip-filter",
+    directoryKind: "fixed-list",
     resultSort: false,
-    eligibility: { rule: "moment-tag", momentTag: "outdoor" },
+    eligibility: { rule: "places-outdoor-seating" },
     momentTag: "outdoor",
     vibeOrder: 12,
     slugOrder: 12,
@@ -285,7 +290,7 @@ export const DISCOVERY_CATEGORIES = [
     enabled: true,
     homeRank: 2,
     surface: "home",
-    directoryKind: "nearby-geo",
+    directoryKind: "fixed-list",
     resultSort: false,
     eligibility: { rule: "nearby-haversine" },
     momentTag: null,
@@ -383,6 +388,14 @@ export function isStaticDirectoryChip(
 ): boolean {
   const row = getDiscoveryCategory(id);
   return Boolean(row?.enabled && row.directoryKind === "static-list");
+}
+
+/** Nearby, Outdoor, Best coffee, Work. List first; chat does not auto-send. */
+export function isFixedListChip(id: string | null | undefined): boolean {
+  const row = getDiscoveryCategory(id);
+  return Boolean(
+    row?.enabled && row.directoryKind === "fixed-list" && isFixedListId(id),
+  );
 }
 
 export function isOffHomeChipId(id: string): id is OffHomeChipId {

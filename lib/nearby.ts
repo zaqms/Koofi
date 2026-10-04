@@ -6,10 +6,14 @@ import { dedupeSameBrand } from "./shop-brand";
 import type { ChatPick, Language, Pin, Shop } from "./types";
 import { uniqueWhyLines } from "./why-line";
 
+/**
+ * Chat still asks for three nearest cafés. The Nearby list page ranks the
+ * full listing (no 3-pick cap) in lib/fixed-lists.ts.
+ */
 const TARGET_PICKS = 3;
 
 
-/** Three nearest official-place shops. Display sort for the Nearby chip only. */
+/** Three nearest official-place shops. Chat only — not the Nearby list page. */
 export function pickNearestShops(
   shops: Shop[],
   origin: Pin,

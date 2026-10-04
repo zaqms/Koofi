@@ -61,7 +61,7 @@ export const FIXED_LIST_EXPLAINER: Record<
  * render (and every crawler) has no location, so it gets `noLocation`.
  * `located` is the same line as FIXED_LIST_EXPLAINER.nearby (also the OG card).
  */
-export type NearbyExplainerState = "noLocation" | "denied" | "located";
+export type NearbyExplainerState = "noLocation" | "denied" | "unread" | "located";
 
 export const NEARBY_EXPLAINER: Record<
   NearbyExplainerState,
@@ -74,6 +74,11 @@ export const NEARBY_EXPLAINER: Record<
   denied: {
     ar: "الموقع مقفل، فهذي أشهر القهاوي في الرياض. أو اختر حي من تحت.",
     en: "Location is off, so these are Riyadh's most popular. Or pick a neighborhood below.",
+  },
+  /** Timeout or an unusable fix. Same words as the café chip. */
+  unread: {
+    ar: "ما قدرنا نقرأ موقعك.",
+    en: "Couldn't read your location.",
   },
   located: FIXED_LIST_EXPLAINER.nearby,
 };
@@ -88,6 +93,7 @@ export function nearbyExplainer(
 export const FIXED_LIST_ACTION = {
   showMore: { ar: "عرض المزيد", en: "Show more" },
   useLocation: { ar: "استخدم موقعي", en: "Use my location" },
+  retryLocation: { ar: "جرّب مرة ثانية", en: "Try again" },
   locationBlocked: {
     ar: "الموقع مقفل من المتصفح",
     en: "Location is blocked in the browser",

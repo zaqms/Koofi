@@ -10,6 +10,7 @@ import {
   listDriveThroughDirectoryShops,
 } from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
+import { copy } from "../lib/copy";
 import { shopDistanceKm } from "../lib/directory-sort";
 import {
   EARTH_RADIUS_KM,
@@ -22,9 +23,11 @@ import {
   isUsableVisitorOrigin,
   officialShopCoords,
 } from "../lib/place-coords";
+import { NEARBY_EXPLAINER, FIXED_LIST_ACTION } from "../lib/fixed-list-ids";
 import {
   MAX_NEARBY_DISPLAY_KM,
   shopDistanceDisplay,
+  shopDistanceForVisitor,
 } from "../lib/shop-distance-label";
 import type { Pin, Shop } from "../lib/types";
 
@@ -132,13 +135,15 @@ assert(
   "CID-only / no pin is a visible fallback, not a silent omit",
 );
 
+const nanVisitor = shopDistanceDisplay({
+  origin: { lat: Number.NaN, lng: 46.6753 },
+  coords: GOOD_NEIGHBOR,
+  language: "en",
+});
 assert(
-  shopDistanceDisplay({
-    origin: { lat: Number.NaN, lng: 46.6753 },
-    coords: GOOD_NEIGHBOR,
-    language: "en",
-  }).kind === "missing",
-  "NaN visitor lat → fallback, not km",
+  nanVisitor.kind === "permission" &&
+    nanVisitor.label === "Couldn't read your location.",
+  "NaN visitor lat is a visitor-origin failure, not a missing shop pin",
 );
 
 const nullIsland = shopDistanceDisplay({
@@ -151,13 +156,12 @@ assert(
   "Null Island is not a usable visitor origin",
 );
 assert(
-  nullIsland.kind === "missing" &&
-    nullIsland.label === "Location unavailable",
-  "user 0,0 + Riyadh shop → fallback, not ~12k km",
+  nullIsland.kind === "permission" &&
+    nullIsland.label === "Couldn't read your location.",
+  "user 0,0 + Riyadh shop → visitor unread, not the shop-pin string",
 );
 assert(
-  !("km" in nullIsland) ||
-    (nullIsland.kind === "missing" && !nullIsland.label.includes("118")),
+  !("km" in nullIsland) && !nullIsland.label.includes("118"),
   "Null Island must not paint 11,8xx km",
 );
 
@@ -167,8 +171,8 @@ const atlanta = shopDistanceDisplay({
   language: "ar",
 });
 assert(
-  atlanta.kind === "missing" && atlanta.label === "موقع غير متاح",
-  "non-KSA visitor geo → AR fallback, not 11,800 km",
+  atlanta.kind === "permission" && atlanta.label === "ما قدرنا نقرأ موقعك.",
+  "non-KSA visitor geo → AR unread, not 11,800 km and not موقع غير متاح",
 );
 
 const swappedUser = shopDistanceDisplay({
@@ -177,8 +181,38 @@ const swappedUser = shopDistanceDisplay({
   language: "en",
 });
 assert(
-  swappedUser.kind === "missing",
-  "swapped visitor origin is fallback, not Romania-scale km",
+  swappedUser.kind === "permission" &&
+    swappedUser.label === "Couldn't read your location.",
+  "swapped visitor origin is unread, not Romania-scale km and not a shop-pin miss",
+);
+
+const stringRiyadh = shopDistanceDisplay({
+  origin: { lat: "24.7136" as unknown as number, lng: "46.6753" as unknown as number },
+  coords: GOOD_NEIGHBOR,
+  language: "en",
+});
+assert(
+  stringRiyadh.kind === "km" && stringRiyadh.km < 20,
+  "numeric-string Riyadh GPS still passes isUsableVisitorOrigin",
+);
+
+const denied = shopDistanceForVisitor({
+  status: "denied",
+  coords: GOOD_NEIGHBOR,
+  language: "ar",
+});
+assert(
+  denied.kind === "permission" &&
+    denied.label === "اسمح بالموقع عشان تشوف البعد.",
+  "deny is the permission empty state, not موقع غير متاح",
+);
+assert(
+  shopDistanceForVisitor({
+    status: "pending",
+    coords: GOOD_NEIGHBOR,
+    language: "en",
+  }).kind === "hidden",
+  "pending geo still hides the slot",
 );
 
 assert(
@@ -360,6 +394,20 @@ assert(
   "CLI hook stays no-op until a Scout pack path is passed",
 );
 
+const visitorRead = readFileSync(join(process.cwd(), "lib/visitor-location.ts"), "utf8");
+assert(
+  visitorRead.includes("enableHighAccuracy: true") &&
+    visitorRead.includes("maximumAge: 0") &&
+    visitorRead.includes("isUsableVisitorOrigin") &&
+    visitorRead.includes('status: "denied"'),
+  "visitor read takes a fresh GPS fix and does not store an unusable origin as ready",
+);
+assert(
+  !visitorRead.includes("maximumAge: 60_000") &&
+    !visitorRead.includes("enableHighAccuracy: false, maximumAge: 60_000"),
+  "stale 60s low-accuracy cache is not the first fix",
+);
+
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "Nearby list AR distance reads 1.2 كم");
 assert(formatDistanceKm(1.2, "en") === "1.2 km", "Nearby list EN distance reads 1.2 km");
 const fixedList = readFileSync(join(process.cwd(), "components/fixed-list-body.tsx"), "utf8");
@@ -369,6 +417,45 @@ assert(fixedList.includes("data-fixed-show-more"), "show more adds the next page
 assert(fixedList.includes("shopDistanceKm"), "Nearby sort uses the existing distance helper");
 assert(fixedList.includes("autoLocate={false}"), "distance paints without a card-level prompt");
 assert(!fixedList.includes("pickNearestShops"), "the list is not the chat 3-pick");
+const kmOnlyLtr = 'dir={display.kind === "km" ? "ltr" : undefined}';
+const listingCard = readFileSync(join(process.cwd(), "components/directory-card.tsx"), "utf8");
+const cafeDetail = readFileSync(join(process.cwd(), "components/cafe-detail.tsx"), "utf8");
+const shopDistanceUi = readFileSync(join(process.cwd(), "components/shop-distance.tsx"), "utf8");
+assert(
+  listingCard.includes(kmOnlyLtr) &&
+    cafeDetail.includes(kmOnlyLtr) &&
+    !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(listingCard) &&
+    !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(cafeDetail) &&
+    shopDistanceUi.includes('dir="ltr" data-shop-distance="km"') &&
+    !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(shopDistanceUi),
+  "LTR wraps the numeric km value only",
+);
+assert(
+  listingCard.includes('display.kind === "km" || display.kind === "missing"') &&
+    !listingCard.includes("directoryDistancePermission") &&
+    !listingCard.includes("directoryDistanceUnread"),
+  "listing cards omit the denied and unread lines",
+);
+assert(
+  cafeDetail.includes('display.kind === "hidden" ? null') &&
+    cafeDetail.includes("shopDistanceForVisitor"),
+  "the café chip still renders permission and unread lines",
+);
+assert(
+  NEARBY_EXPLAINER.unread.ar === copy.directoryDistanceUnread.ar &&
+    NEARBY_EXPLAINER.unread.en === copy.directoryDistanceUnread.en &&
+    NEARBY_EXPLAINER.unread.ar === "ما قدرنا نقرأ موقعك." &&
+    NEARBY_EXPLAINER.unread.en === "Couldn't read your location." &&
+    fixedList.includes('visitor.status === "unavailable"') &&
+    fixedList.includes('? "unread"') &&
+    fixedList.includes("retryLocation") &&
+    fixedList.includes('permission === "denied" || visitor.status === "denied"') &&
+    FIXED_LIST_ACTION.retryLocation.ar === "جرّب مرة ثانية" &&
+    FIXED_LIST_ACTION.retryLocation.en === "Try again" &&
+    NEARBY_EXPLAINER.denied.ar.includes("مقفل") &&
+    !NEARBY_EXPLAINER.unread.ar.includes("مقفل"),
+  "Nearby uses the can't-read line and a retry button when the fix is unavailable, and location-off only for a real denial",
+);
 
 console.log("check-distance: ok", {
   camelKm: Number(camelKm.toFixed(2)),

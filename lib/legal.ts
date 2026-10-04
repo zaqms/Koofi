@@ -22,6 +22,32 @@ export type LegalDoc = {
 
 export type LegalKind = "privacy" | "terms";
 
+/**
+ * GTM-W3TM4552 container version the copy was checked against (4 Oct 2026).
+ * Everything this page says about what Google Tag Manager forwards (which
+ * event params reach GA4, that `feedback_text` and the dataLayer
+ * `cafes` array are not forwarded, `pack_id` on 8 events) is true for
+ * this version only. When the container is republished, re-check the
+ * analytics and بيننا sections against the new version, then bump this
+ * number and the "version 13" sentence in AR + EN. scripts/check-legal.ts
+ * asserts the copy names this version, and fails if LEGAL_GTM_LIVE_VERSION
+ * is set to a different number.
+ */
+export const LEGAL_GTM_CONTAINER_VERSION = 13;
+
+/**
+ * QA r2 M4: the Google tag's automatic user-provided data collection
+ * (email / phone / address typed into forms, sent hashed for ad
+ * measurement) is on in the gtag config. Amjad decides:
+ * - "pending": the M4 marker stays in the Google Ads paragraph (AR + EN).
+ * - "off": he turned it off in the Google tag settings; delete the marker,
+ *   no sentence is needed.
+ * - "kept": replace the marker with the disclosure sentence it quotes and
+ *   add the same point to the summary and the sharing list.
+ * scripts/check-legal.ts enforces the copy that matches this value.
+ */
+export const LEGAL_GOOGLE_USER_DATA: "pending" | "off" | "kept" = "pending";
+
 /** Visible review markers. The page highlights any text in this shape. */
 export const LEGAL_PLACEHOLDER_PATTERN =
   /(\[(?:AMJAD TO CONFIRM|للتأكيد من أمجد):[^\]]*\])/;
@@ -68,16 +94,16 @@ const PRIVACY_AR: LegalDoc = {
       heading: "مين حنا",
       paragraphs: [
         `وين يديره ${CONTROLLER.ar}، وهي الجهة المسؤولة (المتحكّم) عن البيانات الشخصية المذكورة هنا.`,
-        `للتواصل في أي شي يخص الخصوصية: ${CONTACT_EMAIL.ar}. وتقدر بعد تضغط «تواصل معنا» تحت الصفحة، ويفتح لك محادثة واتساب معنا.`,
+        `للتواصل في أي شي يخص الخصوصية: ${CONTACT_EMAIL.ar}. وتقدر كمان تضغط «تواصل معنا» تحت الصفحة، ويفتح لك محادثة واتساب معنا.`,
       ],
     },
     {
       heading: "باختصار",
       bullets: [
         "ما فيه حسابات ولا تسجيل. ما نطلب اسمك ولا إيميلك ولا رقم جوالك عشان تستخدم وين.",
-        "نستخدم أدوات تحليل (Google Analytics عن طريق Google Tag Manager، وVercel Web Analytics، وDataFast) عشان نفهم كيف ينستخدم الموقع، ومنها اللي تكتبه في خانة البحث.",
-        "موقعك ما ناخذه إلا إذا سمحت فيه، والمتصفح يسألك أول ما تفتح صفحة فيها قهاوي. في «قريب مني» وترتيب المسافة يبقى في جهازك. في «بيننا» تنرسل النقاط اللي تحددها لخادمنا، والتفاصيل تحت.",
-        "الموقع ما يعرض إعلانات. لكن نستخدم أدوات إعلانية من Google (Google Ads) وX (تويتر) وOpenAI تسجّل زياراتك للصفحات ولما يطلع لك «بيننا» بنتائج، عشان نقيس تسويقنا. وGoogle Ads يستخدم الزيارات بعد لإعادة الاستهداف (يعني يعرض إعلاناتنا لاحقًا للي زاروا الموقع)، وبكسل OpenAI يقدر يلتقط إيميل أو رقم جوال مكتوب في نموذج بالصفحة. التفاصيل تحت.",
+        "نستخدم أدوات تحليل (Google Analytics عن طريق Google Tag Manager، وVercel Web Analytics، وDataFast) عشان نفهم كيف ينستخدم الموقع، وهذا يشمل اللي تكتبه في خانة البحث.",
+        "موقعك ما ناخذه إلا إذا سمحت فيه، والمتصفح يسألك أول ما تفتح صفحة فيها قهاوي. في «قريب مني» وترتيب المسافة، يبقى موقعك في جهازك. في «بيننا» تنرسل النقاط اللي تحددها لخادمنا، والتفاصيل تحت.",
+        "الموقع ما يعرض إعلانات. لكن نستخدم أدوات إعلانية من Google (Google Ads) وX (تويتر) وOpenAI تسجّل زياراتك للصفحات ولما يطلع لك «بيننا» بنتائج، عشان نقيس تسويقنا. وGoogle Ads يستخدم الزيارات كمان لإعادة الاستهداف (يعني يعرض إعلاناتنا لاحقًا للي زاروا الموقع)، وبكسل OpenAI يقدر يلتقط إيميل أو رقم جوال مكتوب في نموذج بالصفحة. التفاصيل تحت.",
         "رابط دعوة «بيننا» فيه نقطتك، ويوصل لـ Google Analytics وأدوات القياس الإعلاني. التفاصيل في قسم «بيننا».",
       ],
     },
@@ -85,13 +111,14 @@ const PRIVACY_AR: LegalDoc = {
       heading: "التحليلات وقياس الاستخدام",
       paragraphs: [
         "في كل صفحة يشتغل Google Tag Manager (الحاوية {{GTM-W3TM4552}})، وهو اللي يمرّر الأحداث لـ Google Analytics 4 ({{G-EFZZET02TT}}). ويسجّل Google Analytics عادةً الصفحات اللي تزورها، ونوع الجهاز والمتصفح، والموقع التقريبي من عنوان IP، والصفحة اللي جيت منها، ويحط كوكيز مثل {{_ga}} و{{_ga_<ID>}}. [للتأكيد من أمجد: إعدادات GA4 مثل التعامل مع IP وGoogle signals والربط الإعلاني]",
-        "من الأحداث اللي نرسلها لـ Google Analytics: لما تطلع لك 3 اقتراحات، أو تفتح الخريطة، أو تشارك، أو تعطي إعجاب لقهوة، أو تختار حي، أو تبحث أو ترتّب في صفحة كل الأحياء، أو تستخدم «بيننا»، أو تقيّم النتائج. وتشمل أشياء مثل معرّف القهوة عندنا، والحي، واللغة، وفي «بيننا» رقم الدعوة (التفاصيل في قسم «بيننا»).",
+        "من الأحداث اللي نرسلها لـ Google Analytics: لما تطلع لك 3 اقتراحات، أو تفتح الخريطة، أو تشارك، أو تعطي إعجاب لقهوة، أو تختار حي، أو تبحث أو ترتّب في صفحة كل الأحياء، أو تستخدم «بيننا»، أو تقيّم النتائج. وتشمل أشياء مثل معرّف القهوة عندنا، والحي، واللغة، وفي «بيننا» معرّف الدعوة (التفاصيل في قسم «بيننا»). وGoogle Analytics يسجّل كمان بعض الأحداث تلقائيًا، مثل التمرير والضغط على روابط خارجية.",
+        "اللي يمرّره Google Tag Manager لأدوات التحليل والإعلان، زي ما هو موصوف في هالصفحة، هو حسب النسخة 13 من الحاوية (فحصناها في 4 أكتوبر 2026).",
         "اللي تكتبه في خانة الشات، واللي تبحث عنه في صفحة كل الأحياء، ينرسل كنص لـ Google Analytics. لا تكتب فيها معلومات شخصية.",
-        "لما تقيّم النتائج وتقول إنها ما فادتك، تقدر تختار «شي ثاني» وتضيف ملاحظة قصيرة. الملاحظة تنمرّر لـ Google Tag Manager داخل الصفحة، لكن إعداداتنا الحالية ما ترسلها لـ Google Analytics ولا لأي أداة ثانية، وما نحفظها في قاعدة بياناتنا.",
+        "لما تقيّم النتائج وتقول إنها ما فادتك، تقدر تختار «شي ثاني» وتضيف ملاحظة قصيرة. الملاحظة تنرسل لـ Google Tag Manager داخل الصفحة، لكن إعداداتنا الحالية ما ترسلها لـ Google Analytics ولا لأي أداة ثانية، وما نحفظها في قاعدة بياناتنا.",
         "Vercel Web Analytics يحسب زيارات الصفحات.",
-        "DataFast ({{datafa.st}}) أداة تحليل تسجّل الصفحات، والمصدر اللي جيت منه، والمتصفح والجهاز، والدولة. [للتأكيد من أمجد: هل DataFast يحط كوكيز أو معرّف للزائر؛ ما شفنا له كوكيز في فحص 4 أكتوبر] وتوصل لـ DataFast بعد معلومة عن الطلب لما يفتح صفحة برنامج زحف معروف تابع لذكاء اصطناعي، مو الزوار العاديين.",
-        "Google Ads: نفس وسم Google يشغّل بعد Google Ads (الحساب {{AW-18418378883}}). نستخدمه لقياس إعلاناتنا ولإعادة الاستهداف (remarketing)، يعني يسجّل زيارتك عشان Google يقدر يعرض إعلاناتنا لاحقًا للناس اللي زاروا الموقع. ويحط كوكيز {{_gcl_au}}، ويحفظ {{_gcl_ls}} في متصفحك. وGoogle Analytics مربوط بأدوات Google الإعلانية (DoubleClick).",
-        "القياس الإعلاني من X وOpenAI: Google Tag Manager يحمّل بعد بكسل X (تويتر) وبكسل OpenAI للقياس الإعلاني. يسجّلون زيارات الصفحات ولما يطلع بحث «بيننا» بنتائج، وبكسل X يسجّل بعد لما تطوّل في صفحة. ويحطون كوكيز خاصة فيهم، مثل {{_twpid}} و{{_twsid}} من X و{{__obref}} من OpenAI، وكوكيز على نطاقاتهم هم، وبكسل OpenAI يحفظ {{oaiq_cs:…}} في تبويب المتصفح. هذي الجهات تستخدم البيانات حسب سياساتها. [للتأكيد من أمجد: الغرض من بكسلات X وOpenAI، وهل نحتاج موافقة قبل تشغيلها]",
+        "DataFast ({{datafa.st}}) أداة تحليل تسجّل الصفحات، والمصدر اللي جيت منه، والمتصفح والجهاز، والدولة. [للتأكيد من أمجد: هل DataFast يحط كوكيز أو معرّف للزائر؛ ما شفنا له كوكيز في فحص 4 أكتوبر] وتوصل لـ DataFast كمان معلومة عن الطلب لما يفتح صفحة برنامج زحف معروف تابع لذكاء اصطناعي، مو الزوار العاديين.",
+        "Google Ads: نفس وسم Google يشغّل كمان Google Ads (الحساب {{AW-18418378883}}). نستخدمه لقياس إعلاناتنا ولإعادة الاستهداف (remarketing)، يعني يسجّل زيارتك عشان Google يقدر يعرض إعلاناتنا لاحقًا للناس اللي زاروا الموقع. ويحط كوكيز {{_gcl_au}}، ويحفظ {{_gcl_ls}} في متصفحك. وGoogle Analytics مربوط بأدوات Google الإعلانية (DoubleClick). [للتأكيد من أمجد: نخلي جمع بيانات المستخدم التلقائي في وسم Google أو نطفّيه. الخيار مفعّل الحين: الوسم يقدر يلتقط إيميل أو رقم جوال أو عنوان مكتوب في نموذج بالصفحة. (أ) إذا طفّيناه من إعدادات وسم Google: نحذف هذي الملاحظة بس، وما نحتاج نضيف جملة. (ب) إذا خلّيناه: نحط مكان هذي الملاحظة «ووسم Google مفعّل فيه الجمع التلقائي للبيانات اللي يدخلها المستخدم: يقدر يلتقط إيميل أو رقم جوال أو عنوان مكتوب في نموذج بالصفحة، ويرسله لـ Google كبصمة رقمية ما تنعكس (hash) لقياس الإعلانات.»، ونضيف نفس النقطة في «باختصار» وفي قائمة «مع مين نشارك البيانات»]",
+        "القياس الإعلاني من X وOpenAI: كمان يحمّل Google Tag Manager بكسل X (تويتر) وبكسل OpenAI للقياس الإعلاني. يسجّلون زيارات الصفحات ولما يطلع بحث «بيننا» بنتائج، وبكسل X يسجّل كمان لما تطوّل في صفحة. ويحطون كوكيز خاصة فيهم، مثل {{_twpid}} و{{_twsid}} من X و{{__obref}} من OpenAI، وكوكيز على نطاقاتهم هم، وبكسل OpenAI يحفظ {{oaiq_cs:…}} في تبويب المتصفح. هذي الجهات تستخدم البيانات حسب سياساتها. [للتأكيد من أمجد: الغرض من بكسلات X وOpenAI، وهل نحتاج موافقة قبل تشغيلها]",
         "بكسل OpenAI مفعّل فيه «المطابقة المتقدّمة التلقائية» (automatic advanced matching). هذا يخليه يقدر يلتقط إيميل أو رقم جوال مكتوب في نموذج بالصفحة، ويرسله لـ OpenAI كبصمة رقمية ما تنعكس (hash). في فحص 4 أكتوبر ما شفناه أرسل شي (وما كتبنا بيانات في أي نموذج)، لكن الخيار مفعّل. [للتأكيد من أمجد: نخلي المطابقة المتقدّمة في بكسل OpenAI أو نطفّيها في GTM]",
         "مدة الاحتفاظ: Google Analytics [للتأكيد من أمجد: مدة الاحتفاظ المضبوطة في GA4]، DataFast [للتأكيد من أمجد: مدة احتفاظ DataFast]، Vercel Web Analytics حسب إعدادات Vercel [للتأكيد من أمجد: مدة احتفاظ Vercel Analytics].",
       ],
@@ -99,7 +126,7 @@ const PRIVACY_AR: LegalDoc = {
     {
       heading: "خانة الشات والبحث",
       paragraphs: [
-        "اللي تكتبه يروح لخادمنا عشان نختار لك 3 قهاوي. ويحفظ الخادم سجل تعلّم داخلي بسيط فيه: نصك، ومعرّفات القهاوي الـ3، واللغة، ورقم جلسة عشوائي محفوظ في تبويب متصفحك. نفس الشي لما تفتح أحد الاقتراحات في الخريطة. هذا السجل يكون في سجلات الخادم وتخزين مؤقت. [للتأكيد من أمجد: مدة الاحتفاظ بسجلات الخادم وسجل التعلّم]",
+        "اللي تكتبه يروح لخادمنا عشان نختار لك 3 قهاوي. ويحفظ الخادم سجل تعلّم داخلي بسيط فيه: نصك، ومعرّفات القهاوي الـ3، واللغة، ومعرّف جلسة عشوائي محفوظ في تبويب متصفحك. نفس الشي لما تفتح أحد الاقتراحات في الخريطة. هذا السجل يكون في سجلات الخادم وتخزين مؤقت. [للتأكيد من أمجد: مدة الاحتفاظ بسجلات الخادم وسجل التعلّم]",
         "عشان نكتب الجملة القصيرة اللي فوق الاقتراحات، ممكن يرسل الخادم نصك، وأسماء القهاوي اللي اخترناها والحي اللي فيه كل وحدة منها، لـ xAI (مزوّد الذكاء الاصطناعي). ما نرسل معها موقعك ولا أي رقم يعرّف فيك. [للتأكيد من أمجد: هل ردّ xAI شغّال على الموقع الحين]",
         "القهاوي اللي علّمت إنك رحتها تنحفظ في متصفحك، وتنرسل مع كل طلب عشان ما نكررها عليك. ما نحفظها عندنا.",
       ],
@@ -123,7 +150,7 @@ const PRIVACY_AR: LegalDoc = {
     {
       heading: "موقعك (قريب مني والمسافة)",
       paragraphs: [
-        "ما نعرف موقعك إلا إذا سمحت للمتصفح. أول ما تفتح الصفحة الرئيسية أو صفحة قهوة أو قائمة قهاوي (مثل صفحة حي)، يطلب وين موقعك من المتصفح على طول، مو بس لما تضغط «قريب مني». وإذا ما قد اخترت قبل، يطلع لك المتصفح طلب الإذن وقتها.",
+        "ما نعرف موقعك إلا إذا سمحت للمتصفح. أول ما تفتح الصفحة الرئيسية أو صفحة قهوة أو قائمة قهاوي (مثل صفحة حي)، يطلب وين من المتصفح مكانك على طول، مو بس لما تضغط «قريب مني». وإذا ما قد اخترت قبل، يطلع لك المتصفح طلب الإذن وقتها.",
         "إذا سمحت، نستخدم موقعك داخل متصفحك عشان نرتّب القهاوي حسب القرب ونوريك كم تبعد. لهذي الميزات ما ينرسل موقعك لخادمنا ولا لأي طرف ثاني.",
         "نحفظ في متصفحك بس إنك سمحت بالموقع (نعم أو لا)، وما نحفظ الإحداثيات أبد.",
         "تقدر توقف إذن الموقع أي وقت من إعدادات المتصفح.",
@@ -135,10 +162,10 @@ const PRIVACY_AR: LegalDoc = {
         "تقدر تحدد نقطتك من موقعك، أو بإحداثيات، أو برابط Google Maps. نقرّب النقطة لدقة تقارب مترًا واحدًا.",
         "النقاط تروح لخادمنا عشان نلقى قهاوي في النص بينكم. وإذا لصقت رابط Maps، خادمنا يسأل Google Maps عن مكانه.",
         "لما ترسل دعوة للشخص اللي بتقابله، نقطتك تكون داخل رابط الدعوة ({{/h/…}}). أي أحد عنده الرابط يقدر يعرف هالنقطة، فشاركه بس معه.",
-        "«بيننا» ما يطلب إيميلك. لكن رقم الدعوة فيه نقطتك، ويوصل لـ Google Analytics وأدوات القياس الإعلاني لما تنشئ رابط الدعوة أو تفتحه. [للتأكيد من أمجد: هل ينصلح هذا قبل النشر؛ فيه تعديل جاري (رقم دعوة عشوائي، أو إخفاء روابط {{/h/}} عن أدوات التحليل والبكسلات)، ولما ينعتمد تتغيّر هذي الفقرة]",
-        "بالتفصيل: Google Analytics يوصله رقم الدعوة داخل عنوان الصفحة لما ينفتح الرابط، وباسم {{pack_id}} في ما يصل إلى 8 أحداث من «بيننا». واحد منها، {{meet_halfway_invite_share}}، ينرسل من جهازك أنت أول ما تنشئ الرابط، قبل ما أحد يفتحه، وبعدها ينتقل تبويبك لرابط الدعوة. ولما يكون رابط الدعوة مفتوح، يوصل عنوانه بعد لـ Google Ads وX وOpenAI، وممكن يوصل لـ DataFast لأنه يسجّل الصفحات اللي تفتحها. أما القهاوي ومسافاتها فما توصل لـ Google Analytics: حدث النتائج فيه بس اللغة، وعدد القهاوي، وهل البحث جاء من دعوة.",
+        "«بيننا» ما يطلب إيميلك. لكن معرّف الدعوة فيه نقطتك، ويوصل لـ Google Analytics وأدوات القياس الإعلاني لما تنشئ رابط الدعوة أو تفتحه. [للتأكيد من أمجد: هل ينصلح هذا قبل النشر؛ فيه تعديل جاري (معرّف دعوة عشوائي، أو إخفاء روابط {{/h/}} عن أدوات التحليل والبكسلات)، ولما ينعتمد تتغيّر هذي الفقرة]",
+        "بالتفصيل: Google Analytics يوصله معرّف الدعوة داخل عنوان الصفحة لما ينفتح الرابط، وباسم {{pack_id}} في ما يصل إلى 8 أحداث من «بيننا». واحد منها، {{meet_halfway_invite_share}}، ينرسل من جهازك أنت أول ما تنشئ الرابط، قبل ما أحد يفتحه، وبعدها ينتقل تبويبك لرابط الدعوة. ولما يكون رابط الدعوة مفتوح، يوصل عنوانه كمان لـ Google Ads وX وOpenAI، ويوصل كمان لـ DataFast وVercel Web Analytics، اللي يسجّلون الصفحات اللي تفتحها. حدث النتائج نفسه ما فيه القهاوي ولا مسافاتها: فيه بس اللغة، وعدد القهاوي، وهل البحث جاء من دعوة. لكن إذا فتحت وحدة من القهاوي أو ضغطت «الخريطة» أو شاركتها، يعرف Google Analytics أي قهوة هي: صفحة القهوة اللي فتحتها، ومعرّف القهوة في حدث الخريطة أو المشاركة، ورابطها في Google Maps (ينسجّل كضغطة على رابط خارجي). وفي الدعوة، ممكن تحمل هذي الأحداث عنوان صفحة الدعوة كمان.",
         "عشان تشوفون نفس النتائج، نحفظ نقاط الجلسة والقهاوي الـ3 في قاعدة بياناتنا. الرابط يشتغل 45 دقيقة وأنت تنتظر الشخص اللي بتقابله، و48 ساعة بعد ما تطلع النتائج. [للتأكيد من أمجد: متى تنحذف الجلسات المنتهية من قاعدة البيانات، الكود يوقف عرضها بس ما يحذفها]",
-        "لما يطلع بحث «بيننا» بنتائج، يرسل خادمنا ملخص لخدمة أتمتة ترسله بالإيميل لفريق وين. الملخص فيه النقطتين بالإحداثيات الدقيقة وروابط الخريطة، والقهاوي الـ3 ومسافاتها، واللغة، ورقم الجلسة. ما فيه اسم ولا إيميل ولا جوال. [للتأكيد من أمجد: مزوّد الأتمتة، الكود يرسل لـ Cursor Automations، ومدة الاحتفاظ بهالإيميلات]",
+        "لما يطلع بحث «بيننا» بنتائج، يرسل خادمنا ملخص لخدمة أتمتة ترسله بالإيميل لفريق وين. الملخص فيه النقطتين بالإحداثيات الدقيقة وروابط الخريطة، والقهاوي الـ3 ومسافاتها، واللغة، ومعرّف الجلسة. ما فيه اسم ولا إيميل ولا جوال. [للتأكيد من أمجد: مزوّد الأتمتة، الكود يرسل لـ Cursor Automations، ومدة الاحتفاظ بهالإيميلات]",
       ],
     },
     {
@@ -159,7 +186,7 @@ const PRIVACY_AR: LegalDoc = {
       heading: "اللي ينحفظ في متصفحك",
       bullets: [
         "اختيار المدينة، وزر «محلي بس» (إخفاء السلاسل)، والقهاوي اللي علّمت إنك رحتها، وإنك سمحت بالموقع (نعم أو لا).",
-        "بيانات مؤقتة للتبويب: الترتيب اللي اخترته، وحالة انتظار «بيننا» (فيها نقطتك أنت)، وتقييمك للنتائج، ورقم الجلسة.",
+        "بيانات مؤقتة للتبويب: الترتيب اللي اخترته، وحالة انتظار «بيننا» (فيها نقطتك أنت)، وتقييمك للنتائج، ومعرّف الجلسة.",
         "الكوكيز: {{wain_vid}} (حقنا، للتصويت)، وكوكيز Google Analytics ({{_ga}} و{{_ga_<ID>}})، وكوكيز Google Ads وX وOpenAI المذكورة فوق ({{_gcl_au}} و{{_twpid}} و{{_twsid}} و{{__obref}}).",
         "تخزين أدوات الإعلان: Google Ads يحفظ {{_gcl_ls}} في التخزين المحلي للمتصفح، وبكسل OpenAI يحفظ {{oaiq_cs:…}} في تخزين التبويب.",
         "تقدر تمسحها كلها أي وقت من إعدادات المتصفح.",
@@ -181,7 +208,7 @@ const PRIVACY_AR: LegalDoc = {
     {
       heading: "مع مين نشارك البيانات",
       paragraphs: [
-        "نشارك البيانات مع هالمزوّدين. بعضهم يشغّل الموقع لنا، وأدوات التحليل والإعلان تستخدم البيانات بعد حسب سياساتها:",
+        "نشارك البيانات مع هالمزوّدين. بعضهم يشغّل الموقع لنا، وأدوات التحليل والإعلان تستخدم البيانات كمان حسب سياساتها:",
       ],
       bullets: [
         "Google: Tag Manager وAnalytics، وGoogle Ads لقياس الإعلانات وإعادة الاستهداف (عرض إعلاناتنا لاحقًا للي زاروا الموقع)، وGoogle Maps لقراءة الروابط والمواقع.",
@@ -270,12 +297,13 @@ const PRIVACY_EN: LegalDoc = {
       heading: "Analytics",
       paragraphs: [
         "Every page loads Google Tag Manager (container {{GTM-W3TM4552}}), which passes events to Google Analytics 4 ({{G-EFZZET02TT}}). Google Analytics typically records the pages you view, your device and browser, an approximate location from your IP address, and the page you came from, and sets cookies such as {{_ga}} and {{_ga_<ID>}}. [AMJAD TO CONFIRM: GA4 settings such as IP handling, Google signals, and ads linking]",
-        "Events we send to Google Analytics include: when you see three picks, open Maps, share, upvote a café, choose a district, search or sort the all-districts page, use بيننا, or rate results. They carry details such as our café IDs, the district, the language, and, for بيننا, the invite ID (see the بيننا section).",
+        "Events we send to Google Analytics include: when you see three picks, open Maps, share, upvote a café, choose a district, search or sort the all-districts page, use بيننا, or rate results. They carry details such as our café IDs, the district, the language, and, for بيننا, the invite ID (see the بيننا section). Google Analytics also records some events automatically, such as scrolling and clicks on outside links.",
+        "What Google Tag Manager forwards to the analytics and ad tools, as described on this page, reflects version 13 of the container (checked on 4 October 2026).",
         "What you type into the chat box, and into the search on the all-districts page, is sent to Google Analytics as text. Please don't type personal details there.",
         "When you rate a set of results as not helpful, you can pick Something else and add a short note. The note is handed to Google Tag Manager inside the page, but our current setup doesn't forward it to Google Analytics or any other tool, and we don't store it in our database.",
         "Vercel Web Analytics counts page views.",
         "DataFast ({{datafa.st}}) is an analytics tool that records pages, the referring site, browser and device, and country. [AMJAD TO CONFIRM: whether DataFast sets a cookie or visitor ID; none was seen in our 4 October check] DataFast also receives a note about the request when a known AI crawler (a bot) loads a page. This does not happen for normal visitors.",
-        "Google Ads: the same Google tag also loads Google Ads (account {{AW-18418378883}}). We use it for ad measurement and for remarketing: it records your visit so Google can show our ads later to people who visited the site. It sets the {{_gcl_au}} cookie and saves {{_gcl_ls}} in your browser. Google Analytics is also linked to Google's advertising tools (DoubleClick).",
+        "Google Ads: the same Google tag also loads Google Ads (account {{AW-18418378883}}). We use it for ad measurement and for remarketing: it records your visit so Google can show our ads later to people who visited the site. It sets the {{_gcl_au}} cookie and saves {{_gcl_ls}} in your browser. Google Analytics is also linked to Google's advertising tools (DoubleClick). [AMJAD TO CONFIRM: keep or turn off user-provided data collection in the Google tag. It is switched on now: the tag can pick up an email address, phone number, or postal address typed into a form on the page. (a) If we turn it off in the Google tag settings: just delete this marker; no sentence is needed. (b) If we keep it: replace this marker with “The Google tag also has automatic collection of user-provided data switched on: it can pick up an email address, phone number, or postal address typed into a form on the page and send it to Google as a one-way hash for ad measurement.” and add the same point to The short version and to Who we share data with]",
         "Ad measurement by X and OpenAI: Google Tag Manager also loads the X (Twitter) pixel and the OpenAI ads pixel. They record page visits and when a بيننا search shows results, and the X pixel also notes when you stay on a page for a while. They set their own cookies, such as {{_twpid}} and {{_twsid}} (X) and {{__obref}} (OpenAI), plus cookies on their own domains, and the OpenAI pixel keeps {{oaiq_cs:…}} in the tab's session storage. These companies use the data under their own policies. [AMJAD TO CONFIRM: the purpose of the X and OpenAI pixels, and whether consent is needed before they load]",
         "The OpenAI pixel has automatic advanced matching switched on. This lets it pick up an email address or phone number typed into a form on the page and send it to OpenAI as a one-way hash. In our 4 October check we saw none sent (we didn't type details into any form), but the setting is on. [AMJAD TO CONFIRM: keep or turn off OpenAI advanced matching in GTM]",
         "Retention: Google Analytics [AMJAD TO CONFIRM: GA4 data-retention setting], DataFast [AMJAD TO CONFIRM: DataFast retention], Vercel Web Analytics per Vercel's settings [AMJAD TO CONFIRM: Vercel Analytics retention].",
@@ -321,7 +349,7 @@ const PRIVACY_EN: LegalDoc = {
         "Pins are sent to our server to find cafés in the middle. If you paste a Maps link, our server asks Google Maps where it points.",
         "When you send an invite to the person you're meeting, your pin is built into the invite link ({{/h/…}}). Anyone with the link can work out that pin, so share it only with them.",
         "بيننا does not ask for your email. But the invite ID contains your pin, and it reaches Google Analytics and the ad-measurement tools when you create or open an invite link. [AMJAD TO CONFIRM: whether this is fixed before launch; a fix is in progress (a random invite ID, or hiding {{/h/}} links from analytics and the pixels), and this paragraph changes when it lands]",
-        "In detail: Google Analytics receives the invite ID in the page address when the link is open, and as {{pack_id}} on up to 8 بيننا events. One of them, {{meet_halfway_invite_share}}, is sent from your own device as soon as you create the link, before anyone opens it, and your tab then moves to the invite link. While an invite link is open, its address also reaches Google Ads, X, and OpenAI, and it may reach DataFast, which records the pages you open. Google Analytics does not receive the cafés or their distances: the results event only carries the language, the number of cafés, and whether the search came from an invite.",
+        "In detail: Google Analytics receives the invite ID in the page address when the link is open, and as {{pack_id}} on up to 8 بيننا events. One of them, {{meet_halfway_invite_share}}, is sent from your own device as soon as you create the link, before anyone opens it, and your tab then moves to the invite link. While an invite link is open, its address also reaches Google Ads, X, and OpenAI, and it also reaches DataFast and Vercel Web Analytics, which record the pages you open. The results event itself doesn't carry the cafés or their distances: it only has the language, the number of cafés, and whether the search came from an invite. But if you open one of the cafés, tap Map, or share it, Google Analytics learns which café it was: the café page you open, the café's ID on the Map or Share event, and its Google Maps link (recorded as a click on an outside link). On an invite, those hits can carry the invite page address too.",
         "So you both see the same results, we store the session's pins and the three cafés in our database. The link works for 45 minutes while you wait for the person you're meeting, and for 48 hours after the results appear. [AMJAD TO CONFIRM: when expired sessions are deleted from the database; the code stops showing them but does not delete them]",
         "When a بيننا search returns results, our server sends a summary to an automation service that emails it to the Wain team. The summary has both pins as exact coordinates and Maps links, the three cafés and their distances, the language, and the session ID. It has no name, email, or phone number. [AMJAD TO CONFIRM: the automation vendor (the code posts to Cursor Automations) and how long these emails are kept]",
       ],
@@ -611,9 +639,36 @@ const TERMS_EN: LegalDoc = {
   ],
 };
 
+/**
+ * «لـ Google» can break at the space and leave «لـ» alone at the end of a
+ * line (QA r2 L-b). Join the prefix to the next word with a no-break space
+ * so it wraps together. Applied to the Arabic docs only; check-legal
+ * asserts no «لـ» + plain space is left.
+ */
+const NO_BREAK_SPACE = "\u00A0";
+const STRANDABLE_PREFIX = /([لب]ـ) /g;
+
+function joinPrefixes(text: string): string {
+  return text.replace(STRANDABLE_PREFIX, `$1${NO_BREAK_SPACE}`);
+}
+
+function withJoinedPrefixes(doc: LegalDoc): LegalDoc {
+  return {
+    ...doc,
+    title: joinPrefixes(doc.title),
+    description: joinPrefixes(doc.description),
+    intro: doc.intro.map(joinPrefixes),
+    sections: doc.sections.map((section) => ({
+      heading: joinPrefixes(section.heading),
+      ...(section.paragraphs ? { paragraphs: section.paragraphs.map(joinPrefixes) } : {}),
+      ...(section.bullets ? { bullets: section.bullets.map(joinPrefixes) } : {}),
+    })),
+  };
+}
+
 export const LEGAL_DOCS: Record<LegalKind, Record<Language, LegalDoc>> = {
-  privacy: { ar: PRIVACY_AR, en: PRIVACY_EN },
-  terms: { ar: TERMS_AR, en: TERMS_EN },
+  privacy: { ar: withJoinedPrefixes(PRIVACY_AR), en: PRIVACY_EN },
+  terms: { ar: withJoinedPrefixes(TERMS_AR), en: TERMS_EN },
 };
 
 export function legalDoc(kind: LegalKind, language: Language): LegalDoc {

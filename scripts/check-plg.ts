@@ -201,6 +201,22 @@ assert(
     breehantArHits.some((shop) => shop.id === "breehant-al-yasmin"),
   "brand-key EXTRA_ALIASES must attach بريهانت to both Breehant rows",
 );
+const essertNew = matchCatalogShops("ايزرت", catalog);
+const essertOld = matchCatalogShops("إسرت", catalog);
+assert(
+  essertNew.some((shop) => shop.id === "essert-al-rawabi") &&
+    essertNew.some((shop) => shop.id === "essert-al-arid") &&
+    essertOld.some((shop) => shop.id === "essert-al-rawabi") &&
+    essertOld.some((shop) => shop.id === "essert-al-arid"),
+  "Essert search finds both rows by ايزرت and the previous إسرت spelling",
+);
+const hintia = matchCatalogShops("Hintia", catalog);
+const hintiya = matchCatalogShops("Hintiya", catalog);
+assert(
+  hintia.some((shop) => shop.id === "hintiya-al-narjis") &&
+    hintiya.some((shop) => shop.id === "hintiya-al-narjis"),
+  "Hintia is the English name; Hintiya still matches the slug",
+);
 
 const ARABIC_SCRIPT = /[\u0600-\u06FF]/;
 for (const shop of catalog) {

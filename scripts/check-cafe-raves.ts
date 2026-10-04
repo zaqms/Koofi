@@ -142,8 +142,18 @@ function hasBannedBrand(value: string): boolean {
   return EN_BRAND_RE.test(squeezed) || AR_BRAND_RE.test(squeezed);
 }
 
+/**
+ * «عرضة» (the ardah dance; also "width" / «عرضة لـ» "prone to") ends in ة, so it
+ * is not the promo «عرضه» ("his offer"). matchText() folds ة to ه, so the
+ * word is blanked before folding. «عرضه» with ه is still promo.
+ */
+const ARDAH_RE = new RegExp(
+  `${AR_WORD_START}${AR_PREFIX}ع[\u064B-\u065F\u0670]*ر[\u064B-\u065F\u0670]*ض[\u064B-\u065F\u0670]*ة${AR_WORD_END}`,
+  "gu",
+);
+
 function hasPromo(value: string): boolean {
-  const text = matchText(value);
+  const text = matchText(value.normalize("NFKC").replace(INVISIBLE_RE, "").replace(ARDAH_RE, " "));
   return AR_PROMO_RE.test(text) || EN_PROMO_RE.test(text) || hasPercent(text);
 }
 
@@ -178,8 +188,12 @@ function normalizeName(value: string, foldCase: boolean): string {
  */
 const TEXT_SYMBOLS = new Set(["\u00A9", "\u00AE", "\u2122"]);
 
-/** Alcohol-coded drink emoji. Kombucha stays 🥤. */
-const EMOJI_DENYLIST = new Set(["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸"]);
+/** Alcohol-coded drink emoji. Kombucha stays 🥤. Looked up after stripping ZWJ, skin tones, and VS15/VS16. */
+const EMOJI_DENYLIST = new Set(["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸", "🥃", "🍶"]);
+
+export function isDeniedEmoji(value: string): boolean {
+  return EMOJI_DENYLIST.has(value.trim().replace(/[\u200D\uFE0E\uFE0F\u{1F3FB}-\u{1F3FF}]/gu, ""));
+}
 
 export function isOneEmojiGrapheme(value: string): boolean {
   const segments = [
@@ -345,7 +359,7 @@ export function collectCafeRaveProblems(
       if (item.emoji.trim() && !isOneEmojiGrapheme(item.emoji.trim())) {
         problems.push(`${where}: emoji must be exactly one emoji`);
       }
-      if (EMOJI_DENYLIST.has(item.emoji.trim())) {
+      if (isDeniedEmoji(item.emoji)) {
         problems.push(`${where}: emoji is on the denylist`);
       }
       const nameEn = [...item.name_en].length;
@@ -939,11 +953,42 @@ function selfTest(ids: Set<string>): void {
   }
   console.log("check-cafe-raves: ❤️ 🌶️ 🍽️ 🇸🇦 and ZWJ emoji allowed; bare ❤ / 🌶, ©️ and lone indicators rejected");
 
-  for (const emoji of ["🍺", "🍻", "🍹", "🍾", "🍷", "🥂", "🍸"]) {
-    rejects({ emoji }, "emoji is on the denylist", `emoji ${emoji}`);
+  for (const emoji of [
+    "🍺",
+    "🍻",
+    "🍹",
+    "🍾",
+    "🍷",
+    "🥂",
+    "🍸",
+    "🥃",
+    "🍶",
+    "🍷\uFE0F",
+    "🍺\uFE0F",
+    "🥃\uFE0F",
+    "🍶\uFE0F",
+    "🍸\uFE0E",
+    "🍺\u200D",
+    "🍻\u{1F3FD}",
+    "🍷\uFE0F\u200D",
+  ]) {
+    rejects({ emoji }, "emoji is on the denylist", `emoji ${JSON.stringify(emoji)}`);
   }
-  allows({ emoji: "🥤" }, "🥤 is not on the denylist");
-  console.log("check-cafe-raves: 🍺 🍻 🍹 🍾 🍷 🥂 🍸 denied; 🥤 allowed");
+  for (const emoji of ["🥤", "🧋", "🧃", "☕", "☕\uFE0F", "🍵", "🫖", "🍰", "🍫", "🍨", "🥪"]) {
+    allows({ emoji }, `${emoji} is not on the denylist`);
+  }
+  console.log(
+    "check-cafe-raves: 🍺 🍻 🍹 🍾 🍷 🥂 🍸 🥃 🍶 (VS15/VS16, ZWJ, skin tone) denied; 🥤 🧋 ☕️ 🍵 🍰 🍫 🍨 🥪 allowed",
+  );
+
+  // «عرضة» (ة) is an ordinary word; «عرضه» (ه, "his offer") stays promo.
+  for (const word of ["عرضة", "العرضة", "العرضة النجدية", "والعرضة", "عَرْضَة", "عرضـة"]) {
+    allows({ reason_ar: word }, `«${word}»`);
+  }
+  for (const word of ["عرضه", "عرضة وعرض", "العرضة والخصم"]) {
+    rejects({ reason_ar: word }, "promo or offer wording", `«${word}»`);
+  }
+  console.log("check-cafe-raves: «عرضة» / «العرضة» allowed; «عرضه» and عرضة next to عرض/خصم rejected");
 
   // Cinnabon evasions are caught after normalisation; cinnamon stays allowed.
   for (const name of ["Cinna bon", "Cinna-bon", "C-i-n-n-a-b-o-n", "Cinna\u200Cbon", "Cinna\u200Dbon", "CINNA.BON", "Ｃｉｎｎａｂｏｎ"]) {
@@ -1065,6 +1110,13 @@ const batch03Cafes = [
   "nosound-al-narjis",
   "atea-al-rabi",
 ] as const;
+const batch04Cafes = [
+  "percent-arabica-hittin",
+  "good-neighbor-olaya",
+  "peaks-digital-city-al-nakheel",
+  "jather-al-hamra",
+  "one-gram-sulimaniyah",
+] as const;
 for (const slug of liveCafes) {
   assert(slug in cafeRaves, `${slug} still renders a rave section`);
 }
@@ -1075,11 +1127,21 @@ for (const slug of batch03Cafes) {
   assert(slug in cafeRaves, `${slug} renders a rave section (batch 03)`);
   assert(cafeRaves[slug]?.length === 1, `${slug} ships one item in batch 03`);
 }
+for (const slug of batch04Cafes) {
+  assert(slug in cafeRaves, `${slug} renders a rave section (batch 04)`);
+  assert(cafeRaves[slug]?.length === 1, `${slug} ships one item in batch 04`);
+  assert(
+    (cafeRaves[slug]?.[0]?.evidence ?? "").includes("(batch-04 2026-10-03)"),
+    `${slug} evidence is tagged batch-04`,
+  );
+}
 assert(
-  Object.keys(cafeRaves).length === liveCafes.length + batch02Cafes.length + batch03Cafes.length,
-  "8 live cafés plus the batch-02 and batch-03 cafés render a rave section",
+  Object.keys(cafeRaves).length ===
+    liveCafes.length + batch02Cafes.length + batch03Cafes.length + batch04Cafes.length,
+  "8 live cafés plus the batch-02, batch-03 and batch-04 cafés render a rave section",
 );
-assert(shippedItems === 23, `23 items after batch 03, got ${shippedItems}`);
+assert(Object.keys(cafeRaves).length === 27, `27 cafés after batch 04, got ${Object.keys(cafeRaves).length}`);
+assert(shippedItems === 28, `28 items after batch 04, got ${shippedItems}`);
 for (const deferred of [
   "asfoura-al-malqa",
   "da-nonna-al-nakheel",
@@ -1093,6 +1155,31 @@ for (const deferred of [
   "okawa-king-fahd",
   // Flat White is a standard espresso drink (generic, V60 precedent).
   "volume-coffee-roasters-al-narjis",
+  // Batch 04 (2026-10-03): fewer than 3 same-branch dated sources, generic, mixed, or grouped.
+  "just-a-space-al-nakheel",
+  "sand-clock-al-muruj",
+  "taim-specialty-coffee-as-sahafah",
+  "cafe-tale-kafd",
+  "trieste-kafd",
+  "qamaria-hittin",
+  "kicksters-al-malqa",
+  "cross-coffee-an-nazhah",
+  "raslania-al-safa",
+  "silo-cafe-al-yarmouk",
+  "woods-al-yasmin",
+  "seven-beans-sulimaniyah",
+  "infuse-al-nakheel",
+  "hawaf-al-safa",
+  "aim-coffee-bar-al-malqa",
+  "breehant-al-yasmin",
+  "wee-al-nakheel",
+  "just-another-hittin",
+  "arco-al-rabi",
+  "rex-hittin",
+  "diplab-al-rabi",
+  "jae-specialty-coffee-ghirnatah",
+  // sources stale (2022/2024/2025); 2026 Maps reviews of the French toast are negative
+  "sors-hittin",
 ]) {
   assert(!(deferred in cafeRaves), `${deferred} is deferred`);
 }

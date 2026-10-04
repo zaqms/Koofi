@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import popularityIndexFile from "../data/popularity-index.json";
 import { isChainShop } from "../lib/chain-brands";
 import { listRealShops } from "../lib/catalog";
@@ -219,6 +221,25 @@ for (const q of ["ايرا", "إيرا", "قهوة ايرا", "إرا"]) {
     `"${q}" resolves to Era As Suwaidi, got ${hits.map((shop) => shop.id).join(",")}`,
   );
 }
+// QA L8: Ostrich is «اوستريتش» in the catalog and district copy. «اوستريتيش» still finds it.
+const ostrich = catalog.find((shop) => shop.id === "ostrich-al-falah");
+assert(ostrich?.nameAr === "اوستريتش", "Ostrich Arabic name is اوستريتش");
+const arCopy = readFileSync(join(process.cwd(), "lib/ar-content.ts"), "utf8");
+const enCopy = readFileSync(join(process.cwd(), "lib/en-content.ts"), "utf8");
+assert(
+  arCopy.includes("و[اوستريتش](/c/ostrich-al-falah)") &&
+    arCopy.includes("مود ماسترز واوستريتش وفلتر") &&
+    !arCopy.includes("اوستريتيش") &&
+    !enCopy.includes("اوستريتيش"),
+  "Al Falah copy uses اوستريتش, not اوستريتيش",
+);
+for (const q of ["اوستريتش", "اوستريتيش"]) {
+  const hits = matchCatalogShops(q, catalog);
+  assert(
+    hits.some((shop) => shop.id === "ostrich-al-falah"),
+    `"${q}" resolves to Ostrich Al Falah, got ${hits.map((shop) => shop.id).join(",")}`,
+  );
+}
 const hintia = matchCatalogShops("Hintia", catalog);
 const hintiya = matchCatalogShops("Hintiya", catalog);
 assert(
@@ -300,8 +321,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 448,
-  `popularity map should have 448 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 457,
+  `popularity map should have 457 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) =>

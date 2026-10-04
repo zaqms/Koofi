@@ -850,14 +850,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-falah": {
     lead: `Al Falah (الفلاح) sits on the north side of Riyadh. This page is the Al Falah set on wain.lol so far.
 
-[Mood Masters](/en/c/mood-masters-al-falah) is the name on this list today. We don’t invent extras to fill the page.`,
+[Mood Masters](/en/c/mood-masters-al-falah), [Ostrich Coffee House](/en/c/ostrich-al-falah), and [Filter Roastery](/en/c/filter-roastery-al-falah) are among the cards on this page today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Al Falah on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Falah isn’t the stop, these north lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Falah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Al Falah on wain.lol — a Riyadh neighborhood list including Mood Masters, with a Maps link.",
+    meta: "{countCafe} in Al Falah on wain.lol — a Riyadh neighborhood list including Mood Masters, Ostrich, and Filter Roastery, each with a Maps link.",
   },
   "al-izdihar": {
     lead: `Al Izdihar (الازدهار) sits beside Al Mughrizat. This page is the Al Izdihar set on wain.lol so far.

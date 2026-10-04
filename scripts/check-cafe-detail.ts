@@ -557,6 +557,20 @@ const BATCH14_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH14_IDS = Object.keys(BATCH14_HERO_COUNTS);
 
+/** BATCH D2: Al Falah (4 Oct 2026) Places galleries — 4 frames each, 3 for LEO and Towlan (screenshot / TV-face frames dropped). Google credit per frame. */
+const BATCH_D2_FALAH_HERO_COUNTS: Record<string, number> = {
+  "rawi-cafe-al-falah": 4,
+  "ostrich-al-falah": 4,
+  "bow-al-falah": 4,
+  "distance-away-al-falah": 4,
+  "double-three-al-falah": 4,
+  "leo-al-falah": 3,
+  "filter-roastery-al-falah": 4,
+  "tropika-al-falah": 4,
+  "towlan-al-falah": 3,
+};
+const BATCH_D2_FALAH_IDS = Object.keys(BATCH_D2_FALAH_HERO_COUNTS);
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-yasmin",
   // placeId fix 2026-10-02: the corrected place has no Places hours.
@@ -582,6 +596,7 @@ const batch11HeroIds = BATCH11_IDS.filter((id) => bakedHeroes[id]);
 const batch12HeroIds = BATCH12_IDS.filter((id) => bakedHeroes[id]);
 const batch13HeroIds = BATCH13_IDS.filter((id) => bakedHeroes[id]);
 const batch14HeroIds = BATCH14_IDS.filter((id) => bakedHeroes[id]);
+const batchD2FalahHeroIds = BATCH_D2_FALAH_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -597,8 +612,9 @@ assert(
       batch11HeroIds.length +
       batch12HeroIds.length +
       batch13HeroIds.length +
-      batch14HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14 merge in",
+      batch14HeroIds.length +
+      batchD2FalahHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14 and D2 Al Falah merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -613,6 +629,7 @@ assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
 assert(batch12HeroIds.length === 9, "batch 12 Trending adds hero set is complete");
 assert(batch13HeroIds.length === 8, "batch 13 Bisat/Rex/Veo/Alwaal hero set is complete");
 assert(batch14HeroIds.length === 7, "batch 14 D1 As Suwaidi hero set is complete");
+assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete");
 // QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
 assert(
   (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
@@ -713,6 +730,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH12_HERO_COUNTS[id] != null) return BATCH12_HERO_COUNTS[id]!;
   if (BATCH13_HERO_COUNTS[id] != null) return BATCH13_HERO_COUNTS[id]!;
   if (BATCH14_HERO_COUNTS[id] != null) return BATCH14_HERO_COUNTS[id]!;
+  if (BATCH_D2_FALAH_HERO_COUNTS[id] != null) return BATCH_D2_FALAH_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

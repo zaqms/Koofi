@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 387,
-  outdoor: 179,
-  coffee: 66,
+  nearby: 403,
+  outdoor: 188,
+  coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 441, "catalog stays 441");
-assert(listListingShops().length === 387, "listing stays 387");
-assert(listPublicShops().length === 387, "/api/shops pool stays 387");
+assert(listRealShops().length === 457, "catalog stays 457");
+assert(listListingShops().length === 403, "listing stays 403");
+assert(listPublicShops().length === 403, "/api/shops pool stays 403");
 assert(listLiveCatalogDistrictIds().length === 68, "district pages stay 68");
-assert(listSitemapLocs().length === 1059, "sitemap stays 1059");
+assert(listSitemapLocs().length === 1091, "sitemap stays 1091");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 7,
-  "nearby includes the 7 listed chains",
+  nearby.filter((shop) => isChainShop(shop)).length === 8,
+  "nearby includes the 8 listed chains",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -107,8 +107,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 5 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 174,
-  "outdoor is 174 local + 5 chains",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 183,
+  "outdoor is 183 local + 5 chains",
 );
 
 const coffee = listBestCoffeeShops();

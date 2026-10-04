@@ -152,7 +152,11 @@ export async function POST(request: Request) {
     }
     if (!created) {
       return Response.json(
-        { error: "no_storage", reply: copy.error[locale], locations: [] },
+        {
+          error: "no_storage",
+          reply: copy.meetHalfwayInvitesPaused[locale],
+          locations: [],
+        },
         { status: 503 },
       );
     }

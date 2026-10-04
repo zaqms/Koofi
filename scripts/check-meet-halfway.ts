@@ -97,8 +97,10 @@ import {
   notifyHalfwayResults,
 } from "../lib/halfway-results-webhook";
 import {
+  GTM_EVENT_TIMEOUT_MS,
   meetHalfwayFeedbackParams,
   meetHalfwayResultsParams,
+  trackEventAndWait,
 } from "../lib/track";
 import { decideVisitorLocationPeek } from "../lib/visitor-location-peek";
 
@@ -1548,6 +1550,27 @@ for (const name of halfwayEvents) {
 assert(ui.includes("onPin") && ui.includes("halfwayPinMethod"), "pin field reports which + method");
 assert(chatUi.includes("meet_halfway_pin"), "pin sets push meet_halfway_pin");
 assert(
+  GTM_EVENT_TIMEOUT_MS === 300 &&
+    track.includes("eventCallback: finish") &&
+    track.includes("eventTimeout: timeoutMs") &&
+    /function flushInviteShare[\s\S]*?trackEventAndWait\(\s*"meet_halfway_invite_share"/.test(
+      chatUi,
+    ) &&
+    /async function inviteHalfwayFriend[\s\S]*?const flushed = flushInviteShare\(created\.id\);[\s\S]*?await flushed;[\s\S]*?window\.location\.replace\(destination\)/.test(
+      chatUi,
+    ),
+  "invite navigation waits for the callback-or-timeout",
+);
+assert(
+  copy.includes("الدعوات متوقفة مؤقتاً، جرّب بعد شوي.") &&
+    copy.includes("Invites are paused for now. Try again a bit later.") &&
+    chatUi.includes("response.status === 503") &&
+    chatUi.includes("copy.meetHalfwayInvitesPaused[landing]") &&
+    inviteApi.includes("meetHalfwayInvitesPaused") &&
+    !inviteApi.includes("copy.error"),
+  "503 while invites are off shows the paused copy, not the generic error",
+);
+assert(
   track.includes('"meet_halfway_invite_joined"') &&
     chatUi.includes("meet_halfway_invite_joined"),
   "additive host-sees-guest-pin event does not replace the GTM v7 seven",
@@ -1875,6 +1898,117 @@ assert(
 );
 
 void (async () => {
+  const previousWindow = (globalThis as { window?: unknown }).window;
+  const rawInviteId = "invite-RAW-do-not-leak";
+  try {
+    const pushed: Array<Record<string, unknown>> = [];
+    const timers = new Map<number, () => void>();
+    let nextTimer = 1;
+    const win = {
+      dataLayer: {
+        push(row: Record<string, unknown>) {
+          pushed.push(row);
+          const callback = row.eventCallback;
+          if (typeof callback === "function") callback();
+        },
+      },
+      setTimeout(fn: () => void) {
+        const id = nextTimer++;
+        timers.set(id, fn);
+        return id;
+      },
+      clearTimeout(id: number) {
+        timers.delete(id);
+      },
+    };
+    (globalThis as { window?: unknown }).window = win;
+    const started = Date.now();
+    await trackEventAndWait(
+      "meet_halfway_invite_share",
+      { locale: "ar", pack_id: rawInviteId },
+      { dedupeKey: `invite-share-callback:${rawInviteId}` },
+    );
+    assert(Date.now() - started < 250, "eventCallback resolves before the timeout");
+    assert(timers.size === 0, "eventCallback cancels the navigation timeout");
+    const row = pushed[0];
+    if (!row) fail("invite share push");
+    assert(row.event === "meet_halfway_invite_share", "flush pushes invite_share");
+    assert(typeof row.eventCallback === "function", "push carries eventCallback");
+    assert(row.eventTimeout === GTM_EVENT_TIMEOUT_MS, "push carries eventTimeout");
+    assert(row.pack_id === "[invite]", "invite id stays [invite]");
+    const serialized = JSON.stringify(pushed);
+    assert(!serialized.includes(rawInviteId), "raw invite id never reaches the dataLayer");
+    assert(!serialized.includes("24.713") && !("lat" in row) && !("lng" in row), "flush push has no pin");
+    assert(!String(row.eventCallback).includes(rawInviteId), "eventCallback does not close over the invite id");
+
+    const quiet: Array<Record<string, unknown>> = [];
+    const quietTimers = new Map<number, () => void>();
+    let quietNext = 1;
+    const quietWin = {
+      dataLayer: quiet,
+      setTimeout(fn: () => void) {
+        const id = quietNext++;
+        quietTimers.set(id, fn);
+        return id;
+      },
+      clearTimeout(id: number) {
+        quietTimers.delete(id);
+      },
+    };
+    (globalThis as { window?: unknown }).window = quietWin;
+    let settled = false;
+    const waiting = trackEventAndWait(
+      "meet_halfway_invite_share",
+      { locale: "en", pack_id: rawInviteId },
+      { dedupeKey: `invite-share-timeout:${rawInviteId}` },
+    ).then(() => {
+      settled = true;
+    });
+    assert(!settled, "missing GTM does not resolve before the timeout");
+    const fire = [...quietTimers.values()];
+    quietTimers.clear();
+    for (const fn of fire) fn();
+    await waiting;
+    assert(settled, "timeout navigates when eventCallback never fires");
+    assert(quiet[0]?.pack_id === "[invite]", "timeout push still redacts the invite id");
+    assert(quiet[0]?.eventTimeout === GTM_EVENT_TIMEOUT_MS, "timeout push keeps eventTimeout");
+
+    const blockedTimers: Array<() => void> = [];
+    const blocked = {
+      dataLayer: {
+        push() {
+          throw new Error("gtm blocked");
+        },
+      },
+      setTimeout(fn: () => void) {
+        blockedTimers.push(fn);
+        return blockedTimers.length;
+      },
+      clearTimeout() {
+        return undefined;
+      },
+    };
+    (globalThis as { window?: unknown }).window = blocked;
+    let blockedSettled = false;
+    const blockedWait = trackEventAndWait(
+      "meet_halfway_invite_share",
+      { locale: "ar", pack_id: rawInviteId },
+      { dedupeKey: `invite-share-blocked:${rawInviteId}` },
+    ).then(() => {
+      blockedSettled = true;
+    });
+    assert(!blockedSettled, "a throwing dataLayer does not hang or resolve early");
+    for (const fn of blockedTimers) fn();
+    await blockedWait;
+    assert(blockedSettled, "timeout still navigates when dataLayer.push throws");
+
+    delete (globalThis as { window?: unknown }).window;
+    await trackEventAndWait("meet_halfway_open", { locale: "ar" });
+  } finally {
+    if (previousWindow === undefined) delete (globalThis as { window?: unknown }).window;
+    else (globalThis as { window?: unknown }).window = previousWindow;
+  }
+
   const previousFetch = globalThis.fetch;
   const previousKey = process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
   const previousVercelEnv = process.env.VERCEL_ENV;

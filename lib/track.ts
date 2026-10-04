@@ -163,6 +163,12 @@ const DEDUPE_MS = 400;
 let lastDedupeKey = "";
 let lastDedupeAt = 0;
 
+/**
+ * How long a tracker-free navigation waits for GTM. eventCallback usually
+ * lands first; this fires if GTM is blocked, absent, or slow.
+ */
+export const GTM_EVENT_TIMEOUT_MS = 300;
+
 declare global {
   interface Window {
     dataLayer?: Array<Record<string, unknown>>;
@@ -411,4 +417,53 @@ export function trackEvent(
 
   browserWindow.dataLayer = browserWindow.dataLayer || [];
   browserWindow.dataLayer.push({ event: name, ...redactAnalyticsParams(name, params) });
+}
+
+/**
+ * Push `name` and resolve when GTM has processed it, or after `timeoutMs`,
+ * whichever comes first. Always resolves — including SSR, a deduped push,
+ * a throwing dataLayer, and GTM blocked or not loaded — so a navigation
+ * waiting on this cannot hang.
+ *
+ * Invite ids are still redacted to `[invite]` (lib/analytics-redact).
+ * `eventCallback` / `eventTimeout` are GTM control keys, not event params:
+ * no pin, coordinates, blob, or raw invite id is added here.
+ */
+export function trackEventAndWait(
+  name: AnalyticsEventName,
+  params?: AnalyticsParams,
+  options?: { dedupeKey?: string; timeoutMs?: number },
+): Promise<void> {
+  const timeoutMs = options?.timeoutMs ?? GTM_EVENT_TIMEOUT_MS;
+  const browserWindow = globalThis.window;
+  if (!browserWindow) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    let settled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      if (timer !== undefined) browserWindow.clearTimeout(timer);
+      resolve();
+    };
+    timer = browserWindow.setTimeout(finish, timeoutMs);
+
+    const dedupeKey =
+      options?.dedupeKey ?? `${name}:${JSON.stringify(params ?? {})}`;
+    if (shouldDedupe(dedupeKey)) return;
+
+    const redacted = redactAnalyticsParams(name, params);
+    browserWindow.dataLayer = browserWindow.dataLayer || [];
+    try {
+      browserWindow.dataLayer.push({
+        event: name,
+        ...(redacted ?? {}),
+        eventCallback: finish,
+        eventTimeout: timeoutMs,
+      });
+    } catch {
+      // Broken or blocked dataLayer. The timeout still resolves.
+    }
+  });
 }

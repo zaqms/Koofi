@@ -481,10 +481,10 @@ assert(
   "live 24cafe is tagged 24cafe",
 );
 const taggedLive = listRealShops().filter((shop) => shop.isChain === true);
-assert(taggedLive.length === 27, "exactly 27 existing rows are tagged");
+assert(taggedLive.length === 28, "exactly 28 existing rows are tagged (27 + dr.CAFE As Suwaidi)");
 assert(
-  taggedLive.filter((shop) => shop.chainBrand === "dr-cafe").length === 18,
-  "18 dr.CAFE rows are tagged",
+  taggedLive.filter((shop) => shop.chainBrand === "dr-cafe").length === 19,
+  "19 dr.CAFE rows are tagged (18 + As Suwaidi, Batch D1)",
 );
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "java").length === 6,
@@ -495,6 +495,8 @@ assert(
   "3 24cafe rows are tagged",
 );
 const dineInLaneRemoved = [
+  // Batch D1 (4 Oct): sit-down + drive-through branch, added without the lane.
+  "drcafe-as-suwaidi",
   "drcafe-namar",
   "drcafe-tuwaiq",
   "drcafe-sulimaniyah",
@@ -653,21 +655,21 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 380, "specialty discovery is 380 after the Bisat batch");
-assert(listRealShops().length === 441, "catalog is 441 after the Bisat batch");
+assert(listDiscoveryShops().length === 386, "specialty discovery is 386 after Batch D1 (380 + 6 local As Suwaidi)");
+assert(listRealShops().length === 448, "catalog is 448 after Batch D1 (441 + 7)");
 assert(listLiveDistrictIds().length === 57, "specialty districts are 57 (Bisat batch adds Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 74,
   "catalog rows cover 74 districts (Jarir hidden; 4 Bisat batch districts)",
 );
 assert(listLiveCatalogDistrictIds().length === 68, "five chain-only districts drop out of the page set (64 + 4 Bisat batch)");
-assert(listDriveThroughDirectoryShops().length === 71, "drive-through is 71 after the placeId fix");
-assert(listListingShops().length === 387, "listing is specialty plus the 7 sit-down chains");
-assert(listPublicShops().length === 387, "public list includes the 7 sit-down chains");
-assert(listBrowseDirectoryShops().length === 397, "browse keeps local drive-through rows and the sit-down chains");
+assert(listDriveThroughDirectoryShops().length === 73, "drive-through is 73 after Batch D1 (Coffee Address + dr.CAFE As Suwaidi)");
+assert(listListingShops().length === 394, "listing is specialty plus the 8 sit-down chains");
+assert(listPublicShops().length === 394, "public list includes the 8 sit-down chains");
+assert(listBrowseDirectoryShops().length === 404, "browse keeps local drive-through rows and the sit-down chains");
 assert(
-  listListingShops().filter((shop) => shop.isChain).length === 7,
-  "exactly 7 sit-down chains are listed",
+  listListingShops().filter((shop) => shop.isChain).length === 8,
+  "exactly 8 sit-down chains are listed (7 + dr.CAFE As Suwaidi)",
 );
 assert(
   listDirectoryShopsForDistrict("al-malaz").some((shop) => shop.id === "java-cafe-al-malaz") &&
@@ -847,7 +849,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz,tuwaiq",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz,tuwaiq,as-suwaidi",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -1066,7 +1068,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "941e5a687a85cbafe65b079b47625c6ede46cf63ef587c17212e74b2ede5a42a",
+  copyHash === "322bf17dd6e401d2586835cdac30785248951b70e8fef917699971300be66f79",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1182,12 +1184,12 @@ assert(
 );
 const driveThrough = listDriveThroughDirectoryShops();
 assert(
-  driveThrough.filter((shop) => shop.isChain === true).length === 27,
-  "the drive-through directory includes the 27 tagged branches",
+  driveThrough.filter((shop) => shop.isChain === true).length === 28,
+  "the drive-through directory includes the 28 tagged branches",
 );
 assert(
-  applyHideChains(driveThrough, true).length === 44,
-  "drive-through local-only keeps the 44 non-chain rows",
+  applyHideChains(driveThrough, true).length === 45,
+  "drive-through local-only keeps the 45 non-chain rows (44 + Coffee Address As Suwaidi)",
 );
 assert(
   !chainFilterShowsEmpty(driveThrough, true),
@@ -1196,12 +1198,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "b2efa2a60901a4494cbd9344698b8c0d6af488540b564df835172c128ac7991e",
+  llmsHash === "b8e9dccbecfb6b44453cd4ed57972428f9f2e4836622097569d17dc6f555cc43",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("380 local, 7 chain branches"),
-  "llms.txt names the 7 chain branches separately from specialty",
+  llms.includes("386 local, 8 chain branches"),
+  "llms.txt names the 8 chain branches separately from specialty",
 );
 
 assert(

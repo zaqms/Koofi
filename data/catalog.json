@@ -41606,6 +41606,712 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "plant-cafe-as-suwaidi",
+      "nameAr": "بلانت كافيه",
+      "nameEn": "Plant Cafe",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee524cf5feb13:0x1b2813c9be8831bc!8m2!3d24.5888365!4d46.6645636",
+      "pin": {
+        "lat": 24.5888365,
+        "lng": 46.6645636
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJE-tfzyTlLj4RvDGIvskTKBs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:30 AM – 2:00 AM",
+          "Tuesday: 5:30 AM – 2:00 AM",
+          "Wednesday: 5:30 AM – 2:00 AM",
+          "Thursday: 5:30 AM – 2:00 AM",
+          "Friday: 12:00 PM – 2:00 AM",
+          "Saturday: 9:00 AM – 2:00 AM",
+          "Sunday: 5:30 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "seen-cafe-as-suwaidi",
+      "nameAr": "سين كافية",
+      "nameEn": "Seen Cafe",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1b001dcb4477:0x9140247ce26730cd!8m2!3d24.588624499999998!4d46.6651905",
+      "pin": {
+        "lat": 24.588624499999998,
+        "lng": 46.6651905
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJd0TLHQAbLz4RzTBn4nwkQJE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 1:00 AM",
+          "Tuesday: 7:00 AM – 12:00 AM",
+          "Wednesday: 7:00 AM – 1:00 AM",
+          "Thursday: 7:00 AM – 3:30 AM",
+          "Friday: 1:00 PM – 3:30 AM",
+          "Saturday: 7:00 AM – 3:30 AM",
+          "Sunday: 7:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "hot-sip-as-suwaidi",
+      "nameAr": "هوت سيب",
+      "nameEn": "Hot Sip",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11a195d75645:0x15d6349b964e559e!8m2!3d24.5795978!4d46.6595593",
+      "pin": {
+        "lat": 24.5795978,
+        "lng": 46.6595593
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJRVbXlaERLz4RnlVOlps01hU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "era-coffee-as-suwaidi",
+      "nameAr": "إرا",
+      "nameEn": "Era Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11249f26ba57:0xa1397b7f3fea9cef!8m2!3d24.579730599999998!4d46.6652874",
+      "pin": {
+        "lat": 24.579730599999998,
+        "lng": 46.6652874
+      },
+      "logoUrl": "/logos/era-coffee-as-suwaidi.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJV7omnyQRLz4R75zqP397OaE",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:30 AM – 3:00 AM",
+          "Tuesday: 5:30 AM – 3:00 AM",
+          "Wednesday: 5:30 AM – 3:00 AM",
+          "Thursday: 5:30 AM – 3:00 AM",
+          "Friday: 10:00 AM – 3:00 AM",
+          "Saturday: 5:30 AM – 3:00 AM",
+          "Sunday: 5:30 AM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "naham-specialty-as-suwaidi",
+      "nameAr": "نهم",
+      "nameEn": "Naham Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11002a9475df:0x542d6dd656bdb0fa!8m2!3d24.5856156!4d46.664646499999996",
+      "pin": {
+        "lat": 24.5856156,
+        "lng": 46.664646499999996
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ33WUKgARLz4R-rC9VtZtLVQ",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 12:30 PM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "coffee-address-as-suwaidi",
+      "nameAr": "عنوان القهوة",
+      "nameEn": "Coffee Address",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11ac9b3078b5:0x16140c01b21486b9!8m2!3d24.5817503!4d46.659084899999996",
+      "pin": {
+        "lat": 24.5817503,
+        "lng": 46.659084899999996
+      },
+      "logoUrl": "/logos/coffee-address-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJtXgwm6wRLz4RuYYUsgEMFBY",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:00 AM – 2:00 AM",
+          "Tuesday: 5:00 AM – 2:00 AM",
+          "Wednesday: 5:00 AM – 2:00 AM",
+          "Thursday: 5:00 AM – 2:00 AM",
+          "Friday: 5:00 AM – 2:00 AM",
+          "Saturday: 5:00 AM – 2:00 AM",
+          "Sunday: 5:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "drcafe-as-suwaidi",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
+      "nameAr": "د.كيف كافيه",
+      "nameEn": "dr.CAFE",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "طلبات السيارة"
+      ],
+      "momentTags": [
+        "drive-through"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11001901a3f5:0xaf74b1bb8db394a2!8m2!3d24.5818563!4d46.657982",
+      "pin": {
+        "lat": 24.5818563,
+        "lng": 46.657982
+      },
+      "logoUrl": "/logos/drcafe-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ9aMBGQARLz4RopSzjbuxdK8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

@@ -545,6 +545,18 @@ const BATCH13_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH13_IDS = Object.keys(BATCH13_HERO_COUNTS);
 
+/** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each, Google credit per frame. */
+const BATCH14_HERO_COUNTS: Record<string, number> = {
+  "plant-cafe-as-suwaidi": 4,
+  "seen-cafe-as-suwaidi": 4,
+  "hot-sip-as-suwaidi": 4,
+  "era-coffee-as-suwaidi": 4,
+  "naham-specialty-as-suwaidi": 4,
+  "coffee-address-as-suwaidi": 4,
+  "drcafe-as-suwaidi": 4,
+};
+const BATCH14_IDS = Object.keys(BATCH14_HERO_COUNTS);
+
 const BATCH6_MISSING_HOURS = [
   "drive-al-yasmin",
   // placeId fix 2026-10-02: the corrected place has no Places hours.
@@ -569,6 +581,7 @@ const batch10HeroIds = BATCH10_IDS.filter((id) => bakedHeroes[id]);
 const batch11HeroIds = BATCH11_IDS.filter((id) => bakedHeroes[id]);
 const batch12HeroIds = BATCH12_IDS.filter((id) => bakedHeroes[id]);
 const batch13HeroIds = BATCH13_IDS.filter((id) => bakedHeroes[id]);
+const batch14HeroIds = BATCH14_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -583,8 +596,9 @@ assert(
       batch10HeroIds.length +
       batch11HeroIds.length +
       batch12HeroIds.length +
-      batch13HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–13 merge in",
+      batch13HeroIds.length +
+      batch14HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -598,6 +612,7 @@ assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
 assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
 assert(batch12HeroIds.length === 9, "batch 12 Trending adds hero set is complete");
 assert(batch13HeroIds.length === 8, "batch 13 Bisat/Rex/Veo/Alwaal hero set is complete");
+assert(batch14HeroIds.length === 7, "batch 14 D1 As Suwaidi hero set is complete");
 // QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
 assert(
   (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
@@ -697,6 +712,7 @@ function expectedHeroCount(id: string): number {
   if (id === "buljah-al-olaya") return 3;
   if (BATCH12_HERO_COUNTS[id] != null) return BATCH12_HERO_COUNTS[id]!;
   if (BATCH13_HERO_COUNTS[id] != null) return BATCH13_HERO_COUNTS[id]!;
+  if (BATCH14_HERO_COUNTS[id] != null) return BATCH14_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

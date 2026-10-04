@@ -1,9 +1,9 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getShop } from "./catalog";
 import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { neighborhoodLabel } from "./neighborhoods";
+import { publicOgImageDataUri } from "./og-image-data";
+import { OG_RTL_ROW, ogFontMeasurer, ogRtlUnits } from "./og-rtl-text";
 import { PRODUCT_NAME, shopDisplayName } from "./product";
 import type { Language, Shop } from "./types";
 
@@ -15,22 +15,11 @@ type CafeOgProps = {
 };
 
 function shopImageDataUri(shop: Shop): string | null {
-  const path = shop.logoUrl?.trim() || shop.photoUrl?.trim();
-  if (!path || !path.startsWith("/") || path.startsWith("//")) return null;
-  const file = join(process.cwd(), "public", path);
-  try {
-    const buffer = readFileSync(file);
-    const ext = path.split(".").pop()?.toLowerCase();
-    const mime =
-      ext === "png"
-        ? "image/png"
-        : ext === "webp"
-          ? "image/webp"
-          : "image/jpeg";
-    return `data:${mime};base64,${buffer.toString("base64")}`;
-  } catch {
-    return null;
-  }
+  // Logo first, then photo; each must be a format Satori can decode
+  // (see lib/og-image-data.ts). A webp/ico logo must not 500 the card.
+  return (
+    publicOgImageDataUri(shop.logoUrl) ?? publicOgImageDataUri(shop.photoUrl)
+  );
 }
 
 async function loadArabicFont(): Promise<ArrayBuffer | null> {
@@ -63,6 +52,10 @@ export async function cafeOpenGraphImage(
     : cityLabel(DEFAULT_LIVE_CITY, language);
   const image = shop ? shopImageDataUri(shop) : null;
   const dir = language === "en" ? "ltr" : "rtl";
+  const measure = dir === "rtl" ? ogFontMeasurer(font) : null;
+  // AR rows span the room beside the logo: row-reverse starts them at the
+  // right edge, and long names wrap instead of overflowing.
+  const rtlWidth = CAFE_OG_SIZE.width - 2 * 80 - (image ? 160 + 36 : 0);
 
   return new ImageResponse(
     (
@@ -111,10 +104,41 @@ export async function cafeOpenGraphImage(
               direction: dir,
             }}
           >
-            <div style={{ fontSize: 54, lineHeight: 1.2, fontWeight: 600 }}>
-              {name}
-            </div>
-            <div style={{ fontSize: 32, color: "#5c4e45" }}>{area}</div>
+            {dir === "rtl" ? (
+              // Satori has no bidi and mis-sizes joined Arabic: lay the AR
+              // words out ourselves (lib/og-rtl-text.tsx). EN is unchanged.
+              <div
+                style={{
+                  ...OG_RTL_ROW,
+                  alignSelf: "flex-end",
+                  width: rtlWidth,
+                  fontSize: 54,
+                  lineHeight: 1.2,
+                  fontWeight: 600,
+                }}
+              >
+                {ogRtlUnits(name, 54, measure)}
+              </div>
+            ) : (
+              <div style={{ fontSize: 54, lineHeight: 1.2, fontWeight: 600 }}>
+                {name}
+              </div>
+            )}
+            {dir === "rtl" ? (
+              <div
+                style={{
+                  ...OG_RTL_ROW,
+                  alignSelf: "flex-end",
+                  width: rtlWidth,
+                  fontSize: 32,
+                  color: "#5c4e45",
+                }}
+              >
+                {ogRtlUnits(area, 32, measure)}
+              </div>
+            ) : (
+              <div style={{ fontSize: 32, color: "#5c4e45" }}>{area}</div>
+            )}
           </div>
         </div>
         <div

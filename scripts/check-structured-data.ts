@@ -5,6 +5,7 @@ import {
   getShop,
   listDirectoryShops,
   listDiscoveryShops,
+  listListingShops,
   listRealShops,
 } from "../lib/catalog";
 import {
@@ -27,6 +28,7 @@ import {
 import {
   buildLlmsTxt,
   districtItemListJsonLd,
+  fixedListItemListJsonLd,
   mostPopularItemListJsonLd,
   jsonHasForbiddenPublicFields,
   listPublicShops,
@@ -60,8 +62,10 @@ function readRepo(path: string): string {
 
 const shops = listPublicShops();
 assert(
-  shops.length === listDiscoveryShops().length,
-  "public list is the specialty discovery catalog",
+  shops.length === listListingShops().length &&
+    shops.length === listDiscoveryShops().length + shops.filter((shop) => shop.isChain).length &&
+    shops.filter((shop) => shop.isChain).length === 10,
+  "public list is specialty plus the 10 sit-down chains",
 );
 assert(shops.length > 0, "catalog is not empty");
 
@@ -228,10 +232,12 @@ assert(
     !sitemap.includes("/coffee-shops/for-two") &&
     !sitemap.includes("/coffee-shops/date<") &&
     !sitemap.includes("/en/coffee-shops/date<") &&
-    !sitemap.includes("soft-places") &&
-    !sitemap.includes("/coffee-shops/as-suwaidi<") &&
-    !sitemap.includes("/en/coffee-shops/as-suwaidi<"),
-  "sitemap excludes dating, Soft Places, and 0-shop districts",
+    !sitemap.includes("soft-places"),
+  "sitemap excludes dating and Soft Places",
+);
+assert(
+  sitemap.includes("/coffee-shops/as-suwaidi<") && sitemap.includes("/en/coffee-shops/as-suwaidi<"),
+  "sitemap lists As Suwaidi now that Alwaal Albari is live",
 );
 assert(
   sitemap.includes("https://wain.lol/neighborhoods<"),
@@ -699,6 +705,21 @@ assert(
   llms.includes("WebSite"),
   "llms.txt mentions home WebSite JSON-LD",
 );
+
+assert(
+  readRepo("app/[category]/[slug]/page.tsx").includes("fixedListItemListJsonLd") &&
+    readRepo("app/en/[category]/[slug]/page.tsx").includes("fixedListItemListJsonLd"),
+  "fixed list pages inject ItemList",
+);
+const outdoorList = fixedListItemListJsonLd("outdoor", "ar");
+const coffeeList = fixedListItemListJsonLd("coffee", "en");
+const workList = fixedListItemListJsonLd("work", "ar");
+assert(fixedListItemListJsonLd("nearby", "ar") == null, "nearby has no ItemList");
+assert(outdoorList?.numberOfItems === 198, "outdoor ItemList is 198");
+assert(coffeeList?.numberOfItems === 67, "best coffee ItemList is 67");
+assert(workList?.numberOfItems === 65, "work ItemList is 65");
+assert(outdoorList?.name === "قهاوي فيها جلسات خارجية في الرياض", "outdoor ItemList name is the H1");
+assert(!JSON.stringify(coffeeList).includes("noindex"), "best coffee list stays indexable");
 
 console.log(
   `check-structured-data: ok (${shops.length} shops, sample ${sample.id}, ${aboutAr.length} about FAQs)`,

@@ -5,15 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "generate-sitemap": "npx tsx scripts/generate-sitemap.ts",
+    "refresh-tiktok-followers": "npx tsx scripts/refresh-tiktok-followers.ts",
     "prebuild": "npx tsx scripts/generate-sitemap.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check-cafe-raves": "npx tsx scripts/check-cafe-raves.ts"
   },
   "dependencies": {
     "@datafast/ai-crawl": "^1.0.9",
     "@modelcontextprotocol/server": "^2.0.0",
     "@neondatabase/serverless": "^1.1.0",
+    "@shuding/opentype.js": "1.4.0-beta.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.0",
     "mcp-handler": "^2.1.1",

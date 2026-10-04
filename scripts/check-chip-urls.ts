@@ -13,7 +13,10 @@ import {
   listRealShops,
 } from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
-import { categoryListingStaticParams } from "../lib/most-popular";
+import {
+  categoryListingStaticParams,
+  listPopularDirectoryShops,
+} from "../lib/most-popular";
 import { isNeighborhoodId } from "../lib/neighborhoods";
 import {
   COFFEE_SHOP_CHIP_SLUGS,
@@ -37,6 +40,7 @@ import {
   chipDirectoryMoment,
   chipIdFromCoffeeShopSlug,
   chipSharePath,
+  isFixedListChip,
   isStaticDirectoryChip,
   coffeeShopChipPath,
   coffeeShopChipSlugForId,
@@ -162,14 +166,14 @@ assert(
 );
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,nearby,outdoor,with-friends,work,drive-through",
-  "P0 home order is locked — Matcha 4th, Drive-through 9th after Work",
+    "popular,nearby,matcha,coffee,work,with-friends,outdoor,drive-through",
+  "P0 home order is the 8-tile grid — Nearby 2nd, Drive-through last",
 );
 assert(
   OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",
   "off-home chip ids stay shareable",
 );
-assert(homeSurfaceChips().length === 9, "home chrome is nine chips");
+assert(homeSurfaceChips().length === 8, "home chrome is eight chips");
 const homeChipIds: readonly string[] = homeSurfaceChips().map((chip) => chip.id);
 assert(
   !homeChipIds.includes("meet-halfway"),
@@ -424,7 +428,7 @@ assert(
     !chips.includes('stroke="#111"') &&
     chips.includes('stroke="currentColor"') &&
     chips.includes('strokeWidth = "1.55"') &&
-    chips.includes("className=\"size-7 shrink-0\"") &&
+    chips.includes("\"size-6 shrink-0\"") &&
     !chips.includes("bg-matcha") &&
     !chips.includes("text-matcha") &&
     !chips.includes("border-matcha") &&
@@ -437,8 +441,8 @@ assert(
     chips.includes("text-ink") &&
     chips.includes("border-bean bg-bean") &&
     chips.includes("text-foam") &&
-    (chips.match(/border-line bg-foam/g)?.length ?? 0) === 1 &&
-    (chips.match(/border-bean bg-bean/g)?.length ?? 0) === 1,
+    (chips.match(/border-line bg-foam/g)?.length ?? 0) === 2 &&
+    (chips.match(/border-bean bg-bean/g)?.length ?? 0) === 2,
   "vibe chips share Paper/white + Ink unselected and dusty-bean selected",
 );
 assert(
@@ -448,16 +452,20 @@ assert(
 );
 assert(chipDirectoryMoment("matcha") === "matcha", "matcha slug filters matcha tags");
 assert(
-  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 26,
-  "Matcha route directory is the 26 tagged shops",
+  filterDirectoryShopsByMoment(listDirectoryShops(), "matcha").length === 29,
+  "Matcha route directory is the 29 tagged shops",
 );
 assert(
   chipDirectoryMoment("drive-through") === "drive-through",
   "drive-through slug filters drive-through tags",
 );
 assert(
-  listDriveThroughDirectoryShops().length === 77,
-  "Drive-through directory is 67 ADD + 10 TAG",
+  listRealShops().filter(isDriveThroughLane).length === 54,
+  "DT lane (catalogLane === drive-through) is 54",
+);
+assert(
+  listDriveThroughDirectoryShops().length === 73,
+  "Drive-through directory is 54 lane rows plus moment-tagged sit-down chains",
 );
 assert(
   listDriveThroughDirectoryShops().every((shop) =>
@@ -644,6 +652,25 @@ assert(
   "most-popular still selects popular and locale-switches on that path",
 );
 assert(
+  landing.includes('pageChipId === "popular"') &&
+    landing.includes("popularChipSelected") &&
+    landing.includes("listPopularDirectoryShops()"),
+  "default Most Popular chip serves the popularityIndex ranking",
+);
+const popularRank = listPopularDirectoryShops().map((shop) => shop.id);
+const neighborhoodRank = listDirectoryShops().map((shop) => shop.id);
+assert(popularRank.length > 0, "Most Popular ranking is non-empty");
+assert(
+  popularRank.join(",") !== neighborhoodRank.join(","),
+  "Most Popular ranking is not the neighborhood directory order",
+);
+assert(
+  landing.includes("<HomeTrending") &&
+    landing.indexOf("<HomeTrending") < landing.indexOf("<ShopDirectory") &&
+    landing.includes("listPopularDirectoryShops()"),
+  "home shows trending above the café list; Most Popular still ranks that list",
+);
+assert(
   landing.includes("restoreOffHomeChipOpen") &&
     landing.includes("chipOpen") &&
     landing.includes("isOffHomeChipId"),
@@ -682,7 +709,9 @@ assert(
   "drive-through is a static directory chip",
 );
 assert(!isStaticDirectoryChip("quiet"), "quiet stays off-home three-pick");
-assert(!isStaticDirectoryChip("coffee"), "coffee still opens chat");
+assert(!isStaticDirectoryChip("coffee"), "coffee is not a static directory chip");
+assert(isFixedListChip("coffee"), "coffee is a fixed list and does not auto-send");
+assert(isFixedListChip("nearby") && isFixedListChip("outdoor") && isFixedListChip("work"), "the four list pages skip chat auto-send");
 assert(!/Soft Places/i.test(chat), "no Soft Places analytics or UI in chat");
 
 const nextConfig = read("next.config.ts");
@@ -721,18 +750,33 @@ assert(
 
 const hero = read("components/home-hero.tsx");
 assert(
-  hero.includes("copy.opener") &&
-    hero.includes("copy.homeSupport") &&
+  hero.includes("هلا، وين ودك تروح اليوم..") &&
+    hero.includes("Hey, where are we going today..") &&
+    !hero.includes("copy.opener") &&
+    !hero.includes("copy.homeSupport") &&
     !hero.includes("cityOnly") &&
     !/Koofi/i.test(hero),
-  "home chrome is headline + support, no eyebrow, no Koofi",
+  "bare-home headline is Amjad’s line only — subtitle removed, no eyebrow, no Koofi",
 );
 assert(
   chat.includes("HomeHero") &&
     chat.includes("MeetHalfwayCard") &&
     chat.includes("VibeChips") &&
-    chat.includes('pickedChipId ?? "popular"'),
-  "landing stacks بيننا card above chips; default selected is popular",
+    chat.includes('pickedChipId ?? "popular"') &&
+    chat.indexOf("<HomeHero") < chat.indexOf("<VibeChips") &&
+    chat.indexOf("<VibeChips") < chat.indexOf("<MeetHalfwayCard"),
+  "landing stacks the category grid above بيننا; default selected is popular",
+);
+const vibeChips = read("components/vibe-chips.tsx");
+assert(
+  vibeChips.includes('chip.id === "popular"') &&
+    vibeChips.includes('type="button"') &&
+    vibeChips.includes("chipSharePath(chip.id, language)"),
+  "re-tap of selected Most Popular stays put; other chips stay shareable links",
+);
+assert(
+  !read("components/shop-directory.tsx").includes("allDistricts"),
+  "shop directory does not mount the old district-chip grid",
 );
 
 console.log("check-chip-urls: ok");

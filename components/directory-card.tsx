@@ -23,6 +23,11 @@ type DirectoryCardProps = {
   mapsSource?: MapsClickSource;
   badge?: string | null;
   onMapsClick?: () => void;
+  /**
+   * Fixed lists pass false so a card never opens the geolocation prompt.
+   * Distance still paints once a peek or an explicit tap fills the snapshot.
+   */
+  autoLocate?: boolean;
 };
 
 export function DirectoryCard({
@@ -31,6 +36,7 @@ export function DirectoryCard({
   mapsSource = "list",
   badge = null,
   onMapsClick,
+  autoLocate = true,
 }: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
   const area =
@@ -44,6 +50,7 @@ export function DirectoryCard({
   return (
     <li
       data-listing-card=""
+      {...(shop.isChain ? { "data-chain-card": "" } : {})}
       className="rounded-[var(--radius-card)] border border-wain-divider bg-wain-paper px-3.5 py-3.5 shadow-[0_2px_8px_rgba(30,23,20,0.05)]"
       dir={dir}
       lang={language}
@@ -74,6 +81,7 @@ export function DirectoryCard({
               neighborhood={area}
               lat={shop.lat}
               lng={shop.lng}
+              autoLocate={autoLocate}
             />
             {tags.length > 0 ? (
               <ul className="mt-1.5 flex flex-wrap gap-1">
@@ -128,13 +136,15 @@ function ListingLocation({
   neighborhood,
   lat,
   lng,
+  autoLocate = true,
 }: {
   language: Language;
   neighborhood: string;
   lat?: number;
   lng?: number;
+  autoLocate?: boolean;
 }) {
-  const visitor = useVisitorLocation();
+  const visitor = useVisitorLocation({ auto: autoLocate });
   const display = shopDistanceForVisitor({
     status: visitor.status,
     lat: visitor.status === "ready" ? visitor.lat : undefined,

@@ -6,10 +6,12 @@ import Script from "next/script";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
 import { CityProvider } from "@/lib/city-context";
 import { cityLabel, DEFAULT_LIVE_CITY } from "@/lib/cities";
+import { HIDE_CHAINS_STORAGE_KEY } from "@/lib/chain-filter";
+import { listingOgImage } from "@/lib/listing-og";
 import {
+  LOCKED_OPENER,
   PRODUCT_NAME,
   PUBLIC_SITE_URL,
-  SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "@/lib/product";
 import "./globals.css";
@@ -31,6 +33,7 @@ const passportSerif = Source_Serif_4({
 });
 
 const description = `وين القهوة الحين — ثلاث قهاوي، وسبب لكل وحدة. ${cityLabel(DEFAULT_LIVE_CITY, "ar")}.`;
+const homeOg = listingOgImage({ kind: "home", language: "ar" }, LOCKED_OPENER);
 
 export const metadata: Metadata = {
   metadataBase: new URL(PUBLIC_SITE_URL),
@@ -45,13 +48,13 @@ export const metadata: Metadata = {
     locale: "ar_SA",
     type: "website",
     url: "/",
-    images: [SOCIAL_SHARE_IMAGE],
+    images: [homeOg],
   },
   twitter: {
     card: SOCIAL_TWITTER_CARD,
     title: PRODUCT_NAME,
     description,
-    images: [SOCIAL_SHARE_IMAGE],
+    images: [homeOg],
   },
 };
 
@@ -64,6 +67,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${plexArabic.variable} ${passportSerif.variable}`}
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{if(localStorage.getItem(${JSON.stringify(HIDE_CHAINS_STORAGE_KEY)})==="1")document.documentElement.setAttribute("data-hide-chains","")}catch(e){}})();`,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

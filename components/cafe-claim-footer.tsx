@@ -53,9 +53,8 @@ export function CafeClaimFooter({
 
   return (
     <footer className="border-t border-wain-divider pt-3 text-[11px] text-wain-soft-taupe">
-      <p dir="ltr">{copy.listedOn[language]}</p>
       {showCta ? (
-        <p className="mt-1.5">
+        <p>
           <a
             href={shopClaimWhatsAppHref(shop, language)}
             className="underline-offset-2 hover:text-ink hover:underline"

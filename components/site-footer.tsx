@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { BrandWordmark } from "@/components/brand-wordmark";
+import { FixedListFooterLinks } from "@/components/fixed-list-nav";
 import { aboutPath, feedbackPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
@@ -10,6 +11,8 @@ type SiteFooterProps = {
   padded?: boolean;
   /** Cream type + inverted wordmark on charcoal Passport chrome. */
   onDark?: boolean;
+  /** Bare home drops the rule and separates sections with space. */
+  rule?: boolean;
 };
 
 /** Latin brand, About + Ideas links, Contact us. Home: after the directory. Cards: under back-to-chat. */
@@ -17,17 +20,23 @@ export function SiteFooter({
   language,
   padded = true,
   onDark = false,
+  rule = true,
 }: SiteFooterProps) {
   const linkClass = onDark
     ? "text-xs text-foam/85 underline-offset-2 hover:text-foam hover:underline"
     : "text-xs text-ink-soft underline-offset-2 hover:text-ink hover:underline";
+  const ruleClass = rule
+    ? onDark
+      ? "border-t border-foam/25"
+      : "border-t border-line"
+    : "";
   const frameClass = padded
     ? onDark
-      ? "mx-auto w-full max-w-md border-t border-foam/25 px-4 py-5"
-      : "mx-auto w-full max-w-md border-t border-line bg-paper px-4 py-5"
+      ? `mx-auto w-full max-w-md px-4 py-5 ${ruleClass}`
+      : `mx-auto w-full max-w-md bg-paper px-4 py-5 ${ruleClass}`
     : onDark
-      ? "mt-8 border-t border-foam/25 pt-4 pb-2"
-      : "mt-8 border-t border-line pt-4 pb-2";
+      ? `mt-8 pt-4 pb-2 ${ruleClass}`
+      : `mt-8 pt-4 pb-2 ${ruleClass}`;
 
   return (
     <footer
@@ -52,6 +61,7 @@ export function SiteFooter({
           {copy.feedbackLink[language]}
         </Link>
       </p>
+      <FixedListFooterLinks language={language} className={linkClass} />
       <div className="mt-3">
         <ContactUs language={language} />
       </div>

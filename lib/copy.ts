@@ -498,6 +498,10 @@ export const copy = {
     ar: "التصنيف",
     en: "Vibe",
   },
+  detailRaves: {
+    ar: "وش يمدحون هنا؟",
+    en: "People rave about",
+  },
   detailSeeAll: {
     ar: "عرض الكل",
     en: "See all",
@@ -537,6 +541,14 @@ export const copy = {
   newThisWeekHint: {
     ar: "انضافت للقائمة هالأسبوع.",
     en: "Added to the list this week.",
+  },
+  trendingThisWeek: {
+    ar: "ترند الأسبوع",
+    en: "Trending this week",
+  },
+  trendingEmpty: {
+    ar: "ما فيه ترند هالأسبوع للحين.",
+    en: "Nothing trending this week yet.",
   },
   directory: {
     ar: "القائمة",
@@ -627,6 +639,10 @@ export const copy = {
   backToChat: {
     ar: "ارجع للشات",
     en: "Back to chat",
+  },
+  backHome: {
+    ar: "الرئيسية",
+    en: "Home",
   },
   passportBack: {
     ar: "رجوع للشات",
@@ -724,10 +740,6 @@ export const copy = {
   feedbackNoStorage: {
     ar: "البورد بعد ما اشتغل على السيرفر. جرّب بعد شوي.",
     en: "The board is not connected yet. Try again later.",
-  },
-  listedOn: {
-    ar: "معروض على wain.lol",
-    en: "Listed on wain.lol",
   },
   ownThisCafe: {
     ar: "تملك المقهى؟",

@@ -12,6 +12,18 @@ import {
   rankInDistrict,
   shopsMissingIgFollowers,
 } from "../lib/district-rank";
+import {
+  TIKTOK_FOLLOWER_CAP,
+  TIKTOK_FOLLOWERS,
+  TIKTOK_MAX_POINTS,
+  TIKTOK_NEUTRAL_BONUS,
+  effectivePopularityIndex,
+  neutralBonusFromRows,
+  tiktokBonusForShop,
+  tiktokFollowerMapErrors,
+  tiktokFoundBonus,
+  uniqueFoundFollowerCounts,
+} from "../lib/tiktok-popularity";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { parseIntent } from "../lib/parse-intent";
 import { pickCafes } from "../lib/picker";
@@ -35,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 47, `expected 47 live districts, got ${live.length}`);
+assert(live.length === 62, `expected 62 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -75,6 +87,22 @@ assert(extractPrimaryDistrict("Hittin") === "hittin", "Hittin");
 assert(extractPrimaryDistrict("hittin") === "hittin", "hittin");
 assert(extractPrimaryDistrict("حطين") === "hittin", "حطين");
 assert(extractPrimaryDistrict("hitin") === "hittin", "hitin typo");
+// #239 QA: Arabic diacritics and tatweel never split a word («بِساط» reads as «بساط»).
+assert(extractPrimaryDistrict("حِطِّين") === "hittin", "حِطِّين with kasra/shadda");
+assert(extractPrimaryDistrict("قهوة في السُّوَيدي") === "as-suwaidi", "السُّوَيدي with damma/fatha/shadda");
+assert(extractPrimaryDistrict("حطــين") === "hittin", "حطــين with tatweel");
+assert(parseIntent("بِساط حِطّين").neighborhoods.includes("hittin"), "parseIntent strips diacritics");
+for (const q of ["بساط", "بِساط", "bisat"]) {
+  const ids = matchCatalogShops(q, listRealShops()).map((shop) => shop.id);
+  assert(
+    ["bisat-umm-al-hamam-al-gharbi", "bisat-an-nafal", "bisat-hittin"].every((id) => ids.includes(id)),
+    `"${q}" finds the 3 بِساط rows, got ${ids.join(",")}`,
+  );
+}
+assert(
+  pickCafes({ text: "بِساط حِطّين" }).picks[0]?.shop.id === "bisat-hittin",
+  "«بِساط حِطّين» leads with Bisat Hittin",
+);
 assert(extractPrimaryDistrict("al narjis") === "al-narjis", "al narjis");
 assert(extractPrimaryDistrict("Al Narjis") === "al-narjis", "Al Narjis");
 assert(extractPrimaryDistrict("النرجس") === "al-narjis", "النرجس");
@@ -94,13 +122,56 @@ assert(
   "ابغى قهوة في حطين",
 );
 
-assert(extractPrimaryDistrict("Izdihar") === null, "do not invent Izdihar");
-assert(extractPrimaryDistrict("الازدهار") === null, "do not invent الازدهار");
-assert(parseIntent("Izdihar").neighborhoods.length === 0, "Izdihar not a حي");
+assert(extractPrimaryDistrict("Izdihar") === "al-izdihar", "Izdihar");
+assert(extractPrimaryDistrict("الازدهار") === "al-izdihar", "الازدهار");
+assert(extractPrimaryDistrict("Al Izdihar") === "al-izdihar", "Al Izdihar");
 assert(
-  parseIntent("الازدهار").neighborhoods.length === 0,
-  "الازدهار not a حي",
+  parseIntent("Izdihar").neighborhoods.join(",") === "al-izdihar",
+  "Izdihar is a حي",
 );
+assert(
+  parseIntent("الازدهار").neighborhoods.join(",") === "al-izdihar",
+  "الازدهار is a حي",
+);
+assert(extractPrimaryDistrict("Dhahrat Al Badiah") === "dhahrat-al-badiah", "Dhahrat Al Badiah");
+assert(extractPrimaryDistrict("ظهرة البديعة") === "dhahrat-al-badiah", "ظهرة البديعة");
+assert(
+  parseIntent("ظهرة البديعة").neighborhoods.join(",") === "dhahrat-al-badiah",
+  "ظهرة البديعة is a حي",
+);
+// Bisat batch (3 Oct): four new live districts resolve in EN and AR.
+for (const [text, id] of [
+  ["Umm Al Hamam Al Gharbi", "umm-al-hamam-al-gharbi"],
+  ["أم الحمام الغربي", "umm-al-hamam-al-gharbi"],
+  ["An Nafal", "an-nafal"],
+  ["النفل", "an-nafal"],
+  ["King Salman", "king-salman"],
+  ["الملك سلمان", "king-salman"],
+  ["As Suwaidi", "as-suwaidi"],
+  ["السويدي", "as-suwaidi"],
+] as const) {
+  assert(extractPrimaryDistrict(text) === id, `${text} → ${id}`);
+  assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
+}
+assert(extractPrimaryDistrict("King Fahd District") === "king-fahd", "King Salman does not steal King Fahd");
+// Batch D3 (4 Oct): four new live districts resolve in EN and AR.
+for (const [text, id] of [
+  ["Ash Shifa", "ash-shifa"],
+  ["الشفا", "ash-shifa"],
+  ["Al Qadisiyah", "al-qadisiyah"],
+  ["القادسية", "al-qadisiyah"],
+  ["Dhahrat Laban", "dhahrat-laban"],
+  ["ظهرة لبن", "dhahrat-laban"],
+] as const) {
+  assert(extractPrimaryDistrict(text) === id, `${text} → ${id}`);
+  assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
+}
+// Gharbi beats its parent on a tie, same as An Nasim Al Gharbi / An Nasim.
+assert(extractPrimaryDistrict("As Suwaidi Al Gharbi") === "as-suwaidi-al-gharbi", "As Suwaidi Al Gharbi → as-suwaidi-al-gharbi");
+assert(extractPrimaryDistrict("السويدي الغربي") === "as-suwaidi-al-gharbi", "السويدي الغربي → as-suwaidi-al-gharbi");
+assert(extractPrimaryDistrict("السويدي") === "as-suwaidi", "plain السويدي stays As Suwaidi");
+assert(extractPrimaryDistrict("Dhahrat Al Badiah") === "dhahrat-al-badiah", "Dhahrat Laban does not steal Dhahrat Al Badiah");
+assert(extractPrimaryDistrict("لبن") == null, "bare لبن (milk) is not a district ask");
 
 assert(DISTRICT_POPULARITY_WEIGHTS.maps === 0.6, "maps weight locked at 0.6");
 assert(DISTRICT_POPULARITY_WEIGHTS.ig === 0.4, "IG weight locked at 0.4");
@@ -114,6 +185,82 @@ const missingIg = shopsMissingIgFollowers(catalog);
 assert(
   missingIg.length === catalog.length,
   `expected every live shop to lack a durable igFollowers field, got ${missingIg.length}/${catalog.length}`,
+);
+
+assert(TIKTOK_MAX_POINTS === 10, "TikTok max points stay 10");
+assert(TIKTOK_FOLLOWER_CAP === 50_000, "TikTok follower cap stays 50000");
+assert(
+  tiktokFoundBonus(TIKTOK_FOLLOWER_CAP) === TIKTOK_MAX_POINTS,
+  "bonus at the follower cap is the max",
+);
+assert(
+  tiktokFoundBonus(TIKTOK_FOLLOWER_CAP * 4) === TIKTOK_MAX_POINTS,
+  "bonus above the follower cap stays at the max",
+);
+assert(tiktokFoundBonus(0) === 0, "zero followers score 0");
+assert(
+  tiktokFoundBonus(1) < tiktokFoundBonus(100) &&
+    tiktokFoundBonus(100) < tiktokFoundBonus(10_000) &&
+    tiktokFoundBonus(10_000) < tiktokFoundBonus(TIKTOK_FOLLOWER_CAP),
+  "found bonus is monotonic in followers below the cap",
+);
+
+const tiktokErrors = tiktokFollowerMapErrors(TIKTOK_FOLLOWERS, catalogIds, {
+  requireComplete: true,
+});
+assert(
+  tiktokErrors.length === 0,
+  `tiktok-followers.json ${tiktokErrors.slice(0, 5).join("; ")}`,
+);
+assert(
+  TIKTOK_NEUTRAL_BONUS === neutralBonusFromRows(TIKTOK_FOLLOWERS),
+  "neutral bonus is the median of unique found accounts",
+);
+assert(
+  uniqueFoundFollowerCounts(TIKTOK_FOLLOWERS).length > 0,
+  "neutral bonus needs at least one found account",
+);
+
+const foundFollowers = uniqueFoundFollowerCounts(TIKTOK_FOLLOWERS).sort(
+  (a, b) => a - b,
+);
+for (let i = 1; i < foundFollowers.length; i += 1) {
+  const previous = foundFollowers[i - 1] ?? 0;
+  const current = foundFollowers[i] ?? 0;
+  assert(
+    tiktokFoundBonus(current) >= tiktokFoundBonus(previous),
+    `found bonus dropped from ${previous} followers to ${current}`,
+  );
+}
+
+const unverifiedId = Object.entries(TIKTOK_FOLLOWERS).find(
+  ([, row]) => row.status === "unverified",
+)?.[0];
+const noneId = Object.entries(TIKTOK_FOLLOWERS).find(
+  ([, row]) => row.status === "none",
+)?.[0];
+assert(unverifiedId, "scout includes an unverified row");
+assert(noneId, "scout includes a none row");
+assert(
+  tiktokBonusForShop(unverifiedId) === TIKTOK_NEUTRAL_BONUS,
+  "unverified equals the neutral bonus",
+);
+assert(
+  tiktokBonusForShop(noneId) === TIKTOK_NEUTRAL_BONUS,
+  "none equals the neutral bonus",
+);
+assert(
+  tiktokBonusForShop("shop-not-in-tiktok-file") === TIKTOK_NEUTRAL_BONUS,
+  "missing TikTok row equals the neutral bonus",
+);
+assert(
+  effectivePopularityIndex(undefined, unverifiedId) === undefined,
+  "no baked index means TikTok does not create a rank",
+);
+assert(
+  effectivePopularityIndex(97.5, "shop-not-in-tiktok-file") ===
+    97.5 + TIKTOK_NEUTRAL_BONUS,
+  "missing row adds the neutral bonus on top of the baked index",
 );
 
 const LOCKED_POPULAR = [

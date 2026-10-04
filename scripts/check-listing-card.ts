@@ -131,6 +131,15 @@ assert(directory.includes("DirectoryCard"), "home / chip / district lists share 
 const week = read("components/new-this-week.tsx");
 assert(week.includes("DirectoryCard"), "New this week uses the same listing card");
 
+const trending = read("components/home-trending.tsx");
+const trendingLanding = read("components/home-landing.tsx");
+assert(!trending.includes("DirectoryCard"), "Trending stays logo-plus-name tiles, not the listing card");
+assert(
+  trendingLanding.includes("shops={listTrendingThisWeekShops()}") &&
+    trendingLanding.includes("shops={listNewThisWeekShops()}"),
+  "Trending and New this week are separate allowlists",
+);
+
 const halfway = read("components/meet-halfway-result-cards.tsx");
 assert(halfway.includes("DirectoryCard"), "بيننا results use the shared listing card");
 assert(halfway.includes("directoryShopFromPick"), "بيننا maps picks onto DirectoryShop");

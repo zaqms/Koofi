@@ -23,8 +23,7 @@ function assert(cond: unknown, message: string): asserts cond {
 }
 
 assert(PRODUCT_NAME === "wain.lol", "brand is wain.lol");
-assert(copy.listedOn.en === "Listed on wain.lol", "EN listed line");
-assert(copy.listedOn.ar === "معروض على wain.lol", "AR listed line keeps Latin brand");
+assert(!("listedOn" in copy), "listed chrome copy is stripped");
 assert(copy.ownThisCafe.ar === "تملك المقهى؟", "Najdi own-this CTA");
 assert(copy.ownThisCafe.en === "Own this cafe?", "EN own-this CTA");
 assert(copy.ownerChatWhatsApp.en === "Chat on WhatsApp", "EN WhatsApp CTA");
@@ -144,7 +143,9 @@ assert(!cafeCard.includes("CafePassportCard"), "verified shops do not switch to 
 assert(!cafeCard.includes("preferPassportUi"), "claim status does not pick a second layout");
 
 const footer = readFileSync("components/cafe-claim-footer.tsx", "utf8");
-assert(footer.includes("listedOn"), "footer has Listed on wain.lol");
+assert(!footer.includes("listedOn"), "footer does not render Listed on");
+assert(!footer.includes("Listed on wain.lol"), "EN listed line is gone from the footer");
+assert(!footer.includes("معروض على wain.lol"), "AR listed line is gone from the footer");
 assert(footer.includes("ownThisCafe"), "footer has Own this cafe?");
 assert(footer.includes("shopClaimWhatsAppHref"), "footer is wa.me with shop prefill");
 assert(!footer.includes("ownerClaimPath"), "footer no longer routes through /owner");

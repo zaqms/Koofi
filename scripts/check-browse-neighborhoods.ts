@@ -11,14 +11,20 @@ import {
   browseNeighborhoodLabel,
   featuredNeighborhoodIds,
   filterNeighborhoodRows,
+  homeNeighborhoodCandidates,
+  HOME_NEIGHBORHOOD_TOP_N,
   listNeighborhoodRows,
+  nearestHomeNeighborhoodIds,
   neighborhoodCafeCount,
   neighborhoodCafeCountLabel,
   neighborhoodDistanceKm,
   neighborhoodsIndexHeading,
   popularNeighborhoodIds,
+  resolveHomeNeighborhoods,
   sortNeighborhoodRows,
 } from "../lib/browse-neighborhoods";
+import { browseNeighborhoodsHintForCity } from "../lib/cities";
+import { cityIdFromPin } from "../lib/city-geo";
 import { listBrowseDirectoryShops, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { directoryNeighborhoods } from "../lib/directory";
@@ -110,7 +116,9 @@ const WADI_REFILL_DISTRICTS = ["al-wadi"] as const;
 const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
 const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
-const EMPTY_DICTIONARY_DISTRICTS = ["as-suwaidi"] as const;
+const BISAT_BATCH_NEW_DISTRICTS = ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const;
+// Batch D3 (4 Oct 2026): Tul Cafe opens As Suwaidi Al Gharbi + Ash Shifa; ON OFF Coffee opens Al Qadisiyah + Dhahrat Laban.
+const BATCH_D3_NEW_DISTRICTS = ["as-suwaidi-al-gharbi", "ash-shifa", "al-qadisiyah", "dhahrat-laban"] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "As Sulimaniyah",
@@ -173,10 +181,20 @@ assert(
   "view-all rows stay on live catalog ids",
 );
 assert(
-  EMPTY_DICTIONARY_DISTRICTS.every(
-    (id) => !rowsEn.some((row) => row.id === id),
+  BISAT_BATCH_NEW_DISTRICTS.every((id) =>
+    rowsEn.some(
+      (row) =>
+        row.id === id &&
+        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "king-salman" ? 2 : 1),
+    ),
   ),
-  "0-shop dictionary districts stay out of live browse",
+  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1)",
+);
+assert(
+  BATCH_D3_NEW_DISTRICTS.every((id) =>
+    rowsEn.some((row) => row.id === id && row.cafeCount === 1),
+  ),
+  "Batch D3 districts (As Suwaidi Al Gharbi, Ash Shifa, Al Qadisiyah, Dhahrat Laban) join live browse with one cafe each",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -201,7 +219,18 @@ for (const row of rowsEn) {
     `${row.id} count matches catalog`,
   );
   if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
-    const expected = row.id === "al-takhassusi" ? 7 : row.id === "al-ghadeer" ? 9 : 8;
+    const expected =
+      row.id === "al-takhassusi"
+        ? 7
+        : row.id === "al-ghadeer"
+          ? 9
+          : row.id === "al-qirawan"
+            ? 13
+            : row.id === "al-arid"
+              ? 10 // drive-al-arid is a chain with unknown dine-in (4 Oct 2026)
+              : row.id === "al-aqiq"
+                ? 9 // Batch D3 adds Nahl
+                : 8;
     assert(
       row.cafeCount === expected,
       `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
@@ -213,18 +242,18 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 6,
-      `${row.id} Muruj refill has 6 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 10,
+      `${row.id} Muruj refill has 10 cafes, got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 4,
-      `${row.id} Mohammadiyah refill has 4 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 5,
+      `${row.id} Mohammadiyah refill has 5 cafes, got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 5,
-      `${row.id} Malaz refill has 5 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 6,
+      `${row.id} Malaz refill has 6 cafes, got ${row.cafeCount}`,
     );
   } else {
     assert(row.cafeCount > 0, `${row.id} has at least one cafe`);
@@ -327,31 +356,41 @@ assert(
   az.some((row) => row.id === "at-taawun"),
   "A–Z includes at-taawun",
 );
-assert(
-  az.some((row) => row.id === "al-mursalat"),
-  "A–Z includes al-mursalat",
-);
-assert(
-  az.some((row) => row.id === "al-murabba"),
-  "A–Z includes al-murabba",
-);
-assert(az.some((row) => row.id === "as-salam"), "A–Z includes as-salam");
 assert(az.some((row) => row.id === "badr"), "A–Z includes badr");
-assert(az.some((row) => row.id === "al-janadriyyah"), "A–Z includes al-janadriyyah");
-assert(az.some((row) => row.id === "namar"), "A–Z includes namar");
-assert(az.some((row) => row.id === "kkia"), "A–Z includes kkia");
-assert(az.some((row) => row.id === "al-jazirah"), "A–Z includes al-jazirah");
 assert(az.some((row) => row.id === "an-nasim-ash-sharqi"), "A–Z includes an-nasim-ash-sharqi");
-assert(az.some((row) => row.id === "an-nasim"), "A–Z includes an-nasim");
-assert(az.some((row) => row.id === "shubra"), "A–Z includes shubra");
-assert(az.some((row) => row.id === "manfuha"), "A–Z includes manfuha");
-assert(az.some((row) => row.id === "tuwaiq"), "A–Z includes tuwaiq");
+for (const id of [
+  "al-mursalat",
+  "al-murabba",
+  "as-salam",
+  "ghubairah",
+  "al-wisham",
+  "namar",
+  "tuwaiq",
+] as const) {
+  assert(az.some((row) => row.id === id), `A–Z keeps ${id}`);
+}
+// Drive Coffee is a chain (4 Oct 2026). These five districts only had a
+// Drive drive-through lane row, so they drop like the dr.CAFE-only ones.
+for (const id of [
+  "kkia",
+  "al-jazirah",
+  "an-nasim",
+  "shubra",
+  "manfuha",
+  "al-hazm",
+  "al-andalus",
+  "al-khaleej",
+  "ar-rimal",
+  "al-janadriyyah",
+] as const) {
+  assert(!az.some((row) => row.id === id), `A–Z hides chain-only ${id}`);
+}
 assert(
-  !az.some((row) => row.id === "as-suwaidi"),
-  "A–Z excludes 0-shop as-suwaidi",
+  az.some((row) => row.id === "as-suwaidi"),
+  "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 66, "A–Z is the 66 live catalog districts");
+assert(az.length === 67, "A–Z drops the ten chain-only districts (72 on main 592b85e6 − 5 Drive-only)");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(
@@ -509,9 +548,14 @@ assert(!registry.includes("Good for a date"), "date chip label is gone from regi
 
 const directory = readRepo("components/shop-directory.tsx");
 assert(
-  directory.includes("{popular ? (") &&
-    directory.includes('className="mt-3 flex flex-wrap gap-1.5"'),
-  "Most Popular keeps the wrap; district pages do not resurrect it",
+  !directory.includes("allDistricts") &&
+    !directory.includes('className="mt-3 flex flex-wrap gap-1.5"') &&
+    !directory.includes("districtPath"),
+  "Most Popular no longer mounts the old district-chip wrap",
+);
+assert(
+  !readRepo("components/district-page.tsx").includes("allDistricts"),
+  "district pages do not resurrect the district-chip wrap",
 );
 
 const browse = readRepo("components/browse-neighborhoods.tsx");
@@ -525,17 +569,19 @@ assert(browse.includes("min-w-0 flex-1 overflow-x-auto"), "pills scroll; chevron
 assert(browse.includes("shrink-0 items-center justify-center rounded-full"), "chevron stays circular and unclipped");
 assert(!browse.includes("absolute end-4"), "chevron is not overlayed inside the overflow clip");
 assert(
-  browse.indexOf("<ViewAllLink language={language} city={city} />") <
-    browse.indexOf("{copy.browseNeighborhoodsHint[language]}"),
+  browse.indexOf("<ViewAllLink language={language} city={trackCity} />") <
+    browse.indexOf("browseNeighborhoodsHintForCity(language, resolved.cityId)"),
   "subtitle sits under the title row so EN stays one line",
 );
 assert(browse.includes('source: "home_pill"') || browse.includes('"home_pill"'), "home pills send source=home_pill");
 assert(browse.includes("neighborhoods_view_all"), "View all CTA fires neighborhoods_view_all");
 assert(browse.includes("city"), "browse events carry city");
 assert(
-  browse.includes("featuredNeighborhoodIds") &&
-    !browse.includes("popularNeighborhoodIds"),
-  "homepage strip reads featured, not Popular",
+  browse.includes("resolveHomeNeighborhoods") &&
+    browse.includes("useFreshHomeOrigin") &&
+    !browse.includes("popularNeighborhoodIds") &&
+    !browse.includes("useVisitorLocation("),
+  "homepage strip ranks by a fresh fix, not Popular or the shared snapshot",
 );
 assert(!browse.includes("NeighborhoodIcon"), "homepage strip has no landmark icons");
 assert(!browse.includes("aspect-square"), "homepage strip is not the card belt");
@@ -548,8 +594,8 @@ assert(
   "AR browse section is a true RTL twin",
 );
 assert(
-  browse.includes("border-y border-line"),
-  "subtle beige dividers above and below the strip",
+  !browse.includes("border-y border-line"),
+  "home neighborhoods separate with space, not a divider",
 );
 assert(
   browse.includes('data-view-all-cta={language}') ||
@@ -563,7 +609,7 @@ assert(
 );
 assert(
   browse.indexOf('id="browse-neighborhoods"') <
-    browse.indexOf("<ViewAllLink language={language} city={city} />"),
+    browse.indexOf("<ViewAllLink language={language} city={trackCity} />"),
   "heading precedes CTA in DOM; dir places title and View all",
 );
 
@@ -663,6 +709,247 @@ for (const id of NEW_POPULAR_DISTRICTS) {
   }
 }
 
+assert(HOME_NEIGHBORHOOD_TOP_N === 5, "home proximity shortlist is 5");
+assert(
+  browseNeighborhoodsHintForCity("en", "riyadh") ===
+    "Coffee around Riyadh, neighborhood by neighborhood.",
+  "EN subtitle keeps the Riyadh sentence",
+);
+assert(
+  browseNeighborhoodsHintForCity("en", "jeddah") ===
+    "Coffee around Jeddah, neighborhood by neighborhood.",
+  "EN subtitle city is dynamic",
+);
+assert(
+  browseNeighborhoodsHintForCity("ar", "jeddah") === "اكتشف القهاوي حولك، حي بحي.",
+  "AR subtitle stays the locked sentence",
+);
+
+const riyadhCandidates = homeNeighborhoodCandidates(shops, "riyadh");
+assert(
+  riyadhCandidates.length === live.length,
+  "home candidates are the live Riyadh districts",
+);
+assert(
+  riyadhCandidates.every((row) => row.city === "riyadh"),
+  "home candidates stay on Riyadh",
+);
+assert(
+  riyadhCandidates.filter((row) => row.centroid).length >= HOME_NEIGHBORHOOD_TOP_N,
+  "enough official-pin centroids to fill the shortlist",
+);
+assert(
+  riyadhCandidates.some((row) => row.id === "as-suwaidi" && row.centroid),
+  "As Suwaidi joins the home rail candidates with an official-pin centroid",
+);
+
+const hittinRow = riyadhCandidates.find((row) => row.id === "hittin");
+const rabwahRow = riyadhCandidates.find((row) => row.id === "al-rabwah");
+if (!hittinRow?.centroid || !rabwahRow?.centroid) {
+  throw new Error("Hittin and Ar Rabwah have centroids");
+}
+const hittinArea = {
+  lat: hittinRow.centroid.lat + 0.004,
+  lng: hittinRow.centroid.lng - 0.003,
+};
+const rabwahArea = {
+  lat: rabwahRow.centroid.lat - 0.004,
+  lng: rabwahRow.centroid.lng + 0.003,
+};
+const nearHittin = resolveHomeNeighborhoods({
+  candidates: riyadhCandidates,
+  origin: hittinArea,
+  locationReady: true,
+  selectedCityId: "riyadh",
+});
+const nearRabwah = resolveHomeNeighborhoods({
+  candidates: riyadhCandidates,
+  origin: rabwahArea,
+  locationReady: true,
+  selectedCityId: "riyadh",
+});
+assert(nearHittin.mode === "proximity" && nearRabwah.mode === "proximity", "GPS uses proximity");
+assert(nearHittin.ids.length === HOME_NEIGHBORHOOD_TOP_N, "Hittin-area shortlist is top 5");
+assert(nearRabwah.ids.length === HOME_NEIGHBORHOOD_TOP_N, "Rabwah-area shortlist is top 5");
+assert(nearHittin.ids[0] === "hittin", "Hittin-area first pill is the nearest live neighborhood");
+assert(
+  nearRabwah.ids[0] === "al-rabwah",
+  "Rabwah-area first pill is Ar Rabwah, not the featured belt",
+);
+assert(
+  nearHittin.ids.join(",") !== nearRabwah.ids.join(","),
+  "different Riyadh fixes produce different shortlists",
+);
+assert(
+  nearHittin.ids.join(",") ===
+    nearestHomeNeighborhoodIds(riyadhCandidates, "riyadh", hittinArea).join(","),
+  "EN and the ranker share one id list",
+);
+assert(
+  resolveHomeNeighborhoods({
+    candidates: riyadhCandidates,
+    origin: rabwahArea,
+    locationReady: true,
+    selectedCityId: "riyadh",
+  }).ids.join(",") === nearRabwah.ids.join(","),
+  "a second resolve keeps the same ids for AR labels",
+);
+assert(
+  nearHittin.ids.every((id, index) => browseNeighborhoodLabel(id, "ar") !== "" && index >= 0),
+  "AR labels exist for the same proximity ids",
+);
+assert(
+  nearRabwah.ids.join(",") !==
+    featuredNeighborhoodIds("en").slice(0, HOME_NEIGHBORHOOD_TOP_N).join(","),
+  "proximity is not the featured belt prefix",
+);
+assert(
+  nearRabwah.ids.join(",") !==
+    RIYADH_POPULAR_NEIGHBORHOODS.slice(0, HOME_NEIGHBORHOOD_TOP_N).join(","),
+  "proximity is not Popular",
+);
+
+const denied = resolveHomeNeighborhoods({
+  candidates: riyadhCandidates,
+  origin: null,
+  locationReady: false,
+  selectedCityId: "riyadh",
+});
+assert(denied.mode === "fallback", "denied location uses the city fallback");
+assert(
+  denied.ids.join(",") === featuredNeighborhoodIds("en", "riyadh").join(","),
+  "fallback keeps the existing featured belt",
+);
+assert(denied.ids.length === 6, "fallback is not clipped to top 5");
+assert(
+  resolveHomeNeighborhoods({
+    candidates: riyadhCandidates,
+    origin: { lat: 51.5, lng: -0.12 },
+    locationReady: true,
+    selectedCityId: "riyadh",
+  }).ids.join(",") === denied.ids.join(","),
+  "unusable origin keeps the city fallback",
+);
+
+const jeddahPin = { lat: 21.5433, lng: 39.1728 };
+const dammamPin = { lat: 26.4207, lng: 50.0888 };
+const abhaPin = { lat: 18.2465, lng: 42.5117 };
+assert(cityIdFromPin(jeddahPin) === "jeddah", "Jeddah fix maps to Jeddah");
+assert(cityIdFromPin(dammamPin) === "dammam", "Dammam fix maps to Dammam");
+assert(cityIdFromPin(hittinArea) === "riyadh", "Hittin-area fix maps to Riyadh");
+assert(cityIdFromPin(abhaPin) === null, "a KSA fix outside the metros is not Riyadh");
+const jeddahGps = resolveHomeNeighborhoods({
+  candidates: riyadhCandidates,
+  origin: jeddahPin,
+  locationReady: true,
+  selectedCityId: "riyadh",
+});
+assert(jeddahGps.cityId === "jeddah" && jeddahGps.mode === "proximity", "Jeddah GPS selects Jeddah");
+assert(jeddahGps.ids.length === 0, "Jeddah GPS does not receive Riyadh pills");
+assert(
+  resolveHomeNeighborhoods({
+    candidates: riyadhCandidates,
+    origin: dammamPin,
+    locationReady: true,
+    selectedCityId: "riyadh",
+  }).ids.length === 0,
+  "Dammam GPS does not receive Riyadh pills",
+);
+assert(
+  resolveHomeNeighborhoods({
+    candidates: riyadhCandidates,
+    origin: abhaPin,
+    locationReady: true,
+    selectedCityId: "riyadh",
+  }).ids.length === 0,
+  "a fix outside every metro does not borrow Riyadh",
+);
+
+const jeddahCandidates = [
+  {
+    id: "hittin" as const,
+    city: "jeddah" as const,
+    centroid: { lat: 21.55, lng: 39.16 },
+  },
+  {
+    id: "al-rabwah" as const,
+    city: "jeddah" as const,
+    centroid: { lat: 21.6, lng: 39.3 },
+  },
+  ...riyadhCandidates,
+];
+const jeddahSupported = resolveHomeNeighborhoods({
+  candidates: jeddahCandidates,
+  origin: jeddahPin,
+  locationReady: true,
+  selectedCityId: "riyadh",
+});
+assert(
+  jeddahSupported.ids[0] === "hittin" &&
+    jeddahSupported.ids.length === 2 &&
+    jeddahSupported.ids.every((id) =>
+      jeddahCandidates.some((row) => row.city === "jeddah" && row.id === id),
+    ),
+  "when Jeddah has live rows, GPS ranks those rows only",
+);
+assert(
+  !jeddahSupported.ids.some((id) =>
+    riyadhCandidates.some((row) => row.id === id) &&
+    !jeddahCandidates.some((row) => row.city === "jeddah" && row.id === id),
+  ),
+  "supported Jeddah does not mix in Riyadh districts",
+);
+
+const tied = nearestHomeNeighborhoodIds(
+  [
+    { id: "olaya", city: "riyadh", centroid: { lat: 24.7, lng: 46.7 } },
+    { id: "hittin", city: "riyadh", centroid: { lat: 24.7, lng: 46.7 } },
+  ],
+  "riyadh",
+  { lat: 24.7, lng: 46.7 },
+);
+assert(tied.join(",") === "hittin,olaya", "equal distance breaks on stable id, not label");
+
+const fresh = readRepo("lib/fresh-visitor-origin.ts");
+assert(
+  fresh.includes("enableHighAccuracy: true") &&
+    fresh.includes("maximumAge: 0") &&
+    fresh.includes("isUsableVisitorOrigin") &&
+    !fresh.includes("maximumAge: 60_000") &&
+    !fresh.includes("shared.lat") &&
+    !fresh.includes("snapshot.lat"),
+  "home rail reads a fresh GPS fix and does not copy the shared snapshot",
+);
+assert(fresh.includes("Soft Places stays parked"), "Soft Places stays parked on the fresh read");
+assert(
+  readRepo("lib/browse-neighborhoods.ts").includes("Soft Places stays parked"),
+  "Soft Places stays parked on the home shortlist",
+);
+assert(
+  browse.includes('dir={rtl ? "rtl" : "ltr"}') &&
+    browse.includes("districtPath(id, language)") &&
+    browse.includes("neighborhoodsPath(language)") &&
+    browse.includes("data-browse-scroll") &&
+    browse.includes("NeighborhoodRailArrow") &&
+    !browse.includes("scrollBy") &&
+    !browse.includes('type="button"'),
+  "pills open the district route; View all and the circle arrow open the index",
+);
+assert(
+  browse.includes('href={neighborhoodsPath(language)}') &&
+    browse.includes("data-browse-scroll") &&
+    browse.indexOf("data-browse-scroll") > browse.indexOf("function NeighborhoodRailArrow"),
+  "circle arrow links to the neighborhoods index and is not a district",
+);
+assert(!browse.includes("Soft Places"), "Soft Places stays parked on the home rail");
+assert(
+  !readRepo("lib/city-geo.ts").includes("Soft Places"),
+  "city boxes are not Soft Places",
+);
+
 console.log(
   `check-browse-neighborhoods: ok (${rowsEn.length} catalog districts, ${live.length} with cafes, ${hittinCount} Hittin cafes)`,
+);
+console.log(
+  `home proximity smoke: Hittin-area first=${nearHittin.ids.join(" > ")} | Rabwah-area first=${nearRabwah.ids.join(" > ")}`,
 );

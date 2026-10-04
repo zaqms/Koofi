@@ -57,10 +57,21 @@ assert(DIRECTORY_SORT_COPY.new === copy.directorySortNew, "New copy is directory
 assert(isDirectoryResultSortChip("matcha"), "Matcha results get the shared sorter");
 assert(isDirectoryResultSortChip("drive-through"), "DT results get the shared sorter");
 assert(!isDirectoryResultSortChip("popular"), "Most Popular stays unsorted");
+assert(
+  !isDirectoryResultSortChip("nearby") &&
+    !isDirectoryResultSortChip("outdoor") &&
+    !isDirectoryResultSortChip("coffee") &&
+    !isDirectoryResultSortChip("work"),
+  "fixed lists do not extend Matcha/DT sort keys — popular stays off DIRECTORY_RESULT_SORTS",
+);
+assert(
+  read("components/fixed-list-body.tsx").includes('["popular", "nearby"]'),
+  "Outdoor, Best coffee, and Work sort Popular then Nearby inside the list",
+);
 assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();
-assert(dt.length === 77, `DT directory stays 77 shops, got ${dt.length}`);
+assert(dt.length === 73, `DT directory (moment tag) is 73 shops (71 + Coffee Address and dr.CAFE As Suwaidi), got ${dt.length}`);
 assert(
   dt.every((shop) => shop.momentTags.includes("drive-through")),
   "sort does not change the DT filter",
@@ -141,7 +152,7 @@ assert(
 );
 
 const matcha = filterDirectoryShopsByMoment(listDirectoryShops(), "matcha");
-assert(matcha.length === 26, "Matcha list content stays 26 tagged shops");
+assert(matcha.length === 29, "Matcha list content is 29 tagged shops");
 const matchaAz = sortDirectoryShops(matcha, "az", null, "en");
 const matchaNearbyNoGeo = sortDirectoryShops(matcha, "nearby", null, "en");
 const matchaNew = sortDirectoryShops(matcha, "new", null, "en");

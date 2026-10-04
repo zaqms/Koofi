@@ -3,6 +3,7 @@ import { getShop, listDirectoryShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { filterDirectoryShops } from "../lib/directory";
 import { listNewThisWeekShops, NEW_THIS_WEEK_IDS } from "../lib/new-this-week";
+import { listTrendingThisWeekShops } from "../lib/trending-this-week";
 import { parseShopIdShape, parseVoteAction } from "../lib/upvotes-types";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -49,6 +50,12 @@ assert(
   week.map((shop) => shop.id).join(",") ===
     NEW_THIS_WEEK_IDS.filter((id) => getShop(id)).join(","),
   "New this week keep allowlist order",
+);
+assert(
+  listTrendingThisWeekShops()
+    .map((shop) => shop.id)
+    .join(",") !== week.map((shop) => shop.id).join(","),
+  "Trending this week is not the New this week allowlist",
 );
 
 const cafePage = readFileSync("components/cafe-card-page.tsx", "utf8");

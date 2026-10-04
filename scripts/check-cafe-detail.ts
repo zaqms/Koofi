@@ -11,6 +11,7 @@ import {
   cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
+  isCafeHeroFocus,
   neighborhoodCafesHeading,
 } from "../lib/cafe-detail";
 import { copy } from "../lib/copy";
@@ -19,12 +20,26 @@ import { listingCardTags, MAX_LISTING_TAGS } from "../lib/listing-tags";
 import { neighborhoodLabel } from "../lib/neighborhoods";
 import { cafeArMarkdown } from "../lib/ar-content";
 import { cafeEnMarkdown } from "../lib/en-content";
-import { getShop } from "../lib/catalog";
+import { getShop, listRealShops } from "../lib/catalog";
+import { matchCatalogShops } from "../lib/shop-name";
 import { PRODUCT_NAME } from "../lib/product";
 import { SHOW_BEEN_HERE, SHOW_DETAIL_FAVORITE, SHOW_INVITE_CTA } from "../lib/tonight";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
+}
+
+/** Absent focus (undefined) is the default crop. Anything else must be two percentages. */
+function heroFocusFailure(slug: string, frame: number, focus: unknown): string | null {
+  if (focus === undefined) return null;
+  if (typeof focus !== "string") {
+    const kind = focus === null ? "null" : Array.isArray(focus) ? "array" : typeof focus;
+    return `${slug} frame ${frame} focus must be a string, got ${kind}`;
+  }
+  if (!isCafeHeroFocus(focus)) {
+    return `${slug} frame ${frame} focus must be two percentages from 0 to 100, got ${JSON.stringify(focus)}`;
+  }
+  return null;
 }
 
 function read(path: string): string {
@@ -181,7 +196,6 @@ const BATCH3_IDS = [
   "najd-alathiah-qurtubah",
   "klatch-qurtubah",
   "nosound-qurtubah",
-  "vanilla-coffee-qurtubah",
   "mill-coffee-qurtubah",
   "cofen-qurtubah",
   "mud-speciality-coffee-an-nazhah",
@@ -357,8 +371,6 @@ const BATCH5_IDS = [
   "mezaj-al-malaz",
   "mezaj-maghrebi-al-wadi",
   "moroccan-taste-al-muruj",
-  "n5-caffe-al-rabi",
-  "n5-caffe-al-rabi-2",
   "sol-olas-al-ghadeer",
 ] as const;
 
@@ -371,11 +383,6 @@ const BATCH6_IDS = [
   "three-sulimaniyah",
   "threes-al-yasmin",
   "wave-cafe-al-rabi",
-  "drive-al-rabi",
-  "drive-al-rabi-2",
-  "drive-al-rabi-3",
-  "drive-al-rabi-4",
-  "drive-al-rabi-5",
   "a-plus-as-salam",
   "arabica-cafe-ghubairah",
   "arabica-coffee-al-wisham",
@@ -410,26 +417,203 @@ const BATCH6_IDS = [
   "drcafe-tuwaiq",
   "drcafe-al-mughrizat",
   "drcafe-al-mathar",
-  "drcafe-as-suwaidi",
 ] as const;
+
+/** Post-batch-6 hero bakes: #208 (six #207 shops) + #217 Al Mughrizat Scout-10. */
+const BATCH7_IDS = [
+  "bacha-coffee-solitaire",
+  "beitkull-al-olaya",
+  "las-cafe-al-malqa",
+  "las-cafe-al-olaya",
+  "little-henri-al-muruj",
+  "mood-masters-al-falah",
+  "satr-specialty-coffee-al-mughrizat",
+  "covo-artisan-coffee-al-mughrizat",
+  "bunatetu-al-mughrizat",
+  "dune-coffee-al-mughrizat",
+  "tuxedo-coffee-al-mughrizat",
+  "bar-coffee-al-mughrizat",
+  "adab-cafe-al-mughrizat",
+  "booze-specialty-coffee-bar-al-mughrizat",
+  "latch-al-mughrizat",
+  "slant-specialty-coffee-al-izdihar",
+] as const;
+
+/** Al Olaya Scout-11 (#218). The total-keys assert on main did not include these. */
+const BATCH8_IDS = [
+  "gedeb-al-olaya",
+  "bossco-roastery-al-olaya",
+  "lluvia-caffe-al-olaya",
+  "oromiffa-al-olaya",
+  "buljah-al-olaya",
+  "19-gram-al-olaya",
+  "kulma-speciality-coffee-al-olaya",
+  "morfi-al-olaya",
+  "jolt-al-olaya",
+  "key-cafe-al-olaya",
+  "alwaal-albari-al-olaya",
+] as const;
+
+/** BATCH9 Places heroes for the previously-unbaked place_id cafés (42 with photos). */
+const BATCH9_IDS = [
+  "voute-fot-al-naseem-sharqi",
+  "jaro-cafe-al-naseem-sharqi",
+  "tamper-speciality-al-naseem-sharqi",
+  "luxo-coffee-al-naseem-sharqi",
+  "ma-specialty-al-naseem-sharqi",
+  "get-up-coffee-al-naseem-sharqi",
+  "trivali-roaster-al-naseem-gharbi",
+  "gusn-coffee-al-naseem-gharbi",
+  "public-al-naseem-sharqi",
+  "be-such-al-naseem-gharbi",
+  "hjeen-roaster-saudi-90s-ar-rabwah",
+  "on-move-ar-rabwah",
+  "claz-ar-rabwah",
+  "coffee-address-ar-rabwah-ihsaa",
+  "somatcha-ar-rabwah",
+  "jaam-coffee-ar-rabwah",
+  "roasting-art-al-masif",
+  "qaha-roastery-al-masif",
+  "voute-fot-al-masif",
+  "coffee-address-al-masif",
+  "brsk-al-masif",
+  "o2-coffee-al-masif",
+  "loom-coffee-al-masif",
+  "befine-coffee-al-masif",
+  "brew-crew-al-mughrizat",
+  "waznah-coffee-al-masif",
+  "black-stamp-al-masif",
+  "aaj-al-mughrizat",
+  "kyok-al-nakheel",
+  "crops-al-narjis",
+  "bala-al-rawabi",
+  "ract-al-qirawan",
+  "orkt-al-hamra",
+  "rex-al-arid",
+  "veo-hittin",
+  "essert-al-arid",
+  "otto-al-muruj",
+  "behind-al-muruj",
+  "shubak-al-bun-badr",
+  "hearth-al-arid",
+  "abeille-al-narjis",
+  "way-coffee-dhahrat-al-badiah",
+] as const;
+
+/** BATCH10: Waqar (Al Aziziyah, #224) Places gallery — 4 frames, Google credit per frame. */
+const BATCH10_IDS = ["waqar-al-aziziyah"] as const;
+
+/** BATCH11: Shoug batch A1 (10 specialty cafés) Places galleries — 3 frames each, except Ōkawa (2 after the face frame was dropped). Google credit per frame. */
+const BATCH11_IDS = [
+  "fav-coffee-room-al-malqa",
+  "asfoura-al-malqa",
+  "bab-al-mohammadiyah",
+  "cherie-al-muruj",
+  "da-nonna-al-nakheel",
+  "okawa-al-narjis",
+  "nap-al-qirawan",
+  "ouia-al-qirawan",
+  "shml-al-qirawan",
+  "for-coffee-roasters-al-qirawan",
+] as const;
+const BATCH11_IDS_SET = new Set<string>(BATCH11_IDS);
+
+/** BATCH12: Trending adds batch (3 Oct 2026) Places galleries — 4 or 5 frames each, Google credit per frame. */
+const BATCH12_HERO_COUNTS: Record<string, number> = {
+  "torre-al-rawabi": 4,
+  "dm-cafe-roastery-as-sahafah": 5,
+  "okawa-olaya": 4,
+  "okawa-king-fahd": 4,
+  "hintiya-al-narjis": 5,
+  "sama-cafe-al-aziziyah": 4,
+  "drip-tuwaiq": 4,
+  "soliz-badr": 4,
+  "respire-al-malqa": 4,
+};
+const BATCH12_IDS = Object.keys(BATCH12_HERO_COUNTS);
+
+/** BATCH13: Bisat/Rex/Veo/Alwaal batch (3 Oct 2026) Places galleries — 4 or 5 frames each, Google credit per frame. */
+const BATCH13_HERO_COUNTS: Record<string, number> = {
+  "bisat-umm-al-hamam-al-gharbi": 5,
+  "bisat-an-nafal": 4,
+  "bisat-hittin": 4,
+  "veo-al-malqa": 4,
+  "rex-as-sahafah": 5,
+  "rex-hittin": 4,
+  "rex-king-salman": 4,
+  "alwaal-albari-as-suwaidi": 5,
+};
+const BATCH13_IDS = Object.keys(BATCH13_HERO_COUNTS);
+
+/** BATCH_D3: Batch D3 trending-missing adds (4 Oct 2026) Places galleries — 4 frames each, Google credit per frame. */
+const BATCH_D3_HERO_COUNTS: Record<string, number> = {
+  "trov-olaya": 4,
+  "nahl-al-aqiq": 4,
+  "tul-cafe-king-salman": 4,
+  "tul-cafe-as-suwaidi-al-gharbi": 4,
+  "tul-cafe-ash-shifa": 4,
+  "century-cafe-an-nada": 4,
+  "on-off-coffee-al-manar": 4,
+  "on-off-coffee-al-qadisiyah": 4,
+  "on-off-coffee-namar": 4,
+  "on-off-coffee-dhahrat-laban": 4,
+  "chino-hittin": 4,
+};
+const BATCH_D3_IDS = Object.keys(BATCH_D3_HERO_COUNTS);
+
+/** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
+const BATCH14_HERO_COUNTS: Record<string, number> = {
+  "plant-cafe-as-suwaidi": 4,
+  "seen-cafe-as-suwaidi": 4,
+  "hot-sip-as-suwaidi": 4,
+  "era-coffee-as-suwaidi": 3,
+  "naham-specialty-as-suwaidi": 4,
+  "coffee-address-as-suwaidi": 4,
+  "drcafe-as-suwaidi": 4,
+};
+const BATCH14_IDS = Object.keys(BATCH14_HERO_COUNTS);
+
+/** BATCH D2: Al Falah (4 Oct 2026) Places galleries — 4 frames each, 3 for LEO and Towlan (screenshot / TV-face frames dropped). Google credit per frame. */
+const BATCH_D2_FALAH_HERO_COUNTS: Record<string, number> = {
+  "rawi-cafe-al-falah": 4,
+  "ostrich-al-falah": 4,
+  "bow-al-falah": 4,
+  "distance-away-al-falah": 4,
+  "double-three-al-falah": 4,
+  "leo-al-falah": 3,
+  "filter-roastery-al-falah": 4,
+  "tropika-al-falah": 4,
+  "towlan-al-falah": 3,
+};
+const BATCH_D2_FALAH_IDS = Object.keys(BATCH_D2_FALAH_HERO_COUNTS);
 
 const BATCH6_MISSING_HOURS = [
-  "drive-al-rabi",
-  "drive-al-rabi-2",
-  "drive-al-rabi-3",
-  "drive-al-rabi-4",
-  "drive-al-rabi-5",
   "drive-al-yasmin",
-  "drive-al-janadriyyah",
-  "drcafe-as-suwaidi",
+  // placeId fix 2026-10-02: the corrected place has no Places hours.
+  "drive-al-qirawan-2",
 ] as const;
 
-const bakedHeroes = cafeHeroesFile as Record<string, { src: string }[]>;
+const bakedHeroes = cafeHeroesFile as Record<
+  string,
+  { src: string; focus?: unknown }[]
+>;
+/** Slugs allowed to set a per-frame hero focus. Waqar, plus VEO Al Malqa (#239 QA). Expand only with QA. */
+const HERO_FOCUS_SLUGS = new Set(["waqar-al-aziziyah", "veo-al-malqa"]);
 const batch2HeroIds = BATCH2_IDS.filter((id) => bakedHeroes[id]);
 const batch3HeroIds = BATCH3_IDS.filter((id) => bakedHeroes[id]);
 const batch4HeroIds = BATCH4_IDS.filter((id) => bakedHeroes[id]);
 const batch5HeroIds = BATCH5_IDS.filter((id) => bakedHeroes[id]);
 const batch6HeroIds = BATCH6_IDS.filter((id) => bakedHeroes[id]);
+const batch7HeroIds = BATCH7_IDS.filter((id) => bakedHeroes[id]);
+const batch8HeroIds = BATCH8_IDS.filter((id) => bakedHeroes[id]);
+const batch9HeroIds = BATCH9_IDS.filter((id) => bakedHeroes[id]);
+const batch10HeroIds = BATCH10_IDS.filter((id) => bakedHeroes[id]);
+const batch11HeroIds = BATCH11_IDS.filter((id) => bakedHeroes[id]);
+const batch12HeroIds = BATCH12_IDS.filter((id) => bakedHeroes[id]);
+const batch13HeroIds = BATCH13_IDS.filter((id) => bakedHeroes[id]);
+const batchD3HeroIds = BATCH_D3_IDS.filter((id) => bakedHeroes[id]);
+const batch14HeroIds = BATCH14_IDS.filter((id) => bakedHeroes[id]);
+const batchD2FalahHeroIds = BATCH_D2_FALAH_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -437,14 +621,81 @@ assert(
       batch3HeroIds.length +
       batch4HeroIds.length +
       batch5HeroIds.length +
-      batch6HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batch 6 merges in",
+      batch6HeroIds.length +
+      batch7HeroIds.length +
+      batch8HeroIds.length +
+      batch9HeroIds.length +
+      batch10HeroIds.length +
+      batch11HeroIds.length +
+      batch12HeroIds.length +
+      batch13HeroIds.length +
+      batchD3HeroIds.length +
+      batch14HeroIds.length +
+      batchD2FalahHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah and D3 merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
-assert(batch3HeroIds.length === 50, "batch 3 50-shop hero set is complete");
+assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
 assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
-assert(batch5HeroIds.length === 99, "batch 5 99-shop hero set is complete");
-assert(batch6HeroIds.length === 43, "batch 6 43-shop hero set is complete");
+assert(batch5HeroIds.length === 97, "batch 5 hero set is 97 after the N5 Al Rabi drops");
+assert(batch6HeroIds.length === 37, "batch 6 hero set is 37 after the As Suwaidi and Drive Al Rabi drops");
+assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
+assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
+assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
+assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
+assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");
+assert(batch12HeroIds.length === 9, "batch 12 Trending adds hero set is complete");
+assert(batch13HeroIds.length === 8, "batch 13 Bisat/Rex/Veo/Alwaal hero set is complete");
+assert(batchD3HeroIds.length === 11, "Batch D3 trending-missing hero set is complete");
+assert(batch14HeroIds.length === 7, "batch 14 D1 As Suwaidi hero set is complete");
+assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete");
+// QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
+assert(
+  (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
+    "GA|FaisaL|صالحه المنيع|سوليز soliz",
+  "soliz-badr gallery order: current frames first, pre-opening storefront last",
+);
+// QA #237 L6: TORRE frame 2 is the clean lounge frame; the frame with a barista in the background moves to 4.
+assert(
+  [1, 2, 3, 4].map((n) => readFileSync(join("public/cafe-heroes/torre-al-rawabi", `${n}.jpg`)).length).join(",") ===
+    "148987,200646,245402,257603",
+  "torre-al-rawabi frame 2 is the clean lounge frame; the barista-background frame is 4",
+);
+// QA #237 L4 + #239: one Ōkawa spelling (the live An Narjis row), one AR pattern and one logo on every Ōkawa row.
+const OKAWA_IDS = ["okawa-al-narjis", "okawa-olaya", "okawa-king-fahd", "okawa-cafe-al-malqa"];
+for (const id of OKAWA_IDS) {
+  const shop = getShop(id);
+  assert(shop?.nameEn === "Ōkawa" && shop?.nameAr === "أوكاوا", `${id} is Ōkawa / أوكاوا`);
+  assert(shop?.logoUrl === "/logos/okawa-al-narjis.jpg", `${id} uses the shared Ōkawa logo`);
+}
+assert(
+  !existsSync(join("public/logos", "okawa-cafe-al-malqa.jpg")),
+  "the 100px okawa-cafe-al-malqa.jpg logo is deleted (nothing references it)",
+);
+for (const q of ["okawa", "Okawa", "Ōkawa", "اوكاوا", "أوكاوا"]) {
+  const ids = matchCatalogShops(q, listRealShops()).map((shop) => shop.id);
+  assert(OKAWA_IDS.every((id) => ids.includes(id)), `plain "${q}" search finds all 4 Ōkawa rows, got ${ids.join(",")}`);
+}
+// #239 QA: VEO Al Malqa leads with the VEO cup frame; the frame with a masked barista in the mid-ground moves last.
+assert(
+  (bakedHeroes["veo-al-malqa"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
+    "S A|abdullah faisal|Eman|Nawal “Alamri”",
+  "veo-al-malqa gallery order: VEO cup, terrace, pastry, interior-with-barista last",
+);
+assert(
+  (bakedHeroes["veo-al-malqa"] as { focus?: string }[])[0]?.focus === "50% 78%",
+  "veo-al-malqa frame 1 crops low so the VEO sign and cup sit in the hero",
+);
+assert(
+  [1, 2, 3, 4].map((n) => readFileSync(join("public/cafe-heroes/veo-al-malqa", `${n}.jpg`)).length).join(",") ===
+    "211103,254234,179137,202564",
+  "veo-al-malqa files follow the new order (1 = cup frame)",
+);
+assert(
+  !listRealShops().some((shop) => /King Fahad/.test(shop.nameEn)),
+  "no catalog name spells King Fahad (the district is King Fahd)",
+);
+assert(bakedHeroes["waqar-al-aziziyah"]?.length === 4, "Waqar keeps the 4 QA-picked frames");
 assert(bakedHeroes["wathba-an-nazhah"]?.length === 4, "Wathba uses the correct-pin cafe-heroes");
 assert(bakedHeroes["mill-coffee-qurtubah"]?.length === 2, "mill-coffee-qurtubah keeps the 2 downloaded frames");
 assert(bakedHeroes["first-series-olaya"]?.length === 4, "First Series pack 1 heroes");
@@ -452,19 +703,134 @@ assert(bakedHeroes["tobys-estate-olaya"]?.length === 4, "Toby's Estate pack 2–
 assert(bakedHeroes["mkth-ghirnatah"]?.length === 4, "MKTH Ghirnatah pack 2–3 heroes");
 assert(bakedHeroes["elixir-bunn-al-narjis"]?.length === 3, "elixir-bunn-al-narjis keeps the 3 downloaded frames");
 assert(bakedHeroes["bind-specialty-coffee-ghirnatah"]?.length === 4, "BIND pack 1 heroes");
+/** placeId fix 2026-10-02: re-pulled galleries from the corrected place (QA-picked, 1–3 frames). */
+const PLACEID_FIX_HERO_COUNTS: Record<string, number> = {
+  "camel-step-granada-business": 3,
+  "coffee-address-al-hamra": 2,
+  "coffee-address-al-nahdah": 2,
+  "coffee-address-al-rabi": 2,
+  "coffee-address-al-rabwah": 1,
+  "coffee-zam-al-yarmouk": 3,
+  "dahal-specialty-al-nahdah": 3,
+  "drcafe-al-jazirah": 3,
+  "drcafe-al-mathar": 3,
+  "drcafe-al-mughrizat": 3,
+  "drcafe-an-nasim": 3,
+  "drcafe-kkia": 2,
+  "drcafe-manfuha": 3,
+  "drcafe-sulimaniyah": 3,
+  "drcafe-sulimaniyah-2": 2,
+  "drive-al-arid": 2,
+  "drive-al-janadriyyah": 2,
+  "drive-al-nakheel": 2,
+  "drive-al-qirawan-2": 2,
+  "drive-an-nasim-al-gharbi": 2,
+  "drive-as-sahafah": 2,
+  "drive-badr-2": 3,
+  "ghandoura-an-nazhah": 3,
+  "idmi-nakheel-takhassusi": 3,
+  // QA #230 G3: menu/promo frame 3 dropped (old gallery, kept placeId).
+  "java-cafe-al-rabi": 3,
+  "khasib-al-bun-diriyah": 3,
+  "lattio-lounge-qurtubah": 3,
+  "makhsousa-coffee-ar-rabwah": 3,
+  "malfa-coffee-house-diriyah": 3,
+  "najd-roastery-al-munsiyah": 2,
+  "nosound-al-yarmouk": 3,
+  "shovel-al-arid": 3,
+};
 function expectedHeroCount(id: string): number {
+  if (PLACEID_FIX_HERO_COUNTS[id]) return PLACEID_FIX_HERO_COUNTS[id];
+  if (id === "okawa-al-narjis") return 2;
   if (id === "elixir-bunn-al-narjis") return 3;
   if (id === "mill-coffee-qurtubah") return 2;
   if (id === "hokkaido-al-hamra") return 3;
+  if (id === "buljah-al-olaya") return 3;
+  if (BATCH12_HERO_COUNTS[id] != null) return BATCH12_HERO_COUNTS[id]!;
+  if (BATCH13_HERO_COUNTS[id] != null) return BATCH13_HERO_COUNTS[id]!;
+  if (BATCH_D3_HERO_COUNTS[id] != null) return BATCH_D3_HERO_COUNTS[id]!;
+  if (BATCH14_HERO_COUNTS[id] != null) return BATCH14_HERO_COUNTS[id]!;
+  if (BATCH_D2_FALAH_HERO_COUNTS[id] != null) return BATCH_D2_FALAH_HERO_COUNTS[id]!;
+  if (id === "latch-al-mughrizat") return 3;
+  if (id === "jaro-cafe-al-naseem-sharqi") return 1;
+  if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;
+  if (
+    id === "gusn-coffee-al-naseem-gharbi" ||
+    id === "roasting-art-al-masif" ||
+    id === "brsk-al-masif" ||
+    id === "orkt-al-hamra" ||
+    id === "waznah-coffee-al-masif" ||
+    id === "trivali-roaster-al-naseem-gharbi" ||
+    id === "essert-al-arid" ||
+    id === "coffee-address-ar-rabwah-ihsaa" ||
+    id === "behind-al-muruj" ||
+    BATCH11_IDS_SET.has(id)
+  ) {
+    return 3;
+  }
   return 4;
 }
 for (const [id, photos] of Object.entries(bakedHeroes)) {
   const expected = expectedHeroCount(id);
   assert(photos.length === expected, `${id} has ${expected} cached cafe-heroes`);
-  for (const photo of photos) {
+  photos.forEach((photo, index) => {
     assert(photo.src.startsWith(`/cafe-heroes/${id}/`), `${photo.src} is shop-scoped`);
     assert(existsSync(join("public", photo.src.slice(1))), `${photo.src} is on disk`);
+    const focusError = heroFocusFailure(id, index + 1, photo.focus);
+    assert(focusError == null, focusError ?? `${id} frame ${index + 1} focus`);
+    if (photo.focus !== undefined) {
+      assert(
+        HERO_FOCUS_SLUGS.has(id),
+        `${id} is not allowed to set hero focus`,
+      );
+    }
+  });
+}
+for (const valid of ["50% 20%", "0% 100%", "100% 0%", "12.5% 0.5%", "50.0% 20%"]) {
+  assert(isCafeHeroFocus(valid), `${valid} is a valid hero focus`);
+  assert(heroFocusFailure("waqar-al-aziziyah", 1, valid) == null, `${valid} passes the frame check`);
+}
+assert(heroFocusFailure("waqar-al-aziziyah", 1, undefined) == null, "omitted focus keeps the default crop");
+for (const invalid of [
+  "top 10%",
+  "10% left",
+  "center",
+  "top",
+  "center top",
+  "left 10% top 20px",
+  "150% 0%",
+  "-5% 10%",
+  "50% -10%",
+  "50%",
+  "50% 20% 0%",
+  "",
+  " 50% 20%",
+  "50%  20%",
+  "50%20%",
+]) {
+  assert(!isCafeHeroFocus(invalid), `${JSON.stringify(invalid)} is not a hero focus`);
+  const message = heroFocusFailure("sample-cafe", 1, invalid);
+  assert(
+    message?.includes("sample-cafe") && message.includes("frame 1"),
+    `${JSON.stringify(invalid)} names the slug and frame`,
+  );
+}
+for (const [focus, kind] of [
+  [50, "number"],
+  [null, "null"],
+  [{ x: 50, y: 20 }, "object"],
+] as const) {
+  let message: string | null = null;
+  try {
+    message = heroFocusFailure("sample-cafe", 2, focus);
+  } catch (error) {
+    assert(false, `non-string focus crashed the check: ${error instanceof Error ? error.name : "error"}`);
   }
+  assert(message != null, `${kind} focus is rejected`);
+  assert(
+    message.includes("sample-cafe") && message.includes("frame 2") && message.includes(kind),
+    `${kind} focus names the slug, frame, and type`,
+  );
 }
 assert(
   cafeDetailHeroPhotos({ id: "percent-arabica-hittin" }).length === 4,
@@ -534,7 +900,12 @@ assert(detail.includes("listingCardTags"), "pills come from listing tags");
 assert(detail.includes("listingLocationOrder"), "pin line is locale-aware");
 assert(detail.includes("neighborhoodCafesHeading"), "related heading is district cafés");
 assert(detail.includes("copy.detailSeeAll"), "See all / عرض الكل");
-assert(detail.includes("districtPath"), "neighborhood row + See all use district route");
+assert(
+  detail.includes("districtHref") &&
+    read("components/cafe-card-page.tsx").includes("listed.length > 0") &&
+    read("components/cafe-card-page.tsx").includes("districtPath"),
+  "neighborhood row + See all link only when the district has a qualifying row",
+);
 assert(detail.includes("shopMapsHref"), "Take me there opens existing Maps");
 assert(detail.includes('source="card"'), "Maps hop stays the card source");
 assert(detail.includes("ShareListingButton"), "share stays the listing packet");
@@ -567,6 +938,8 @@ assert(!detail.includes("DirectoryCard"), "detail is not the listing card");
 assert(!detail.includes("CardBeen"), "Been here stays off the identity layout");
 assert(!detail.includes("ownThisCafe"), "Own this cafe stays off the identity card");
 assert(!detail.includes("listedOn"), "Listed on stays off the identity card");
+assert(!detail.includes("Listed on wain.lol"), "EN listed line stays off the identity card");
+assert(!detail.includes("معروض على wain.lol"), "AR listed line stays off the identity card");
 assert(!detail.includes("iframe"), "no embedded map");
 assert(!detail.includes("You might also like"), "no invented related heading");
 assert(!detail.includes("shop.hours"), "catalog hours are not painted");
@@ -595,7 +968,23 @@ assert(
   "header sits above the card, not under the essay",
 );
 assert(!page.includes("BrandHomeLink"), "old thin wordmark header is gone");
+assert(!page.includes("listedOn"), "Listed on stays off the public page shell");
+assert(!page.includes("Listed on wain.lol"), "EN listed line stays off the public page shell");
+assert(!page.includes("معروض على wain.lol"), "AR listed line stays off the public page shell");
 assert(!page.includes("backToChat"), "old back-to-chat line is gone from the thin page");
+
+const thinEarly = read("components/cafe-card.tsx");
+assert(!thinEarly.includes("listedOn"), "Listed on stays off the thin card");
+assert(!thinEarly.includes("Listed on wain.lol"), "EN listed line stays off the thin card");
+assert(!thinEarly.includes("معروض على wain.lol"), "AR listed line stays off the thin card");
+const claimFooter = read("components/cafe-claim-footer.tsx");
+assert(!claimFooter.includes("listedOn"), "claim footer does not render Listed on");
+assert(!claimFooter.includes("Listed on wain.lol"), "EN listed line is not in the claim footer");
+assert(!claimFooter.includes("معروض على wain.lol"), "AR listed line is not in the claim footer");
+const copySource = read("lib/copy.ts");
+assert(!copySource.includes("listedOn"), "listed chrome copy is stripped");
+assert(!copySource.includes("Listed on wain.lol"), "EN listed line is stripped from copy");
+assert(!copySource.includes("معروض على wain.lol"), "AR listed line is stripped from copy");
 
 const blurb = read("components/cafe-en-blurb.tsx");
 assert(blurb.includes('data-cafe-seo-essay=""'), "visible SEO body has a stable hook");
@@ -642,7 +1031,6 @@ for (const id of [
   "sombrero-sulimaniyah",
   "coffee-planet-kafd",
   "kmr-diriyah",
-  "malfa-coffee-house-diriyah",
 ]) {
   const shop = getShop(id);
   assert(shop, `${id} is in the catalog`);
@@ -752,15 +1140,15 @@ assert(
   "Coffee Address Al Hamra is baked 24h",
 );
 assert(
-  cafeDetailHeroPhotos(coffeeAddress).length === 4,
-  "Coffee Address Al Hamra uses baked cafe-heroes",
+  cafeDetailHeroPhotos(coffeeAddress).length === 2,
+  "Coffee Address Al Hamra uses the 2 re-pulled cafe-heroes",
 );
 assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(coffeeAddress)),
   "batch 4 Places photos still require a Google credit",
 );
 assert(
-  cafeDetailHeroPhotos(coffeeAddress)[0]?.attribution?.displayName === "Sk Ajeez",
+  cafeDetailHeroPhotos(coffeeAddress)[0]?.attribution?.displayName === "Aziz !",
   "Coffee Address Al Hamra bake still has the Places author name",
 );
 assert(ashjar && (ashjar.openingHours?.periods?.length ?? 0) > 0, "Ashjar has baked periods");
@@ -869,10 +1257,21 @@ assert(
     mahmasaAttrs.place_name === "مقهى ومحمصة حي",
   "places-attrs Mahmasa uses the Al Raqban cafe pin, not GOAT Olaya",
 );
+const aridAttrs = (
+  JSON.parse(read("data/places-attrs-2026-09-19.json")) as {
+    shops: { id: string; place_id?: string; dine_in?: boolean | null }[];
+  }
+).shops.find((row) => row.id === "drive-al-arid");
+assert(
+  aridAttrs?.place_id === "ChIJ0cfdVgDvLj4R_dbw3QdkM_s" &&
+    aridAttrs.place_id === getShop("drive-al-arid")?.placeId &&
+    aridAttrs.dine_in === false,
+  "places-attrs Drive Al Arid uses its own Al Arid pin (not Drive Al Qirawan) and is not dine-in",
+);
 for (const id of BATCH4_IDS) {
   assert(
-    cafeDetailHeroPhotos(getShop(id)!).length === 4,
-    `${id} uses 4 baked cafe-heroes`,
+    cafeDetailHeroPhotos(getShop(id)!).length === expectedHeroCount(id),
+    `${id} uses ${expectedHeroCount(id)} baked cafe-heroes`,
   );
 }
 
@@ -933,8 +1332,6 @@ assert(cafeDetailHeroPhotos(jazean).length === 4, "Jazean DQ uses baked cafe-her
 assert(cafeDetailHeroPhotos(kernel).length === 4, "Kernel uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("hokkaido-al-hamra")!).length === 3, "Hokkaido keeps the 3 downloaded frames");
 assert(cafeDetailHeroPhotos(markab).length === 4, "Markab uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi")!).length === 4, "N5 Al Rabi uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(getShop("n5-caffe-al-rabi-2")!).length === 4, "N5 Al Rabi 2 uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(getShop("opinion-al-mathar")!).length === 4, "Opinion Al Mathar uses baked cafe-heroes");
 const opinionHittin = getShop("opinion-hittin");
 assert(opinionHittin, "Opinion Hittin is in the catalog");
@@ -992,7 +1389,6 @@ const three = getShop("three-sulimaniyah");
 const threes = getShop("threes-al-yasmin");
 const wave = getShop("wave-cafe-al-rabi");
 const drcafeMathar = getShop("drcafe-al-mathar");
-const drcafeSuwaidi = getShop("drcafe-as-suwaidi");
 assert(three, "Three Sulimaniyah is in the catalog");
 assert(
   (three.openingHours?.periods?.length ?? 0) > 0,
@@ -1012,13 +1408,10 @@ assert(
   "Wave cafe Sunday afternoon is Open now",
 );
 assert(drcafeMathar && (drcafeMathar.openingHours?.periods?.length ?? 0) > 0, "DRCAFE Al Mathar has baked periods");
-assert(drcafeSuwaidi, "DRCAFE As Suwaidi is in the catalog");
-assert(!drcafeSuwaidi.openingHours, "DRCAFE As Suwaidi keeps Status hidden — no invented hours");
 assert(cafeDetailHeroPhotos(three).length === 4, "Three Sulimaniyah uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(threes).length === 4, "Threes Al Yasmin uses baked cafe-heroes");
 assert(cafeDetailHeroPhotos(wave).length === 4, "Wave cafe uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(drcafeMathar).length === 4, "DRCAFE Al Mathar uses baked cafe-heroes");
-assert(cafeDetailHeroPhotos(drcafeSuwaidi).length === 4, "DRCAFE As Suwaidi uses baked cafe-heroes");
+assert(cafeDetailHeroPhotos(drcafeMathar).length === 3, "DRCAFE Al Mathar uses the 3 re-pulled cafe-heroes");
 assert(
   cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(three)),
   "batch 6 Places photos still require a Google credit",
@@ -1028,20 +1421,39 @@ assert(
   "Three Sulimaniyah bake still has the Places author name",
 );
 assert(
-  cafeDetailHeroPhotos(drcafeSuwaidi)[0]?.attribution?.displayName === "Random Tech",
-  "DRCAFE As Suwaidi bake has the Places author name",
-);
-assert(
   cafeDetailHoursStatus(three, "en", new Date("2026-09-20T15:00:00+03:00"))
     ?.kind === "open",
   "Three Sulimaniyah Sunday afternoon is Open now",
 );
 for (const id of BATCH6_IDS) {
   assert(
-    cafeDetailHeroPhotos(getShop(id)!).length === 4,
-    `${id} uses 4 baked cafe-heroes`,
+    cafeDetailHeroPhotos(getShop(id)!).length === expectedHeroCount(id),
+    `${id} uses ${expectedHeroCount(id)} baked cafe-heroes`,
   );
 }
+const waqar = getShop("waqar-al-aziziyah");
+assert(waqar, "Waqar is in the catalog");
+assert(cafeDetailHeroPhotos(waqar).length === 4, "Waqar uses 4 baked cafe-heroes");
+assert(
+  cafeDetailHeroPhotos(waqar).every((photo) => photo.attribution?.uri?.startsWith("https://maps.google.com/maps/contrib/")),
+  "Waqar frames each keep the Google Maps contributor credit",
+);
+assert(
+  cafeDetailHeroNeedsGoogleCredit(cafeDetailHeroPhotos(waqar)),
+  "Waqar Places photos still require a Google credit",
+);
+assert(
+  cafeDetailHeroPhotos(waqar)[0]?.attribution?.displayName === "في سالم",
+  "Waqar hero frame 1 keeps its Places author name",
+);
+assert(
+  cafeDetailHeroPhotos(waqar)[0]?.focus === "50% 16%",
+  "Waqar frame 1 focuses the crop so the wall logo stays in frame",
+);
+assert(
+  cafeDetailHeroPhotos(waqar).slice(1).every((photo) => photo.focus == null),
+  "Waqar frames 2–4 keep the default center crop",
+);
 const remainingUnbaked = (
   JSON.parse(read("data/catalog.json")) as {
     shops: { id: string; placeId?: string; openingHours?: unknown }[];
@@ -1053,7 +1465,7 @@ const remainingUnbaked = (
 });
 assert(
   remainingUnbaked.length === 0,
-  "no place_id shops left unbaked after batch 6",
+  "no place_id shops left unbaked after batch 9",
 );
 
 const wedOpen = new Date("2026-09-16T10:00:00+03:00");
@@ -1097,7 +1509,10 @@ assert(!thin.includes("CafePassportCard"), "verified shops stay on CafeDetail");
 assert(!thin.includes("preferPassportUi"), "claim status does not pick a second layout");
 assert(!thin.includes("woodsPassportFixture"), "Woods fixture stays off the public card");
 assert(thin.includes("CafeClaimFooter"), "claim footer stays for SEO / claim path");
-assert(thin.includes("sr-only"), "Listed on / Own this cafe stay off the visible UI");
+assert(thin.includes("sr-only"), "Own this cafe stays off the visible UI");
+assert(!thin.includes("listedOn"), "Listed on stays off the thin card");
+assert(!thin.includes("Listed on wain.lol"), "EN listed line stays off the thin card");
+assert(!thin.includes("معروض على wain.lol"), "AR listed line stays off the thin card");
 assert(thin.includes("SHOW_BEEN_HERE"), "Been here stays parked on the thin card");
 assert(thin.includes("{SHOW_BEEN_HERE ?"), "Been here is not rendered while parked");
 assert(!thin.includes("CafePresenceRow"), "thin no longer mounts the old action row");
@@ -1108,6 +1523,10 @@ assert(woods, "WOODS Olaya is in the catalog");
 assert(
   cafeDetailHeroPhotos(woods).length === 4,
   "WOODS uses baked cafe-heroes, not Passport fixtures",
+);
+assert(
+  cafeDetailHeroPhotos(woods).every((photo) => photo.focus == null),
+  "Woods keeps the default hero crop",
 );
 assert(
   (woods.openingHours?.periods?.length ?? 0) > 0,
@@ -1144,6 +1563,9 @@ assert(!helper.includes("هيتين"), "never هيتين");
 assert(!helper.includes("places.ts"), "no live Place Details on detail helpers");
 
 assert(detail.includes("photo.src"), "hero paints cached photo src");
+assert(detail.includes("photo.focus"), "hero crop reads the optional per-frame focus");
+assert(detail.includes("objectPosition"), "hero focus is applied as object-position");
+assert(detail.includes("isCafeHeroFocus"), "hero focus is checked before it is applied");
 assert(detail.includes("cafeDetailHeroNeedsGoogleCredit"), "hero keeps a quiet Google credit");
 assert(detail.includes("detailPhotosGoogle"), "visible credit is Photos · Google");
 assert(detail.includes("sr-only"), "author names stay off the primary chrome");
@@ -1170,5 +1592,23 @@ assert(
 assert(detail.includes("draggable={false}"), "hero img is not a native drag ghost");
 assert(detail.includes("setPointerCapture"), "hero swipe captures the pointer");
 assert(!detail.includes("shop.openingHours"), "raw openingHours are not painted");
+assert(!detail.includes("cafeDetailWeeklyHours"), "weekly schedule stays off the detail page");
+assert(!detail.includes("data-cafe-detail-hours"), "no weekly Hours row");
+assert(!detail.includes("copy.hours"), "Hours / الساعات list stays off the 19 Sep detail");
+assert(!helper.includes("cafeDetailWeeklyHours"), "no sitewide weekly schedule helper");
+assert(detail.includes("cafeDetailHoursStatus"), "Status still comes from baked periods");
+assert(detail.includes("detailStatus"), "Status row stays");
+
+const hello = getShop("hello-cafe-olaya");
+assert(hello, "Hello Cafe Olaya is in the catalog");
+assert(
+  cafeDetailHoursStatus(hello, "en", new Date("2026-09-25T02:30:00Z"))?.label ===
+    "Opens at 6:00 AM",
+  "Hello Cafe Friday before 6 AM opens at 6:00 AM, not 7:00 AM",
+);
+assert(
+  cafeDetailHoursStatus(hello, "en", new Date("2026-09-25T03:00:00Z"))?.kind === "open",
+  "Hello Cafe Friday 6:00 AM is Open now",
+);
 
 console.log("check-cafe-detail: ok");

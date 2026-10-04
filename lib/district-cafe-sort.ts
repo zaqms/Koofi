@@ -112,6 +112,9 @@ export function sortDistrictCafes(
 
   if (resolved === "new") {
     return rows.sort((a, b) => {
+      // A chain batch must not flood New ahead of local cafés.
+      const chainDelta = Number(a.isChain === true) - Number(b.isChain === true);
+      if (chainDelta !== 0) return chainDelta;
       const delta = addedMillis(b) - addedMillis(a);
       if (delta !== 0) return delta;
       if (b.catalogIndex !== a.catalogIndex) {

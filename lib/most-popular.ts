@@ -4,6 +4,7 @@ import { copy } from "./copy";
 import { COFFEE_SHOPS_CATEGORY, type DirectoryCategoryId } from "./directory-category";
 import type { DirectoryShop } from "./directory";
 import { categoryDistrictStaticParams } from "./district";
+import { listingOgCopy, listingOgImage } from "./listing-og";
 import { rankByPopularity } from "./picker";
 import {
   COFFEE_SHOP_CHIP_SLUGS,
@@ -12,6 +13,7 @@ import {
   PRODUCT_NAME,
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
+  TRENDING_SLUG,
   mostPopularHeading,
   mostPopularPath,
 } from "./product";
@@ -31,6 +33,9 @@ export function mostPopularMetadata(language: Language): Metadata {
   const title = mostPopularTitle(language);
   const description = mostPopularDescription(language);
   const url = mostPopularPath(language);
+  const ogSpec = { kind: "popular" as const, language };
+  const og = listingOgCopy(ogSpec);
+  const images = og ? [listingOgImage(ogSpec, og.title)] : [SOCIAL_SHARE_IMAGE];
 
   return {
     title,
@@ -51,13 +56,13 @@ export function mostPopularMetadata(language: Language): Metadata {
       locale: language === "en" ? "en_US" : "ar_SA",
       type: "website",
       url,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
       title,
       description,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
   };
 }
@@ -69,6 +74,7 @@ export function categoryListingStaticParams(): {
   return [
     ...categoryDistrictStaticParams(),
     { category: COFFEE_SHOPS_CATEGORY, slug: MOST_POPULAR_SLUG },
+    { category: COFFEE_SHOPS_CATEGORY, slug: TRENDING_SLUG },
     ...COFFEE_SHOP_CHIP_SLUGS.map(
       (slug): { category: DirectoryCategoryId; slug: string } => ({
         category: COFFEE_SHOPS_CATEGORY,
@@ -78,7 +84,7 @@ export function categoryListingStaticParams(): {
   ];
 }
 
-/** Full catalog by baked popularityIndex. No brand-dedupe — directory cards. */
+/** Full catalog by effective popularityIndex. No brand-dedupe — directory cards. */
 export function listPopularDirectoryShops(): DirectoryShop[] {
   const byId = new Map(listDirectoryShops().map((shop) => [shop.id, shop]));
   return rankByPopularity(listDiscoveryShops())

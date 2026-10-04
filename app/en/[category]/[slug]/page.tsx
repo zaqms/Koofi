@@ -1,10 +1,15 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { DistrictPage } from "@/components/district-page";
+import { FixedListPage } from "@/components/fixed-list-page";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
+import { isFixedListId } from "@/lib/fixed-list-ids";
+import { fixedListMetadata } from "@/lib/fixed-lists";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
+import { districtPageHidden, hiddenDistrictRedirect } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
+import { TrendingThisWeekPage } from "@/components/trending-this-week-page";
 import {
   categoryListingStaticParams,
   mostPopularMetadata,
@@ -13,10 +18,13 @@ import {
   chipIdFromCoffeeShopSlug,
   isCoffeeShopChipSlug,
   isMostPopularSlug,
+  isTrendingSlug,
   PRODUCT_NAME,
 } from "@/lib/product";
+import { trendingMetadata } from "@/lib/trending-page";
 import {
   districtItemListJsonLd,
+  fixedListItemListJsonLd,
   mostPopularItemListJsonLd,
 } from "@/lib/structured-data";
 
@@ -38,13 +46,17 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
   if (isMostPopularSlug(slug)) {
     return mostPopularMetadata("en");
   }
+  if (isTrendingSlug(slug)) {
+    return trendingMetadata("en");
+  }
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
     if (!chipId) return { title: `${PRODUCT_NAME} · Coffee shops` };
+    if (isFixedListId(chipId)) return fixedListMetadata(chipId, "en");
     return chipPageMetadata(chipId, "en");
   }
   const district = resolveDistrictSlug(slug);
-  if (!district) {
+  if (!district || districtPageHidden(district)) {
     return { title: `${PRODUCT_NAME} · Coffee shops` };
   }
   return districtMetadata(district, "en", category);
@@ -63,13 +75,26 @@ export default async function EnglishCategoryDistrictPage({
       </>
     );
   }
+  if (isTrendingSlug(slug)) {
+    return <TrendingThisWeekPage language="en" />;
+  }
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
     if (!chipId) notFound();
+    if (isFixedListId(chipId)) {
+      const itemList = fixedListItemListJsonLd(chipId, "en");
+      return (
+        <>
+          {itemList ? <JsonLd data={itemList} /> : null}
+          <FixedListPage language="en" listId={chipId} />
+        </>
+      );
+    }
     return <HomeLanding language="en" selectedChipId={chipId} />;
   }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();
+  if (districtPageHidden(district)) redirect(hiddenDistrictRedirect("en"));
 
   return (
     <>

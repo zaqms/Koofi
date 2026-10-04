@@ -6,6 +6,7 @@ import {
   OWNER_PHOTO_PUBLIC_PREFIX,
   ownerPhotoProxyPathname,
 } from "./owner-photo-urls";
+import { ogDataUriFromBytes } from "./og-image-data";
 import { safeTonightPhotoPath } from "./tonight";
 
 const PUBLIC_ROOT = path.resolve(process.cwd(), "public");
@@ -35,7 +36,8 @@ async function readPublicHero(safe: string): Promise<string | null> {
   if (!abs.startsWith(`${PUBLIC_ROOT}${path.sep}`)) return null;
   try {
     const buf = await readFile(abs);
-    return toDataUri(safe, buf);
+    // Mime from the bytes (Satori 500s on webp); unsupported → null → fallback.
+    return ogDataUriFromBytes(buf);
   } catch {
     return null;
   }
@@ -50,7 +52,7 @@ async function readOwnerHero(safe: string): Promise<string | null> {
     const blob = await readOwnerBlob(pathname);
     if (!blob?.stream) return null;
     const buf = Buffer.from(await new Response(blob.stream).arrayBuffer());
-    return toDataUri(safe, buf, blob.blob.contentType);
+    return ogDataUriFromBytes(buf);
   } catch {
     return null;
   }
@@ -66,20 +68,4 @@ async function readOwnerBlob(pathname: string) {
       return null;
     }
   }
-}
-
-function toDataUri(
-  name: string,
-  buf: Buffer,
-  contentType?: string | null,
-): string {
-  const mime =
-    contentType && contentType.startsWith("image/")
-      ? contentType
-      : name.endsWith(".png")
-        ? "image/png"
-        : name.endsWith(".webp")
-          ? "image/webp"
-          : "image/jpeg";
-  return `data:${mime};base64,${buf.toString("base64")}`;
 }

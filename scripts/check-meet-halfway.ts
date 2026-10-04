@@ -848,6 +848,14 @@ for (const id of rabwahScout) {
   const shop = SHOPS.find((row) => row.id === id);
   assert(shop && isHalfwayEligible(shop), `${id} is بيننا sit-down from PACK dine-in`);
 }
+const helloOlaya = SHOPS.find((row) => row.id === "hello-cafe-olaya");
+assert(
+  helloOlaya?.dineIn === true &&
+    helloOlaya.outdoorSeating === true &&
+    helloOlaya.pickupOnly == null &&
+    isHalfwayEligible(helloOlaya),
+  "Hello Cafe Olaya is بيننا sit-down from Scout dine-in and outdoor seating",
+);
 const coffeeMqr6 = SHOPS.find((row) => row.id === "coffee-address-ar-rabwah");
 assert(
   coffeeMqr6?.dineIn == null &&
@@ -1282,6 +1290,15 @@ assert(
     !districtPage.includes("meetHalfwayMoreTitle"),
   "home + district do not mount the بيننا results chrome",
 );
+assert(
+  homeLanding.includes("const halfwayScreen = pageChipId === MEET_HALFWAY_CHIP.id") &&
+    homeLanding.includes("discovery={halfwayScreen ? null : homeDiscovery}") &&
+    homeLanding.includes(") : halfwayScreen ? (") &&
+    homeLanding.includes("<HomeTrending") &&
+    homeLanding.includes("<BrowseNeighborhoods") &&
+    homeLanding.includes("<ShopDirectory"),
+  "بيننا drops the home discovery feed; bare home still mounts trending, neighborhoods, and cafés",
+);
 const homePage = readFileSync(join(repoRoot, "app/page.tsx"), "utf8");
 const homePageEn = readFileSync(join(repoRoot, "app/en/page.tsx"), "utf8");
 assert(
@@ -1361,7 +1378,7 @@ assert(
     chatUi.includes("locations,") &&
     chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
-    chatUi.includes("auto: !halfwayInvite && !meetHalfwayOpen"),
+    chatUi.includes("auto: !listFirst && !halfwayInvite && !meetHalfwayOpen"),
   "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
 );
 assert(
@@ -1424,7 +1441,8 @@ const askFormGate =
   chatUi.match(/showAskComposer \? \(\s*<form[\s\S]*?<\/form>/)?.[0] ?? "";
 assert(
   askFormGate.includes("<form") &&
-    askFormGate.includes('id="koofi-ask"') &&
+    askFormGate.includes('htmlFor="koofi-ask"') &&
+    askFormGate.includes("<AskComposerField") &&
     askFormGate.includes("<AddShopButton"),
   "hidden form includes the ask composer + أضف قهوة / Add a coffee shop",
 );
@@ -1448,6 +1466,24 @@ assert(
     chatUi.includes("setMeetHalfwayOpen(false)") &&
     chatUi.includes("setMeetHalfwayOpen(true)"),
   "ask composer and أضف قهوة stay in Chat; they restore when بيننا closes",
+);
+assert(
+  chatUi.includes("function dismissHalfway") &&
+    chatUi.includes("halfwayClosedOntoOldHome") &&
+    chatUi.includes("cached home entry") &&
+    chatUi.includes("router.replace(homePath(landing))") &&
+    !chatUi.includes("onClick={() => setMeetHalfwayOpen(false)}") &&
+    /function dismissHalfway\(\) \{\s*if \(!homeSurface\) \{\s*router\.replace\(homePath\(landing\)\);/.test(
+      chatUi,
+    ),
+  "بيننا close leaves for canonical / or /en and does not cache the pre-#205 home",
+);
+assert(
+  chatUi.includes("paints LegacyOpenerHero") &&
+    /function onBrandHomeClick[\s\S]*?if \(!homeSurface\) \{\s*event\.preventDefault\(\);\s*router\.replace\(homePath\(landing\)\);/.test(
+      chatUi,
+    ),
+  "non-home wordmark replaces onto canonical home and does not paint the pre-#205 opener",
 );
 assert(
   inviteSession.includes("<Chat") &&

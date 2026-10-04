@@ -7,6 +7,7 @@ import {
 } from "./directory-category";
 import { districtArMeta, districtArTitle } from "./ar-content";
 import { districtEnMeta, districtEnTitle } from "./en-content";
+import { listingOgCopy, listingOgImage } from "./listing-og";
 import { pageAlternates } from "./locale";
 import { isNeighborhoodId, neighborhoodLabel } from "./neighborhoods";
 import {
@@ -15,6 +16,7 @@ import {
   SOCIAL_SHARE_IMAGE,
   SOCIAL_TWITTER_CARD,
 } from "./product";
+import { districtPageHidden } from "./district-dictionary";
 import { NEIGHBORHOOD_IDS, type Language, type NeighborhoodId } from "./types";
 
 export function resolveDistrictSlug(slug: string): NeighborhoodId | null {
@@ -25,10 +27,12 @@ export function categoryDistrictStaticParams(): {
   category: DirectoryCategoryId;
   slug: NeighborhoodId;
 }[] {
-  return NEIGHBORHOOD_IDS.map((slug) => ({
-    category: COFFEE_SHOPS_CATEGORY,
-    slug,
-  }));
+  return NEIGHBORHOOD_IDS.filter((slug) => !districtPageHidden(slug)).map(
+    (slug) => ({
+      category: COFFEE_SHOPS_CATEGORY,
+      slug,
+    }),
+  );
 }
 
 export function districtTitle(
@@ -69,6 +73,9 @@ export function districtMetadata(
   const title = districtTitle(id, language, category);
   const description = districtDescription(id, language, category);
   const url = categoryDistrictPath(category, id, language);
+  const ogSpec = { kind: "district" as const, language, id };
+  const og = listingOgCopy(ogSpec);
+  const images = og ? [listingOgImage(ogSpec, og.title)] : [SOCIAL_SHARE_IMAGE];
 
   return {
     title,
@@ -87,13 +94,13 @@ export function districtMetadata(
       locale: language === "en" ? "en_US" : "ar_SA",
       type: "website",
       url,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
       title,
       description,
-      images: [SOCIAL_SHARE_IMAGE],
+      images,
     },
   };
 }

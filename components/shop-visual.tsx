@@ -13,7 +13,7 @@ type ShopVisualProps = {
 
 const DARK_LOGO_PATHS = new Set([
   "/logos/tobys-estate-hittin.png",
-  "/logos/qamaria-hittin.webp",
+  "/logos/qamaria-hittin.jpg",
   "/logos/first-series-olaya.png",
   "/logos/just-another-hittin.jpg",
   "/logos/repository-coffee-roasters-al-narjis.jpg",
@@ -53,6 +53,8 @@ const DARK_LOGO_PATHS = new Set([
   "/logos/kuro-sulimaniyah.png",
   "/logos/the-matcha-bar-olaya.jpg",
   "/logos/remis-matcha-club-hittin.png",
+  // Respire is a light grey mark; it disappears on the default cream tile.
+  "/logos/respire-al-malqa-v2.png",
 ]);
 
 export function ShopVisual({

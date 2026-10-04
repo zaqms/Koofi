@@ -20,16 +20,18 @@ import {
   cafeDetailHeroNeedsGoogleCredit,
   cafeDetailHeroPhotos,
   cafeDetailHoursStatus,
+  isCafeHeroFocus,
   neighborhoodCafesHeading,
   type CafeDetailHeroPhoto,
 } from "@/lib/cafe-detail";
+import type { CafeRaveLine } from "@/lib/cafe-raves";
 import { copy } from "@/lib/copy";
 import type { DirectoryShop } from "@/lib/directory";
 import { listingLocationOrder } from "@/lib/listing-location";
 import { listingCardTags } from "@/lib/listing-tags";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { officialShopCoords } from "@/lib/place-coords";
-import { cardPath, districtPath, shopDisplayName } from "@/lib/product";
+import { cardPath, shopDisplayName } from "@/lib/product";
 import { shopMapsHref } from "@/lib/public-url";
 import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import { SHOW_DETAIL_FAVORITE } from "@/lib/tonight";
@@ -41,6 +43,8 @@ type CafeDetailProps = {
   language: Language;
   backHref: string;
   siblings: DirectoryShop[];
+  districtHref?: string;
+  raves?: CafeRaveLine[];
 };
 
 const heroSquareClass =
@@ -57,6 +61,8 @@ export function CafeDetail({
   language,
   backHref,
   siblings,
+  districtHref,
+  raves,
 }: CafeDetailProps) {
   const dir = language === "ar" ? "rtl" : "ltr";
   const name = shopDisplayName(shop, language);
@@ -69,6 +75,7 @@ export function CafeDetail({
   const description = cafeDetailDescription(shop);
   const status = cafeDetailHoursStatus(shop, language);
   const coords = officialShopCoords(shop);
+  const raveItems = raves ?? [];
 
   return (
     <article
@@ -141,7 +148,7 @@ export function CafeDetail({
 
         <div className="mt-7 border-y border-wain-divider">
           <DetailInfoRow
-            href={districtPath(shop.neighborhood, language)}
+            href={districtHref}
             icon={<MapPinIcon className="size-[18px]" />}
             label={copy.neighborhood[language]}
             value={area}
@@ -166,6 +173,9 @@ export function CafeDetail({
               language={language}
             />
           ) : null}
+          {raveItems.length > 0 ? (
+            <CafeRaveRows items={raveItems} language={language} />
+          ) : null}
         </div>
 
         <div className="mt-5">
@@ -182,7 +192,7 @@ export function CafeDetail({
       <CafeRelatedRail
         language={language}
         neighborhood={area}
-        neighborhoodId={shop.neighborhood}
+        districtHref={districtHref}
         siblings={siblings}
       />
     </article>
@@ -252,6 +262,11 @@ function CafeDetailHero({
           alt={`${name} · ${neighborhood}`}
           draggable={false}
           className="pointer-events-none size-full select-none object-cover"
+          style={
+            typeof photo.focus === "string" && isCafeHeroFocus(photo.focus)
+              ? { objectPosition: photo.focus }
+              : undefined
+          }
         />
       ) : null}
 
@@ -464,31 +479,90 @@ function DetailInfoRow({
   );
 }
 
+/** Keep Latin runs such as V60 and 70% in logical order inside Arabic RTL rows. */
+function isolateEmbeddedLtr(text: string): ReactNode {
+  const re = /[A-Za-z0-9]+(?:['.’-]*[A-Za-z0-9]+)*%?/g;
+  const nodes: ReactNode[] = [];
+  let last = 0;
+  for (const match of text.matchAll(re)) {
+    const index = match.index ?? 0;
+    if (index > last) nodes.push(text.slice(last, index));
+    nodes.push(
+      <bdi key={`${index}:${match[0]}`} dir="ltr">
+        {match[0]}
+      </bdi>,
+    );
+    last = index + match[0].length;
+  }
+  if (nodes.length === 0) return text;
+  if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+}
+
+function CafeRaveRows({
+  items,
+  language,
+}: {
+  items: CafeRaveLine[];
+  language: Language;
+}) {
+  return (
+    <div data-cafe-raves="" lang={language}>
+      <h2 className="flex w-full items-start gap-3 border-b border-wain-divider py-4 text-[11px] leading-4 text-wain-soft-taupe">
+        <span className="size-[18px] shrink-0" aria-hidden="true" />
+        <span className="min-w-0 flex-1">{copy.detailRaves[language]}</span>
+      </h2>
+      {items.map((item, index) => (
+        <div
+          key={`${index}:${item.emoji}:${item.name}`}
+          className="flex w-full items-start gap-3 border-b border-wain-divider py-4 last:border-b-0"
+        >
+          <span
+            className="mt-0.5 w-[18px] shrink-0 text-center text-[18px] leading-none"
+            aria-hidden="true"
+          >
+            {item.emoji}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm leading-5 text-ink">
+              {isolateEmbeddedLtr(item.name)}
+            </span>
+            <span className="mt-0.5 block text-[11px] leading-4 text-wain-soft-taupe">
+              {isolateEmbeddedLtr(item.reason)}
+            </span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CafeRelatedRail({
   language,
   neighborhood,
-  neighborhoodId,
+  districtHref,
   siblings,
 }: {
   language: Language;
   neighborhood: string;
-  neighborhoodId: Shop["neighborhood"];
+  districtHref?: string;
   siblings: DirectoryShop[];
 }) {
   if (siblings.length === 0) return null;
   const heading = neighborhoodCafesHeading(neighborhood, language);
-  const seeAll = districtPath(neighborhoodId, language);
 
   return (
     <section className="mt-8" data-cafe-detail-related="">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-base font-semibold leading-tight">{heading}</h2>
-        <Link
-          href={seeAll}
-          className="shrink-0 text-[13px] text-wain-soft-taupe hover:text-ink"
-        >
-          {copy.detailSeeAll[language]}
-        </Link>
+        {districtHref ? (
+          <Link
+            href={districtHref}
+            className="shrink-0 text-[13px] text-wain-soft-taupe hover:text-ink"
+          >
+            {copy.detailSeeAll[language]}
+          </Link>
+        ) : null}
       </div>
       <ul className="mt-3 flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {siblings.map((sibling) => (

@@ -1,0 +1,4 @@
+{
+  "note": "Precomputed cid → Maps feature id (0x…:0x…) for catalog rows whose mapsShareUrl is cid-only (?cid=…). Fill from a Place Details googleMapsUri + the placeId decode when such a row is added. Empty while every row carries a 1s0x…:0x… hex.",
+  "cids": {}
+}

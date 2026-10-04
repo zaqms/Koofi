@@ -163,6 +163,10 @@ for (const district of [
   "manfuha",
   "tuwaiq",
   "as-suwaidi",
+  "al-falah",
+  "umm-al-hamam-al-gharbi",
+  "an-nafal",
+  "king-salman",
 ] as const) {
   const body = districtEnMarkdown(district);
   const lead = body.split("## What’s here")[0] ?? "";
@@ -177,16 +181,29 @@ for (const district of [
 }
 
 assert(
-  !districtEnMarkdown("as-suwaidi").includes("/en/c/drcafe-as-suwaidi"),
-  "as-suwaidi EN must not keep the closed card link",
+  districtEnMarkdown("as-suwaidi").includes("- {chain} [dr.CAFE](/en/c/drcafe-as-suwaidi)"),
+  "as-suwaidi EN lists the operational dr.CAFE as a {chain} row (Batch D1)",
 );
 assert(
   !districtEnMarkdown("al-rabwah").includes("/en/c/get-up-coffee-ar-rabwah"),
   "al-rabwah EN must not keep the wrong Get Up card link",
 );
 assert(
-  shopsInDistrict("as-suwaidi").length === 0,
-  "as-suwaidi catalog is empty after the closed drop",
+  shopsInDistrict("as-suwaidi").map((shop) => shop.id).join(",") === "alwaal-albari-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi,era-coffee-as-suwaidi,hot-sip-as-suwaidi,naham-specialty-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi",
+  "as-suwaidi catalog is Alwaal Albari plus the 7 Batch D1 cafés",
+);
+assert(
+  !districtEnMarkdown("al-masif").includes("/en/c/voom-al-masif"),
+  "al-masif EN must not keep the closed card link",
+);
+assert(
+  shopsInDistrict("al-masif").length === 10,
+  "al-masif catalog is 10 after the closed drop",
+);
+assert(
+  districtEnMarkdown("al-aziziyah").includes("/en/c/waqar-al-aziziyah") &&
+    !districtEnMarkdown("al-aziziyah").includes("/en/c/drive-al-aziziyah"),
+  "al-aziziyah EN lists Waqar, not the DT-lane cards",
 );
 
 const kafdMeta = districtMetadata("kafd", "en");
@@ -557,8 +574,17 @@ for (const district of liveDistricts) {
 }
 
 assert(
-  !districtArMarkdown("as-suwaidi").includes("/c/drcafe-as-suwaidi"),
-  "as-suwaidi AR must not keep the closed card link",
+  districtArMarkdown("as-suwaidi").includes("- {chain} [د.كيف كافيه](/c/drcafe-as-suwaidi)"),
+  "as-suwaidi AR lists the operational dr.CAFE as a {chain} row (Batch D1)",
+);
+assert(
+  !districtArMarkdown("al-masif").includes("/c/voom-al-masif"),
+  "al-masif AR must not keep the closed card link",
+);
+assert(
+  districtArMarkdown("al-aziziyah").includes("/c/waqar-al-aziziyah") &&
+    !districtArMarkdown("al-aziziyah").includes("/c/drcafe-al-aziziyah"),
+  "al-aziziyah AR lists Waqar, not the DT-lane cards",
 );
 assert(
   !districtArMarkdown("al-rabwah").includes("/c/get-up-coffee-ar-rabwah"),

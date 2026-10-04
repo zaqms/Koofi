@@ -1,5 +1,12 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import popularityIndexFile from "../data/popularity-index.json";
+import { isChainShop } from "../lib/chain-brands";
 import { listRealShops } from "../lib/catalog";
+import {
+  chainPopularityIndex,
+  effectivePopularityIndex,
+} from "../lib/tiktok-popularity";
 import { isNearAskedNeighborhood } from "../lib/neighborhood-tight";
 import { parseIntent } from "../lib/parse-intent";
 import { pickCafes } from "../lib/picker";
@@ -19,6 +26,7 @@ import {
   listingSharePath,
   packSharePath,
   VIBE_CHIPS,
+  isFixedListChip,
 } from "../lib/product";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { matchCatalogShops } from "../lib/shop-name";
@@ -196,6 +204,49 @@ assert(
     breehantArHits.some((shop) => shop.id === "breehant-al-yasmin"),
   "brand-key EXTRA_ALIASES must attach بريهانت to both Breehant rows",
 );
+const essertNew = matchCatalogShops("ايزرت", catalog);
+const essertOld = matchCatalogShops("إسرت", catalog);
+assert(
+  essertNew.some((shop) => shop.id === "essert-al-rawabi") &&
+    essertNew.some((shop) => shop.id === "essert-al-arid") &&
+    essertOld.some((shop) => shop.id === "essert-al-rawabi") &&
+    essertOld.some((shop) => shop.id === "essert-al-arid"),
+  "Essert search finds both rows by ايزرت and the previous إسرت spelling",
+);
+// #247 QA L4: Era is «إرا» in the catalog; people also type «ايرا» / «إيرا».
+for (const q of ["ايرا", "إيرا", "قهوة ايرا", "إرا"]) {
+  const hits = matchCatalogShops(q, catalog);
+  assert(
+    hits[0]?.id === "era-coffee-as-suwaidi",
+    `"${q}" resolves to Era As Suwaidi, got ${hits.map((shop) => shop.id).join(",")}`,
+  );
+}
+// QA L8: Ostrich is «اوستريتش» in the catalog and district copy. «اوستريتيش» still finds it.
+const ostrich = catalog.find((shop) => shop.id === "ostrich-al-falah");
+assert(ostrich?.nameAr === "اوستريتش", "Ostrich Arabic name is اوستريتش");
+const arCopy = readFileSync(join(process.cwd(), "lib/ar-content.ts"), "utf8");
+const enCopy = readFileSync(join(process.cwd(), "lib/en-content.ts"), "utf8");
+assert(
+  arCopy.includes("و[اوستريتش](/c/ostrich-al-falah)") &&
+    arCopy.includes("مود ماسترز واوستريتش وفلتر") &&
+    !arCopy.includes("اوستريتيش") &&
+    !enCopy.includes("اوستريتيش"),
+  "Al Falah copy uses اوستريتش, not اوستريتيش",
+);
+for (const q of ["اوستريتش", "اوستريتيش"]) {
+  const hits = matchCatalogShops(q, catalog);
+  assert(
+    hits.some((shop) => shop.id === "ostrich-al-falah"),
+    `"${q}" resolves to Ostrich Al Falah, got ${hits.map((shop) => shop.id).join(",")}`,
+  );
+}
+const hintia = matchCatalogShops("Hintia", catalog);
+const hintiya = matchCatalogShops("Hintiya", catalog);
+assert(
+  hintia.some((shop) => shop.id === "hintiya-al-narjis") &&
+    hintiya.some((shop) => shop.id === "hintiya-al-narjis"),
+  "Hintia is the English name; Hintiya still matches the slug",
+);
 
 const ARABIC_SCRIPT = /[\u0600-\u06FF]/;
 for (const shop of catalog) {
@@ -270,12 +321,17 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 358,
-  `popularity map should have 358 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 468,
+  `popularity map should have 468 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
-  catalog.every((shop) => shop.popularityIndex === popularityIndex[shop.id]),
-  "every live shop must carry the baked popularityIndex",
+  catalog.every((shop) =>
+    isChainShop(shop)
+      ? shop.popularityIndex === chainPopularityIndex()
+      : shop.popularityIndex ===
+        effectivePopularityIndex(popularityIndex[shop.id], shop.id),
+  ),
+  "every live shop must carry the baked popularityIndex plus the TikTok bonus, or the flat chain index",
 );
 assert(
   catalog.every((shop) => !shop.momentTags.includes("popular")),
@@ -394,7 +450,8 @@ assertPopularLock("اللي عليها طلب", "ar");
 assertPopularLock("popular", "en");
 
 const bestCoffee = pickCafes({ text: "Best Coffee", language: "en" });
-assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee stays qahwa");
+assert(isFixedListChip("coffee"), "Best coffee page is a fixed list");
+assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee chat ask stays qahwa until it shares the list rule");
 assert(
   bestCoffee.picks.every((pick) => pick.shop.momentTags.includes("qahwa")),
   "Best Coffee still ranks qahwa-tagged shops",

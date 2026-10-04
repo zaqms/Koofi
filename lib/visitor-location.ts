@@ -174,7 +174,10 @@ export async function peekReadyVisitorLocation(): Promise<VisitorLocation> {
     rememberedGranted: readRememberedGeoGranted(),
   });
   if (action === "request") return requestVisitorLocation({ retry: true });
-  return snapshot.status === "unavailable" ? snapshot : pendingSnapshot;
+  if (snapshot.status === "unavailable" || snapshot.status === "denied") {
+    return snapshot;
+  }
+  return pendingSnapshot;
 }
 
 /** One browser Geolocation read. Retry after deny so a chip tap can ask again. */

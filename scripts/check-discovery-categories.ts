@@ -21,6 +21,7 @@ import {
   homeSurfaceChips,
   isDirectoryResultSortChip,
   isDriveThroughDirectoryChip,
+  isFixedListChip,
   isOffHomeChipId,
   isStaticDirectoryChip,
   vibeChipLabel,
@@ -84,8 +85,8 @@ assert(DISCOVERY_CATEGORIES.length === 14, "14 live discovery categories (13 vib
 assert(VIBE_CHIPS.length === 13, "Soft Places stay parked — 13 vibe chips");
 assert(
   HOME_CHIP_IDS.join(",") ===
-    "popular,coffee,pastry,matcha,nearby,outdoor,with-friends,work,drive-through",
-  "P0 home order is locked",
+    "popular,nearby,matcha,coffee,work,with-friends,outdoor,drive-through",
+  "P0 home order is the 8-tile grid",
 );
 assert(
   OFF_HOME_CHIP_IDS.join(",") === "roaster,specialty,study,late,quiet",
@@ -109,7 +110,26 @@ assert(isStaticDirectoryChip("popular") && isStaticDirectoryChip("matcha"), "sta
 assert(isDriveThroughDirectoryChip("drive-through"), "DT eligibility");
 assert(!isDriveThroughDirectoryChip("matcha"), "matcha is not the DT lane");
 assert(isDirectoryResultSortChip("matcha") && isDirectoryResultSortChip("drive-through"), "sort chips");
-assert(chipDirectoryMoment("coffee") === "qahwa", "coffee filters qahwa");
+assert(chipDirectoryMoment("coffee") === "qahwa", "coffee chat moment stays qahwa");
+assert(
+  isFixedListChip("nearby") &&
+    isFixedListChip("outdoor") &&
+    isFixedListChip("coffee") &&
+    isFixedListChip("work"),
+  "the four list pages are fixed-list chips",
+);
+assert(
+  getDiscoveryCategory("nearby")?.eligibility.rule === "nearby-haversine" &&
+    getDiscoveryCategory("outdoor")?.eligibility.rule === "places-outdoor-seating" &&
+    getDiscoveryCategory("coffee")?.eligibility.rule === "roaster-tag" &&
+    getDiscoveryCategory("work")?.eligibility.rule === "work-tag+dineIn",
+  "fixed-list eligibility is haversine, Places outdoor seating, roaster, work+dineIn",
+);
+assert(
+  getDiscoveryCategory("nearby")?.directoryKind === "fixed-list" &&
+    getDiscoveryCategory("coffee")?.momentTag === "qahwa",
+  "page kind is fixed-list; Best Coffee chat moment stays qahwa until PR2",
+);
 assert(chipDirectoryMoment("specialty") === "roaster", "specialty still shares roaster");
 assert(chipDirectoryMoment("popular") === null, "popular is not a moment filter");
 assert(chipDirectoryMoment("nearby") === null, "nearby is not a moment filter");

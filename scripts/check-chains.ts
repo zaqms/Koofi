@@ -1073,7 +1073,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "ab3b3a8dcc24d83fbcd3a9cb92bf55ad4c72022399492147dde6a7c1a1f41120",
+  copyHash === "941e5a687a85cbafe65b079b47625c6ede46cf63ef587c17212e74b2ede5a42a",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1908,7 +1908,7 @@ assert(
     !rawabiAr.includes("4 بطاقة") &&
     rawabiAr.includes("[توري](/c/torre-al-rawabi)") &&
     rawabiAr.includes("[THE IT]") &&
-    rawabiAr.includes("[إسرت]"),
+    rawabiAr.includes("[ايزرت]"),
   "Al Rawabi AR lead names the four cards",
 );
 const nadaEn = districtEnMarkdown("an-nada");

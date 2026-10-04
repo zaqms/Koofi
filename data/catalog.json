@@ -22896,6 +22896,8 @@
     },
     {
       "id": "drive-al-ghadeer",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -23411,6 +23413,8 @@
     },
     {
       "id": "drive-al-arid",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -24497,6 +24501,8 @@
     },
     {
       "id": "drive-al-qirawan",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30168,6 +30174,8 @@
     },
     {
       "id": "drive-badr",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30215,6 +30223,8 @@
     },
     {
       "id": "drive-al-aziziyah",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30262,6 +30272,8 @@
     },
     {
       "id": "drive-al-hazm",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30309,6 +30321,8 @@
     },
     {
       "id": "drive-al-andalus",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30356,6 +30370,8 @@
     },
     {
       "id": "drive-al-khaleej",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30404,6 +30420,8 @@
     },
     {
       "id": "drive-an-nasim-al-gharbi",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30452,6 +30470,8 @@
     },
     {
       "id": "drive-ar-rimal",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30500,6 +30520,8 @@
     },
     {
       "id": "drive-al-qirawan-2",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30527,6 +30549,8 @@
     },
     {
       "id": "drive-al-yasmin",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30554,6 +30578,8 @@
     },
     {
       "id": "drive-as-sahafah",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30602,6 +30628,8 @@
     },
     {
       "id": "drive-badr-2",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30649,6 +30677,8 @@
     },
     {
       "id": "drive-al-nakheel",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30697,6 +30727,8 @@
     },
     {
       "id": "drive-al-janadriyyah",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",

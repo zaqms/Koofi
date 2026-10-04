@@ -1257,6 +1257,17 @@ assert(
     mahmasaAttrs.place_name === "مقهى ومحمصة حي",
   "places-attrs Mahmasa uses the Al Raqban cafe pin, not GOAT Olaya",
 );
+const aridAttrs = (
+  JSON.parse(read("data/places-attrs-2026-09-19.json")) as {
+    shops: { id: string; place_id?: string; dine_in?: boolean | null }[];
+  }
+).shops.find((row) => row.id === "drive-al-arid");
+assert(
+  aridAttrs?.place_id === "ChIJ0cfdVgDvLj4R_dbw3QdkM_s" &&
+    aridAttrs.place_id === getShop("drive-al-arid")?.placeId &&
+    aridAttrs.dine_in === false,
+  "places-attrs Drive Al Arid uses its own Al Arid pin (not Drive Al Qirawan) and is not dine-in",
+);
 for (const id of BATCH4_IDS) {
   assert(
     cafeDetailHeroPhotos(getShop(id)!).length === expectedHeroCount(id),

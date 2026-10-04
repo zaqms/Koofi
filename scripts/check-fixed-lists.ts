@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 414,
+  nearby: 413,
   outdoor: 198,
   coffee: 67,
   work: 65,
 } as const;
 
 assert(listRealShops().length === 468, "catalog stays 468");
-assert(listListingShops().length === 414, "listing stays 414");
-assert(listPublicShops().length === 414, "/api/shops pool stays 414");
-assert(listLiveCatalogDistrictIds().length === 72, "district pages stay 72");
-assert(listSitemapLocs().length === 1121, "sitemap stays 1121");
+assert(listListingShops().length === 413, "listing is 413 (414 on main minus Drive Al Arid)");
+assert(listPublicShops().length === 413, "/api/shops pool is 413");
+assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (72 on main minus 5 Drive-only)");
+assert(listSitemapLocs().length === 1111, "sitemap is 1111 (1121 on main minus 5 districts × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 8,
-  "nearby includes the 8 listed chains",
+  nearby.filter((shop) => isChainShop(shop)).length === 10,
+  "nearby includes the 10 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan)",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,

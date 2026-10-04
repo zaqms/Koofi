@@ -210,6 +210,14 @@ assert(
     essertOld.some((shop) => shop.id === "essert-al-arid"),
   "Essert search finds both rows by ايزرت and the previous إسرت spelling",
 );
+// #247 QA L4: Era is «إرا» in the catalog; people also type «ايرا» / «إيرا».
+for (const q of ["ايرا", "إيرا", "قهوة ايرا", "إرا"]) {
+  const hits = matchCatalogShops(q, catalog);
+  assert(
+    hits[0]?.id === "era-coffee-as-suwaidi",
+    `"${q}" resolves to Era As Suwaidi, got ${hits.map((shop) => shop.id).join(",")}`,
+  );
+}
 const hintia = matchCatalogShops("Hintia", catalog);
 const hintiya = matchCatalogShops("Hintiya", catalog);
 assert(

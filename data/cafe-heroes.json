@@ -12402,13 +12402,6 @@
         "displayName": "S. Maashi",
         "uri": "https://maps.google.com/maps/contrib/109718495198027144574"
       }
-    },
-    {
-      "src": "/cafe-heroes/hot-sip-as-suwaidi/4.jpg",
-      "attribution": {
-        "displayName": "khalid Foodie",
-        "uri": "https://maps.google.com/maps/contrib/109126617948351104732"
-      }
     }
   ],
   "era-coffee-as-suwaidi": [
@@ -12428,13 +12421,6 @@
     },
     {
       "src": "/cafe-heroes/era-coffee-as-suwaidi/3.jpg",
-      "attribution": {
-        "displayName": "قهوة إرا ERA COFFEE - فرع السويدي",
-        "uri": "https://maps.google.com/maps/contrib/115407905693566410743"
-      }
-    },
-    {
-      "src": "/cafe-heroes/era-coffee-as-suwaidi/4.jpg",
       "attribution": {
         "displayName": "قهوة إرا ERA COFFEE - فرع السويدي",
         "uri": "https://maps.google.com/maps/contrib/115407905693566410743"
@@ -12505,8 +12491,8 @@
     {
       "src": "/cafe-heroes/drcafe-as-suwaidi/1.jpg",
       "attribution": {
-        "displayName": "د.كيف",
-        "uri": "https://maps.google.com/maps/contrib/112735132114460900261"
+        "displayName": "Abdulaziz Atiyah Alanazi",
+        "uri": "https://maps.google.com/maps/contrib/108567184423407456008"
       }
     },
     {
@@ -12519,15 +12505,15 @@
     {
       "src": "/cafe-heroes/drcafe-as-suwaidi/3.jpg",
       "attribution": {
-        "displayName": "Abdulaziz Atiyah Alanazi",
-        "uri": "https://maps.google.com/maps/contrib/108567184423407456008"
+        "displayName": "Yousef Al",
+        "uri": "https://maps.google.com/maps/contrib/101952393881780663281"
       }
     },
     {
       "src": "/cafe-heroes/drcafe-as-suwaidi/4.jpg",
       "attribution": {
-        "displayName": "Yousef Al",
-        "uri": "https://maps.google.com/maps/contrib/101952393881780663281"
+        "displayName": "Jeswaldo Villamor",
+        "uri": "https://maps.google.com/maps/contrib/105078842705199008875"
       }
     }
   ]

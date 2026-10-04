@@ -187,8 +187,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 57, `expected 57 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 380, `specialty discovery is 380 after the Bisat batch, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 441, `catalog is 441 (433 plus the 8 Bisat batch rows), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 386, `specialty discovery is 386 after Batch D1 (380 + 6 local As Suwaidi), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 448, `catalog is 448 (441 plus the 7 Batch D1 rows), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1519,7 +1519,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 71, `Drive-through directory (moment tag) is 71, got ${dt.length}`);
+  assert(dt.length === 73, `Drive-through directory (moment tag) is 73 (71 + Coffee Address and dr.CAFE As Suwaidi), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -1529,17 +1529,21 @@ const MALAZ_REFILL = {
     "Drive-through directory is tagged only",
   );
   assert(
-    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 18,
-    "18 hex-verified dr.CAFE rows are on the Drive-through directory",
+    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 19,
+    "19 hex-verified dr.CAFE rows are on the Drive-through directory (18 + As Suwaidi, Batch D1)",
   );
+  // Batch D1 (4 Oct 2026): the earlier drop came from a wrong 19 Sep Places
+  // match (dr.CAFE Al Qasr, ChIJC9-F2ogPLz4Rh0O4S3P3PDA, CLOSED_PERMANENTLY).
+  // The hex place itself (ChIJ9aMBGQARLz4RopSzjbuxdK8) is OPERATIONAL, so it is back.
   assert(
-    !getShop("drcafe-as-suwaidi"),
-    "CLOSED_PERMANENTLY dr.CAFE As Suwaidi stays dropped",
+    getShop("drcafe-as-suwaidi")?.placeId === "ChIJ9aMBGQARLz4RopSzjbuxdK8" &&
+      getShop("drcafe-as-suwaidi")?.isChain === true,
+    "dr.CAFE As Suwaidi is the operational hex place, tagged as a chain",
   );
   assert(
     listDirectoryShopsForDistrict("as-suwaidi").map((shop) => shop.id).join(",") ===
-      "alwaal-albari-as-suwaidi",
-    "as-suwaidi lists Alwaal Albari only (dr.CAFE As Suwaidi stays dropped)",
+      "alwaal-albari-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi,era-coffee-as-suwaidi,hot-sip-as-suwaidi,naham-specialty-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi",
+    "as-suwaidi lists Alwaal Albari plus the 7 Batch D1 cafés",
   );
   assert(
     !getShop("voom-al-masif"),
@@ -1626,10 +1630,10 @@ const MALAZ_REFILL = {
     "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
-  assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);
+  assert(drcafe.length === 19, `19 dr.CAFE rows, got ${drcafe.length}`);
   assert(
     drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
-    "all 18 dr.CAFE rows use the official mark",
+    "all 19 dr.CAFE rows use the official mark",
   );
   assert(
     getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",

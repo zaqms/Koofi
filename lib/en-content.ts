@@ -922,14 +922,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "as-suwaidi": {
     lead: `As Suwaidi (السويدي) is a Riyadh neighborhood. This page is the As Suwaidi set on wain.lol so far.
 
-[Alwaal Albari](/en/c/alwaal-albari-as-suwaidi) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from As Suwaidi on the catalog today:`,
+[Alwaal Albari](/en/c/alwaal-albari-as-suwaidi), [Plant Cafe](/en/c/plant-cafe-as-suwaidi), [Seen Cafe](/en/c/seen-cafe-as-suwaidi), [Hot Sip](/en/c/hot-sip-as-suwaidi), [Era Coffee](/en/c/era-coffee-as-suwaidi), [Naham Specialty Coffee](/en/c/naham-specialty-as-suwaidi) and [Coffee Address](/en/c/coffee-address-as-suwaidi) are the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from As Suwaidi on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If As Suwaidi isn’t the stop, these three lists are the closest on the site. Al Wisham is close too, but its only cafe is a drive-thru, so it isn’t listed here:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Suwaidi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in As Suwaidi on wain.lol — a Riyadh neighborhood list including Alwaal Albari, with a Maps link.",
+    meta: "{countCafe} in As Suwaidi on wain.lol — a Riyadh neighborhood list including Alwaal Albari and Era Coffee, with Maps links.",
   },
 };
 

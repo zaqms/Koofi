@@ -211,6 +211,14 @@ assert(
     essertOld.some((shop) => shop.id === "essert-al-arid"),
   "Essert search finds both rows by ايزرت and the previous إسرت spelling",
 );
+// #247 QA L4: Era is «إرا» in the catalog; people also type «ايرا» / «إيرا».
+for (const q of ["ايرا", "إيرا", "قهوة ايرا", "إرا"]) {
+  const hits = matchCatalogShops(q, catalog);
+  assert(
+    hits[0]?.id === "era-coffee-as-suwaidi",
+    `"${q}" resolves to Era As Suwaidi, got ${hits.map((shop) => shop.id).join(",")}`,
+  );
+}
 const hintia = matchCatalogShops("Hintia", catalog);
 const hintiya = matchCatalogShops("Hintiya", catalog);
 assert(
@@ -292,8 +300,8 @@ assert(!isOffTopicAsk("بريهانت"), "بريهانت is on-topic");
 
 const popularityIndex = popularityIndexFile as Record<string, number>;
 assert(
-  Object.keys(popularityIndex).length === 441,
-  `popularity map should have 441 ids, got ${Object.keys(popularityIndex).length}`,
+  Object.keys(popularityIndex).length === 448,
+  `popularity map should have 448 ids, got ${Object.keys(popularityIndex).length}`,
 );
 assert(
   catalog.every((shop) =>

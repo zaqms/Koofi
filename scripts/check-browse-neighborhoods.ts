@@ -180,9 +180,11 @@ assert(
 );
 assert(
   BISAT_BATCH_NEW_DISTRICTS.every((id) =>
-    rowsEn.some((row) => row.id === id && row.cafeCount === 1),
+    rowsEn.some(
+      (row) => row.id === id && row.cafeCount === (id === "as-suwaidi" ? 8 : 1),
+    ),
   ),
-  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) join live browse with one cafe each",
+  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) join live browse (one cafe each; As Suwaidi 8 after Batch D1)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),

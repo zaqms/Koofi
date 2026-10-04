@@ -464,7 +464,7 @@ assert(
   "DT lane (catalogLane === drive-through) is 54",
 );
 assert(
-  listDriveThroughDirectoryShops().length === 71,
+  listDriveThroughDirectoryShops().length === 73,
   "Drive-through directory is 54 lane rows plus moment-tagged sit-down chains",
 );
 assert(

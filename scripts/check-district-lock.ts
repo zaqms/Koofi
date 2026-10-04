@@ -143,8 +143,8 @@ assert(
   "browse rows match live catalog districts",
 );
 assert(
-  browse.some((row) => row.id === "as-suwaidi" && row.cafeCount === 1),
-  "As Suwaidi joins the neighborhood index with one cafe",
+  browse.some((row) => row.id === "as-suwaidi" && row.cafeCount === 8),
+  "As Suwaidi is on the neighborhood index with 8 cafes (Batch D1: 7 local + dr.CAFE)",
 );
 
 const sitemap = listSitemapLocs().join("\n");
@@ -197,7 +197,8 @@ for (const [id, en, ar, shopId, onSheet] of [
   ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi", true],
   ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal", false],
   ["king-salman", "King Salman", "الملك سلمان", "rex-king-salman,tul-cafe-king-salman", false],
-  ["as-suwaidi", "As Suwaidi", "السويدي", "alwaal-albari-as-suwaidi", true],
+  // Batch D1 (4 Oct): As Suwaidi gains 7 cafés (6 local + dr.CAFE chain). Batch D3 adds Tul Cafe beside Rex on King Salman.
+  ["as-suwaidi", "As Suwaidi", "السويدي", "alwaal-albari-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi,hot-sip-as-suwaidi,era-coffee-as-suwaidi,naham-specialty-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi", true],
 ] as const) {
   const row = rows.find((r) => r.stableId === id);
   if (onSheet) {

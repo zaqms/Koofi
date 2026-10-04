@@ -182,9 +182,13 @@ assert(
 );
 assert(
   BISAT_BATCH_NEW_DISTRICTS.every((id) =>
-    rowsEn.some((row) => row.id === id && row.cafeCount === (id === "king-salman" ? 2 : 1)),
+    rowsEn.some(
+      (row) =>
+        row.id === id &&
+        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "king-salman" ? 2 : 1),
+    ),
   ),
-  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) stay on live browse (King Salman has two since Batch D3 added Tul Cafe)",
+  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1)",
 );
 assert(
   BATCH_D3_NEW_DISTRICTS.every((id) =>

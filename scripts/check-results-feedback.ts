@@ -73,6 +73,10 @@ assert(chat.includes("!busy"), "not while streaming");
 assert(directory.includes("ResultsFeedbackBlock"), "category pages mount the master");
 assert(directory.includes("ResultsFeedbackReveal"), "category uses the not-aggressive reveal");
 assert(directory.includes("isStaticDirectoryChip"), "only static category lists + popular/district");
+const fixedList = read("components/fixed-list-body.tsx");
+assert(fixedList.includes("ResultsFeedbackBlock"), "fixed lists mount category feedback");
+assert(fixedList.includes('preset="category"'), "fixed lists use the category preset");
+assert(fixedList.includes("ResultsFeedbackReveal"), "fixed lists use the same reveal");
 
 assert(detail.includes("ResultsFeedbackBlock"), "cafe detail mounts the master");
 assert(detail.includes('preset="cafe"'), "cafe_detail preset");

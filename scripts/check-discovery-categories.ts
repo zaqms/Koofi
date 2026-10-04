@@ -21,6 +21,7 @@ import {
   homeSurfaceChips,
   isDirectoryResultSortChip,
   isDriveThroughDirectoryChip,
+  isFixedListChip,
   isOffHomeChipId,
   isStaticDirectoryChip,
   vibeChipLabel,
@@ -109,7 +110,26 @@ assert(isStaticDirectoryChip("popular") && isStaticDirectoryChip("matcha"), "sta
 assert(isDriveThroughDirectoryChip("drive-through"), "DT eligibility");
 assert(!isDriveThroughDirectoryChip("matcha"), "matcha is not the DT lane");
 assert(isDirectoryResultSortChip("matcha") && isDirectoryResultSortChip("drive-through"), "sort chips");
-assert(chipDirectoryMoment("coffee") === "qahwa", "coffee filters qahwa");
+assert(chipDirectoryMoment("coffee") === "qahwa", "coffee chat moment stays qahwa");
+assert(
+  isFixedListChip("nearby") &&
+    isFixedListChip("outdoor") &&
+    isFixedListChip("coffee") &&
+    isFixedListChip("work"),
+  "the four list pages are fixed-list chips",
+);
+assert(
+  getDiscoveryCategory("nearby")?.eligibility.rule === "nearby-haversine" &&
+    getDiscoveryCategory("outdoor")?.eligibility.rule === "places-outdoor-seating" &&
+    getDiscoveryCategory("coffee")?.eligibility.rule === "roaster-tag" &&
+    getDiscoveryCategory("work")?.eligibility.rule === "work-tag+dineIn",
+  "fixed-list eligibility is haversine, Places outdoor seating, roaster, work+dineIn",
+);
+assert(
+  getDiscoveryCategory("nearby")?.directoryKind === "fixed-list" &&
+    getDiscoveryCategory("coffee")?.momentTag === "qahwa",
+  "page kind is fixed-list; Best Coffee chat moment stays qahwa until PR2",
+);
 assert(chipDirectoryMoment("specialty") === "roaster", "specialty still shares roaster");
 assert(chipDirectoryMoment("popular") === null, "popular is not a moment filter");
 assert(chipDirectoryMoment("nearby") === null, "nearby is not a moment filter");

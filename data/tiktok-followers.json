@@ -594,11 +594,25 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "century-cafe-an-nada": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
   "cherie-al-muruj": {
     "handle": null,
     "followers": null,
     "status": "unverified",
     "dateChecked": "2026-10-02",
+    "sharedBrandAccount": false
+  },
+  "chino-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
     "sharedBrandAccount": false
   },
   "chord-daily-coffee-al-nahdah": {
@@ -2001,6 +2015,13 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": true
   },
+  "nahl-al-aqiq": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
   "najd-alathiah-qurtubah": {
     "handle": null,
     "followers": null,
@@ -2153,6 +2174,34 @@
     "followers": 919,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "on-off-coffee-al-manar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
+  "on-off-coffee-al-qadisiyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
+  "on-off-coffee-dhahrat-laban": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
+  "on-off-coffee-namar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
     "sharedBrandAccount": false
   },
   "one-gram-sulimaniyah": {
@@ -2876,11 +2925,39 @@
     "dateChecked": "2026-09-26",
     "sharedBrandAccount": false
   },
+  "trov-olaya": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
   "true-side-al-munsiyah": {
     "handle": "@truuee_e",
     "followers": 1624,
     "status": "found",
     "dateChecked": "2026-09-26",
+    "sharedBrandAccount": false
+  },
+  "tul-cafe-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
+  "tul-cafe-ash-shifa": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
+    "sharedBrandAccount": false
+  },
+  "tul-cafe-king-salman": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-04",
     "sharedBrandAccount": false
   },
   "tuxedo-coffee-al-mughrizat": {

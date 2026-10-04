@@ -117,6 +117,8 @@ const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
 const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
 const BISAT_BATCH_NEW_DISTRICTS = ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const;
+// Batch D3 (4 Oct 2026): Tul Cafe opens As Suwaidi Al Gharbi + Ash Shifa; ON OFF Coffee opens Al Qadisiyah + Dhahrat Laban.
+const BATCH_D3_NEW_DISTRICTS = ["as-suwaidi-al-gharbi", "ash-shifa", "al-qadisiyah", "dhahrat-laban"] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "As Sulimaniyah",
@@ -180,9 +182,15 @@ assert(
 );
 assert(
   BISAT_BATCH_NEW_DISTRICTS.every((id) =>
+    rowsEn.some((row) => row.id === id && row.cafeCount === (id === "king-salman" ? 2 : 1)),
+  ),
+  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) stay on live browse (King Salman has two since Batch D3 added Tul Cafe)",
+);
+assert(
+  BATCH_D3_NEW_DISTRICTS.every((id) =>
     rowsEn.some((row) => row.id === id && row.cafeCount === 1),
   ),
-  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) join live browse with one cafe each",
+  "Batch D3 districts (As Suwaidi Al Gharbi, Ash Shifa, Al Qadisiyah, Dhahrat Laban) join live browse with one cafe each",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -216,7 +224,9 @@ for (const row of rowsEn) {
             ? 13
             : row.id === "al-arid"
               ? 11
-              : 8;
+              : row.id === "al-aqiq"
+                ? 9 // Batch D3 adds Nahl
+                : 8;
     assert(
       row.cafeCount === expected,
       `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
@@ -368,7 +378,7 @@ assert(
   "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 68, "A–Z drops the five chain-only districts (64 + 4 Bisat batch districts)");
+assert(az.length === 72, "A–Z drops the five chain-only districts (64 + 4 Bisat batch + 4 Batch D3 districts)");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

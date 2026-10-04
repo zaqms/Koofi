@@ -12779,5 +12779,335 @@
         "uri": "https://maps.google.com/maps/contrib/105561161620047330185"
       }
     }
+  ],
+  "trov-olaya": [
+    {
+      "src": "/cafe-heroes/trov-olaya/1.jpg",
+      "attribution": {
+        "displayName": "sLman",
+        "uri": "https://maps.google.com/maps/contrib/108840509068826157888"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trov-olaya/2.jpg",
+      "attribution": {
+        "displayName": "sLman",
+        "uri": "https://maps.google.com/maps/contrib/108840509068826157888"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trov-olaya/3.jpg",
+      "attribution": {
+        "displayName": "Àml Abdullah",
+        "uri": "https://maps.google.com/maps/contrib/109672120852213037085"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trov-olaya/4.jpg",
+      "attribution": {
+        "displayName": "sLman",
+        "uri": "https://maps.google.com/maps/contrib/108840509068826157888"
+      }
+    }
+  ],
+  "nahl-al-aqiq": [
+    {
+      "src": "/cafe-heroes/nahl-al-aqiq/1.jpg",
+      "attribution": {
+        "displayName": "نهل",
+        "uri": "https://maps.google.com/maps/contrib/111099474143947221273"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nahl-al-aqiq/2.jpg",
+      "attribution": {
+        "displayName": "م خالد الرماح",
+        "uri": "https://maps.google.com/maps/contrib/101874636404256411369"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nahl-al-aqiq/3.jpg",
+      "attribution": {
+        "displayName": "م خالد الرماح",
+        "uri": "https://maps.google.com/maps/contrib/101874636404256411369"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nahl-al-aqiq/4.jpg",
+      "attribution": {
+        "displayName": "نهل",
+        "uri": "https://maps.google.com/maps/contrib/111099474143947221273"
+      }
+    }
+  ],
+  "tul-cafe-king-salman": [
+    {
+      "src": "/cafe-heroes/tul-cafe-king-salman/1.jpg",
+      "attribution": {
+        "displayName": "AbdullaH",
+        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-king-salman/2.jpg",
+      "attribution": {
+        "displayName": "MO 0",
+        "uri": "https://maps.google.com/maps/contrib/115210845962339128140"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-king-salman/3.jpg",
+      "attribution": {
+        "displayName": "AaBb 1390",
+        "uri": "https://maps.google.com/maps/contrib/104339505452720063872"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-king-salman/4.jpg",
+      "attribution": {
+        "displayName": "فهد التميمي-2",
+        "uri": "https://maps.google.com/maps/contrib/112721665764216486585"
+      }
+    }
+  ],
+  "tul-cafe-as-suwaidi-al-gharbi": [
+    {
+      "src": "/cafe-heroes/tul-cafe-as-suwaidi-al-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "شوق محمد",
+        "uri": "https://maps.google.com/maps/contrib/105177721696716623012"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-as-suwaidi-al-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Sumaya M",
+        "uri": "https://maps.google.com/maps/contrib/115712955040086978362"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-as-suwaidi-al-gharbi/3.jpg",
+      "attribution": {
+        "displayName": "S A",
+        "uri": "https://maps.google.com/maps/contrib/111195122493182812739"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-as-suwaidi-al-gharbi/4.jpg",
+      "attribution": {
+        "displayName": "طَول كافيه | السويدي",
+        "uri": "https://maps.google.com/maps/contrib/110006498112885184017"
+      }
+    }
+  ],
+  "tul-cafe-ash-shifa": [
+    {
+      "src": "/cafe-heroes/tul-cafe-ash-shifa/1.jpg",
+      "attribution": {
+        "displayName": "Maha Abdullah",
+        "uri": "https://maps.google.com/maps/contrib/114664991229589549139"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-ash-shifa/2.jpg",
+      "attribution": {
+        "displayName": "Tayyab Ashfaq",
+        "uri": "https://maps.google.com/maps/contrib/118020485930203395356"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-ash-shifa/3.jpg",
+      "attribution": {
+        "displayName": "سليمان ابراهيم",
+        "uri": "https://maps.google.com/maps/contrib/117412061243933953987"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tul-cafe-ash-shifa/4.jpg",
+      "attribution": {
+        "displayName": "Al Jxo",
+        "uri": "https://maps.google.com/maps/contrib/109747660924784331527"
+      }
+    }
+  ],
+  "century-cafe-an-nada": [
+    {
+      "src": "/cafe-heroes/century-cafe-an-nada/1.jpg",
+      "attribution": {
+        "displayName": "Century Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115213179217305415731"
+      }
+    },
+    {
+      "src": "/cafe-heroes/century-cafe-an-nada/2.jpg",
+      "attribution": {
+        "displayName": "Nadu S",
+        "uri": "https://maps.google.com/maps/contrib/103064037798631764604"
+      }
+    },
+    {
+      "src": "/cafe-heroes/century-cafe-an-nada/3.jpg",
+      "attribution": {
+        "displayName": "Century Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115213179217305415731"
+      }
+    },
+    {
+      "src": "/cafe-heroes/century-cafe-an-nada/4.jpg",
+      "attribution": {
+        "displayName": "Hashim Algarni",
+        "uri": "https://maps.google.com/maps/contrib/109451275774933952168"
+      }
+    }
+  ],
+  "on-off-coffee-al-manar": [
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-manar/1.jpg",
+      "attribution": {
+        "displayName": "ON OFF Coffee",
+        "uri": "https://maps.google.com/maps/contrib/117756902066015010090"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-manar/2.jpg",
+      "attribution": {
+        "displayName": "Waleed sa",
+        "uri": "https://maps.google.com/maps/contrib/106648747137735150233"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-manar/3.jpg",
+      "attribution": {
+        "displayName": "Wejdan Malki",
+        "uri": "https://maps.google.com/maps/contrib/104145031024305941314"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-manar/4.jpg",
+      "attribution": {
+        "displayName": "تجارب عبييّد .",
+        "uri": "https://maps.google.com/maps/contrib/111891889011265991632"
+      }
+    }
+  ],
+  "on-off-coffee-al-qadisiyah": [
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-qadisiyah/1.jpg",
+      "attribution": {
+        "displayName": "Nova Mansueto",
+        "uri": "https://maps.google.com/maps/contrib/115665046729265998184"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-qadisiyah/2.jpg",
+      "attribution": {
+        "displayName": "Abu Rakan",
+        "uri": "https://maps.google.com/maps/contrib/105889677330571193661"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-qadisiyah/3.jpg",
+      "attribution": {
+        "displayName": "ON OFF Coffee | اون اوف كوفي",
+        "uri": "https://maps.google.com/maps/contrib/114411271786321999503"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-al-qadisiyah/4.jpg",
+      "attribution": {
+        "displayName": "ABDELAZIZ",
+        "uri": "https://maps.google.com/maps/contrib/109240755778778361988"
+      }
+    }
+  ],
+  "on-off-coffee-namar": [
+    {
+      "src": "/cafe-heroes/on-off-coffee-namar/1.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-namar/2.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-namar/3.jpg",
+      "attribution": {
+        "displayName": "Fayez",
+        "uri": "https://maps.google.com/maps/contrib/112149544580685834519"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-namar/4.jpg",
+      "attribution": {
+        "displayName": "ON OFF Coffee | اون اوف كوفي",
+        "uri": "https://maps.google.com/maps/contrib/112814610276954057761"
+      }
+    }
+  ],
+  "on-off-coffee-dhahrat-laban": [
+    {
+      "src": "/cafe-heroes/on-off-coffee-dhahrat-laban/1.jpg",
+      "attribution": {
+        "displayName": "Tahani Alluqmani",
+        "uri": "https://maps.google.com/maps/contrib/102719059461147463844"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-dhahrat-laban/2.jpg",
+      "attribution": {
+        "displayName": "Abdul Wahab",
+        "uri": "https://maps.google.com/maps/contrib/109154850934749680494"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-dhahrat-laban/3.jpg",
+      "attribution": {
+        "displayName": "kl kl",
+        "uri": "https://maps.google.com/maps/contrib/100424585882596713451"
+      }
+    },
+    {
+      "src": "/cafe-heroes/on-off-coffee-dhahrat-laban/4.jpg",
+      "attribution": {
+        "displayName": "ON OFF Coffee",
+        "uri": "https://maps.google.com/maps/contrib/117885594955256088522"
+      }
+    }
+  ],
+  "chino-hittin": [
+    {
+      "src": "/cafe-heroes/chino-hittin/1.jpg",
+      "attribution": {
+        "displayName": "CHINO",
+        "uri": "https://maps.google.com/maps/contrib/115968713560196114363"
+      }
+    },
+    {
+      "src": "/cafe-heroes/chino-hittin/2.jpg",
+      "attribution": {
+        "displayName": "Lees",
+        "uri": "https://maps.google.com/maps/contrib/101062575219738572378"
+      }
+    },
+    {
+      "src": "/cafe-heroes/chino-hittin/3.jpg",
+      "attribution": {
+        "displayName": "Faizah Al-masud",
+        "uri": "https://maps.google.com/maps/contrib/104909242272899036303"
+      }
+    },
+    {
+      "src": "/cafe-heroes/chino-hittin/4.jpg",
+      "attribution": {
+        "displayName": "Abdullah S.",
+        "uri": "https://maps.google.com/maps/contrib/113696491019326454122"
+      }
+    }
   ]
 }

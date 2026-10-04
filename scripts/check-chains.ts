@@ -662,18 +662,18 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 395, "specialty discovery is 395 after Batch D1 and Batch D2 (380 + 6 local As Suwaidi + 9 Al Falah)");
-assert(listRealShops().length === 457, "catalog is 457 after Batch D1 and Batch D2 (441 + 7 + 9)");
-assert(listLiveDistrictIds().length === 57, "specialty districts are 57 (Bisat batch adds Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi)");
+assert(listDiscoveryShops().length === 406, "specialty discovery is 406 after D1, D2 and D3 (395 + 11 local)");
+assert(listRealShops().length === 468, "catalog is 468 after D1, D2 and D3 (457 + 11)");
+assert(listLiveDistrictIds().length === 62, "specialty districts are 62 (57 on main plus 4 Batch D3 districts and Namar, which gains a local cafe)");
 assert(
-  catalogDistrictIdsFrom(listRealShops()).length === 74,
-  "catalog rows cover 74 districts (Jarir hidden; 4 Bisat batch districts)",
+  catalogDistrictIdsFrom(listRealShops()).length === 78,
+  "catalog rows cover 78 districts (Jarir hidden; 4 Bisat batch + 4 Batch D3 districts)",
 );
-assert(listLiveCatalogDistrictIds().length === 68, "five chain-only districts drop out of the page set (64 + 4 Bisat batch)");
-assert(listDriveThroughDirectoryShops().length === 73, "drive-through is 73 after Batch D1 (Coffee Address + dr.CAFE As Suwaidi)");
-assert(listListingShops().length === 403, "listing is specialty plus the 8 sit-down chains");
-assert(listPublicShops().length === 403, "public list includes the 8 sit-down chains");
-assert(listBrowseDirectoryShops().length === 413, "browse keeps local drive-through rows and the sit-down chains");
+assert(listLiveCatalogDistrictIds().length === 72, "district pages are 72 (68 on main plus 4 Batch D3)");
+assert(listDriveThroughDirectoryShops().length === 73, "drive-through is 73 after Batch D1 (Coffee Address + dr.CAFE As Suwaidi); D3 adds none");
+assert(listListingShops().length === 414, "listing is specialty plus the 8 sit-down chains");
+assert(listPublicShops().length === 414, "public list includes the 8 sit-down chains");
+assert(listBrowseDirectoryShops().length === 424, "browse keeps local drive-through rows and the sit-down chains");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 8,
   "exactly 8 sit-down chains are listed (7 + dr.CAFE As Suwaidi)",
@@ -720,8 +720,8 @@ assert(
 );
 assert(
   districtEnMeta("olaya") ===
-    "28 cafes in Al Olaya on wain.lol — a Riyadh neighborhood list, with Maps links.",
-  "Al Olaya EN meta is unchanged",
+    "29 cafes in Al Olaya on wain.lol — a Riyadh neighborhood list, with Maps links.",
+  "Al Olaya EN meta counts Trov (Batch D3)",
 );
 const wordingMatrix: {
   total: number;
@@ -817,13 +817,19 @@ assert(
     !chainDistrictLeadAr("نمار", 1, 0, 1).includes("ما فيه"),
   "chain leads omit a zero clause",
 );
+// Batch D3: ON OFF Coffee (local) joins dr.CAFE in Namar, so Namar is mixed now (Tuwaiq pattern).
 assert(
-  districtEnMarkdown("namar").includes("on the catalog today — one chain branch:"),
-  "Namar EN intro counts the dine-in chain",
+  districtEnMarkdown("namar").includes("on the catalog today — one local cafe, one chain branch:"),
+  "Namar EN intro counts the local cafe and the dine-in chain",
 );
 assert(
-  districtArMarkdown("namar").includes("بالكتالوج اليوم — فرع واحد:"),
-  "Namar AR intro counts the dine-in chain",
+  districtArMarkdown("namar").includes("بالكتالوج اليوم — قهوة محلية وحدة، وفرع واحد:"),
+  "Namar AR intro counts the local cafe and the dine-in chain",
+);
+assert(
+  districtEnMarkdown("namar").includes("[ON OFF Coffee](/en/c/on-off-coffee-namar) is the local cafe on this list today.") &&
+    districtArMarkdown("namar").includes("[اون اوف كوفي](/c/on-off-coffee-namar) القهوة المحلية بهالقائمة اليوم."),
+  "Namar intro names only the local cafe (ON OFF Coffee)",
 );
 assert(
   districtEnMarkdown("namar").includes("{chain} [dr.CAFE](/en/c/drcafe-namar)"),
@@ -856,13 +862,13 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz,tuwaiq,as-suwaidi",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-malaz,namar,tuwaiq,as-suwaidi",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
-  districtEnMeta("namar").includes("chain branch only so far") &&
-    !districtEnMeta("namar").includes("chain branches"),
-  "Namar uses the singular chain branch",
+  districtEnMeta("namar") ===
+    "Two cafes in Namar on wain.lol — local specialty plus chain branches, each with a Maps link.",
+  "Namar meta is the mixed line since Batch D3 (ON OFF Coffee + dr.CAFE)",
 );
 assert(
   listDirectoryShopsForDistrict("tuwaiq").map((shop) => shop.id).sort().join(",") ===
@@ -1075,7 +1081,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "cc484560ee0a74476039ffddd160ffb84b3b230b2053621a276312bbe37dc13b",
+  copyHash === "7e72771eb5190722f52293fc436b2a42fca473ce7e03f50f4020a2b2fc964c4f",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1205,11 +1211,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "f8ce4547fe5856f26c42ea9623fc64da14eabd08ef6bb4b7ca491c1740c6d935",
+  llmsHash === "b3ca855aea8ac40600fffadcc5420a042f22bd5f8093930e94baec288f8e4d60",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("395 local, 8 chain branches"),
+  llms.includes("406 local, 8 chain branches"),
   "llms.txt names the 8 chain branches separately from specialty",
 );
 
@@ -1854,17 +1860,21 @@ assert(
 function paragraphWith(html: string, needle: string): string {
   return html.split("</p>").find((part) => part.includes(needle)) ?? "";
 }
-// Tuwaiq left this chain-only set on 3 Oct 2026 (Drip is local); it is in the mixed list above.
+// Tuwaiq left this chain-only set on 3 Oct 2026 (Drip is local); Namar left it in Batch D3
+// (ON OFF Coffee is local). Both are in the mixed list above. The dr.CAFE row stays a {chain} row.
 for (const id of ["namar"] as const) {
   const en = renderedMarkdown(districtEnMarkdown(id));
   const ar = renderedMarkdown(districtArMarkdown(id));
   assert(
-    paragraphWith(en, "chain branch").includes("data-chain-only"),
-    `${id} EN chain sentence is hidden with Local only`,
+    paragraphWith(en, "is the local cafe") !== "" &&
+      paragraphWith(ar, "القهوة المحلية") !== "" &&
+      !paragraphWith(en, "is the local cafe").includes("data-chain-only") &&
+      !paragraphWith(ar, "القهوة المحلية").includes("data-chain-only"),
+    `${id} local lead stays visible with Local only`,
   );
   assert(
-    paragraphWith(ar, "فرع").includes("data-chain-only"),
-    `${id} AR chain sentence is hidden with Local only`,
+    districtEnMarkdown(id).includes("- {chain} [dr.CAFE](/en/c/drcafe-namar)"),
+    `${id} dr.CAFE stays a {chain} list row (hidden with Local only on)`,
   );
 }
 assert(
@@ -1882,12 +1892,12 @@ for (const [id, enTitle, arTitle] of [
   ["namar", "What’s here", "وش فيه"],
 ] as const) {
   assert(
-    headingIsChainOnly(renderedMarkdown(districtEnMarkdown(id)), enTitle),
-    `${id} EN What's here hides under Local only`,
+    !headingIsChainOnly(renderedMarkdown(districtEnMarkdown(id)), enTitle),
+    `${id} EN What's here stays under Local only (local ON OFF card follows it)`,
   );
   assert(
-    headingIsChainOnly(renderedMarkdown(districtArMarkdown(id)), arTitle),
-    `${id} AR وش فيه hides under Local only`,
+    !headingIsChainOnly(renderedMarkdown(districtArMarkdown(id)), arTitle),
+    `${id} AR وش فيه stays under Local only (local ON OFF card follows it)`,
   );
 }
 assert(
@@ -1918,16 +1928,19 @@ const nadaAr = districtArMarkdown("an-nada");
 assert(
   nadaEn.includes("[SoMatcha](/en/c/somatcha-an-nada)") &&
     nadaEn.includes("[Brew 92 - Al Nada]") &&
-    /\btwo cards\b/.test(nadaEn) &&
-    /\btwo cafes\b/.test(nadaEn),
-  "An Nada EN lead names both cards",
+    nadaEn.includes("[Century Cafe](/en/c/century-cafe-an-nada)") &&
+    /\b3 cards\b/.test(nadaEn) &&
+    /\b3 cafes\b/.test(nadaEn),
+  "An Nada EN lead names the 3 cards (Batch D3 adds Century Cafe)",
 );
 assert(
   nadaAr.includes("[سو ماتشا](/c/somatcha-an-nada)") &&
     nadaAr.includes("[برو92]") &&
-    nadaAr.includes("البطاقتين") &&
-    nadaAr.includes("قهوتين"),
-  "An Nada AR lead names both cards",
+    nadaAr.includes("[سنشري كافيه](/c/century-cafe-an-nada)") &&
+    nadaAr.includes("البطاقات الـ3") &&
+    nadaAr.includes("3 قهاوي") &&
+    !nadaAr.includes("ثلاث قهاوي"),
+  "An Nada AR lead names the 3 cards (digits from 3)",
 );
 const chainSection = renderedMarkdown(
   "## What’s here\n\n{chain-only}Only a chain.{/chain-only}\n\n- {chain} [dr.CAFE](/en/c/drcafe-namar)\n\n## Nearby\n\n- [Olaya](/en/coffee-shops/olaya)",

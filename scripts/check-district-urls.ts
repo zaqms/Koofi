@@ -186,9 +186,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 57, `expected 57 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 395, `specialty discovery is 395 after Batch D1 and Batch D2, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 457, `catalog is 457 (441 plus 7 Batch D1 and 9 Batch D2), got ${listRealShops().length}`);
+assert(areas.length === 62, `expected 62 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 406, `specialty discovery is 406 after D1, D2 and D3 (395 + 11), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 468, `catalog is 468 (457 plus the 11 Batch D3 rows), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -751,8 +751,8 @@ assert(
 );
 
 const manar = filterDirectoryShops(shops, "al-manar");
-assert(manar.length === 2, `al-manar has 2 shops, got ${manar.length}`);
-for (const id of ["vase-coffee-al-manar", "recaf-al-manar"]) {
+assert(manar.length === 3, `al-manar has 3 shops, got ${manar.length}`);
+for (const id of ["vase-coffee-al-manar", "recaf-al-manar", "on-off-coffee-al-manar"]) {
   assert(manar.some((shop) => shop.id === id), `al-manar includes ${id}`);
 }
 assert(neighborhoodLabel("al-manar", "ar") === "المنار", "al-manar Arabic label");
@@ -976,7 +976,11 @@ assert(
 );
 
 const nada = filterDirectoryShops(shops, "an-nada");
-assert(nada.length === 2, `an-nada has 2 shops, got ${nada.length}`);
+assert(nada.length === 3, `an-nada has 3 shops, got ${nada.length}`);
+assert(
+  nada.some((shop) => shop.id === "century-cafe-an-nada"),
+  "an-nada includes century-cafe-an-nada (Batch D3)",
+);
 assert(
   nada.some((shop) => shop.id === "brew92-an-nada"),
   "an-nada includes brew92-an-nada",
@@ -1121,6 +1125,7 @@ const WAVE1_DISTRICTS: {
       "scarf-al-aqiq",
       "the-coffee-kingdom-al-aqiq",
       "file-coffee-al-aqiq",
+      "nahl-al-aqiq",
     ],
   },
   {
@@ -1587,8 +1592,8 @@ const MALAZ_REFILL = {
   );
   const namar = listDirectoryShopsForDistrict("namar");
   assert(
-    namar.length === 1 && namar[0]?.id === "drcafe-namar",
-    "namar lists the dine-in dr.CAFE",
+    namar.map((shop) => shop.id).sort().join(",") === "drcafe-namar,on-off-coffee-namar",
+    "namar lists the dine-in dr.CAFE and ON OFF Coffee (Batch D3)",
   );
   assert(
     listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),

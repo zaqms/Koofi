@@ -360,6 +360,16 @@ assert(
   "CLI hook stays no-op until a Scout pack path is passed",
 );
 
+assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "Nearby list AR distance reads 1.2 كم");
+assert(formatDistanceKm(1.2, "en") === "1.2 km", "Nearby list EN distance reads 1.2 km");
+const fixedList = readFileSync(join(process.cwd(), "components/fixed-list-body.tsx"), "utf8");
+const fixedIds = readFileSync(join(process.cwd(), "lib/fixed-list-ids.ts"), "utf8");
+assert(fixedIds.includes("FIXED_LIST_NEARBY_PAGE_SIZE = 12"), "Nearby list shows 12");
+assert(fixedList.includes("data-fixed-show-more"), "show more adds the next page");
+assert(fixedList.includes("shopDistanceKm"), "Nearby sort uses the existing distance helper");
+assert(fixedList.includes("autoLocate={false}"), "distance paints without a card-level prompt");
+assert(!fixedList.includes("pickNearestShops"), "the list is not the chat 3-pick");
+
 console.log("check-distance: ok", {
   camelKm: Number(camelKm.toFixed(2)),
   neighborKm: Number(neighborKm.toFixed(2)),

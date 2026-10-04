@@ -171,6 +171,10 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "dr-cafe": ["د.كيف", "د كيف", "dr cafe", "drcafe", "dr.cafe"],
   // Brand spelling is ايزرت. إسرت is the previous catalog form.
   essert: ["إسرت"],
+  // Catalog name is إرا; locals also type ايرا / إيرا (#247 QA L4).
+  "era-coffee-as-suwaidi": ["ايرا", "إيرا"],
+  // Catalog spelling is اوستريتش. اوستريتيش is the other spelling people type.
+  "ostrich-al-falah": ["اوستريتيش"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

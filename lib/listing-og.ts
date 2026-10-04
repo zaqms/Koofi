@@ -1,5 +1,10 @@
 import { directoryHintForCity } from "./cities";
 import {
+  fixedListExplainer,
+  fixedListHeading,
+  isFixedListId,
+} from "./fixed-list-ids";
+import {
   COFFEE_SHOPS_CATEGORY,
   categoryDistrictHeading,
 } from "./directory-category";
@@ -58,6 +63,13 @@ export function listingOgCopy(spec: ListingOgSpec): ListingOgCopy | null {
     };
   }
   if (spec.kind === "chip") {
+    if (isFixedListId(spec.id)) {
+      return {
+        title: fixedListHeading(spec.id, language),
+        subtitle: fixedListExplainer(spec.id, language),
+        language,
+      };
+    }
     const title =
       spec.id === MEET_HALFWAY_CHIP.id
         ? vibeChipLabel(MEET_HALFWAY_CHIP, language)

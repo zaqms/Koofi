@@ -239,6 +239,34 @@ function catalogAddedIndexById(): Map<string, number> {
   return new Map(listRealShops().map((shop, index) => [shop.id, index]));
 }
 
+function directoryShopFrom(
+  shop: Shop,
+  added: Map<string, number>,
+): DirectoryShop {
+  const coords = officialShopCoords(shop);
+  return {
+    id: shop.id,
+    nameAr: shop.nameAr,
+    nameEn: shop.nameEn,
+    neighborhood: shop.neighborhood,
+    neighborhoodAr: shop.neighborhoodAr,
+    vibeTags: shop.vibeTags,
+    momentTags: shop.momentTags,
+    mapsHref: shopMapsHref(shop),
+    photoUrl: shop.photoUrl,
+    logoUrl: shop.logoUrl,
+    catalogIndex: added.get(shop.id) ?? -1,
+    addedAt: CATALOG_ADDED_AT[shop.id],
+    ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
+    ...(shop.isChain
+      ? {
+          isChain: true as const,
+          ...(shop.chainBrand ? { chainBrand: shop.chainBrand } : {}),
+        }
+      : {}),
+  };
+}
+
 function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
   const added = catalogAddedIndexById();
   return shops
@@ -248,30 +276,13 @@ function toDirectoryShops(shops: Shop[]): DirectoryShop[] {
       if (area !== 0) return area;
       return a.nameEn.localeCompare(b.nameEn);
     })
-    .map((shop) => {
-      const coords = officialShopCoords(shop);
-      return {
-        id: shop.id,
-        nameAr: shop.nameAr,
-        nameEn: shop.nameEn,
-        neighborhood: shop.neighborhood,
-        neighborhoodAr: shop.neighborhoodAr,
-        vibeTags: shop.vibeTags,
-        momentTags: shop.momentTags,
-        mapsHref: shopMapsHref(shop),
-        photoUrl: shop.photoUrl,
-        logoUrl: shop.logoUrl,
-        catalogIndex: added.get(shop.id) ?? -1,
-        addedAt: CATALOG_ADDED_AT[shop.id],
-        ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
-        ...(shop.isChain
-          ? {
-              isChain: true as const,
-              ...(shop.chainBrand ? { chainBrand: shop.chainBrand } : {}),
-            }
-          : {}),
-      };
-    });
+    .map((shop) => directoryShopFrom(shop, added));
+}
+
+/** Keep caller order. Fixed lists rank first, then map onto directory cards. */
+export function directoryShopsInOrder(shops: readonly Shop[]): DirectoryShop[] {
+  const added = catalogAddedIndexById();
+  return shops.map((shop) => directoryShopFrom(shop, added));
 }
 
 /** Specialty directory used by default home, districts with specialty shops, chips. */

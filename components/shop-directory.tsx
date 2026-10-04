@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { DirectoryCard } from "@/components/directory-card";
+import { FixedListPills } from "@/components/fixed-list-nav";
 import { DirectoryResultSortPills } from "@/components/directory-result-sort";
 import { ViewAllLink } from "@/components/view-all-link";
 import { ResultsFeedbackBlock } from "@/components/results-feedback";
@@ -284,6 +285,7 @@ export function ShopDirectory({
               {heading}
             </h2>
           )}
+          {district ? <FixedListPills language={language} current={null} /> : null}
         </>
       )}
       {intro || homeList ? null : (

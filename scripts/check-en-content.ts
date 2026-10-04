@@ -181,16 +181,16 @@ for (const district of [
 }
 
 assert(
-  !districtEnMarkdown("as-suwaidi").includes("/en/c/drcafe-as-suwaidi"),
-  "as-suwaidi EN must not keep the closed card link",
+  districtEnMarkdown("as-suwaidi").includes("- {chain} [dr.CAFE](/en/c/drcafe-as-suwaidi)"),
+  "as-suwaidi EN lists the operational dr.CAFE as a {chain} row (Batch D1)",
 );
 assert(
   !districtEnMarkdown("al-rabwah").includes("/en/c/get-up-coffee-ar-rabwah"),
   "al-rabwah EN must not keep the wrong Get Up card link",
 );
 assert(
-  shopsInDistrict("as-suwaidi").map((shop) => shop.id).join(",") === "alwaal-albari-as-suwaidi",
-  "as-suwaidi catalog is Alwaal Albari only (dr.CAFE As Suwaidi stays dropped)",
+  shopsInDistrict("as-suwaidi").map((shop) => shop.id).join(",") === "alwaal-albari-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi,era-coffee-as-suwaidi,hot-sip-as-suwaidi,naham-specialty-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi",
+  "as-suwaidi catalog is Alwaal Albari plus the 7 Batch D1 cafés",
 );
 assert(
   !districtEnMarkdown("al-masif").includes("/en/c/voom-al-masif"),
@@ -574,8 +574,8 @@ for (const district of liveDistricts) {
 }
 
 assert(
-  !districtArMarkdown("as-suwaidi").includes("/c/drcafe-as-suwaidi"),
-  "as-suwaidi AR must not keep the closed card link",
+  districtArMarkdown("as-suwaidi").includes("- {chain} [د.كيف كافيه](/c/drcafe-as-suwaidi)"),
+  "as-suwaidi AR lists the operational dr.CAFE as a {chain} row (Batch D1)",
 );
 assert(
   !districtArMarkdown("al-masif").includes("/c/voom-al-masif"),

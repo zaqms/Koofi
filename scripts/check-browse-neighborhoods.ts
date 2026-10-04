@@ -117,6 +117,8 @@ const MURUJ_REFILL_DISTRICTS = ["al-muruj"] as const;
 const MOH_REFILL_DISTRICTS = ["al-mohammadiyah"] as const;
 const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
 const BISAT_BATCH_NEW_DISTRICTS = ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const;
+// Batch D3 (4 Oct 2026): Tul Cafe opens As Suwaidi Al Gharbi + Ash Shifa; ON OFF Coffee opens Al Qadisiyah + Dhahrat Laban.
+const BATCH_D3_NEW_DISTRICTS = ["as-suwaidi-al-gharbi", "ash-shifa", "al-qadisiyah", "dhahrat-laban"] as const;
 
 assert(
   browseNeighborhoodLabel("sulimaniyah", "en") === "As Sulimaniyah",
@@ -180,9 +182,19 @@ assert(
 );
 assert(
   BISAT_BATCH_NEW_DISTRICTS.every((id) =>
+    rowsEn.some(
+      (row) =>
+        row.id === id &&
+        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "king-salman" ? 2 : 1),
+    ),
+  ),
+  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1)",
+);
+assert(
+  BATCH_D3_NEW_DISTRICTS.every((id) =>
     rowsEn.some((row) => row.id === id && row.cafeCount === 1),
   ),
-  "Bisat batch districts (Umm Al Hamam Al Gharbi, An Nafal, King Salman, As Suwaidi) join live browse with one cafe each",
+  "Batch D3 districts (As Suwaidi Al Gharbi, Ash Shifa, Al Qadisiyah, Dhahrat Laban) join live browse with one cafe each",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -215,8 +227,10 @@ for (const row of rowsEn) {
           : row.id === "al-qirawan"
             ? 13
             : row.id === "al-arid"
-              ? 11
-              : 8;
+              ? 10 // drive-al-arid is a chain with unknown dine-in (4 Oct 2026)
+              : row.id === "al-aqiq"
+                ? 9 // Batch D3 adds Nahl
+                : 8;
     assert(
       row.cafeCount === expected,
       `${row.id} Wave 1 catalog has ${expected} cafes, got ${row.cafeCount}`,
@@ -350,17 +364,25 @@ for (const id of [
   "as-salam",
   "ghubairah",
   "al-wisham",
-  "al-hazm",
-  "al-andalus",
-  "al-khaleej",
-  "ar-rimal",
-  "al-janadriyyah",
   "namar",
   "tuwaiq",
 ] as const) {
   assert(az.some((row) => row.id === id), `A–Z keeps ${id}`);
 }
-for (const id of ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const) {
+// Drive Coffee is a chain (4 Oct 2026). These five districts only had a
+// Drive drive-through lane row, so they drop like the dr.CAFE-only ones.
+for (const id of [
+  "kkia",
+  "al-jazirah",
+  "an-nasim",
+  "shubra",
+  "manfuha",
+  "al-hazm",
+  "al-andalus",
+  "al-khaleej",
+  "ar-rimal",
+  "al-janadriyyah",
+] as const) {
   assert(!az.some((row) => row.id === id), `A–Z hides chain-only ${id}`);
 }
 assert(
@@ -368,7 +390,7 @@ assert(
   "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 68, "A–Z drops the five chain-only districts (64 + 4 Bisat batch districts)");
+assert(az.length === 67, "A–Z drops the ten chain-only districts (72 on main 592b85e6 − 5 Drive-only)");
 
 const nearbyNoOrigin = sortNeighborhoodRows(rowsEn, "nearby", null, "en");
 assert(

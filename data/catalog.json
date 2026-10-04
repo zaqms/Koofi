@@ -22896,6 +22896,8 @@
     },
     {
       "id": "drive-al-ghadeer",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -23411,6 +23413,8 @@
     },
     {
       "id": "drive-al-arid",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -24497,6 +24501,8 @@
     },
     {
       "id": "drive-al-qirawan",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30168,6 +30174,8 @@
     },
     {
       "id": "drive-badr",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30215,6 +30223,8 @@
     },
     {
       "id": "drive-al-aziziyah",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30262,6 +30272,8 @@
     },
     {
       "id": "drive-al-hazm",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30309,6 +30321,8 @@
     },
     {
       "id": "drive-al-andalus",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30356,6 +30370,8 @@
     },
     {
       "id": "drive-al-khaleej",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30404,6 +30420,8 @@
     },
     {
       "id": "drive-an-nasim-al-gharbi",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30452,6 +30470,8 @@
     },
     {
       "id": "drive-ar-rimal",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30500,6 +30520,8 @@
     },
     {
       "id": "drive-al-qirawan-2",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30527,6 +30549,8 @@
     },
     {
       "id": "drive-al-yasmin",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30554,6 +30578,8 @@
     },
     {
       "id": "drive-as-sahafah",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30602,6 +30628,8 @@
     },
     {
       "id": "drive-badr-2",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30649,6 +30677,8 @@
     },
     {
       "id": "drive-al-nakheel",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -30697,6 +30727,8 @@
     },
     {
       "id": "drive-al-janadriyyah",
+      "isChain": true,
+      "chainBrand": "drive",
       "nameAr": "درايف كوفي",
       "nameEn": "Drive Coffee",
       "city": "riyadh",
@@ -41600,6 +41632,2608 @@
             "open": {
               "day": 0,
               "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "plant-cafe-as-suwaidi",
+      "nameAr": "بلانت كافيه",
+      "nameEn": "Plant Cafe",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee524cf5feb13:0x1b2813c9be8831bc!8m2!3d24.5888365!4d46.6645636",
+      "pin": {
+        "lat": 24.5888365,
+        "lng": 46.6645636
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJE-tfzyTlLj4RvDGIvskTKBs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:30 AM – 2:00 AM",
+          "Tuesday: 5:30 AM – 2:00 AM",
+          "Wednesday: 5:30 AM – 2:00 AM",
+          "Thursday: 5:30 AM – 2:00 AM",
+          "Friday: 12:00 PM – 2:00 AM",
+          "Saturday: 9:00 AM – 2:00 AM",
+          "Sunday: 5:30 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "seen-cafe-as-suwaidi",
+      "nameAr": "سين كافية",
+      "nameEn": "Seen Cafe",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1b001dcb4477:0x9140247ce26730cd!8m2!3d24.588624499999998!4d46.6651905",
+      "pin": {
+        "lat": 24.588624499999998,
+        "lng": 46.6651905
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJd0TLHQAbLz4RzTBn4nwkQJE",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 1:00 AM",
+          "Tuesday: 7:00 AM – 12:00 AM",
+          "Wednesday: 7:00 AM – 1:00 AM",
+          "Thursday: 7:00 AM – 3:30 AM",
+          "Friday: 1:00 PM – 3:30 AM",
+          "Saturday: 7:00 AM – 3:30 AM",
+          "Sunday: 7:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "hot-sip-as-suwaidi",
+      "nameAr": "هوت سيب",
+      "nameEn": "Hot Sip",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11a195d75645:0x15d6349b964e559e!8m2!3d24.5795978!4d46.6595593",
+      "pin": {
+        "lat": 24.5795978,
+        "lng": 46.6595593
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJRVbXlaERLz4RnlVOlps01hU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "era-coffee-as-suwaidi",
+      "nameAr": "إرا",
+      "nameEn": "Era Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11249f26ba57:0xa1397b7f3fea9cef!8m2!3d24.579730599999998!4d46.6652874",
+      "pin": {
+        "lat": 24.579730599999998,
+        "lng": 46.6652874
+      },
+      "logoUrl": "/logos/era-coffee-as-suwaidi.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJV7omnyQRLz4R75zqP397OaE",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:30 AM – 3:00 AM",
+          "Tuesday: 5:30 AM – 3:00 AM",
+          "Wednesday: 5:30 AM – 3:00 AM",
+          "Thursday: 5:30 AM – 3:00 AM",
+          "Friday: 10:00 AM – 3:00 AM",
+          "Saturday: 5:30 AM – 3:00 AM",
+          "Sunday: 5:30 AM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 10,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "naham-specialty-as-suwaidi",
+      "nameAr": "نهم",
+      "nameEn": "Naham Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11002a9475df:0x542d6dd656bdb0fa!8m2!3d24.5856156!4d46.664646499999996",
+      "pin": {
+        "lat": 24.5856156,
+        "lng": 46.664646499999996
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ33WUKgARLz4R-rC9VtZtLVQ",
+      "dineIn": null,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 12:30 PM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "coffee-address-as-suwaidi",
+      "nameAr": "عنوان القهوة",
+      "nameEn": "Coffee Address",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11ac9b3078b5:0x16140c01b21486b9!8m2!3d24.5817503!4d46.659084899999996",
+      "pin": {
+        "lat": 24.5817503,
+        "lng": 46.659084899999996
+      },
+      "logoUrl": "/logos/coffee-address-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJtXgwm6wRLz4RuYYUsgEMFBY",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:00 AM – 2:00 AM",
+          "Tuesday: 5:00 AM – 2:00 AM",
+          "Wednesday: 5:00 AM – 2:00 AM",
+          "Thursday: 5:00 AM – 2:00 AM",
+          "Friday: 5:00 AM – 2:00 AM",
+          "Saturday: 5:00 AM – 2:00 AM",
+          "Sunday: 5:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "drcafe-as-suwaidi",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
+      "nameAr": "د.كيف كافيه",
+      "nameEn": "dr.CAFE",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi",
+      "neighborhoodAr": "السويدي",
+      "vibeTags": [
+        "طلبات السيارة"
+      ],
+      "momentTags": [
+        "drive-through"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11001901a3f5:0xaf74b1bb8db394a2!8m2!3d24.5818563!4d46.657982",
+      "pin": {
+        "lat": 24.5818563,
+        "lng": 46.657982
+      },
+      "logoUrl": "/logos/drcafe-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ9aMBGQARLz4RopSzjbuxdK8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "rawi-cafe-al-falah",
+      "nameAr": "مقهى الراوي",
+      "nameEn": "Rawi Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efcf06c52c5f1:0xf887a41820776f52!8m2!3d24.801932!4d46.7007094",
+      "pin": {
+        "lat": 24.801932,
+        "lng": 46.7007094
+      },
+      "logoUrl": "/logos/rawi-cafe-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ8cVSbPD8Lj4RUm93IBikh_g",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 3:00 AM",
+          "Tuesday: 6:00 AM – 3:00 AM",
+          "Wednesday: 6:00 AM – 3:00 AM",
+          "Thursday: 6:00 AM – 3:30 AM",
+          "Friday: 12:00 PM – 4:00 AM",
+          "Saturday: 6:00 AM – 3:00 AM",
+          "Sunday: 6:00 AM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "ostrich-al-falah",
+      "nameAr": "اوستريتش",
+      "nameEn": "Ostrich Coffee House",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd7ca3ef4e67:0xaf7f9e97fd465cd9!8m2!3d24.7970292!4d46.7066944",
+      "pin": {
+        "lat": 24.7970292,
+        "lng": 46.7066944
+      },
+      "logoUrl": "/logos/ostrich-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJZ07vo3z9Lj4R2VxG_Zeef68",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 6:00 AM – 2:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "bow-al-falah",
+      "nameAr": "بو قهوة مختصة",
+      "nameEn": "Bow Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd8e60acf2a3:0xe848447c6407af9f!8m2!3d24.7952973!4d46.7037307",
+      "pin": {
+        "lat": 24.7952973,
+        "lng": 46.7037307
+      },
+      "logoUrl": "/logos/bow-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJo_KsYI79Lj4Rn68HZHxESOg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 6:00 AM – 2:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "distance-away-al-falah",
+      "nameAr": "ديستانس أويي",
+      "nameEn": "Distance Away",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdfaf64aa75f:0x3f821771e6c4fa1f!8m2!3d24.7959137!4d46.7039772",
+      "pin": {
+        "lat": 24.7959137,
+        "lng": 46.7039772
+      },
+      "logoUrl": "/logos/distance-away-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJX6dK9vr9Lj4RH_rE5nEXgj8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 12:00 AM",
+          "Tuesday: 7:00 AM – 12:00 AM",
+          "Wednesday: 7:00 AM – 12:00 AM",
+          "Thursday: 7:00 AM – 1:00 AM",
+          "Friday: 7:00 AM – 1:00 AM",
+          "Saturday: 7:00 AM – 12:00 AM",
+          "Sunday: 7:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "double-three-al-falah",
+      "nameAr": "دبل ثري",
+      "nameEn": "Double Three",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd8b9e965fa7:0x5940b27c979e331b!8m2!3d24.8027262!4d46.7025622",
+      "pin": {
+        "lat": 24.8027262,
+        "lng": 46.7025622
+      },
+      "logoUrl": "/logos/double-three-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJp1-Wnov9Lj4RGzOel3yyQFk",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 6:00 AM – 12:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "leo-al-falah",
+      "nameAr": "ليو",
+      "nameEn": "LEO",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdfc8d07a6f9:0x6f701919a4503870!8m2!3d24.796443!4d46.6991377",
+      "pin": {
+        "lat": 24.796443,
+        "lng": 46.6991377
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ-aYHjfz9Lj4RcDhQpBkZcG8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 3:00 AM",
+          "Tuesday: 6:00 AM – 3:00 AM",
+          "Wednesday: 6:00 AM – 3:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: 6:00 AM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "filter-roastery-al-falah",
+      "nameAr": "محمصة فلتر",
+      "nameEn": "Filter Roastery",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd128532da91:0xbfd8fcc8e9deb781!8m2!3d24.8008975!4d46.6981675",
+      "pin": {
+        "lat": 24.8008975,
+        "lng": 46.6981675
+      },
+      "logoUrl": "/logos/filter-roastery-al-falah.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJkdoyhRL9Lj4Rgbfe6cj82L8",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 12:00 PM – 12:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tropika-al-falah",
+      "nameAr": "تروبيكا",
+      "nameEn": "Tropika",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd00087aa49f:0xf210d6dceea53c6c!8m2!3d24.7955238!4d46.7043498",
+      "pin": {
+        "lat": 24.7955238,
+        "lng": 46.7043498
+      },
+      "logoUrl": "/logos/tropika-al-falah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJn6R6CAD9Lj4RbDyl7tzWEPI",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "towlan-al-falah",
+      "nameAr": "كافيه تولان",
+      "nameEn": "Towlan Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-falah",
+      "neighborhoodAr": "الفلاح",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdfca2302e1f:0xb2c4b6fba637aa52!8m2!3d24.8033144!4d46.7039992",
+      "pin": {
+        "lat": 24.8033144,
+        "lng": 46.7039992
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJHy4wovz9Lj4RUqo3pvu2xLI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "trov-olaya",
+      "nameAr": "تروف",
+      "nameEn": "Trov",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f030049d8faab:0xcee98143f4f89eae!8m2!3d24.6774721!4d46.68398500000001",
+      "pin": {
+        "lat": 24.6774721,
+        "lng": 46.68398500000001
+      },
+      "logoUrl": "/logos/trov-olaya.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJq_rYSQADLz4Rrp749EOB6c4",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "nahl-al-aqiq",
+      "nameAr": "نهل",
+      "nameEn": "Nahl",
+      "city": "riyadh",
+      "neighborhood": "al-aqiq",
+      "neighborhoodAr": "العقيق",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3d1c78d4e07:0x78461c6065c36fa9!8m2!3d24.7737509!4d46.619468999999995",
+      "pin": {
+        "lat": 24.7737509,
+        "lng": 46.619468999999995
+      },
+      "logoUrl": "/logos/nahl-al-aqiq.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJB06Nx9HjLj4RqW_DZWAcRng",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 12:30 AM",
+          "Friday: 12:00 PM – 2:00 AM",
+          "Saturday: 1:00 PM – 12:00 AM",
+          "Sunday: 7:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tul-cafe-king-salman",
+      "nameAr": "طَول كافيه",
+      "nameEn": "Tul Cafe",
+      "city": "riyadh",
+      "neighborhood": "king-salman",
+      "neighborhoodAr": "الملك سلمان",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f037bfd4ce331:0x38dc6afc663171c0!8m2!3d24.7334705!4d46.6963089",
+      "pin": {
+        "lat": 24.7334705,
+        "lng": 46.6963089
+      },
+      "logoUrl": "/logos/tul-cafe.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJMeNM_XsDLz4RwHExZvxq3Dg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tul-cafe-as-suwaidi-al-gharbi",
+      "nameAr": "طَول كافيه",
+      "nameEn": "Tul Cafe",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi-al-gharbi",
+      "neighborhoodAr": "السويدي الغربي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f114bebd624d9:0xd0b4e20da1c5a77e!8m2!3d24.5675299!4d46.6376999",
+      "pin": {
+        "lat": 24.5675299,
+        "lng": 46.6376999
+      },
+      "logoUrl": "/logos/tul-cafe.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ2STW60sRLz4RfqfFoQ3itNA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 4:00 PM – 2:00 AM",
+          "Tuesday: 4:00 PM – 2:00 AM",
+          "Wednesday: 4:00 PM – 2:00 AM",
+          "Thursday: 4:00 PM – 2:00 AM",
+          "Friday: 4:00 PM – 2:00 AM",
+          "Saturday: 4:00 PM – 2:00 AM",
+          "Sunday: 4:00 PM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tul-cafe-ash-shifa",
+      "nameAr": "طَول كافيه",
+      "nameEn": "Tul Cafe",
+      "city": "riyadh",
+      "neighborhood": "ash-shifa",
+      "neighborhoodAr": "الشفا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f0036d0f35b:0x8f89a30e10d99d2e!8m2!3d24.562950999999998!4d46.7000983",
+      "pin": {
+        "lat": 24.562950999999998,
+        "lng": 46.7000983
+      },
+      "logoUrl": "/logos/tul-cafe.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJW_PQNgAPLz4RLp3ZEA6jiY8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 12:30 PM – 2:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "century-cafe-an-nada",
+      "nameAr": "سنشري كافيه",
+      "nameEn": "Century Cafe",
+      "city": "riyadh",
+      "neighborhood": "an-nada",
+      "neighborhoodAr": "الندى",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdf2cca072e5:0x41a56025c37b8b3e!8m2!3d24.804173799999997!4d46.6738116",
+      "pin": {
+        "lat": 24.804173799999997,
+        "lng": 46.6738116
+      },
+      "logoUrl": "/logos/century-cafe-an-nada.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ5XKgzPL9Lj4RPot7wyVgpUE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 2:00 AM",
+          "Tuesday: 7:00 AM – 2:00 AM",
+          "Wednesday: 7:00 AM – 2:00 AM",
+          "Thursday: 7:00 AM – 3:00 AM",
+          "Friday: 3:00 PM – 3:00 AM",
+          "Saturday: 7:00 AM – 2:00 AM",
+          "Sunday: 7:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "on-off-coffee-al-manar",
+      "nameAr": "اون اوف كوفي",
+      "nameEn": "ON OFF Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-manar",
+      "neighborhoodAr": "المنار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f019ccb8cd0d1:0x5f3dfc0f954d335d!8m2!3d24.7266875!4d46.7846875",
+      "pin": {
+        "lat": 24.7266875,
+        "lng": 46.7846875
+      },
+      "logoUrl": "/logos/on-off-coffee-al-manar.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ0dCMy5wBLz4RXTNNlQ_8PV8",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "on-off-coffee-al-qadisiyah",
+      "nameAr": "اون اوف كوفي",
+      "nameEn": "ON OFF Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff4005ff6ae7:0x9c34b08df08315cb!8m2!3d24.8074375!4d46.8109375",
+      "pin": {
+        "lat": 24.8074375,
+        "lng": 46.8109375
+      },
+      "logoUrl": "/logos/on-off-coffee-al-manar.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ52r_BUD_Lj4RyxWD8I2wNJw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "on-off-coffee-namar",
+      "nameAr": "اون اوف كوفي",
+      "nameEn": "ON OFF Coffee",
+      "city": "riyadh",
+      "neighborhood": "namar",
+      "neighborhoodAr": "نمار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f48acee48bb:0x15de43eff5606246!8m2!3d24.5763125!4d46.6798125",
+      "pin": {
+        "lat": 24.5763125,
+        "lng": 46.6798125
+      },
+      "logoUrl": "/logos/on-off-coffee-al-manar.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJu0jurEgPLz4RRmJg9e9D3hU",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "on-off-coffee-dhahrat-laban",
+      "nameAr": "اون اوف كوفي",
+      "nameEn": "ON OFF Coffee",
+      "city": "riyadh",
+      "neighborhood": "dhahrat-laban",
+      "neighborhoodAr": "ظهرة لبن",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1f7ad2fe3cdd:0xfa1b919a2c92c9ff!8m2!3d24.6530344!4d46.587506",
+      "pin": {
+        "lat": 24.6530344,
+        "lng": 46.587506
+      },
+      "logoUrl": "/logos/on-off-coffee-al-manar.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ3Tz-0nofLz4R_8mSLJqRG_o",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "chino-hittin",
+      "nameAr": "تشينو",
+      "nameEn": "CHINO",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "حطين",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee36dbf553731:0x185e83acdd4fba01!8m2!3d24.7719789!4d46.6157237",
+      "pin": {
+        "lat": 24.7719789,
+        "lng": 46.6157237
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJMTdVv23jLj4RAbpP3ayDXhg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 6:00 AM – 12:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
               "minute": 0
             }
           }

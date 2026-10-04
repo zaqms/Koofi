@@ -85,6 +85,12 @@ export const CHAIN_BRANDS = {
     nameAr: "دان كافيه",
     logo: null,
   },
+  drive: {
+    id: "drive",
+    nameEn: "Drive Coffee",
+    nameAr: "درايف كوفي",
+    logo: "/logos/drive-coffee-wordmark.png",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -107,6 +113,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   "coffee-day": ["coffee day", "coffeeday", "كوفي داي"],
   kyan: ["kyan", "كيان"],
   dancafe: ["dancafe", "dan cafe", "دان كافيه"],
+  drive: ["drive coffee", "drivecoffee", "درايف كوفي", "درايف كافي"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -152,6 +159,12 @@ export function chainBrandKeyFromName(latinName: string): string | null {
     return "dancafe";
   }
   if (latinName.startsWith("kyan")) return "kyan";
+  if (
+    latinName.startsWith("drive coffee") ||
+    compact.startsWith("drivecoffee")
+  ) {
+    return "drive";
+  }
   if (
     latinName.startsWith("barns") ||
     latinName.startsWith("barn s") ||

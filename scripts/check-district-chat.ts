@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 57, `expected 57 live districts, got ${live.length}`);
+assert(live.length === 62, `expected 62 live districts, got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -154,6 +154,24 @@ for (const [text, id] of [
   assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
 }
 assert(extractPrimaryDistrict("King Fahd District") === "king-fahd", "King Salman does not steal King Fahd");
+// Batch D3 (4 Oct): four new live districts resolve in EN and AR.
+for (const [text, id] of [
+  ["Ash Shifa", "ash-shifa"],
+  ["الشفا", "ash-shifa"],
+  ["Al Qadisiyah", "al-qadisiyah"],
+  ["القادسية", "al-qadisiyah"],
+  ["Dhahrat Laban", "dhahrat-laban"],
+  ["ظهرة لبن", "dhahrat-laban"],
+] as const) {
+  assert(extractPrimaryDistrict(text) === id, `${text} → ${id}`);
+  assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
+}
+// Gharbi beats its parent on a tie, same as An Nasim Al Gharbi / An Nasim.
+assert(extractPrimaryDistrict("As Suwaidi Al Gharbi") === "as-suwaidi-al-gharbi", "As Suwaidi Al Gharbi → as-suwaidi-al-gharbi");
+assert(extractPrimaryDistrict("السويدي الغربي") === "as-suwaidi-al-gharbi", "السويدي الغربي → as-suwaidi-al-gharbi");
+assert(extractPrimaryDistrict("السويدي") === "as-suwaidi", "plain السويدي stays As Suwaidi");
+assert(extractPrimaryDistrict("Dhahrat Al Badiah") === "dhahrat-al-badiah", "Dhahrat Laban does not steal Dhahrat Al Badiah");
+assert(extractPrimaryDistrict("لبن") == null, "bare لبن (milk) is not a district ask");
 
 assert(DISTRICT_POPULARITY_WEIGHTS.maps === 0.6, "maps weight locked at 0.6");
 assert(DISTRICT_POPULARITY_WEIGHTS.ig === 0.4, "IG weight locked at 0.4");

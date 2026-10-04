@@ -186,9 +186,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 57, `expected 57 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 380, `specialty discovery is 380 after the Bisat batch, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 441, `catalog is 441 (433 plus the 8 Bisat batch rows), got ${listRealShops().length}`);
+assert(areas.length === 62, `expected 62 districts, got ${areas.length}`);
+assert(listDiscoveryShops().length === 403, `specialty discovery is 403 (406 on main − 3 Drive Coffee rows now chains), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 468, `catalog is 468 after D1, D2 and D3, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -751,8 +751,8 @@ assert(
 );
 
 const manar = filterDirectoryShops(shops, "al-manar");
-assert(manar.length === 2, `al-manar has 2 shops, got ${manar.length}`);
-for (const id of ["vase-coffee-al-manar", "recaf-al-manar"]) {
+assert(manar.length === 3, `al-manar has 3 shops, got ${manar.length}`);
+for (const id of ["vase-coffee-al-manar", "recaf-al-manar", "on-off-coffee-al-manar"]) {
   assert(manar.some((shop) => shop.id === id), `al-manar includes ${id}`);
 }
 assert(neighborhoodLabel("al-manar", "ar") === "المنار", "al-manar Arabic label");
@@ -976,7 +976,11 @@ assert(
 );
 
 const nada = filterDirectoryShops(shops, "an-nada");
-assert(nada.length === 2, `an-nada has 2 shops, got ${nada.length}`);
+assert(nada.length === 3, `an-nada has 3 shops, got ${nada.length}`);
+assert(
+  nada.some((shop) => shop.id === "century-cafe-an-nada"),
+  "an-nada includes century-cafe-an-nada (Batch D3)",
+);
 assert(
   nada.some((shop) => shop.id === "brew92-an-nada"),
   "an-nada includes brew92-an-nada",
@@ -1121,6 +1125,7 @@ const WAVE1_DISTRICTS: {
       "scarf-al-aqiq",
       "the-coffee-kingdom-al-aqiq",
       "file-coffee-al-aqiq",
+      "nahl-al-aqiq",
     ],
   },
   {
@@ -1134,7 +1139,6 @@ const WAVE1_DISTRICTS: {
       "drip-al-ghadeer",
       "blumen-al-ghadeer",
       "brsk-al-ghadeer",
-      "drive-al-ghadeer",
       "ghandoura-al-ghadeer",
       "iota-al-ghadeer",
     ],
@@ -1148,7 +1152,6 @@ const WAVE1_DISTRICTS: {
       "kicksters-lab-al-arid",
       "shovel-al-arid",
       "archi-al-arid",
-      "drive-al-arid",
       "roasting-house-al-arid",
       "coffee-address-al-arid",
       "shiro-al-arid",
@@ -1168,7 +1171,6 @@ const WAVE1_DISTRICTS: {
       "drip-al-qirawan",
       "coffee-side-al-qirawan",
       "caf-lab-al-qirawan",
-      "drive-al-qirawan",
       "scout-coffee-al-qirawan",
       "ract-al-qirawan",
       "nap-al-qirawan",
@@ -1519,7 +1521,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 71, `Drive-through directory (moment tag) is 71, got ${dt.length}`);
+  assert(dt.length === 73, `Drive-through directory (moment tag) is 73 (71 + Coffee Address and dr.CAFE As Suwaidi), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -1529,17 +1531,21 @@ const MALAZ_REFILL = {
     "Drive-through directory is tagged only",
   );
   assert(
-    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 18,
-    "18 hex-verified dr.CAFE rows are on the Drive-through directory",
+    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 19,
+    "19 hex-verified dr.CAFE rows are on the Drive-through directory (18 + As Suwaidi, Batch D1)",
   );
+  // Batch D1 (4 Oct 2026): the earlier drop came from a wrong 19 Sep Places
+  // match (dr.CAFE Al Qasr, ChIJC9-F2ogPLz4Rh0O4S3P3PDA, CLOSED_PERMANENTLY).
+  // The hex place itself (ChIJ9aMBGQARLz4RopSzjbuxdK8) is OPERATIONAL, so it is back.
   assert(
-    !getShop("drcafe-as-suwaidi"),
-    "CLOSED_PERMANENTLY dr.CAFE As Suwaidi stays dropped",
+    getShop("drcafe-as-suwaidi")?.placeId === "ChIJ9aMBGQARLz4RopSzjbuxdK8" &&
+      getShop("drcafe-as-suwaidi")?.isChain === true,
+    "dr.CAFE As Suwaidi is the operational hex place, tagged as a chain",
   );
   assert(
     listDirectoryShopsForDistrict("as-suwaidi").map((shop) => shop.id).join(",") ===
-      "alwaal-albari-as-suwaidi",
-    "as-suwaidi lists Alwaal Albari only (dr.CAFE As Suwaidi stays dropped)",
+      "alwaal-albari-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi,era-coffee-as-suwaidi,hot-sip-as-suwaidi,naham-specialty-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi",
+    "as-suwaidi lists Alwaal Albari plus the 7 Batch D1 cafés",
   );
   assert(
     !getShop("voom-al-masif"),
@@ -1583,8 +1589,8 @@ const MALAZ_REFILL = {
   );
   const namar = listDirectoryShopsForDistrict("namar");
   assert(
-    namar.length === 1 && namar[0]?.id === "drcafe-namar",
-    "namar lists the dine-in dr.CAFE",
+    namar.map((shop) => shop.id).sort().join(",") === "drcafe-namar,on-off-coffee-namar",
+    "namar lists the dine-in dr.CAFE and ON OFF Coffee (Batch D3)",
   );
   assert(
     listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),
@@ -1626,10 +1632,10 @@ const MALAZ_REFILL = {
     "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
-  assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);
+  assert(drcafe.length === 19, `19 dr.CAFE rows, got ${drcafe.length}`);
   assert(
     drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
-    "all 18 dr.CAFE rows use the official mark",
+    "all 19 dr.CAFE rows use the official mark",
   );
   assert(
     getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",
@@ -1704,6 +1710,23 @@ const MALAZ_REFILL = {
     assert(shop.logoUrl === logoUrl, `${id} keeps the harvested mark`);
   }
 }
+
+// Drive Coffee is a chain (4 Oct 2026): out of the specialty directory above.
+// Ghadeer and Qirawan list it as a {chain} row (dine-in true); Arid's row has
+// dine-in unknown, so it stays off the district list like other chains.
+for (const id of ["drive-al-ghadeer", "drive-al-arid", "drive-al-qirawan"]) {
+  assert(!shops.some((shop) => shop.id === id), `${id} is not in specialty discovery (chain)`);
+  assert(getShop(id)?.isChain === true && getShop(id)?.chainBrand === "drive", `${id} is tagged drive`);
+}
+assert(
+  listDirectoryShopsForDistrict("al-ghadeer").some((shop) => shop.id === "drive-al-ghadeer" && shop.isChain) &&
+    listDirectoryShopsForDistrict("al-qirawan").some((shop) => shop.id === "drive-al-qirawan" && shop.isChain),
+  "Al Ghadeer and Al Qirawan list Drive Coffee as a chain row",
+);
+assert(
+  !listDirectoryShopsForDistrict("al-arid").some((shop) => shop.id === "drive-al-arid"),
+  "Al Arid drops Drive Coffee (chain, dine-in unknown)",
+);
 
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);
@@ -4427,6 +4450,122 @@ const scoutPack: {
     pin: { lat: 24.5935137, lng: 46.6780331 },
     coordsInUrl: true,
     placeId: "ChIJDRVduR4FLz4RebaThyWtiCw",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch D2: Al Falah (4 Oct 2026). Scout pass.csv pins, Places ids and seating; LEO and Towlan are letter tiles.
+  {
+    id: "rawi-cafe-al-falah",
+    hex: "0x3e2efcf06c52c5f1:0xf887a41820776f52",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rawi-cafe-al-falah.jpg",
+    pin: { lat: 24.801932, lng: 46.7007094 },
+    coordsInUrl: true,
+    placeId: "ChIJ8cVSbPD8Lj4RUm93IBikh_g",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "ostrich-al-falah",
+    hex: "0x3e2efd7ca3ef4e67:0xaf7f9e97fd465cd9",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ostrich-al-falah.jpg",
+    pin: { lat: 24.7970292, lng: 46.7066944 },
+    coordsInUrl: true,
+    placeId: "ChIJZ07vo3z9Lj4R2VxG_Zeef68",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bow-al-falah",
+    hex: "0x3e2efd8e60acf2a3:0xe848447c6407af9f",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bow-al-falah.jpg",
+    pin: { lat: 24.7952973, lng: 46.7037307 },
+    coordsInUrl: true,
+    placeId: "ChIJo_KsYI79Lj4Rn68HZHxESOg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "distance-away-al-falah",
+    hex: "0x3e2efdfaf64aa75f:0x3f821771e6c4fa1f",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/distance-away-al-falah.jpg",
+    pin: { lat: 24.7959137, lng: 46.7039772 },
+    coordsInUrl: true,
+    placeId: "ChIJX6dK9vr9Lj4RH_rE5nEXgj8",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "double-three-al-falah",
+    hex: "0x3e2efd8b9e965fa7:0x5940b27c979e331b",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/double-three-al-falah.jpg",
+    pin: { lat: 24.8027262, lng: 46.7025622 },
+    coordsInUrl: true,
+    placeId: "ChIJp1-Wnov9Lj4RGzOel3yyQFk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "leo-al-falah",
+    hex: "0x3e2efdfc8d07a6f9:0x6f701919a4503870",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.796443, lng: 46.6991377 },
+    coordsInUrl: true,
+    placeId: "ChIJ-aYHjfz9Lj4RcDhQpBkZcG8",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "filter-roastery-al-falah",
+    hex: "0x3e2efd128532da91:0xbfd8fcc8e9deb781",
+    neighborhood: "al-falah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/filter-roastery-al-falah.png",
+    pin: { lat: 24.8008975, lng: 46.6981675 },
+    coordsInUrl: true,
+    placeId: "ChIJkdoyhRL9Lj4Rgbfe6cj82L8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "tropika-al-falah",
+    hex: "0x3e2efd00087aa49f:0xf210d6dceea53c6c",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tropika-al-falah.jpg",
+    pin: { lat: 24.7955238, lng: 46.7043498 },
+    coordsInUrl: true,
+    placeId: "ChIJn6R6CAD9Lj4RbDyl7tzWEPI",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "towlan-al-falah",
+    hex: "0x3e2efdfca2302e1f:0xb2c4b6fba637aa52",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8033144, lng: 46.7039992 },
+    coordsInUrl: true,
+    placeId: "ChIJHy4wovz9Lj4RUqo3pvu2xLI",
     dineIn: true,
     outdoorSeating: null,
   },

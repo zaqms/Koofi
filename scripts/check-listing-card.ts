@@ -81,7 +81,7 @@ assert(card.includes('dir={dir}'), "card sets document direction");
 assert(card.includes('language === "ar" ? "rtl" : "ltr"'), "true RTL, not flipped LTR");
 assert(card.includes("listingCardTags"), "pills come from listing tags helper");
 assert(card.includes("listingLocationOrder"), "location order is locale-aware");
-assert(card.includes("shopDistanceDisplay"), "km uses the existing distance helper");
+assert(card.includes("shopDistanceForVisitor"), "km uses the existing distance helper");
 assert(card.includes("ShareListingButton"), "share stays the existing listing packet");
 assert(card.includes("source={mapsSource}"), "Maps hop keeps pack vs list vs card");
 assert(card.includes('source="list"'), "listing share stays the list packet");

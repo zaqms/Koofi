@@ -203,6 +203,8 @@ assert(
       "الموقع مقفل، فهذي أشهر القهاوي في الرياض. أو اختر حي من تحت." &&
     NEARBY_EXPLAINER.denied.en ===
       "Location is off, so these are Riyadh's most popular. Or pick a neighborhood below." &&
+    NEARBY_EXPLAINER.unread.ar === "ما قدرنا نقرأ موقعك." &&
+    NEARBY_EXPLAINER.unread.en === "Couldn't read your location." &&
     NEARBY_EXPLAINER.located.ar === "مرتبة حسب المسافة من موقعك." &&
     NEARBY_EXPLAINER.located.en === "Sorted by distance from you.",
   "Nearby explainer lines per location state",
@@ -246,8 +248,10 @@ assert(!read("lib/fixed-lists.ts").includes("noindex"), "lists are not noindex")
 assert(FIXED_LIST_ACTION.showMore.ar === "عرض المزيد" && FIXED_LIST_ACTION.showMore.en === "Show more", "show more copy");
 assert(
   FIXED_LIST_ACTION.useLocation.ar === "استخدم موقعي" &&
-    FIXED_LIST_ACTION.useLocation.en === "Use my location",
-  "use my location copy",
+    FIXED_LIST_ACTION.useLocation.en === "Use my location" &&
+    FIXED_LIST_ACTION.retryLocation.ar === "جرّب مرة ثانية" &&
+    FIXED_LIST_ACTION.retryLocation.en === "Try again",
+  "use my location and retry copy",
 );
 
 function renderList(id: FixedListId, language: "ar" | "en" = "ar"): string {

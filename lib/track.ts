@@ -440,7 +440,8 @@ export function trackEventAndWait(
 
   return new Promise((resolve) => {
     let settled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    // window.setTimeout returns a number. Node's setTimeout returns a Timeout.
+    let timer: number | undefined;
     const finish = () => {
       if (settled) return;
       settled = true;

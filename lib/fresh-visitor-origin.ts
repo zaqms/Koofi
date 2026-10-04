@@ -15,11 +15,8 @@ import {
  *
  * High-accuracy first, `maximumAge: 0`. A second fresh coarse read runs
  * only if GPS times out or returns an unusable point. The shared
- * visitor snapshot (low-accuracy, up to 60s old) is a permission signal
- * only — its lat/lng are never copied.
- *
- * Same read order as HOLD #195, implemented here so this rail does not
- * depend on that unmerged PR. Soft Places stays parked.
+ * visitor snapshot is a permission signal only — its lat/lng are never copied.
+ * Soft Places stays parked.
  */
 export async function readFreshVisitorPosition(): Promise<VisitorLocation> {
   const gps = await readOnce({
@@ -103,7 +100,7 @@ export function useFreshHomeOrigin(): VisitorLocation {
         readRememberedGeoGranted() ||
         shared.status === "ready";
       if (!allowed) {
-        if (shared.status === "unavailable") {
+        if (shared.status === "unavailable" || shared.status === "denied") {
           setLocation({ status: "unavailable" });
         }
         return;

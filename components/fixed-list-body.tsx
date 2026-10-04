@@ -128,16 +128,20 @@ export function FixedListBody({
   const visible =
     located ? sorted.slice(0, shown) : sorted;
   const canShowMore = located && shown < sorted.length;
-  const locationBlocked =
-    permission === "denied" || visitor.status === "unavailable";
+  const locationDenied =
+    permission === "denied" || visitor.status === "denied";
+  const locationUnread =
+    !locationDenied && visitor.status === "unavailable";
   const nearbyState: NearbyExplainerState | null =
     listId !== "nearby"
       ? null
       : located
         ? "located"
-        : locationBlocked
+        : locationDenied
           ? "denied"
-          : "noLocation";
+          : locationUnread
+            ? "unread"
+            : "noLocation";
   const explainer = nearbyState
     ? nearbyExplainer(nearbyState, language)
     : fixedListExplainer(listId, language);
@@ -209,13 +213,17 @@ export function FixedListBody({
           <button
             type="button"
             data-use-my-location=""
-            data-location-state={locationBlocked ? "blocked" : "prompt"}
+            data-location-state={
+              locationDenied ? "blocked" : locationUnread ? "unread" : "prompt"
+            }
             onClick={useMyLocation}
             className="inline-flex h-10 items-center rounded-full bg-bean px-4 text-sm text-foam"
           >
-            {locationBlocked
+            {locationDenied
               ? FIXED_LIST_ACTION.locationBlocked[language]
-              : FIXED_LIST_ACTION.useLocation[language]}
+              : locationUnread
+                ? FIXED_LIST_ACTION.retryLocation[language]
+                : FIXED_LIST_ACTION.useLocation[language]}
           </button>
           {neighborhoodCandidates.length > 0 ? (
             <BrowseNeighborhoods

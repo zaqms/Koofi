@@ -24,6 +24,7 @@ import {
   listingSharePath,
   packSharePath,
   VIBE_CHIPS,
+  isFixedListChip,
 } from "../lib/product";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { matchCatalogShops } from "../lib/shop-name";
@@ -404,7 +405,8 @@ assertPopularLock("اللي عليها طلب", "ar");
 assertPopularLock("popular", "en");
 
 const bestCoffee = pickCafes({ text: "Best Coffee", language: "en" });
-assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee stays qahwa");
+assert(isFixedListChip("coffee"), "Best coffee page is a fixed list");
+assert(bestCoffee.askedMoments.join(",") === "qahwa", "Best Coffee chat ask stays qahwa until it shares the list rule");
 assert(
   bestCoffee.picks.every((pick) => pick.shop.momentTags.includes("qahwa")),
   "Best Coffee still ranks qahwa-tagged shops",

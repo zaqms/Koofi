@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { BrandWordmark } from "@/components/brand-wordmark";
+import { FixedListFooterLinks } from "@/components/fixed-list-nav";
 import { aboutPath, feedbackPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
@@ -60,6 +61,7 @@ export function SiteFooter({
           {copy.feedbackLink[language]}
         </Link>
       </p>
+      <FixedListFooterLinks language={language} className={linkClass} />
       <div className="mt-3">
         <ContactUs language={language} />
       </div>

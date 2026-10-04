@@ -70,6 +70,13 @@ import { foldHalfwayPlaceAndScoutAttrs } from "../lib/fold-halfway-place-attrs";
 import { isHalfwayEligible, filterHalfwayEligible } from "../lib/halfway-eligibility";
 import { rankByPopularity } from "../lib/district-rank";
 import { listPopularDirectoryShops } from "../lib/most-popular";
+import {
+  listBestCoffeeShops,
+  listNearbyShops,
+  listOutdoorShops,
+  listWorkShops,
+} from "../lib/fixed-lists";
+import { fixedListAllowsChains } from "../lib/fixed-list-ids";
 import { formatReply, pickCafes } from "../lib/picker";
 import { districtPath } from "../lib/product";
 import { dedupeSameBrand, shopBrandKey } from "../lib/shop-brand";
@@ -1939,5 +1946,26 @@ for (const district of hiddenDistrictCafes) {
     }
   }
 }
+
+assert(fixedListAllowsChains("nearby") && fixedListAllowsChains("outdoor"), "Nearby and Outdoor show chains behind Local only");
+assert(!fixedListAllowsChains("coffee") && !fixedListAllowsChains("work"), "Best coffee and Work are local only");
+assert(listNearbyShops().some((shop) => isChainShop(shop)), "Nearby pool includes listed chains");
+assert(listOutdoorShops().some((shop) => isChainShop(shop)), "Outdoor pool includes listed chains");
+assert(
+  listBestCoffeeShops().every((shop) => !isChainShop(shop)) &&
+    listWorkShops().every((shop) => !isChainShop(shop)),
+  "Best coffee and Work contain zero chains",
+);
+assert(
+  read("components/fixed-list-body.tsx").includes("data-chain-filter") &&
+    read("components/fixed-list-body.tsx").includes("HIDE_CHAINS") === false &&
+    read("components/fixed-list-body.tsx").includes("writeHideChains") &&
+    !read("components/fixed-list-body.tsx").includes("URLSearchParams"),
+  "fixed lists reuse the Local only toggle, localStorage, no URL param",
+);
+assert(
+  listPopularDirectoryShops().every((shop) => !shop.isChain),
+  "Most Popular stays local",
+);
 
 console.log("check-chains: ok");

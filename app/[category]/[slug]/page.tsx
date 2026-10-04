@@ -1,8 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import { DistrictPage } from "@/components/district-page";
+import { FixedListPage } from "@/components/fixed-list-page";
 import { HomeLanding } from "@/components/home-landing";
 import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
+import { isFixedListId } from "@/lib/fixed-list-ids";
+import { fixedListMetadata } from "@/lib/fixed-lists";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
 import { districtPageHidden, hiddenDistrictRedirect } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
@@ -21,6 +24,7 @@ import {
 import { trendingMetadata } from "@/lib/trending-page";
 import {
   districtItemListJsonLd,
+  fixedListItemListJsonLd,
   mostPopularItemListJsonLd,
 } from "@/lib/structured-data";
 
@@ -48,6 +52,7 @@ export async function generateMetadata({ params }: CategoryDistrictPageProps) {
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
     if (!chipId) return { title: PRODUCT_NAME };
+    if (isFixedListId(chipId)) return fixedListMetadata(chipId, "ar");
     return chipPageMetadata(chipId, "ar");
   }
   const district = resolveDistrictSlug(slug);
@@ -76,6 +81,15 @@ export default async function CategoryDistrictPage({
   if (isCoffeeShopChipSlug(slug)) {
     const chipId = chipIdFromCoffeeShopSlug(slug);
     if (!chipId) notFound();
+    if (isFixedListId(chipId)) {
+      const itemList = fixedListItemListJsonLd(chipId, "ar");
+      return (
+        <>
+          {itemList ? <JsonLd data={itemList} /> : null}
+          <FixedListPage language="ar" listId={chipId} />
+        </>
+      );
+    }
     return <HomeLanding language="ar" selectedChipId={chipId} />;
   }
   const district = resolveDistrictSlug(slug);

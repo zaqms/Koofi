@@ -40,6 +40,7 @@ import {
   chipDirectoryMoment,
   chipIdFromCoffeeShopSlug,
   chipSharePath,
+  isFixedListChip,
   isStaticDirectoryChip,
   coffeeShopChipPath,
   coffeeShopChipSlugForId,
@@ -708,7 +709,9 @@ assert(
   "drive-through is a static directory chip",
 );
 assert(!isStaticDirectoryChip("quiet"), "quiet stays off-home three-pick");
-assert(!isStaticDirectoryChip("coffee"), "coffee still opens chat");
+assert(!isStaticDirectoryChip("coffee"), "coffee is not a static directory chip");
+assert(isFixedListChip("coffee"), "coffee is a fixed list and does not auto-send");
+assert(isFixedListChip("nearby") && isFixedListChip("outdoor") && isFixedListChip("work"), "the four list pages skip chat auto-send");
 assert(!/Soft Places/i.test(chat), "no Soft Places analytics or UI in chat");
 
 const nextConfig = read("next.config.ts");

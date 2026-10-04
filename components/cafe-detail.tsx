@@ -395,7 +395,7 @@ function CafeDetailLocation({
   const distance =
     display.kind === "hidden" ? null : (
       <span
-        dir="ltr"
+        dir={display.kind === "km" ? "ltr" : undefined}
         data-shop-distance={display.kind}
         {...(display.kind === "km"
           ? { "data-shop-distance-km": display.km.toFixed(3) }

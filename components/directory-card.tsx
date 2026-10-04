@@ -153,18 +153,19 @@ function ListingLocation({
     language,
   });
   const order = listingLocationOrder(language);
-  const distance =
-    display.kind === "hidden" ? null : (
-      <span
-        dir="ltr"
-        data-shop-distance={display.kind}
-        {...(display.kind === "km"
-          ? { "data-shop-distance-km": display.km.toFixed(3) }
-          : {})}
-      >
-        {display.label}
-      </span>
-    );
+  // Denied and unread stay off listing cards. km and a missing pin still show.
+  const showDistance = display.kind === "km" || display.kind === "missing";
+  const distance = showDistance ? (
+    <span
+      dir={display.kind === "km" ? "ltr" : undefined}
+      data-shop-distance={display.kind}
+      {...(display.kind === "km"
+        ? { "data-shop-distance-km": display.km.toFixed(3) }
+        : {})}
+    >
+      {display.label}
+    </span>
+  ) : null;
 
   return (
     <p className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[12px] leading-4 text-wain-soft-taupe">

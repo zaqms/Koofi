@@ -10,6 +10,7 @@ import {
   listDriveThroughDirectoryShops,
 } from "../lib/catalog";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
+import { copy } from "../lib/copy";
 import { shopDistanceKm } from "../lib/directory-sort";
 import {
   EARTH_RADIUS_KM,
@@ -22,6 +23,7 @@ import {
   isUsableVisitorOrigin,
   officialShopCoords,
 } from "../lib/place-coords";
+import { NEARBY_EXPLAINER, FIXED_LIST_ACTION } from "../lib/fixed-list-ids";
 import {
   MAX_NEARBY_DISPLAY_KM,
   shopDistanceDisplay,
@@ -415,10 +417,44 @@ assert(fixedList.includes("data-fixed-show-more"), "show more adds the next page
 assert(fixedList.includes("shopDistanceKm"), "Nearby sort uses the existing distance helper");
 assert(fixedList.includes("autoLocate={false}"), "distance paints without a card-level prompt");
 assert(!fixedList.includes("pickNearestShops"), "the list is not the chat 3-pick");
+const kmOnlyLtr = 'dir={display.kind === "km" ? "ltr" : undefined}';
+const listingCard = readFileSync(join(process.cwd(), "components/directory-card.tsx"), "utf8");
+const cafeDetail = readFileSync(join(process.cwd(), "components/cafe-detail.tsx"), "utf8");
+const shopDistanceUi = readFileSync(join(process.cwd(), "components/shop-distance.tsx"), "utf8");
 assert(
-  fixedList.includes('visitor.status === "denied"') &&
-    fixedList.includes('visitor.status === "unavailable"'),
-  "Nearby fallback treats denied and unread GPS as location off, not a missing shop pin",
+  listingCard.includes(kmOnlyLtr) &&
+    cafeDetail.includes(kmOnlyLtr) &&
+    !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(listingCard) &&
+    !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(cafeDetail) &&
+    shopDistanceUi.includes('dir="ltr" data-shop-distance="km"') &&
+    !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(shopDistanceUi),
+  "LTR wraps the numeric km value only",
+);
+assert(
+  listingCard.includes('display.kind === "km" || display.kind === "missing"') &&
+    !listingCard.includes("directoryDistancePermission") &&
+    !listingCard.includes("directoryDistanceUnread"),
+  "listing cards omit the denied and unread lines",
+);
+assert(
+  cafeDetail.includes('display.kind === "hidden" ? null') &&
+    cafeDetail.includes("shopDistanceForVisitor"),
+  "the café chip still renders permission and unread lines",
+);
+assert(
+  NEARBY_EXPLAINER.unread.ar === copy.directoryDistanceUnread.ar &&
+    NEARBY_EXPLAINER.unread.en === copy.directoryDistanceUnread.en &&
+    NEARBY_EXPLAINER.unread.ar === "ما قدرنا نقرأ موقعك." &&
+    NEARBY_EXPLAINER.unread.en === "Couldn't read your location." &&
+    fixedList.includes('visitor.status === "unavailable"') &&
+    fixedList.includes('? "unread"') &&
+    fixedList.includes("retryLocation") &&
+    fixedList.includes('permission === "denied" || visitor.status === "denied"') &&
+    FIXED_LIST_ACTION.retryLocation.ar === "جرّب مرة ثانية" &&
+    FIXED_LIST_ACTION.retryLocation.en === "Try again" &&
+    NEARBY_EXPLAINER.denied.ar.includes("مقفل") &&
+    !NEARBY_EXPLAINER.unread.ar.includes("مقفل"),
+  "Nearby uses the can't-read line and a retry button when the fix is unavailable, and location-off only for a real denial",
 );
 
 console.log("check-distance: ok", {

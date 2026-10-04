@@ -545,11 +545,11 @@ const BATCH13_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH13_IDS = Object.keys(BATCH13_HERO_COUNTS);
 
-/** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Hot Sip and Era 3 after #247 r2 dropped menu/ad frames), Google credit per frame. */
+/** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
 const BATCH14_HERO_COUNTS: Record<string, number> = {
   "plant-cafe-as-suwaidi": 4,
   "seen-cafe-as-suwaidi": 4,
-  "hot-sip-as-suwaidi": 3,
+  "hot-sip-as-suwaidi": 4,
   "era-coffee-as-suwaidi": 3,
   "naham-specialty-as-suwaidi": 4,
   "coffee-address-as-suwaidi": 4,

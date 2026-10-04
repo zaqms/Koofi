@@ -8,7 +8,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { GET as trendingOgGet } from "../app/og/[locale]/[kind]/[[...id]]/route";
 import { HomeTrending } from "../components/home-trending";
 import { TrendingThisWeekList } from "../components/trending-this-week-page";
-import { getShop, listRealShops } from "../lib/catalog";
+import { getShop, listDirectoryShops, listRealShops } from "../lib/catalog";
 import { listingOgCopy } from "../lib/listing-og";
 import { NEW_THIS_WEEK_IDS, listNewThisWeekShops } from "../lib/new-this-week";
 import { LOCKED_OPENER, LOCKED_OPENER_EN, trendingPath } from "../lib/product";
@@ -40,7 +40,12 @@ function escapeHtml(text: string): string {
 const LINE_PROMO =
   /\b(paid|promo|sponsored|offers?|discounts?|deals?|free|new menu)\b|%|عرض|عروض|خصم|مجان|برعاية|سبونسر|منيو جديد/i;
 
-const EXPECTED = [
+/**
+ * Week of 28 Sep – 4 Oct: empty. Organic-only audit (policy 6, 3+ distinct organic
+ * accounts) dropped TORRE, DM and Waqar; Namq is cooling.
+ */
+const EXPECTED: readonly string[] = [];
+const DROPPED = [
   "torre-al-rawabi",
   "dm-cafe-roastery-as-sahafah",
   "namq-al-malqa",
@@ -48,14 +53,17 @@ const EXPECTED = [
 ] as const;
 
 assert(
-  TRENDING_THIS_WEEK_WINDOW.from === "2026-09-25" &&
-    TRENDING_THIS_WEEK_WINDOW.to === "2026-10-02",
-  "Trending window is 2026-09-25 to 2026-10-02",
+  TRENDING_THIS_WEEK_WINDOW.from === "2026-09-28" &&
+    TRENDING_THIS_WEEK_WINDOW.to === "2026-10-04",
+  "Trending window is 2026-09-28 to 2026-10-04",
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") === EXPECTED.join(","),
-  "Trending allowlist order is TORRE, DM, Namq, then Waqar",
+  "Trending allowlist is empty this week",
 );
+for (const id of DROPPED) {
+  assert(!TRENDING_THIS_WEEK_IDS.includes(id), `${id} is not in Trending this week`);
+}
 assert(
   TRENDING_THIS_WEEK.map((row) => row.id).join(",") === EXPECTED.join(","),
   "Trending rows stay in allowlist order",
@@ -113,29 +121,8 @@ assert(
   "lines render on the Trending page, not on the home tiles",
 );
 assert(
-  TRENDING_THIS_WEEK[2]?.lineAr ===
-    "نمق كان من أكثر الأسماء اللي انتشرت بيوم القهوة العالمي." &&
-    TRENDING_THIS_WEEK[2]?.lineEn ===
-      "Namq was one of the most talked-about names on World Coffee Day.",
-  "Namq's line no longer promotes the expired owner offer",
-);
-assert(
-  TRENDING_THIS_WEEK[0]?.lineAr ===
-    "توري مقهى جديد فتح بالروابي، وصار من أكثر الأماكن اللي انتكلم عنها هالأسبوع." &&
-    TRENDING_THIS_WEEK[0]?.lineEn ===
-      "TORRE is a new opening in Al Rawabi that people were talking about this week.",
-  "TORRE's line is the neutral new-opening reason",
-);
-assert(
-  TRENDING_THIS_WEEK[1]?.lineAr ===
-    "دي ام بالصحافة كان من أول الأماكن اللي انذكرت مع ترند الكوكيز فوق الآيسكريم." &&
-    TRENDING_THIS_WEEK[1]?.lineEn ===
-      "DM Café & Roastery in As Sahafah was one of the first spots named in the cookie-on-ice-cream trend.",
-  "DM's line is the neutral cookie-on-ice-cream reason",
-);
-assert(
-  trendingWindowLabel("ar") === "25 سبتمبر – 2 أكتوبر" &&
-    trendingWindowLabel("en") === "25 Sep – 2 Oct",
+  trendingWindowLabel("ar") === "28 سبتمبر – 4 أكتوبر" &&
+    trendingWindowLabel("en") === "28 Sep – 4 Oct",
   "window line is derived from the stored dates",
 );
 for (const row of TRENDING_THIS_WEEK) {
@@ -202,45 +189,36 @@ const torre = getShop("torre-al-rawabi");
 const dm = getShop("dm-cafe-roastery-as-sahafah");
 assert(
   torre?.neighborhood === "al-rawabi" && torre.nameEn === "TORRE Cafe" && !torre.isChain,
-  "TORRE is a real Al Rawabi café row",
+  "TORRE stays a real Al Rawabi café row (only dropped from Trending)",
 );
 assert(
   dm?.neighborhood === "as-sahafah" && dm.nameEn === "DM Café & Roastery" && !dm.isChain,
-  "DM Café & Roastery is a real As Sahafah café row, not a chain",
+  "DM Café & Roastery stays a real As Sahafah café row (only dropped from Trending)",
 );
 assert(
   names.filter((name) => /\btorre\b/i.test(name)).length === 2,
   "TORRE has exactly one catalog row",
 );
+for (const shop of listTrendingThisWeekShops()) {
+  assert(!shop.isChain, `${shop.id} is not a chain`);
+}
 
-function trendingIds(language: Language): string[] {
-  const html = renderToStaticMarkup(
+function homeTrendingHtml(language: Language): string {
+  return renderToStaticMarkup(
     createElement(HomeTrending, {
       language,
       shops: listTrendingThisWeekShops(),
     }),
   );
-  for (const row of TRENDING_THIS_WEEK) {
-    assert(!html.includes(row.lineAr), `${language} does not render the Arabic line`);
-    assert(!html.includes(escapeHtml(row.lineEn)), `${language} does not render the English line`);
-  }
-  assert(html.includes("grid-cols-2"), `${language} lays four rows out two-by-two`);
-  assert(!html.includes("grid-cols-3"), `${language} does not leave a lone tile on a second row`);
-  assert(
-    html.includes(language === "ar" ? "ترند الأسبوع" : "Trending this week"),
-    `${language} keeps the existing heading`,
-  );
-  return [...html.matchAll(/data-trending-id="([^"]+)"/g)].map((match) => match[1]!);
 }
 
-assert(
-  trendingIds("ar").join(",") === EXPECTED.join(","),
-  "AR home Trending renders all four in allowlist order",
-);
-assert(
-  trendingIds("en").join(",") === EXPECTED.join(","),
-  "EN home Trending renders all four in allowlist order",
-);
+for (const language of ["ar", "en"] as const) {
+  const html = homeTrendingHtml(language);
+  assert(html === "", `${language} home hides the Trending section when the list is empty`);
+  for (const id of DROPPED) {
+    assert(!html.includes(id), `${language} home does not show ${id}`);
+  }
+}
 
 const PROMO = /\b(paid|promo|sponsored|offer)\b|عروض|برعاية|سبونسر/i;
 
@@ -254,6 +232,10 @@ for (const language of ["ar", "en"] as const) {
   const html = listHtml(language);
   const ids = [...html.matchAll(/data-trending-id="([^"]+)"/g)].map((match) => match[1]);
   assert(ids.join(",") === EXPECTED.join(","), `${language} page keeps allowlist order`);
+  assert(html.includes("data-trending-empty"), `${language} page shows the empty state this week`);
+  for (const id of DROPPED) {
+    assert(!html.includes(id), `${language} page does not show ${id}`);
+  }
   assert(html.includes(trendingWindowLabel(language)), `${language} window comes from the data file`);
   assert(!/\bween\b/i.test(html), `${language} page does not say ween`);
   assert(!PROMO.test(html), `${language} page has no promo or offer wording`);
@@ -264,7 +246,8 @@ for (const language of ["ar", "en"] as const) {
   const home = renderToStaticMarkup(
     createElement(HomeTrending, {
       language,
-      shops: listTrendingThisWeekShops(),
+      // Fixture row: the live list is empty this week, so wire-check View all with one café.
+      shops: listDirectoryShops().filter((shop) => shop.id === "torre-al-rawabi"),
     }),
   );
   assert(

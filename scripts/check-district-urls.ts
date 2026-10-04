@@ -1892,8 +1892,7 @@ assert(
   "New this week strip keeps allowlist order",
 );
 assert(
-  TRENDING_THIS_WEEK_IDS.join(",") ===
-    "torre-al-rawabi,dm-cafe-roastery-as-sahafah,namq-al-malqa,waqar-al-aziziyah" &&
+  TRENDING_THIS_WEEK_IDS.join(",") === "" &&
     listTrendingThisWeekShops()
       .map((shop) => shop.id)
       .join(",") === TRENDING_THIS_WEEK_IDS.join(",") &&

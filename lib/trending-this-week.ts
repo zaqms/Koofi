@@ -4,14 +4,19 @@ import type { Language } from "./types";
 
 /**
  * v1 allowlist. Not derived from data.
- * Window: 2026-09-25 through 2026-10-02.
+ * Window: 2026-09-28 through 2026-10-04.
+ *
+ * Organic only (listing policy 6): an entry needs 3+ distinct organic accounts
+ * inside the window. This week TORRE, DM and Waqar were each backed only by paid,
+ * ad-licensed or own-brand sources, and Namq is cooling, so the list is empty.
+ * Empty means the home section hides and the Trending page shows its empty state.
  *
  * lineAr / lineEn render on the Trending page, under each café card.
  * The home tiles have no line slot, so the lines are not rendered there.
  */
 export const TRENDING_THIS_WEEK_WINDOW = {
-  from: "2026-09-25",
-  to: "2026-10-02",
+  from: "2026-09-28",
+  to: "2026-10-04",
 } as const;
 
 const AR_MONTHS = [
@@ -63,31 +68,13 @@ export function trendingWindowLabel(language: Language): string {
   return `${from.day} ${months[from.month - 1]} – ${to.day} ${months[to.month - 1]}`;
 }
 
-export const TRENDING_THIS_WEEK = [
-  {
-    id: "torre-al-rawabi",
-    lineAr: "توري مقهى جديد فتح بالروابي، وصار من أكثر الأماكن اللي انتكلم عنها هالأسبوع.",
-    lineEn: "TORRE is a new opening in Al Rawabi that people were talking about this week.",
-  },
-  {
-    id: "dm-cafe-roastery-as-sahafah",
-    lineAr: "دي ام بالصحافة كان من أول الأماكن اللي انذكرت مع ترند الكوكيز فوق الآيسكريم.",
-    lineEn:
-      "DM Café & Roastery in As Sahafah was one of the first spots named in the cookie-on-ice-cream trend.",
-  },
-  {
-    id: "namq-al-malqa",
-    lineAr: "نمق كان من أكثر الأسماء اللي انتشرت بيوم القهوة العالمي.",
-    lineEn: "Namq was one of the most talked-about names on World Coffee Day.",
-  },
-  {
-    id: "waqar-al-aziziyah",
-    lineAr:
-      "وقار بالعزيزية دخلت على ترند الكوكيز مع الآيسكريم، اطلبه مع قهوتك وخلّه يذوب شوي قبل أول لقمة.",
-    lineEn:
-      "Waqar in Al Aziziyah jumped on the cookie-on-ice-cream trend. Order it with your coffee and let it melt a little before the first bite.",
-  },
-] as const;
+export type TrendingThisWeekEntry = {
+  id: string;
+  lineAr: string;
+  lineEn: string;
+};
+
+export const TRENDING_THIS_WEEK: readonly TrendingThisWeekEntry[] = [];
 
 /** Skip any id that is missing or example. Same rule as New this week. */
 export const TRENDING_THIS_WEEK_IDS = TRENDING_THIS_WEEK.map((row) => row.id);

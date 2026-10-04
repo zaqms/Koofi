@@ -1,5 +1,5 @@
 import { LegalPageView } from "@/components/legal-page";
-import { legalDoc } from "@/lib/legal";
+import { LEGAL_ROBOTS, legalDoc } from "@/lib/legal";
 import { pageAlternates } from "@/lib/locale";
 import {
   PRODUCT_NAME,
@@ -13,8 +13,10 @@ const doc = legalDoc("privacy", language);
 const url = privacyPath(language);
 
 export const metadata = {
-  title: doc.title,
+  title: `${doc.title} · ${PRODUCT_NAME}`,
   description: doc.description,
+  // noindex, follow while review markers remain (see LEGAL_HAS_PLACEHOLDERS).
+  robots: LEGAL_ROBOTS,
   applicationName: PRODUCT_NAME,
   appleWebApp: { title: PRODUCT_NAME },
   alternates: pageAlternates(url, privacyPath("ar"), privacyPath("en")),

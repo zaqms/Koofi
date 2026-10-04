@@ -11,9 +11,7 @@ import {
   homePath,
   mostPopularPath,
   neighborhoodsPath,
-  privacyPath,
   PUBLIC_SITE_URL,
-  termsPath,
   trendingPath,
 } from "./product";
 
@@ -52,10 +50,6 @@ function sitemapPaths(): string[] {
     aboutPath("en"),
     feedbackPath("ar"),
     feedbackPath("en"),
-    privacyPath("ar"),
-    privacyPath("en"),
-    termsPath("ar"),
-    termsPath("en"),
     neighborhoodsPath("ar"),
     neighborhoodsPath("en"),
     // Real landings only — app/halfway + app/en/halfway both exist.

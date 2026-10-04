@@ -328,7 +328,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1063, `sitemap is 1063 (1059 plus /privacy and /terms × AR/EN), got ${locs.length}`);
+assert(locs.length === 1059, `sitemap is 1059 (1035 plus 8 Bisat batch cafés and 4 districts × AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

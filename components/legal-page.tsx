@@ -4,6 +4,7 @@ import { DocumentLocale } from "@/components/document-locale";
 import { SiteFooter } from "@/components/site-footer";
 import { copy } from "@/lib/copy";
 import {
+  LEGAL_LTR_PATTERN,
   LEGAL_PLACEHOLDER_PATTERN,
   legalDoc,
   type LegalKind,
@@ -13,6 +14,38 @@ import type { Language } from "@/lib/types";
 
 function legalPath(kind: LegalKind, language: Language): string {
   return kind === "privacy" ? privacyPath(language) : termsPath(language);
+}
+
+/** Longest {{token}} kept on one line; longer ones may wrap anywhere. */
+const LTR_NOWRAP_MAX = 28;
+
+/**
+ * {{token}} → an isolated LTR span, so Latin identifiers (_ga_<ID>,
+ * GTM-W3TM4552, /h/…) keep their order inside Arabic text.
+ */
+function LtrTokens({ text }: { text: string }) {
+  const parts = text.split(LEGAL_LTR_PATTERN);
+  return (
+    <>
+      {parts.map((part, index) =>
+        index % 2 === 1 ? (
+          <bdi
+            key={index}
+            dir="ltr"
+            className={`font-mono text-[0.9em] ${
+              // Short ids stay on one line (no "GTM-" / "W3TM4552" split);
+              // only very long tokens may break.
+              part.length > LTR_NOWRAP_MAX ? "[overflow-wrap:anywhere]" : "whitespace-nowrap"
+            }`}
+          >
+            {part}
+          </bdi>
+        ) : (
+          <span key={index}>{part}</span>
+        ),
+      )}
+    </>
+  );
 }
 
 /** Highlight review markers so nothing unconfirmed reads as final. */
@@ -26,10 +59,10 @@ function LegalText({ text }: { text: string }) {
             key={index}
             className="rounded bg-gold/25 px-1 font-semibold text-ink [overflow-wrap:anywhere]"
           >
-            {part}
+            <LtrTokens text={part} />
           </mark>
         ) : (
-          <span key={index}>{part}</span>
+          <LtrTokens key={index} text={part} />
         ),
       )}
     </>

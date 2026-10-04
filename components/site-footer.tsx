@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { BrandWordmark } from "@/components/brand-wordmark";
-import { aboutPath, feedbackPath } from "@/lib/product";
+import { aboutPath, feedbackPath, privacyPath, termsPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type SiteFooterProps = {
@@ -14,7 +14,7 @@ type SiteFooterProps = {
   rule?: boolean;
 };
 
-/** Latin brand, About + Ideas links, Contact us. Home: after the directory. Cards: under back-to-chat. */
+/** Latin brand, About + Ideas + Privacy + Terms links, Contact us. Home: after the directory. Cards: under back-to-chat. */
 export function SiteFooter({
   language,
   padded = true,
@@ -58,6 +58,18 @@ export function SiteFooter({
           className={linkClass}
         >
           {copy.feedbackLink[language]}
+        </Link>
+        <Link
+          href={privacyPath(language)}
+          className={linkClass}
+        >
+          {copy.privacyLink[language]}
+        </Link>
+        <Link
+          href={termsPath(language)}
+          className={linkClass}
+        >
+          {copy.termsLink[language]}
         </Link>
       </p>
       <div className="mt-3">

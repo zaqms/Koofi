@@ -53,6 +53,8 @@ const DARK_LOGO_PATHS = new Set([
   "/logos/kuro-sulimaniyah.png",
   "/logos/the-matcha-bar-olaya.jpg",
   "/logos/remis-matcha-club-hittin.png",
+  // Respire is a light grey mark; it disappears on the default cream tile.
+  "/logos/respire-al-malqa-v2.png",
 ]);
 
 export function ShopVisual({

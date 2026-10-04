@@ -18437,7 +18437,7 @@
     },
     {
       "id": "essert-al-rawabi",
-      "nameAr": "إسرت",
+      "nameAr": "ايزرت",
       "nameEn": "Essert",
       "city": "riyadh",
       "neighborhood": "al-rawabi",
@@ -18453,7 +18453,7 @@
         "lat": 24.6876817,
         "lng": 46.7950323
       },
-      "logoUrl": "/logos/essert-al-rawabi.jpg",
+      "logoUrl": "/logos/essert.png",
       "popularityIndex": 40,
       "placeId": "ChIJLz2JTwAHLz4RRuwZDBopO5o",
       "dineIn": true,
@@ -22909,7 +22909,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3007631ac4b:0x22a7ddce0ec9d709",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "placeId": "ChIJS6wxdgDjLj4RCdfJDs7dpyI",
       "dineIn": true,
@@ -23428,7 +23428,7 @@
         "lat": 24.8989508,
         "lng": 46.6184764
       },
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "placeId": "ChIJ0cfdVgDvLj4R_dbw3QdkM_s",
       "dineIn": null,
@@ -24144,7 +24144,7 @@
         "lat": 24.8233431,
         "lng": 46.5935748
       },
-      "logoUrl": "/logos/drip-al-qirawan.jpg",
+      "logoUrl": "/logos/drip-tuwaiq-v2.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJe5mqHBHlLj4RiviIxdUpu4w",
       "dineIn": true,
@@ -24514,7 +24514,7 @@
         "lat": 24.8458534,
         "lng": 46.6049121
       },
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "placeId": "ChIJs3c_XQDlLj4RV_b9jx-q2j0",
       "dineIn": true,
@@ -30180,7 +30180,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f7d093e89ad:0x25634e4237928efe",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJrYk-CX0PLz4R_o6SN0JOYyU",
@@ -30227,7 +30227,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f090039040fbf:0x3442fdc0f56cedb4",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJvw8EOQAJLz4RtO1s9cD9QjQ",
@@ -30274,7 +30274,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f11006ee73071:0x6ac1ed1f9c42da4a",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJcTDnbgARLz4RStpCnB_twWo",
@@ -30321,7 +30321,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010060d8ffc3:0x5fb35dec54089a48",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJw__YYAABLz4RSJoIVOxds18",
@@ -30368,7 +30368,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f01004769df7d:0xfb56f6756c523dac",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJfd9pRwABLz4RrD1SbHX2Vvs",
@@ -30416,7 +30416,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f010068e50f15:0xdaae116aad4b79ad",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJFQ_laAABLz4RrXlLrWoRrto",
@@ -30464,7 +30464,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ef9002b269119:0x68698a697541607d",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJGZEmKwD5Lj4RfWBBdWmKaWg",
@@ -30512,7 +30512,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7000f67c713:0x87b0608ff8dcbc50",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJE8dnDwDnLj4RULzc-I9gsIc",
@@ -30539,7 +30539,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3005d8dc955:0xd52930e780f1a55c",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJVcmNXQDjLj4RXKXxgOcwKdU",
@@ -30566,7 +30566,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee50058d3a89f:0x57c1ed8a3852218d",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJn6jTWADlLj4RjSFSOIrtwVc",
@@ -30614,7 +30614,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f001887555b:0xeea0e18c273e881f",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJW1WHGAAPLz4RH4g-J4zhoO4",
@@ -30661,7 +30661,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3000519787f:0xd54d0d43ff709a3d",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJf3gZBQDjLj4RPZpw_0MNTdU",
@@ -30709,7 +30709,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e5500720fb481:0xfeb986d1f94e48d3",
-      "logoUrl": "/logos/drive-coffee.png",
+      "logoUrl": "/logos/drive-coffee-wordmark.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJgbQPcgBVLj4R00hO-dGGuf4",
@@ -36547,7 +36547,7 @@
     },
     {
       "id": "essert-al-arid",
-      "nameAr": "إسرت",
+      "nameAr": "ايزرت",
       "nameEn": "Essert",
       "city": "riyadh",
       "neighborhood": "al-arid",
@@ -36563,7 +36563,7 @@
         "lat": 24.861214699999998,
         "lng": 46.6284055
       },
-      "logoUrl": "/logos/essert-al-rawabi.jpg",
+      "logoUrl": "/logos/essert.png",
       "popularityIndex": 40,
       "placeId": "ChIJW7FAsxnlLj4Rt5-Z6uKDTlQ",
       "dineIn": true,
@@ -37208,7 +37208,7 @@
         "lat": 24.599526899999997,
         "lng": 46.6425717
       },
-      "logoUrl": "/logos/way-coffee-dhahrat-al-badiah.jpg",
+      "logoUrl": "/logos/way-coffee-dhahrat-al-badiah-v2.png",
       "popularityIndex": 40,
       "placeId": "ChIJ9b1YMQAbLz4RJ_z25Md_hJE",
       "dineIn": true,
@@ -40237,7 +40237,7 @@
     {
       "id": "hintiya-al-narjis",
       "nameAr": "حنطية",
-      "nameEn": "Hintiya",
+      "nameEn": "Hintia",
       "city": "riyadh",
       "neighborhood": "al-narjis",
       "neighborhoodAr": "النرجس",
@@ -40252,7 +40252,7 @@
         "lat": 24.8313653,
         "lng": 46.6691734
       },
-      "logoUrl": "/logos/hintiya-al-narjis.jpg",
+      "logoUrl": "/logos/hintiya-al-narjis-v2.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJQXRek8_lLj4RKdikjrEnwEY",
       "dineIn": true,
@@ -40375,7 +40375,7 @@
         "lat": 24.5828684,
         "lng": 46.7800689
       },
-      "logoUrl": "/logos/sama-cafe-al-aziziyah.jpg",
+      "logoUrl": "/logos/sama-cafe-al-aziziyah-v2.png",
       "popularityIndex": 40,
       "placeId": "ChIJ26M-6qwJLz4RdED46V_UOGo",
       "dineIn": true,
@@ -40498,7 +40498,7 @@
         "lat": 24.5593186,
         "lng": 46.5652973
       },
-      "logoUrl": "/logos/drip-al-qirawan.jpg",
+      "logoUrl": "/logos/drip-tuwaiq-v2.jpg",
       "popularityIndex": 40,
       "placeId": "ChIJKVvTbvUZLz4RthsxKe7MQZA",
       "dineIn": true,
@@ -40672,7 +40672,7 @@
         "lat": 24.8056239,
         "lng": 46.6135492
       },
-      "logoUrl": "/logos/respire-al-malqa.png",
+      "logoUrl": "/logos/respire-al-malqa-v2.png",
       "popularityIndex": 40,
       "placeId": "ChIJ5292IjzjLj4RhdI79sEQj6A",
       "dineIn": true,
@@ -40795,7 +40795,7 @@
         "lat": 24.6977213,
         "lng": 46.6389596
       },
-      "logoUrl": "/logos/bisat.jpg",
+      "logoUrl": "/logos/bisat-wordmark.png",
       "popularityIndex": 40,
       "placeId": "ChIJSRkO-4AdLz4R2BvAEC1Rbzs",
       "dineIn": true,
@@ -40918,7 +40918,7 @@
         "lat": 24.7794093,
         "lng": 46.6808549
       },
-      "logoUrl": "/logos/bisat.jpg",
+      "logoUrl": "/logos/bisat-wordmark.png",
       "popularityIndex": 40,
       "placeId": "ChIJE_2bIQD9Lj4RDkFwmHIsIB8",
       "dineIn": true,
@@ -41041,7 +41041,7 @@
         "lat": 24.7646531,
         "lng": 46.6092044
       },
-      "logoUrl": "/logos/bisat.jpg",
+      "logoUrl": "/logos/bisat-wordmark.png",
       "popularityIndex": 40,
       "placeId": "ChIJla3K1t_jLj4Rgx4zazBDkSk",
       "dineIn": true,

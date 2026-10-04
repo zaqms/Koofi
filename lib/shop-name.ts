@@ -169,6 +169,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "happyland-matcha-diriyah": ["هابي لاند"],
   "salam-cafe-al-malqa": ["قهوة سلام", "salam cafe"],
   "dr-cafe": ["د.كيف", "د كيف", "dr cafe", "drcafe", "dr.cafe"],
+  // Brand spelling is ايزرت. إسرت is the previous catalog form.
+  essert: ["إسرت"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

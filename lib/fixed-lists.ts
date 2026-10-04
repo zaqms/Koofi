@@ -41,10 +41,16 @@ export function listNearbyShops(): Shop[] {
   return listListingShops().filter((shop) => officialShopCoords(shop) != null);
 }
 
-/** Places `outdoorSeating === true` only. null / false / missing stay out. */
+/**
+ * Places `outdoorSeating === true` and not pickup-only. null / false / missing
+ * seating stays out. Pickup-only uses the same `pickupOnly === true` rule as
+ * `chainIsListed` in lib/catalog.ts.
+ */
 export function listOutdoorShops(): Shop[] {
   return rankLikeMostPopular(
-    listListingShops().filter((shop) => shop.outdoorSeating === true),
+    listListingShops().filter(
+      (shop) => shop.outdoorSeating === true && shop.pickupOnly !== true,
+    ),
   );
 }
 
@@ -80,7 +86,7 @@ export function fixedListDescription(id: FixedListId, language: Language): strin
   const n = fixedListCount(id);
   if (language === "ar") {
     const count = countedCafesAr(n);
-    if (id === "nearby") return `${count} في الرياض، مرتبة حسب المسافة من موقعك.`;
+    if (id === "nearby") return `${count} في الرياض، تترتب حسب المسافة لما تشارك موقعك.`;
     if (id === "outdoor") {
       return `${count} فيها جلسات خارجية في الرياض، حسب قائمة Google Maps.`;
     }
@@ -90,14 +96,14 @@ export function fixedListDescription(id: FixedListId, language: Language): strin
     return `${count} تنفع للشغل في الرياض، وفيها قعدة حسب Google Maps.`;
   }
   const count = countedCafesEn(n);
-  if (id === "nearby") return `${count} in Riyadh, sorted by distance from you.`;
+  if (id === "nearby") return `${count} in Riyadh, sorted by distance once you share your location.`;
   if (id === "outdoor") {
     return `${count} with outdoor seating in Riyadh, from the Google Maps listing.`;
   }
   if (id === "coffee") {
     return `${count} — Riyadh roasters, ranked the same way as Most Popular.`;
   }
-  return `${count} good for work in Riyadh, tagged for work and dine-in on Google Maps.`;
+  return `${count} to work from in Riyadh, with dine-in on Google Maps.`;
 }
 
 export function fixedListTitle(id: FixedListId, language: Language): string {

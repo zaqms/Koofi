@@ -28,7 +28,9 @@ import {
   fixedListExplainer,
   fixedListHasSort,
   fixedListHeading,
+  nearbyExplainer,
   type FixedListId,
+  type NearbyExplainerState,
 } from "@/lib/fixed-list-ids";
 import { mostPopularHeading } from "@/lib/product";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
@@ -108,7 +110,9 @@ export function FixedListBody({
   const popularFallbackOn = listId === "nearby" && !located;
   const pool = popularFallbackOn ? popularFallback : shops;
   const chainCount = shops.filter((shop) => shop.isChain).length;
-  const showChainToggle = allowsChains && chainCount > 0;
+  // The popular-12 fallback has no chains, so Local only would do nothing there.
+  // Nearby shows the toggle only once the distance-sorted list is on screen.
+  const showChainToggle = allowsChains && chainCount > 0 && !popularFallbackOn;
   const chainScoped = useMemo(
     () =>
       showChainToggle && hideChains ? pool.filter((shop) => !shop.isChain) : pool,
@@ -126,6 +130,17 @@ export function FixedListBody({
   const canShowMore = located && shown < sorted.length;
   const locationBlocked =
     permission === "denied" || visitor.status === "unavailable";
+  const nearbyState: NearbyExplainerState | null =
+    listId !== "nearby"
+      ? null
+      : located
+        ? "located"
+        : locationBlocked
+          ? "denied"
+          : "noLocation";
+  const explainer = nearbyState
+    ? nearbyExplainer(nearbyState, language)
+    : fixedListExplainer(listId, language);
   const headingId = `fixed-list-${listId}`;
   const listedIds = sorted.slice(0, 8).map((shop) => shop.id);
   const localOnlyEmpty = showChainToggle && hideChains && sorted.length === 0;
@@ -181,8 +196,11 @@ export function FixedListBody({
       <h1 id={headingId} className="text-lg font-semibold leading-7">
         {fixedListHeading(listId, language)}
       </h1>
-      <p className="mt-1 text-sm leading-6 text-ink-soft" data-fixed-list-explainer="">
-        {fixedListExplainer(listId, language)}
+      <p
+        className="mt-1 text-sm leading-6 text-ink-soft"
+        data-fixed-list-explainer={nearbyState ?? ""}
+      >
+        {explainer}
       </p>
       <FixedListPills language={language} current={listId} />
 

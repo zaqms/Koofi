@@ -24,7 +24,7 @@ export const FIXED_LIST_HEADING: Record<FixedListId, { ar: string; en: string }>
   coffee: { ar: "أفضل قهوة في الرياض", en: "Best coffee in Riyadh" },
   work: {
     ar: "قهاوي تنفع للشغل في الرياض",
-    en: "Coffee shops good for work in Riyadh",
+    en: "Coffee shops to work from in Riyadh",
   },
 };
 
@@ -42,18 +42,48 @@ export const FIXED_LIST_EXPLAINER: Record<
     en: "Sorted by distance from you.",
   },
   outdoor: {
-    ar: "جلسات خارجية حسب قائمة Google Maps. اللي بيانها ناقص أو مو صحيح تطلع برا.",
-    en: "Outdoor seating from the Google Maps listing. Missing or false stays off.",
+    ar: "اللي ما عندها جلسات خارجية في Google Maps أو بياناتها ناقصة ما تطلع هنا.",
+    en: "Cafés without outdoor seating on Google Maps, or with missing data, are left out.",
   },
   coffee: {
     ar: "محامص محلية، مرتبة بنفس ترتيب أشهر القهاوي.",
     en: "Local roasters, ranked the same way as Most Popular.",
   },
   work: {
-    ar: "موسومة للشغل وفيها قعدة حسب Google Maps. محلية بس.",
-    en: "Tagged for work, and dine-in on Google Maps. Local cafés only.",
+    ar: "قهاوي اخترناها للشغل والقعدة الطويلة.",
+    en: "Cafés we picked for working and staying a while.",
   },
 };
+
+/**
+ * Nearby's line under the H1 follows the location state, so it never claims a
+ * distance sort while the page shows the most-popular fallback. The server
+ * render (and every crawler) has no location, so it gets `noLocation`.
+ * `located` is the same line as FIXED_LIST_EXPLAINER.nearby (also the OG card).
+ */
+export type NearbyExplainerState = "noLocation" | "denied" | "located";
+
+export const NEARBY_EXPLAINER: Record<
+  NearbyExplainerState,
+  { ar: string; en: string }
+> = {
+  noLocation: {
+    ar: "شارك موقعك ونرتبها لك حسب المسافة. للحين هذي أشهر القهاوي في الرياض.",
+    en: "Share your location to sort by distance. Until then, these are Riyadh's most popular.",
+  },
+  denied: {
+    ar: "الموقع مقفل، فهذي أشهر القهاوي في الرياض. أو اختر حي من تحت.",
+    en: "Location is off, so these are Riyadh's most popular. Or pick a neighborhood below.",
+  },
+  located: FIXED_LIST_EXPLAINER.nearby,
+};
+
+export function nearbyExplainer(
+  state: NearbyExplainerState,
+  language: Language,
+): string {
+  return NEARBY_EXPLAINER[state][language];
+}
 
 export const FIXED_LIST_ACTION = {
   showMore: { ar: "عرض المزيد", en: "Show more" },

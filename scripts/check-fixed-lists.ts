@@ -23,6 +23,7 @@ import {
   fixedListAllowsChains,
   fixedListExplainer,
   fixedListHeading,
+  NEARBY_EXPLAINER,
   type FixedListId,
 } from "../lib/fixed-list-ids";
 import {
@@ -95,6 +96,14 @@ assert(
     (shop) => !outdoor.some((row) => row.id === shop.id),
   ),
   "null, false, and missing outdoor seating stay out",
+);
+assert(
+  outdoor.every((shop) => shop.pickupOnly !== true),
+  "outdoor drops pickup-only rows (same pickupOnly === true rule as the catalog)",
+);
+assert(
+  read("lib/fixed-lists.ts").includes("shop.outdoorSeating === true && shop.pickupOnly !== true"),
+  "outdoor filter carries the spec's not-pickup-only guard",
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 5 &&
@@ -170,6 +179,45 @@ for (const id of FIXED_LIST_IDS) {
   }
 }
 
+// QA round 1 (M1, L4, I1): copy follows the page state and the spec wording.
+assert(FIXED_LIST_HEADING.work.en === "Coffee shops to work from in Riyadh", "EN Work H1 is the spec wording");
+assert(
+  fixedListMetadata("work", "en").title === "Coffee shops to work from in Riyadh · wain.lol" &&
+    fixedListDescription("work", "en").includes("to work from") &&
+    !fixedListDescription("work", "en").includes("good for work"),
+  "EN Work title and meta match the H1 wording",
+);
+assert(
+  fixedListDescription("nearby", "ar") ===
+    `${PIN.nearby} قهاوي في الرياض، تترتب حسب المسافة لما تشارك موقعك.` &&
+    fixedListDescription("nearby", "en") ===
+      `${PIN.nearby} cafes in Riyadh, sorted by distance once you share your location.`,
+  "Nearby meta does not claim a distance sort before a location is shared",
+);
+assert(
+  NEARBY_EXPLAINER.noLocation.ar ===
+    "شارك موقعك ونرتبها لك حسب المسافة. للحين هذي أشهر القهاوي في الرياض." &&
+    NEARBY_EXPLAINER.noLocation.en ===
+      "Share your location to sort by distance. Until then, these are Riyadh's most popular." &&
+    NEARBY_EXPLAINER.denied.ar ===
+      "الموقع مقفل، فهذي أشهر القهاوي في الرياض. أو اختر حي من تحت." &&
+    NEARBY_EXPLAINER.denied.en ===
+      "Location is off, so these are Riyadh's most popular. Or pick a neighborhood below." &&
+    NEARBY_EXPLAINER.located.ar === "مرتبة حسب المسافة من موقعك." &&
+    NEARBY_EXPLAINER.located.en === "Sorted by distance from you.",
+  "Nearby explainer lines per location state",
+);
+assert(
+  fixedListExplainer("outdoor", "ar") ===
+    "اللي ما عندها جلسات خارجية في Google Maps أو بياناتها ناقصة ما تطلع هنا." &&
+    fixedListExplainer("work", "ar") === "قهاوي اخترناها للشغل والقعدة الطويلة." &&
+    !fixedListExplainer("work", "ar").includes("موسومة"),
+  "Outdoor and Work AR explainers use the QA wording",
+);
+for (const line of Object.values(NEARBY_EXPLAINER).flatMap((row) => [row.ar, row.en])) {
+  assert(!/\bween\b/i.test(line) && !/koofi/i.test(line), "Nearby explainer has no ween / Koofi");
+}
+
 const chat = read("components/chat.tsx");
 assert(
   chat.includes("isFixedListChip(selectedChipId)") &&
@@ -233,12 +281,26 @@ for (const id of FIXED_LIST_IDS) {
       assert(html.includes("data-use-my-location"), "use my location is on the page");
       assert(!html.includes("data-fixed-show-more"), "show more waits for a location");
       assert(!html.includes("data-shop-distance=\"km\""), "fallback cards are not labelled with distance");
+      assert(
+        html.includes('data-fixed-list-explainer="noLocation"') &&
+          html.includes(NEARBY_EXPLAINER.noLocation[language].replace(/'/g, "&#x27;")),
+        `${language} nearby server HTML shows the no-location line`,
+      );
+      assert(
+        !html.includes(NEARBY_EXPLAINER.located[language]),
+        `${language} nearby server HTML does not claim a distance sort`,
+      );
     } else {
       assert(cards.length === PIN[id], `${id} renders the full list (${cards.length})`);
     }
     if (id === "coffee" || id === "work") {
       assert(!html.includes("data-chain-card"), `${id} HTML has zero chain cards`);
       assert(!html.includes("data-chain-filter"), `${id} has no chain toggle`);
+    } else if (id === "nearby") {
+      assert(
+        !html.includes("data-chain-filter"),
+        `${language} nearby hides Local only until the distance list shows (fallback has no chains)`,
+      );
     } else {
       assert(html.includes("data-chain-filter"), `${id} has the Local only toggle`);
     }

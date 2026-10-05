@@ -588,14 +588,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "at-taawun": {
     lead: `At Taawun (التعاون) sits between Al Olaya and Al Mughrizat — a mid-north Riyadh حي of its own. This page is the At Taawun set on wain.lol so far.
 
-[FLOW MATCHA](/en/c/flow-matcha-at-taawun) is the name on this list today. We don’t invent extras to fill the page.`,
+[FLOW MATCHA](/en/c/flow-matcha-at-taawun), [Jadeel Coffee](/en/c/jadeel-coffee-at-taawun), [Soul Cafe](/en/c/soul-cafe-at-taawun), and [Peaks](/en/c/peaks-at-taawun) are among the cards on this page today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from At Taawun on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If At Taawun isn’t the stop, these mid-north lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like At Taawun. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in At Taawun on wain.lol — a Riyadh neighborhood list including FLOW MATCHA, with a Maps link.",
+    meta: "{countCafe} in At Taawun on wain.lol — a Riyadh neighborhood list including FLOW MATCHA, Jadeel, Soul Cafe, and Peaks, each with a Maps link.",
   },
   "al-mursalat": {
     lead: `Al Mursalat (المرسلات) sits between Al Mughrizat and Al Masif. This page is the Al Mursalat set on wain.lol so far.

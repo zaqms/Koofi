@@ -91,6 +91,20 @@ export const CHAIN_BRANDS = {
     nameAr: "درايف كوفي",
     logo: "/logos/drive-coffee-wordmark.png",
   },
+  // Batch F (5 Oct 2026): 49 Riyadh pins on Places (Shoug B3 text search, 2 Oct) — mass-market under the 8+ branch rule.
+  "half-million": {
+    id: "half-million",
+    nameEn: "Half Million",
+    nameAr: "هاف مليون",
+    logo: "/logos/half-million-mark.png",
+  },
+  // Batch F (5 Oct 2026): 183 KSA branches, 25+ on the Riyadh locator.
+  "tim-hortons": {
+    id: "tim-hortons",
+    nameEn: "Tim Hortons",
+    nameAr: "تيم هورتنز",
+    logo: "/logos/tim-hortons-wordmark.png",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -114,6 +128,8 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   kyan: ["kyan", "كيان"],
   dancafe: ["dancafe", "dan cafe", "دان كافيه"],
   drive: ["drive coffee", "drivecoffee", "درايف كوفي", "درايف كافي"],
+  "half-million": ["half million", "halfmillion", "هاف مليون", "هاف ميليون"],
+  "tim-hortons": ["tim hortons", "tim horton", "timhortons", "تيم هورتنز", "تيم هورتن", "تيم هورتونز"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -164,6 +180,19 @@ export function chainBrandKeyFromName(latinName: string): string | null {
     compact.startsWith("drivecoffee")
   ) {
     return "drive";
+  }
+  if (
+    latinName.startsWith("half million") ||
+    compact.startsWith("halfmillion")
+  ) {
+    return "half-million";
+  }
+  if (
+    latinName.startsWith("tim hortons") ||
+    latinName.startsWith("tim horton") ||
+    compact.startsWith("timhorton")
+  ) {
+    return "tim-hortons";
   }
   if (
     latinName.startsWith("barns") ||

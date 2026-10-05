@@ -177,6 +177,7 @@ assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
 assert(areas.includes("al-malaz"), "directory includes al-malaz");
 assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
+assert(areas.includes("shubra"), "directory includes shubra (Batch F)");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
@@ -186,9 +187,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 62, `expected 62 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 413, `specialty discovery is 413 (403 + 10 Batch E At Taawun), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 478, `catalog is 478 after D1, D2, D3 and Batch E, got ${listRealShops().length}`);
+assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
+assert(listDiscoveryShops().length === 420, `specialty discovery is 420 (403 + 10 Batch E At Taawun + 7 Batch F Shubra local), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 487, `catalog is 487 after D1, D2, D3, Batch E and Batch F, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1427,6 +1428,28 @@ const MALAZ_REFILL = {
 }
 
 {
+  // Batch F (5 Oct 2026): Shubra lists 7 local cafés + Half Million and Tim Hortons; dr.CAFE Shubra stays on the drive-through lane only.
+  const rows = listDirectoryShopsForDistrict("shubra");
+  assert(
+    rows.map((shop) => shop.id).sort().join(",") ===
+      "address-mood-shubra,coffee-address-shubra,eco-cup-shubra,half-million-shubra,jadeel-coffee-shubra,mhj-cafe-shubra,nasaq-shubra,samus-shubra,tim-hortons-shubra",
+    `shubra lists the 9 Batch F rows, got ${rows.map((shop) => shop.id).join(",")}`,
+  );
+  assert(!rows.some((shop) => shop.id === "drcafe-shubra"), "drcafe-shubra stays off the Shubra page (drive-through lane)");
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-shubra") &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "tim-hortons-shubra"),
+    "drcafe-shubra and tim-hortons-shubra are on the Drive-through directory",
+  );
+  assert(neighborhoodLabel("shubra", "ar") === "شبرا", "shubra Arabic label");
+  assert(neighborhoodLabel("shubra", "en") === "Shubra", "shubra English label");
+  assert(districtPath("shubra", "ar") === "/coffee-shops/shubra", "AR shubra coffee-shops path");
+  for (const ask of ["شبرا", "shubra", "shobra", "Shubra"]) {
+    assert(parseIntent(ask).neighborhoods.includes("shubra"), `parseIntent(${ask}) should hit shubra`);
+  }
+}
+
+{
   const rows = listDirectoryShopsForDistrict("al-mursalat");
   assert(rows.length === 1, `al-mursalat has 1 DT-lane shop, got ${rows.length}`);
   assert(
@@ -1521,7 +1544,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 73, `Drive-through directory (moment tag) is 73 (71 + Coffee Address and dr.CAFE As Suwaidi), got ${dt.length}`);
+  assert(dt.length === 74, `Drive-through directory (moment tag) is 74 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -1976,6 +1999,7 @@ const scoutPack: {
     | "ghirnatah"
     | "al-mathar"
     | "at-taawun"
+    | "shubra"
     | "al-narjis"
     | "badr"
     | "dhahrat-al-badiah"
@@ -4695,6 +4719,122 @@ const scoutPack: {
     placeId: "ChIJ5Wr2E1z9Lj4RQdskOtgoLK8",
     dineIn: true,
     outdoorSeating: true,
+  },  // Batch F: Shubra (5 Oct 2026). Batch F Place Details pins, ids and seating; Coffee Address and Jadeel reuse their brand marks; Half Million and Tim Hortons are chains with registered marks; Eco Cup is a letter tile.
+  {
+    id: "mhj-cafe-shubra",
+    hex: "0x3e2f11f677b002d7:0x43d2c939cffbfd70",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/mhj-cafe-shubra.png",
+    pin: { lat: 24.5738582, lng: 46.6699745 },
+    coordsInUrl: true,
+    placeId: "ChIJ1wKwd_YRLz4RcP37zznJ0kM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "nasaq-shubra",
+    hex: "0x3e2f11002382beb1:0x9a755aec88883678",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/nasaq-shubra.png",
+    pin: { lat: 24.5793715, lng: 46.6665406 },
+    coordsInUrl: true,
+    placeId: "ChIJsb6CIwARLz4ReDaIiOxadZo",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-shubra",
+    hex: "0x3e2f1193ec53416b:0xd38fba46711cec23",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.57412, lng: 46.662997999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJa0FT7JMRLz4RI-wccUa6j9M",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "eco-cup-shubra",
+    hex: "0x3e2f0fdfa29c15d9:0x123632a425233bf5",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.583849999999998, lng: 46.6765173 },
+    coordsInUrl: true,
+    placeId: "ChIJ2RWcot8PLz4R9TsjJaQyNhI",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "jadeel-coffee-shubra",
+    hex: "0x3e2f11000ebf86ad:0x6942d1f94823a1b8",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jadeel-coffee-at-taawun.png",
+    pin: { lat: 24.5634221, lng: 46.6476548 },
+    coordsInUrl: true,
+    placeId: "ChIJrYa_DgARLz4RuKEjSPnRQmk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "samus-shubra",
+    hex: "0x3e2f11f6acdeddcf:0x938ccb9c9b7cc081",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/samus-shubra.png",
+    pin: { lat: 24.5743692, lng: 46.6634264 },
+    coordsInUrl: true,
+    placeId: "ChIJz93erPYRLz4RgcB8m5zLjJM",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "address-mood-shubra",
+    hex: "0x3e2f11ae4d5760ab:0x4aa5f0787933f421",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/address-mood-shubra.png",
+    pin: { lat: 24.573679199999997, lng: 46.663271099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJq2BXTa4RLz4RIfQzeXjwpUo",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "half-million-shubra",
+    hex: "0x3e2f116f99a91f0f:0xd5f9ea42bb1ad314",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/half-million-mark.png",
+    pin: { lat: 24.5689684, lng: 46.6603785 },
+    coordsInUrl: true,
+    placeId: "ChIJDx-pmW8RLz4RFNMau0Lq-dU",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "tim-hortons-shubra",
+    hex: "0x3e2f0f186f8abb07:0x85ae99f1fb9f1a54",
+    neighborhood: "shubra",
+    vibe: ["طلبات السيارة"],
+    moments: ["drive-through"],
+    logoUrl: "/logos/tim-hortons-wordmark.png",
+    pin: { lat: 24.576440299999998, lng: 46.678114199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJB7uKbxgPLz4RVBqf-_GZroU",
+    dineIn: true,
+    outdoorSeating: null,
   },
 ];
 

@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 67, `expected 67 district pages (72 on main minus 5 Drive-only districts), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 68, `expected 68 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -244,6 +244,28 @@ for (const [id, en, ar, shopId] of [
     sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) &&
       sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
     `sitemap lists ${id} AR + EN`,
+  );
+}
+
+// Batch F (5 Oct): Shubra goes live (was chain-only: dr.CAFE drive-through lane). Sheet stays dictionary_only.
+{
+  const id = "shubra";
+  const row = rows.find((r) => r.stableId === id);
+  assert(row?.status === "dictionary_only", "shubra sheet stays dictionary_only");
+  assert(row?.nameEn === "Shubra" && row?.nameAr === "شبرا", "shubra sheet EN/AR lock");
+  assert(neighborhoodLabel(id, "en") === "Shubra", "shubra EN label is Shubra");
+  assert(neighborhoodLabel(id, "ar") === "شبرا", "shubra AR label is شبرا");
+  assert(liveCatalog.includes(id), "shubra is a live catalog district");
+  assert(listLiveDistrictIds().includes(id), "shubra is a live specialty district");
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).sort().join(",") ===
+      "address-mood-shubra,coffee-address-shubra,drcafe-shubra,eco-cup-shubra,half-million-shubra,jadeel-coffee-shubra,mhj-cafe-shubra,nasaq-shubra,samus-shubra,tim-hortons-shubra",
+    "shubra catalog is dr.CAFE (lane) + the 9 Batch F rows",
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) &&
+      sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    "sitemap lists shubra AR + EN",
   );
 }
 

@@ -819,7 +819,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     lead: `Shubra (شبرا) sits on the south side of Riyadh. This page is the Shubra set on wain.lol so far.
 
 [mhj cafe](/en/c/mhj-cafe-shubra), [Nasaq](/en/c/nasaq-shubra), [Jadeel Coffee](/en/c/jadeel-coffee-shubra), and [Address Mood Café](/en/c/address-mood-shubra) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Shubra on the catalog today:`,
+    hereIntro: `There are **{count}** cafes from Shubra on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Shubra isn’t the stop, these south lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Shubra. [About](/en/about).

@@ -576,14 +576,14 @@ const BATCH_E_TAAWUN_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_E_TAAWUN_IDS = Object.keys(BATCH_E_TAAWUN_HERO_COUNTS);
 
-/** BATCH_F: Shubra (5 Oct 2026) Places galleries — 36 Place Photos fetched (4 per café), hand-picked: AI renders (Samus), promo graphics, an off-site kiosk and a dirty-cup frame dropped; faces blurred where visible. Google credit per frame. */
+/** BATCH_F: Shubra (5 Oct 2026) Places galleries — 36 Place Photos fetched (4 per café), hand-picked: AI renders (Samus), promo graphics, an off-site kiosk and a dirty-cup frame dropped; faces blurred where visible. Samus +1 storefront frame from the #254 r2 top-up (2 more Photos; the sandwich-box frame dropped). Google credit per frame. */
 const BATCH_F_SHUBRA_HERO_COUNTS: Record<string, number> = {
   "mhj-cafe-shubra": 4,
   "nasaq-shubra": 4,
   "coffee-address-shubra": 3,
   "eco-cup-shubra": 3,
   "jadeel-coffee-shubra": 4,
-  "samus-shubra": 2,
+  "samus-shubra": 3,
   "address-mood-shubra": 3,
   "half-million-shubra": 3,
   "tim-hortons-shubra": 4,

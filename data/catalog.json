@@ -44505,6 +44505,7 @@
         "lat": 24.7823127,
         "lng": 46.704997600000006
       },
+      "logoUrl": "/logos/strangers-coffee-at-taawun.png",
       "popularityIndex": 40,
       "placeId": "ChIJtYFBEt79Lj4RioTYtWh-lQs",
       "dineIn": true,
@@ -44779,6 +44780,8 @@
     },
     {
       "id": "veloce-cafe-at-taawun",
+      "isChain": true,
+      "chainBrand": "veloce",
       "nameAr": "فيلوتشي كافية",
       "nameEn": "Veloce Cafe",
       "city": "riyadh",
@@ -44795,6 +44798,7 @@
         "lat": 24.7724127,
         "lng": 46.6976123
       },
+      "logoUrl": "/logos/veloce-cafe-at-taawun.png",
       "popularityIndex": 40,
       "placeId": "ChIJv5AE_t_9Lj4R1HlB30Bq5P4",
       "dineIn": true,
@@ -44840,6 +44844,7 @@
         "lat": 24.772337,
         "lng": 46.6982198
       },
+      "logoUrl": "/logos/wooden-coffee-at-taawun.png",
       "popularityIndex": 40,
       "placeId": "ChIJv3kTZwD9Lj4Rutcj-bJnhU4",
       "dineIn": true,

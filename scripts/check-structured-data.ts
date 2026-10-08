@@ -64,8 +64,8 @@ const shops = listPublicShops();
 assert(
   shops.length === listListingShops().length &&
     shops.length === listDiscoveryShops().length + shops.filter((shop) => shop.isChain).length &&
-    shops.filter((shop) => shop.isChain).length === 10,
-  "public list is specialty plus the 10 sit-down chains",
+    shops.filter((shop) => shop.isChain).length === 11,
+  "public list is specialty plus the 11 sit-down chains",
 );
 assert(shops.length > 0, "catalog is not empty");
 

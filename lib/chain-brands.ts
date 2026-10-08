@@ -91,6 +91,13 @@ export const CHAIN_BRANDS = {
     nameAr: "درايف كوفي",
     logo: "/logos/drive-coffee-wordmark.png",
   },
+  // Batch E r2 (8 Oct 2026): 60+ branches (official TikTok @veloce_cafe_sa) — mass-market under the 8+ branch rule.
+  veloce: {
+    id: "veloce",
+    nameEn: "Veloce",
+    nameAr: "فيلوتشي",
+    logo: "/logos/veloce-cafe-at-taawun.png",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -114,6 +121,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   kyan: ["kyan", "كيان"],
   dancafe: ["dancafe", "dan cafe", "دان كافيه"],
   drive: ["drive coffee", "drivecoffee", "درايف كوفي", "درايف كافي"],
+  veloce: ["veloce", "veloce cafe", "فيلوتشي", "فيلوتشي كافيه", "فيلوتشي كافية"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -165,6 +173,7 @@ export function chainBrandKeyFromName(latinName: string): string | null {
   ) {
     return "drive";
   }
+  if (latinName.startsWith("veloce")) return "veloce";
   if (
     latinName.startsWith("barns") ||
     latinName.startsWith("barn s") ||

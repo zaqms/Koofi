@@ -188,7 +188,7 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
-assert(listDiscoveryShops().length === 420, `specialty discovery is 420 (403 + 10 Batch E At Taawun + 7 Batch F Shubra local), got ${listDiscoveryShops().length}`);
+assert(listDiscoveryShops().length === 419, `specialty discovery is 419 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local; Veloce is a chain), got ${listDiscoveryShops().length}`);
 assert(listRealShops().length === 487, `catalog is 487 after D1, D2, D3, Batch E and Batch F, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
@@ -1401,7 +1401,13 @@ const MALAZ_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, "at-taawun");
-  assert(rows.length === 11, `at-taawun has 11 shops after Batch E, got ${rows.length}`);
+  assert(rows.length === 10, `at-taawun has 10 specialty shops after Batch E r2 (Veloce is a chain), got ${rows.length}`);
+  const pageRows = listDirectoryShopsForDistrict("at-taawun");
+  assert(
+    pageRows.length === 11 &&
+      pageRows.filter((shop) => shop.isChain).map((shop) => shop.id).join(",") === "veloce-cafe-at-taawun",
+    `at-taawun page lists 11 rows: 10 local + Veloce behind Local only, got ${pageRows.map((shop) => shop.id + (shop.isChain ? "{chain}" : "")).join(",")}`,
+  );
   assert(
     rows.some((shop) => shop.id === "flow-matcha-at-taawun"),
     "at-taawun includes flow-matcha-at-taawun",
@@ -4593,7 +4599,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
-  // Batch E: At Taawun (5 Oct 2026). Scout CLEAN.csv pins, Places ids and seating; Peaks and CAF LAB reuse their brand marks; Stranger's, Glare, Veloce and Wooden are letter tiles.
+  // Batch E: At Taawun (5 Oct 2026). Scout CLEAN.csv pins, Places ids and seating; Peaks and CAF LAB reuse their brand marks; Glare is a letter tile. r2 (8 Oct): Stranger's cup mark (X @strangerCo_SA), Wooden W mark (wooden.sa), Veloce wordmark (TikTok @veloce_cafe_sa; isChain veloce).
   {
     id: "odd-at-taawun",
     hex: "0x3e2efd68254b6397:0x9f80cb48c8b93789",
@@ -4626,6 +4632,7 @@ const scoutPack: {
     neighborhood: "at-taawun",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/strangers-coffee-at-taawun.png",
     pin: { lat: 24.7823127, lng: 46.704997600000006 },
     coordsInUrl: true,
     placeId: "ChIJtYFBEt79Lj4RioTYtWh-lQs",
@@ -4663,6 +4670,7 @@ const scoutPack: {
     neighborhood: "at-taawun",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/veloce-cafe-at-taawun.png",
     pin: { lat: 24.7724127, lng: 46.6976123 },
     coordsInUrl: true,
     placeId: "ChIJv5AE_t_9Lj4R1HlB30Bq5P4",
@@ -4675,6 +4683,7 @@ const scoutPack: {
     neighborhood: "at-taawun",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/wooden-coffee-at-taawun.png",
     pin: { lat: 24.772337, lng: 46.6982198 },
     coordsInUrl: true,
     placeId: "ChIJv3kTZwD9Lj4Rutcj-bJnhU4",

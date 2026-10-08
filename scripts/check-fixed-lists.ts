@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 12,
-  "nearby includes the 12 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Half Million and Tim Hortons Shubra)",
+  nearby.filter((shop) => isChainShop(shop)).length === 13,
+  "nearby includes the 13 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra)",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -106,9 +106,9 @@ assert(
   "outdoor filter carries the spec's not-pickup-only guard",
 );
 assert(
-  outdoor.filter((shop) => isChainShop(shop)).length === 5 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 202,
-  "outdoor is 202 local + 5 chains (Batch F adds mhj cafe and Coffee Address Shubra)",
+  outdoor.filter((shop) => isChainShop(shop)).length === 6 &&
+    outdoor.filter((shop) => !isChainShop(shop)).length === 201,
+  "outdoor is 201 local + 6 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra)",
 );
 
 const coffee = listBestCoffeeShops();

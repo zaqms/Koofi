@@ -105,6 +105,13 @@ export const CHAIN_BRANDS = {
     nameAr: "تيم هورتنز",
     logo: "/logos/tim-hortons-wordmark.png",
   },
+  // Batch E r2 (8 Oct 2026): 60+ branches (official TikTok @veloce_cafe_sa) — mass-market under the 8+ branch rule.
+  veloce: {
+    id: "veloce",
+    nameEn: "Veloce",
+    nameAr: "فيلوتشي",
+    logo: "/logos/veloce-cafe-at-taawun.png",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -130,6 +137,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   drive: ["drive coffee", "drivecoffee", "درايف كوفي", "درايف كافي"],
   "half-million": ["half million", "halfmillion", "هاف مليون", "هاف ميليون"],
   "tim-hortons": ["tim hortons", "tim horton", "timhortons", "تيم هورتنز", "تيم هورتن", "تيم هورتونز"],
+  veloce: ["veloce", "veloce cafe", "فيلوتشي", "فيلوتشي كافيه", "فيلوتشي كافية"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -181,6 +189,7 @@ export function chainBrandKeyFromName(latinName: string): string | null {
   ) {
     return "drive";
   }
+  if (latinName.startsWith("veloce")) return "veloce";
   if (
     latinName.startsWith("half million") ||
     compact.startsWith("halfmillion")

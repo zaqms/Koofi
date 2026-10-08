@@ -55,6 +55,7 @@ import {
   neighborhoodsPath,
   PRODUCT_NAME,
 } from "../lib/product";
+import { listingCardTags } from "../lib/listing-tags";
 import { officialShopCoords } from "../lib/place-coords";
 import { rankByPopularity } from "../lib/picker";
 import { buildSitemapXml } from "../lib/sitemap-xml";
@@ -1610,14 +1611,27 @@ const MALAZ_REFILL = {
     listDirectoryShopsForDistrict("al-masif").length === 10,
     "al-masif specialty directory is 10 after the closed Voom drop",
   );
-  // The 16 Sep drop stays (no Starbucks drive-through rows). Batch G (8 Oct) adds the first sit-down
-  // Starbucks under the 4 Oct listing policy: tagged isChain, hidden by Local only.
+  // 16 Sep scope: no Starbucks row carries the drive-through tag or chip.
+  // Sit-down Starbucks (Tala Mall, Batch G) stays. Most popular, بيننا, and trending
+  // still leave chains out the way those lists already do.
+  const DRIVE_THROUGH_CHIP = /drive-through|طلبات السيار|درايف ثرو/i;
+  const starbucksRows = listRealShops().filter(
+    (shop) =>
+      shop.chainBrand === "starbucks" ||
+      /starbucks|ستاربكس/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
+  );
+  assert(starbucksRows.length > 0, "a sit-down Starbucks row is in the catalog");
   assert(
-    listRealShops()
-      .filter((shop) => /starbucks/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`))
-      .map((shop) => `${shop.id}:${shop.isChain === true}:${shop.chainBrand}`)
-      .join(",") === "starbucks-tala-mall-an-nafal:true:starbucks",
-    "the only Starbucks row is the tagged Tala Mall chain (Batch G)",
+    starbucksRows.every((shop) => {
+      const chips = [...listingCardTags(shop, "en"), ...listingCardTags(shop, "ar")];
+      return (
+        shop.catalogLane !== "drive-through" &&
+        !shop.momentTags.includes("drive-through") &&
+        !shop.vibeTags.some((tag) => DRIVE_THROUGH_CHIP.test(tag)) &&
+        !chips.some((tag) => DRIVE_THROUGH_CHIP.test(tag))
+      );
+    }),
+    "no Starbucks row carries the drive-through tag or chip",
   );
   const namar = listDirectoryShopsForDistrict("namar");
   assert(
@@ -4848,7 +4862,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
-  // Batch G: An Nafal (8 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 6 letter tiles (Nafel, Pivot, Cave, Kaseb, Hatheeth, Percol); chains Costa, Starbucks and dr.CAFE are sit-down (no drive-through).
+  // Batch G: An Nafal (8 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 7 letter tiles (Nafel, Pivot, Cave, Kaseb, Hatheeth, Percol, Grotta — the G mark stays illegible at 44px); chains Costa, Starbucks and dr.CAFE are sit-down (no drive-through).
   {
     id: "air-speciality-an-nafal",
     hex: "0x3e2efdd141871e29:0xfd9157a95d2f6b0a",
@@ -4979,7 +4993,6 @@ const scoutPack: {
     neighborhood: "an-nafal",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/grotta-an-nafal.png",
     pin: { lat: 24.7830074, lng: 46.6788141 },
     coordsInUrl: true,
     placeId: "ChIJC9DQhQTlLj4R55v1MGcWwTc",

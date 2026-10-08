@@ -707,6 +707,12 @@ assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete
 assert(batchETaawunHeroIds.length === 10, "Batch E At Taawun hero set is complete");
 assert(batchFShubraHeroIds.length === 9, "Batch F Shubra hero set is complete");
 assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete");
+assert(
+  (bakedHeroes["starbucks-tala-mall-an-nafal"] as { attribution?: { displayName?: string } }[])
+    .map((photo) => photo.attribution?.displayName)
+    .join("|") === "Fathi Ashour|Starbucks|Azam Anwar|Miss Lily",
+  "starbucks-tala-mall hero is the former gallery frame 2 (Fathi Ashour interior); Google credit stays on that frame",
+);
 // QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
 assert(
   (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===

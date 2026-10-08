@@ -80,7 +80,7 @@ import { fixedListAllowsChains } from "../lib/fixed-list-ids";
 import { formatReply, pickCafes } from "../lib/picker";
 import { districtPath } from "../lib/product";
 import { dedupeSameBrand, shopBrandKey } from "../lib/shop-brand";
-import { matchCatalogShops } from "../lib/shop-name";
+import { matchCatalogShops, shopNameAliases } from "../lib/shop-name";
 import { listSitemapLocs } from "../lib/sitemap-xml";
 import { buildLlmsTxt, listPublicShops, publicShopRecord } from "../lib/structured-data";
 import {
@@ -525,6 +525,75 @@ assert(
     taggedLive.filter((shop) => shop.chainBrand === "starbucks").map((shop) => shop.id).join(",") === "starbucks-tala-mall-an-nafal",
   "Costa and Starbucks each have one tagged row (Tala Mall An Nafal, Batch G)",
 );
+
+// Generic cafe words are not a brand name. «كوفي» inside كوستا كوفي used to pin Costa first.
+const GENERIC_CAFE_TOKENS = new Set([
+  "كوفي",
+  "كوفيه",
+  "كوفه",
+  "قهوه",
+  "كافيه",
+  "كافية",
+  "كافي",
+  "coffee",
+  "coffe",
+  "cofee",
+  "cafe",
+  "café",
+  "caffe",
+  "caffé",
+  "kofi",
+  "kofe",
+  "koffee",
+  "qahwa",
+  "qahwah",
+  "kahwa",
+  "gahwa",
+]);
+const genericChainAliases = listRealShops()
+  .filter((shop) => shop.isChain === true)
+  .flatMap((shop) =>
+    shopNameAliases(shop)
+      .filter((alias) => !alias.includes(" ") && GENERIC_CAFE_TOKENS.has(alias))
+      .map((alias) => `${shop.id}:${alias}`),
+  );
+assert(
+  genericChainAliases.length === 0,
+  `chain rows must not alias a generic cafe token, got ${genericChainAliases.join(",")}`,
+);
+for (const ask of ["كوفي النفل", "كوفي قريب من النفل", "coffee an nafal", "كافيه النفل"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.picks.length > 0, `${ask} still returns picks`);
+  assert(
+    result.picks.every((pick) => pick.shop.isChain !== true),
+    `${ask} top picks stay local, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
+const costaNafal = pickCafes({ text: "كوستا النفل" });
+assert(
+  costaNafal.picks.some((pick) => pick.shop.id === "costa-tala-mall-an-nafal"),
+  `كوستا النفل returns Costa, got ${costaNafal.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+for (const [ask, brand] of [
+  ["كوستا", "costa"],
+  ["costa", "costa"],
+  ["costa coffee", "costa"],
+  ["starbucks", "starbucks"],
+  ["ستاربكس", "starbucks"],
+  ["د.كيف", "dr-cafe"],
+  ["dr.CAFE", "dr-cafe"],
+  ["هاف مليون", "half-million"],
+  ["تيم هورتنز", "tim-hortons"],
+  ["فيلوتشي", "veloce"],
+  ["درايف كوفي", "drive"],
+  ["جافا", "java"],
+] as const) {
+  const result = pickCafes({ text: ask });
+  assert(
+    result.picks.some((pick) => pick.shop.chainBrand === brand),
+    `${ask} still surfaces ${brand}, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
 // Sit-down chain rows with no drive-through (no drive-through moment tag, never on the lane).
 const SIT_DOWN_ONLY_CHAINS = new Set<string>([
   "veloce-cafe-at-taawun",
@@ -1336,12 +1405,13 @@ assert(
   "llms.txt names the 16 chain branches separately from specialty",
 );
 
-// Batch G (8 Oct 2026): the 2 Oct guard kept Starbucks out while no row was tagged. Under the 4 Oct
-// listing policy the first Starbucks row ships tagged (isChain, Local only hides it); the district-urls
-// assert now pins it as the only Starbucks row.
+// 16 Sep scope stays: no Starbucks row carries the drive-through tag or chip.
+// Most popular, بيننا, and trending still exclude chains (including Starbucks) as implemented.
 assert(
-  read("scripts/check-district-urls.ts").includes('"the only Starbucks row is the tagged Tala Mall chain (Batch G)"'),
-  "Starbucks assert pins the single tagged Tala Mall row",
+  read("scripts/check-district-urls.ts").includes(
+    '"no Starbucks row carries the drive-through tag or chip"',
+  ),
+  "Starbucks drive-through chip ban stays in the district check",
 );
 
 const dineInChain = fixtureShop({

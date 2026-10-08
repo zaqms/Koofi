@@ -175,6 +175,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "era-coffee-as-suwaidi": ["ايرا", "إيرا"],
   // Catalog spelling is اوستريتش. اوستريتيش is the other spelling people type.
   "ostrich-al-falah": ["اوستريتيش"],
+  // Batch G: نفل is also the حي token (النفل), so the full name needs to be an explicit alias (same as قهوة سلام).
+  "nafel-coffee-an-nafal": ["قهوة نفل", "nafel coffee"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

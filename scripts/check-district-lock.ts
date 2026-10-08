@@ -195,7 +195,8 @@ assert(
 // As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.
 for (const [id, en, ar, shopId, onSheet] of [
   ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi", true],
-  ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal", false],
+  // Batch G (8 Oct): An Nafal gains 15 cafés (12 local + Costa, Starbucks and dr.CAFE sit-down chains).
+  ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal,air-speciality-an-nafal,black-stamp-an-nafal,nafel-coffee-an-nafal,pivot-espresso-an-nafal,roastree-an-nafal,cave-cafe-an-nafal,kaseb-concept-an-nafal,hatheeth-an-nafal,percol-an-nafal,peacock-an-nafal,grotta-an-nafal,btw-an-nafal,costa-tala-mall-an-nafal,starbucks-tala-mall-an-nafal,drcafe-an-nafal", false],
   ["king-salman", "King Salman", "الملك سلمان", "rex-king-salman,tul-cafe-king-salman", false],
   // Batch D1 (4 Oct): As Suwaidi gains 7 cafés (6 local + dr.CAFE chain). Batch D3 adds Tul Cafe beside Rex on King Salman.
   ["as-suwaidi", "As Suwaidi", "السويدي", "alwaal-albari-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi,hot-sip-as-suwaidi,era-coffee-as-suwaidi,naham-specialty-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi", true],

@@ -188,8 +188,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
-assert(listDiscoveryShops().length === 419, `specialty discovery is 419 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 487, `catalog is 487 after D1, D2, D3, Batch E and Batch F, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 431, `specialty discovery is 431 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 502, `catalog is 502 after D1, D2, D3, Batch E, Batch F and Batch G, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1610,11 +1610,14 @@ const MALAZ_REFILL = {
     listDirectoryShopsForDistrict("al-masif").length === 10,
     "al-masif specialty directory is 10 after the closed Voom drop",
   );
+  // The 16 Sep drop stays (no Starbucks drive-through rows). Batch G (8 Oct) adds the first sit-down
+  // Starbucks under the 4 Oct listing policy: tagged isChain, hidden by Local only.
   assert(
-    !listRealShops().some((shop) =>
-      /starbucks/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
-    ),
-    "Starbucks stays dropped",
+    listRealShops()
+      .filter((shop) => /starbucks/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`))
+      .map((shop) => `${shop.id}:${shop.isChain === true}:${shop.chainBrand}`)
+      .join(",") === "starbucks-tala-mall-an-nafal:true:starbucks",
+    "the only Starbucks row is the tagged Tala Mall chain (Batch G)",
   );
   const namar = listDirectoryShopsForDistrict("namar");
   assert(
@@ -1661,10 +1664,10 @@ const MALAZ_REFILL = {
     "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
-  assert(drcafe.length === 19, `19 dr.CAFE rows, got ${drcafe.length}`);
+  assert(drcafe.length === 20, `20 dr.CAFE rows (19 + An Nafal Park, Batch G), got ${drcafe.length}`);
   assert(
     drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
-    "all 19 dr.CAFE rows use the official mark",
+    "all 20 dr.CAFE rows use the official mark",
   );
   assert(
     getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",
@@ -4842,6 +4845,196 @@ const scoutPack: {
     pin: { lat: 24.576440299999998, lng: 46.678114199999996 },
     coordsInUrl: true,
     placeId: "ChIJB7uKbxgPLz4RVBqf-_GZroU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch G: An Nafal (8 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 6 letter tiles (Nafel, Pivot, Cave, Kaseb, Hatheeth, Percol); chains Costa, Starbucks and dr.CAFE are sit-down (no drive-through).
+  {
+    id: "air-speciality-an-nafal",
+    hex: "0x3e2efdd141871e29:0xfd9157a95d2f6b0a",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/air-speciality-an-nafal.png",
+    pin: { lat: 24.786226199999998, lng: 46.681539199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJKR6HQdH9Lj4RCmsvXalXkf0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "black-stamp-an-nafal",
+    hex: "0x3e2efd501b71bb19:0x697aff7d69303774",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/black-stamp-an-nafal.png",
+    pin: { lat: 24.781727999999998, lng: 46.683722499999995 },
+    coordsInUrl: true,
+    placeId: "ChIJGbtxG1D9Lj4RdDcwaX3_emk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "nafel-coffee-an-nafal",
+    hex: "0x3e2efd8bcefe2e7f:0x5dd26dd85397e8fa",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7802603, lng: 46.684233 },
+    coordsInUrl: true,
+    placeId: "ChIJfy7-zov9Lj4R-uiXU9ht0l0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "pivot-espresso-an-nafal",
+    hex: "0x3e2efd005e56c5d7:0x25d526ba03683437",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.780051, lng: 46.6838127 },
+    coordsInUrl: true,
+    placeId: "ChIJ18VWXgD9Lj4RNzRoA7om1SU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "roastree-an-nafal",
+    hex: "0x3e2efd19d74abc47:0x598668daefcc7c54",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/roastree-an-nafal.png",
+    pin: { lat: 24.789391000000002, lng: 46.671059299999996 },
+    coordsInUrl: true,
+    placeId: "ChIJR7xK1xn9Lj4RVHzM79pohlk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "cave-cafe-an-nafal",
+    hex: "0x3e2efdc173725853:0x16b146d82ec4f0ea",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7798335, lng: 46.683313 },
+    coordsInUrl: true,
+    placeId: "ChIJU1hyc8H9Lj4R6vDELthGsRY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "kaseb-concept-an-nafal",
+    hex: "0x3e2efd386fe66f57:0xb2c13ebb571ef88c",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7752865, lng: 46.6755259 },
+    coordsInUrl: true,
+    placeId: "ChIJV2_mbzj9Lj4RjPgeV7s-wbI",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "hatheeth-an-nafal",
+    hex: "0x3e2efd006dc3413b:0x9f1a139542c832c",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.779541, lng: 46.6824947 },
+    coordsInUrl: true,
+    placeId: "ChIJO0HDbQD9Lj4RLIMsVDmh8Qk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "percol-an-nafal",
+    hex: "0x3e2efd61ae7c2aa5:0x565f7818114fff5",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7795223, lng: 46.6824388 },
+    coordsInUrl: true,
+    placeId: "ChIJpSp8rmH9Lj4R9f8UgYH3ZQU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "peacock-an-nafal",
+    hex: "0x3e2efd00244af7cd:0xfba0b3aa8afb64c6",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peacock-an-nafal.png",
+    pin: { lat: 24.7762891, lng: 46.6751423 },
+    coordsInUrl: true,
+    placeId: "ChIJzfdKJAD9Lj4RxmT7iqqzoPs",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "grotta-an-nafal",
+    hex: "0x3e2ee50485d0d00b:0x37c1166730f59be7",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/grotta-an-nafal.png",
+    pin: { lat: 24.7830074, lng: 46.6788141 },
+    coordsInUrl: true,
+    placeId: "ChIJC9DQhQTlLj4R55v1MGcWwTc",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "btw-an-nafal",
+    hex: "0x3e2efd0c7afdb917:0xd5d229ef5423373c",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/btw-an-nafal.png",
+    pin: { lat: 24.7772962, lng: 46.68428720000001 },
+    coordsInUrl: true,
+    placeId: "ChIJF7n9egz9Lj4RPDcjVO8p0tU",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "costa-tala-mall-an-nafal",
+    hex: "0x3e2ee3000d5b7105:0xf50d24766cdb30e6",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/costa-mark.png",
+    pin: { lat: 24.7711568, lng: 46.669407899999996 },
+    coordsInUrl: true,
+    placeId: "ChIJBXFbDQDjLj4R5jDbbHYkDfU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "starbucks-tala-mall-an-nafal",
+    hex: "0x3e2ee3ac0af9cdd3:0x8e5a9b39f34563e0",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.7711814, lng: 46.669083699999995 },
+    coordsInUrl: true,
+    placeId: "ChIJ0835CqzjLj4R4GNF8zmbWo4",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "drcafe-an-nafal",
+    hex: "0x3e2efda72f993adb:0xc0e9f501dc660d54",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drcafe-mark.png",
+    pin: { lat: 24.779096, lng: 46.6797974 },
+    coordsInUrl: true,
+    placeId: "ChIJ2zqZL6f9Lj4RVA1m3AH16cA",
     dineIn: true,
     outdoorSeating: null,
   },

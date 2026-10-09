@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 447,
-  outdoor: 213,
+  nearby: 455,
+  outdoor: 217,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 502, "catalog is 502 after Batch G (468 + 10 At Taawun + 9 Shubra + 15 An Nafal)");
-assert(listListingShops().length === 447, "listing is 447 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal)");
-assert(listPublicShops().length === 447, "/api/shops pool is 447");
+assert(listRealShops().length === 510, "catalog is 510 after Batch H (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 8 Al Izdihar)");
+assert(listListingShops().length === 455, "listing is 455 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 8 Batch H Al Izdihar)");
+assert(listPublicShops().length === 455, "/api/shops pool is 455");
 assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
-assert(listSitemapLocs().length === 1181, "sitemap is 1181 (1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN)");
+assert(listSitemapLocs().length === 1197, "sitemap is 1197 (1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 8 Batch H cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 16,
-  "nearby includes the 16 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal)",
+  nearby.filter((shop) => isChainShop(shop)).length === 17,
+  "nearby includes the 17 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + McCafe Al Izdihar)",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -107,8 +107,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 6 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 207,
-  "outdoor is 207 local + 6 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés)",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 211,
+  "outdoor is 211 local + 6 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana)",
 );
 
 const coffee = listBestCoffeeShops();

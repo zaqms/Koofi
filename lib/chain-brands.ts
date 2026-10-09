@@ -30,7 +30,8 @@ export const CHAIN_BRANDS = {
     id: "mccafe",
     nameEn: "McCafe",
     nameAr: "ماك كافيه",
-    logo: null,
+    // Batch H (9 Oct 2026): first catalog row (Uthman Ibn Affan Rd, Al Izdihar) ships the McCafé wordmark.
+    logo: "/logos/mccafe-mark.png",
   },
   barns: {
     id: "barns",

@@ -174,11 +174,13 @@ assert(izdihar?.status === "dictionary_only", "Izdihar sheet stays dictionary_on
 assert(izdihar?.nameEn === "Al Izdihar", "Izdihar EN lock");
 assert(izdihar?.nameAr === "الازدهار", "Izdihar AR lock");
 assert(liveCatalog.includes("al-izdihar"), "Slant makes Al Izdihar a live catalog district");
+// Batch H (9 Oct): Al Izdihar gains 8 cafés (7 local + McCafe sit-down chain).
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-izdihar").map((shop) => shop.id).join(",") ===
-    "slant-specialty-coffee-al-izdihar",
-  "Al Izdihar catalog is Slant only",
+    "slant-specialty-coffee-al-izdihar,convoy-coffee-al-izdihar,knoll-al-izdihar,steam-roastery-al-izdihar,temper-al-izdihar,katf-al-izdihar,rakiza-al-izdihar,hijana-al-izdihar,mccafe-uthman-al-izdihar",
+  "Al Izdihar catalog is Slant plus the 8 Batch H rows",
 );
+assert(izdihar?.shopCountLive === 9, "Izdihar sheet shop_count_live is 9 after Batch H");
 
 const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
 assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");

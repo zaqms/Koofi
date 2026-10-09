@@ -610,6 +610,19 @@ const BATCH_G_NAFAL_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_G_NAFAL_IDS = Object.keys(BATCH_G_NAFAL_HERO_COUNTS);
 
+/** BATCH_H: Al Izdihar (9 Oct 2026) Places galleries — Scout's 9 Oct frames (44 Place Photos, 640px), hand-ordered. McCafe ships 1 frame: Places frames 2–4 are McDonald's burger/stadium promo graphics. Google credit per frame. */
+const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
+  "convoy-coffee-al-izdihar": 4,
+  "knoll-al-izdihar": 4,
+  "steam-roastery-al-izdihar": 4,
+  "temper-al-izdihar": 4,
+  "katf-al-izdihar": 4,
+  "rakiza-al-izdihar": 4,
+  "hijana-al-izdihar": 4,
+  "mccafe-uthman-al-izdihar": 1,
+};
+const BATCH_H_IZDIHAR_IDS = Object.keys(BATCH_H_IZDIHAR_HERO_COUNTS);
+
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
 const BATCH14_HERO_COUNTS: Record<string, number> = {
   "plant-cafe-as-suwaidi": 4,
@@ -666,6 +679,7 @@ const batchD2FalahHeroIds = BATCH_D2_FALAH_IDS.filter((id) => bakedHeroes[id]);
 const batchETaawunHeroIds = BATCH_E_TAAWUN_IDS.filter((id) => bakedHeroes[id]);
 const batchFShubraHeroIds = BATCH_F_SHUBRA_IDS.filter((id) => bakedHeroes[id]);
 const batchGNafalHeroIds = BATCH_G_NAFAL_IDS.filter((id) => bakedHeroes[id]);
+const batchHIzdiharHeroIds = BATCH_H_IZDIHAR_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -686,8 +700,9 @@ assert(
       batchD2FalahHeroIds.length +
       batchETaawunHeroIds.length +
       batchFShubraHeroIds.length +
-      batchGNafalHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra and G An Nafal merge in",
+      batchGNafalHeroIds.length +
+      batchHIzdiharHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal and H Al Izdihar merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -707,6 +722,7 @@ assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete
 assert(batchETaawunHeroIds.length === 10, "Batch E At Taawun hero set is complete");
 assert(batchFShubraHeroIds.length === 9, "Batch F Shubra hero set is complete");
 assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete");
+assert(batchHIzdiharHeroIds.length === 8, "Batch H Al Izdihar hero set is complete");
 assert(
   (bakedHeroes["starbucks-tala-mall-an-nafal"] as { attribution?: { displayName?: string } }[])
     .map((photo) => photo.attribution?.displayName)
@@ -818,6 +834,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH_E_TAAWUN_HERO_COUNTS[id] != null) return BATCH_E_TAAWUN_HERO_COUNTS[id]!;
   if (BATCH_F_SHUBRA_HERO_COUNTS[id] != null) return BATCH_F_SHUBRA_HERO_COUNTS[id]!;
   if (BATCH_G_NAFAL_HERO_COUNTS[id] != null) return BATCH_G_NAFAL_HERO_COUNTS[id]!;
+  if (BATCH_H_IZDIHAR_HERO_COUNTS[id] != null) return BATCH_H_IZDIHAR_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

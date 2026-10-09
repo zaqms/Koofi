@@ -1,10 +1,13 @@
 "use client";
 
-import { CONSENT_OPEN_EVENT } from "@/lib/consent";
 import { consentText } from "@/lib/consent-copy";
 import type { Language } from "@/lib/types";
 
-/** Footer link that reopens the cookie banner. */
+/**
+ * Footer link that reopens the cookie banner. No click handler: the consent
+ * bootstrap's capture guard handles data-consent clicks before any tag
+ * listener sees them (lib/consent.ts, CONSENT_ACTION_EVENT).
+ */
 export function CookieSettingsLink({
   language,
   className,
@@ -13,12 +16,7 @@ export function CookieSettingsLink({
   className: string;
 }) {
   return (
-    <button
-      type="button"
-      className={className}
-      data-consent="settings"
-      onClick={() => window.dispatchEvent(new Event(CONSENT_OPEN_EVENT))}
-    >
+    <button type="button" className={className} data-consent="settings">
       {consentText("settingsLink", language)}
     </button>
   );

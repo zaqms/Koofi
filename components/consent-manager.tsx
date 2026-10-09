@@ -3,9 +3,10 @@
 import { Analytics } from "@vercel/analytics/next";
 import Link from "next/link";
 import Script from "next/script";
-import { useCallback, useSyncExternalStore } from "react";
+import { useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import {
-  CONSENT_OPEN_EVENT,
+  CONSENT_ACTION_EVENT,
+  type ConsentAction,
   DATAFAST_DOMAIN,
   DATAFAST_SRC,
   DATAFAST_WEBSITE_ID,
@@ -31,6 +32,21 @@ function documentLanguage(fallback: Language): Language {
  * bootstrap in app/layout.tsx (lib/consent.ts). The banner is fixed to the
  * bottom of the viewport, so showing it never shifts the page.
  */
+/** Height of a visible fixed bar pinned to the viewport bottom (0 if none). */
+function fixedBottomBarHeight(banner: HTMLElement): number {
+  let height = 0;
+  for (const el of Array.from(document.body.querySelectorAll<HTMLElement>("form, nav, footer, [role=toolbar]"))) {
+    if (banner.contains(el)) continue;
+    const style = window.getComputedStyle(el);
+    if (style.position !== "fixed" || style.display === "none" || style.visibility === "hidden") continue;
+    const rect = el.getBoundingClientRect();
+    if (rect.height > 0 && rect.height < window.innerHeight / 3 && Math.abs(rect.bottom - window.innerHeight) <= 1) {
+      height = Math.max(height, Math.round(rect.height));
+    }
+  }
+  return height;
+}
+
 type ConsentSnap = { choice: ConsentChoice | null; open: boolean };
 const SERVER_SNAP: ConsentSnap = { choice: null, open: false };
 let snap: ConsentSnap | null = null;
@@ -49,16 +65,26 @@ function setSnap(next: ConsentSnap): void {
   for (const listener of listeners) listener();
 }
 
-function onOpenSettings(): void {
-  setSnap({ ...getSnap(), open: true });
+/** Accept / Reject / Cookie settings, re-emitted by the bootstrap guard. */
+function onConsentAction(event: Event): void {
+  const action = (event as CustomEvent<ConsentAction>).detail;
+  if (action === "accept") {
+    grantConsent();
+    setSnap({ choice: "granted", open: false });
+  } else if (action === "reject") {
+    denyConsent(getSnap().choice);
+    setSnap({ choice: "denied", open: false });
+  } else if (action === "settings") {
+    setSnap({ ...getSnap(), open: true });
+  }
 }
 
 function subscribe(listener: () => void): () => void {
   listeners.add(listener);
-  if (listeners.size === 1) window.addEventListener(CONSENT_OPEN_EVENT, onOpenSettings);
+  if (listeners.size === 1) window.addEventListener(CONSENT_ACTION_EVENT, onConsentAction);
   return () => {
     listeners.delete(listener);
-    if (listeners.size === 0) window.removeEventListener(CONSENT_OPEN_EVENT, onOpenSettings);
+    if (listeners.size === 0) window.removeEventListener(CONSENT_ACTION_EVENT, onConsentAction);
   };
 }
 
@@ -68,15 +94,15 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
   // document's current lang is safe to read.
   const language = open ? documentLanguage(initialLanguage) : initialLanguage;
 
-  const accept = useCallback(() => {
-    grantConsent();
-    setSnap({ choice: "granted", open: false });
-  }, []);
-
-  const reject = useCallback(() => {
-    denyConsent(getSnap().choice);
-    setSnap({ choice: "denied", open: false });
-  }, []);
+  // Sit above a fixed bottom bar (home chat composer) instead of covering
+  // it. Measured once when the banner opens, before paint: no later move,
+  // so no layout shift.
+  const bannerRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const banner = bannerRef.current;
+    if (!open || !banner) return;
+    banner.style.bottom = `${fixedBottomBarHeight(banner)}px`;
+  }, [open]);
 
   const button =
     "min-h-11 flex-1 rounded-full border border-ink bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bean";
@@ -99,6 +125,7 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
           role="dialog"
           aria-modal="false"
           aria-labelledby="wain-consent-title"
+          ref={bannerRef}
           data-consent-banner=""
           dir={language === "ar" ? "rtl" : "ltr"}
           lang={language}
@@ -123,10 +150,10 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
               <p className="mt-1 text-xs text-ink-soft">{consentCopy.current[language][choice]}</p>
             ) : null}
             <div className="mt-3 flex gap-2">
-              <button type="button" className={button} onClick={accept} data-consent="accept">
+              <button type="button" className={button} data-consent="accept">
                 {consentText("accept", language)}
               </button>
-              <button type="button" className={button} onClick={reject} data-consent="reject">
+              <button type="button" className={button} data-consent="reject">
                 {consentText("reject", language)}
               </button>
             </div>

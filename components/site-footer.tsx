@@ -14,6 +14,8 @@ type SiteFooterProps = {
   onDark?: boolean;
   /** Bare home drops the rule and separates sections with space. */
   rule?: boolean;
+  /** Pages that already show Contact us in their body pass false. */
+  contact?: boolean;
 };
 
 /** Latin brand, About + Ideas + Privacy + Terms + Cookie settings links, fixed-list links, Contact us. Home: after the directory. Cards: under back-to-chat. */
@@ -22,6 +24,7 @@ export function SiteFooter({
   padded = true,
   onDark = false,
   rule = true,
+  contact = true,
 }: SiteFooterProps) {
   const linkClass = onDark
     ? "text-xs text-foam/85 underline-offset-2 hover:text-foam hover:underline"
@@ -76,9 +79,11 @@ export function SiteFooter({
         <CookieSettingsLink language={language} className={linkClass} />
       </p>
       <FixedListFooterLinks language={language} className={linkClass} />
-      <div className="mt-3">
-        <ContactUs language={language} />
-      </div>
+      {contact ? (
+        <div className="mt-3">
+          <ContactUs language={language} />
+        </div>
+      ) : null}
     </footer>
   );
 }

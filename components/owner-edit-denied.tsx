@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import Link from "next/link";
 import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
@@ -13,6 +14,7 @@ type OwnerEditDeniedProps = {
 
 export function OwnerEditDenied({ language, error }: OwnerEditDeniedProps) {
   return (
+    <>
     <main
       className="mx-auto min-h-dvh w-full max-w-md bg-charcoal px-4 py-6 text-foam"
       dir={language === "ar" ? "rtl" : "ltr"}
@@ -42,5 +44,7 @@ export function OwnerEditDenied({ language, error }: OwnerEditDeniedProps) {
         </p>
       </section>
     </main>
+    <SiteFooter language={language} />
+    </>
   );
 }

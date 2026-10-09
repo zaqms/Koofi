@@ -18,7 +18,9 @@ import { join } from "node:path";
 import { runInNewContext } from "node:vm";
 import {
   CONSENT_DENIED,
+  CONSENT_GUARDED_EVENTS,
   CONSENT_STORAGE_KEY,
+  CONSENT_UNLOAD_EVENTS,
   GTM_SRC,
   consentBootstrapScript,
 } from "../lib/consent";
@@ -82,23 +84,46 @@ const grantedBlock = manager.match(/\{choice === "granted" \? \(([\s\S]*?)\) : n
 assert(grantedBlock.includes("<Analytics") && grantedBlock.includes("DATAFAST_SRC"), "Vercel Analytics + DataFast render only when choice === granted");
 assert((manager.match(/<Analytics/g) ?? []).length === 1 && (manager.match(/DATAFAST_SRC/g) ?? []).length === 2, "no other Analytics/DataFast render in the manager");
 // Equal prominence: Accept and Reject share one class string.
-assert(/className=\{button\} onClick=\{accept\}/.test(manager) && /className=\{button\} onClick=\{reject\}/.test(manager), "Accept and Reject use the same button style");
+assert(manager.includes('className={button} data-consent="accept"') && manager.includes('className={button} data-consent="reject"'), "Accept and Reject use the same button style");
+// L3: consent buttons have no React onClick; only the bootstrap guard acts on them.
+assert(!/onClick/.test(manager) && !/onClick/.test(read("components/cookie-settings-link.tsx")), "consent buttons are handled by the capture guard only");
 assert(read("components/site-footer.tsx").includes("<CookieSettingsLink"), "footer has the Cookie settings link");
+// M1: the copy says «تحت كل صفحة» / "at the bottom of every page", so every
+// page and not-found route must render <SiteFooter> (directly or through a
+// component it imports, two levels deep). The render check over the built
+// site is capture/footer-render.py in the #251 package.
+function rendersFooter(file: string, depth = 0): boolean {
+  const src = read(file);
+  if (src.includes("<SiteFooter")) return true;
+  if (depth >= 2) return false;
+  for (const m of src.matchAll(/from "@\/components\/([\w-]+)"/g)) {
+    const dep = `components/${m[1]}.tsx`;
+    if (existsSync(join(process.cwd(), dep)) && rendersFooter(dep, depth + 1)) return true;
+  }
+  return false;
+}
+const routeFiles = walk("app").filter((f) => /\/(page|not-found)\.tsx$/.test(f));
+assert(routeFiles.length >= 29, `found ${routeFiles.length} page/not-found routes`);
+for (const file of routeFiles) {
+  assert(rendersFooter(file), `${file} has no SiteFooter (Privacy, Terms, Cookie settings): the copy promises it on every page (M1)`);
+}
 assert(!read("lib/track.ts").match(/fetch\(|sendBeacon|XMLHttpRequest/), "lib/track.ts only writes to the dataLayer");
 
 // Run the bootstrap in a sandbox: stored none / denied / granted / bad value.
-type Sandbox = { dataLayer: unknown[]; appended: string[]; __wainLoadGtm?: () => void };
+type Sandbox = { dataLayer: unknown[]; appended: string[]; order: string[]; __wainLoadGtm?: () => void };
 function boot(stored: string | null): Sandbox {
   const appended: string[] = [];
   const el = { async: false, src: "" };
-  const head = { appendChild: (node: { src: string }) => appended.push(node.src) };
+  const order: string[] = [];
+  const head = { appendChild: (node: { src: string }) => { appended.push(node.src); order.push("gtm"); } };
   const window = {
     dataLayer: undefined as unknown,
+    addEventListener: (type: string, _fn: unknown, capture: boolean) => order.push(`listen:${type}:${capture}`),
     localStorage: { getItem: (k: string) => (k === CONSENT_STORAGE_KEY ? stored : null) },
   } as Record<string, unknown>;
   const document = { createElement: () => ({ ...el }), head, documentElement: head };
   runInNewContext(consentBootstrapScript(), { window, document });
-  return { dataLayer: window.dataLayer as unknown[], appended, __wainLoadGtm: window.__wainLoadGtm as () => void };
+  return { dataLayer: window.dataLayer as unknown[], appended, order, __wainLoadGtm: window.__wainLoadGtm as () => void };
 }
 const asArgs = (entry: unknown) => Array.from(entry as ArrayLike<unknown>);
 for (const stored of [null, JSON.stringify({ v: 1, c: "denied" }), '{"v":9,"c":"granted"}', "not json"]) {
@@ -114,6 +139,12 @@ for (const stored of [null, JSON.stringify({ v: 1, c: "denied" }), '{"v":9,"c":"
 {
   const s = boot(JSON.stringify({ v: 1, c: "granted" }));
   assert(s.appended.length === 1 && s.appended[0] === GTM_SRC, "stored granted loads GTM once");
+  const guardAt = s.order.indexOf("listen:click:true");
+  assert(guardAt >= 0 && guardAt < s.order.indexOf("gtm"), "consent click guard (window, capture) is registered before GTM loads (L3)");
+  for (const type of [...CONSENT_GUARDED_EVENTS, ...CONSENT_UNLOAD_EVENTS]) {
+    const at = s.order.indexOf(`listen:${type}:true`);
+    assert(at >= 0 && at < s.order.indexOf("gtm"), `guard covers ${type}, registered before GTM (L3)`);
+  }
   const order = s.dataLayer.map((e) => (Array.isArray(e) ? e : asArgs(e).length ? asArgs(e) : e));
   const i = order.findIndex((e) => Array.isArray(e) && e[1] === "update");
   assert(i > 0, "consent update granted is pushed before gtm.js");
@@ -156,10 +187,12 @@ for (const language of LANGS) {
   const cookies = doc.sections.find((s) => s.id === LEGAL_COOKIES_SECTION_ID);
   assert(cookies, `privacy/${language}: #${LEGAL_COOKIES_SECTION_ID} section (banner links here)`);
   const body = [...(cookies.paragraphs ?? []), ...(cookies.bullets ?? [])].join("\n");
-  for (const name of ["Google Tag Manager", "Google Analytics", "Google Ads", "OpenAI", "DataFast", "Vercel Web Analytics", "{{wain_consent}}", "{{wain_vid}}", "{{_ga}}", "{{_gcl_au}}", "{{_twpid}}", "{{__obref}}", "{{datafast_session_id}}", "wain.lol"]) {
+  for (const name of ["Google Tag Manager", "Google Analytics", "Google Ads", "OpenAI", "DataFast", "Vercel Web Analytics", "{{wain_consent}}", "{{wain_vid}}", "{{_ga}}", "{{_gcl_au}}", "{{IDE}}", "{{_twpid}}", "{{__obref}}", "{{datafast_session_id}}", "wain.lol"]) {
     assert(body.includes(name), `privacy/${language} cookies: names ${name}`);
   }
   assert(language === "en" ? /Consent Mode/.test(body) && /Reject/.test(body) && /Cookie settings/.test(body) : body.includes("Consent Mode") && body.includes("«أرفض»") && body.includes("«إعدادات الكوكيز»"), `privacy/${language} cookies: Consent Mode, Reject, Cookie settings`);
+  const clearLine = (cookies.paragraphs ?? []).find((t) => t.includes("doubleclick.net")) ?? "";
+  assert(["Google", "X", "OpenAI", "doubleclick.net", "twitter.com", "t.co", "openai.com"].every((n) => clearLine.includes(n)), `privacy/${language} cookies: the 'clear in your browser' line names Google, X and OpenAI (L1)`);
   const terms = LEGAL_DOCS.terms[language];
   assert(text(terms).includes(language === "en" ? "Cookie settings" : "«إعدادات الكوكيز»"), `terms/${language}: cookie tie-in`);
 }
@@ -206,7 +239,7 @@ if (LEGAL_HAS_PLACEHOLDERS) {
 }
 
 // ---------- 5. Typography + brand ----------
-const IDENTIFIER = /(?:^|[^{\w@.])(_ga\b|_ga_\w+|_gcl_\w+|_tw\w+|__obref|__cf_bm|_cfuvid|guest_id\w*|personalization_id|muc_ads|test_cookie|wain_vid|wain_consent|wain_claim_ops|datafast_\w+|privacy@cali\.sa)/;
+const IDENTIFIER = /(?:^|[^{\w@.])(IDE\b|_ga\b|_ga_\w+|_gcl_\w+|_tw\w+|__obref|__cf_bm|_cfuvid|guest_id\w*|personalization_id|muc_ads|test_cookie|wain_vid|wain_consent|wain_claim_ops|datafast_\w+|privacy@cali\.sa)/;
 for (const { kind, language, doc } of all) {
   assert(!LEGAL_LTR_PATTERN.test(doc.title) && !LEGAL_LTR_PATTERN.test(doc.description), `${kind}/${language}: no {{…}} in title or description`);
   for (const t of legalDocText(doc)) {
@@ -231,5 +264,5 @@ if (process.env.LEGAL_SHIP === "1") {
 }
 
 console.log(
-  `check-legal: ok (consent gate: 0 trackers outside lib/consent.ts, Consent Mode v2 default denied, bootstrap sandbox 6/6; contact ${CONSENT_CONTACT_EMAIL}, 0 personal-inbox hits in ${USER_FACING.length} user-facing files; markers ${markers} (Shoug slots ${awaiting}); noindex=${LEGAL_HAS_PLACEHOLDERS}; sitemap ${locs.length}${LEGAL_AWAITING_SHOUG ? "; NOT SHIPPABLE: awaiting Shoug text" : ""})`,
+  `check-legal: ok (consent gate: 0 trackers outside lib/consent.ts, Consent Mode v2 default denied, bootstrap sandbox 6/6 + capture guard; footer on ${routeFiles.length}/${routeFiles.length} routes; contact ${CONSENT_CONTACT_EMAIL}, 0 personal-inbox hits in ${USER_FACING.length} user-facing files; markers ${markers} (Shoug slots ${awaiting}); noindex=${LEGAL_HAS_PLACEHOLDERS}; sitemap ${locs.length}${LEGAL_AWAITING_SHOUG ? "; NOT SHIPPABLE: awaiting Shoug text" : ""})`,
 );

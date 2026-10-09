@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { cookies } from "next/headers";
 import { DocumentLocale } from "@/components/document-locale";
 import { getShop } from "@/lib/catalog";
@@ -60,6 +61,7 @@ export default async function OpsClaimsPage({ searchParams }: OpsPageProps) {
   }
 
   return (
+    <>
     <main dir="ltr" lang="en" className="mx-auto max-w-3xl p-4 font-mono text-sm text-ink">
       <DocumentLocale language="en" />
       <h1 className="text-base font-medium">claims ops</h1>
@@ -206,5 +208,7 @@ export default async function OpsClaimsPage({ searchParams }: OpsPageProps) {
       )}
       <p className="mt-8 text-xs text-ink-soft">{OPS_CLAIMS_PATH}</p>
     </main>
+    <SiteFooter language="en" />
+    </>
   );
 }

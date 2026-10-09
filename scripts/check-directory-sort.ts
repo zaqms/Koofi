@@ -71,7 +71,7 @@ assert(
 assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();
-assert(dt.length === 73, `DT directory (moment tag) is 73 shops (71 + Coffee Address and dr.CAFE As Suwaidi), got ${dt.length}`);
+assert(dt.length === 74, `DT directory (moment tag) is 74 shops (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra), got ${dt.length}`);
 assert(
   dt.every((shop) => shop.momentTags.includes("drive-through")),
   "sort does not change the DT filter",

@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 67, `expected 67 district pages (72 on main minus 5 Drive-only districts), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 68, `expected 68 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -174,11 +174,13 @@ assert(izdihar?.status === "dictionary_only", "Izdihar sheet stays dictionary_on
 assert(izdihar?.nameEn === "Al Izdihar", "Izdihar EN lock");
 assert(izdihar?.nameAr === "الازدهار", "Izdihar AR lock");
 assert(liveCatalog.includes("al-izdihar"), "Slant makes Al Izdihar a live catalog district");
+// Batch H (9 Oct): Al Izdihar gains 7 local cafés (McCafe dropped per Amjad, r3); local-only district.
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-izdihar").map((shop) => shop.id).join(",") ===
-    "slant-specialty-coffee-al-izdihar",
-  "Al Izdihar catalog is Slant only",
+    "slant-specialty-coffee-al-izdihar,convoy-coffee-al-izdihar,knoll-al-izdihar,steam-roastery-al-izdihar,temper-al-izdihar,katf-al-izdihar,rakiza-al-izdihar,hijana-al-izdihar",
+  "Al Izdihar catalog is Slant plus the 7 Batch H rows",
 );
+assert(izdihar?.shopCountLive === 8, "Izdihar sheet shop_count_live is 8 after Batch H");
 
 const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
 assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");
@@ -195,7 +197,8 @@ assert(
 // As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.
 for (const [id, en, ar, shopId, onSheet] of [
   ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi", true],
-  ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal", false],
+  // Batch G (8 Oct): An Nafal gains 15 cafés (12 local + Costa, Starbucks and dr.CAFE sit-down chains).
+  ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal,air-speciality-an-nafal,black-stamp-an-nafal,nafel-coffee-an-nafal,pivot-espresso-an-nafal,roastree-an-nafal,cave-cafe-an-nafal,kaseb-concept-an-nafal,hatheeth-an-nafal,percol-an-nafal,peacock-an-nafal,grotta-an-nafal,btw-an-nafal,costa-tala-mall-an-nafal,starbucks-tala-mall-an-nafal,drcafe-an-nafal", false],
   ["king-salman", "King Salman", "الملك سلمان", "rex-king-salman,tul-cafe-king-salman", false],
   // Batch D1 (4 Oct): As Suwaidi gains 7 cafés (6 local + dr.CAFE chain). Batch D3 adds Tul Cafe beside Rex on King Salman.
   ["as-suwaidi", "As Suwaidi", "السويدي", "alwaal-albari-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi,hot-sip-as-suwaidi,era-coffee-as-suwaidi,naham-specialty-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi", true],
@@ -244,6 +247,28 @@ for (const [id, en, ar, shopId] of [
     sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) &&
       sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
     `sitemap lists ${id} AR + EN`,
+  );
+}
+
+// Batch F (5 Oct): Shubra goes live (was chain-only: dr.CAFE drive-through lane). Sheet stays dictionary_only.
+{
+  const id = "shubra";
+  const row = rows.find((r) => r.stableId === id);
+  assert(row?.status === "dictionary_only", "shubra sheet stays dictionary_only");
+  assert(row?.nameEn === "Shubra" && row?.nameAr === "شبرا", "shubra sheet EN/AR lock");
+  assert(neighborhoodLabel(id, "en") === "Shubra", "shubra EN label is Shubra");
+  assert(neighborhoodLabel(id, "ar") === "شبرا", "shubra AR label is شبرا");
+  assert(liveCatalog.includes(id), "shubra is a live catalog district");
+  assert(listLiveDistrictIds().includes(id), "shubra is a live specialty district");
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).sort().join(",") ===
+      "address-mood-shubra,coffee-address-shubra,drcafe-shubra,eco-cup-shubra,half-million-shubra,jadeel-coffee-shubra,mhj-cafe-shubra,nasaq-shubra,samus-shubra,tim-hortons-shubra",
+    "shubra catalog is dr.CAFE (lane) + the 9 Batch F rows",
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) &&
+      sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    "sitemap lists shubra AR + EN",
   );
 }
 

@@ -14,8 +14,15 @@ import type { Shop } from "./types";
  * Only real catalog shops. Never invent a listing.
  */
 
-function normalize(text: string): string {
+/** Latin accents fold to the bare letter ("McCafé" → "mccafe"); Arabic is untouched. */
+function stripLatinAccents(text: string): string {
   return text
+    .replace(/[\u00C0-\u024F]/g, (ch) => ch.normalize("NFD"))
+    .replace(/[\u0300-\u036F]/g, "");
+}
+
+function normalize(text: string): string {
+  return stripLatinAccents(text)
     .toLowerCase()
     .replace(/['’]/g, "")
     .replace(/[إأآ]/g, "ا")

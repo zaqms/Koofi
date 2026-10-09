@@ -588,7 +588,7 @@ for (const ask of ["كوفي الازدهار", "coffee al izdihar", "كافيه
     `${ask} top picks stay local, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
   );
 }
-for (const ask of ["ماك كافيه الازدهار", "mccafe izdihar"] as const) {
+for (const ask of ["ماك كافيه الازدهار", "mccafe izdihar", "McCafé", "mc café", "McCafé Izdihar", "Mc Cafe\u0301"] as const) {
   const result = pickCafes({ text: ask });
   assert(
     result.picks.some((pick) => pick.shop.id === "mccafe-uthman-al-izdihar"),
@@ -615,12 +615,40 @@ for (const [ask, brand] of [
   ["جافا", "java"],
   ["ماك كافيه", "mccafe"],
   ["mccafe", "mccafe"],
+  ["McCafé", "mccafe"],
 ] as const) {
   const result = pickCafes({ text: ask });
   assert(
     result.picks.some((pick) => pick.shop.chainBrand === brand),
     `${ask} still surfaces ${brand}, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
   );
+}
+// Batch H r2 (#256 QA L1): Latin accents fold in name search ("McCafé" = "mccafe"), both ways, and no name loses itself.
+{
+  const shops = listRealShops();
+  const mccafeAliases = shopNameAliases(getShop("mccafe-uthman-al-izdihar")!);
+  assert(mccafeAliases.includes("mccafe") && !mccafeAliases.some((alias) => /[\u00C0-\u024F]/.test(alias)), "McCafe aliases are accent-free");
+  for (const [ask, id] of [
+    ["McCafé", "mccafe-uthman-al-izdihar"],
+    ["MCCAFÉ", "mccafe-uthman-al-izdihar"],
+    ["Rémis Matcha Club", "remis-matcha-club-hittin"],
+    ["remis matcha club", "remis-matcha-club-hittin"],
+    ["Voûte Fot", "voute-fot-al-naseem-sharqi"],
+    ["voute fot", "voute-fot-al-naseem-sharqi"],
+  ] as const) {
+    assert(
+      matchCatalogShops(ask, shops).some((shop) => shop.id === id),
+      `${ask} name-matches ${id}, got ${matchCatalogShops(ask, shops).slice(0, 3).map((shop) => shop.id).join(",")}`,
+    );
+  }
+  const accented = shops.filter((shop) => /[\u00C0-\u024F]/.test(shop.nameEn));
+  assert(accented.length >= 10, `accented English names still in catalog (${accented.length})`);
+  for (const shop of accented) {
+    assert(
+      matchCatalogShops(shop.nameEn, shops).some((hit) => hit.id === shop.id),
+      `${shop.nameEn} still name-matches ${shop.id}`,
+    );
+  }
 }
 // Sit-down chain rows with no drive-through (no drive-through moment tag, never on the lane).
 const SIT_DOWN_ONLY_CHAINS = new Set<string>([

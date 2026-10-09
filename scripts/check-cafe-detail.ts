@@ -610,7 +610,7 @@ const BATCH_G_NAFAL_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_G_NAFAL_IDS = Object.keys(BATCH_G_NAFAL_HERO_COUNTS);
 
-/** BATCH_H: Al Izdihar (9 Oct 2026) Places galleries — Scout's 9 Oct frames (44 Place Photos, 640px), hand-ordered. McCafe ships 1 frame: Places frames 2–4 are McDonald's burger/stadium promo graphics. Google credit per frame. */
+/** BATCH_H: Al Izdihar (9 Oct 2026) Places galleries — Scout's 9 Oct frames (44 Place Photos, 640px), hand-ordered. McCafe ships 2 frames: Places frames 2–4 are McDonald's burger/stadium promo graphics; r2 adds user idx 7 (McCafé signage over the counter, cropped 640×360, no people) — idx 4 (burger) and idx 5 (other mall restaurant) dropped. Google credit per frame. */
 const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
   "convoy-coffee-al-izdihar": 4,
   "knoll-al-izdihar": 4,
@@ -619,7 +619,7 @@ const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
   "katf-al-izdihar": 4,
   "rakiza-al-izdihar": 4,
   "hijana-al-izdihar": 4,
-  "mccafe-uthman-al-izdihar": 1,
+  "mccafe-uthman-al-izdihar": 2,
 };
 const BATCH_H_IZDIHAR_IDS = Object.keys(BATCH_H_IZDIHAR_HERO_COUNTS);
 

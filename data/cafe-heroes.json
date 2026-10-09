@@ -14291,6 +14291,13 @@
         "displayName": "McCafé",
         "uri": "https://maps.google.com/maps/contrib/103170672955547588292"
       }
+    },
+    {
+      "src": "/cafe-heroes/mccafe-uthman-al-izdihar/2.jpg",
+      "attribution": {
+        "displayName": "Abdulrahman",
+        "uri": "https://maps.google.com/maps/contrib/100895791835093854085"
+      }
     }
   ]
 }

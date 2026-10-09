@@ -59,7 +59,15 @@ const GENERIC_ALIASES = new Set(
     "caffe",
     "caffé",
     "coffee",
+    "coffe",
+    "cofee",
+    "kofi",
+    "kofe",
+    "koffee",
     "qahwa",
+    "qahwah",
+    "kahwa",
+    "gahwa",
     "roaster",
     "roastery",
     "roasters",
@@ -90,12 +98,18 @@ const GENERIC_ALIASES = new Set(
     "up",
     "best",
     "قهوه",
+    "قهوة",
     "قهاوي",
     "مقهى",
     "محمصه",
     "محامص",
     "كافيه",
+    "كافية",
     "كافي",
+    // Cafe-type words, not a brand. «كوفي» inside كوستا كوفي / درايف كوفي must not name the chain.
+    "كوفي",
+    "كوفيه",
+    "كوفه",
     "مختصه",
     "بن",
     "فنجان",
@@ -175,6 +189,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "era-coffee-as-suwaidi": ["ايرا", "إيرا"],
   // Catalog spelling is اوستريتش. اوستريتيش is the other spelling people type.
   "ostrich-al-falah": ["اوستريتيش"],
+  // Batch G: نفل is also the حي token (النفل), so the full name needs to be an explicit alias (same as قهوة سلام).
+  "nafel-coffee-an-nafal": ["قهوة نفل", "nafel coffee"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

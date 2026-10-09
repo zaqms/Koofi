@@ -590,6 +590,26 @@ const BATCH_F_SHUBRA_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_F_SHUBRA_IDS = Object.keys(BATCH_F_SHUBRA_HERO_COUNTS);
 
+/** BATCH_G: An Nafal (8 Oct 2026) Places galleries — Scout's 8 Oct frames (60 Place Photos, 640px), 4 each, hand-ordered (interior or storefront hero). Google credit per frame. */
+const BATCH_G_NAFAL_HERO_COUNTS: Record<string, number> = {
+  "air-speciality-an-nafal": 4,
+  "black-stamp-an-nafal": 4,
+  "nafel-coffee-an-nafal": 4,
+  "pivot-espresso-an-nafal": 4,
+  "roastree-an-nafal": 4,
+  "cave-cafe-an-nafal": 4,
+  "kaseb-concept-an-nafal": 4,
+  "hatheeth-an-nafal": 4,
+  "percol-an-nafal": 4,
+  "peacock-an-nafal": 4,
+  "grotta-an-nafal": 4,
+  "btw-an-nafal": 4,
+  "costa-tala-mall-an-nafal": 4,
+  "starbucks-tala-mall-an-nafal": 4,
+  "drcafe-an-nafal": 4,
+};
+const BATCH_G_NAFAL_IDS = Object.keys(BATCH_G_NAFAL_HERO_COUNTS);
+
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
 const BATCH14_HERO_COUNTS: Record<string, number> = {
   "plant-cafe-as-suwaidi": 4,
@@ -645,6 +665,7 @@ const batch14HeroIds = BATCH14_IDS.filter((id) => bakedHeroes[id]);
 const batchD2FalahHeroIds = BATCH_D2_FALAH_IDS.filter((id) => bakedHeroes[id]);
 const batchETaawunHeroIds = BATCH_E_TAAWUN_IDS.filter((id) => bakedHeroes[id]);
 const batchFShubraHeroIds = BATCH_F_SHUBRA_IDS.filter((id) => bakedHeroes[id]);
+const batchGNafalHeroIds = BATCH_G_NAFAL_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -664,8 +685,9 @@ assert(
       batch14HeroIds.length +
       batchD2FalahHeroIds.length +
       batchETaawunHeroIds.length +
-      batchFShubraHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun and F Shubra merge in",
+      batchFShubraHeroIds.length +
+      batchGNafalHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra and G An Nafal merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -684,6 +706,13 @@ assert(batch14HeroIds.length === 7, "batch 14 D1 As Suwaidi hero set is complete
 assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete");
 assert(batchETaawunHeroIds.length === 10, "Batch E At Taawun hero set is complete");
 assert(batchFShubraHeroIds.length === 9, "Batch F Shubra hero set is complete");
+assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete");
+assert(
+  (bakedHeroes["starbucks-tala-mall-an-nafal"] as { attribution?: { displayName?: string } }[])
+    .map((photo) => photo.attribution?.displayName)
+    .join("|") === "Fathi Ashour|Starbucks|Azam Anwar|Miss Lily",
+  "starbucks-tala-mall hero is the former gallery frame 2 (Fathi Ashour interior); Google credit stays on that frame",
+);
 // QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
 assert(
   (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
@@ -788,6 +817,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH_D2_FALAH_HERO_COUNTS[id] != null) return BATCH_D2_FALAH_HERO_COUNTS[id]!;
   if (BATCH_E_TAAWUN_HERO_COUNTS[id] != null) return BATCH_E_TAAWUN_HERO_COUNTS[id]!;
   if (BATCH_F_SHUBRA_HERO_COUNTS[id] != null) return BATCH_F_SHUBRA_HERO_COUNTS[id]!;
+  if (BATCH_G_NAFAL_HERO_COUNTS[id] != null) return BATCH_G_NAFAL_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

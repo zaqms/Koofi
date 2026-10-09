@@ -17,7 +17,8 @@ export const CHAIN_BRANDS = {
     id: "starbucks",
     nameEn: "Starbucks",
     nameAr: "ستاربكس",
-    logo: null,
+    // Batch G (8 Oct 2026): first catalog row (Tala Mall, An Nafal) ships the siren mark.
+    logo: "/logos/starbucks-mark.png",
   },
   dunkin: {
     id: "dunkin",
@@ -112,6 +113,13 @@ export const CHAIN_BRANDS = {
     nameAr: "فيلوتشي",
     logo: "/logos/veloce-cafe-at-taawun.png",
   },
+  // Batch G (8 Oct 2026): global chain, dozens of KSA branches — mass-market under the 8+ branch rule.
+  costa: {
+    id: "costa",
+    nameEn: "Costa Coffee",
+    nameAr: "كوستا كوفي",
+    logo: "/logos/costa-mark.png",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -138,6 +146,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   "half-million": ["half million", "halfmillion", "هاف مليون", "هاف ميليون"],
   "tim-hortons": ["tim hortons", "tim horton", "timhortons", "تيم هورتنز", "تيم هورتن", "تيم هورتونز"],
   veloce: ["veloce", "veloce cafe", "فيلوتشي", "فيلوتشي كافيه", "فيلوتشي كافية"],
+  costa: ["costa", "costa coffee", "كوستا", "كوستا كوفي", "كوستا كافيه"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -190,6 +199,7 @@ export function chainBrandKeyFromName(latinName: string): string | null {
     return "drive";
   }
   if (latinName.startsWith("veloce")) return "veloce";
+  if (latinName.startsWith("costa")) return "costa";
   if (
     latinName.startsWith("half million") ||
     compact.startsWith("halfmillion")

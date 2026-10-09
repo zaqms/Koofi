@@ -13623,5 +13623,455 @@
         "uri": "https://maps.google.com/maps/contrib/107931321378222468795"
       }
     }
+  ],
+  "air-speciality-an-nafal": [
+    {
+      "src": "/cafe-heroes/air-speciality-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "A q",
+        "uri": "https://maps.google.com/maps/contrib/108722340425332567515"
+      }
+    },
+    {
+      "src": "/cafe-heroes/air-speciality-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Osama Gamal",
+        "uri": "https://maps.google.com/maps/contrib/105707484965452038009"
+      }
+    },
+    {
+      "src": "/cafe-heroes/air-speciality-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Lelex 099",
+        "uri": "https://maps.google.com/maps/contrib/107124664622012698817"
+      }
+    },
+    {
+      "src": "/cafe-heroes/air-speciality-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Ghada",
+        "uri": "https://maps.google.com/maps/contrib/114954247336527528977"
+      }
+    }
+  ],
+  "black-stamp-an-nafal": [
+    {
+      "src": "/cafe-heroes/black-stamp-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "بلاك ستامب Black Stamp",
+        "uri": "https://maps.google.com/maps/contrib/102562752762679352962"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-stamp-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Salah Al Humaid",
+        "uri": "https://maps.google.com/maps/contrib/115146997265462159607"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-stamp-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Saad",
+        "uri": "https://maps.google.com/maps/contrib/102241831470943188485"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-stamp-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "ANi",
+        "uri": "https://maps.google.com/maps/contrib/103802353679364239696"
+      }
+    }
+  ],
+  "nafel-coffee-an-nafal": [
+    {
+      "src": "/cafe-heroes/nafel-coffee-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "زهرة الغامدي",
+        "uri": "https://maps.google.com/maps/contrib/114984888738843900284"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nafel-coffee-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Saad",
+        "uri": "https://maps.google.com/maps/contrib/103226736499766630127"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nafel-coffee-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Johara Almurshed",
+        "uri": "https://maps.google.com/maps/contrib/114548848220601928661"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nafel-coffee-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "أبحَر",
+        "uri": "https://maps.google.com/maps/contrib/112047129158270296336"
+      }
+    }
+  ],
+  "pivot-espresso-an-nafal": [
+    {
+      "src": "/cafe-heroes/pivot-espresso-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "Razan I.M",
+        "uri": "https://maps.google.com/maps/contrib/110567232390144948052"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pivot-espresso-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "hamd saud",
+        "uri": "https://maps.google.com/maps/contrib/118111190889484049176"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pivot-espresso-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Ahmed A",
+        "uri": "https://maps.google.com/maps/contrib/113182772076187519348"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pivot-espresso-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Majed H",
+        "uri": "https://maps.google.com/maps/contrib/106439426263394355904"
+      }
+    }
+  ],
+  "roastree-an-nafal": [
+    {
+      "src": "/cafe-heroes/roastree-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "الهنوف عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/110161514781372689110"
+      }
+    },
+    {
+      "src": "/cafe-heroes/roastree-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Ahmed",
+        "uri": "https://maps.google.com/maps/contrib/116802640155923762613"
+      }
+    },
+    {
+      "src": "/cafe-heroes/roastree-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "ROASTREE Coffee Roasters محمصة ومقهى روستري",
+        "uri": "https://maps.google.com/maps/contrib/110442458551780017074"
+      }
+    },
+    {
+      "src": "/cafe-heroes/roastree-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "الهنوف عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/110161514781372689110"
+      }
+    }
+  ],
+  "cave-cafe-an-nafal": [
+    {
+      "src": "/cafe-heroes/cave-cafe-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "alanoud",
+        "uri": "https://maps.google.com/maps/contrib/116838175228568164061"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cave-cafe-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "مؤيد 2030",
+        "uri": "https://maps.google.com/maps/contrib/108034197064316138886"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cave-cafe-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "nada ahmad",
+        "uri": "https://maps.google.com/maps/contrib/117248362298765176911"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cave-cafe-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "M",
+        "uri": "https://maps.google.com/maps/contrib/113346974625497367514"
+      }
+    }
+  ],
+  "kaseb-concept-an-nafal": [
+    {
+      "src": "/cafe-heroes/kaseb-concept-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "Bothainh Alasem",
+        "uri": "https://maps.google.com/maps/contrib/104500764822107274306"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kaseb-concept-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Kaseb Concept - Speciality Cafe",
+        "uri": "https://maps.google.com/maps/contrib/115225608825976310007"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kaseb-concept-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Jawharah",
+        "uri": "https://maps.google.com/maps/contrib/103603924194721489838"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kaseb-concept-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "ميار الدوسري",
+        "uri": "https://maps.google.com/maps/contrib/113463958040866940015"
+      }
+    }
+  ],
+  "hatheeth-an-nafal": [
+    {
+      "src": "/cafe-heroes/hatheeth-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hatheeth-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Adel Wadaani",
+        "uri": "https://maps.google.com/maps/contrib/100030629532772062155"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hatheeth-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Fahad",
+        "uri": "https://maps.google.com/maps/contrib/117946118149732592612"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hatheeth-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Nawaf Saleh",
+        "uri": "https://maps.google.com/maps/contrib/104405014742613681468"
+      }
+    }
+  ],
+  "percol-an-nafal": [
+    {
+      "src": "/cafe-heroes/percol-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "AbdullaH",
+        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/percol-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Aljory",
+        "uri": "https://maps.google.com/maps/contrib/113091292315441678433"
+      }
+    },
+    {
+      "src": "/cafe-heroes/percol-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "i am maram",
+        "uri": "https://maps.google.com/maps/contrib/113919053995301118928"
+      }
+    },
+    {
+      "src": "/cafe-heroes/percol-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Percol بيركل",
+        "uri": "https://maps.google.com/maps/contrib/109512358016348827969"
+      }
+    }
+  ],
+  "peacock-an-nafal": [
+    {
+      "src": "/cafe-heroes/peacock-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "بندر",
+        "uri": "https://maps.google.com/maps/contrib/106667279407035356485"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peacock-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "PEACOCK Coffee & Roastery",
+        "uri": "https://maps.google.com/maps/contrib/110023842029196966564"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peacock-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "PEACOCK Coffee & Roastery",
+        "uri": "https://maps.google.com/maps/contrib/110023842029196966564"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peacock-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Exit",
+        "uri": "https://maps.google.com/maps/contrib/105211440739705694553"
+      }
+    }
+  ],
+  "grotta-an-nafal": [
+    {
+      "src": "/cafe-heroes/grotta-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "Bayan",
+        "uri": "https://maps.google.com/maps/contrib/106353809612504622741"
+      }
+    },
+    {
+      "src": "/cafe-heroes/grotta-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Fajer Alzahrani",
+        "uri": "https://maps.google.com/maps/contrib/105268889907776878103"
+      }
+    },
+    {
+      "src": "/cafe-heroes/grotta-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Bayan",
+        "uri": "https://maps.google.com/maps/contrib/106353809612504622741"
+      }
+    },
+    {
+      "src": "/cafe-heroes/grotta-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "مساعد سليمان",
+        "uri": "https://maps.google.com/maps/contrib/104999023414021136205"
+      }
+    }
+  ],
+  "btw-an-nafal": [
+    {
+      "src": "/cafe-heroes/btw-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "By The Way (BTW)",
+        "uri": "https://maps.google.com/maps/contrib/103861824378799275927"
+      }
+    },
+    {
+      "src": "/cafe-heroes/btw-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "By The Way (BTW)",
+        "uri": "https://maps.google.com/maps/contrib/103861824378799275927"
+      }
+    },
+    {
+      "src": "/cafe-heroes/btw-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "amjad Altamimi",
+        "uri": "https://maps.google.com/maps/contrib/109016797676862123289"
+      }
+    },
+    {
+      "src": "/cafe-heroes/btw-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Nouf.D7",
+        "uri": "https://maps.google.com/maps/contrib/108976373947661910960"
+      }
+    }
+  ],
+  "costa-tala-mall-an-nafal": [
+    {
+      "src": "/cafe-heroes/costa-tala-mall-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "sufiyan chafekar",
+        "uri": "https://maps.google.com/maps/contrib/111415277349427143262"
+      }
+    },
+    {
+      "src": "/cafe-heroes/costa-tala-mall-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "S A",
+        "uri": "https://maps.google.com/maps/contrib/100538579094869820858"
+      }
+    },
+    {
+      "src": "/cafe-heroes/costa-tala-mall-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Ehrlichkeit Aa",
+        "uri": "https://maps.google.com/maps/contrib/114201888054116611573"
+      }
+    },
+    {
+      "src": "/cafe-heroes/costa-tala-mall-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Y H",
+        "uri": "https://maps.google.com/maps/contrib/111727613084102931176"
+      }
+    }
+  ],
+  "starbucks-tala-mall-an-nafal": [
+    {
+      "src": "/cafe-heroes/starbucks-tala-mall-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "Fathi Ashour",
+        "uri": "https://maps.google.com/maps/contrib/105508836925081327928"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-tala-mall-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "Starbucks",
+        "uri": "https://maps.google.com/maps/contrib/107928717093344729990"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-tala-mall-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "Azam Anwar",
+        "uri": "https://maps.google.com/maps/contrib/112664334349847763644"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-tala-mall-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "Miss Lily",
+        "uri": "https://maps.google.com/maps/contrib/107242269236647611307"
+      }
+    }
+  ],
+  "drcafe-an-nafal": [
+    {
+      "src": "/cafe-heroes/drcafe-an-nafal/1.jpg",
+      "attribution": {
+        "displayName": "dr.CAFE An Nafal Park | د.كيف حديقة حي النفل | Manual Brew",
+        "uri": "https://maps.google.com/maps/contrib/114147094700048682827"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-an-nafal/2.jpg",
+      "attribution": {
+        "displayName": "dr.CAFE An Nafal Park | د.كيف حديقة حي النفل | Manual Brew",
+        "uri": "https://maps.google.com/maps/contrib/114147094700048682827"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-an-nafal/3.jpg",
+      "attribution": {
+        "displayName": "dr.CAFE An Nafal Park | د.كيف حديقة حي النفل | Manual Brew",
+        "uri": "https://maps.google.com/maps/contrib/114147094700048682827"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-an-nafal/4.jpg",
+      "attribution": {
+        "displayName": "ابو عبدالعزيز",
+        "uri": "https://maps.google.com/maps/contrib/109153470015968606803"
+      }
+    }
   ]
 }

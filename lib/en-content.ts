@@ -902,14 +902,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "an-nafal": {
     lead: `An Nafal (النفل) sits on the north side of Riyadh. This page is the An Nafal set on wain.lol so far.
 
-[Bisat](/en/c/bisat-an-nafal) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from An Nafal on the catalog today:`,
+[Bisat](/en/c/bisat-an-nafal), [ROASTREE](/en/c/roastree-an-nafal), [Black Stamp](/en/c/black-stamp-an-nafal), and [PEACOCK](/en/c/peacock-an-nafal) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from An Nafal on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If An Nafal isn’t the stop, these north lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like An Nafal. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in An Nafal on wain.lol — a Riyadh neighborhood list including Bisat, with a Maps link.",
+    meta: "{countCafe} in An Nafal on wain.lol — a north Riyadh list including Bisat, ROASTREE, and Black Stamp, each with a Maps link.",
   },
   "king-salman": {
     lead: `King Salman (الملك سلمان) is a north-central Riyadh حي. This page is the King Salman set on wain.lol so far.

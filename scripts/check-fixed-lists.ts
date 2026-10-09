@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 413,
-  outdoor: 198,
+  nearby: 423,
+  outdoor: 205,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 468, "catalog stays 468");
-assert(listListingShops().length === 413, "listing is 413 (414 on main minus Drive Al Arid)");
-assert(listPublicShops().length === 413, "/api/shops pool is 413");
+assert(listRealShops().length === 478, "catalog is 478 after Batch E (468 + 10 At Taawun)");
+assert(listListingShops().length === 423, "listing is 423 (413 + 10 Batch E At Taawun)");
+assert(listPublicShops().length === 423, "/api/shops pool is 423");
 assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (72 on main minus 5 Drive-only)");
-assert(listSitemapLocs().length === 1111, "sitemap is 1111 (1121 on main minus 5 districts × AR/EN)");
+assert(listSitemapLocs().length === 1131, "sitemap is 1131 (1111 + 10 Batch E cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 10,
-  "nearby includes the 10 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan)",
+  nearby.filter((shop) => isChainShop(shop)).length === 11,
+  "nearby includes the 11 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun)",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -106,9 +106,9 @@ assert(
   "outdoor filter carries the spec's not-pickup-only guard",
 );
 assert(
-  outdoor.filter((shop) => isChainShop(shop)).length === 5 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 193,
-  "outdoor is 193 local + 5 chains",
+  outdoor.filter((shop) => isChainShop(shop)).length === 6 &&
+    outdoor.filter((shop) => !isChainShop(shop)).length === 199,
+  "outdoor is 199 local + 6 chains (Veloce At Taawun is a chain with outdoor seating)",
 );
 
 const coffee = listBestCoffeeShops();

@@ -187,8 +187,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 62, `expected 62 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 403, `specialty discovery is 403 (406 on main − 3 Drive Coffee rows now chains), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 468, `catalog is 468 after D1, D2 and D3, got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 412, `specialty discovery is 412 (403 + 9 Batch E At Taawun local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 478, `catalog is 478 after D1, D2, D3 and Batch E, got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1400,7 +1400,13 @@ const MALAZ_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, "at-taawun");
-  assert(rows.length === 1, `at-taawun has 1 shop, got ${rows.length}`);
+  assert(rows.length === 10, `at-taawun has 10 specialty shops after Batch E r2 (Veloce is a chain), got ${rows.length}`);
+  const pageRows = listDirectoryShopsForDistrict("at-taawun");
+  assert(
+    pageRows.length === 11 &&
+      pageRows.filter((shop) => shop.isChain).map((shop) => shop.id).join(",") === "veloce-cafe-at-taawun",
+    `at-taawun page lists 11 rows: 10 local + Veloce behind Local only, got ${pageRows.map((shop) => shop.id + (shop.isChain ? "{chain}" : "")).join(",")}`,
+  );
   assert(
     rows.some((shop) => shop.id === "flow-matcha-at-taawun"),
     "at-taawun includes flow-matcha-at-taawun",
@@ -4568,6 +4574,136 @@ const scoutPack: {
     placeId: "ChIJHy4wovz9Lj4RUqo3pvu2xLI",
     dineIn: true,
     outdoorSeating: null,
+  },
+  // Batch E: At Taawun (5 Oct 2026). Scout CLEAN.csv pins, Places ids and seating; Peaks and CAF LAB reuse their brand marks; Glare is a letter tile. r2 (8 Oct): Stranger's cup mark (X @strangerCo_SA), Wooden W mark (wooden.sa), Veloce wordmark (TikTok @veloce_cafe_sa; isChain veloce).
+  {
+    id: "odd-at-taawun",
+    hex: "0x3e2efd68254b6397:0x9f80cb48c8b93789",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/odd-at-taawun.png",
+    pin: { lat: 24.7731039, lng: 46.6890095 },
+    coordsInUrl: true,
+    placeId: "ChIJl2NLJWj9Lj4RiTe5yEjLgJ8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "jadeel-coffee-at-taawun",
+    hex: "0x3e2efdf2c06c3bd7:0x7d19a75dc4c796b",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jadeel-coffee-at-taawun.png",
+    pin: { lat: 24.7693226, lng: 46.691057 },
+    coordsInUrl: true,
+    placeId: "ChIJ1ztswPL9Lj4Ra3lM3HWa0Qc",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "strangers-coffee-at-taawun",
+    hex: "0x3e2efdde124181b5:0xb957e68b5d8848a",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/strangers-coffee-at-taawun.png",
+    pin: { lat: 24.7823127, lng: 46.704997600000006 },
+    coordsInUrl: true,
+    placeId: "ChIJtYFBEt79Lj4RioTYtWh-lQs",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "glare-cafe-at-taawun",
+    hex: "0x3e2efd156e3527bb:0x18193deefcdd860b",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7743684, lng: 46.7032252 },
+    coordsInUrl: true,
+    placeId: "ChIJuyc1bhX9Lj4RC4bd_O49GRg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "isla-at-taawun",
+    hex: "0x3e2efd4581d3c335:0xb3c73a280734df87",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/isla-at-taawun.png",
+    pin: { lat: 24.772243, lng: 46.6976264 },
+    coordsInUrl: true,
+    placeId: "ChIJNcPTgUX9Lj4Rh980Byg6x7M",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "veloce-cafe-at-taawun",
+    hex: "0x3e2efddffe0490bf:0xfee46a40df4179d4",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/veloce-cafe-at-taawun.png",
+    pin: { lat: 24.7724127, lng: 46.6976123 },
+    coordsInUrl: true,
+    placeId: "ChIJv5AE_t_9Lj4R1HlB30Bq5P4",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "wooden-coffee-at-taawun",
+    hex: "0x3e2efd00671379bf:0x4e8567b2f923d7ba",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/wooden-coffee-at-taawun.png",
+    pin: { lat: 24.772337, lng: 46.6982198 },
+    coordsInUrl: true,
+    placeId: "ChIJv3kTZwD9Lj4Rutcj-bJnhU4",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "soul-cafe-at-taawun",
+    hex: "0x3e2efd56d99dcb53:0xabb86679d03a4e37",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/soul-cafe-at-taawun.png",
+    pin: { lat: 24.772149499999998, lng: 46.6975932 },
+    coordsInUrl: true,
+    placeId: "ChIJU8ud2Vb9Lj4RN0460HlmuKs",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "peaks-at-taawun",
+    hex: "0x3e2efda2747d2f57:0x1da305e625f8826d",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peaks-digital-city-al-nakheel.jpg",
+    pin: { lat: 24.7640128, lng: 46.7009587 },
+    coordsInUrl: true,
+    placeId: "ChIJVy99dKL9Lj4RbYL4JeYFox0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "caf-lab-at-taawun",
+    hex: "0x3e2efd5c13f66ae5:0xaf2c28d83a24db41",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/caf-lab-al-qirawan.jpg",
+    pin: { lat: 24.772544099999998, lng: 46.697775 },
+    coordsInUrl: true,
+    placeId: "ChIJ5Wr2E1z9Lj4RQdskOtgoLK8",
+    dineIn: true,
+    outdoorSeating: true,
   },
 ];
 

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
 import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import { headers } from "next/headers";
-import Script from "next/script";
+import { ConsentManager } from "@/components/consent-manager";
+import { consentBootstrapScript } from "@/lib/consent";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
 import { CityProvider } from "@/lib/city-context";
 import { cityLabel, DEFAULT_LIVE_CITY } from "@/lib/cities";
@@ -15,8 +15,6 @@ import {
   SOCIAL_TWITTER_CARD,
 } from "@/lib/product";
 import "./globals.css";
-
-const GTM_ID = "GTM-W3TM4552";
 
 const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
@@ -72,34 +70,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{if(localStorage.getItem(${JSON.stringify(HIDE_CHAINS_STORAGE_KEY)})==="1")document.documentElement.setAttribute("data-hide-chains","")}catch(e){}})();`,
           }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
+        {/* Consent first: Consent Mode v2 defaults denied; GTM loads only
+            after Accept (lib/consent.ts). No tracker loads outside this gate. */}
+        <script dangerouslySetInnerHTML={{ __html: consentBootstrapScript() }} />
       </head>
       <body className="min-h-dvh bg-paper text-ink antialiased">
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
         <CityProvider>{children}</CityProvider>
-        <Analytics />
+        <ConsentManager language={language} />
       </body>
-      <Script
-        src="https://datafa.st/js/script.js"
-        strategy="afterInteractive"
-        data-website-id="dfid_qZyLQNdTVNdYA3lB44WTe"
-        data-domain="wain.lol"
-      />
     </html>
   );
 }

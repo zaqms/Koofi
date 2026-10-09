@@ -101,7 +101,9 @@ export function LegalPageView({ kind, language }: LegalPageViewProps) {
 
         <article className="mt-8 rounded-2xl border border-line bg-foam px-4 py-5 [overflow-wrap:anywhere]">
           <h1 className="text-base font-semibold">{doc.title}</h1>
-          <p className="mt-1 text-xs text-ink-soft">{doc.updated}</p>
+          <p className="mt-1 text-xs text-ink-soft">
+            <LegalText text={doc.updated} />
+          </p>
           {doc.intro.map((paragraph, index) => (
             <p key={index} className="mt-3 text-sm leading-7">
               <LegalText text={paragraph} />
@@ -109,7 +111,7 @@ export function LegalPageView({ kind, language }: LegalPageViewProps) {
           ))}
 
           {doc.sections.map((section) => (
-            <section key={section.heading} className="mt-6">
+            <section key={section.heading} id={section.id} className="mt-6 scroll-mt-4">
               <h2 className="text-sm font-semibold">{section.heading}</h2>
               {section.paragraphs?.map((paragraph, index) => (
                 <p key={index} className="mt-2 text-sm leading-7">

@@ -190,7 +190,7 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
 }
 assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
 assert(listDiscoveryShops().length === 438, `specialty discovery is 438 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 510, `catalog is 510 after D1, D2, D3, Batch E, Batch F, Batch G and Batch H, got ${listRealShops().length}`);
+assert(listRealShops().length === 509, `catalog is 509 after D1, D2, D3, Batch E, Batch F, Batch G and Batch H (7 Al Izdihar), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -5051,7 +5051,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
-  // Batch H: Al Izdihar (9 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 3 letter tiles (Knoll: Scout's mark is white-on-white line art; KATF; Rakiza); McCafe is a sit-down chain (no drive-through). Dunkin' x2 and Turkish Wabel are held for Amjad.
+  // Batch H: Al Izdihar (9 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 3 letter tiles (Knoll: Scout's mark is white-on-white line art; KATF; Rakiza); McCafe dropped per Amjad (r3), so Al Izdihar is local-only. Dunkin' x2 and Turkish Wabel are held for Amjad.
   {
     id: "convoy-coffee-al-izdihar",
     hex: "0x3e2efd33713dbfbb:0x857822515b5d85a2",
@@ -5139,19 +5139,6 @@ const scoutPack: {
     placeId: "ChIJMf6ikBn9Lj4RUApZrnagA-Y",
     dineIn: true,
     outdoorSeating: true,
-  },
-  {
-    id: "mccafe-uthman-al-izdihar",
-    hex: "0x3e2efd20d513431b:0xb6e12581f2f2e759",
-    neighborhood: "al-izdihar",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-    logoUrl: "/logos/mccafe-mark.png",
-    pin: { lat: 24.778941999999997, lng: 46.708088 },
-    coordsInUrl: true,
-    placeId: "ChIJG0MT1SD9Lj4RWefy8oEl4bY",
-    dineIn: true,
-    outdoorSeating: false,
   },
 ];
 

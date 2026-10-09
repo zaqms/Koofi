@@ -14,7 +14,7 @@ import type { Shop } from "./types";
  * Only real catalog shops. Never invent a listing.
  */
 
-/** Latin accents fold to the bare letter ("McCafé" → "mccafe"); Arabic is untouched. */
+/** Latin accents fold to the bare letter ("Rémi's" → "remis", "VOÛTE" → "voute"); Arabic is untouched. */
 function stripLatinAccents(text: string): string {
   return text
     .replace(/[\u00C0-\u024F]/g, (ch) => ch.normalize("NFD"))

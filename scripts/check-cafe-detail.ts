@@ -610,7 +610,7 @@ const BATCH_G_NAFAL_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_G_NAFAL_IDS = Object.keys(BATCH_G_NAFAL_HERO_COUNTS);
 
-/** BATCH_H: Al Izdihar (9 Oct 2026) Places galleries — Scout's 9 Oct frames (44 Place Photos, 640px), hand-ordered. McCafe ships 2 frames: Places frames 2–4 are McDonald's burger/stadium promo graphics; r2 adds user idx 7 (McCafé signage over the counter, cropped 640×360, no people) — idx 4 (burger) and idx 5 (other mall restaurant) dropped. Google credit per frame. */
+/** BATCH_H: Al Izdihar (9 Oct 2026) Places galleries — Scout's 9 Oct frames (44 Place Photos, 640px), hand-ordered. McCafe was dropped per Amjad (r3), so 7 local galleries of 4. Google credit per frame. */
 const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
   "convoy-coffee-al-izdihar": 4,
   "knoll-al-izdihar": 4,
@@ -619,7 +619,6 @@ const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
   "katf-al-izdihar": 4,
   "rakiza-al-izdihar": 4,
   "hijana-al-izdihar": 4,
-  "mccafe-uthman-al-izdihar": 2,
 };
 const BATCH_H_IZDIHAR_IDS = Object.keys(BATCH_H_IZDIHAR_HERO_COUNTS);
 
@@ -722,7 +721,8 @@ assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete
 assert(batchETaawunHeroIds.length === 10, "Batch E At Taawun hero set is complete");
 assert(batchFShubraHeroIds.length === 9, "Batch F Shubra hero set is complete");
 assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete");
-assert(batchHIzdiharHeroIds.length === 8, "Batch H Al Izdihar hero set is complete");
+assert(batchHIzdiharHeroIds.length === 7, "Batch H Al Izdihar hero set is complete (7 local; McCafe dropped)");
+assert(!("mccafe-uthman-al-izdihar" in bakedHeroes), "no McCafe gallery ships (dropped in r3)");
 assert(
   (bakedHeroes["starbucks-tala-mall-an-nafal"] as { attribution?: { displayName?: string } }[])
     .map((photo) => photo.attribution?.displayName)

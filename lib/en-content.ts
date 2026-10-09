@@ -228,7 +228,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-jazirah": ["al-nahdah", "al-yarmouk", "al-hamra", "al-rawdah"],
   "an-nasim-ash-sharqi": ["an-nasim-al-gharbi", "al-nahdah", "al-yarmouk", "al-hamra"],
   "an-nasim": ["an-nasim-ash-sharqi", "an-nasim-al-gharbi", "al-nahdah", "al-yarmouk"],
-  shubra: ["badr", "al-aziziyah", "al-hazm", "al-malaz"],
+  shubra: ["as-suwaidi", "namar", "as-suwaidi-al-gharbi", "badr"],
   manfuha: ["ghubairah", "al-malaz", "al-murabba", "al-aziziyah"],
   tuwaiq: ["al-hazm", "badr", "al-malaz", "king-fahd"],
   "as-suwaidi": ["dhahrat-al-badiah", "al-wisham", "badr", "al-malaz"],
@@ -818,14 +818,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   shubra: {
     lead: `Shubra (شبرا) sits on the south side of Riyadh. This page is the Shubra set on wain.lol so far.
 
-[dr.CAFE](/en/c/drcafe-shubra) is the name on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Shubra on the catalog today:`,
+[mhj cafe](/en/c/mhj-cafe-shubra), [Nasaq](/en/c/nasaq-shubra), [Jadeel Coffee](/en/c/jadeel-coffee-shubra), and [Address Mood Café](/en/c/address-mood-shubra) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Shubra on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Shubra isn’t the stop, these south lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Shubra. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Shubra on wain.lol — a Riyadh neighborhood list including dr.CAFE, with a Maps link.",
+    meta: "{countCafe} in Shubra on wain.lol — a Riyadh neighborhood list including mhj cafe, Nasaq, and Jadeel, each with a Maps link.",
   },
   manfuha: {
     lead: `Manfuha (منفوحة) sits south of the old-city stretch. This page is the Manfuha set on wain.lol so far.

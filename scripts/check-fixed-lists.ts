@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 423,
-  outdoor: 205,
+  nearby: 432,
+  outdoor: 207,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 478, "catalog is 478 after Batch E (468 + 10 At Taawun)");
-assert(listListingShops().length === 423, "listing is 423 (413 + 10 Batch E At Taawun)");
-assert(listPublicShops().length === 423, "/api/shops pool is 423");
-assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (72 on main minus 5 Drive-only)");
-assert(listSitemapLocs().length === 1131, "sitemap is 1131 (1111 + 10 Batch E cafés × AR/EN)");
+assert(listRealShops().length === 487, "catalog is 487 after Batch F (468 + 10 At Taawun + 9 Shubra)");
+assert(listListingShops().length === 432, "listing is 432 (413 + 10 Batch E At Taawun + 9 Batch F Shubra)");
+assert(listPublicShops().length === 432, "/api/shops pool is 432");
+assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
+assert(listSitemapLocs().length === 1151, "sitemap is 1151 (1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 11,
-  "nearby includes the 11 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun)",
+  nearby.filter((shop) => isChainShop(shop)).length === 13,
+  "nearby includes the 13 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra)",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -107,8 +107,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 6 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 199,
-  "outdoor is 199 local + 6 chains (Veloce At Taawun is a chain with outdoor seating)",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 201,
+  "outdoor is 201 local + 6 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra)",
 );
 
 const coffee = listBestCoffeeShops();

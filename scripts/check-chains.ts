@@ -488,7 +488,7 @@ assert(
   "live 24cafe is tagged 24cafe",
 );
 const taggedLive = listRealShops().filter((shop) => shop.isChain === true);
-assert(taggedLive.length === 45, "exactly 45 rows are tagged (28 on main + 16 Drive Coffee + Veloce At Taawun, Batch E r2)");
+assert(taggedLive.length === 47, "exactly 47 rows are tagged (28 on main + 16 Drive Coffee + Veloce At Taawun, Batch E r2 + Half Million and Tim Hortons Shubra, Batch F)");
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "drive").length === 16 &&
     listRealShops()
@@ -513,6 +513,12 @@ assert(
   taggedLive.filter((shop) => shop.chainBrand === "veloce").map((shop) => shop.id).join(",") === "veloce-cafe-at-taawun",
   "Veloce has one tagged row (At Taawun, Batch E r2)",
 );
+// Batch F (5 Oct 2026): first Half Million and Tim Hortons rows, both sit-down in Shubra.
+assert(
+  taggedLive.filter((shop) => shop.chainBrand === "half-million").map((shop) => shop.id).join(",") === "half-million-shubra" &&
+    taggedLive.filter((shop) => shop.chainBrand === "tim-hortons").map((shop) => shop.id).join(",") === "tim-hortons-shubra",
+  "Half Million and Tim Hortons each have one tagged row (Shubra, Batch F)",
+);
 const dineInLaneRemoved = [
   // Drive Coffee rows that were never on the drive-through lane (tagged 4 Oct 2026).
   "drive-al-ghadeer",
@@ -529,6 +535,9 @@ const dineInLaneRemoved = [
   "java-cafe-al-manar",
   // Batch E r2 (8 Oct): sit-down chain in At Taawun, never on the lane.
   "veloce-cafe-at-taawun",
+  // Batch F (5 Oct): sit-down chains in Shubra, never on the lane (Tim Hortons also has a drive-through).
+  "tim-hortons-shubra",
+  "half-million-shubra",
 ] as const;
 const qaKiosks = [
   "drcafe-al-wadi",
@@ -552,9 +561,9 @@ const laneKept = [
 ] as const;
 assert(
   taggedLive
-    .filter((shop) => shop.id !== "veloce-cafe-at-taawun")
+    .filter((shop) => shop.id !== "half-million-shubra" && shop.id !== "veloce-cafe-at-taawun")
     .every((shop) => shop.momentTags.includes("drive-through")),
-  "tagged rows keep the drive-through moment tag (Veloce At Taawun has no drive-through)",
+  "tagged rows keep the drive-through moment tag (Veloce At Taawun and Half Million Shubra have no drive-through)",
 );
 const veloce = getShop("veloce-cafe-at-taawun");
 assert(
@@ -565,9 +574,25 @@ assert(
     veloce.dineIn === true,
   "Veloce At Taawun is a sit-down chain without a drive-through tag",
 );
+const halfMillion = getShop("half-million-shubra");
+assert(
+  halfMillion?.isChain === true &&
+    !halfMillion.momentTags.includes("drive-through") &&
+    halfMillion.catalogLane !== "drive-through" &&
+    halfMillion.dineIn === true,
+  "Half Million Shubra is a sit-down chain without a drive-through tag",
+);
+const timHortons = getShop("tim-hortons-shubra");
+assert(
+  timHortons?.isChain === true &&
+    timHortons.momentTags.includes("drive-through") &&
+    timHortons.catalogLane !== "drive-through" &&
+    timHortons.dineIn === true,
+  "Tim Hortons Shubra is sit-down + drive-through like dr.CAFE As Suwaidi (moment tag, no lane)",
+);
 assert(
   dineInLaneRemoved.every((id) => getShop(id)?.catalogLane !== "drive-through"),
-  "the 12 sit-down rows stay off the drive-through lane",
+  "the 14 sit-down rows stay off the drive-through lane",
 );
 for (const id of qaKiosks) {
   const shop = getShop(id);
@@ -652,7 +677,7 @@ assert(
 const brandIds = Object.keys(CHAIN_BRANDS);
 assert(
   brandIds.join(",") ===
-    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,24cafe,shqaf,coffee-day,kyan,dancafe,drive,veloce",
+    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,24cafe,shqaf,coffee-day,kyan,dancafe,drive,half-million,tim-hortons,veloce",
   "registry is the mass-market set",
 );
 assert(!isChainBrandId("krispy-kreme"), "Krispy Kreme is not a chain brand");
@@ -665,6 +690,19 @@ assert(isChainBrandId("veloce") && CHAIN_BRANDS.veloce.nameAr === "فيلوتش�
 assert(
   shopBrandKey(fixtureShop({ id: "veloce-x", nameEn: "Veloce Cafe" })) === "veloce",
   "Veloce brand key",
+);
+assert(
+  isChainBrandId("half-million") && CHAIN_BRANDS["half-million"].nameAr === "هاف مليون",
+  "Half Million is هاف مليون",
+);
+assert(
+  isChainBrandId("tim-hortons") && CHAIN_BRANDS["tim-hortons"].nameAr === "تيم هورتنز",
+  "Tim Hortons is تيم هورتنز",
+);
+assert(
+  shopBrandKey(fixtureShop({ id: "half-million-x", nameEn: "Half Million" })) === "half-million" &&
+    shopBrandKey(fixtureShop({ id: "tim-hortons-x", nameEn: "Tim Hortons" })) === "tim-hortons",
+  "Half Million and Tim Hortons brand keys",
 );
 assert(
   shopBrandKey(fixtureShop({ id: "drive-x", nameEn: "Drive Coffee" })) === "drive",
@@ -701,21 +739,21 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 412, "specialty discovery is 412 (403 + 9 Batch E At Taawun local; Veloce is a chain)");
-assert(listRealShops().length === 478, "catalog is 478 after D1, D2, D3 and Batch E");
-assert(listLiveDistrictIds().length === 62, "specialty districts are 62 (the 3 Drive rows were not a district's only specialty cafe)");
+assert(listDiscoveryShops().length === 419, "specialty discovery is 419 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local; Veloce is a chain)");
+assert(listRealShops().length === 487, "catalog is 487 after D1, D2, D3, Batch E and Batch F (9 Shubra)");
+assert(listLiveDistrictIds().length === 63, "specialty districts are 63 (62 + Shubra, Batch F; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 78,
   "catalog rows cover 78 districts (Jarir hidden; 4 Bisat batch + 4 Batch D3 districts)",
 );
-assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (72 on main minus 5 Drive-only)");
-assert(listDriveThroughDirectoryShops().length === 73, "drive-through is 73 (count unchanged; the 16 Drive rows were already on the list)");
-assert(listListingShops().length === 423, "listing is 412 local plus the 11 sit-down chains");
-assert(listPublicShops().length === 423, "public list includes the 11 sit-down chains");
-assert(listBrowseDirectoryShops().length === 428, "browse is 418 plus the 10 Batch E At Taawun rows");
+assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
+assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
+assert(listListingShops().length === 432, "listing is 419 local plus the 13 sit-down chains");
+assert(listPublicShops().length === 432, "public list includes the 13 sit-down chains");
+assert(listBrowseDirectoryShops().length === 437, "browse is 418 plus the 10 Batch E At Taawun rows and the 9 Batch F Shubra rows");
 assert(
-  listListingShops().filter((shop) => shop.isChain).length === 11,
-  "exactly 11 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun)",
+  listListingShops().filter((shop) => shop.isChain).length === 13,
+  "exactly 13 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra)",
 );
 assert(
   listDirectoryShopsForDistrict("al-malaz").some((shop) => shop.id === "java-cafe-al-malaz") &&
@@ -895,7 +933,7 @@ const chainOnlyDistricts = [
   "an-nasim",
   "kkia",
   "manfuha",
-  "shubra",
+  // Shubra left this list in Batch F (5 Oct 2026): 7 local cafés + 2 sit-down chains.
   // Drive Coffee drive-through-lane-only districts (4 Oct 2026).
   "al-hazm",
   "al-andalus",
@@ -907,7 +945,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-ghadeer,al-qirawan,al-malaz,at-taawun,namar,tuwaiq,as-suwaidi",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-ghadeer,al-qirawan,al-malaz,at-taawun,namar,shubra,tuwaiq,as-suwaidi",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -1126,7 +1164,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "76a17ce2caf66d6f434d6dd246ffc5ce7ecd7eccb2ca6814f6da3347d73be3de",
+  copyHash === "29b687fa6315472eff031c862318bc38d8533cd6f13d4992c5c09af5c045b833",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1242,8 +1280,8 @@ assert(
 );
 const driveThrough = listDriveThroughDirectoryShops();
 assert(
-  driveThrough.filter((shop) => shop.isChain === true).length === 44,
-  "the drive-through directory includes the 44 tagged branches (28 on main + 16 Drive Coffee)",
+  driveThrough.filter((shop) => shop.isChain === true).length === 45,
+  "the drive-through directory includes the 45 drive-through chain branches (28 on main + 16 Drive Coffee + Tim Hortons Shubra)",
 );
 assert(
   applyHideChains(driveThrough, true).length === 29,
@@ -1256,12 +1294,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "b3ef6f1862d58c03f079c62a7a6ca7def5580f6becae3c8411e75f28d591e447",
+  llmsHash === "7abdfa8a5acbbdc63e0c55be63c47c824680b8791f3c4940dc9d16e3cc17ca73",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("412 local, 11 chain branches"),
-  "llms.txt names the 11 chain branches separately from specialty",
+  llms.includes("419 local, 13 chain branches"),
+  "llms.txt names the 13 chain branches separately from specialty",
 );
 
 assert(
@@ -1995,7 +2033,7 @@ assert(
     !headingIsChainOnly(chainSection, "Nearby"),
   "a heading hides under Local only only when its section is entirely chain-only",
 );
-const hiddenDistrictCafes = ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const;
+const hiddenDistrictCafes = ["kkia", "al-jazirah", "an-nasim", "manfuha"] as const;
 const listLeftovers = ["الأسماء الثانية مربوطة تحت", "باقي الحي تحت", "linked below", "مربوطة تحت", "مربوط تحت"];
 for (const district of hiddenDistrictCafes) {
   for (const shop of listRealShops().filter((row) => row.neighborhood === district)) {

@@ -13388,5 +13388,240 @@
         "uri": "https://maps.google.com/maps/contrib/107069586165900511797"
       }
     }
+  ],
+  "mhj-cafe-shubra": [
+    {
+      "src": "/cafe-heroes/mhj-cafe-shubra/1.jpg",
+      "attribution": {
+        "displayName": "ابو سطام",
+        "uri": "https://maps.google.com/maps/contrib/117821152749403815214"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mhj-cafe-shubra/2.jpg",
+      "attribution": {
+        "displayName": "Amal",
+        "uri": "https://maps.google.com/maps/contrib/103806324441616695084"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mhj-cafe-shubra/3.jpg",
+      "attribution": {
+        "displayName": "SHO -A",
+        "uri": "https://maps.google.com/maps/contrib/115396788723783993256"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mhj-cafe-shubra/4.jpg",
+      "attribution": {
+        "displayName": "مهج قهوة مختصة وأكثر",
+        "uri": "https://maps.google.com/maps/contrib/104084087116565516568"
+      }
+    }
+  ],
+  "nasaq-shubra": [
+    {
+      "src": "/cafe-heroes/nasaq-shubra/1.jpg",
+      "attribution": {
+        "displayName": "اسأل الرياض",
+        "uri": "https://maps.google.com/maps/contrib/115501198122157450120"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nasaq-shubra/2.jpg",
+      "attribution": {
+        "displayName": "Roro G",
+        "uri": "https://maps.google.com/maps/contrib/109384367464904630100"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nasaq-shubra/3.jpg",
+      "attribution": {
+        "displayName": "TreeK",
+        "uri": "https://maps.google.com/maps/contrib/117208332159667394942"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nasaq-shubra/4.jpg",
+      "attribution": {
+        "displayName": "اسأل الرياض",
+        "uri": "https://maps.google.com/maps/contrib/115501198122157450120"
+      }
+    }
+  ],
+  "coffee-address-shubra": [
+    {
+      "src": "/cafe-heroes/coffee-address-shubra/1.jpg",
+      "attribution": {
+        "displayName": "TakiMaki",
+        "uri": "https://maps.google.com/maps/contrib/100681223471288578571"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-shubra/2.jpg",
+      "attribution": {
+        "displayName": "Maha Albishe",
+        "uri": "https://maps.google.com/maps/contrib/102252657185572843364"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-shubra/3.jpg",
+      "attribution": {
+        "displayName": "Ibrahim",
+        "uri": "https://maps.google.com/maps/contrib/118244667466057245545"
+      }
+    }
+  ],
+  "eco-cup-shubra": [
+    {
+      "src": "/cafe-heroes/eco-cup-shubra/1.jpg",
+      "attribution": {
+        "displayName": "Ariyan Ahmed",
+        "uri": "https://maps.google.com/maps/contrib/103614282153244749297"
+      }
+    },
+    {
+      "src": "/cafe-heroes/eco-cup-shubra/2.jpg",
+      "attribution": {
+        "displayName": "KAiEUM HASSAN",
+        "uri": "https://maps.google.com/maps/contrib/103319029520055344728"
+      }
+    },
+    {
+      "src": "/cafe-heroes/eco-cup-shubra/3.jpg",
+      "attribution": {
+        "displayName": "osama saleh",
+        "uri": "https://maps.google.com/maps/contrib/100090434478662483481"
+      }
+    }
+  ],
+  "jadeel-coffee-shubra": [
+    {
+      "src": "/cafe-heroes/jadeel-coffee-shubra/1.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    },
+    {
+      "src": "/cafe-heroes/jadeel-coffee-shubra/2.jpg",
+      "attribution": {
+        "displayName": "Abood",
+        "uri": "https://maps.google.com/maps/contrib/111612553968901999938"
+      }
+    },
+    {
+      "src": "/cafe-heroes/jadeel-coffee-shubra/3.jpg",
+      "attribution": {
+        "displayName": "abdullah",
+        "uri": "https://maps.google.com/maps/contrib/116219387021319694171"
+      }
+    },
+    {
+      "src": "/cafe-heroes/jadeel-coffee-shubra/4.jpg",
+      "attribution": {
+        "displayName": "H. A",
+        "uri": "https://maps.google.com/maps/contrib/104297041655282027385"
+      }
+    }
+  ],
+  "samus-shubra": [
+    {
+      "src": "/cafe-heroes/samus-shubra/1.jpg",
+      "attribution": {
+        "displayName": "أبو يوسف محمد",
+        "uri": "https://maps.google.com/maps/contrib/106177356145448699886"
+      }
+    },
+    {
+      "src": "/cafe-heroes/samus-shubra/2.jpg",
+      "attribution": {
+        "displayName": "OM",
+        "uri": "https://maps.google.com/maps/contrib/115660377781938367201"
+      }
+    },
+    {
+      "src": "/cafe-heroes/samus-shubra/3.jpg",
+      "attribution": {
+        "displayName": "ABO 5LOUD",
+        "uri": "https://maps.google.com/maps/contrib/100019589799427480743"
+      }
+    }
+  ],
+  "address-mood-shubra": [
+    {
+      "src": "/cafe-heroes/address-mood-shubra/1.jpg",
+      "attribution": {
+        "displayName": "Khawar Naseem",
+        "uri": "https://maps.google.com/maps/contrib/105153871673673216758"
+      }
+    },
+    {
+      "src": "/cafe-heroes/address-mood-shubra/2.jpg",
+      "attribution": {
+        "displayName": "abdullah mohamad",
+        "uri": "https://maps.google.com/maps/contrib/106677380017301163991"
+      }
+    },
+    {
+      "src": "/cafe-heroes/address-mood-shubra/3.jpg",
+      "attribution": {
+        "displayName": "Iman Hossain",
+        "uri": "https://maps.google.com/maps/contrib/103859771440183245857"
+      }
+    }
+  ],
+  "half-million-shubra": [
+    {
+      "src": "/cafe-heroes/half-million-shubra/1.jpg",
+      "attribution": {
+        "displayName": "Half Million",
+        "uri": "https://maps.google.com/maps/contrib/114372676840447992996"
+      }
+    },
+    {
+      "src": "/cafe-heroes/half-million-shubra/2.jpg",
+      "attribution": {
+        "displayName": "Maryam -",
+        "uri": "https://maps.google.com/maps/contrib/105172917063803872756"
+      }
+    },
+    {
+      "src": "/cafe-heroes/half-million-shubra/3.jpg",
+      "attribution": {
+        "displayName": "saeed ahmeri",
+        "uri": "https://maps.google.com/maps/contrib/113232910606646694958"
+      }
+    }
+  ],
+  "tim-hortons-shubra": [
+    {
+      "src": "/cafe-heroes/tim-hortons-shubra/1.jpg",
+      "attribution": {
+        "displayName": "Arshan Mohammad",
+        "uri": "https://maps.google.com/maps/contrib/107769656618251279437"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tim-hortons-shubra/2.jpg",
+      "attribution": {
+        "displayName": "Hasen Aldosry",
+        "uri": "https://maps.google.com/maps/contrib/108360364725802463481"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tim-hortons-shubra/3.jpg",
+      "attribution": {
+        "displayName": "نجلاء",
+        "uri": "https://maps.google.com/maps/contrib/101972458595254945827"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tim-hortons-shubra/4.jpg",
+      "attribution": {
+        "displayName": "N",
+        "uri": "https://maps.google.com/maps/contrib/107931321378222468795"
+      }
+    }
   ]
 }

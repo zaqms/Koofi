@@ -715,7 +715,7 @@ const outdoorList = fixedListItemListJsonLd("outdoor", "ar");
 const coffeeList = fixedListItemListJsonLd("coffee", "en");
 const workList = fixedListItemListJsonLd("work", "ar");
 assert(fixedListItemListJsonLd("nearby", "ar") == null, "nearby has no ItemList");
-assert(outdoorList?.numberOfItems === 213, "outdoor ItemList is 213");
+assert(outdoorList?.numberOfItems === 217, "outdoor ItemList is 217");
 assert(coffeeList?.numberOfItems === 67, "best coffee ItemList is 67");
 assert(workList?.numberOfItems === 65, "work ItemList is 65");
 assert(outdoorList?.name === "قهاوي فيها جلسات خارجية في الرياض", "outdoor ItemList name is the H1");

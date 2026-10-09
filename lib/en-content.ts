@@ -866,14 +866,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-izdihar": {
     lead: `Al Izdihar (الازدهار) sits beside Al Mughrizat. This page is the Al Izdihar set on wain.lol so far.
 
-[Slant Specialty Coffee](/en/c/slant-specialty-coffee-al-izdihar) is the specialty coffee on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Al Izdihar on the catalog today:`,
+[Slant Specialty Coffee](/en/c/slant-specialty-coffee-al-izdihar), [Steam Roastery](/en/c/steam-roastery-al-izdihar), [temper](/en/c/temper-al-izdihar), and [CONVOY](/en/c/convoy-coffee-al-izdihar) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Izdihar on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Izdihar isn’t the stop, these lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Izdihar. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Al Izdihar on wain.lol — a Riyadh neighborhood list including Slant Specialty Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Izdihar on wain.lol — a Riyadh neighborhood list including Slant, Steam Roastery, and temper, each with a Maps link.",
   },
   "dhahrat-al-badiah": {
     lead: `Dhahrat Al Badiah (ظهرة البديعة) is a Riyadh neighborhood on wain.lol. This page is the Dhahrat Al Badiah set so far.

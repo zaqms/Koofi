@@ -112,7 +112,17 @@ function rendersFooter(file: string, depth = 0): boolean {
 }
 const routeFiles = walk("app").filter((f) => /\/(page|not-found)\.tsx$/.test(f));
 assert(routeFiles.length >= 29, `found ${routeFiles.length} page/not-found routes`);
+// A page that renders nothing and only calls notFound() (app/en/[category])
+// is covered by the not-found.tsx next to it, which must render the footer.
+function onlyNotFound(file: string): boolean {
+  return /\.\/page\.tsx$|\/page\.tsx$/.test(file) && /\(\): never \{\s*notFound\(\);\s*\}/.test(read(file)) && !/return\s*[(<]/.test(read(file));
+}
 for (const file of routeFiles) {
+  if (onlyNotFound(file)) {
+    const sibling = file.replace(/page\.tsx$/, "not-found.tsx");
+    assert(existsSync(join(process.cwd(), sibling)) && rendersFooter(sibling), `${file} only calls notFound(); ${sibling} must render SiteFooter`);
+    continue;
+  }
   assert(rendersFooter(file), `${file} has no SiteFooter (Privacy, Terms, Cookie settings): the copy promises it on every page (M1)`);
 }
 assert(!read("lib/track.ts").match(/fetch\(|sendBeacon|XMLHttpRequest/), "lib/track.ts only writes to the dataLayer");
@@ -201,8 +211,8 @@ const NOT_FOUND_SAMPLES = [
   ["/p/qa-no-such-pack", "app/p/[id]/page.tsx"],
   ["/en/p/qa-no-such-pack", "app/en/[category]/[slug]/page.tsx"],
   ["/c/x", "app/c/[id]/page.tsx"],
-  ["/en/x", "app/not-found.tsx"],
-  ["/en/qa-no-such-page", "app/not-found.tsx"],
+  ["/en/x", "app/en/[category]/not-found.tsx"],
+  ["/en/qa-no-such-page", "app/en/[category]/not-found.tsx"],
   ["/qa-no-such-page", "app/not-found.tsx"],
 ] as const;
 for (const [, file] of NOT_FOUND_SAMPLES) {

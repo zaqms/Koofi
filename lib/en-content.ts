@@ -379,12 +379,16 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   "al-rahmaniyyah": {
-    lead: `Ar Rahmaniyyah is on the catalog with a single shop for now. This page stays that honest.`,
-    hereIntro: `There is **{count}** cafe from Ar Rahmaniyyah on the list right now:`,
-    hereOutro: `**Take me there** opens Maps for the pin.`,
-    about: `wain.lol helps you find coffee in Riyadh. [About](/en/about).
+    lead: `Ar Rahmaniyyah (الرحمانية) sits between Olaya and Al Nakheel. This page is the Ar Rahmaniyyah set on wain.lol so far.
 
-Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
+[Camel Step](/en/c/camel-step-al-rahmaniyyah), [Sipology](/en/c/sipology-al-rahmaniyyah), [Ramli Cafe](/en/c/ramli-cafe-al-rahmaniyyah), and [Peaks – The Tent](/en/c/peaks-the-tent-al-rahmaniyyah) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Ar Rahmaniyyah on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Ar Rahmaniyyah isn’t the stop, these lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ar Rahmaniyyah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in Ar Rahmaniyyah on wain.lol — a Riyadh neighborhood list including Camel Step, Sipology, and Ramli Cafe, each with a Maps link.",
   },
   "al-shohda": {
     lead: `Ash Shuhada is a small east-Riyadh list — one cafe added so far.`,

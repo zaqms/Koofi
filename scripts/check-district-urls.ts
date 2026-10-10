@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
-assert(listDiscoveryShops().length === 438, `specialty discovery is 438 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 509, `catalog is 509 after D1, D2, D3, Batch E, Batch F, Batch G and Batch H (7 Al Izdihar), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 443, `specialty discovery is 443 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 5 Batch I Ar Rahmaniyyah local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 516, `catalog is 516 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar) and Batch I (7 Ar Rahmaniyyah), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -2019,6 +2019,7 @@ const scoutPack: {
     | "al-falah"
     | "al-mughrizat"
     | "al-izdihar"
+    | "al-rahmaniyyah"
     | "ghirnatah"
     | "al-mathar"
     | "at-taawun"
@@ -5139,6 +5140,96 @@ const scoutPack: {
     placeId: "ChIJMf6ikBn9Lj4RUApZrnagA-Y",
     dineIn: true,
     outdoorSeating: true,
+  },
+  // Batch I: Ar Rahmaniyyah (10 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 2 letter tiles (Grind Coffee, Java Time); Peaks and November reuse their sibling marks; Starbucks and Java Time are sit-down chains (no drive-through).
+  {
+    id: "peaks-the-tent-al-rahmaniyyah",
+    hex: "0x3e2f1d5c471c936f:0x4e108e85b733eb6f",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peaks-digital-city-al-nakheel.jpg",
+    pin: { lat: 24.7190411, lng: 46.664949799999995 },
+    coordsInUrl: true,
+    placeId: "ChIJb5McR1wdLz4Rb-szt4WOEE4",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "november-coffee-al-rahmaniyyah",
+    hex: "0x3e2f1dbf7ade43cd:0x56ab04a5ea7f8d7f",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/november-coffee-an-nazhah.png",
+    pin: { lat: 24.720318499999998, lng: 46.656823 },
+    coordsInUrl: true,
+    placeId: "ChIJzUPeer8dLz4Rf41_6qUEq1Y",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "sipology-al-rahmaniyyah",
+    hex: "0x3e2f1d004b852631:0xe23fc47b6b452658",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/sipology-al-rahmaniyyah.png",
+    pin: { lat: 24.716845799999998, lng: 46.659756599999994 },
+    coordsInUrl: true,
+    placeId: "ChIJMSaFSwAdLz4RWCZFa3vEP-I",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "ramli-cafe-al-rahmaniyyah",
+    hex: "0x3e2f1d461858f021:0x2de8495d9ca26331",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ramli-cafe-al-rahmaniyyah.png",
+    pin: { lat: 24.7267157, lng: 46.6628918 },
+    coordsInUrl: true,
+    placeId: "ChIJIfBYGEYdLz4RMWOinF1J6C0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "grind-coffee-al-rahmaniyyah",
+    hex: "0x3e2f1de924e8ad97:0x56a9ddf73574ebdb",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7235749, lng: 46.6647982 },
+    coordsInUrl: true,
+    placeId: "ChIJl63oJOkdLz4R2-t0NffdqVY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "starbucks-diplomat-al-rahmaniyyah",
+    hex: "0x3e2f1d05d2dca9d5:0xe1cb2bdf996f86d3",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.7207164, lng: 46.6487641 },
+    coordsInUrl: true,
+    placeId: "ChIJ1anc0gUdLz4R04Zvmd8ry-E",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "java-time-al-rahmaniyyah",
+    hex: "0x3e2f1d002582a01d:0x5219686f9b41bd5f",
+    neighborhood: "al-rahmaniyyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7150727, lng: 46.6598696 },
+    coordsInUrl: true,
+    placeId: "ChIJHaCCJQAdLz4RX71Bm29oGVI",
+    dineIn: true,
+    outdoorSeating: null,
   },
 ];
 

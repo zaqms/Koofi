@@ -215,6 +215,15 @@ function addExtraAlias(into: Set<string>, raw: string): void {
   into.add(alias);
 }
 
+/**
+ * Single-word name tokens a chain row must not answer to on its own.
+ * Java Time: «جافا» / "java" already name Java Cafe (`java`), and "time" / «تايم» are plain words.
+ * The full name ("java time", «جافا تايم», "javatime") still matches.
+ */
+const CHAIN_TOKEN_BLOCK: Partial<Record<ChainBrandId, readonly string[]>> = {
+  "java-time": ["java", "جافا", "time", "تايم"],
+};
+
 function chainBrandIdForShop(
   shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "chainBrand">,
 ): ChainBrandId | null {
@@ -255,6 +264,7 @@ export function shopNameAliases(
     for (const extra of chainBrandSearchAliases(chainBrand)) {
       addExtraAlias(aliases, extra);
     }
+    for (const blocked of CHAIN_TOKEN_BLOCK[chainBrand] ?? []) aliases.delete(normalize(blocked));
   }
 
   return [...aliases];

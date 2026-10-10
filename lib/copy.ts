@@ -245,6 +245,11 @@ export const copy = {
     ar: "هالجولة انتهت.",
     en: "This Halfway expired.",
   },
+  /** Create returned 503 — migration not applied yet. Not the generic error. */
+  meetHalfwayInvitesPaused: {
+    ar: "الدعوات متوقفة مؤقتاً، جرّب بعد شوي.",
+    en: "Invites are paused for now. Try again a bit later.",
+  },
   meetHalfwayShareResults: {
     ar: "شارك النتائج",
     en: "Share results",

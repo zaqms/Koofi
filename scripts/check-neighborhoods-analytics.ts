@@ -41,7 +41,9 @@ const olaya = neighborhoodsSearchParams({
   locale: "en",
   city: "riyadh",
 });
-assert(olaya?.query_text === "olaya", "search trims query_text");
+assert(olaya && !("query_text" in olaya), "search sends no raw text");
+assert(olaya?.text_length === "olaya".length, "search sends the trimmed length");
+assert(olaya?.text_length_bucket === "1-10", "search sends a coarse length bucket");
 assert(olaya?.locale === "en", "search locale");
 assert(olaya?.city === "riyadh", "search city");
 

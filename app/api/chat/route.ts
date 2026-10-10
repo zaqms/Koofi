@@ -9,9 +9,11 @@ import {
 } from "@/lib/cities";
 import { copy } from "@/lib/copy";
 import { isOffTopicAsk } from "@/lib/off-topic-intent";
+import { clientIp } from "@/lib/feedback";
 import { recordLearnAsk } from "@/lib/learn";
 import { extractMapsUrl, looksLikeHttpUrl } from "@/lib/maps-url";
 import {
+  canonicalHalfwayInviteId,
   freezeHalfwayInviteResults,
   readHalfwayInviteSession,
 } from "@/lib/halfway-invite-store";
@@ -95,7 +97,21 @@ export async function POST(request: Request) {
       });
     }
 
-    const sessionId = parseHalfwaySessionId(body.halfway);
+    const rawSessionId = parseHalfwaySessionId(body.halfway);
+    // Legacy coordinate tokens map to their migrated random id.
+    let sessionId = rawSessionId;
+    if (rawSessionId) {
+      try {
+        // Same per-IP limit as the legacy redirect: crafted legacy tokens
+        // can't mint rows without it.
+        const canonical = await canonicalHalfwayInviteId(rawSessionId, {
+          ip: clientIp(request),
+        });
+        if (canonical.ok) sessionId = canonical.id;
+      } catch {
+        sessionId = rawSessionId;
+      }
+    }
     const more = body.halfwayMore === true;
     if (sessionId && !more) {
       let storedShopIds: string[] = [];

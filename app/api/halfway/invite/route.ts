@@ -5,12 +5,10 @@ import {
   halfwayPinFailCopy,
   restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
+import { roundHalfwayPin } from "@/lib/halfway-invite";
 import {
-  encodeHalfwayInviteId,
-  parseHalfwayInviteToken,
-  roundHalfwayPin,
-} from "@/lib/halfway-invite";
-import {
+  canonicalHalfwayInviteId,
+  createHalfwayInviteSession,
   resolveHalfwayInviteSession,
   upsertHalfwayInviteSession,
 } from "@/lib/halfway-invite-store";
@@ -49,7 +47,16 @@ async function resolveBodyPin(body: {
 }
 
 export async function GET(request: Request) {
-  const id = new URL(request.url).searchParams.get("id")?.trim() ?? "";
+  const rawId = new URL(request.url).searchParams.get("id")?.trim() ?? "";
+  // Legacy coordinate tokens resolve through their migrated random id.
+  const canonical = await canonicalHalfwayInviteId(rawId, { ip: clientIp(request) });
+  if (!canonical.ok && canonical.reason !== "missing") {
+    return Response.json(
+      { error: canonical.reason === "expired" ? "expired" : "bad", locations: [] },
+      { status: canonical.reason === "expired" ? 410 : 400 },
+    );
+  }
+  const id = canonical.ok ? canonical.id : rawId;
   const resolved = await resolveHalfwayInviteSession(id);
   if (!resolved.ok) {
     return Response.json(
@@ -103,41 +110,65 @@ export async function POST(request: Request) {
     return Response.json({ error: "invalid_json" }, { status: 400 });
   }
 
+  const locale = body.locale === "en" ? "en" : "ar";
   let id = inviteIdFrom(body.id);
-  let parsed = id ? parseHalfwayInviteToken(id) : null;
-  if (!parsed?.ok) {
-    const mintedPin = await resolveBodyPin(body);
-    const locale = body.locale === "en" ? "en" : "ar";
-    const mintedId = mintedPin
-      ? encodeHalfwayInviteId({ locale, locations: [mintedPin] })
-      : null;
-    if (!mintedId) {
-      const pinFail = !(parsed && !parsed.ok);
+  if (id) {
+    const canonical = await canonicalHalfwayInviteId(id, { ip: clientIp(request) });
+    if (!canonical.ok && canonical.reason !== "missing") {
       return Response.json(
         {
-          error: parsed && !parsed.ok ? "bad" : "bad_pin",
-          reply: pinFail
-            ? halfwayPinFailCopy(locale, [
-                { text: typeof body.text === "string" ? body.text : undefined },
-              ])
-            : copy.meetHalfwayInviteExpired[locale],
+          error: canonical.reason === "expired" ? "expired" : "bad",
+          reply: copy.meetHalfwayInviteExpired[locale],
+          locations: [],
+        },
+        { status: canonical.reason === "expired" ? 410 : 400 },
+      );
+    }
+    // No store (local without DB): legacy tokens keep the stateless read.
+    if (canonical.ok) id = canonical.id;
+  } else {
+    // New invite: random opaque id, host pin stays server-side.
+    const mintedPin = await resolveBodyPin(body);
+    if (!mintedPin) {
+      return Response.json(
+        {
+          error: "bad_pin",
+          reply: halfwayPinFailCopy(locale, [
+            { text: typeof body.text === "string" ? body.text : undefined },
+          ]),
           locations: [],
         },
         { status: 400 },
       );
     }
-    id = mintedId;
-    parsed = parseHalfwayInviteToken(id);
-  }
-  if (!parsed.ok) {
-    return Response.json(
-      {
-        error: parsed.reason,
-        reply: copy.meetHalfwayInviteExpired.ar,
-        locations: [],
-      },
-      { status: 400 },
-    );
+    if (!allowRate(`halfway:${clientIp(request)}`, WRITE_LIMIT, WRITE_WINDOW_MS)) {
+      return Response.json({ error: "rate_limited", locations: [] }, { status: 429 });
+    }
+    let created: Awaited<ReturnType<typeof createHalfwayInviteSession>> = null;
+    try {
+      created = await createHalfwayInviteSession({ locale, host: mintedPin });
+    } catch {
+      created = null;
+    }
+    if (!created) {
+      return Response.json(
+        {
+          error: "no_storage",
+          reply: copy.meetHalfwayInvitesPaused[locale],
+          locations: [],
+        },
+        { status: 503 },
+      );
+    }
+    return Response.json({
+      id: created.id,
+      language: locale,
+      exp: created.session.expiresAt,
+      locations: pinsToRows(created.session.locations),
+      joined: false,
+      shop_ids: [],
+      picks: [],
+    });
   }
 
   const resolved = await resolveHalfwayInviteSession(id);
@@ -145,7 +176,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         error: resolved.reason,
-        reply: copy.meetHalfwayInviteExpired[parsed.seed.locale],
+        reply: copy.meetHalfwayInviteExpired[locale],
         locations: [],
       },
       { status: resolved.reason === "expired" ? 410 : 400 },

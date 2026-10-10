@@ -155,7 +155,7 @@ const chatNo = resultsFeedbackParams({
 assert(chatNo.source === "chat_results", "non-Halfway source is the placement");
 assert(chatNo.feedback_source === "chat_results", "feedback_source matches");
 assert(chatNo.shop_ids === "camel-step-hittin,cafu-olaya", "shop ids");
-assert(chatNo.query_text === "قهوة شغل", "query context");
+assert(!JSON.stringify(chatNo).includes("قهوة"), "raw ask text is not pushed with feedback");
 assert(typeof chatNo.timestamp === "string", "timestamp");
 const otherNote = resultsFeedbackParams({
   locale: "en",
@@ -167,7 +167,9 @@ const otherNote = resultsFeedbackParams({
   shopId: "camel-step-hittin",
 });
 assert(otherNote.feedback === "no" && otherNote.reason === "other", "other reason");
-assert(otherNote.feedback_text === "Nothing exciting", "free-text rides the same event");
+assert(!JSON.stringify(otherNote).includes("Nothing exciting"), "free-text note is never pushed");
+assert(otherNote.text_length === "Nothing exciting".length, "note push carries its length only");
+assert(otherNote.text_length_bucket === "11-25", "note push carries a coarse length bucket");
 assert(otherNote.feedback_note == null, "primary other+text is not a note-only follow-up");
 assert(
   !master.includes("fetch(") && !master.includes("/api/"),

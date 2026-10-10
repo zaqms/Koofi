@@ -139,7 +139,8 @@ These names are the contract in `lib/env.ts`, `.env.example`, and the webhook. D
 | `RESEND_API_KEY` | No | Optional. If set, claim submit emails `CLAIM_ALERT_TO` via Resend. If empty, email is stubbed and the server logs `wain_claim`. |
 | `CLAIM_APPROVE_TOKEN` | No | Optional shared secret for `/ops/claims`. Mint / revoke owner edit links for verified shops. If empty, ops 404s. Never commit a real token. Do not auto-send WhatsApp. Preview try-path only — do not set this on Production from this work. |
 | `BLOB_READ_WRITE_TOKEN` | No | Vercel Blob token for owner Passport photo upload (`POST /api/owner/photos`). Auto-injected when a Blob store is linked to the Vercel project. Preview needs a linked Blob store (or this token) for phone upload. URL fields still work if empty. Never commit a real token. |
-| `HALFWAY_RESULTS_WEBHOOK_KEY` | No | Optional Bearer for the server-side Cursor Grok Bot webhook that emails **aj@cali.sa** the بيننا three. Set on the Vercel project (Preview + Production). If empty, picks still render and the server logs `wain_halfway_results_webhook_stub`. Never `NEXT_PUBLIC_`. Never commit the key. |
+| `HALFWAY_RESULTS_WEBHOOK_KEY` | No | Optional Bearer for the server-side Cursor Grok Bot webhook that emails **aj@cali.sa** the بيننا three. Sends only on Vercel Production (`VERCEL_ENV=production`); Preview and local always stub, even with the key. If empty, picks still render and the server logs `wain_halfway_results_webhook_stub`. Never `NEXT_PUBLIC_`. Never commit the key. |
+| `HALFWAY_ALLOW_NONPROD_DB` | No | `1` lets a Preview or local run keep بيننا invites in `DATABASE_URL` (only point it at a Neon branch, never prod). Unset: Production uses Neon, Preview has invites off, local uses memory. The `halfway_invites` columns/indexes come from the one-time migration `sql/halfway-invites-privacy.sql` (`npx tsx scripts/migrate-halfway-invites.ts`, dry run unless `--apply`); the app runs no DDL for it and keeps invites off until it is applied. Expired rows are deleted about 24 h after expiry. |
 
 Do not commit secrets.
 
@@ -171,7 +172,7 @@ Web chat pushes optional GTM `dataLayer` events from [`lib/track.ts`](lib/track.
 
 | Event | When | Parameters |
 | --- | --- | --- |
-| `chat_query` | A user ask is submitted through the composer (`send`) | `query_text` (exact typed / submitted text), `locale`, `via` (`typed` / `chip`), `text_length` |
+| `chat_query` | A user ask is submitted through the composer (`send`) | `locale`, `via` (`typed` / `chip`), `text_length`, `text_length_bucket` (`1-10` / `11-25` / `26-50` / `51+`). The typed text itself is not sent. |
 | `district_match` | A typed ask resolved to a live district and returned in-district picks | `district_slug`, `locale` |
 | `chip_tap` | A vibe or Nearby chip is tapped | `chip_id`, `chip_label`, `locale` |
 | `district_select` | A list حي filter is chosen | `district_id`, `district_ar`, `district_en`, `locale` |
@@ -240,6 +241,8 @@ npm run refresh-tiktok-followers -- path/to/tiktok-followers.json
 ```
 
 The script checks shop ids, requires followers on `found` rows, and rejects followers on every other status.
+
+> **Privacy (Oct 2026):** the dataLayer no longer carries `query_text` (chat asks, district search) or `feedback_text` (results notes). Map `text_length` / `text_length_bucket` instead; a `DL - query_text` variable now reads empty.
 
 Repo code cannot create GTM tags. In container **GTM-W3TM4552**:
 

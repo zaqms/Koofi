@@ -16,7 +16,8 @@ const en = chatQueryParams({
   via: "typed",
 });
 assert(en, "English typed query must build params");
-assert(en.query_text === "quiet work in Al Malqa", `EN text: ${en.query_text}`);
+assert(!("query_text" in en), "EN params carry no raw ask text");
+assert(en.text_length_bucket === "11-25", `EN bucket: ${en.text_length_bucket}`);
 assert(en.locale === "en", "EN locale");
 assert(en.via === "typed", "EN via is typed");
 assert(en.text_length === "quiet work in Al Malqa".length, "EN text_length");
@@ -27,7 +28,9 @@ const ar = chatQueryParams({
   via: "typed",
 });
 assert(ar, "Arabic typed query must build params");
-assert(ar.query_text === "حطين شغل", `AR text: ${ar.query_text}`);
+assert(!("query_text" in ar), "AR params carry no raw ask text");
+assert(ar.text_length === "حطين شغل".length, "AR text_length is trimmed length");
+assert(ar.text_length_bucket === "1-10", `AR bucket: ${ar.text_length_bucket}`);
 assert(ar.locale === "ar", "AR locale");
 assert(ar.via === "typed", "AR via is typed");
 
@@ -40,7 +43,7 @@ const chipSubmitted = chatQueryParams({
   via: "chip",
 });
 assert(chipSubmitted?.via === "chip", "chip label posted to chat is via=chip");
-assert(chipSubmitted?.query_text === "Best for Work", "chip submit keeps the label");
+assert(chipSubmitted?.text_length === "Best for Work".length, "chip submit sends length only");
 
 type WindowStub = { dataLayer: Array<Record<string, unknown>> };
 const previousWindow = (globalThis as { window?: unknown }).window;
@@ -59,10 +62,14 @@ try {
 
   const queries = stub.dataLayer.filter((row) => row.event === "chat_query");
   assert(queries.length === 2, `expected 2 chat_query events, got ${queries.length}`);
-  assert(queries[0]?.query_text === "quiet work in Al Malqa", "EN dataLayer text");
+  assert(
+    !JSON.stringify(queries).includes("Al Malqa") && !JSON.stringify(queries).includes("حطين"),
+    "dataLayer never carries the typed ask",
+  );
+  assert(queries[0]?.text_length === "quiet work in Al Malqa".length, "EN dataLayer length");
   assert(queries[0]?.locale === "en", "EN dataLayer locale");
   assert(queries[0]?.via === "typed", "EN dataLayer via");
-  assert(queries[1]?.query_text === "حطين شغل", "AR dataLayer text");
+  assert(queries[1]?.text_length_bucket === "1-10", "AR dataLayer bucket");
   assert(queries[1]?.locale === "ar", "AR dataLayer locale");
   assert(!("reply" in (queries[0] ?? {})), "must not send reply text");
   assert(!("session" in (queries[0] ?? {})), "must not send session");
@@ -79,11 +86,11 @@ try {
     "whitespace submit does not track",
   );
   assert(
-    stub.dataLayer.every((row) => row.query_text !== LOCKED_OPENER),
+    stub.dataLayer.every((row) => !JSON.stringify(row).includes(LOCKED_OPENER)),
     "opener Arabic is not a chat_query",
   );
   assert(
-    stub.dataLayer.every((row) => row.query_text !== LOCKED_OPENER_EN),
+    stub.dataLayer.every((row) => !JSON.stringify(row).includes(LOCKED_OPENER_EN)),
     "opener English is not a chat_query",
   );
 

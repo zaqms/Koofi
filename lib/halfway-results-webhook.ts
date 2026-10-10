@@ -72,7 +72,8 @@ export function halfwayResultsWebhookBody(input: {
 
 /**
  * Server-only. Bearer key stays in Vercel env — never import this module
- * from a client component. Missing key stubs and logs; results still render.
+ * from a client component. Sends only on Vercel Production with the key;
+ * missing key or any non-production env stubs and logs; results still render.
  */
 export async function notifyHalfwayResults(input: {
   locale: Language;
@@ -86,10 +87,14 @@ export async function notifyHalfwayResults(input: {
 
   const body = halfwayResultsWebhookBody(input);
   const key = readEnv(ENV_KEYS.HALFWAY_RESULTS_WEBHOOK_KEY);
-  if (!key) {
+  // Production only: a preview (or a local run with a pulled key) must
+  // never email real-looking results. Stub log has no coordinates.
+  const production = process.env.VERCEL_ENV === "production";
+  if (!key || !production) {
     console.log(
       "wain_halfway_results_webhook_stub",
       JSON.stringify({
+        reason: key ? "non_production" : "no_key",
         locale: body.locale,
         session_id: body.session_id ?? null,
         count: body.count,

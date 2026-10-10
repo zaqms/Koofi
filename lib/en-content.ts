@@ -388,7 +388,6 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ar Rahmaniyyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Ar Rahmaniyyah on wain.lol — a Riyadh neighborhood list including Camel Step, Sipology, and Ramli Cafe, each with a Maps link.",
   },
   "al-shohda": {
     lead: `Ash Shuhada is a small east-Riyadh list — one cafe added so far.`,

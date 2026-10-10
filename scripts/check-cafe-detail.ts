@@ -622,14 +622,13 @@ const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_H_IZDIHAR_IDS = Object.keys(BATCH_H_IZDIHAR_HERO_COUNTS);
 
-/** BATCH_I: Ar Rahmaniyyah (10 Oct 2026) Places galleries — Scout's 10 Oct frames (28 Place Photos, 640px) plus 3 Dev Starbucks user photos, hand-ordered. Sipology 3 (Instagram collage dropped), Grind 3 (diners under another venue's sign dropped), Java Time 3 (288px owner thumbnail dropped); Starbucks brand stock/promo frames dropped. Google credit per frame. */
+/** BATCH_I: Ar Rahmaniyyah (10 Oct 2026) Places galleries — Scout's 10 Oct frames (28 Place Photos, 640px) plus 3 Dev Starbucks user photos, hand-ordered. Sipology 3 (Instagram collage dropped), Grind Coffee dropped in r2 (#257 QA M1, rule 5), Java Time 3 (288px owner thumbnail dropped); Starbucks brand stock/promo frames dropped. Google credit per frame. */
 const BATCH_I_RAHMANIYYAH_HERO_COUNTS: Record<string, number> = {
   "peaks-the-tent-al-rahmaniyyah": 4,
   "november-coffee-al-rahmaniyyah": 4,
   "sipology-al-rahmaniyyah": 3,
   "ramli-cafe-al-rahmaniyyah": 4,
-  "grind-coffee-al-rahmaniyyah": 3,
-  "starbucks-diplomat-al-rahmaniyyah": 4,
+  "starbucks-the-plaza-al-rahmaniyyah": 4,
   "java-time-al-rahmaniyyah": 3,
 };
 const BATCH_I_RAHMANIYYAH_IDS = Object.keys(BATCH_I_RAHMANIYYAH_HERO_COUNTS);
@@ -737,9 +736,10 @@ assert(batchFShubraHeroIds.length === 9, "Batch F Shubra hero set is complete");
 assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete");
 assert(batchHIzdiharHeroIds.length === 7, "Batch H Al Izdihar hero set is complete (7 local; McCafe dropped)");
 assert(!("mccafe-uthman-al-izdihar" in bakedHeroes), "no McCafe gallery ships (dropped in r3)");
-assert(batchIRahmaniyyahHeroIds.length === 7, "Batch I Ar Rahmaniyyah hero set is complete");
+assert(batchIRahmaniyyahHeroIds.length === 6, "Batch I Ar Rahmaniyyah hero set is complete (Grind Coffee dropped in r2)");
+assert(!("grind-coffee-al-rahmaniyyah" in bakedHeroes), "no Grind Coffee gallery ships (dropped in r2)");
 assert(
-  (bakedHeroes["starbucks-diplomat-al-rahmaniyyah"] as { attribution?: { displayName?: string } }[])
+  (bakedHeroes["starbucks-the-plaza-al-rahmaniyyah"] as { attribution?: { displayName?: string } }[])
     .map((photo) => photo.attribution?.displayName)
     .join("|") === "Bandar|Faisal Bashiti|Abdulrahman|Thamer AL Juwaidi",
   "Starbucks Ar Rahmaniyyah ships 4 user photos of this branch (no brand stock/promo frames); Google credit per frame",

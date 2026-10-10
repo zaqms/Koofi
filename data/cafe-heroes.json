@@ -14397,53 +14397,30 @@
       }
     }
   ],
-  "grind-coffee-al-rahmaniyyah": [
+  "starbucks-the-plaza-al-rahmaniyyah": [
     {
-      "src": "/cafe-heroes/grind-coffee-al-rahmaniyyah/1.jpg",
-      "attribution": {
-        "displayName": "Suleiman ALAQEL",
-        "uri": "https://maps.google.com/maps/contrib/113575877522266479937"
-      }
-    },
-    {
-      "src": "/cafe-heroes/grind-coffee-al-rahmaniyyah/2.jpg",
-      "attribution": {
-        "displayName": "Suleiman ALAQEL",
-        "uri": "https://maps.google.com/maps/contrib/113575877522266479937"
-      }
-    },
-    {
-      "src": "/cafe-heroes/grind-coffee-al-rahmaniyyah/3.jpg",
-      "attribution": {
-        "displayName": "Suleiman ALAQEL",
-        "uri": "https://maps.google.com/maps/contrib/113575877522266479937"
-      }
-    }
-  ],
-  "starbucks-diplomat-al-rahmaniyyah": [
-    {
-      "src": "/cafe-heroes/starbucks-diplomat-al-rahmaniyyah/1.jpg",
+      "src": "/cafe-heroes/starbucks-the-plaza-al-rahmaniyyah/1.jpg",
       "attribution": {
         "displayName": "Bandar",
         "uri": "https://maps.google.com/maps/contrib/107546106776390346227"
       }
     },
     {
-      "src": "/cafe-heroes/starbucks-diplomat-al-rahmaniyyah/2.jpg",
+      "src": "/cafe-heroes/starbucks-the-plaza-al-rahmaniyyah/2.jpg",
       "attribution": {
         "displayName": "Faisal Bashiti",
         "uri": "https://maps.google.com/maps/contrib/115019146102977996151"
       }
     },
     {
-      "src": "/cafe-heroes/starbucks-diplomat-al-rahmaniyyah/3.jpg",
+      "src": "/cafe-heroes/starbucks-the-plaza-al-rahmaniyyah/3.jpg",
       "attribution": {
         "displayName": "Abdulrahman",
         "uri": "https://maps.google.com/maps/contrib/104445007786604612964"
       }
     },
     {
-      "src": "/cafe-heroes/starbucks-diplomat-al-rahmaniyyah/4.jpg",
+      "src": "/cafe-heroes/starbucks-the-plaza-al-rahmaniyyah/4.jpg",
       "attribution": {
         "displayName": "Thamer AL Juwaidi",
         "uri": "https://maps.google.com/maps/contrib/116329730558272748845"

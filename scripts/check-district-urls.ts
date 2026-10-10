@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
-assert(listDiscoveryShops().length === 443, `specialty discovery is 443 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 5 Batch I Ar Rahmaniyyah local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 516, `catalog is 516 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar) and Batch I (7 Ar Rahmaniyyah), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 442, `specialty discovery is 442 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 515, `catalog is 515 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar) and Batch I (6 Ar Rahmaniyyah), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -5141,7 +5141,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: true,
   },
-  // Batch I: Ar Rahmaniyyah (10 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 2 letter tiles (Grind Coffee, Java Time); Peaks and November reuse their sibling marks; Starbucks and Java Time are sit-down chains (no drive-through).
+  // Batch I: Ar Rahmaniyyah (10 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 1 letter tile (Java Time; Grind Coffee dropped in r2, rule 5); Peaks and November reuse their sibling marks; Starbucks and Java Time are sit-down chains (no drive-through).
   {
     id: "peaks-the-tent-al-rahmaniyyah",
     hex: "0x3e2f1d5c471c936f:0x4e108e85b733eb6f",
@@ -5195,19 +5195,7 @@ const scoutPack: {
     outdoorSeating: true,
   },
   {
-    id: "grind-coffee-al-rahmaniyyah",
-    hex: "0x3e2f1de924e8ad97:0x56a9ddf73574ebdb",
-    neighborhood: "al-rahmaniyyah",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-    pin: { lat: 24.7235749, lng: 46.6647982 },
-    coordsInUrl: true,
-    placeId: "ChIJl63oJOkdLz4R2-t0NffdqVY",
-    dineIn: true,
-    outdoorSeating: null,
-  },
-  {
-    id: "starbucks-diplomat-al-rahmaniyyah",
+    id: "starbucks-the-plaza-al-rahmaniyyah",
     hex: "0x3e2f1d05d2dca9d5:0xe1cb2bdf996f86d3",
     neighborhood: "al-rahmaniyyah",
     vibe: ["قهوة"],

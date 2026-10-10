@@ -198,6 +198,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "ostrich-al-falah": ["اوستريتيش"],
   // Batch G: نفل is also the حي token (النفل), so the full name needs to be an explicit alias (same as قهوة سلام).
   "nafel-coffee-an-nafal": ["قهوة نفل", "nafel coffee"],
+  // Batch I r2: Starbucks at The Plaza (King Abdullah Rd), so "starbucks the plaza" / «ستاربكس بلازا» find this branch first.
+  "starbucks-the-plaza-al-rahmaniyyah": ["starbucks the plaza", "starbucks plaza", "the plaza", "plaza", "ستاربكس ذا بلازا", "ستاربكس بلازا", "ذا بلازا", "بلازا"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -222,6 +224,12 @@ function addExtraAlias(into: Set<string>, raw: string): void {
  */
 const CHAIN_TOKEN_BLOCK: Partial<Record<ChainBrandId, readonly string[]>> = {
   "java-time": ["java", "جافا", "time", "تايم"],
+};
+
+/** Same idea for one row: a plain word in the name that should not name the café alone. */
+const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
+  // "The Tent" is the venue; "tent" alone is not Peaks (#257 QA n4). "peaks tent" / "peaks the tent" still match.
+  "peaks-the-tent-al-rahmaniyyah": ["tent"],
 };
 
 function chainBrandIdForShop(
@@ -266,6 +274,7 @@ export function shopNameAliases(
     }
     for (const blocked of CHAIN_TOKEN_BLOCK[chainBrand] ?? []) aliases.delete(normalize(blocked));
   }
+  for (const blocked of SHOP_TOKEN_BLOCK[shop.id] ?? []) aliases.delete(normalize(blocked));
 
   return [...aliases];
 }

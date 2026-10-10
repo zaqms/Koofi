@@ -523,7 +523,7 @@ assert(
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "costa").map((shop) => shop.id).join(",") === "costa-tala-mall-an-nafal" &&
     taggedLive.filter((shop) => shop.chainBrand === "starbucks").map((shop) => shop.id).join(",") ===
-      "starbucks-tala-mall-an-nafal,starbucks-diplomat-al-rahmaniyyah",
+      "starbucks-tala-mall-an-nafal,starbucks-the-plaza-al-rahmaniyyah",
   "Costa has one tagged row (Tala Mall An Nafal, Batch G); Starbucks has Tala Mall (Batch G) and The Plaza Ar Rahmaniyyah (Batch I)",
 );
 // Batch I (10 Oct 2026): Java Time (~20 Riyadh branches, coffee-first) is its own chain brand, never Java Cafe.
@@ -543,7 +543,7 @@ assert(
     "Java Cafe rows keep brand java",
   );
   assert(!shopNameAliases(javaTime!).some((alias) => ["java", "جافا", "time", "تايم"].includes(alias)), "Java Time does not answer to java / جافا / time / تايم alone");
-  const starbucksR = getShop("starbucks-diplomat-al-rahmaniyyah");
+  const starbucksR = getShop("starbucks-the-plaza-al-rahmaniyyah");
   assert(
     starbucksR?.isChain === true && starbucksR.chainBrand === "starbucks" && shopBrandKey(starbucksR) === "starbucks" && starbucksR.logoUrl === "/logos/starbucks-mark.png",
     "Starbucks Ar Rahmaniyyah is brand starbucks with the siren mark",
@@ -622,8 +622,14 @@ for (const ask of ["كوفي الرحمانية", "قهوة الرحمانية",
   );
 }
 for (const [ask, id] of [
-  ["ستاربكس الرحمانية", "starbucks-diplomat-al-rahmaniyyah"],
-  ["starbucks rahmaniyyah", "starbucks-diplomat-al-rahmaniyyah"],
+  ["ستاربكس الرحمانية", "starbucks-the-plaza-al-rahmaniyyah"],
+  ["starbucks rahmaniyyah", "starbucks-the-plaza-al-rahmaniyyah"],
+  // Batch I r2 (#257 QA m1/n1): the branch is The Plaza on King Abdullah Rd.
+  ["starbucks the plaza", "starbucks-the-plaza-al-rahmaniyyah"],
+  ["Starbucks The Plaza", "starbucks-the-plaza-al-rahmaniyyah"],
+  ["starbucks plaza", "starbucks-the-plaza-al-rahmaniyyah"],
+  ["ستاربكس بلازا", "starbucks-the-plaza-al-rahmaniyyah"],
+  ["ستاربكس ذا بلازا", "starbucks-the-plaza-al-rahmaniyyah"],
   ["java time", "java-time-al-rahmaniyyah"],
   ["Java Time", "java-time-al-rahmaniyyah"],
   ["جافا تايم", "java-time-al-rahmaniyyah"],
@@ -643,14 +649,17 @@ for (const ask of ["time", "coffee time", "تايم"] as const) {
   const result = pickCafes({ text: ask });
   assert(!result.picks.some((pick) => pick.shop.chainBrand === "java-time"), `${ask} does not pin Java Time, got ${result.picks.map((pick) => pick.shop.id).join(",")}`);
 }
+// Batch I r2 (#257 QA M1): Grind Coffee (counter-only mall kiosk, rule 5) is not live; "tent" alone is not Peaks (n4).
+assert(!getShop("grind-coffee-al-rahmaniyyah") && !listRealShops().some((shop) => /grind|طحن/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)), "no Grind Coffee row is live (dropped in Batch I r2)");
+assert(!shopNameAliases(getShop("peaks-the-tent-al-rahmaniyyah")!).includes("tent"), "Peaks – The Tent does not answer to tent alone");
+assert(!pickCafes({ text: "tent" }).picks.some((pick) => pick.shop.id === "peaks-the-tent-al-rahmaniyyah"), "tent alone does not pick Peaks");
 // Batch I name self-tests: every new row finds itself by its EN and AR names.
 for (const id of [
   "peaks-the-tent-al-rahmaniyyah",
   "november-coffee-al-rahmaniyyah",
   "sipology-al-rahmaniyyah",
   "ramli-cafe-al-rahmaniyyah",
-  "grind-coffee-al-rahmaniyyah",
-  "starbucks-diplomat-al-rahmaniyyah",
+  "starbucks-the-plaza-al-rahmaniyyah",
   "java-time-al-rahmaniyyah",
 ] as const) {
   const shop = getShop(id)!;
@@ -666,10 +675,9 @@ for (const [ask, id] of [
   ["سايبولوجي", "sipology-al-rahmaniyyah"],
   ["Ramli Cafe", "ramli-cafe-al-rahmaniyyah"],
   ["رملي كافيه", "ramli-cafe-al-rahmaniyyah"],
-  ["Grind Coffee", "grind-coffee-al-rahmaniyyah"],
-  ["مقهى طحن", "grind-coffee-al-rahmaniyyah"],
   ["Peaks The Tent", "peaks-the-tent-al-rahmaniyyah"],
   ["بيكس الرحمانية", "peaks-the-tent-al-rahmaniyyah"],
+  ["peaks tent", "peaks-the-tent-al-rahmaniyyah"],
 ] as const) {
   const result = pickCafes({ text: ask });
   assert(result.picks[0]?.shop.id === id, `${ask} picks ${id} first, got ${result.picks.map((pick) => pick.shop.id).join(",")}`);
@@ -731,7 +739,7 @@ const SIT_DOWN_ONLY_CHAINS = new Set<string>([
   "costa-tala-mall-an-nafal",
   "starbucks-tala-mall-an-nafal",
   "drcafe-an-nafal",
-  "starbucks-diplomat-al-rahmaniyyah",
+  "starbucks-the-plaza-al-rahmaniyyah",
   "java-time-al-rahmaniyyah",
 ]);
 const dineInLaneRemoved = [
@@ -758,7 +766,7 @@ const dineInLaneRemoved = [
   "starbucks-tala-mall-an-nafal",
   "drcafe-an-nafal",
   // Batch I (10 Oct): sit-down chains in Ar Rahmaniyyah, no drive-through.
-  "starbucks-diplomat-al-rahmaniyyah",
+  "starbucks-the-plaza-al-rahmaniyyah",
   "java-time-al-rahmaniyyah",
 ] as const;
 const qaKiosks = [
@@ -977,8 +985,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 443, "specialty discovery is 443 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 5 Batch I Ar Rahmaniyyah local; Veloce is a chain)");
-assert(listRealShops().length === 516, "catalog is 516 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar) and Batch I (7 Ar Rahmaniyyah)");
+assert(listDiscoveryShops().length === 442, "specialty discovery is 442 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local; Veloce is a chain)");
+assert(listRealShops().length === 515, "catalog is 515 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar) and Batch I (6 Ar Rahmaniyyah)");
 assert(listLiveDistrictIds().length === 63, "specialty districts are 63 (62 + Shubra, Batch F; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 78,
@@ -986,9 +994,9 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
 assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
-assert(listListingShops().length === 461, "listing is 443 local plus the 18 sit-down chains");
-assert(listPublicShops().length === 461, "public list includes the 18 sit-down chains");
-assert(listBrowseDirectoryShops().length === 466, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows and the 7 Batch I Ar Rahmaniyyah rows");
+assert(listListingShops().length === 460, "listing is 442 local plus the 18 sit-down chains");
+assert(listPublicShops().length === 460, "public list includes the 18 sit-down chains");
+assert(listBrowseDirectoryShops().length === 465, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows and the 6 Batch I Ar Rahmaniyyah rows");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 18,
   "exactly 18 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah)",
@@ -1402,7 +1410,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "76cada2d594378d4375f524f5477184ea64dfcac2d1a36342ddbfbef9ae5c77f",
+  copyHash === "6d8b430f93153f892e20a0e58818571901b5979769851e837d1c4cd39e613bfc",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1532,11 +1540,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "ad8901673c06144e8ea7cfd6aef85b521dcce22b2b2ad1980c09b3b05b59d9ba",
+  llmsHash === "643ed916f9d4d5e8d43b20a7a04c590a846aa8921e6479feb56701c76d811891",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("443 local, 18 chain branches"),
+  llms.includes("442 local, 18 chain branches"),
   "llms.txt names the 18 chain branches separately from specialty",
 );
 

@@ -3,7 +3,7 @@ import type { Language } from "./types";
 /**
  * Privacy policy + Terms of use (AR + EN).
  *
- * STATUS (10 Oct 2026): final texts in (Privacy EN v3 + AR, Terms EN + AR,
+ * STATUS (10 Oct 2026, r8): final texts in (Privacy EN v3 + AR, Terms EN + AR,
  * approved by Amjad incl. his 1:45 PM no-accounts rule, post-#252 wording).
  * Dropped in verbatim; the only structural conversions are: numbered
  * sections and lettered subsections become LegalSection (subsection: true
@@ -15,9 +15,9 @@ import type { Language } from "./types";
  * section (COOKIES_AR / COOKIES_EN, /privacy#cookies), placed after
  * section 7, which points to it.
  *
- * One marker is left on purpose: the effective date
- * ([AMJAD TO CONFIRM: publish date]). Fill it on go-live day; until then the
- * pages stay noindex and LEGAL_SHIP fails.
+ * r8 (Amjad's Yalla, 10 Oct 5:03 PM): effective date 11 October 2026, the
+ * legal-identity caveat dropped from section 1, «أفكاركم» in Arabic. No
+ * markers are left, so the pages are indexable and in the sitemap.
  * Never write a personal inbox in this copy, and never the old repo name.
  */
 export type LegalSection = {
@@ -112,14 +112,14 @@ const COOKIES_EN: LegalSection = {
 const PRIVACY_AR: LegalDoc = {
   title: "سياسة الخصوصية",
   description: "وش البيانات اللي يجمعها وين (wain.lol)، ليش، ووين تروح، وكيف تتحكم في الكوكيز.",
-  updated: "تاريخ السريان: [للتأكيد من أمجد: تاريخ النشر]",
+  updated: "تاريخ السريان: 11 أكتوبر 2026",
   intro: [],
   sections: [
     {
       heading: "1. عن وين",
       paragraphs: [
         "وين (Wain)، المتاح على {{https://wain.lol}}، منصة سعودية لاكتشاف المقاهي، تساعدك على العثور على المقاهي واستكشاف الأحياء والبحث عن التوصيات، وإيجاد أماكن للالتقاء من خلال ميزة بيننا (Halfway).",
-        "لأغراض هذه المسودة، يُعرَّف وين بأنه خدمة تشغّلها Cali Ventures، وذلك رهنٌ بتأكيد كيانها القانوني المسجّل ومسؤوليتها عن معالجة البيانات الشخصية.",
+        "تشغّل وين شركة مشاريع كالي (Cali Ventures) على العنوان المذكور أدناه.",
         "للتواصل: {{privacy@cali.sa}}",
         "العنوان: Cali Ventures، العقارية 2، شارع العليا، حي العليا، الرياض 12244، المملكة العربية السعودية.",
       ],
@@ -127,7 +127,7 @@ const PRIVACY_AR: LegalDoc = {
     {
       heading: "2. المعلومات التي نجمعها ونعالجها",
       paragraphs: [
-        "لا توجد في وين حسابات للزوار ولا تسجيل دخول. لا تحتاج إلى التسجيل أو الدخول لاستخدامه، ولا يخزّن وين أي كلمات مرور أو بيانات دخول. ولا يجمع وين عناوين البريد الإلكتروني لنشرة بريدية. وخطوة التحقق الوحيدة هي رمز WhatsApp الذي يتلقاه أصحاب المقاهي عند المطالبة بإدراج مقهاهم، كما هو موضّح أدناه.",
+        "لا توجد في وين حسابات للزوار ولا تسجيل دخول. لا تحتاج إلى التسجيل أو الدخول لاستخدامه، ولا يخزّن وين أي كلمات مرور أو بيانات دخول للزوار. ولا يجمع وين عناوين البريد الإلكتروني لنشرة بريدية. وخطوة التحقق الوحيدة هي رمز WhatsApp الذي يتلقاه أصحاب المقاهي عند المطالبة بإدراج مقهاهم، كما هو موضّح أدناه.",
         "وبحسب الميزات التي تستخدمها، قد تُعالَج المعلومات التالية.",
       ],
     },
@@ -173,7 +173,7 @@ const PRIVACY_AR: LegalDoc = {
       heading: "ج. الاقتراحات والتصويت",
       subsection: true,
       paragraphs: [
-        "عندما ترسل فكرة عبر لوحة الاقتراحات في وين، يُعرض النص المُرسَل علنًا ويُحتفظ به دون مدة حذف تلقائي محددة.",
+        "عندما ترسل فكرة عبر «أفكاركم» في وين، يُعرض النص المُرسَل علنًا ويُحتفظ به دون مدة حذف تلقائي محددة.",
         "يستخدم التصويت معرّفًا مستعارًا مشتقًا من كوكيز المتصفح {{wain_vid}}. وتُحفظ سجلات التصويت دون مدة حذف تلقائي محددة، مع مراعاة ما يتوفر من وسائل الإزالة.",
         "وقد يُعالَج عنوان IP مؤقتًا لمنع الرسائل المزعجة دون تخزينه في قاعدة بيانات تطبيق وين لهذا الغرض.",
         "يُرجى عدم تضمين معلومات شخصية خاصة في الاقتراحات المنشورة علنًا.",
@@ -280,7 +280,7 @@ const PRIVACY_AR: LegalDoc = {
       bullets: [
         "سجلات بيننا في قاعدة البيانات: تُحذف تلقائيًا بعد نحو 24 ساعة من انتهاء صلاحية الرابط",
         "رسائل نتائج بيننا: إلى أن تُحذف يدويًا",
-        "الأفكار المنشورة في لوحة الاقتراحات: لا تُحذف تلقائيًا",
+        "الأفكار المنشورة في «أفكاركم»: لا تُحذف تلقائيًا",
         "سجلات التصويت على الاقتراحات: لا تُحذف تلقائيًا",
         "سجلات مطالبات أصحاب المقاهي: لا تُحذف تلقائيًا",
         "سجلات التحقق وروابط التعديل منتهية الصلاحية: قد تبقى مخزّنة بعد انتهاء صلاحيتها",
@@ -326,7 +326,7 @@ const PRIVACY_AR: LegalDoc = {
       heading: "9. الأمان",
       paragraphs: [
         "يستخدم وين تدابير تقنية، مثل رموز التحقق المُجزّأة والروابط المقيّدة لبعض الميزات، في عمليات معيّنة.",
-        "ومع ذلك، لا يوجد نظام آمن تمامًا. تستخدم روابط دعوات بيننا رمزًا عشوائيًا ولا تحتوي على موقعك، ولا تُحمَّل أدوات التحليلات في صفحات الدعوة أو صفحات تعديل المالك.",
+        "ومع ذلك، لا يوجد نظام آمن تمامًا. تستخدم روابط دعوات بيننا رمزًا عشوائيًا ولا تحتوي على موقعك، ولا تُحمَّل أدوات الإعلانات وتحليلات Google في صفحات الدعوة أو صفحات تعديل المالك، ولا يرى Vercel Web Analytics صفحات الدعوة إلا بصيغة \"{{/h/[invite]}}\".",
         "لا تشارك روابط التعديل الخاصة أو روابط بيننا مع غير المقصودين بها.",
       ],
     },
@@ -360,14 +360,14 @@ const PRIVACY_AR: LegalDoc = {
 const PRIVACY_EN: LegalDoc = {
   title: "Privacy policy",
   description: "What data Wain (wain.lol) collects, why, where it goes, and how to control cookies.",
-  updated: "Effective date: [AMJAD TO CONFIRM: publish date]",
+  updated: "Effective date: 11 October 2026",
   intro: [],
   sections: [
     {
       heading: "1. About Wain",
       paragraphs: [
         "Wain (وين), available at {{https://wain.lol}}, is a Saudi café discovery platform that helps people find cafés, explore neighborhoods, search for recommendations, and find places to meet through its Halfway (بيننا) feature.",
-        "For the purposes of this draft, Wain is identified as a service operated by Cali Ventures, subject to confirmation of its registered legal identity and responsibility for personal-data processing.",
+        "Wain is operated by Cali Ventures (شركة مشاريع كالي) at the address below.",
         "Contact: {{privacy@cali.sa}}",
         "Address: Cali Ventures, Al Akaria 2, Al Olaya Street, Al Olaya, Riyadh 12244, Saudi Arabia.",
       ],
@@ -375,7 +375,7 @@ const PRIVACY_EN: LegalDoc = {
     {
       heading: "2. Information We Collect and Process",
       paragraphs: [
-        "Wain has no visitor accounts or logins. You don't sign up or sign in to use it, and Wain stores no passwords or login data. Wain does not collect email addresses for a newsletter. The only verification step is the WhatsApp code café owners receive when they claim a listing, described below.",
+        "Wain has no visitor accounts or logins. You don't sign up or sign in to use it, and Wain stores no visitor passwords or login data. Wain does not collect email addresses for a newsletter. The only verification step is the WhatsApp code café owners receive when they claim a listing, described below.",
         "Depending on the features you use, the following information may be processed.",
       ],
     },
@@ -574,7 +574,7 @@ const PRIVACY_EN: LegalDoc = {
       heading: "9. Security",
       paragraphs: [
         "Wain uses technical measures such as hashed verification codes and restricted feature links for certain operations.",
-        "However, no system is completely secure. Halfway invitation links use a random code and don’t contain your location, and analytics tools don’t load on invite or owner-edit pages.",
+        "However, no system is completely secure. Halfway invitation links use a random code and don’t contain your location, and advertising and Google analytics tools don’t load on invite or owner-edit pages; Vercel Web Analytics sees invite pages only as “{{/h/[invite]}}”.",
         "Do not share private edit links or Halfway links with unintended recipients.",
       ],
     },
@@ -608,7 +608,7 @@ const PRIVACY_EN: LegalDoc = {
 const TERMS_AR: LegalDoc = {
   title: "الشروط والأحكام",
   description: "شروط استخدام وين (wain.lol).",
-  updated: "تاريخ السريان: [للتأكيد من أمجد: تاريخ النشر]",
+  updated: "تاريخ السريان: 11 أكتوبر 2026",
   intro: [
     "تنظّم هذه الشروط استخدامك لوين (Wain) على {{https://wain.lol}}. واستخدامك للموقع يعني موافقتك عليها، لذا يُرجى قراءتها أولًا.",
   ],
@@ -622,7 +622,7 @@ const TERMS_AR: LegalDoc = {
     {
       heading: "2. ما هو وين",
       paragraphs: [
-        "وين خدمة لاكتشاف المقاهي وتقديم معلومات عنها، تساعدك على العثور على المقاهي في الرياض واستكشاف الأحياء وإيجاد مكان للالتقاء من خلال بيننا (Halfway). لا نبيع أي شيء، ولا نقبل حجوزات، ولا نوصّل طلبات. ولا توجد في وين حسابات للزوار ولا تسجيل دخول، ولا نخزّن أي كلمات مرور أو بيانات دخول.",
+        "وين خدمة لاكتشاف المقاهي وتقديم معلومات عنها، تساعدك على العثور على المقاهي في الرياض واستكشاف الأحياء وإيجاد مكان للالتقاء من خلال بيننا (Halfway). لا نبيع أي شيء، ولا نقبل حجوزات، ولا نوصّل طلبات. ولا توجد في وين حسابات للزوار ولا تسجيل دخول، ولا نخزّن أي كلمات مرور أو بيانات دخول للزوار.",
       ],
     },
     {
@@ -641,8 +641,8 @@ const TERMS_AR: LegalDoc = {
     {
       heading: "5. المحتوى الذي ترسله",
       paragraphs: [
-        "عندما تنشر فكرة في لوحة الاقتراحات، أو تصوّت، أو ترسل معلومات أو صورًا عن مقهى بصفتك صاحبه، فإنك تمنحنا ترخيصًا غير حصري ودون مقابل لتخزين هذا المحتوى وعرضه وتكييفه (مثل تغيير مقاس الصور) لتشغيل وين وتحسينه.",
-        "أنت مسؤول عمّا ترسله. ويحق لنا تعديل أي محتوى أو إزالته في أي وقت، بما في ذلك المحتوى المخالف لهذه الشروط. تُعرض الأفكار في لوحة الاقتراحات علنًا، فلا تضمّنها معلومات شخصية خاصة.",
+        "عندما تنشر فكرة في «أفكاركم»، أو تصوّت، أو ترسل معلومات أو صورًا عن مقهى بصفتك صاحبه، فإنك تمنحنا ترخيصًا غير حصري ودون مقابل لتخزين هذا المحتوى وعرضه وتكييفه (مثل تغيير مقاس الصور) لتشغيل وين وتحسينه.",
+        "أنت مسؤول عمّا ترسله. ويحق لنا تعديل أي محتوى أو إزالته في أي وقت، بما في ذلك المحتوى المخالف لهذه الشروط. تُعرض الأفكار في «أفكاركم» علنًا، فلا تضمّنها معلومات شخصية خاصة.",
       ],
     },
     {
@@ -721,7 +721,7 @@ const TERMS_AR: LegalDoc = {
 const TERMS_EN: LegalDoc = {
   title: "Terms and conditions",
   description: "The terms for using Wain (wain.lol).",
-  updated: "Effective date: [AMJAD TO CONFIRM: publish date]",
+  updated: "Effective date: 11 October 2026",
   intro: [
     "These terms cover your use of Wain (وين) at {{https://wain.lol}}. By using the site you agree to them, so please read them first.",
   ],
@@ -735,7 +735,7 @@ const TERMS_EN: LegalDoc = {
     {
       heading: "2. What Wain is",
       paragraphs: [
-        "Wain is a café discovery and information service that helps you find cafés in Riyadh, explore neighbourhoods, and find a place to meet through Halfway (بيننا). We don't sell anything, take bookings, or deliver orders. Wain has no visitor accounts or logins, and we store no passwords or login data.",
+        "Wain is a café discovery and information service that helps you find cafés in Riyadh, explore neighbourhoods, and find a place to meet through Halfway (بيننا). We don't sell anything, take bookings, or deliver orders. Wain has no visitor accounts or logins, and we store no visitor passwords or login data.",
       ],
     },
     {

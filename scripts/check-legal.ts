@@ -1,9 +1,9 @@
 /**
- * Privacy + terms + cookie consent lock (#251 r7, 10 Oct 2026).
+ * Privacy + terms + cookie consent lock (#251 r8, 10 Oct 2026).
  *
- * The final texts are in. One marker per doc is left on purpose, the
- * effective date ([AMJAD TO CONFIRM: publish date]), so the pages stay
- * noindex and out of the sitemap until go-live day. What is checked:
+ * The final texts are in, with no markers left (r8: effective date
+ * 11 October 2026), so the pages are indexable and in the sitemap. Any new
+ * marker turns noindex back on and drops them out. What is checked:
  * - the consent gate: no tracker (GTM → GA4 / Google Ads / X / OpenAI,
  *   Vercel Web Analytics, DataFast) loads outside lib/consent.ts, Consent
  *   Mode v2 defaults are denied before GTM can load, Reject keeps it off;

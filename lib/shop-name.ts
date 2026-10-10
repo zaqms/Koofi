@@ -198,6 +198,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "ostrich-al-falah": ["اوستريتيش"],
   // Batch G: نفل is also the حي token (النفل), so the full name needs to be an explicit alias (same as قهوة سلام).
   "nafel-coffee-an-nafal": ["قهوة نفل", "nafel coffee"],
+  // Batch I r2: Starbucks at The Plaza (King Abdullah Rd), so "starbucks the plaza" / «ستاربكس بلازا» find this branch first.
+  // r3 (#257 QA M1): brand-qualified only; bare "plaza" is a generic / other-venue word and must not pin a chain.
+  "starbucks-the-plaza-al-rahmaniyyah": ["starbucks the plaza", "starbucks plaza", "ستاربكس ذا بلازا", "ستاربكس بلازا"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -214,6 +217,23 @@ function addExtraAlias(into: Set<string>, raw: string): void {
   if (isBlockedAlias(alias) && !alias.includes(" ")) return;
   into.add(alias);
 }
+
+/**
+ * Single-word name tokens a chain row must not answer to on its own.
+ * Java Time: «جافا» / "java" already name Java Cafe (`java`), and "time" / «تايم» are plain words.
+ * The full name ("java time", «جافا تايم», "javatime") still matches.
+ */
+const CHAIN_TOKEN_BLOCK: Partial<Record<ChainBrandId, readonly string[]>> = {
+  "java-time": ["java", "جافا", "time", "تايم"],
+};
+
+/** Same idea for one row: a plain word in the name that should not name the café alone. */
+const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
+  // "The Tent" is the venue; "tent" alone is not Peaks (#257 QA n4). "peaks tent" / "peaks the tent" still match.
+  "peaks-the-tent-al-rahmaniyyah": ["tent"],
+  // "plaza" alone is any mall or hotel called Plaza, not this Starbucks (#257 QA r2 M1).
+  "starbucks-the-plaza-al-rahmaniyyah": ["plaza", "the plaza", "بلازا", "ذا بلازا"],
+};
 
 function chainBrandIdForShop(
   shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "chainBrand">,
@@ -255,7 +275,9 @@ export function shopNameAliases(
     for (const extra of chainBrandSearchAliases(chainBrand)) {
       addExtraAlias(aliases, extra);
     }
+    for (const blocked of CHAIN_TOKEN_BLOCK[chainBrand] ?? []) aliases.delete(normalize(blocked));
   }
+  for (const blocked of SHOP_TOKEN_BLOCK[shop.id] ?? []) aliases.delete(normalize(blocked));
 
   return [...aliases];
 }

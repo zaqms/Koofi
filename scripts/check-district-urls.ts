@@ -2356,7 +2356,7 @@ const scoutPack: {
     neighborhood: "al-hamra",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/drip-al-hamra.jpg",
+    logoUrl: "/logos/drip-tuwaiq-v2.jpg",
     pin: { lat: 24.7878805, lng: 46.7593322 },
   },
   {
@@ -3036,7 +3036,7 @@ const scoutPack: {
     neighborhood: "al-ghadeer",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/drip-al-ghadeer.jpg",
+    logoUrl: "/logos/drip-tuwaiq-v2.jpg",
   },
   {
     id: "blumen-al-ghadeer",

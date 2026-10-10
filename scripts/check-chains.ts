@@ -650,9 +650,19 @@ for (const ask of ["time", "coffee time", "تايم"] as const) {
   assert(!result.picks.some((pick) => pick.shop.chainBrand === "java-time"), `${ask} does not pin Java Time, got ${result.picks.map((pick) => pick.shop.id).join(",")}`);
 }
 // Batch I r2 (#257 QA M1): Grind Coffee (counter-only mall kiosk, rule 5) is not live; "tent" alone is not Peaks (n4).
-assert(!getShop("grind-coffee-al-rahmaniyyah") && !listRealShops().some((shop) => /grind|طحن/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)), "no Grind Coffee row is live (dropped in Batch I r2)");
+assert(!getShop("grind-coffee-al-rahmaniyyah") && !listRealShops().some((shop) => shop.id === "grind-coffee-al-rahmaniyyah" || shop.placeId === "ChIJl63oJOkdLz4R2-t0NffdqVY"), "no Grind Coffee row is live (dropped in Batch I r2; id/placeId only)");
 assert(!shopNameAliases(getShop("peaks-the-tent-al-rahmaniyyah")!).includes("tent"), "Peaks – The Tent does not answer to tent alone");
 assert(!pickCafes({ text: "tent" }).picks.some((pick) => pick.shop.id === "peaks-the-tent-al-rahmaniyyah"), "tent alone does not pick Peaks");
+// Batch I r3 (#257 QA r2 M1): bare plaza / بلازا asks never pin Starbucks The Plaza; brand-qualified asks still do.
+{
+  const plazaAliases = shopNameAliases(getShop("starbucks-the-plaza-al-rahmaniyyah")!);
+  for (const bare of ["plaza", "the plaza", "بلازا", "ذا بلازا"]) assert(!plazaAliases.includes(bare), `Starbucks The Plaza has no bare alias ${bare}`);
+  for (const ask of ["plaza", "the plaza", "coffee plaza", "cafe plaza", "plaza mall", "riyadh plaza", "plaza cafe olaya", "the plaza king abdullah", "بلازا", "ذا بلازا", "كوفي بلازا", "بلازا مول", "رياض بلازا", "كوفي قريب من بلازا"]) {
+    for (let run = 0; run < 3; run += 1) {
+      assert(!pickCafes({ text: ask }).picks.some((pick) => pick.shop.id === "starbucks-the-plaza-al-rahmaniyyah"), `${ask} does not pick Starbucks The Plaza`);
+    }
+  }
+}
 // Batch I name self-tests: every new row finds itself by its EN and AR names.
 for (const id of [
   "peaks-the-tent-al-rahmaniyyah",

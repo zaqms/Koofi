@@ -199,7 +199,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch G: نفل is also the حي token (النفل), so the full name needs to be an explicit alias (same as قهوة سلام).
   "nafel-coffee-an-nafal": ["قهوة نفل", "nafel coffee"],
   // Batch I r2: Starbucks at The Plaza (King Abdullah Rd), so "starbucks the plaza" / «ستاربكس بلازا» find this branch first.
-  "starbucks-the-plaza-al-rahmaniyyah": ["starbucks the plaza", "starbucks plaza", "the plaza", "plaza", "ستاربكس ذا بلازا", "ستاربكس بلازا", "ذا بلازا", "بلازا"],
+  // r3 (#257 QA M1): brand-qualified only; bare "plaza" is a generic / other-venue word and must not pin a chain.
+  "starbucks-the-plaza-al-rahmaniyyah": ["starbucks the plaza", "starbucks plaza", "ستاربكس ذا بلازا", "ستاربكس بلازا"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -230,6 +231,8 @@ const CHAIN_TOKEN_BLOCK: Partial<Record<ChainBrandId, readonly string[]>> = {
 const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   // "The Tent" is the venue; "tent" alone is not Peaks (#257 QA n4). "peaks tent" / "peaks the tent" still match.
   "peaks-the-tent-al-rahmaniyyah": ["tent"],
+  // "plaza" alone is any mall or hotel called Plaza, not this Starbucks (#257 QA r2 M1).
+  "starbucks-the-plaza-al-rahmaniyyah": ["plaza", "the plaza", "بلازا", "ذا بلازا"],
 };
 
 function chainBrandIdForShop(

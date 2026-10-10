@@ -66,7 +66,7 @@ al-hair	Al Hair	الحائر	riyadh	al-hair		shoug_locked_2026-09-21	dictionary_
 al-hazm	Al Hazm	الحزم	riyadh	al-hazm		shoug_locked_2026-09-21	dictionary_only	
 al-industrial-new	New Industrial Area	الصناعية الجديدة	riyadh	al-industrial-new		shoug_locked_2026-09-21	dictionary_only	Fixed slug typo al-ndustrial-new→al-industrial-new.
 al-iskan	Al Iskan	الإسكان	riyadh	al-iskan		shoug_locked_2026-09-21	dictionary_only	
-al-izdihar	Al Izdihar	الازدهار	riyadh	al-izdihar	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 28 Sep — Slant Specialty Coffee. Sheet status stays dictionary_only (21 Sep lock).
+al-izdihar	Al Izdihar	الازدهار	riyadh	al-izdihar	8	shoug_locked_2026-09-21	dictionary_only	Catalog live 28 Sep — Slant Specialty Coffee; 9 Oct adds CONVOY, Knoll, Steam Roastery, temper, KATF, Rakiza, Hijana. Sheet status stays dictionary_only (21 Sep lock).
 al-janadriyah	Al Janadriyah	الجنادرية	riyadh	al-janadriyah		shoug_locked_2026-09-21	dictionary_only	
 al-jaradiyah	Al Jaradiyah	الجرادية	riyadh	al-jaradiyah		shoug_locked_2026-09-21	dictionary_only	
 al-jazirah	Al Jazirah	الجزيرة	riyadh	al-jazirah		shoug_locked_2026-09-21	dictionary_only	
@@ -82,7 +82,7 @@ al-mathar-ash-shamali	Al Mathar Ash Shamali	المعذر الشمالي	riyadh	a
 al-mishal	Al Mishal	المشاعل	riyadh	al-mishal		shoug_locked_2026-09-21	dictionary_only	
 al-murabba	Al Murabba	المربع	riyadh	al-murabba		shoug_locked_2026-09-21	dictionary_only	
 al-mutamarat	Al Mutamarat	المؤتمرات	riyadh	al-mutamarat		shoug_locked_2026-09-21	dictionary_only	
-al-qadisiyah	Al Qadisiyah	القادسية	riyadh	al-qadisiyah		shoug_locked_2026-09-21	dictionary_only	
+al-qadisiyah	Al Qadisiyah	القادسية	riyadh	al-qadisiyah	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — ON OFF Coffee. Sheet status stays dictionary_only (21 Sep lock).
 al-quds	Al Quds	القدس	riyadh	al-quds		shoug_locked_2026-09-21	dictionary_only	
 al-uraija	Al Uraija	العريجاء	riyadh	al-uraija		shoug_locked_2026-09-21	dictionary_only	
 al-uraija-al-gharbiyah	Al Uraija Al Gharbiyah	العريجاء الغربية	riyadh	al-uraija-al-gharbiyah		shoug_locked_2026-09-21	dictionary_only	
@@ -100,14 +100,14 @@ as-salam	As Salam	السلام	riyadh	as-salam		shoug_locked_2026-09-21	dictiona
 as-salihiyah	As Salihiyah	الصالحية	riyadh	as-salihiyah		shoug_locked_2026-09-21	dictionary_only	
 as-sulay	As Sulay	السلي	riyadh	as-sulay		shoug_locked_2026-09-21	dictionary_only	
 as-suwaidi	As Suwaidi	السويدي	riyadh	as-suwaidi	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 3 Oct — Alwaal Albari. Sheet status stays dictionary_only (21 Sep lock).
-as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi		shoug_locked_2026-09-21	dictionary_only	
-ash-shifa	Ash Shifa	الشفا	riyadh	ash-shifa		shoug_locked_2026-09-21	dictionary_only	
+as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe. Sheet status stays dictionary_only (21 Sep lock).
+ash-shifa	Ash Shifa	الشفا	riyadh	ash-shifa	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe. Sheet status stays dictionary_only (21 Sep lock).
 ash-shumaisi	Ash Shumaisi	الشميسي	riyadh	ash-shumaisi		shoug_locked_2026-09-21	dictionary_only	
 ath-thumairi	Ath Thumairi	الثميري	riyadh	ath-thumairi		shoug_locked_2026-09-21	dictionary_only	
 badr	Badr	بدر	riyadh	badr		shoug_locked_2026-09-21	dictionary_only	
 dahiat-namar	Dahiat Namar	ضاحية نمار	riyadh	dahiat-namar		shoug_locked_2026-09-21	dictionary_only	
 dhahrat-al-badiah	Dhahrat Al Badiah	ظهرة البديعة	riyadh	dhahrat-al-badiah	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 30 Sep — WAY Coffee & Bakery. Sheet status stays dictionary_only (21 Sep lock).
-dhahrat-laban	Dhahrat Laban	ظهرة لبن	riyadh	dhahrat-laban		shoug_locked_2026-09-21	dictionary_only	
+dhahrat-laban	Dhahrat Laban	ظهرة لبن	riyadh	dhahrat-laban	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — ON OFF Coffee. Sheet status stays dictionary_only (21 Sep lock).
 dirab	Dirab	ديراب	riyadh	dirab		shoug_locked_2026-09-21	dictionary_only	
 ghubairah	Ghubairah	غبيرة	riyadh	ghubairah		shoug_locked_2026-09-21	dictionary_only	
 irqah	Irqah	عرقة	riyadh	irqah		shoug_locked_2026-09-21	dictionary_only	
@@ -120,7 +120,7 @@ manfuhah	Manfuha	منفوحة	riyadh	manfuhah		shoug_locked_2026-09-21	dictionar
 namar	Namar	نمار	riyadh	namar		shoug_locked_2026-09-21	dictionary_only	
 new-manfuhah	New Manfuhah	منفوحة الجديدة	riyadh	new-manfuhah		shoug_locked_2026-09-21	dictionary_only	
 second-industrial-city	Second Industrial City	المدينة الصناعية الثانية	riyadh	second-industrial-city		shoug_locked_2026-09-21	dictionary_only	
-shubra	Shubra	شبرا	riyadh	shubra		shoug_locked_2026-09-21	dictionary_only	
+shubra	Shubra	شبرا	riyadh	shubra	9	shoug_locked_2026-09-21	dictionary_only	Catalog live 5 Oct — mhj cafe, Nasaq, Coffee Address, Eco Cup, Jadeel Coffee, Samus, Address Mood Café, plus Half Million and Tim Hortons (chains). Sheet status stays dictionary_only (21 Sep lock).
 sultanah	Sultanah	سلطانة	riyadh	sultanah		shoug_locked_2026-09-21	dictionary_only	
 taybah	Taybah	طيبة	riyadh	taybah		shoug_locked_2026-09-21	dictionary_only	
 tuwaiq	Tuwaiq	طويق	riyadh	tuwaiq		shoug_locked_2026-09-21	dictionary_only	

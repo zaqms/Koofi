@@ -1378,7 +1378,7 @@ assert(
     chatUi.includes("locations,") &&
     chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
-    chatUi.includes("auto: !halfwayInvite && !meetHalfwayOpen"),
+    chatUi.includes("auto: !listFirst && !halfwayInvite && !meetHalfwayOpen"),
   "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
 );
 assert(
@@ -1441,7 +1441,8 @@ const askFormGate =
   chatUi.match(/showAskComposer \? \(\s*<form[\s\S]*?<\/form>/)?.[0] ?? "";
 assert(
   askFormGate.includes("<form") &&
-    askFormGate.includes('id="koofi-ask"') &&
+    askFormGate.includes('htmlFor="koofi-ask"') &&
+    askFormGate.includes("<AskComposerField") &&
     askFormGate.includes("<AddShopButton"),
   "hidden form includes the ask composer + أضف قهوة / Add a coffee shop",
 );

@@ -73,6 +73,7 @@ import {
   discoveryCategoryLabel,
   districtPath,
   homePath,
+  isFixedListChip,
   isOffHomeChipId,
   isStaticDirectoryChip,
   vibeChipLabel,
@@ -887,7 +888,8 @@ export function Chat({
     chipOpen?.picks.length ? chipOpen.chipId : null,
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
-  useVisitorLocation({ auto: !halfwayInvite && !meetHalfwayOpen });
+  const listFirst = isFixedListChip(selectedChipId);
+  useVisitorLocation({ auto: !listFirst && !halfwayInvite && !meetHalfwayOpen });
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -1758,7 +1760,7 @@ export function Chat({
     // `/en` writes that screen into the cached home entry, so Back misses
     // the new home and can reopen the pre-#205 opener.
     if (homeSurface) return;
-    if (isStaticDirectoryChip(chipId)) {
+    if (isStaticDirectoryChip(chipId) || isFixedListChip(chipId)) {
       setMeetHalfwayOpen(false);
       return;
     }
@@ -1811,7 +1813,13 @@ export function Chat({
 
   useEffect(() => {
     if (halfwayInvite || halfwayInviteExpired) return;
-    if (!selectedChipId || isStaticDirectoryChip(selectedChipId)) return;
+    if (
+      !selectedChipId ||
+      isStaticDirectoryChip(selectedChipId) ||
+      isFixedListChip(selectedChipId)
+    ) {
+      return;
+    }
     if (chipOpen?.chipId === selectedChipId && chipOpen.picks.length > 0) {
       routedChipOpenedRef.current = selectedChipId;
       return;
@@ -2239,6 +2247,8 @@ export function Chat({
         )}
       </header>
 
+      {listFirst && discovery ? discovery : null}
+
       {isComingSoon && !showHalfwayResults && !sessionExpired ? (
         <ComingSoonCity language={landing} city={cityId} />
       ) : showHalfwayResults && halfwayResult?.picks ? (
@@ -2338,7 +2348,7 @@ export function Chat({
             </p>
           ) : null}
         </div>
-      ) : (
+      ) : listFirst && !threadVisible ? null : (
       <div
         ref={listRef}
         className={
@@ -2546,7 +2556,7 @@ export function Chat({
       </div>
       )}
 
-      {showHomeOpener && discovery ? discovery : null}
+      {showHomeOpener && discovery && !listFirst ? discovery : null}
 
       {showAskComposer ? (
         <form
@@ -2647,7 +2657,7 @@ export function Chat({
           </div>
         </form>
       ) : null}
-      {!showHomeOpener && !threadVisible && discovery ? discovery : null}
+      {!showHomeOpener && !threadVisible && discovery && !listFirst ? discovery : null}
     </div>
   );
 }

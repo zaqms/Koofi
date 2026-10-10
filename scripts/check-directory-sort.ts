@@ -57,10 +57,21 @@ assert(DIRECTORY_SORT_COPY.new === copy.directorySortNew, "New copy is directory
 assert(isDirectoryResultSortChip("matcha"), "Matcha results get the shared sorter");
 assert(isDirectoryResultSortChip("drive-through"), "DT results get the shared sorter");
 assert(!isDirectoryResultSortChip("popular"), "Most Popular stays unsorted");
+assert(
+  !isDirectoryResultSortChip("nearby") &&
+    !isDirectoryResultSortChip("outdoor") &&
+    !isDirectoryResultSortChip("coffee") &&
+    !isDirectoryResultSortChip("work"),
+  "fixed lists do not extend Matcha/DT sort keys — popular stays off DIRECTORY_RESULT_SORTS",
+);
+assert(
+  read("components/fixed-list-body.tsx").includes('["popular", "nearby"]'),
+  "Outdoor, Best coffee, and Work sort Popular then Nearby inside the list",
+);
 assert(!isDirectoryResultSortChip("coffee"), "other chips stay unsorted");
 
 const dt = listDriveThroughDirectoryShops();
-assert(dt.length === 71, `DT directory (moment tag) is 71 shops, got ${dt.length}`);
+assert(dt.length === 74, `DT directory (moment tag) is 74 shops (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra), got ${dt.length}`);
 assert(
   dt.every((shop) => shop.momentTags.includes("drive-through")),
   "sort does not change the DT filter",
@@ -262,13 +273,15 @@ assert(
   missingEn.kind === "missing" && missingEn.label === "Location unavailable",
   "ready geo + no pin → EN fallback, not silent omit",
 );
+const nullIslandLabel = shopDistanceDisplay({
+  origin: { lat: 0, lng: 0 },
+  coords: { lat: 24.753476, lng: 46.6906575 },
+  language: "en",
+});
 assert(
-  shopDistanceDisplay({
-    origin: { lat: 0, lng: 0 },
-    coords: { lat: 24.753476, lng: 46.6906575 },
-    language: "en",
-  }).kind === "missing",
-  "Null Island visitor + shop pin → fallback, not ~12k km",
+  nullIslandLabel.kind === "permission" &&
+    nullIslandLabel.label === "Couldn't read your location.",
+  "Null Island visitor + shop pin → unread, not the shop-pin string",
 );
 
 const byId = new Map(listRealShops().map((shop) => [shop.id, shop]));
@@ -305,13 +318,14 @@ const card = read("components/directory-card.tsx");
 const distanceUi = read("components/shop-distance.tsx");
 const distanceLabel = read("lib/shop-distance-label.ts");
 assert(
-  card.includes("shopDistanceDisplay") &&
+  card.includes("shopDistanceForVisitor") &&
     card.includes('data-shop-distance={display.kind}') &&
     card.includes("data-shop-distance-km") &&
     distanceLabel.includes("shopDistanceDisplay") &&
-    distanceUi.includes("shopDistanceDisplay") &&
-    distanceUi.includes('data-shop-distance="missing"') &&
+    distanceLabel.includes("isUsableVisitorOrigin") &&
+    distanceUi.includes("shopDistanceForVisitor") &&
     distanceUi.includes('data-shop-distance="km"') &&
+    distanceUi.includes("data-shop-distance={display.kind}") &&
     distanceUi.includes("data-shop-distance-km"),
   "Matcha + DT cards share one distance slot with km or fallback",
 );

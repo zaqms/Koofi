@@ -55,6 +55,7 @@ import {
   neighborhoodsPath,
   PRODUCT_NAME,
 } from "../lib/product";
+import { listingCardTags } from "../lib/listing-tags";
 import { officialShopCoords } from "../lib/place-coords";
 import { rankByPopularity } from "../lib/picker";
 import { buildSitemapXml } from "../lib/sitemap-xml";
@@ -177,6 +178,7 @@ assert(areas.includes("al-mohammadiyah"), "directory includes al-mohammadiyah");
 assert(areas.includes("al-malaz"), "directory includes al-malaz");
 assert(areas.includes("al-mathar"), "directory includes al-mathar");
 assert(areas.includes("at-taawun"), "directory includes at-taawun");
+assert(areas.includes("shubra"), "directory includes shubra (Batch F)");
 assert(areas.includes("an-nasim-ash-sharqi"), "directory includes an-nasim-ash-sharqi");
 assert(areas.includes("an-nasim-al-gharbi"), "directory includes an-nasim-al-gharbi");
 assert(areas.includes("al-falah"), "directory includes al-falah");
@@ -186,9 +188,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 57, `expected 57 districts, got ${areas.length}`);
-assert(listDiscoveryShops().length === 380, `specialty discovery is 380 after the Bisat batch, got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 441, `catalog is 441 (433 plus the 8 Bisat batch rows), got ${listRealShops().length}`);
+assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
+assert(listDiscoveryShops().length === 438, `specialty discovery is 438 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 509, `catalog is 509 after D1, D2, D3, Batch E, Batch F, Batch G and Batch H (7 Al Izdihar), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -751,8 +753,8 @@ assert(
 );
 
 const manar = filterDirectoryShops(shops, "al-manar");
-assert(manar.length === 2, `al-manar has 2 shops, got ${manar.length}`);
-for (const id of ["vase-coffee-al-manar", "recaf-al-manar"]) {
+assert(manar.length === 3, `al-manar has 3 shops, got ${manar.length}`);
+for (const id of ["vase-coffee-al-manar", "recaf-al-manar", "on-off-coffee-al-manar"]) {
   assert(manar.some((shop) => shop.id === id), `al-manar includes ${id}`);
 }
 assert(neighborhoodLabel("al-manar", "ar") === "المنار", "al-manar Arabic label");
@@ -976,7 +978,11 @@ assert(
 );
 
 const nada = filterDirectoryShops(shops, "an-nada");
-assert(nada.length === 2, `an-nada has 2 shops, got ${nada.length}`);
+assert(nada.length === 3, `an-nada has 3 shops, got ${nada.length}`);
+assert(
+  nada.some((shop) => shop.id === "century-cafe-an-nada"),
+  "an-nada includes century-cafe-an-nada (Batch D3)",
+);
 assert(
   nada.some((shop) => shop.id === "brew92-an-nada"),
   "an-nada includes brew92-an-nada",
@@ -1121,6 +1127,7 @@ const WAVE1_DISTRICTS: {
       "scarf-al-aqiq",
       "the-coffee-kingdom-al-aqiq",
       "file-coffee-al-aqiq",
+      "nahl-al-aqiq",
     ],
   },
   {
@@ -1134,7 +1141,6 @@ const WAVE1_DISTRICTS: {
       "drip-al-ghadeer",
       "blumen-al-ghadeer",
       "brsk-al-ghadeer",
-      "drive-al-ghadeer",
       "ghandoura-al-ghadeer",
       "iota-al-ghadeer",
     ],
@@ -1148,7 +1154,6 @@ const WAVE1_DISTRICTS: {
       "kicksters-lab-al-arid",
       "shovel-al-arid",
       "archi-al-arid",
-      "drive-al-arid",
       "roasting-house-al-arid",
       "coffee-address-al-arid",
       "shiro-al-arid",
@@ -1168,7 +1173,6 @@ const WAVE1_DISTRICTS: {
       "drip-al-qirawan",
       "coffee-side-al-qirawan",
       "caf-lab-al-qirawan",
-      "drive-al-qirawan",
       "scout-coffee-al-qirawan",
       "ract-al-qirawan",
       "nap-al-qirawan",
@@ -1398,7 +1402,13 @@ const MALAZ_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, "at-taawun");
-  assert(rows.length === 1, `at-taawun has 1 shop, got ${rows.length}`);
+  assert(rows.length === 10, `at-taawun has 10 specialty shops after Batch E r2 (Veloce is a chain), got ${rows.length}`);
+  const pageRows = listDirectoryShopsForDistrict("at-taawun");
+  assert(
+    pageRows.length === 11 &&
+      pageRows.filter((shop) => shop.isChain).map((shop) => shop.id).join(",") === "veloce-cafe-at-taawun",
+    `at-taawun page lists 11 rows: 10 local + Veloce behind Local only, got ${pageRows.map((shop) => shop.id + (shop.isChain ? "{chain}" : "")).join(",")}`,
+  );
   assert(
     rows.some((shop) => shop.id === "flow-matcha-at-taawun"),
     "at-taawun includes flow-matcha-at-taawun",
@@ -1421,6 +1431,28 @@ const MALAZ_REFILL = {
       parseIntent(ask).neighborhoods.includes("at-taawun"),
       `parseIntent(${ask}) should hit at-taawun`,
     );
+  }
+}
+
+{
+  // Batch F (5 Oct 2026): Shubra lists 7 local cafés + Half Million and Tim Hortons; dr.CAFE Shubra stays on the drive-through lane only.
+  const rows = listDirectoryShopsForDistrict("shubra");
+  assert(
+    rows.map((shop) => shop.id).sort().join(",") ===
+      "address-mood-shubra,coffee-address-shubra,eco-cup-shubra,half-million-shubra,jadeel-coffee-shubra,mhj-cafe-shubra,nasaq-shubra,samus-shubra,tim-hortons-shubra",
+    `shubra lists the 9 Batch F rows, got ${rows.map((shop) => shop.id).join(",")}`,
+  );
+  assert(!rows.some((shop) => shop.id === "drcafe-shubra"), "drcafe-shubra stays off the Shubra page (drive-through lane)");
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-shubra") &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "tim-hortons-shubra"),
+    "drcafe-shubra and tim-hortons-shubra are on the Drive-through directory",
+  );
+  assert(neighborhoodLabel("shubra", "ar") === "شبرا", "shubra Arabic label");
+  assert(neighborhoodLabel("shubra", "en") === "Shubra", "shubra English label");
+  assert(districtPath("shubra", "ar") === "/coffee-shops/shubra", "AR shubra coffee-shops path");
+  for (const ask of ["شبرا", "shubra", "shobra", "Shubra"]) {
+    assert(parseIntent(ask).neighborhoods.includes("shubra"), `parseIntent(${ask}) should hit shubra`);
   }
 }
 
@@ -1519,7 +1551,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 71, `Drive-through directory (moment tag) is 71, got ${dt.length}`);
+  assert(dt.length === 74, `Drive-through directory (moment tag) is 74 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -1529,17 +1561,21 @@ const MALAZ_REFILL = {
     "Drive-through directory is tagged only",
   );
   assert(
-    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 18,
-    "18 hex-verified dr.CAFE rows are on the Drive-through directory",
+    dt.filter((shop) => shop.id.startsWith("drcafe-")).length === 19,
+    "19 hex-verified dr.CAFE rows are on the Drive-through directory (18 + As Suwaidi, Batch D1)",
   );
+  // Batch D1 (4 Oct 2026): the earlier drop came from a wrong 19 Sep Places
+  // match (dr.CAFE Al Qasr, ChIJC9-F2ogPLz4Rh0O4S3P3PDA, CLOSED_PERMANENTLY).
+  // The hex place itself (ChIJ9aMBGQARLz4RopSzjbuxdK8) is OPERATIONAL, so it is back.
   assert(
-    !getShop("drcafe-as-suwaidi"),
-    "CLOSED_PERMANENTLY dr.CAFE As Suwaidi stays dropped",
+    getShop("drcafe-as-suwaidi")?.placeId === "ChIJ9aMBGQARLz4RopSzjbuxdK8" &&
+      getShop("drcafe-as-suwaidi")?.isChain === true,
+    "dr.CAFE As Suwaidi is the operational hex place, tagged as a chain",
   );
   assert(
     listDirectoryShopsForDistrict("as-suwaidi").map((shop) => shop.id).join(",") ===
-      "alwaal-albari-as-suwaidi",
-    "as-suwaidi lists Alwaal Albari only (dr.CAFE As Suwaidi stays dropped)",
+      "alwaal-albari-as-suwaidi,coffee-address-as-suwaidi,drcafe-as-suwaidi,era-coffee-as-suwaidi,hot-sip-as-suwaidi,naham-specialty-as-suwaidi,plant-cafe-as-suwaidi,seen-cafe-as-suwaidi",
+    "as-suwaidi lists Alwaal Albari plus the 7 Batch D1 cafés",
   );
   assert(
     !getShop("voom-al-masif"),
@@ -1575,16 +1611,32 @@ const MALAZ_REFILL = {
     listDirectoryShopsForDistrict("al-masif").length === 10,
     "al-masif specialty directory is 10 after the closed Voom drop",
   );
+  // 16 Sep scope: no Starbucks row carries the drive-through tag or chip.
+  // Sit-down Starbucks (Tala Mall, Batch G) stays. Most popular, بيننا, and trending
+  // still leave chains out the way those lists already do.
+  const DRIVE_THROUGH_CHIP = /drive-through|طلبات السيار|درايف ثرو/i;
+  const starbucksRows = listRealShops().filter(
+    (shop) =>
+      shop.chainBrand === "starbucks" ||
+      /starbucks|ستاربكس/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
+  );
+  assert(starbucksRows.length > 0, "a sit-down Starbucks row is in the catalog");
   assert(
-    !listRealShops().some((shop) =>
-      /starbucks/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
-    ),
-    "Starbucks stays dropped",
+    starbucksRows.every((shop) => {
+      const chips = [...listingCardTags(shop, "en"), ...listingCardTags(shop, "ar")];
+      return (
+        shop.catalogLane !== "drive-through" &&
+        !shop.momentTags.includes("drive-through") &&
+        !shop.vibeTags.some((tag) => DRIVE_THROUGH_CHIP.test(tag)) &&
+        !chips.some((tag) => DRIVE_THROUGH_CHIP.test(tag))
+      );
+    }),
+    "no Starbucks row carries the drive-through tag or chip",
   );
   const namar = listDirectoryShopsForDistrict("namar");
   assert(
-    namar.length === 1 && namar[0]?.id === "drcafe-namar",
-    "namar lists the dine-in dr.CAFE",
+    namar.map((shop) => shop.id).sort().join(",") === "drcafe-namar,on-off-coffee-namar",
+    "namar lists the dine-in dr.CAFE and ON OFF Coffee (Batch D3)",
   );
   assert(
     listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),
@@ -1626,10 +1678,10 @@ const MALAZ_REFILL = {
     "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
-  assert(drcafe.length === 18, `18 dr.CAFE rows, got ${drcafe.length}`);
+  assert(drcafe.length === 20, `20 dr.CAFE rows (19 + An Nafal Park, Batch G), got ${drcafe.length}`);
   assert(
     drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
-    "all 18 dr.CAFE rows use the official mark",
+    "all 20 dr.CAFE rows use the official mark",
   );
   assert(
     getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",
@@ -1704,6 +1756,23 @@ const MALAZ_REFILL = {
     assert(shop.logoUrl === logoUrl, `${id} keeps the harvested mark`);
   }
 }
+
+// Drive Coffee is a chain (4 Oct 2026): out of the specialty directory above.
+// Ghadeer and Qirawan list it as a {chain} row (dine-in true); Arid's row has
+// dine-in unknown, so it stays off the district list like other chains.
+for (const id of ["drive-al-ghadeer", "drive-al-arid", "drive-al-qirawan"]) {
+  assert(!shops.some((shop) => shop.id === id), `${id} is not in specialty discovery (chain)`);
+  assert(getShop(id)?.isChain === true && getShop(id)?.chainBrand === "drive", `${id} is tagged drive`);
+}
+assert(
+  listDirectoryShopsForDistrict("al-ghadeer").some((shop) => shop.id === "drive-al-ghadeer" && shop.isChain) &&
+    listDirectoryShopsForDistrict("al-qirawan").some((shop) => shop.id === "drive-al-qirawan" && shop.isChain),
+  "Al Ghadeer and Al Qirawan list Drive Coffee as a chain row",
+);
+assert(
+  !listDirectoryShopsForDistrict("al-arid").some((shop) => shop.id === "drive-al-arid"),
+  "Al Arid drops Drive Coffee (chain, dine-in unknown)",
+);
 
 for (const district of WAVE1_DISTRICTS) {
   const rows = filterDirectoryShops(shops, district.id);
@@ -1953,6 +2022,7 @@ const scoutPack: {
     | "ghirnatah"
     | "al-mathar"
     | "at-taawun"
+    | "shubra"
     | "al-narjis"
     | "badr"
     | "dhahrat-al-badiah"
@@ -4429,6 +4499,646 @@ const scoutPack: {
     placeId: "ChIJDRVduR4FLz4RebaThyWtiCw",
     dineIn: true,
     outdoorSeating: null,
+  },
+  // Batch D2: Al Falah (4 Oct 2026). Scout pass.csv pins, Places ids and seating; LEO and Towlan are letter tiles.
+  {
+    id: "rawi-cafe-al-falah",
+    hex: "0x3e2efcf06c52c5f1:0xf887a41820776f52",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rawi-cafe-al-falah.jpg",
+    pin: { lat: 24.801932, lng: 46.7007094 },
+    coordsInUrl: true,
+    placeId: "ChIJ8cVSbPD8Lj4RUm93IBikh_g",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "ostrich-al-falah",
+    hex: "0x3e2efd7ca3ef4e67:0xaf7f9e97fd465cd9",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ostrich-al-falah.jpg",
+    pin: { lat: 24.7970292, lng: 46.7066944 },
+    coordsInUrl: true,
+    placeId: "ChIJZ07vo3z9Lj4R2VxG_Zeef68",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "bow-al-falah",
+    hex: "0x3e2efd8e60acf2a3:0xe848447c6407af9f",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/bow-al-falah.jpg",
+    pin: { lat: 24.7952973, lng: 46.7037307 },
+    coordsInUrl: true,
+    placeId: "ChIJo_KsYI79Lj4Rn68HZHxESOg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "distance-away-al-falah",
+    hex: "0x3e2efdfaf64aa75f:0x3f821771e6c4fa1f",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/distance-away-al-falah.jpg",
+    pin: { lat: 24.7959137, lng: 46.7039772 },
+    coordsInUrl: true,
+    placeId: "ChIJX6dK9vr9Lj4RH_rE5nEXgj8",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "double-three-al-falah",
+    hex: "0x3e2efd8b9e965fa7:0x5940b27c979e331b",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/double-three-al-falah.jpg",
+    pin: { lat: 24.8027262, lng: 46.7025622 },
+    coordsInUrl: true,
+    placeId: "ChIJp1-Wnov9Lj4RGzOel3yyQFk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "leo-al-falah",
+    hex: "0x3e2efdfc8d07a6f9:0x6f701919a4503870",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.796443, lng: 46.6991377 },
+    coordsInUrl: true,
+    placeId: "ChIJ-aYHjfz9Lj4RcDhQpBkZcG8",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "filter-roastery-al-falah",
+    hex: "0x3e2efd128532da91:0xbfd8fcc8e9deb781",
+    neighborhood: "al-falah",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/filter-roastery-al-falah.png",
+    pin: { lat: 24.8008975, lng: 46.6981675 },
+    coordsInUrl: true,
+    placeId: "ChIJkdoyhRL9Lj4Rgbfe6cj82L8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "tropika-al-falah",
+    hex: "0x3e2efd00087aa49f:0xf210d6dceea53c6c",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tropika-al-falah.jpg",
+    pin: { lat: 24.7955238, lng: 46.7043498 },
+    coordsInUrl: true,
+    placeId: "ChIJn6R6CAD9Lj4RbDyl7tzWEPI",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "towlan-al-falah",
+    hex: "0x3e2efdfca2302e1f:0xb2c4b6fba637aa52",
+    neighborhood: "al-falah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.8033144, lng: 46.7039992 },
+    coordsInUrl: true,
+    placeId: "ChIJHy4wovz9Lj4RUqo3pvu2xLI",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch E: At Taawun (5 Oct 2026). Scout CLEAN.csv pins, Places ids and seating; Peaks and CAF LAB reuse their brand marks; Glare is a letter tile. r2 (8 Oct): Stranger's cup mark (X @strangerCo_SA), Wooden W mark (wooden.sa), Veloce wordmark (TikTok @veloce_cafe_sa; isChain veloce).
+  {
+    id: "odd-at-taawun",
+    hex: "0x3e2efd68254b6397:0x9f80cb48c8b93789",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/odd-at-taawun.png",
+    pin: { lat: 24.7731039, lng: 46.6890095 },
+    coordsInUrl: true,
+    placeId: "ChIJl2NLJWj9Lj4RiTe5yEjLgJ8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "jadeel-coffee-at-taawun",
+    hex: "0x3e2efdf2c06c3bd7:0x7d19a75dc4c796b",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jadeel-coffee-at-taawun.png",
+    pin: { lat: 24.7693226, lng: 46.691057 },
+    coordsInUrl: true,
+    placeId: "ChIJ1ztswPL9Lj4Ra3lM3HWa0Qc",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "strangers-coffee-at-taawun",
+    hex: "0x3e2efdde124181b5:0xb957e68b5d8848a",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/strangers-coffee-at-taawun.png",
+    pin: { lat: 24.7823127, lng: 46.704997600000006 },
+    coordsInUrl: true,
+    placeId: "ChIJtYFBEt79Lj4RioTYtWh-lQs",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "glare-cafe-at-taawun",
+    hex: "0x3e2efd156e3527bb:0x18193deefcdd860b",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7743684, lng: 46.7032252 },
+    coordsInUrl: true,
+    placeId: "ChIJuyc1bhX9Lj4RC4bd_O49GRg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "isla-at-taawun",
+    hex: "0x3e2efd4581d3c335:0xb3c73a280734df87",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/isla-at-taawun.png",
+    pin: { lat: 24.772243, lng: 46.6976264 },
+    coordsInUrl: true,
+    placeId: "ChIJNcPTgUX9Lj4Rh980Byg6x7M",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "veloce-cafe-at-taawun",
+    hex: "0x3e2efddffe0490bf:0xfee46a40df4179d4",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/veloce-cafe-at-taawun.png",
+    pin: { lat: 24.7724127, lng: 46.6976123 },
+    coordsInUrl: true,
+    placeId: "ChIJv5AE_t_9Lj4R1HlB30Bq5P4",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "wooden-coffee-at-taawun",
+    hex: "0x3e2efd00671379bf:0x4e8567b2f923d7ba",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/wooden-coffee-at-taawun.png",
+    pin: { lat: 24.772337, lng: 46.6982198 },
+    coordsInUrl: true,
+    placeId: "ChIJv3kTZwD9Lj4Rutcj-bJnhU4",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "soul-cafe-at-taawun",
+    hex: "0x3e2efd56d99dcb53:0xabb86679d03a4e37",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/soul-cafe-at-taawun.png",
+    pin: { lat: 24.772149499999998, lng: 46.6975932 },
+    coordsInUrl: true,
+    placeId: "ChIJU8ud2Vb9Lj4RN0460HlmuKs",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "peaks-at-taawun",
+    hex: "0x3e2efda2747d2f57:0x1da305e625f8826d",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peaks-digital-city-al-nakheel.jpg",
+    pin: { lat: 24.7640128, lng: 46.7009587 },
+    coordsInUrl: true,
+    placeId: "ChIJVy99dKL9Lj4RbYL4JeYFox0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "caf-lab-at-taawun",
+    hex: "0x3e2efd5c13f66ae5:0xaf2c28d83a24db41",
+    neighborhood: "at-taawun",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/caf-lab-al-qirawan.jpg",
+    pin: { lat: 24.772544099999998, lng: 46.697775 },
+    coordsInUrl: true,
+    placeId: "ChIJ5Wr2E1z9Lj4RQdskOtgoLK8",
+    dineIn: true,
+    outdoorSeating: true,
+  },  // Batch F: Shubra (5 Oct 2026). Batch F Place Details pins, ids and seating; Coffee Address and Jadeel reuse their brand marks; Half Million and Tim Hortons are chains with registered marks; Eco Cup is a letter tile.
+  {
+    id: "mhj-cafe-shubra",
+    hex: "0x3e2f11f677b002d7:0x43d2c939cffbfd70",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/mhj-cafe-shubra.png",
+    pin: { lat: 24.5738582, lng: 46.6699745 },
+    coordsInUrl: true,
+    placeId: "ChIJ1wKwd_YRLz4RcP37zznJ0kM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "nasaq-shubra",
+    hex: "0x3e2f11002382beb1:0x9a755aec88883678",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/nasaq-shubra.png",
+    pin: { lat: 24.5793715, lng: 46.6665406 },
+    coordsInUrl: true,
+    placeId: "ChIJsb6CIwARLz4ReDaIiOxadZo",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-shubra",
+    hex: "0x3e2f1193ec53416b:0xd38fba46711cec23",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.57412, lng: 46.662997999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJa0FT7JMRLz4RI-wccUa6j9M",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "eco-cup-shubra",
+    hex: "0x3e2f0fdfa29c15d9:0x123632a425233bf5",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.583849999999998, lng: 46.6765173 },
+    coordsInUrl: true,
+    placeId: "ChIJ2RWcot8PLz4R9TsjJaQyNhI",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "jadeel-coffee-shubra",
+    hex: "0x3e2f11000ebf86ad:0x6942d1f94823a1b8",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/jadeel-coffee-at-taawun.png",
+    pin: { lat: 24.5634221, lng: 46.6476548 },
+    coordsInUrl: true,
+    placeId: "ChIJrYa_DgARLz4RuKEjSPnRQmk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "samus-shubra",
+    hex: "0x3e2f11f6acdeddcf:0x938ccb9c9b7cc081",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/samus-shubra.png",
+    pin: { lat: 24.5743692, lng: 46.6634264 },
+    coordsInUrl: true,
+    placeId: "ChIJz93erPYRLz4RgcB8m5zLjJM",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "address-mood-shubra",
+    hex: "0x3e2f11ae4d5760ab:0x4aa5f0787933f421",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/address-mood-shubra.png",
+    pin: { lat: 24.573679199999997, lng: 46.663271099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJq2BXTa4RLz4RIfQzeXjwpUo",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "half-million-shubra",
+    hex: "0x3e2f116f99a91f0f:0xd5f9ea42bb1ad314",
+    neighborhood: "shubra",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/half-million-mark.png",
+    pin: { lat: 24.5689684, lng: 46.6603785 },
+    coordsInUrl: true,
+    placeId: "ChIJDx-pmW8RLz4RFNMau0Lq-dU",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "tim-hortons-shubra",
+    hex: "0x3e2f0f186f8abb07:0x85ae99f1fb9f1a54",
+    neighborhood: "shubra",
+    vibe: ["طلبات السيارة"],
+    moments: ["drive-through"],
+    logoUrl: "/logos/tim-hortons-wordmark.png",
+    pin: { lat: 24.576440299999998, lng: 46.678114199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJB7uKbxgPLz4RVBqf-_GZroU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch G: An Nafal (8 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 7 letter tiles (Nafel, Pivot, Cave, Kaseb, Hatheeth, Percol, Grotta — the G mark stays illegible at 44px); chains Costa, Starbucks and dr.CAFE are sit-down (no drive-through).
+  {
+    id: "air-speciality-an-nafal",
+    hex: "0x3e2efdd141871e29:0xfd9157a95d2f6b0a",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/air-speciality-an-nafal.png",
+    pin: { lat: 24.786226199999998, lng: 46.681539199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJKR6HQdH9Lj4RCmsvXalXkf0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "black-stamp-an-nafal",
+    hex: "0x3e2efd501b71bb19:0x697aff7d69303774",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/black-stamp-an-nafal.png",
+    pin: { lat: 24.781727999999998, lng: 46.683722499999995 },
+    coordsInUrl: true,
+    placeId: "ChIJGbtxG1D9Lj4RdDcwaX3_emk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "nafel-coffee-an-nafal",
+    hex: "0x3e2efd8bcefe2e7f:0x5dd26dd85397e8fa",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7802603, lng: 46.684233 },
+    coordsInUrl: true,
+    placeId: "ChIJfy7-zov9Lj4R-uiXU9ht0l0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "pivot-espresso-an-nafal",
+    hex: "0x3e2efd005e56c5d7:0x25d526ba03683437",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.780051, lng: 46.6838127 },
+    coordsInUrl: true,
+    placeId: "ChIJ18VWXgD9Lj4RNzRoA7om1SU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "roastree-an-nafal",
+    hex: "0x3e2efd19d74abc47:0x598668daefcc7c54",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/roastree-an-nafal.png",
+    pin: { lat: 24.789391000000002, lng: 46.671059299999996 },
+    coordsInUrl: true,
+    placeId: "ChIJR7xK1xn9Lj4RVHzM79pohlk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "cave-cafe-an-nafal",
+    hex: "0x3e2efdc173725853:0x16b146d82ec4f0ea",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7798335, lng: 46.683313 },
+    coordsInUrl: true,
+    placeId: "ChIJU1hyc8H9Lj4R6vDELthGsRY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "kaseb-concept-an-nafal",
+    hex: "0x3e2efd386fe66f57:0xb2c13ebb571ef88c",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7752865, lng: 46.6755259 },
+    coordsInUrl: true,
+    placeId: "ChIJV2_mbzj9Lj4RjPgeV7s-wbI",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "hatheeth-an-nafal",
+    hex: "0x3e2efd006dc3413b:0x9f1a139542c832c",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.779541, lng: 46.6824947 },
+    coordsInUrl: true,
+    placeId: "ChIJO0HDbQD9Lj4RLIMsVDmh8Qk",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "percol-an-nafal",
+    hex: "0x3e2efd61ae7c2aa5:0x565f7818114fff5",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7795223, lng: 46.6824388 },
+    coordsInUrl: true,
+    placeId: "ChIJpSp8rmH9Lj4R9f8UgYH3ZQU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "peacock-an-nafal",
+    hex: "0x3e2efd00244af7cd:0xfba0b3aa8afb64c6",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peacock-an-nafal.png",
+    pin: { lat: 24.7762891, lng: 46.6751423 },
+    coordsInUrl: true,
+    placeId: "ChIJzfdKJAD9Lj4RxmT7iqqzoPs",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "grotta-an-nafal",
+    hex: "0x3e2ee50485d0d00b:0x37c1166730f59be7",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7830074, lng: 46.6788141 },
+    coordsInUrl: true,
+    placeId: "ChIJC9DQhQTlLj4R55v1MGcWwTc",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "btw-an-nafal",
+    hex: "0x3e2efd0c7afdb917:0xd5d229ef5423373c",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/btw-an-nafal.png",
+    pin: { lat: 24.7772962, lng: 46.68428720000001 },
+    coordsInUrl: true,
+    placeId: "ChIJF7n9egz9Lj4RPDcjVO8p0tU",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "costa-tala-mall-an-nafal",
+    hex: "0x3e2ee3000d5b7105:0xf50d24766cdb30e6",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/costa-mark.png",
+    pin: { lat: 24.7711568, lng: 46.669407899999996 },
+    coordsInUrl: true,
+    placeId: "ChIJBXFbDQDjLj4R5jDbbHYkDfU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "starbucks-tala-mall-an-nafal",
+    hex: "0x3e2ee3ac0af9cdd3:0x8e5a9b39f34563e0",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.7711814, lng: 46.669083699999995 },
+    coordsInUrl: true,
+    placeId: "ChIJ0835CqzjLj4R4GNF8zmbWo4",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "drcafe-an-nafal",
+    hex: "0x3e2efda72f993adb:0xc0e9f501dc660d54",
+    neighborhood: "an-nafal",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drcafe-mark.png",
+    pin: { lat: 24.779096, lng: 46.6797974 },
+    coordsInUrl: true,
+    placeId: "ChIJ2zqZL6f9Lj4RVA1m3AH16cA",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch H: Al Izdihar (9 Oct 2026). Scout CLEAN.csv pins, Places ids and seating (Places only); 3 letter tiles (Knoll: Scout's mark is white-on-white line art; KATF; Rakiza); McCafe dropped per Amjad (r3), so Al Izdihar is local-only. Dunkin' x2 and Turkish Wabel are held for Amjad.
+  {
+    id: "convoy-coffee-al-izdihar",
+    hex: "0x3e2efd33713dbfbb:0x857822515b5d85a2",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/convoy-coffee-al-izdihar.png",
+    pin: { lat: 24.781153999999997, lng: 46.7068215 },
+    coordsInUrl: true,
+    placeId: "ChIJu789cTP9Lj4RooVdW1EieIU",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "knoll-al-izdihar",
+    hex: "0x3e2efd937fb36ea3:0x1ec2985b7c659803",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7768862, lng: 46.72633630000001 },
+    coordsInUrl: true,
+    placeId: "ChIJo26zf5P9Lj4RA5hlfFuYwh4",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "steam-roastery-al-izdihar",
+    hex: "0x3e2efd7884801cdd:0x2eabff39321c57a5",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/steam-roastery-al-izdihar.png",
+    pin: { lat: 24.777336899999998, lng: 46.720644899999996 },
+    coordsInUrl: true,
+    placeId: "ChIJ3RyAhHj9Lj4RpVccMjn_qy4",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "temper-al-izdihar",
+    hex: "0x3e2efd002b9b1aa5:0xa8345908cd7b584e",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/temper-al-izdihar.png",
+    pin: { lat: 24.7783953, lng: 46.725466499999996 },
+    coordsInUrl: true,
+    placeId: "ChIJpRqbKwD9Lj4RTlh7zQhZNKg",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "katf-al-izdihar",
+    hex: "0x3e2ee1e67cf8ce0d:0x417a3170516277ae",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7744543, lng: 46.725586299999996 },
+    coordsInUrl: true,
+    placeId: "ChIJDc74fObhLj4RrndiUXAxekE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "rakiza-al-izdihar",
+    hex: "0x3e2efd325f52c7c7:0x8ad7d8ae47b68ab6",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.782760399999997, lng: 46.7197721 },
+    coordsInUrl: true,
+    placeId: "ChIJx8dSXzL9Lj4Rtoq2R67Y14o",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "hijana-al-izdihar",
+    hex: "0x3e2efd1990a2fe31:0xe603a076ae590a50",
+    neighborhood: "al-izdihar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/hijana-al-izdihar.png",
+    pin: { lat: 24.782878399999998, lng: 46.720140099999995 },
+    coordsInUrl: true,
+    placeId: "ChIJMf6ikBn9Lj4RUApZrnagA-Y",
+    dineIn: true,
+    outdoorSeating: true,
   },
 ];
 

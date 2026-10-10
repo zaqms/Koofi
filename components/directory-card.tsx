@@ -12,7 +12,7 @@ import { listingLocationOrder } from "@/lib/listing-location";
 import { listingCardTags } from "@/lib/listing-tags";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { cardPath, shopDisplayName } from "@/lib/product";
-import { shopDistanceDisplay } from "@/lib/shop-distance-label";
+import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import type { MapsClickSource } from "@/lib/track";
 import type { Language } from "@/lib/types";
 import { useVisitorLocation } from "@/lib/visitor-location";
@@ -23,6 +23,11 @@ type DirectoryCardProps = {
   mapsSource?: MapsClickSource;
   badge?: string | null;
   onMapsClick?: () => void;
+  /**
+   * Fixed lists pass false so a card never opens the geolocation prompt.
+   * Distance still paints once a peek or an explicit tap fills the snapshot.
+   */
+  autoLocate?: boolean;
 };
 
 export function DirectoryCard({
@@ -31,6 +36,7 @@ export function DirectoryCard({
   mapsSource = "list",
   badge = null,
   onMapsClick,
+  autoLocate = true,
 }: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
   const area =
@@ -75,6 +81,7 @@ export function DirectoryCard({
               neighborhood={area}
               lat={shop.lat}
               lng={shop.lng}
+              autoLocate={autoLocate}
             />
             {tags.length > 0 ? (
               <ul className="mt-1.5 flex flex-wrap gap-1">
@@ -129,35 +136,36 @@ function ListingLocation({
   neighborhood,
   lat,
   lng,
+  autoLocate = true,
 }: {
   language: Language;
   neighborhood: string;
   lat?: number;
   lng?: number;
+  autoLocate?: boolean;
 }) {
-  const visitor = useVisitorLocation();
-  const origin =
-    visitor.status === "ready"
-      ? { lat: visitor.lat, lng: visitor.lng }
-      : null;
-  const display = shopDistanceDisplay({
-    origin,
+  const visitor = useVisitorLocation({ auto: autoLocate });
+  const display = shopDistanceForVisitor({
+    status: visitor.status,
+    lat: visitor.status === "ready" ? visitor.lat : undefined,
+    lng: visitor.status === "ready" ? visitor.lng : undefined,
     coords: lat != null && lng != null ? { lat, lng } : null,
     language,
   });
   const order = listingLocationOrder(language);
-  const distance =
-    display.kind === "hidden" ? null : (
-      <span
-        dir="ltr"
-        data-shop-distance={display.kind}
-        {...(display.kind === "km"
-          ? { "data-shop-distance-km": display.km.toFixed(3) }
-          : {})}
-      >
-        {display.label}
-      </span>
-    );
+  // Denied and unread stay off listing cards. km and a missing pin still show.
+  const showDistance = display.kind === "km" || display.kind === "missing";
+  const distance = showDistance ? (
+    <span
+      dir={display.kind === "km" ? "ltr" : undefined}
+      data-shop-distance={display.kind}
+      {...(display.kind === "km"
+        ? { "data-shop-distance-km": display.km.toFixed(3) }
+        : {})}
+    >
+      {display.label}
+    </span>
+  ) : null;
 
   return (
     <p className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[12px] leading-4 text-wain-soft-taupe">

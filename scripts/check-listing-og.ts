@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { chipPageMetadata } from "../lib/chip-page";
 import { districtMetadata } from "../lib/district";
 import { listingOgCopy, listingOgPath } from "../lib/listing-og";
+import { FIXED_LIST_HEADING, FIXED_LIST_IDS } from "../lib/fixed-list-ids";
 import { mostPopularMetadata } from "../lib/most-popular";
 import {
   LOCKED_OPENER,
@@ -51,6 +52,16 @@ assert(
   "Matcha EN must not use the brand og-v2 card",
 );
 assert(listingOgCopy({ kind: "chip", language: "ar", id: "matcha" })?.title === "ماتشا", "Matcha AR card title");
+for (const id of FIXED_LIST_IDS) {
+  assert(
+    listingOgCopy({ kind: "chip", language: "ar", id })?.title === FIXED_LIST_HEADING[id].ar,
+    `${id} AR card uses the page H1`,
+  );
+  assert(
+    listingOgCopy({ kind: "chip", language: "en", id })?.title === FIXED_LIST_HEADING[id].en,
+    `${id} EN card uses the page H1`,
+  );
+}
 assert(listingOgCopy({ kind: "chip", language: "en", id: "matcha" })?.title === "Matcha", "Matcha EN card title");
 
 const hittin = districtMetadata("hittin", "ar");

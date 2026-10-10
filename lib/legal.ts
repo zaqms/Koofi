@@ -616,7 +616,7 @@ const TERMS_AR: LegalDoc = {
     {
       heading: "1. من يشغّل وين",
       paragraphs: [
-        "تشغّل وين شركة Cali Ventures، العقارية 2، شارع العليا، حي العليا، الرياض 12244، المملكة العربية السعودية.",
+        "تشغّل وين شركة مشاريع كالي (Cali Ventures)، العقارية 2، شارع العليا، حي العليا، الرياض 12244، المملكة العربية السعودية.",
       ],
     },
     {
@@ -729,7 +729,7 @@ const TERMS_EN: LegalDoc = {
     {
       heading: "1. Who runs Wain",
       paragraphs: [
-        "Wain is operated by Cali Ventures, Al Akaria 2, Al Olaya Street, Al Olaya, Riyadh 12244, Saudi Arabia.",
+        "Wain is operated by Cali Ventures (شركة مشاريع كالي), Al Akaria 2, Al Olaya Street, Al Olaya, Riyadh 12244, Saudi Arabia.",
       ],
     },
     {

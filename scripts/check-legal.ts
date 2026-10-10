@@ -1,8 +1,9 @@
 /**
- * Privacy + terms + cookie consent lock (#251 r4, 9 Oct 2026).
+ * Privacy + terms + cookie consent lock (#251 r7, 10 Oct 2026).
  *
- * The legal body is AWAITING SHOUG TEXT (visible markers, noindex, out of
- * the sitemap). What is checked now:
+ * The final texts are in. One marker per doc is left on purpose, the
+ * effective date ([AMJAD TO CONFIRM: publish date]), so the pages stay
+ * noindex and out of the sitemap until go-live day. What is checked:
  * - the consent gate: no tracker (GTM → GA4 / Google Ads / X / OpenAI,
  *   Vercel Web Analytics, DataFast) loads outside lib/consent.ts, Consent
  *   Mode v2 defaults are denied before GTM can load, Reject keeps it off;
@@ -10,7 +11,7 @@
  * - the contact address is privacy@cali.sa and no personal inbox
  *   is in any user-facing copy;
  * - noindex + sitemap rules while markers remain, sitemap = main's count;
- * - brand: Wain / وين only.
+ * - brand: Wain / وين only; no Arabic-Indic digits in the legal copy.
  * LEGAL_SHIP=1 additionally fails while any marker is left (merge gate).
  */
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
@@ -243,7 +244,12 @@ for (const language of LANGS) {
   const clearLine = (cookies.paragraphs ?? []).find((t) => t.includes("doubleclick.net")) ?? "";
   assert(["Google", "X", "OpenAI", "doubleclick.net", "twitter.com", "t.co", "openai.com"].every((n) => clearLine.includes(n)), `privacy/${language} cookies: the 'clear in your browser' line names Google, X and OpenAI (L1)`);
   const terms = LEGAL_DOCS.terms[language];
-  assert(text(terms).includes(language === "en" ? "Cookie settings" : "«إعدادات الكوكيز»"), `terms/${language}: cookie tie-in`);
+  // The Terms point to the privacy page's cookie section by its heading.
+  assert(text(terms).includes(cookies.heading), `terms/${language}: cookie tie-in («${cookies.heading}»)`);
+  // Section 7 of the privacy text points to the same section, which follows it.
+  const seven = doc.sections.findIndex((s) => /^7\./.test(s.heading));
+  assert(seven >= 0 && doc.sections[seven + 1]?.id === LEGAL_COOKIES_SECTION_ID, `privacy/${language}: #${LEGAL_COOKIES_SECTION_ID} follows section 7`);
+  assert([...(doc.sections[seven]?.paragraphs ?? [])].join("\n").includes(cookies.heading), `privacy/${language}: section 7 names «${cookies.heading}»`);
 }
 assert(consentCopy.settingsLink.ar === "إعدادات الكوكيز" && consentCopy.settingsLink.en === "Cookie settings", "footer label matches the copy");
 for (const kind of KINDS) {
@@ -252,7 +258,8 @@ for (const kind of KINDS) {
   ar.sections.forEach((s, i) => {
     const e = en.sections[i];
     assert(s.id === e.id, `${kind}: section ${i} id parity`);
-    assert((s.paragraphs?.length ?? 0) === (e.paragraphs?.length ?? 0) && (s.bullets?.length ?? 0) === (e.bullets?.length ?? 0), `${kind}: section ${i} paragraph/bullet parity`);
+    assert((s.paragraphs?.length ?? 0) === (e.paragraphs?.length ?? 0) && (s.bullets?.length ?? 0) === (e.bullets?.length ?? 0) && (s.after?.length ?? 0) === (e.after?.length ?? 0), `${kind}: section ${i} paragraph/bullet parity`);
+    assert(Boolean(s.subsection) === Boolean(e.subsection), `${kind}: section ${i} subsection parity`);
   });
   assert(count(ar, LEGAL_PLACEHOLDER_PATTERN) === count(en, LEGAL_PLACEHOLDER_PATTERN), `${kind}: AR/EN marker parity`);
 }
@@ -296,6 +303,7 @@ for (const { kind, language, doc } of all) {
     assert(!/\{\{|\}\}/.test(unwrapped), `${kind}/${language}: balanced {{…}} in «${t.slice(0, 60)}»`);
     const hit = unwrapped.match(IDENTIFIER);
     assert(!hit, `${kind}/${language}: unwrapped identifier ${hit?.[1]} in «${t.slice(0, 60)}»`);
+    assert(!/[\u0660-\u0669\u06F0-\u06F9]/.test(t), `${kind}/${language}: Arabic-Indic digit in «${t.slice(0, 60)}» (use 0-9)`);
     if (language === "ar") assert(!/[لب]ـ /.test(t), `${kind}/ar: «لـ» joined with a no-break space in «${t.slice(0, 60)}»`);
   }
 }

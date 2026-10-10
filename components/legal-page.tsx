@@ -111,8 +111,12 @@ export function LegalPageView({ kind, language }: LegalPageViewProps) {
           ))}
 
           {doc.sections.map((section) => (
-            <section key={section.heading} id={section.id} className="mt-6 scroll-mt-4">
-              <h2 className="text-sm font-semibold">{section.heading}</h2>
+            <section key={section.heading} id={section.id} className={`${section.subsection ? "mt-4" : "mt-6"} scroll-mt-4`}>
+              {section.subsection ? (
+                <h3 className="text-sm font-medium">{section.heading}</h3>
+              ) : (
+                <h2 className="text-sm font-semibold">{section.heading}</h2>
+              )}
               {section.paragraphs?.map((paragraph, index) => (
                 <p key={index} className="mt-2 text-sm leading-7">
                   <LegalText text={paragraph} />
@@ -127,6 +131,11 @@ export function LegalPageView({ kind, language }: LegalPageViewProps) {
                   ))}
                 </ul>
               ) : null}
+              {section.after?.map((paragraph, index) => (
+                <p key={`after-${index}`} className="mt-2 text-sm leading-7">
+                  <LegalText text={paragraph} />
+                </p>
+              ))}
             </section>
           ))}
 

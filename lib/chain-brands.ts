@@ -56,6 +56,13 @@ export const CHAIN_BRANDS = {
     nameAr: "جافا",
     logo: "/logos/java-cafe.png",
   },
+  // Batch I (10 Oct 2026): Saudi coffee chain, ~20 Riyadh branches — mass-market under the 8+ branch rule. Not Java Cafe (`java`).
+  "java-time": {
+    id: "java-time",
+    nameEn: "Java Time",
+    nameAr: "جافا تايم",
+    logo: null,
+  },
   "24cafe": {
     id: "24cafe",
     nameEn: "24cafe",
@@ -137,6 +144,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   peets: ["peets", "peet s", "بيتس"],
   "dr-cafe": ["dr cafe", "dr. cafe", "drcafe", "doctor cafe", "د.كيف", "د كيف", "دكتور كيف"],
   java: ["java", "جافا"],
+  "java-time": ["java time", "javatime", "جافا تايم", "جافاتايم"],
   "24cafe": ["24cafe", "24 cafe", "24كافيه"],
   shqaf: ["shqaf", "shgaf", "شقفة"],
   "coffee-day": ["coffee day", "coffeeday", "كوفي داي"],
@@ -243,6 +251,8 @@ export function chainBrandKeyFromName(latinName: string): string | null {
   }
   if (latinName.startsWith("dunkin")) return "dunkin";
   if (latinName.startsWith("starbucks")) return "starbucks";
+  // Java Time is its own chain; check it before Java Cafe's `java` prefix.
+  if (latinName.startsWith("java time") || compact.startsWith("javatime")) return "java-time";
   if (latinName.startsWith("java")) return "java";
   if (latinName.startsWith("dr cafe") || compact === "drcafe") return "dr-cafe";
   return null;

@@ -10,9 +10,16 @@
  * The bootstrap below runs inline in <head> before anything else:
  * 1. Consent Mode v2 defaults: every storage type denied (security only
  *    granted), before GTM could ever load.
- * 2. If the stored choice is "granted", load GTM right away.
- * 3. window.__wainLoadGtm() loads GTM after Accept. It first empties the
+ * 2. window.__wainLoadGtm() loads GTM after Accept (or, for a stored
+ *    "granted", from CONSENT_AUTOLOAD_SCRIPT). It first empties the
  *    dataLayer so events queued before consent are never sent.
+ * 3. #252 (lib/analytics-redact.ts): GTM loads only where trackers are
+ *    allowed. __wainLoadGtm is a no-op unless the redaction bootstrap set
+ *    window.__wainTrackers === true (clean URL, not /h/*, /owner/edit or
+ *    /ops; the layout renders it only when the proxy says trackers are on).
+ *    After the dataLayer reset it re-applies the redaction's
+ *    page_location / page_path / page_referrer (window.__wainRedactSet),
+ *    so GA4 still sees /h/[invite] and no stray query, then loads GTM.
  *
  * scripts/check-legal.ts asserts the layout never loads a tracker outside
  * this gate. The server-side DataFast AI-crawler call in proxy.ts is not a
@@ -90,15 +97,23 @@ var D=${JSON.stringify({ ...CONSENT_DENIED, wait_for_update: 500 })},G=${JSON.st
 g('consent','default',D);g('set','ads_data_redaction',true);
 var c=null;try{var r=JSON.parse(w.localStorage.getItem(${key})||'null');if(r&&r.v===${CONSENT_VERSION}&&(r.c==='granted'||r.c==='denied'))c=r.c;}catch(e){}
 w.__wainConsent=c;var L=false;
-w.__wainLoadGtm=function(){if(L)return;L=true;w.dataLayer.length=0;g('consent','default',D);g('set','ads_data_redaction',true);g('consent','update',G);
+w.__wainLoadGtm=function(){if(L||w.__wainTrackers!==true)return;L=true;w.dataLayer.length=0;g('consent','default',D);g('set','ads_data_redaction',true);g('consent','update',G);if(typeof w.__wainRedactSet==='function')w.__wainRedactSet();
 w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var j=d.createElement('script');j.async=true;j.src=${JSON.stringify(GTM_SRC)};(d.head||d.documentElement).appendChild(j);};
 var A=function(e){var t=e.target,b=t&&t.closest?t.closest('[data-consent]'):null;if(!b)return;e.stopImmediatePropagation();
 if(e.type==='click')w.dispatchEvent(new CustomEvent(${JSON.stringify(CONSENT_ACTION_EVENT)},{detail:b.getAttribute('data-consent')}));};
 ${JSON.stringify(CONSENT_GUARDED_EVENTS)}.forEach(function(t){w.addEventListener(t,A,true);});
 var U=function(e){if(w.__wainStop)e.stopImmediatePropagation();};
 ${JSON.stringify(CONSENT_UNLOAD_EVENTS)}.forEach(function(t){w.addEventListener(t,U,true);});
-if(c==='granted')w.__wainLoadGtm();})(window,document);`;
+})(window,document);`;
 }
+
+/**
+ * Stored "granted": load GTM on page load. Rendered in <head> after the
+ * consent bootstrap AND after #252's ANALYTICS_REDACT_BOOTSTRAP, and only
+ * when the proxy allows trackers, so __wainTrackers is already decided.
+ */
+export const CONSENT_AUTOLOAD_SCRIPT =
+  "(function(w){if(w.__wainConsent==='granted'&&typeof w.__wainLoadGtm==='function')w.__wainLoadGtm();})(window);";
 
 type ConsentWindow = Window & {
   __wainBoot?: number;
@@ -106,6 +121,8 @@ type ConsentWindow = Window & {
   __wainStop?: boolean;
   __wainConsent?: ConsentChoice | null;
   __wainLoadGtm?: () => void;
+  __wainTrackers?: boolean;
+  __wainRedactSet?: () => void;
   dataLayer?: unknown[];
 };
 

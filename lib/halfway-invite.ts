@@ -3,11 +3,17 @@ import { halfwayInvitePath, halfwayInviteSharePath } from "./product";
 import type { Language, Pin } from "./types";
 
 /**
- * بيننا invite token — stateless URL (same checksum family as `/p/`).
+ * بيننا invite ids.
  *
- * Payload is `locations: Pin[]` (N≥1) plus locale + expiry. v1 share
- * encodes Person A's pin; a later 3–4 friend link can encode more rows
- * without changing the shape. Guest adds one pin on `/h/{id}`.
+ * New invites use an opaque random id (128 bits, base64url, 22 chars).
+ * The `/h/{id}` URL carries no coordinates in any encoding; the host
+ * pin, locale and expiry live server-side in the halfway session store
+ * keyed by that id. Guest adds one pin on `/h/{id}`.
+ *
+ * LEGACY: links minted before the random ids were a stateless,
+ * checksummed base64 token of `locations: Pin[]` + locale + expiry.
+ * They still parse (`parseHalfwayInviteToken`) so the proxy can migrate
+ * them to a random id and 307 to a clean URL. Never mint new ones.
  *
  * Waiting (1 pin) TTL is 45 minutes (inside the 30–60 lock).
  * Completed sessions (both pins + frozen shop_ids) live 48 hours
@@ -18,6 +24,41 @@ import type { Language, Pin } from "./types";
 export const HALFWAY_INVITE_TTL_MS = 45 * 60 * 1000;
 export const HALFWAY_RESULTS_TTL_MS = 48 * 60 * 60 * 1000;
 export const HALFWAY_INVITE_MAX_PINS = 4;
+
+/** 16 random bytes → 22 base64url chars. No `.`, so never a legacy token. */
+export const HALFWAY_INVITE_ID_BYTES = 16;
+export const HALFWAY_INVITE_ID_PATTERN = /^[A-Za-z0-9_-]{22}$/;
+
+/** Reserved `/h/expired` landing for a legacy link that already ran out. */
+export const HALFWAY_INVITE_EXPIRED_ID = "expired";
+
+function bytesToBase64Url(bytes: Uint8Array): string {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+/** Unguessable opaque invite id (128 bits of `crypto.getRandomValues`). */
+export function mintHalfwayInviteId(): string {
+  const bytes = new Uint8Array(HALFWAY_INVITE_ID_BYTES);
+  globalThis.crypto.getRandomValues(bytes);
+  return bytesToBase64Url(bytes);
+}
+
+export function isRandomHalfwayInviteId(id: string): boolean {
+  return HALFWAY_INVITE_ID_PATTERN.test(id);
+}
+
+/** Old coordinate-bearing token (checksum + payload parse). */
+export function isLegacyHalfwayInviteId(id: string): boolean {
+  return parseHalfwayInviteToken(id).ok;
+}
+
+/** Client-safe shape check. Expiry is the server's call (410). */
+export function isHalfwayInviteIdShape(id: string): boolean {
+  const trimmed = id.trim();
+  return isRandomHalfwayInviteId(trimmed) || isLegacyHalfwayInviteId(trimmed);
+}
 
 export type HalfwayInviteSeed = {
   locale: Language;
@@ -93,6 +134,10 @@ export function halfwayInviteHasGuest(
   return locations.length >= 2 && guestPinFromLocations(host, locations) !== null;
 }
 
+/**
+ * LEGACY token encoder. It puts the pin in the URL, so live code must not
+ * call it — kept only so checks can build old links for the redirect path.
+ */
 export function encodeHalfwayInviteId(input: {
   locale: Language;
   locations: readonly { lat: number; lng: number }[];

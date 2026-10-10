@@ -23,6 +23,7 @@ import {
   CONSENT_UNLOAD_EVENTS,
   GTM_SRC,
   consentBootstrapScript,
+  CONSENT_AUTOLOAD_SCRIPT,
 } from "../lib/consent";
 import { CONSENT_CONTACT_EMAIL, consentCopy } from "../lib/consent-copy";
 import {
@@ -71,9 +72,12 @@ assert(layout.includes("consentBootstrapScript()"), "app/layout.tsx runs the con
 assert(layout.includes("<ConsentManager"), "app/layout.tsx renders <ConsentManager>");
 const headBlock = layout.slice(layout.indexOf("<head>"), layout.indexOf("</head>"));
 assert(headBlock.includes("consentBootstrapScript()"), "consent bootstrap is inside <head>");
+assert(headBlock.indexOf("consentBootstrapScript()") < headBlock.indexOf("ANALYTICS_REDACT_BOOTSTRAP") && headBlock.indexOf("ANALYTICS_REDACT_BOOTSTRAP") < headBlock.indexOf("CONSENT_AUTOLOAD_SCRIPT"), "consent bootstrap first, then #252's redaction, then the stored-Accept autoload");
 
-// Only lib/consent.ts + components/consent-manager.tsx may reference tracker loaders.
-const GATED_FILES = new Set(["lib/consent.ts", "components/consent-manager.tsx"]);
+// Only the consent gate (lib/consent.ts, components/consent-manager.tsx) and
+// #252's redaction (lib/analytics-redact.ts, components/redacted-analytics.tsx,
+// rendered only by the consent manager) may reference tracker loaders.
+const GATED_FILES = new Set(["lib/consent.ts", "components/consent-manager.tsx", "components/redacted-analytics.tsx", "lib/analytics-redact.ts"]);
 const TRACKER_REF = /googletagmanager\.com|datafa\.st\/js|@vercel\/analytics|connect\.facebook|static\.ads-twitter|bat\.bing/;
 for (const file of [...walk("app"), ...walk("components"), ...walk("lib")]) {
   if (!/\.(tsx?|mjs|js)$/.test(file) || GATED_FILES.has(file)) continue;
@@ -81,8 +85,11 @@ for (const file of [...walk("app"), ...walk("components"), ...walk("lib")]) {
 }
 const manager = read("components/consent-manager.tsx");
 const grantedBlock = manager.match(/\{choice === "granted" \? \(([\s\S]*?)\) : null\}/)?.[1] ?? "";
-assert(grantedBlock.includes("<Analytics") && grantedBlock.includes("DATAFAST_SRC"), "Vercel Analytics + DataFast render only when choice === granted");
-assert((manager.match(/<Analytics/g) ?? []).length === 1 && (manager.match(/DATAFAST_SRC/g) ?? []).length === 2, "no other Analytics/DataFast render in the manager");
+assert(grantedBlock.includes("<RedactedAnalytics") && grantedBlock.includes("DATAFAST_SRC"), "Vercel Analytics (redacted) + DataFast render only when choice === granted");
+assert((manager.match(/<RedactedAnalytics/g) ?? []).length === 1 && !manager.includes("<Analytics") && (manager.match(/DATAFAST_SRC/g) ?? []).length === 2, "no other Analytics/DataFast render in the manager");
+assert(/\{trackers \? \(\s*<Script\s+src=\{DATAFAST_SRC\}/.test(manager), "DataFast also needs #252's trackers verdict");
+const redactedUses = [...walk("app"), ...walk("components"), ...walk("lib")].filter((f) => /\.tsx?$/.test(f) && read(f).includes("<RedactedAnalytics"));
+assert(redactedUses.join() === "components/consent-manager.tsx", `RedactedAnalytics renders only inside the consent gate (${redactedUses.join()})`);
 // Equal prominence: Accept and Reject share one class string.
 assert(manager.includes('className={button} data-consent="accept"') && manager.includes('className={button} data-consent="reject"'), "Accept and Reject use the same button style");
 // L3: consent buttons have no React onClick; only the bootstrap guard acts on them.
@@ -111,19 +118,23 @@ assert(!read("lib/track.ts").match(/fetch\(|sendBeacon|XMLHttpRequest/), "lib/tr
 
 // Run the bootstrap in a sandbox: stored none / denied / granted / bad value.
 type Sandbox = { dataLayer: unknown[]; appended: string[]; order: string[]; __wainLoadGtm?: () => void };
-function boot(stored: string | null, runs = 1): Sandbox {
+// #252: GTM also needs the redaction bootstrap's verdict (__wainTrackers);
+// the layout renders the autoload after it on clean pages only.
+function boot(stored: string | null, runs = 1, trackers: boolean | "unset" = true): Sandbox {
   const appended: string[] = [];
   const el = { async: false, src: "" };
   const order: string[] = [];
   const head = { appendChild: (node: { src: string }) => { appended.push(node.src); order.push("gtm"); } };
   const window = {
     dataLayer: undefined as unknown,
+    __wainTrackers: trackers === "unset" ? undefined : trackers,
     addEventListener: (type: string, _fn: unknown, capture: boolean) => order.push(`listen:${type}:${capture}`),
     localStorage: { getItem: (k: string) => (k === CONSENT_STORAGE_KEY ? stored : null) },
   } as Record<string, unknown>;
   const document = { createElement: () => ({ ...el }), head, documentElement: head };
   const sandbox = { window, document };
   for (let i = 0; i < runs; i += 1) runInNewContext(consentBootstrapScript(), sandbox);
+  runInNewContext(CONSENT_AUTOLOAD_SCRIPT, sandbox);
   return { dataLayer: window.dataLayer as unknown[], appended, order, __wainLoadGtm: window.__wainLoadGtm as () => void };
 }
 const asArgs = (entry: unknown) => Array.from(entry as ArrayLike<unknown>);
@@ -158,6 +169,13 @@ for (const stored of [null, JSON.stringify({ v: 1, c: "denied" }), '{"v":9,"c":"
   assert(!s.dataLayer.some((e) => (e as { event?: string }).event === "pre_consent_event"), "events queued before Accept are dropped, never sent");
   s.__wainLoadGtm?.();
   assert(s.appended.length === 1, "GTM loads at most once");
+}
+// #252 gate: where trackers aren't allowed (/h/*, /owner/edit, /ops, dirty
+// URLs, or the redaction never ran), even Accept loads nothing.
+for (const trackers of [false, "unset"] as const) {
+  const s = boot(JSON.stringify({ v: 1, c: "granted" }), 1, trackers);
+  s.__wainLoadGtm?.();
+  assert(s.appended.length === 0, `GTM stays off when __wainTrackers=${String(trackers)}, even after Accept`);
 }
 // M1-r5: the client fallback re-runs the same script; a second run (head
 // already ran) must be a no-op: one set of guards, one consent default.
@@ -295,5 +313,5 @@ if (process.env.LEGAL_SHIP === "1") {
 }
 
 console.log(
-  `check-legal: ok (consent gate: 0 trackers outside lib/consent.ts, Consent Mode v2 default denied, bootstrap sandbox 6/6 + capture guard + idempotent client fallback (${NOT_FOUND_SAMPLES.length} 404 samples); footer on ${routeFiles.length}/${routeFiles.length} routes; contact ${CONSENT_CONTACT_EMAIL}, 0 personal-inbox hits in ${USER_FACING.length} user-facing files; markers ${markers} (Shoug slots ${awaiting}); noindex=${LEGAL_HAS_PLACEHOLDERS}; sitemap ${locs.length}${LEGAL_AWAITING_SHOUG ? "; NOT SHIPPABLE: awaiting Shoug text" : ""})`,
+  `check-legal: ok (consent gate: 0 trackers outside lib/consent.ts, Consent Mode v2 default denied, bootstrap sandbox 6/6 + capture guard + #252 trackers gate + idempotent client fallback (${NOT_FOUND_SAMPLES.length} 404 samples); footer on ${routeFiles.length}/${routeFiles.length} routes; contact ${CONSENT_CONTACT_EMAIL}, 0 personal-inbox hits in ${USER_FACING.length} user-facing files; markers ${markers} (Shoug slots ${awaiting}); noindex=${LEGAL_HAS_PLACEHOLDERS}; sitemap ${locs.length}${LEGAL_AWAITING_SHOUG ? "; NOT SHIPPABLE: awaiting Shoug text" : ""})`,
 );

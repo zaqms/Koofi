@@ -1,6 +1,5 @@
 "use client";
 
-import { Analytics } from "@vercel/analytics/next";
 import Link from "next/link";
 import Script from "next/script";
 import { useLayoutEffect, useRef, useSyncExternalStore } from "react";
@@ -16,6 +15,7 @@ import {
   readConsent,
   type ConsentChoice,
 } from "@/lib/consent";
+import { RedactedAnalytics } from "@/components/redacted-analytics";
 import { CONSENT_CONTACT_EMAIL, consentCopy, consentText } from "@/lib/consent-copy";
 import { privacyPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
@@ -94,7 +94,14 @@ function subscribe(listener: () => void): () => void {
   };
 }
 
-export function ConsentManager({ language: initialLanguage }: { language: Language }) {
+export function ConsentManager({
+  language: initialLanguage,
+  trackers,
+}: {
+  language: Language;
+  /** #252: false on /h/*, /owner/edit, /ops and dirty URLs (proxy header). */
+  trackers: boolean;
+}) {
   const { choice, open } = useSyncExternalStore(subscribe, getSnap, () => SERVER_SNAP);
   // Only rendered on the client (the server snapshot is closed), so the
   // document's current lang is safe to read.
@@ -127,13 +134,16 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
     <>
       {choice === "granted" ? (
         <>
-          <Analytics />
-          <Script
-            src={DATAFAST_SRC}
-            strategy="afterInteractive"
-            data-website-id={DATAFAST_WEBSITE_ID}
-            data-domain={DATAFAST_DOMAIN}
-          />
+          {/* Vercel Web Analytics via #252's beforeSend: /h/{id} → /h/[invite]. */}
+          <RedactedAnalytics />
+          {trackers ? (
+            <Script
+              src={DATAFAST_SRC}
+              strategy="afterInteractive"
+              data-website-id={DATAFAST_WEBSITE_ID}
+              data-domain={DATAFAST_DOMAIN}
+            />
+          ) : null}
         </>
       ) : null}
       {open ? (

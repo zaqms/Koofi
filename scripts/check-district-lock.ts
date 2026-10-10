@@ -182,6 +182,16 @@ assert(
 );
 assert(izdihar?.shopCountLive === 8, "Izdihar sheet shop_count_live is 8 after Batch H");
 
+// Batch I (10 Oct): Ar Rahmaniyyah gains 6 cafés (4 local + Starbucks and Java Time sit-down chains); Grind Coffee dropped in r2 (rule 5).
+const rahmaniyyah = rows.find((row) => row.stableId === "al-rahmaniyyah");
+assert(rahmaniyyah?.nameEn === "Ar Rahmaniyyah" && rahmaniyyah?.nameAr === "الرحمانية", "Ar Rahmaniyyah EN/AR lock");
+assert(rahmaniyyah?.shopCountLive === 7, "Ar Rahmaniyyah sheet shop_count_live is 7 after Batch I r2");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "al-rahmaniyyah").map((shop) => shop.id).join(",") ===
+    "camel-step-al-rahmaniyyah,peaks-the-tent-al-rahmaniyyah,november-coffee-al-rahmaniyyah,sipology-al-rahmaniyyah,ramli-cafe-al-rahmaniyyah,starbucks-the-plaza-al-rahmaniyyah,java-time-al-rahmaniyyah",
+  "Ar Rahmaniyyah catalog is Camel Step plus the 6 Batch I rows",
+);
+
 const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
 assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");
 assert(dhahrat?.nameEn === "Dhahrat Al Badiah", "Dhahrat Al Badiah EN lock");

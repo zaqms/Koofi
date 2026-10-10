@@ -44,8 +44,6 @@ import {
 } from "@/lib/directory-category";
 import { readLearnSession } from "@/lib/learn-session";
 import {
-  decodeHalfwayInviteId,
-  encodeHalfwayInviteId,
   guestPinFromLocations,
   halfwayInviteHasGuest,
   halfwayInvitePath,
@@ -57,6 +55,7 @@ import {
   clearHalfwayWaiting,
   consumeHalfwayFresh,
   markHalfwayFresh,
+  isHalfwayWaitingLive,
   readHalfwayWaiting,
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
@@ -84,6 +83,7 @@ import {
   trackChatQuery,
   trackDistrictMatch,
   trackEvent,
+  trackEventAndWait,
   type ChatQueryVia,
   type MeetHalfwayResultSource,
   type MeetHalfwayStartSource,
@@ -180,7 +180,7 @@ function sessionHostWait(
   const saved = readHalfwayWaiting();
   if (!saved) return null;
   if (halfwayInvite && saved.id !== halfwayInvite.id) return null;
-  if (!decodeHalfwayInviteId(saved.id)) {
+  if (!isHalfwayWaitingLive(saved)) {
     clearHalfwayWaiting();
     return null;
   }
@@ -884,6 +884,10 @@ export function Chat({
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
   const halfwayRestoreSeenRef = useRef(false);
+  /** Invite id whose meet_halfway_invite_share hit was already pushed. */
+  const halfwayInviteShareSent = useRef<string | null>(null);
+  /** In-flight GTM flush for that id, so a second tap waits on the same one. */
+  const halfwayInviteShareFlush = useRef<Promise<void> | null>(null);
   const routedChipOpenedRef = useRef<string | null>(
     chipOpen?.picks.length ? chipOpen.chipId : null,
   );
@@ -1417,6 +1421,7 @@ export function Chat({
 
   async function ensureHalfwayInvite(
     me: HalfwayPinInput,
+    options?: { deferShareEvent?: boolean },
   ): Promise<{ id: string; url: string } | null> {
     if (halfwayWaitingId) {
       const origin = window.location.origin.replace(/\/$/, "");
@@ -1425,59 +1430,54 @@ export function Chat({
         url: `${origin}${halfwayInviteSharePath(halfwayWaitingId)}`,
       };
     }
-    const pin = pinFromInput(me);
-    let id = encodeHalfwayInviteId({
-      locale: landing,
-      locations: pin ? [pin] : [],
-    });
-    if (!id) {
-      try {
-        const response = await fetch("/api/halfway/invite", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            locale: landing,
-            lat: me.lat,
-            lng: me.lng,
-            text: me.text,
-            seed: true,
-          }),
-        });
-        const data = (await response.json()) as {
-          id?: string;
-          reply?: string;
-        };
-        id = typeof data.id === "string" ? data.id : null;
-        if (!id) {
-          showHalfwayPinFail(
-            [me],
-            typeof data.reply === "string" ? data.reply : undefined,
-          );
-          return null;
-        }
-      } catch {
-        showHalfwayPinFail([me]);
+    // Server mints an opaque random id and keeps A's pin. The URL never
+    // carries coordinates.
+    let pin = pinFromInput(me);
+    let id: string | null = null;
+    let exp: number | undefined;
+    try {
+      const response = await fetch("/api/halfway/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          locale: landing,
+          lat: me.lat,
+          lng: me.lng,
+          text: me.text,
+          seed: true,
+        }),
+      });
+      const data = (await response.json()) as {
+        id?: string;
+        reply?: string;
+        exp?: number;
+        locations?: { lat?: number; lng?: number }[];
+      };
+      if (response.status === 503) {
+        showHalfwayPinFail([me], copy.meetHalfwayInvitesPaused[landing]);
         return null;
       }
-    } else {
-      try {
-        await fetch("/api/halfway/invite", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id, seed: true }),
-        });
-      } catch {
-        // Overlay write is best-effort; the /h/{id} URL still has A's pin.
+      id = typeof data.id === "string" ? data.id : null;
+      exp = typeof data.exp === "number" ? data.exp : undefined;
+      const hostRow = data.locations?.[0];
+      if (!pin && typeof hostRow?.lat === "number" && typeof hostRow?.lng === "number") {
+        pin = { lat: hostRow.lat, lng: hostRow.lng };
       }
-    }
-    if (!id) {
+      if (!id) {
+        showHalfwayPinFail(
+          [me],
+          typeof data.reply === "string" ? data.reply : undefined,
+        );
+        return null;
+      }
+    } catch {
       showHalfwayPinFail([me]);
       return null;
     }
     const origin = window.location.origin.replace(/\/$/, "");
     const url = `${origin}${halfwayInviteSharePath(id)}`;
     if (pin) {
-      writeHalfwayWaiting({ id, locale: landing, me: pin });
+      writeHalfwayWaiting({ id, locale: landing, me: pin, ...(exp ? { exp } : {}) });
       setHalfwayWaitingMe(pin);
     }
     setHalfwayJoined(false);
@@ -1485,23 +1485,53 @@ export function Chat({
     halfwayJoinSeenRef.current = false;
     setHalfwayWaitingId(id);
     setHalfwayPinError(null);
-    trackEvent(
+    // Invite navigation pushes this hit itself, with GTM's eventCallback,
+    // so the redirect can wait for it. Copy link stays on this page.
+    if (!options?.deferShareEvent && halfwayInviteShareSent.current !== id) {
+      halfwayInviteShareSent.current = id;
+      halfwayInviteShareFlush.current = Promise.resolve();
+      trackEvent(
+        "meet_halfway_invite_share",
+        { locale: landing, pack_id: id },
+        { dedupeKey: `meet_halfway_invite_share:${id}` },
+      );
+    }
+    return { id, url };
+  }
+
+  function flushInviteShare(id: string): Promise<void> {
+    if (halfwayInviteShareSent.current === id) {
+      return halfwayInviteShareFlush.current ?? Promise.resolve();
+    }
+    halfwayInviteShareSent.current = id;
+    const pending = trackEventAndWait(
       "meet_halfway_invite_share",
       { locale: landing, pack_id: id },
       { dedupeKey: `meet_halfway_invite_share:${id}` },
     );
-    return { id, url };
+    halfwayInviteShareFlush.current = pending;
+    return pending;
   }
 
   async function inviteHalfwayFriend(me: HalfwayPinInput) {
-    const created = await ensureHalfwayInvite(me);
+    const created = await ensureHalfwayInvite(me, { deferShareEvent: true });
     if (!created) return;
     setHalfwayWaitingUi(true);
+    // Push invite_share (with eventCallback) before the share sheet so a
+    // second tap waits on the same flush. Navigation awaits it below.
+    const flushed = flushInviteShare(created.id);
     await sharePackPacket(
       halfwayInviteShareText({ language: landing, url: created.url }),
     );
-    if (window.location.pathname !== halfwayInvitePath(created.id, landing)) {
-      router.replace(halfwayInvitePath(created.id, landing));
+    const destination = halfwayInvitePath(created.id, landing);
+    if (window.location.pathname !== destination) {
+      // Full document load, not router.replace: /h/* is served without
+      // GTM / DataFast, and an in-app history change would hand the invite
+      // URL to tags that read document.location (GTM history trigger).
+      // eventCallback flushes meet_halfway_open / pin / invite_share first,
+      // or ~300ms, whichever comes first. Always navigates.
+      await flushed;
+      window.location.replace(destination);
     }
   }
 

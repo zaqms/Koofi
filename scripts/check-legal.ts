@@ -111,7 +111,7 @@ assert(!read("lib/track.ts").match(/fetch\(|sendBeacon|XMLHttpRequest/), "lib/tr
 
 // Run the bootstrap in a sandbox: stored none / denied / granted / bad value.
 type Sandbox = { dataLayer: unknown[]; appended: string[]; order: string[]; __wainLoadGtm?: () => void };
-function boot(stored: string | null): Sandbox {
+function boot(stored: string | null, runs = 1): Sandbox {
   const appended: string[] = [];
   const el = { async: false, src: "" };
   const order: string[] = [];
@@ -122,7 +122,8 @@ function boot(stored: string | null): Sandbox {
     localStorage: { getItem: (k: string) => (k === CONSENT_STORAGE_KEY ? stored : null) },
   } as Record<string, unknown>;
   const document = { createElement: () => ({ ...el }), head, documentElement: head };
-  runInNewContext(consentBootstrapScript(), { window, document });
+  const sandbox = { window, document };
+  for (let i = 0; i < runs; i += 1) runInNewContext(consentBootstrapScript(), sandbox);
   return { dataLayer: window.dataLayer as unknown[], appended, order, __wainLoadGtm: window.__wainLoadGtm as () => void };
 }
 const asArgs = (entry: unknown) => Array.from(entry as ArrayLike<unknown>);
@@ -157,6 +158,33 @@ for (const stored of [null, JSON.stringify({ v: 1, c: "denied" }), '{"v":9,"c":"
   assert(!s.dataLayer.some((e) => (e as { event?: string }).event === "pre_consent_event"), "events queued before Accept are dropped, never sent");
   s.__wainLoadGtm?.();
   assert(s.appended.length === 1, "GTM loads at most once");
+}
+// M1-r5: the client fallback re-runs the same script; a second run (head
+// already ran) must be a no-op: one set of guards, one consent default.
+{
+  const once = boot(JSON.stringify({ v: 1, c: "granted" }), 1);
+  const twice = boot(JSON.stringify({ v: 1, c: "granted" }), 2);
+  assert(twice.order.join() === once.order.join() && twice.appended.length === 1 && twice.dataLayer.length === once.dataLayer.length, "bootstrap is idempotent (head + client fallback run it once)");
+}
+// M1-r5: route-level 404s (notFound() while streaming) get <head> only in
+// the RSC payload, so the inline bootstrap never executes there. The
+// consent manager must install it from the client at module load, with the
+// same script (so guards register before GTM can ever load).
+const consentLib = read("lib/consent.ts");
+assert(/export function ensureConsentBootstrap\(\)[\s\S]*?script\.text = consentBootstrapScript\(\);/.test(consentLib), "ensureConsentBootstrap runs consentBootstrapScript() from the client");
+assert(/^ensureConsentBootstrap\(\);$/m.test(manager), "consent-manager installs the bootstrap when its module loads (route-level 404 fallback)");
+/** Route-level 404 samples (AR + EN) for the browser render + click check (capture/footer-render.py). */
+const NOT_FOUND_SAMPLES = [
+  ["/c/qa-no-such-cafe", "app/c/[id]/page.tsx"],
+  ["/en/c/qa-no-such-cafe", "app/en/c/[id]/page.tsx"],
+  ["/coffee-shops/qa-no-such-district", "app/[category]/[slug]/not-found.tsx"],
+  ["/en/coffee-shops/qa-no-such-district", "app/en/[category]/[slug]/not-found.tsx"],
+  ["/p/qa-no-such-pack", "app/p/[id]/page.tsx"],
+  ["/en/qa-no-such-page", "app/not-found.tsx"],
+  ["/qa-no-such-page", "app/not-found.tsx"],
+] as const;
+for (const [, file] of NOT_FOUND_SAMPLES) {
+  assert(existsSync(join(process.cwd(), file)), `404 sample source ${file} exists`);
 }
 
 // ---------- 2. Contact + personal inbox ----------
@@ -264,5 +292,5 @@ if (process.env.LEGAL_SHIP === "1") {
 }
 
 console.log(
-  `check-legal: ok (consent gate: 0 trackers outside lib/consent.ts, Consent Mode v2 default denied, bootstrap sandbox 6/6 + capture guard; footer on ${routeFiles.length}/${routeFiles.length} routes; contact ${CONSENT_CONTACT_EMAIL}, 0 personal-inbox hits in ${USER_FACING.length} user-facing files; markers ${markers} (Shoug slots ${awaiting}); noindex=${LEGAL_HAS_PLACEHOLDERS}; sitemap ${locs.length}${LEGAL_AWAITING_SHOUG ? "; NOT SHIPPABLE: awaiting Shoug text" : ""})`,
+  `check-legal: ok (consent gate: 0 trackers outside lib/consent.ts, Consent Mode v2 default denied, bootstrap sandbox 6/6 + capture guard + idempotent client fallback (${NOT_FOUND_SAMPLES.length} 404 samples); footer on ${routeFiles.length}/${routeFiles.length} routes; contact ${CONSENT_CONTACT_EMAIL}, 0 personal-inbox hits in ${USER_FACING.length} user-facing files; markers ${markers} (Shoug slots ${awaiting}); noindex=${LEGAL_HAS_PLACEHOLDERS}; sitemap ${locs.length}${LEGAL_AWAITING_SHOUG ? "; NOT SHIPPABLE: awaiting Shoug text" : ""})`,
 );

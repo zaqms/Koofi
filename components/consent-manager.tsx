@@ -11,6 +11,7 @@ import {
   DATAFAST_SRC,
   DATAFAST_WEBSITE_ID,
   denyConsent,
+  ensureConsentBootstrap,
   grantConsent,
   readConsent,
   type ConsentChoice,
@@ -47,6 +48,10 @@ function fixedBottomBarHeight(banner: HTMLElement): number {
   return height;
 }
 
+// Route-level 404s never run the <head> bootstrap (see
+// ensureConsentBootstrap). Install it as soon as this module loads.
+ensureConsentBootstrap();
+
 type ConsentSnap = { choice: ConsentChoice | null; open: boolean };
 const SERVER_SNAP: ConsentSnap = { choice: null, open: false };
 let snap: ConsentSnap | null = null;
@@ -80,6 +85,7 @@ function onConsentAction(event: Event): void {
 }
 
 function subscribe(listener: () => void): () => void {
+  ensureConsentBootstrap();
   listeners.add(listener);
   if (listeners.size === 1) window.addEventListener(CONSENT_ACTION_EVENT, onConsentAction);
   return () => {
@@ -101,7 +107,17 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
   useLayoutEffect(() => {
     const banner = bannerRef.current;
     if (!open || !banner) return;
-    banner.style.bottom = `${fixedBottomBarHeight(banner)}px`;
+    const bar = fixedBottomBarHeight(banner);
+    banner.style.bottom = `${bar}px`;
+    // Let the end of every page (e.g. the footer's Cookie settings, the last
+    // cookie bullets) scroll clear of the banner. Padding is added below all
+    // content, so nothing on screen moves (no layout shift).
+    const body = document.body;
+    const previous = body.style.paddingBottom;
+    body.style.paddingBottom = `${banner.offsetHeight + bar}px`;
+    return () => {
+      body.style.paddingBottom = previous;
+    };
   }, [open]);
 
   const button =
@@ -129,14 +145,14 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
           data-consent-banner=""
           dir={language === "ar" ? "rtl" : "ltr"}
           lang={language}
-          className="fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+          className="fixed inset-x-0 bottom-0 z-50 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-3 sm:pb-[max(0.75rem,env(safe-area-inset-bottom))]"
         >
-          <div className="mx-auto w-full max-w-md rounded-2xl border border-line bg-foam px-4 py-4 text-ink shadow-lg">
+          <div className="mx-auto w-full max-w-md rounded-2xl border border-line bg-foam px-3 py-3 text-ink shadow-lg sm:px-4 sm:py-4">
             <p id="wain-consent-title" className="text-sm font-semibold">
               {consentText("title", language)}
             </p>
-            <p className="mt-1 text-xs leading-6">{consentText("body", language)}</p>
-            <p className="mt-1 text-xs leading-6 text-ink-soft">
+            <p className="mt-1 text-xs leading-5 sm:leading-6">{consentText("body", language)}</p>
+            <p className="mt-1 text-xs leading-5 text-ink-soft sm:leading-6">
               <Link
                 href={`${privacyPath(language)}#cookies`}
                 className="underline underline-offset-2 hover:text-ink"
@@ -149,7 +165,7 @@ export function ConsentManager({ language: initialLanguage }: { language: Langua
             {choice ? (
               <p className="mt-1 text-xs text-ink-soft">{consentCopy.current[language][choice]}</p>
             ) : null}
-            <div className="mt-3 flex gap-2">
+            <div className="mt-2 flex gap-2 sm:mt-3">
               <button type="button" className={button} data-consent="accept">
                 {consentText("accept", language)}
               </button>

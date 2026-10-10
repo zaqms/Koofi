@@ -85,7 +85,7 @@ export const TRACKER_STORAGE_PATTERN = /^(_gcl_|oaiq_|_tw|datafast)/;
 
 export function consentBootstrapScript(): string {
   const key = JSON.stringify(CONSENT_STORAGE_KEY);
-  return `(function(w,d){w.dataLayer=w.dataLayer||[];function g(){w.dataLayer.push(arguments);}
+  return `(function(w,d){if(w.__wainBoot)return;w.__wainBoot=1;w.dataLayer=w.dataLayer||[];function g(){w.dataLayer.push(arguments);}
 var D=${JSON.stringify({ ...CONSENT_DENIED, wait_for_update: 500 })},G=${JSON.stringify(CONSENT_GRANTED)};
 g('consent','default',D);g('set','ads_data_redaction',true);
 var c=null;try{var r=JSON.parse(w.localStorage.getItem(${key})||'null');if(r&&r.v===${CONSENT_VERSION}&&(r.c==='granted'||r.c==='denied'))c=r.c;}catch(e){}
@@ -101,11 +101,35 @@ if(c==='granted')w.__wainLoadGtm();})(window,document);`;
 }
 
 type ConsentWindow = Window & {
+  __wainBoot?: number;
+  __wainBootSource?: "head" | "client";
   __wainStop?: boolean;
   __wainConsent?: ConsentChoice | null;
   __wainLoadGtm?: () => void;
   dataLayer?: unknown[];
 };
+
+/**
+ * Fallback for pages where the <head> bootstrap never executed. On a
+ * route-level 404 (notFound() while streaming), Next delivers <head> only
+ * inside the RSC payload, so the inline script is inserted inert. The
+ * consent manager calls this when its module loads (before hydration, so
+ * before any click, and before GTM could load: GTM is only ever injected by
+ * this bootstrap). Running the same script from the client installs the
+ * Consent Mode defaults, the click/exit guards and, for a stored "granted",
+ * GTM. Idempotent: the script returns at once if it already ran.
+ */
+export function ensureConsentBootstrap(): "head" | "client" | "server" {
+  if (typeof window === "undefined") return "server";
+  const w = window as ConsentWindow;
+  if (w.__wainBoot) return (w.__wainBootSource ??= "head");
+  const script = document.createElement("script");
+  script.setAttribute("data-consent-bootstrap", "client");
+  script.text = consentBootstrapScript();
+  (document.head || document.documentElement).appendChild(script);
+  w.__wainBootSource = "client";
+  return "client";
+}
 
 export function readConsent(): ConsentChoice | null {
   if (typeof window === "undefined") return null;

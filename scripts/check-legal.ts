@@ -173,13 +173,16 @@ for (const stored of [null, JSON.stringify({ v: 1, c: "denied" }), '{"v":9,"c":"
 const consentLib = read("lib/consent.ts");
 assert(/export function ensureConsentBootstrap\(\)[\s\S]*?script\.text = consentBootstrapScript\(\);/.test(consentLib), "ensureConsentBootstrap runs consentBootstrapScript() from the client");
 assert(/^ensureConsentBootstrap\(\);$/m.test(manager), "consent-manager installs the bootstrap when its module loads (route-level 404 fallback)");
-/** Route-level 404 samples (AR + EN) for the browser render + click check (capture/footer-render.py). */
+/** Route-level 404 samples (AR + EN). The browser check (capture-r6/notfound-clicks.py) clicks Accept and Reject on each. */
 const NOT_FOUND_SAMPLES = [
   ["/c/qa-no-such-cafe", "app/c/[id]/page.tsx"],
   ["/en/c/qa-no-such-cafe", "app/en/c/[id]/page.tsx"],
   ["/coffee-shops/qa-no-such-district", "app/[category]/[slug]/not-found.tsx"],
   ["/en/coffee-shops/qa-no-such-district", "app/en/[category]/[slug]/not-found.tsx"],
   ["/p/qa-no-such-pack", "app/p/[id]/page.tsx"],
+  ["/en/p/qa-no-such-pack", "app/en/[category]/[slug]/page.tsx"],
+  ["/c/x", "app/c/[id]/page.tsx"],
+  ["/en/x", "app/not-found.tsx"],
   ["/en/qa-no-such-page", "app/not-found.tsx"],
   ["/qa-no-such-page", "app/not-found.tsx"],
 ] as const;

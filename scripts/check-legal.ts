@@ -190,7 +190,7 @@ for (const trackers of [false, "unset"] as const) {
 // consent manager must install it from the client at module load, with the
 // same script (so guards register before GTM can ever load).
 const consentLib = read("lib/consent.ts");
-assert(/export function ensureConsentBootstrap\(\)[\s\S]*?script\.text = consentBootstrapScript\(\);/.test(consentLib), "ensureConsentBootstrap runs consentBootstrapScript() from the client");
+assert(/export function ensureConsentBootstrap\(\)[\s\S]*?\[consentBootstrapScript\(\), ANALYTICS_REDACT_BOOTSTRAP, CONSENT_AUTOLOAD_SCRIPT\][\s\S]*?script\.text = text;/.test(consentLib), "ensureConsentBootstrap runs the consent bootstrap, then #252's redaction, then the autoload, from the client (same order as <head>)");
 assert(/^ensureConsentBootstrap\(\);$/m.test(manager), "consent-manager installs the bootstrap when its module loads (route-level 404 fallback)");
 /** Route-level 404 samples (AR + EN). The browser check (capture-r6/notfound-clicks.py) clicks Accept and Reject on each. */
 const NOT_FOUND_SAMPLES = [

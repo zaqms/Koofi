@@ -25,6 +25,8 @@
  * this gate. The server-side DataFast AI-crawler call in proxy.ts is not a
  * browser tracker: it only reports known AI crawler user agents.
  */
+import { ANALYTICS_REDACT_BOOTSTRAP } from "./analytics-redact";
+
 export const CONSENT_STORAGE_KEY = "wain_consent";
 export const CONSENT_VERSION = 1;
 export type ConsentChoice = "granted" | "denied";
@@ -140,10 +142,16 @@ export function ensureConsentBootstrap(): "head" | "client" | "server" {
   if (typeof window === "undefined") return "server";
   const w = window as ConsentWindow;
   if (w.__wainBoot) return (w.__wainBootSource ??= "head");
-  const script = document.createElement("script");
-  script.setAttribute("data-consent-bootstrap", "client");
-  script.text = consentBootstrapScript();
-  (document.head || document.documentElement).appendChild(script);
+  // Same order as the layout's <head>: consent first, then #252's redaction
+  // (it judges the URL itself and fails closed on /h/*, /owner/edit, /ops
+  // and dirty URLs), then the stored-Accept autoload. Without the redaction
+  // run, __wainTrackers stays unset and GTM never loads on these pages.
+  for (const text of [consentBootstrapScript(), ANALYTICS_REDACT_BOOTSTRAP, CONSENT_AUTOLOAD_SCRIPT]) {
+    const script = document.createElement("script");
+    script.setAttribute("data-consent-bootstrap", "client");
+    script.text = text;
+    (document.head || document.documentElement).appendChild(script);
+  }
   w.__wainBootSource = "client";
   return "client";
 }

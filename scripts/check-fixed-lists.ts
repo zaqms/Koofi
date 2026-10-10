@@ -64,7 +64,7 @@ assert(listRealShops().length === 515, "catalog is 515 after Batch I r2 (468 + 1
 assert(listListingShops().length === 460, "listing is 460 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah)");
 assert(listPublicShops().length === 460, "/api/shops pool is 460");
 assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
-assert(listSitemapLocs().length === 1207, "sitemap is 1207 (1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN)");
+assert(listSitemapLocs().length === 1211, "sitemap is 1211 (4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");

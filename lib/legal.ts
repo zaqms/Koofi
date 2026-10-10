@@ -15,7 +15,7 @@ import type { Language } from "./types";
  * section (COOKIES_AR / COOKIES_EN, /privacy#cookies), placed after
  * section 7, which points to it.
  *
- * r8 (Amjad's Yalla, 10 Oct 5:03 PM): effective date 11 October 2026, the
+ * r8 (Amjad's Yalla, 10 Oct 5:03 PM): effective date 10 October 2026, the
  * legal-identity caveat dropped from section 1, «أفكاركم» in Arabic. No
  * markers are left, so the pages are indexable and in the sitemap.
  * Never write a personal inbox in this copy, and never the old repo name.
@@ -112,7 +112,7 @@ const COOKIES_EN: LegalSection = {
 const PRIVACY_AR: LegalDoc = {
   title: "سياسة الخصوصية",
   description: "وش البيانات اللي يجمعها وين (wain.lol)، ليش، ووين تروح، وكيف تتحكم في الكوكيز.",
-  updated: "تاريخ السريان: 11 أكتوبر 2026",
+  updated: "تاريخ السريان: 10 أكتوبر 2026",
   intro: [],
   sections: [
     {
@@ -360,7 +360,7 @@ const PRIVACY_AR: LegalDoc = {
 const PRIVACY_EN: LegalDoc = {
   title: "Privacy policy",
   description: "What data Wain (wain.lol) collects, why, where it goes, and how to control cookies.",
-  updated: "Effective date: 11 October 2026",
+  updated: "Effective date: 10 October 2026",
   intro: [],
   sections: [
     {
@@ -608,7 +608,7 @@ const PRIVACY_EN: LegalDoc = {
 const TERMS_AR: LegalDoc = {
   title: "الشروط والأحكام",
   description: "شروط استخدام وين (wain.lol).",
-  updated: "تاريخ السريان: 11 أكتوبر 2026",
+  updated: "تاريخ السريان: 10 أكتوبر 2026",
   intro: [
     "تنظّم هذه الشروط استخدامك لوين (Wain) على {{https://wain.lol}}. واستخدامك للموقع يعني موافقتك عليها، لذا يُرجى قراءتها أولًا.",
   ],
@@ -721,7 +721,7 @@ const TERMS_AR: LegalDoc = {
 const TERMS_EN: LegalDoc = {
   title: "Terms and conditions",
   description: "The terms for using Wain (wain.lol).",
-  updated: "Effective date: 11 October 2026",
+  updated: "Effective date: 10 October 2026",
   intro: [
     "These terms cover your use of Wain (وين) at {{https://wain.lol}}. By using the site you agree to them, so please read them first.",
   ],

@@ -561,6 +561,67 @@ const BATCH_D3_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_D3_IDS = Object.keys(BATCH_D3_HERO_COUNTS);
 
+/** BATCH_E: At Taawun (5 Oct 2026) Places galleries — Scout's 5 Oct frames, 4 each; 3 for Stranger's, Veloce and Wooden (promo graphic / person-at-glass frames dropped). Google credit per frame. */
+const BATCH_E_TAAWUN_HERO_COUNTS: Record<string, number> = {
+  "odd-at-taawun": 4,
+  "jadeel-coffee-at-taawun": 4,
+  "strangers-coffee-at-taawun": 3,
+  "glare-cafe-at-taawun": 4,
+  "isla-at-taawun": 4,
+  "veloce-cafe-at-taawun": 3,
+  "wooden-coffee-at-taawun": 3,
+  "soul-cafe-at-taawun": 4,
+  "peaks-at-taawun": 4,
+  "caf-lab-at-taawun": 4,
+};
+const BATCH_E_TAAWUN_IDS = Object.keys(BATCH_E_TAAWUN_HERO_COUNTS);
+
+/** BATCH_F: Shubra (5 Oct 2026) Places galleries — 36 Place Photos fetched (4 per café), hand-picked: AI renders (Samus), promo graphics, an off-site kiosk and a dirty-cup frame dropped; faces blurred where visible. Samus +1 storefront frame from the #254 r2 top-up (2 more Photos; the sandwich-box frame dropped). Google credit per frame. */
+const BATCH_F_SHUBRA_HERO_COUNTS: Record<string, number> = {
+  "mhj-cafe-shubra": 4,
+  "nasaq-shubra": 4,
+  "coffee-address-shubra": 3,
+  "eco-cup-shubra": 3,
+  "jadeel-coffee-shubra": 4,
+  "samus-shubra": 3,
+  "address-mood-shubra": 3,
+  "half-million-shubra": 3,
+  "tim-hortons-shubra": 4,
+};
+const BATCH_F_SHUBRA_IDS = Object.keys(BATCH_F_SHUBRA_HERO_COUNTS);
+
+/** BATCH_G: An Nafal (8 Oct 2026) Places galleries — Scout's 8 Oct frames (60 Place Photos, 640px), 4 each, hand-ordered (interior or storefront hero). Google credit per frame. */
+const BATCH_G_NAFAL_HERO_COUNTS: Record<string, number> = {
+  "air-speciality-an-nafal": 4,
+  "black-stamp-an-nafal": 4,
+  "nafel-coffee-an-nafal": 4,
+  "pivot-espresso-an-nafal": 4,
+  "roastree-an-nafal": 4,
+  "cave-cafe-an-nafal": 4,
+  "kaseb-concept-an-nafal": 4,
+  "hatheeth-an-nafal": 4,
+  "percol-an-nafal": 4,
+  "peacock-an-nafal": 4,
+  "grotta-an-nafal": 4,
+  "btw-an-nafal": 4,
+  "costa-tala-mall-an-nafal": 4,
+  "starbucks-tala-mall-an-nafal": 4,
+  "drcafe-an-nafal": 4,
+};
+const BATCH_G_NAFAL_IDS = Object.keys(BATCH_G_NAFAL_HERO_COUNTS);
+
+/** BATCH_H: Al Izdihar (9 Oct 2026) Places galleries — Scout's 9 Oct frames (44 Place Photos, 640px), hand-ordered. McCafe was dropped per Amjad (r3), so 7 local galleries of 4. Google credit per frame. */
+const BATCH_H_IZDIHAR_HERO_COUNTS: Record<string, number> = {
+  "convoy-coffee-al-izdihar": 4,
+  "knoll-al-izdihar": 4,
+  "steam-roastery-al-izdihar": 4,
+  "temper-al-izdihar": 4,
+  "katf-al-izdihar": 4,
+  "rakiza-al-izdihar": 4,
+  "hijana-al-izdihar": 4,
+};
+const BATCH_H_IZDIHAR_IDS = Object.keys(BATCH_H_IZDIHAR_HERO_COUNTS);
+
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
 const BATCH14_HERO_COUNTS: Record<string, number> = {
   "plant-cafe-as-suwaidi": 4,
@@ -614,6 +675,10 @@ const batch13HeroIds = BATCH13_IDS.filter((id) => bakedHeroes[id]);
 const batchD3HeroIds = BATCH_D3_IDS.filter((id) => bakedHeroes[id]);
 const batch14HeroIds = BATCH14_IDS.filter((id) => bakedHeroes[id]);
 const batchD2FalahHeroIds = BATCH_D2_FALAH_IDS.filter((id) => bakedHeroes[id]);
+const batchETaawunHeroIds = BATCH_E_TAAWUN_IDS.filter((id) => bakedHeroes[id]);
+const batchFShubraHeroIds = BATCH_F_SHUBRA_IDS.filter((id) => bakedHeroes[id]);
+const batchGNafalHeroIds = BATCH_G_NAFAL_IDS.filter((id) => bakedHeroes[id]);
+const batchHIzdiharHeroIds = BATCH_H_IZDIHAR_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -631,8 +696,12 @@ assert(
       batch13HeroIds.length +
       batchD3HeroIds.length +
       batch14HeroIds.length +
-      batchD2FalahHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah and D3 merge in",
+      batchD2FalahHeroIds.length +
+      batchETaawunHeroIds.length +
+      batchFShubraHeroIds.length +
+      batchGNafalHeroIds.length +
+      batchHIzdiharHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal and H Al Izdihar merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -649,6 +718,17 @@ assert(batch13HeroIds.length === 8, "batch 13 Bisat/Rex/Veo/Alwaal hero set is c
 assert(batchD3HeroIds.length === 11, "Batch D3 trending-missing hero set is complete");
 assert(batch14HeroIds.length === 7, "batch 14 D1 As Suwaidi hero set is complete");
 assert(batchD2FalahHeroIds.length === 9, "Batch D2 Al Falah hero set is complete");
+assert(batchETaawunHeroIds.length === 10, "Batch E At Taawun hero set is complete");
+assert(batchFShubraHeroIds.length === 9, "Batch F Shubra hero set is complete");
+assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete");
+assert(batchHIzdiharHeroIds.length === 7, "Batch H Al Izdihar hero set is complete (7 local; McCafe dropped)");
+assert(!("mccafe-uthman-al-izdihar" in bakedHeroes), "no McCafe gallery ships (dropped in r3)");
+assert(
+  (bakedHeroes["starbucks-tala-mall-an-nafal"] as { attribution?: { displayName?: string } }[])
+    .map((photo) => photo.attribution?.displayName)
+    .join("|") === "Fathi Ashour|Starbucks|Azam Anwar|Miss Lily",
+  "starbucks-tala-mall hero is the former gallery frame 2 (Fathi Ashour interior); Google credit stays on that frame",
+);
 // QA #237 L3: Soliz leads with a current frame (the owner's pre-opening storefront moves last).
 assert(
   (bakedHeroes["soliz-badr"] as { attribution?: { displayName?: string } }[]).map((p) => p.attribution?.displayName).join("|") ===
@@ -751,6 +831,10 @@ function expectedHeroCount(id: string): number {
   if (BATCH_D3_HERO_COUNTS[id] != null) return BATCH_D3_HERO_COUNTS[id]!;
   if (BATCH14_HERO_COUNTS[id] != null) return BATCH14_HERO_COUNTS[id]!;
   if (BATCH_D2_FALAH_HERO_COUNTS[id] != null) return BATCH_D2_FALAH_HERO_COUNTS[id]!;
+  if (BATCH_E_TAAWUN_HERO_COUNTS[id] != null) return BATCH_E_TAAWUN_HERO_COUNTS[id]!;
+  if (BATCH_F_SHUBRA_HERO_COUNTS[id] != null) return BATCH_F_SHUBRA_HERO_COUNTS[id]!;
+  if (BATCH_G_NAFAL_HERO_COUNTS[id] != null) return BATCH_G_NAFAL_HERO_COUNTS[id]!;
+  if (BATCH_H_IZDIHAR_HERO_COUNTS[id] != null) return BATCH_H_IZDIHAR_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

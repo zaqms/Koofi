@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 62, `expected 62 live districts, got ${live.length}`);
+assert(live.length === 63, `expected 63 live districts (62 + Shubra, Batch F), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -465,6 +465,10 @@ assert(extractPrimaryDistrict("Al Jazirah") === "al-jazirah", "Al Jazirah");
 assert(extractPrimaryDistrict("النسيم") === "an-nasim", "النسيم");
 assert(extractPrimaryDistrict("An Nasim") === "an-nasim", "An Nasim");
 assert(extractPrimaryDistrict("شبرا") === "shubra", "شبرا");
+// Batch F (5 Oct): Shubra is a live district now; EN spellings resolve too.
+assert(extractPrimaryDistrict("Shubra") === "shubra", "Shubra");
+assert(extractPrimaryDistrict("shobra") === "shubra", "shobra");
+assert(parseIntent("شبرا").neighborhoods.join(",") === "shubra", "شبرا is a حي");
 assert(extractPrimaryDistrict("منفوحة") === "manfuha", "منفوحة");
 assert(extractPrimaryDistrict("طويق") === "tuwaiq", "طويق");
 assert(extractPrimaryDistrict("السويدي") === "as-suwaidi", "السويدي");

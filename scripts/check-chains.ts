@@ -80,7 +80,7 @@ import { fixedListAllowsChains } from "../lib/fixed-list-ids";
 import { formatReply, pickCafes } from "../lib/picker";
 import { districtPath } from "../lib/product";
 import { dedupeSameBrand, shopBrandKey } from "../lib/shop-brand";
-import { matchCatalogShops } from "../lib/shop-name";
+import { matchCatalogShops, shopNameAliases } from "../lib/shop-name";
 import { listSitemapLocs } from "../lib/sitemap-xml";
 import { buildLlmsTxt, listPublicShops, publicShopRecord } from "../lib/structured-data";
 import {
@@ -488,7 +488,7 @@ assert(
   "live 24cafe is tagged 24cafe",
 );
 const taggedLive = listRealShops().filter((shop) => shop.isChain === true);
-assert(taggedLive.length === 44, "exactly 44 existing rows are tagged (28 on main + 16 Drive Coffee)");
+assert(taggedLive.length === 50, "exactly 50 rows are tagged (28 on main + 16 Drive Coffee + Veloce At Taawun, Batch E r2 + Half Million and Tim Hortons Shubra, Batch F + Costa, Starbucks and dr.CAFE An Nafal, Batch G; Batch H Al Izdihar adds no chain)");
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "drive").length === 16 &&
     listRealShops()
@@ -497,8 +497,8 @@ assert(
   "all 16 Drive Coffee rows are tagged drive",
 );
 assert(
-  taggedLive.filter((shop) => shop.chainBrand === "dr-cafe").length === 19,
-  "19 dr.CAFE rows are tagged (18 + As Suwaidi, Batch D1)",
+  taggedLive.filter((shop) => shop.chainBrand === "dr-cafe").length === 20,
+  "20 dr.CAFE rows are tagged (18 + As Suwaidi, Batch D1 + An Nafal Park, Batch G)",
 );
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "java").length === 6,
@@ -508,6 +508,142 @@ assert(
   taggedLive.filter((shop) => shop.chainBrand === "24cafe").length === 3,
   "3 24cafe rows are tagged",
 );
+// Batch E r2 (8 Oct 2026): Veloce has 60+ branches (official TikTok @veloce_cafe_sa), so At Taawun's row is a sit-down chain.
+assert(
+  taggedLive.filter((shop) => shop.chainBrand === "veloce").map((shop) => shop.id).join(",") === "veloce-cafe-at-taawun",
+  "Veloce has one tagged row (At Taawun, Batch E r2)",
+);
+// Batch F (5 Oct 2026): first Half Million and Tim Hortons rows, both sit-down in Shubra.
+assert(
+  taggedLive.filter((shop) => shop.chainBrand === "half-million").map((shop) => shop.id).join(",") === "half-million-shubra" &&
+    taggedLive.filter((shop) => shop.chainBrand === "tim-hortons").map((shop) => shop.id).join(",") === "tim-hortons-shubra",
+  "Half Million and Tim Hortons each have one tagged row (Shubra, Batch F)",
+);
+// Batch G (8 Oct 2026): first Costa and Starbucks rows, both sit-down in Tala Mall (An Nafal).
+assert(
+  taggedLive.filter((shop) => shop.chainBrand === "costa").map((shop) => shop.id).join(",") === "costa-tala-mall-an-nafal" &&
+    taggedLive.filter((shop) => shop.chainBrand === "starbucks").map((shop) => shop.id).join(",") === "starbucks-tala-mall-an-nafal",
+  "Costa and Starbucks each have one tagged row (Tala Mall An Nafal, Batch G)",
+);
+// Batch H (9 Oct 2026): McCafé Uthman Ibn Affan (Al Izdihar) was dropped per Amjad (r3); no McCafé row is live. Dunkin' stays out pending Amjad (donut-led rule).
+assert(
+  !listRealShops().some((shop) => shop.chainBrand === "mccafe" || /mccaf|mc caf|ماك كافيه/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)),
+  "no McCafé row is live (dropped from Batch H per Amjad)",
+);
+assert(
+  !listRealShops().some((shop) => shop.chainBrand === "dunkin" || /dunkin|دانكن/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)),
+  "no Dunkin' row is live (donut-led chain question is open with Amjad)",
+);
+assert(CHAIN_BRANDS.mccafe.logo === null && !existsSync(join(process.cwd(), "public/logos/mccafe-mark.png")), "McCafe registry keeps its pre-Batch H entry with no logo (mark file removed)");
+
+// Generic cafe words are not a brand name. «كوفي» inside كوستا كوفي used to pin Costa first.
+const GENERIC_CAFE_TOKENS = new Set([
+  "كوفي",
+  "كوفيه",
+  "كوفه",
+  "قهوه",
+  "كافيه",
+  "كافية",
+  "كافي",
+  "coffee",
+  "coffe",
+  "cofee",
+  "cafe",
+  "café",
+  "caffe",
+  "caffé",
+  "kofi",
+  "kofe",
+  "koffee",
+  "qahwa",
+  "qahwah",
+  "kahwa",
+  "gahwa",
+]);
+const genericChainAliases = listRealShops()
+  .filter((shop) => shop.isChain === true)
+  .flatMap((shop) =>
+    shopNameAliases(shop)
+      .filter((alias) => !alias.includes(" ") && GENERIC_CAFE_TOKENS.has(alias))
+      .map((alias) => `${shop.id}:${alias}`),
+  );
+assert(
+  genericChainAliases.length === 0,
+  `chain rows must not alias a generic cafe token, got ${genericChainAliases.join(",")}`,
+);
+for (const ask of ["كوفي النفل", "كوفي قريب من النفل", "coffee an nafal", "كافيه النفل"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.picks.length > 0, `${ask} still returns picks`);
+  assert(
+    result.picks.every((pick) => pick.shop.isChain !== true),
+    `${ask} top picks stay local, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
+// Batch H: same rule in Al Izdihar (local-only after the McCafé drop).
+for (const ask of ["كوفي الازدهار", "coffee al izdihar", "كافيه الازدهار", "قهوة الازدهار", "كوفي قريب من الازدهار", "cafe izdihar"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.picks.length > 0, `${ask} still returns picks`);
+  assert(
+    result.picks.every((pick) => pick.shop.isChain !== true),
+    `${ask} top picks stay local, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
+const costaNafal = pickCafes({ text: "كوستا النفل" });
+assert(
+  costaNafal.picks.some((pick) => pick.shop.id === "costa-tala-mall-an-nafal"),
+  `كوستا النفل returns Costa, got ${costaNafal.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+for (const [ask, brand] of [
+  ["كوستا", "costa"],
+  ["costa", "costa"],
+  ["costa coffee", "costa"],
+  ["starbucks", "starbucks"],
+  ["ستاربكس", "starbucks"],
+  ["د.كيف", "dr-cafe"],
+  ["dr.CAFE", "dr-cafe"],
+  ["هاف مليون", "half-million"],
+  ["تيم هورتنز", "tim-hortons"],
+  ["فيلوتشي", "veloce"],
+  ["درايف كوفي", "drive"],
+  ["جافا", "java"],
+] as const) {
+  const result = pickCafes({ text: ask });
+  assert(
+    result.picks.some((pick) => pick.shop.chainBrand === brand),
+    `${ask} still surfaces ${brand}, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
+// Batch H r2 (#256 QA L1): Latin accents fold in name search ("Rémi's" = "remis"), both ways, and no name loses itself.
+{
+  const shops = listRealShops();
+  for (const [ask, id] of [
+    ["Rémis Matcha Club", "remis-matcha-club-hittin"],
+    ["remis matcha club", "remis-matcha-club-hittin"],
+    ["Voûte Fot", "voute-fot-al-naseem-sharqi"],
+    ["voute fot", "voute-fot-al-naseem-sharqi"],
+  ] as const) {
+    assert(
+      matchCatalogShops(ask, shops).some((shop) => shop.id === id),
+      `${ask} name-matches ${id}, got ${matchCatalogShops(ask, shops).slice(0, 3).map((shop) => shop.id).join(",")}`,
+    );
+  }
+  const accented = shops.filter((shop) => /[\u00C0-\u024F]/.test(shop.nameEn));
+  assert(accented.length >= 10, `accented English names still in catalog (${accented.length})`);
+  for (const shop of accented) {
+    assert(
+      matchCatalogShops(shop.nameEn, shops).some((hit) => hit.id === shop.id),
+      `${shop.nameEn} still name-matches ${shop.id}`,
+    );
+  }
+}
+// Sit-down chain rows with no drive-through (no drive-through moment tag, never on the lane).
+const SIT_DOWN_ONLY_CHAINS = new Set<string>([
+  "veloce-cafe-at-taawun",
+  "half-million-shubra",
+  "costa-tala-mall-an-nafal",
+  "starbucks-tala-mall-an-nafal",
+  "drcafe-an-nafal",
+]);
 const dineInLaneRemoved = [
   // Drive Coffee rows that were never on the drive-through lane (tagged 4 Oct 2026).
   "drive-al-ghadeer",
@@ -522,6 +658,15 @@ const dineInLaneRemoved = [
   "drcafe-al-mughrizat",
   "java-cafe-al-malaz",
   "java-cafe-al-manar",
+  // Batch E r2 (8 Oct): sit-down chain in At Taawun, never on the lane.
+  "veloce-cafe-at-taawun",
+  // Batch F (5 Oct): sit-down chains in Shubra, never on the lane (Tim Hortons also has a drive-through).
+  "tim-hortons-shubra",
+  "half-million-shubra",
+  // Batch G (8 Oct): sit-down chains in An Nafal, none has a drive-through.
+  "costa-tala-mall-an-nafal",
+  "starbucks-tala-mall-an-nafal",
+  "drcafe-an-nafal",
 ] as const;
 const qaKiosks = [
   "drcafe-al-wadi",
@@ -544,12 +689,50 @@ const laneKept = [
   "drcafe-shubra",
 ] as const;
 assert(
-  taggedLive.every((shop) => shop.momentTags.includes("drive-through")),
-  "tagged rows keep the drive-through moment tag",
+  taggedLive
+    .filter((shop) => !SIT_DOWN_ONLY_CHAINS.has(shop.id))
+    .every((shop) => shop.momentTags.includes("drive-through")),
+  "tagged rows keep the drive-through moment tag (sit-down-only chains excepted)",
+);
+for (const id of SIT_DOWN_ONLY_CHAINS) {
+  const shop = getShop(id);
+  assert(
+    shop?.isChain === true &&
+      !shop.momentTags.includes("drive-through") &&
+      shop.vibeTags.join(",") === "قهوة" &&
+      shop.catalogLane !== "drive-through" &&
+      shop.dineIn === true,
+    `${id} is a sit-down chain without a drive-through tag`,
+  );
+}
+const veloce = getShop("veloce-cafe-at-taawun");
+assert(
+  veloce?.isChain === true &&
+    veloce.chainBrand === "veloce" &&
+    !veloce.momentTags.includes("drive-through") &&
+    veloce.catalogLane !== "drive-through" &&
+    veloce.dineIn === true,
+  "Veloce At Taawun is a sit-down chain without a drive-through tag",
+);
+const halfMillion = getShop("half-million-shubra");
+assert(
+  halfMillion?.isChain === true &&
+    !halfMillion.momentTags.includes("drive-through") &&
+    halfMillion.catalogLane !== "drive-through" &&
+    halfMillion.dineIn === true,
+  "Half Million Shubra is a sit-down chain without a drive-through tag",
+);
+const timHortons = getShop("tim-hortons-shubra");
+assert(
+  timHortons?.isChain === true &&
+    timHortons.momentTags.includes("drive-through") &&
+    timHortons.catalogLane !== "drive-through" &&
+    timHortons.dineIn === true,
+  "Tim Hortons Shubra is sit-down + drive-through like dr.CAFE As Suwaidi (moment tag, no lane)",
 );
 assert(
   dineInLaneRemoved.every((id) => getShop(id)?.catalogLane !== "drive-through"),
-  "the 11 sit-down rows leave the drive-through lane",
+  "the 17 sit-down rows stay off the drive-through lane",
 );
 for (const id of qaKiosks) {
   const shop = getShop(id);
@@ -634,7 +817,7 @@ assert(
 const brandIds = Object.keys(CHAIN_BRANDS);
 assert(
   brandIds.join(",") ===
-    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,24cafe,shqaf,coffee-day,kyan,dancafe,drive",
+    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,24cafe,shqaf,coffee-day,kyan,dancafe,drive,half-million,tim-hortons,veloce,costa",
   "registry is the mass-market set",
 );
 assert(!isChainBrandId("krispy-kreme"), "Krispy Kreme is not a chain brand");
@@ -643,6 +826,29 @@ assert(isChainBrandId("coffee-day") && CHAIN_BRANDS["coffee-day"].logo === null,
 assert(isChainBrandId("kyan") && CHAIN_BRANDS.kyan.nameAr === "كيان", "Kyan is كيان");
 assert(isChainBrandId("dancafe") && CHAIN_BRANDS.dancafe.nameAr === "دان كافيه", "Dancafe is دان كافيه");
 assert(isChainBrandId("drive") && CHAIN_BRANDS.drive.nameAr === "درايف كوفي", "Drive Coffee is درايف كوفي");
+assert(isChainBrandId("veloce") && CHAIN_BRANDS.veloce.nameAr === "فيلوتشي", "Veloce is فيلوتشي");
+assert(isChainBrandId("costa") && CHAIN_BRANDS.costa.nameAr === "كوستا كوفي", "Costa Coffee is كوستا كوفي");
+assert(
+  shopBrandKey(fixtureShop({ id: "costa-x", nameEn: "Costa Coffee" })) === "costa",
+  "Costa brand key",
+);
+assert(
+  shopBrandKey(fixtureShop({ id: "veloce-x", nameEn: "Veloce Cafe" })) === "veloce",
+  "Veloce brand key",
+);
+assert(
+  isChainBrandId("half-million") && CHAIN_BRANDS["half-million"].nameAr === "هاف مليون",
+  "Half Million is هاف مليون",
+);
+assert(
+  isChainBrandId("tim-hortons") && CHAIN_BRANDS["tim-hortons"].nameAr === "تيم هورتنز",
+  "Tim Hortons is تيم هورتنز",
+);
+assert(
+  shopBrandKey(fixtureShop({ id: "half-million-x", nameEn: "Half Million" })) === "half-million" &&
+    shopBrandKey(fixtureShop({ id: "tim-hortons-x", nameEn: "Tim Hortons" })) === "tim-hortons",
+  "Half Million and Tim Hortons brand keys",
+);
 assert(
   shopBrandKey(fixtureShop({ id: "drive-x", nameEn: "Drive Coffee" })) === "drive",
   "Drive Coffee brand key",
@@ -678,21 +884,21 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 403, "specialty discovery is 403 (406 on main − 3 Drive Coffee rows now chains)");
-assert(listRealShops().length === 468, "catalog is 468 after D1, D2 and D3");
-assert(listLiveDistrictIds().length === 62, "specialty districts are 62 (the 3 Drive rows were not a district's only specialty cafe)");
+assert(listDiscoveryShops().length === 438, "specialty discovery is 438 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local; Veloce is a chain)");
+assert(listRealShops().length === 509, "catalog is 509 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal) and Batch H (7 Al Izdihar)");
+assert(listLiveDistrictIds().length === 63, "specialty districts are 63 (62 + Shubra, Batch F; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 78,
   "catalog rows cover 78 districts (Jarir hidden; 4 Bisat batch + 4 Batch D3 districts)",
 );
-assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (72 on main minus 5 Drive-only)");
-assert(listDriveThroughDirectoryShops().length === 73, "drive-through is 73 (count unchanged; the 16 Drive rows were already on the list)");
-assert(listListingShops().length === 413, "listing is 403 local plus the 10 sit-down chains");
-assert(listPublicShops().length === 413, "public list includes the 10 sit-down chains");
-assert(listBrowseDirectoryShops().length === 418, "browse is 424 on main minus Drive Al Arid and the 5 Drive-only district rows");
+assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
+assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
+assert(listListingShops().length === 454, "listing is 438 local plus the 16 sit-down chains");
+assert(listPublicShops().length === 454, "public list includes the 16 sit-down chains");
+assert(listBrowseDirectoryShops().length === 459, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows and the 7 Batch H Al Izdihar rows");
 assert(
-  listListingShops().filter((shop) => shop.isChain).length === 10,
-  "exactly 10 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan)",
+  listListingShops().filter((shop) => shop.isChain).length === 16,
+  "exactly 16 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal)",
 );
 assert(
   listDirectoryShopsForDistrict("al-malaz").some((shop) => shop.id === "java-cafe-al-malaz") &&
@@ -872,7 +1078,7 @@ const chainOnlyDistricts = [
   "an-nasim",
   "kkia",
   "manfuha",
-  "shubra",
+  // Shubra left this list in Batch F (5 Oct 2026): 7 local cafés + 2 sit-down chains.
   // Drive Coffee drive-through-lane-only districts (4 Oct 2026).
   "al-hazm",
   "al-andalus",
@@ -884,7 +1090,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-ghadeer,al-qirawan,al-malaz,namar,tuwaiq,as-suwaidi",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-mughrizat,al-manar,al-ghadeer,al-qirawan,al-malaz,at-taawun,namar,shubra,tuwaiq,as-suwaidi,an-nafal",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -1103,7 +1309,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "b5b3f94e657b511bc14f75d73a76464d8c31543588cf6e0ec6dc50ce93503e81",
+  copyHash === "f81efea29052d7c91882470c67306c09dfad20b0aefe2eedb0ead53261c698b5",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1219,8 +1425,8 @@ assert(
 );
 const driveThrough = listDriveThroughDirectoryShops();
 assert(
-  driveThrough.filter((shop) => shop.isChain === true).length === 44,
-  "the drive-through directory includes the 44 tagged branches (28 on main + 16 Drive Coffee)",
+  driveThrough.filter((shop) => shop.isChain === true).length === 45,
+  "the drive-through directory includes the 45 drive-through chain branches (28 on main + 16 Drive Coffee + Tim Hortons Shubra)",
 );
 assert(
   applyHideChains(driveThrough, true).length === 29,
@@ -1233,17 +1439,21 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "0cfa7f44dc151add587be31fa5524d94e92e898567262f434bb1c0534627a75f",
+  llmsHash === "4d8a88d6d26af8c7082222a0861a7d99a89b0866b5e6d49092394d40e897691c",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("403 local, 10 chain branches"),
-  "llms.txt names the 10 chain branches separately from specialty",
+  llms.includes("438 local, 16 chain branches"),
+  "llms.txt names the 16 chain branches separately from specialty",
 );
 
+// 16 Sep scope stays: no Starbucks row carries the drive-through tag or chip.
+// Most popular, بيننا, and trending still exclude chains (including Starbucks) as implemented.
 assert(
-  read("scripts/check-district-urls.ts").includes('"Starbucks stays dropped"'),
-  "Starbucks stays dropped assert is unchanged",
+  read("scripts/check-district-urls.ts").includes(
+    '"no Starbucks row carries the drive-through tag or chip"',
+  ),
+  "Starbucks drive-through chip ban stays in the district check",
 );
 
 const dineInChain = fixtureShop({
@@ -1420,6 +1630,13 @@ assert(
   matchCatalogShops("mccafe", askShops).some((shop) => shop.id === "mccafe-sit"),
   "mccafe matches McCafe",
 );
+// Batch H r2/r3: the accent fold reaches chain aliases too, on the synthetic row (no live McCafé row after r3).
+for (const ask of ["McCafé", "MCCAFÉ", "mc café", "Mc Cafe\u0301"] as const) {
+  assert(
+    matchCatalogShops(ask, askShops).some((shop) => shop.id === "mccafe-sit"),
+    `${ask} matches the synthetic McCafe row`,
+  );
+}
 assert(
   matchCatalogShops("barn", askShops)
     .map((shop) => shop.id)
@@ -1972,7 +2189,7 @@ assert(
     !headingIsChainOnly(chainSection, "Nearby"),
   "a heading hides under Local only only when its section is entirely chain-only",
 );
-const hiddenDistrictCafes = ["kkia", "al-jazirah", "an-nasim", "shubra", "manfuha"] as const;
+const hiddenDistrictCafes = ["kkia", "al-jazirah", "an-nasim", "manfuha"] as const;
 const listLeftovers = ["الأسماء الثانية مربوطة تحت", "باقي الحي تحت", "linked below", "مربوطة تحت", "مربوط تحت"];
 for (const district of hiddenDistrictCafes) {
   for (const shop of listRealShops().filter((row) => row.neighborhood === district)) {

@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import Link from "next/link";
 import { DocumentLocale } from "@/components/document-locale";
 import { BrandHomeLink } from "@/components/brand-home-link";
@@ -49,6 +50,7 @@ export function AboutPageView({ language }: AboutPageViewProps) {
   const other: Language = language === "ar" ? "en" : "ar";
 
   return (
+    <>
     <main
       className="mx-auto min-h-dvh w-full max-w-md px-4 py-6"
       dir={language === "ar" ? "rtl" : "ltr"}
@@ -97,5 +99,7 @@ export function AboutPageView({ language }: AboutPageViewProps) {
         </Link>
       </p>
     </main>
+    <SiteFooter language={language} contact={false} />
+    </>
   );
 }

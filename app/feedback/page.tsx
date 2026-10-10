@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { FeedbackBoard } from "@/components/feedback-board";
 import { loadFeedbackSnapshot } from "@/lib/feedback";
 import { copy } from "@/lib/copy";
@@ -29,5 +30,10 @@ export const metadata = {
 
 export default async function FeedbackPage() {
   const snapshot = await loadFeedbackSnapshot();
-  return <FeedbackBoard language="ar" snapshot={snapshot} />;
+  return (
+    <>
+      <FeedbackBoard language="ar" snapshot={snapshot} />
+      <SiteFooter language="ar" />
+    </>
+  );
 }

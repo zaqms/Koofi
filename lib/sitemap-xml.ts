@@ -12,6 +12,8 @@ import {
   mostPopularPath,
   neighborhoodsPath,
   PUBLIC_SITE_URL,
+  privacyPath,
+  termsPath,
   trendingPath,
 } from "./product";
 
@@ -55,6 +57,11 @@ function sitemapPaths(): string[] {
     // Real landings only — app/halfway + app/en/halfway both exist.
     halfwayPath("ar"),
     halfwayPath("en"),
+    // Legal pages (#251): indexable since the texts went final (no markers).
+    privacyPath("ar"),
+    privacyPath("en"),
+    termsPath("ar"),
+    termsPath("en"),
     "/llms.txt",
   ];
 

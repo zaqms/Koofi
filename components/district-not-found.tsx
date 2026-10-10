@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import Link from "next/link";
 import { DocumentLocale } from "@/components/document-locale";
 import { copy } from "@/lib/copy";
@@ -10,6 +11,7 @@ type DistrictNotFoundProps = {
 
 export function DistrictNotFound({ language }: DistrictNotFoundProps) {
   return (
+    <>
     <main
       className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-4"
       dir={language === "ar" ? "rtl" : "ltr"}
@@ -24,5 +26,7 @@ export function DistrictNotFound({ language }: DistrictNotFoundProps) {
         {copy.backToChat[language]}
       </Link>
     </main>
+    <SiteFooter language={language} />
+    </>
   );
 }

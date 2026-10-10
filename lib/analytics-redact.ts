@@ -2,7 +2,8 @@
  * Analytics hygiene for بيننا invite URLs and query strings.
  *
  * Rule (r2): GTM, the pixels inside it (X, OpenAI, Google Ads) and the
- * DataFast browser script load only on a clean URL. Clean means:
+ * DataFast browser script load only on a clean URL, and (#251) only after
+ * the visitor accepts in the cookie banner. Clean means:
  *  - not a tracker-free path (`/h/*` invites, `/owner/edit` magic links,
  *    `/ops/*`), and
  *  - every query key is an ad-attribution key (utm_*, gclid, …) or a
@@ -181,9 +182,12 @@ export function redactAnalyticsParams<T extends Record<string, unknown>>(
 const js = (value: unknown) => JSON.stringify(value);
 
 /**
- * Inline <head> script, before the GTM snippet (plain ES5, runs before
- * any tag). Fail-closed: GTM loads only if this sets
- * `window.__wainTrackers = true`.
+ * Inline <head> script, after the consent bootstrap (lib/consent.ts) and
+ * before CONSENT_AUTOLOAD_SCRIPT (plain ES5, runs before any tag).
+ * Fail-closed: the consent bootstrap's __wainLoadGtm loads GTM only if
+ * this sets `window.__wainTrackers = true` (and only after Accept). It
+ * also exposes `window.__wainRedactSet` so the Accept-time dataLayer
+ * reset can re-apply page_location before GTM loads.
  *  - Dirty URL (tracker-free path, or a query key outside the allowlist):
  *    `__wainTrackers = false`, nothing else runs. The proxy normally
  *    307s these first; this covers anything that slipped through.
@@ -195,13 +199,5 @@ const js = (value: unknown) => JSON.stringify(value);
  */
 export const ANALYTICS_REDACT_BOOTSTRAP = `(function(){var w=window;w.__wainTrackers=false;try{var d=document,h=w.history,C=${js([
   ...CLEAN_KEYS,
-])},A=${js([...ANALYTICS_KEYS])},F=${TRACKER_FREE_RE.toString()},I=${INVITE_PATH_RE.toString()};w.dataLayer=w.dataLayer||[];function g(){w.dataLayer.push(arguments)}function U(u){try{return new URL(u,w.location.href)}catch(e){return null}}function dirty(u){var x=U(u);if(!x||F.test(x.pathname))return true;var bad=false;x.searchParams.forEach(function(v,k){if(C.indexOf(k)<0)bad=true});return bad}function loc(u,q){var x=U(u);if(!x)return"";var p=x.pathname.replace(I,"$1/h/[invite]"),s="";if(q&&!F.test(x.pathname)){var k=new URLSearchParams();x.searchParams.forEach(function(v,n){if(A.indexOf(n)>=0)k.append(n,v)});s=k.toString();if(s)s="?"+s}return x.origin+p+s}function set(u){var l=loc(u||w.location.href,true);if(!l)return;var p={page_location:l,page_path:U(l).pathname};if(d.referrer)p.page_referrer=loc(d.referrer,false);g("set",p)}if(dirty(w.location.href))return;set();["pushState","replaceState"].forEach(function(k){var o=h[k];if(typeof o!=="function")return;h[k]=function(st,t,u){if(u!=null){var n=String(u);if(dirty(n)){if(k==="replaceState")w.location.replace(n);else w.location.assign(n);return}set(n)}return o.apply(this,arguments)}});w.__wainTrackers=true}catch(e){w.__wainTrackers=false}})();`;
+])},A=${js([...ANALYTICS_KEYS])},F=${TRACKER_FREE_RE.toString()},I=${INVITE_PATH_RE.toString()};w.dataLayer=w.dataLayer||[];function g(){w.dataLayer.push(arguments)}function U(u){try{return new URL(u,w.location.href)}catch(e){return null}}function dirty(u){var x=U(u);if(!x||F.test(x.pathname))return true;var bad=false;x.searchParams.forEach(function(v,k){if(C.indexOf(k)<0)bad=true});return bad}function loc(u,q){var x=U(u);if(!x)return"";var p=x.pathname.replace(I,"$1/h/[invite]"),s="";if(q&&!F.test(x.pathname)){var k=new URLSearchParams();x.searchParams.forEach(function(v,n){if(A.indexOf(n)>=0)k.append(n,v)});s=k.toString();if(s)s="?"+s}return x.origin+p+s}function set(u){var l=loc(u||w.location.href,true);if(!l)return;var p={page_location:l,page_path:U(l).pathname};if(d.referrer)p.page_referrer=loc(d.referrer,false);g("set",p)}if(dirty(w.location.href))return;set();["pushState","replaceState"].forEach(function(k){var o=h[k];if(typeof o!=="function")return;h[k]=function(st,t,u){if(u!=null){var n=String(u);if(dirty(n)){if(k==="replaceState")w.location.replace(n);else w.location.assign(n);return}set(n)}return o.apply(this,arguments)}});w.__wainRedactSet=function(){set()};w.__wainTrackers=true}catch(e){w.__wainTrackers=false}})();`;
 
-/** GTM loader, gated on the bootstrap's verdict (fail-closed). */
-export function gtmLoaderSnippet(gtmId: string): string {
-  return `if(window.__wainTrackers===true){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer',${js(gtmId)});}`;
-}

@@ -19,7 +19,6 @@ delete process.env.HALFWAY_RESULTS_WEBHOOK_KEY;
 import { NextRequest, type NextFetchEvent } from "next/server";
 import {
   ANALYTICS_REDACT_BOOTSTRAP,
-  gtmLoaderSnippet,
   isInvitePathname,
   isTrackerFreePathname,
   redactAnalyticsParams,
@@ -29,6 +28,7 @@ import {
   trackersAllowed,
   TRACKERS_HEADER,
 } from "../lib/analytics-redact";
+import { CONSENT_AUTOLOAD_SCRIPT, consentBootstrapScript, CONSENT_STORAGE_KEY, GTM_SRC } from "../lib/consent";
 import {
   encodeHalfwayInviteId,
   HALFWAY_INVITE_ID_PATTERN,
@@ -532,33 +532,76 @@ async function main() {
   runInNewContext(ANALYTICS_REDACT_BOOTSTRAP, { window: broken, document: {}, URL, URLSearchParams });
   assert(broken.__wainTrackers === false, "bootstrap fails closed");
 
-  // GTM loader only runs on the bootstrap's verdict.
-  const loaderRun = (verdict: unknown) => {
-    const inserted: string[] = [];
-    const win: Record<string, unknown> = { __wainTrackers: verdict };
-    const docStub = {
-      getElementsByTagName: () => [{ parentNode: { insertBefore: (el: { src: string }) => inserted.push(el.src) } }],
-      createElement: () => ({ src: "" }),
+  // GTM: #251's consent bootstrap is the only loader. It loads GTM only
+  // after Accept (or a stored Accept, via CONSENT_AUTOLOAD_SCRIPT) AND when
+  // this redaction bootstrap said the URL is clean (__wainTrackers === true).
+  // After its Accept-time dataLayer reset it re-applies the redacted
+  // page_location (window.__wainRedactSet) before gtm.js.
+  type Combined = { win: Record<string, unknown>; appended: string[]; dataLayer: unknown[] };
+  const combined = (href: string, stored: string | null, opts: { redact: boolean; autoload: boolean }, referrer = ""): Combined => {
+    const appended: string[] = [];
+    const head = { appendChild: (node: { src: string }) => appended.push(node.src) };
+    const win: Record<string, unknown> = {
+      location: { href, assign: () => undefined, replace: () => undefined },
+      history: { pushState: () => undefined, replaceState: () => undefined },
+      addEventListener: () => undefined,
+      dispatchEvent: () => true,
+      localStorage: { getItem: (k: string) => (k === CONSENT_STORAGE_KEY ? stored : null) },
     };
-    runInNewContext(gtmLoaderSnippet("GTM-TEST"), { window: win, document: docStub });
-    return inserted;
+    const documentStub = { referrer, createElement: () => ({ async: false, src: "" }), head, documentElement: head };
+    const ctx = { window: win, document: documentStub, URL, URLSearchParams, CustomEvent: class {} };
+    runInNewContext(consentBootstrapScript(), ctx);
+    if (opts.redact) runInNewContext(ANALYTICS_REDACT_BOOTSTRAP, ctx);
+    if (opts.autoload) runInNewContext(CONSENT_AUTOLOAD_SCRIPT, ctx);
+    return { win, appended, dataLayer: win.dataLayer as unknown[] };
   };
-  assert(loaderRun(true)[0] === "https://www.googletagmanager.com/gtm.js?id=GTM-TEST", "GTM loads when clean");
-  for (const verdict of [false, undefined, "true", 1]) {
-    assert(loaderRun(verdict).length === 0, `GTM stays off for verdict ${String(verdict)}`);
+  const granted = JSON.stringify({ v: 1, c: "granted" });
+  const asList = (entry: unknown) => (entry && typeof entry === "object" && "length" in (entry as object) ? Array.from(entry as ArrayLike<unknown>) : [entry]);
+  {
+    // Clean page, stored Accept: GTM once; order default → redaction → update → page_location → gtm.js.
+    const c = combined("https://wain.lol/c/olaya-cafe?utm_source=x&gclid=G1", granted, { redact: true, autoload: true }, `https://wain.lol/h/${first.id}?from=wa`);
+    assert(c.appended.length === 1 && c.appended[0] === GTM_SRC, "clean URL + stored Accept: GTM loads once");
+    const kinds = c.dataLayer.map((e) => {
+      const a = asList(e);
+      return a[0] === "consent" ? `consent:${String(a[1])}` : a[0] === "set" ? (typeof a[1] === "string" ? `set:${a[1]}` : "set:page") : (e as { event?: string }).event ?? "?";
+    });
+    assert(kinds.join(",") === "consent:default,set:ads_data_redaction,consent:update,set:page,gtm.js", `Accept reset re-applies page_location before gtm.js (${kinds.join(",")})`);
+    const page = asList(c.dataLayer[3])[1] as Record<string, string>;
+    assert(page.page_location === "https://wain.lol/c/olaya-cafe?utm_source=x&gclid=G1" && page.page_referrer === "https://wain.lol/h/[invite]", "re-applied page_location keeps attribution; referrer is /h/[invite]");
+  }
+  {
+    // Clean page, no choice: nothing loads; Accept (grantConsent → __wainLoadGtm) loads GTM.
+    const c = combined("https://wain.lol/en", null, { redact: true, autoload: true });
+    assert(c.appended.length === 0, "clean URL, no choice: GTM off");
+    (c.win.__wainLoadGtm as () => void)();
+    assert((c.appended.length as number) === 1, "clean URL, Accept: GTM loads");
+  }
+  for (const href of [`https://wain.lol/h/${first.id}`, `https://wain.lol/en/h/${first.id}`, "https://wain.lol/owner/edit?shop=a&token=T", "https://wain.lol/ops"]) {
+    // Tracker-free page: the layout renders neither the redaction nor the autoload.
+    const c = combined(href, granted, { redact: false, autoload: false });
+    (c.win.__wainLoadGtm as () => void)();
+    assert(c.appended.length === 0, `${href}: GTM never loads, even after Accept`);
+  }
+  {
+    // A dirty URL that slipped past the 307: redaction says no, so Accept loads nothing.
+    const c = combined("https://wain.lol/en?lat=24.7", granted, { redact: true, autoload: true });
+    (c.win.__wainLoadGtm as () => void)();
+    assert(c.win.__wainTrackers === false && c.appended.length === 0, "dirty URL: GTM off even with Accept");
   }
 
-  // ---- (c4) source: every tracker is behind the gate ----
+  // ---- (c4) source: every tracker is behind both gates ----
   const layoutSrc = read("app/layout.tsx");
   assert(layoutSrc.includes(`headerList.get(TRACKERS_HEADER) === "on"`), "layout fails closed (header must be \"on\")");
-  assert(layoutSrc.includes("gtmLoaderSnippet(GTM_ID)"), "layout uses the gated GTM loader");
-  assert(
-    layoutSrc.indexOf("ANALYTICS_REDACT_BOOTSTRAP }}") < layoutSrc.indexOf("gtmLoaderSnippet(GTM_ID)"),
-    "redaction bootstrap runs before the GTM loader",
-  );
-  assert(layoutSrc.includes("<RedactedAnalytics />") && !layoutSrc.includes("<Analytics />"), "Vercel Analytics goes through beforeSend");
-  const TRACKER_RE = /googletagmanager\.com|datafa\.st\/js|gtmLoaderSnippet\(|ANALYTICS_REDACT_BOOTSTRAP \}/g;
-  const allowed = new Set(["app/layout.tsx", "lib/analytics-redact.ts"]);
+  const head = layoutSrc.slice(layoutSrc.indexOf("<head>"), layoutSrc.indexOf("</head>"));
+  const at = (needle: string) => head.indexOf(needle);
+  assert(at("consentBootstrapScript()") >= 0 && at("consentBootstrapScript()") < at("ANALYTICS_REDACT_BOOTSTRAP }}") && at("ANALYTICS_REDACT_BOOTSTRAP }}") < at("CONSENT_AUTOLOAD_SCRIPT }}"), "<head> order: consent bootstrap → redaction bootstrap → autoload");
+  assert(!/googletagmanager\.com|gtm\.js|ns\.html|datafa\.st|<Analytics|<RedactedAnalytics|next\/script/.test(layoutSrc), "layout loads no tracker itself (consent bootstrap / ConsentManager only)");
+  assert(layoutSrc.includes("<ConsentManager language={language} trackers={trackers} />"), "ConsentManager gets the trackers verdict");
+  const managerSrc = read("components/consent-manager.tsx");
+  assert(managerSrc.includes("<RedactedAnalytics />") && !managerSrc.includes("<Analytics />"), "Vercel Analytics goes through beforeSend");
+  assert(/\{trackers \? \(\s*<Script\s+src=\{DATAFAST_SRC\}/.test(managerSrc), "DataFast needs trackers (and sits in the granted branch)");
+  const TRACKER_RE = /googletagmanager\.com|datafa\.st\/js|ANALYTICS_REDACT_BOOTSTRAP \}|CONSENT_AUTOLOAD_SCRIPT \}/g;
+  const allowed = new Set(["app/layout.tsx", "lib/analytics-redact.ts", "lib/consent.ts", "components/consent-manager.tsx"]);
   const walk = (dir: string): string[] =>
     readdirSync(join(root, dir), { withFileTypes: true }).flatMap((entry) => {
       const rel = `${dir}/${entry.name}`;
@@ -572,17 +615,17 @@ async function main() {
     TRACKER_RE.lastIndex = 0;
     assert(allowed.has(file), `tracker script referenced outside the gated files: ${file}`);
   }
-  // Each layout tracker sits inside a `{trackers ? (` branch.
+  // Each layout tracker script sits inside a `{trackers ? (` branch.
   const layoutLines = layoutSrc.split("\n");
   let gatedCount = 0;
   for (const [index, line] of layoutLines.entries()) {
-    if (!/googletagmanager\.com|datafa\.st\/js|gtmLoaderSnippet\(|ANALYTICS_REDACT_BOOTSTRAP \}/.test(line)) continue;
+    if (!/ANALYTICS_REDACT_BOOTSTRAP \}|CONSENT_AUTOLOAD_SCRIPT \}/.test(line)) continue;
     const before = layoutLines.slice(0, index).join("\n");
     const open = before.lastIndexOf("{trackers ? (");
     assert(open >= 0 && open > before.lastIndexOf(") : null}"), `layout line ${index + 1} sits inside an open {trackers ? (…) : null} branch`);
     gatedCount += 1;
   }
-  assert(gatedCount === 4, `4 gated tracker spots in the layout (${gatedCount})`);
+  assert(gatedCount === 2, `2 gated tracker scripts in the layout (${gatedCount})`);
   const proxySrc2 = read("proxy.ts");
   assert(proxySrc2.includes('clean ? "on" : "off"') && proxySrc2.includes("cleanUrlRedirect(request)"), "proxy sets trackers from the clean-URL predicate");
   assert(

@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import { headers } from "next/headers";
-import Script from "next/script";
+import { ConsentManager } from "@/components/consent-manager";
+import { CONSENT_AUTOLOAD_SCRIPT, consentBootstrapScript } from "@/lib/consent";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
-import {
-  ANALYTICS_REDACT_BOOTSTRAP,
-  gtmLoaderSnippet,
-  TRACKERS_HEADER,
-} from "@/lib/analytics-redact";
-import { RedactedAnalytics } from "@/components/redacted-analytics";
+import { ANALYTICS_REDACT_BOOTSTRAP, TRACKERS_HEADER } from "@/lib/analytics-redact";
 import { CityProvider } from "@/lib/city-context";
 import { cityLabel, DEFAULT_LIVE_CITY } from "@/lib/cities";
 import { HIDE_CHAINS_STORAGE_KEY } from "@/lib/chain-filter";
@@ -20,8 +16,6 @@ import {
   SOCIAL_TWITTER_CARD,
 } from "@/lib/product";
 import "./globals.css";
-
-const GTM_ID = "GTM-W3TM4552";
 
 const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
@@ -66,11 +60,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const headerList = await headers();
   const language = localeFromRequestHeaders(headerList);
-  // GTM (GA4 + X + OpenAI + Google Ads) and DataFast load only on a clean
-  // URL: not /h/*, /owner/edit or /ops, and no query keys outside the
-  // allowlist. Those tags read document.location directly. The proxy sets
-  // this header on every page request; anything else fails closed.
-  // See proxy.ts and lib/analytics-redact.ts.
+  // GTM (GA4 + X + OpenAI + Google Ads) and DataFast load only after
+  // Accept (lib/consent.ts) AND on a clean URL: not /h/*, /owner/edit or
+  // /ops, and no query keys outside the allowlist. Those tags read
+  // document.location directly. The proxy sets this header on every page
+  // request; anything else fails closed. See proxy.ts and
+  // lib/analytics-redact.ts.
   const trackers = headerList.get(TRACKERS_HEADER) === "on";
   return (
     <html
@@ -84,35 +79,23 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{if(localStorage.getItem(${JSON.stringify(HIDE_CHAINS_STORAGE_KEY)})==="1")document.documentElement.setAttribute("data-hide-chains","")}catch(e){}})();`,
           }}
         />
+        {/* Consent first: Consent Mode v2 defaults denied, consent click
+            guards; it is the only GTM loader (lib/consent.ts). GTM loads only
+            after Accept AND where #252 allows trackers: the redaction
+            bootstrap (clean URLs only) sets __wainTrackers and the /h/[invite]
+            page_location; the autoload then honours a stored Accept. */}
+        <script dangerouslySetInnerHTML={{ __html: consentBootstrapScript() }} />
         {trackers ? (
           <script dangerouslySetInnerHTML={{ __html: ANALYTICS_REDACT_BOOTSTRAP }} />
         ) : null}
         {trackers ? (
-          <script dangerouslySetInnerHTML={{ __html: gtmLoaderSnippet(GTM_ID) }} />
+          <script dangerouslySetInnerHTML={{ __html: CONSENT_AUTOLOAD_SCRIPT }} />
         ) : null}
       </head>
       <body className="min-h-dvh bg-paper text-ink antialiased">
-        {trackers ? (
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        ) : null}
         <CityProvider>{children}</CityProvider>
-        <RedactedAnalytics />
+        <ConsentManager language={language} trackers={trackers} />
       </body>
-      {trackers ? (
-        <Script
-          src="https://datafa.st/js/script.js"
-          strategy="afterInteractive"
-          data-website-id="dfid_qZyLQNdTVNdYA3lB44WTe"
-          data-domain="wain.lol"
-        />
-      ) : null}
     </html>
   );
 }

@@ -714,6 +714,14 @@ export const copy = {
   feedbackEmpty: LOCKED_FEEDBACK.empty,
   feedbackMapFooter: LOCKED_FEEDBACK.mapFooter,
   feedbackLink: LOCKED_FEEDBACK.link,
+  privacyLink: {
+    ar: "سياسة الخصوصية",
+    en: "Privacy",
+  },
+  termsLink: {
+    ar: "الشروط والأحكام",
+    en: "Terms",
+  },
   shopUpvote: {
     ar: "أعجبني",
     en: "Upvote",

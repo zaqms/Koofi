@@ -2,8 +2,9 @@ import Link from "next/link";
 import { ContactUs } from "@/components/contact-us";
 import { copy } from "@/lib/copy";
 import { BrandWordmark } from "@/components/brand-wordmark";
+import { CookieSettingsLink } from "@/components/cookie-settings-link";
 import { FixedListFooterLinks } from "@/components/fixed-list-nav";
-import { aboutPath, feedbackPath } from "@/lib/product";
+import { aboutPath, feedbackPath, privacyPath, termsPath } from "@/lib/product";
 import type { Language } from "@/lib/types";
 
 type SiteFooterProps = {
@@ -13,14 +14,17 @@ type SiteFooterProps = {
   onDark?: boolean;
   /** Bare home drops the rule and separates sections with space. */
   rule?: boolean;
+  /** Pages that already show Contact us in their body pass false. */
+  contact?: boolean;
 };
 
-/** Latin brand, About + Ideas links, Contact us. Home: after the directory. Cards: under back-to-chat. */
+/** Latin brand, About + Ideas + Privacy + Terms + Cookie settings links, fixed-list links, Contact us. Home: after the directory. Cards: under back-to-chat. */
 export function SiteFooter({
   language,
   padded = true,
   onDark = false,
   rule = true,
+  contact = true,
 }: SiteFooterProps) {
   const linkClass = onDark
     ? "text-xs text-foam/85 underline-offset-2 hover:text-foam hover:underline"
@@ -60,11 +64,26 @@ export function SiteFooter({
         >
           {copy.feedbackLink[language]}
         </Link>
+        <Link
+          href={privacyPath(language)}
+          className={linkClass}
+        >
+          {copy.privacyLink[language]}
+        </Link>
+        <Link
+          href={termsPath(language)}
+          className={linkClass}
+        >
+          {copy.termsLink[language]}
+        </Link>
+        <CookieSettingsLink language={language} className={linkClass} />
       </p>
       <FixedListFooterLinks language={language} className={linkClass} />
-      <div className="mt-3">
-        <ContactUs language={language} />
-      </div>
+      {contact ? (
+        <div className="mt-3">
+          <ContactUs language={language} />
+        </div>
+      ) : null}
     </footer>
   );
 }

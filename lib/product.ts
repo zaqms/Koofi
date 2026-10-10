@@ -206,6 +206,16 @@ export function feedbackPath(language: Language = "ar"): string {
   return language === "en" ? "/en/feedback" : "/feedback";
 }
 
+/** Privacy policy. AR default, EN under /en. */
+export function privacyPath(language: Language = "ar"): string {
+  return language === "en" ? "/en/privacy" : "/privacy";
+}
+
+/** Terms of use. AR default, EN under /en. */
+export function termsPath(language: Language = "ar"): string {
+  return language === "en" ? "/en/terms" : "/terms";
+}
+
 export function ownerPath(language: Language = "ar"): string {
   return language === "en" ? "/en/owner" : "/owner";
 }

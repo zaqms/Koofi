@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { OwnerEdit } from "@/components/owner-edit";
 import { OwnerEditDenied } from "@/components/owner-edit-denied";
 import { getShop } from "@/lib/catalog";
@@ -36,11 +37,14 @@ export default async function OwnerEditPage({ searchParams }: OwnerEditPageProps
     return <OwnerEditDenied language="ar" error="not_found" />;
   }
   return (
-    <OwnerEdit
-      language="ar"
-      shop={shop}
-      token={token}
-      passport={session.passport}
-    />
+    <>
+      <OwnerEdit
+        language="ar"
+        shop={shop}
+        token={token}
+        passport={session.passport}
+      />
+      <SiteFooter language="ar" />
+    </>
   );
 }

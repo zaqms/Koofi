@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { NeighborhoodsPageView } from "@/components/neighborhoods-page";
 import {
   listNeighborhoodRows,
@@ -47,9 +48,12 @@ export const metadata = {
 
 export default function NeighborhoodsPage() {
   return (
-    <NeighborhoodsPageView
-      language="ar"
-      rows={listNeighborhoodRows("ar", listBrowseDirectoryShops())}
-    />
+    <>
+      <NeighborhoodsPageView
+        language="ar"
+        rows={listNeighborhoodRows("ar", listBrowseDirectoryShops())}
+      />
+      <SiteFooter language="ar" />
+    </>
   );
 }

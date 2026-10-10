@@ -28,7 +28,7 @@ function assert(cond: unknown, message: string): asserts cond {
 // renders without the tile (no 500). Remove an entry once its file is fixed;
 // the check fails if a listed file becomes safe, so this list only shrinks.
 // Empty since 3 Oct 2026: the Drive Coffee favicon (/logos/drive-coffee-site.png,
-// ICO bytes) was replaced by the official @drive.sa mark /logos/drive-coffee.png.
+// ICO bytes) was replaced by the official @drive.sa mark (now /logos/drive-coffee-wordmark.png).
 const PENDING_OG_SAFE_IMAGE = new Set<string>([]);
 
 // Sniffer: the formats Satori can and can't draw.

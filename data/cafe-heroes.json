@@ -14730,5 +14730,28 @@
         "uri": "https://maps.google.com/maps/contrib/103164728152434914546"
       }
     }
+  ],
+  "robusta-bake-al-rawdah": [
+    {
+      "src": "/cafe-heroes/robusta-bake-al-rawdah/1.jpg",
+      "attribution": {
+        "displayName": "محمد السبيعي",
+        "uri": "https://maps.google.com/maps/contrib/107992037942832928414"
+      }
+    },
+    {
+      "src": "/cafe-heroes/robusta-bake-al-rawdah/2.jpg",
+      "attribution": {
+        "displayName": "Grace Forever",
+        "uri": "https://maps.google.com/maps/contrib/113223483691351739214"
+      }
+    },
+    {
+      "src": "/cafe-heroes/robusta-bake-al-rawdah/3.jpg",
+      "attribution": {
+        "displayName": "ABDULMAJED ALALWI",
+        "uri": "https://maps.google.com/maps/contrib/100506136153835499465"
+      }
+    }
   ]
 }

@@ -643,10 +643,11 @@ const BATCH_J_MATHAR_HERO_COUNTS: Record<string, number> = {
   "starbucks-panorama-al-mathar": 2,
   "starbucks-tafaseel-al-mathar": 2,
   "starbucks-takhassusi-al-mathar": 2,
-  // Trending-verify adds (same PR): Scout's 4 frames each, already in the ledger; DISAM drops a near-duplicate storefront.
+  // Other adds (same PR): Scout's frames, already in the ledger; DISAM drops a near-duplicate storefront; Robusta Bake ships Scout's 3 (4 Oct pack).
   "nafees-as-suwaidi-al-gharbi": 4,
   "the-hat-as-salam": 4,
   "disam-al-narjis": 3,
+  "robusta-bake-al-rawdah": 3,
 };
 const BATCH_J_MATHAR_IDS = Object.keys(BATCH_J_MATHAR_HERO_COUNTS);
 
@@ -756,7 +757,7 @@ assert(batchGNafalHeroIds.length === 15, "Batch G An Nafal hero set is complete"
 assert(batchHIzdiharHeroIds.length === 7, "Batch H Al Izdihar hero set is complete (7 local; McCafe dropped)");
 assert(!("mccafe-uthman-al-izdihar" in bakedHeroes), "no McCafe gallery ships (dropped in r3)");
 assert(batchIRahmaniyyahHeroIds.length === 6, "Batch I Ar Rahmaniyyah hero set is complete (Grind Coffee dropped in r2)");
-assert(batchJMatharHeroIds.length === 11, "Batch J hero set is complete (8 Al Mathar + 3 trending adds)");
+assert(batchJMatharHeroIds.length === 12, "Batch J hero set is complete (8 Al Mathar + 4 other adds)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],

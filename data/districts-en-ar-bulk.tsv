@@ -28,7 +28,7 @@ al-malaz	Al Malaz	الملز	riyadh	al-malaz	5	shoug_locked_2026-09-21	live	EN p
 al-safa	As Safa	الصفا	riyadh	al-safa	5	shoug_locked_2026-09-21	live	
 al-mohammadiyah	Al Muhammadiyah	المحمدية	riyadh	al-mohammadiyah	4	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-wurud	Al Wurud	الورود	riyadh	al-wurud	4	shoug_locked_2026-09-21	live	
-al-rawdah	Ar Rawdah	الروضة	riyadh	al-rawdah	3	shoug_locked_2026-09-21	live	
+al-rawdah	Ar Rawdah	الروضة	riyadh	al-rawdah	4	shoug_locked_2026-09-21	live	Batch J r2 (11 Oct) adds Robusta Bake.
 al-wadi	Al Wadi	الوادي	riyadh	al-wadi	3	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 an-nasim-al-gharbi	An Nasim Al Gharbi	النسيم الغربي	riyadh	an-nasim-al-gharbi	3	shoug_locked_2026-09-21_plus_187	live	Added 21 Sep — missing from Shoug sheet; live via Scout #187 (Western).
 as-sahafah	As Sahafah	الصحافة	riyadh	as-sahafah	4	shoug_locked_2026-09-21	live	
@@ -100,7 +100,7 @@ as-salam	As Salam	السلام	riyadh	as-salam		shoug_locked_2026-09-21	dictiona
 as-salihiyah	As Salihiyah	الصالحية	riyadh	as-salihiyah		shoug_locked_2026-09-21	dictionary_only	
 as-sulay	As Sulay	السلي	riyadh	as-sulay		shoug_locked_2026-09-21	dictionary_only	
 as-suwaidi	As Suwaidi	السويدي	riyadh	as-suwaidi	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 3 Oct — Alwaal Albari. Sheet status stays dictionary_only (21 Sep lock).
-as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi	2	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe; 11 Oct adds Nafees (trending verify). Sheet status stays dictionary_only (21 Sep lock).
+as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi	2	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe; 11 Oct adds Nafees (Scout verify). Sheet status stays dictionary_only (21 Sep lock).
 ash-shifa	Ash Shifa	الشفا	riyadh	ash-shifa	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe. Sheet status stays dictionary_only (21 Sep lock).
 ash-shumaisi	Ash Shumaisi	الشميسي	riyadh	ash-shumaisi		shoug_locked_2026-09-21	dictionary_only	
 ath-thumairi	Ath Thumairi	الثميري	riyadh	ath-thumairi		shoug_locked_2026-09-21	dictionary_only	

@@ -1131,8 +1131,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 449, "specialty discovery is 449 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 3 Batch J trending adds; Veloce is a chain)");
-assert(listRealShops().length === 526, "catalog is 526 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 3 trending adds)");
+assert(listDiscoveryShops().length === 450, "specialty discovery is 450 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds; Veloce is a chain)");
+assert(listRealShops().length === 527, "catalog is 527 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 4 other adds)");
 assert(listLiveDistrictIds().length === 64, "specialty districts are 64 (62 + Shubra, Batch F + As Salam, Batch J THE HAT; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 78,
@@ -1140,9 +1140,9 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
 assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
-assert(listListingShops().length === 471, "listing is 449 local plus the 22 sit-down chains");
-assert(listPublicShops().length === 471, "public list includes the 22 sit-down chains");
-assert(listBrowseDirectoryShops().length === 475, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 3 Batch J trending rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
+assert(listListingShops().length === 472, "listing is 450 local plus the 22 sit-down chains");
+assert(listPublicShops().length === 472, "public list includes the 22 sit-down chains");
+assert(listBrowseDirectoryShops().length === 476, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 22,
   "exactly 22 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar)",
@@ -1556,7 +1556,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "7f1898819c6da385f3b90fe68a7f5c9d51821656f2857878f3937adc08aaa2ef",
+  copyHash === "d62990fce50d84b933403564194e7eb0745eed7889b5ebad51bc04d74ab15c73",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1686,11 +1686,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "f9ab381777efea5c06c136e3967378c7697cd72c9d146d671b5e34247578f51f",
+  llmsHash === "4f574ba7d6b2b1f29fd94d45e8b0737aadd54175e66ccba6fe4644d20eca7f95",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("449 local, 22 chain branches"),
+  llms.includes("450 local, 22 chain branches"),
   "llms.txt names the 22 chain branches separately from specialty",
 );
 
@@ -2471,7 +2471,7 @@ assert(
 
 console.log("check-chains: ok");
 
-// Batch J trending adds: DISAM matches by sign and Google name; THE HAT matches only as "the hat" / «ذا هات»
+// Batch J other adds: DISAM matches by sign and Google name; THE HAT matches only as "the hat" / «ذا هات»
 // («هات» is everyday Arabic for "bring", so it must never pin the café on its own).
 for (const [name, id] of [
   ["disam", "disam-al-narjis"],
@@ -2491,4 +2491,36 @@ for (const ask of ["هات", "hat", "هات لي قهوة", "هات قهوة ب�
     `${ask} does not pin THE HAT (SHOP_TOKEN_BLOCK)`,
   );
 }
-console.log("check-chains: batch J trending search ok");
+// Batch J r2: one letter never pins L'ETO (QA n1); Robusta Bake by name, never by bare "bake" / «بيك».
+for (const ask of ["l", "L"]) {
+  assert(
+    !matchCatalogShops(ask, listRealShops()).some((hit) => hit.id === "leto-caffe-al-mathar"),
+    `bare ${ask} does not pin L'ETO (SHOP_TOKEN_BLOCK)`,
+  );
+}
+for (const [name, id] of [
+  ["l'eto", "leto-caffe-al-mathar"],
+  ["L'ETO", "leto-caffe-al-mathar"],
+  ["leto", "leto-caffe-al-mathar"],
+  ["ليتو", "leto-caffe-al-mathar"],
+  ["robusta", "robusta-bake-al-rawdah"],
+  ["Robusta Bake", "robusta-bake-al-rawdah"],
+  ["روبيستا", "robusta-bake-al-rawdah"],
+  ["محمصة روبيستا بيك", "robusta-bake-al-rawdah"],
+] as const) {
+  assert(matchCatalogShops(name, listRealShops())[0]?.id === id, `${name} picks ${id} first`);
+}
+{
+  const robusta = listRealShops().find((shop) => shop.id === "robusta-bake-al-rawdah");
+  assert(
+    robusta?.dineIn === true && robusta?.seatingVerdict?.dineIn === true && robusta?.seatingVerdict?.source === "scout" && robusta?.outdoorSeating == null,
+    "Robusta Bake is sit-down by Scout seating verdict (Places gave no dineIn); outdoor unknown",
+  );
+}
+for (const ask of ["bake", "بيك"]) {
+  assert(
+    !matchCatalogShops(ask, listRealShops()).some((hit) => hit.id === "robusta-bake-al-rawdah"),
+    `bare ${ask} does not pin Robusta Bake (SHOP_TOKEN_BLOCK)`,
+  );
+}
+console.log("check-chains: batch J other-adds search ok");

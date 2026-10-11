@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT), got ${areas.length}`);
-assert(listDiscoveryShops().length === 449, `specialty discovery is 449 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 3 Batch J trending adds; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 526, `catalog is 526 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 3 trending adds), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 450, `specialty discovery is 450 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 527, `catalog is 527 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 4 other adds), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -300,7 +300,8 @@ assert(
   rawdah.every((shop) => shop.neighborhood === "al-rawdah"),
   "al-rawdah filter stays in district",
 );
-assert(rawdah.length === 3, `al-rawdah has 3 shops, got ${rawdah.length}`);
+assert(rawdah.length === 4, `al-rawdah has 4 shops (Robusta Bake, Batch J r2), got ${rawdah.length}`);
+assert(rawdah.some((shop) => shop.id === "robusta-bake-al-rawdah"), "al-rawdah includes robusta-bake-al-rawdah");
 assert(
   rawdah.some((shop) => shop.id === "hai-coffee-roasters-al-rawdah"),
   "al-rawdah includes hai-coffee-roasters-al-rawdah",
@@ -5327,7 +5328,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: false,
   },
-  // Batch J trending-verify adds (11 Oct 2026, Scout scout-verify pack): independent sit-down cafés; seating from photos + reviews (Places dineIn agrees). THE HAT is a letter tile; its Google hours are soft-open (QA-NOTE).
+  // Batch J other adds (11 Oct 2026, Scout verify packs): independent sit-down cafés; seating from photos + reviews (Places dineIn agrees). THE HAT is a letter tile; its Google hours are soft-open (QA-NOTE).
   {
     id: "nafees-as-suwaidi-al-gharbi",
     hex: "0x3e2f11dc8cad355d:0xac81e41e4bb18926",
@@ -5363,6 +5364,19 @@ const scoutPack: {
     pin: { lat: 24.811174899999997, lng: 46.6698777 },
     coordsInUrl: true,
     placeId: "ChIJ5-bOT2TjLj4R8UoJ3H4ZcCg",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch J r2: Robusta Bake (Ar Rawdah), Scout robusta recheck 11 Oct (4 Oct pack Details + photos). Places gives no dineIn/outdoor; indoor seating verified from Places frame idx 0 (tables + chairs), Scout seating notes and reviews -> seatingVerdict {dineIn: true, scout} (torre-al-rawabi precedent); outdoor stays null. Letter tile.
+  {
+    id: "robusta-bake-al-rawdah",
+    hex: "0x3e2f01ac532a591f:0x6c7e715e70eda9a8",
+    neighborhood: "al-rawdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.740722299999998, lng: 46.757886199999994 },
+    coordsInUrl: true,
+    placeId: "ChIJH1kqU6wBLz4RqKntcF5xfmw",
     dineIn: true,
     outdoorSeating: null,
   },

@@ -192,7 +192,7 @@ assert(
   "Ar Rahmaniyyah catalog is Camel Step plus the 6 Batch I rows",
 );
 
-// Batch J (11 Oct): Al Mathar gains 8 cafés (4 local + 3 Starbucks and Peet's sit-down chains), plus 3 trending-verify adds elsewhere.
+// Batch J (11 Oct): Al Mathar gains 8 cafés (4 local + 3 Starbucks and Peet's sit-down chains), plus 4 other adds elsewhere (Nafees, THE HAT, DISAM, Robusta Bake).
 const mathar = rows.find((row) => row.stableId === "al-mathar");
 assert(mathar?.nameEn === "Al Mathar" && mathar?.nameAr === "المعذر", "Al Mathar EN/AR lock");
 assert(mathar?.shopCountLive === 9, "Al Mathar sheet shop_count_live is 9 after Batch J");

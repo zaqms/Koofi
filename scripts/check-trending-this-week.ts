@@ -5,6 +5,7 @@
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { POST as chatPost } from "../app/api/chat/route";
 import { GET as trendingOgGet } from "../app/og/[locale]/[kind]/[[...id]]/route";
 import { HomeTrending } from "../components/home-trending";
 import { TrendingThisWeekList } from "../components/trending-this-week-page";
@@ -12,20 +13,24 @@ import { getShop, listDirectoryShops, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { listingOgCopy } from "../lib/listing-og";
 import { NEW_THIS_WEEK_IDS, listNewThisWeekShops } from "../lib/new-this-week";
-import { LOCKED_OPENER, LOCKED_OPENER_EN, trendingPath } from "../lib/product";
+import { isTrendingWeekAsk, parseIntent } from "../lib/parse-intent";
+import { pickCafes } from "../lib/picker";
+import { LOCKED_OPENER, LOCKED_OPENER_EN, PUBLIC_SITE_URL, trendingPath } from "../lib/product";
+import { trendingWeekChatAnswer } from "../lib/trending-ask";
 import { listSitemapLocs } from "../lib/sitemap-xml";
 import {
   buildLlmsTxt,
   listPublicShops,
   publicShopRecord,
 } from "../lib/structured-data";
-import { trendingMetadata } from "../lib/trending-page";
+import { trendingDescription, trendingMetadata, trendingRobots } from "../lib/trending-page";
 import {
   TRENDING_THIS_WEEK,
   TRENDING_THIS_WEEK_IDS,
   TRENDING_THIS_WEEK_WINDOW,
   listTrendingThisWeekRows,
   listTrendingThisWeekShops,
+  trendingMetaRange,
   trendingWindowLabel,
 } from "../lib/trending-this-week";
 import type { Language } from "../lib/types";
@@ -79,11 +84,14 @@ assert(
     .join(",") === NEW_THIS_WEEK_IDS.join(","),
   "New this week strip still resolves the unchanged allowlist",
 );
+const FILLED_IDS = [
+  "torre-al-rawabi",
+  "dm-cafe-roastery-as-sahafah",
+  "namq-al-malqa",
+  "waqar-al-aziziyah",
+] as const;
 assert(
-  trending.map((shop) => shop.id).join(",") !==
-    listNewThisWeekShops()
-      .map((shop) => shop.id)
-      .join(","),
+  FILLED_IDS.join(",") !== NEW_THIS_WEEK_IDS.join(","),
   "Trending is not the New this week list",
 );
 assert(
@@ -251,6 +259,26 @@ assert(
 
 const PROMO = /\b(paid|promo|sponsored|offer)\b|عروض|برعاية|سبونسر/i;
 
+const filledShops = FILLED_IDS.map((id) => listDirectoryShops().find((shop) => shop.id === id));
+assert(
+  filledShops.every((shop) => shop != null),
+  "filled fixture resolves four catalog cafés",
+);
+const filledFixture = filledShops.flatMap((shop) => (shop ? [shop] : []));
+for (const language of ["ar", "en"] as const) {
+  const html = homeHtml(language, filledFixture);
+  const ids = [...html.matchAll(/data-trending-id="([^"]+)"/g)].map((match) => match[1]);
+  assert(ids.join(",") === FILLED_IDS.join(","), `${language} home fixture keeps the four cafés`);
+  assert(html.includes("grid-cols-2"), `${language} lays four tiles out two-by-two`);
+  assert(!html.includes("grid-cols-3"), `${language} does not leave a lone tile on a second row`);
+  assert(
+    html.includes(`href="${trendingPath(language)}"`),
+    `${language} home View all points at the Trending page`,
+  );
+  assert(!PROMO.test(html), `${language} home tiles have no promo wording`);
+  assert(!/\bween\b/i.test(html), `${language} home tiles do not say ween`);
+}
+
 function listHtml(language: Language, rows = listTrendingThisWeekRows()): string {
   return renderToStaticMarkup(
     createElement(TrendingThisWeekList, { language, rows }),
@@ -339,6 +367,33 @@ assert(
 
 const arMeta = trendingMetadata("ar");
 const enMeta = trendingMetadata("en");
+function isNoindexFollow(robots: unknown): boolean {
+  return Boolean(
+    robots &&
+      typeof robots === "object" &&
+      "index" in robots &&
+      "follow" in robots &&
+      (robots as { index?: boolean; follow?: boolean }).index === false &&
+      (robots as { index?: boolean; follow?: boolean }).follow === true,
+  );
+}
+assert(trendingMetaRange("en") === "4–11 Oct" && trendingMetaRange("ar") === "4–11 أكتوبر", "meta range is the compact window");
+assert(
+  enMeta.description ===
+    "No café cleared our trending bar this week (4–11 Oct). Check back next week." &&
+    arMeta.description ===
+      "ما في مقهى تجاوز معيار الترند هالأسبوع (4–11 أكتوبر)، ارجع لنا الأسبوع الجاي.",
+  "empty week meta description is the neutral line plus the window",
+);
+assert(isNoindexFollow(arMeta.robots) && isNoindexFollow(enMeta.robots), "empty trending pages are noindex, follow");
+assert(
+  trendingDescription("en", FILLED_IDS.map((id) => ({ id }))) ===
+    "Riyadh cafés on the list this week." &&
+    trendingDescription("ar", FILLED_IDS.map((id) => ({ id }))) ===
+      "قهاوي الرياض اللي على ترند هالأسبوع." &&
+    trendingRobots(FILLED_IDS.map((id) => ({ id }))) === undefined,
+  "a filled list restores the indexable description",
+);
 assert(arMeta.alternates?.canonical === trendingPath("ar"), "AR canonical");
 assert(enMeta.alternates?.canonical === trendingPath("en"), "EN canonical");
 assert(
@@ -370,6 +425,88 @@ assert(
 const chips = readFileSync("lib/discovery-categories.ts", "utf8");
 assert(!chips.includes('slug: "trending"'), "Trending is not a chip");
 
+const TRENDING_ASKS = [
+  ["trending", "en"],
+  ["what's trending this week", "en"],
+  ["ترند", "ar"],
+  ["وش الترند هالأسبوع", "ar"],
+] as const;
+for (const [text, language] of TRENDING_ASKS) {
+  assert(isTrendingWeekAsk(text), `${text} is a trending-week ask`);
+  assert(!parseIntent(text).moments.includes("popular"), `${text} is not a Most Popular ask`);
+  const answer = trendingWeekChatAnswer({ text, landing: language });
+  assert(answer.language === language, `${text} answers in the user's language`);
+  assert(answer.picks.length === 0, `${text} returns no café list while the week is empty`);
+  assert(answer.reply.includes(copy.trendingEmpty[language]), `${text} uses the neutral line`);
+  assert(
+    answer.reply.includes(`${PUBLIC_SITE_URL}${trendingPath(language)}`),
+    `${text} links to the trending page`,
+  );
+  assert(!/namq|نمق/i.test(answer.reply), `${text} does not name a café`);
+}
+assert(!isTrendingWeekAsk("most popular"), "most popular stays off the weekly ask");
+assert(!isTrendingWeekAsk("trendy"), "trendy stays off the weekly ask");
+assert(!isTrendingWeekAsk("الأكثر طلباً"), "الأكثر طلباً stays off the weekly ask");
+assert(!isTrendingWeekAsk("الأكثر شعبية"), "الأكثر شعبية stays off the weekly ask");
+assert(parseIntent("most popular").moments.includes("popular"), "most popular still ranks Most Popular");
+assert(parseIntent("trendy").moments.includes("popular"), "trendy still ranks Most Popular");
+assert(parseIntent("الأكثر طلباً").moments.includes("popular"), "الأكثر طلباً still ranks Most Popular");
+const popularLead = pickCafes({ text: "most popular", language: "en" });
+assert(popularLead.askedMoments.includes("popular"), "most popular still uses the popular rank");
+assert(popularLead.picks[0]?.shop.id === "namq-al-malqa", "Most Popular still leads with Namq");
+
+const filledAnswer = trendingWeekChatAnswer({
+  text: "trending",
+  landing: "en",
+  rows: FILLED_IDS.map((id) => ({
+    id,
+    lineAr: "سطر محايد.",
+    lineEn: "A neutral line.",
+  })),
+});
+assert(
+  filledAnswer.picks.map((pick) => pick.id).join(",") === FILLED_IDS.join(","),
+  "a filled week returns the trending cafés in allowlist order",
+);
+assert(
+  filledAnswer.picks.map((pick) => pick.id).join(",") !==
+    popularLead.picks.map((pick) => pick.shop.id).join(","),
+  "filled trending chat is not the Most Popular picks",
+);
+assert(filledAnswer.picks[0]?.id === "torre-al-rawabi", "filled trending does not lead with the popular rank");
+assert(filledAnswer.reply === "Trending this week", "filled trending reply is the section heading");
+
+const chatRoute = readFileSync("app/api/chat/route.ts", "utf8");
+const chatUi = readFileSync("components/chat.tsx", "utf8");
+const trendingAskAt = chatRoute.indexOf("isTrendingWeekAsk(text)");
+const offTopicAt = chatRoute.indexOf("isOffTopicAsk(text)");
+const pickAt = chatRoute.indexOf("pickCafes({");
+assert(
+  trendingAskAt > 0 && trendingAskAt < offTopicAt && trendingAskAt < pickAt,
+  "chat answers a trending ask before off-topic and before Most Popular",
+);
+assert(chatUi.includes('part.startsWith("https://")'), "chat renders the trending URL as a link");
+
+async function assertChatRoute(text: string, landing: "ar" | "en") {
+  const response = await chatPost(
+    new Request("https://wain.lol/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ text, landing }),
+    }),
+  );
+  assert(response.status === 200, `${text} chat status ${response.status}`);
+  const body = (await response.json()) as {
+    language: string;
+    reply: string;
+    picks: { id: string }[];
+  };
+  const answer = trendingWeekChatAnswer({ text, landing });
+  assert(body.language === answer.language, `${text} route language`);
+  assert(body.reply === answer.reply, `${text} route reply`);
+  assert(body.picks.length === 0, `${text} route has no café list`);
+}
+
 async function assertOg(locale: "ar" | "en") {
   const response = await trendingOgGet(new Request(`https://wain.lol/og/${locale}/trending`), {
     params: Promise.resolve({ locale, kind: "trending" }),
@@ -384,6 +521,9 @@ async function assertOg(locale: "ar" | "en") {
 void (async () => {
   await assertOg("ar");
   await assertOg("en");
+  for (const [text, landing] of TRENDING_ASKS) {
+    await assertChatRoute(text, landing);
+  }
   console.log("check-trending-this-week: ok");
 })().catch((error: unknown) => {
   console.error(error);

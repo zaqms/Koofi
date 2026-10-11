@@ -31,7 +31,9 @@ import {
   restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
 import { districtPageHidden } from "@/lib/district-dictionary";
+import { isTrendingWeekAsk } from "@/lib/parse-intent";
 import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
+import { trendingWeekChatAnswer } from "@/lib/trending-ask";
 import { recordSuggestion } from "@/lib/suggest";
 import type { DistrictMatch, Language, PickResult } from "@/lib/types";
 import { uniqueWhyLines } from "@/lib/why-line";
@@ -245,6 +247,16 @@ export async function POST(request: Request) {
       thinCatalog: false,
       picks: [],
       awaitingMaps: true,
+    });
+  }
+
+  if (isTrendingWeekAsk(text)) {
+    const answer = trendingWeekChatAnswer({ text, landing });
+    return Response.json({
+      language: answer.language,
+      reply: answer.reply,
+      thinCatalog: false,
+      picks: answer.picks,
     });
   }
 

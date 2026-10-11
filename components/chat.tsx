@@ -371,6 +371,20 @@ function historyIsSearch(): boolean {
   return state?.wainSearch === true;
 }
 
+function assistantReply(text: string): ReactNode {
+  const parts = text.split(/(https:\/\/\S+)/);
+  if (parts.length === 1) return text;
+  return parts.map((part, index) =>
+    part.startsWith("https://") ? (
+      <a key={index} href={part} className="underline underline-offset-2">
+        {part}
+      </a>
+    ) : (
+      part
+    ),
+  );
+}
+
 function openerMessage(landing: Language): AssistantMessage {
   return {
     id: "opener",
@@ -2490,7 +2504,7 @@ export function Chat({
               ) : (
                 <div className="flex justify-start">
                   <p className="max-w-[90%] rounded-2xl rounded-tl-sm bg-paper-deep px-3 py-2 text-sm leading-6 whitespace-pre-wrap">
-                    {message.id === "opener" ? opener : message.text}
+                    {message.id === "opener" ? opener : assistantReply(message.text)}
                   </p>
                 </div>
               )}

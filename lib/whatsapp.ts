@@ -3,6 +3,8 @@ import { copy } from "./copy";
 import { ENV_KEYS, readEnv } from "./env";
 import { detectLanguage } from "./language";
 import { isOffTopicAsk } from "./off-topic-intent";
+import { isTrendingWeekAsk } from "./parse-intent";
+import { trendingWeekChatAnswer } from "./trending-ask";
 import { extractMapsUrl, looksLikeHttpUrl } from "./maps-url";
 import {
   formatWhatsAppReply,
@@ -69,6 +71,14 @@ export async function replyForWhatsApp(text: string): Promise<{
 
   if (isAddShopIntent(text)) {
     return { body: copy.askMaps.ar, locations: [] };
+  }
+
+  if (isTrendingWeekAsk(text)) {
+    const answer = trendingWeekChatAnswer({
+      text,
+      landing: detectLanguage(text),
+    });
+    return { body: answer.reply, locations: [] };
   }
 
   if (isOffTopicAsk(text)) {

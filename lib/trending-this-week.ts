@@ -66,6 +66,17 @@ export function trendingWindowLabel(language: Language): string {
   return `${from.day} ${months[from.month - 1]} – ${to.day} ${months[to.month - 1]}`;
 }
 
+/** Compact same-month range for the empty-week meta line, e.g. 4–11 Oct. */
+export function trendingMetaRange(language: Language): string {
+  const from = windowParts(TRENDING_THIS_WEEK_WINDOW.from);
+  const to = windowParts(TRENDING_THIS_WEEK_WINDOW.to);
+  const months = language === "ar" ? AR_MONTHS : EN_MONTHS;
+  if (from.month === to.month) {
+    return `${from.day}–${to.day} ${months[from.month - 1]}`;
+  }
+  return trendingWindowLabel(language);
+}
+
 type TrendingThisWeekEntry = {
   id: string;
   lineAr: string;

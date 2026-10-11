@@ -201,6 +201,16 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch I r2: Starbucks at The Plaza (King Abdullah Rd), so "starbucks the plaza" / «ستاربكس بلازا» find this branch first.
   // r3 (#257 QA M1): brand-qualified only; bare "plaza" is a generic / other-venue word and must not pin a chain.
   "starbucks-the-plaza-al-rahmaniyyah": ["starbucks the plaza", "starbucks plaza", "ستاربكس ذا بلازا", "ستاربكس بلازا"],
+  // Batch J: three Starbucks in Al Mathar, named by real location. Brand-qualified only (no bare panorama / mall / tafaseel /
+  // takhassusi alias), so a generic or other-venue ask never pins a chain; "starbucks panorama" still finds Panorama Mall.
+  "starbucks-panorama-al-mathar": ["starbucks panorama", "starbucks panorama mall", "ستاربكس بانوراما", "ستاربكس بانوراما مول"],
+  "starbucks-tafaseel-al-mathar": ["starbucks tafaseel", "ستاربكس تفاصيل"],
+  "starbucks-takhassusi-al-mathar": ["starbucks takhassusi", "starbucks al takhassusi", "starbucks takhassusi street", "ستاربكس التخصصي", "ستاربكس شارع التخصصي"],
+  // Batch J: Peet's at Euromarché (Al Takhassusi).
+  "peets-euromarche-al-mathar": ["peets euromarche", "peets coffee euromarche", "بيتس يورومارشيه", "بيتس كوفي يورومارشيه"],
+  // Batch J trending adds: Google lists ديسم, the sign says DISAM.
+  "disam-al-narjis": ["disam", "ديسم", "disam cafe", "ديسم كافيه"],
+  "the-hat-as-salam": ["the hat", "ذا هات", "the hat coffee", "ذا هات كافيه"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -233,6 +243,8 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "peaks-the-tent-al-rahmaniyyah": ["tent"],
   // "plaza" alone is any mall or hotel called Plaza, not this Starbucks (#257 QA r2 M1).
   "starbucks-the-plaza-al-rahmaniyyah": ["plaza", "the plaza", "بلازا", "ذا بلازا"],
+  // «هات» is everyday Arabic ("bring me…"), and "hat" / «ذا» alone are not this café (Batch J). "the hat" / «ذا هات» still match.
+  "the-hat-as-salam": ["hat", "هات", "ذا"],
 };
 
 function chainBrandIdForShop(

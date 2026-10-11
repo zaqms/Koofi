@@ -194,9 +194,9 @@ assert(
 );
 assert(
   BATCH_D3_NEW_DISTRICTS.every((id) =>
-    rowsEn.some((row) => row.id === id && row.cafeCount === 1),
+    rowsEn.some((row) => row.id === id && row.cafeCount === (id === "as-suwaidi-al-gharbi" ? 2 : 1)),
   ),
-  "Batch D3 districts (As Suwaidi Al Gharbi, Ash Shifa, Al Qadisiyah, Dhahrat Laban) join live browse with one cafe each",
+  "Batch D3 districts (As Suwaidi Al Gharbi, Ash Shifa, Al Qadisiyah, Dhahrat Laban) stay on live browse (one cafe each; As Suwaidi Al Gharbi 2 after Batch J Nafees)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),

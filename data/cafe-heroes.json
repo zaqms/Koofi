@@ -14449,5 +14449,286 @@
         "uri": "https://maps.google.com/maps/contrib/105312129309830516194"
       }
     }
+  ],
+  "richony-cafe-al-mathar": [
+    {
+      "src": "/cafe-heroes/richony-cafe-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "ريتشوني",
+        "uri": "https://maps.google.com/maps/contrib/113799236857260472224"
+      }
+    },
+    {
+      "src": "/cafe-heroes/richony-cafe-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "ريتشوني",
+        "uri": "https://maps.google.com/maps/contrib/113799236857260472224"
+      }
+    },
+    {
+      "src": "/cafe-heroes/richony-cafe-al-mathar/3.jpg",
+      "attribution": {
+        "displayName": "ريتشوني",
+        "uri": "https://maps.google.com/maps/contrib/113799236857260472224"
+      }
+    },
+    {
+      "src": "/cafe-heroes/richony-cafe-al-mathar/4.jpg",
+      "attribution": {
+        "displayName": "ريتشوني",
+        "uri": "https://maps.google.com/maps/contrib/113799236857260472224"
+      }
+    }
+  ],
+  "leto-caffe-al-mathar": [
+    {
+      "src": "/cafe-heroes/leto-caffe-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "ابو سلطان الوصابي",
+        "uri": "https://maps.google.com/maps/contrib/115128642125737214626"
+      }
+    },
+    {
+      "src": "/cafe-heroes/leto-caffe-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "L'ETO caffe",
+        "uri": "https://maps.google.com/maps/contrib/114707706338845991015"
+      }
+    },
+    {
+      "src": "/cafe-heroes/leto-caffe-al-mathar/3.jpg",
+      "attribution": {
+        "displayName": "amjad",
+        "uri": "https://maps.google.com/maps/contrib/118238749518860610182"
+      }
+    },
+    {
+      "src": "/cafe-heroes/leto-caffe-al-mathar/4.jpg",
+      "attribution": {
+        "displayName": "Christian Salas",
+        "uri": "https://maps.google.com/maps/contrib/118249392873593040831"
+      }
+    }
+  ],
+  "urth-caffe-al-mathar": [
+    {
+      "src": "/cafe-heroes/urth-caffe-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "Saudia Esmail",
+        "uri": "https://maps.google.com/maps/contrib/115338446617474309845"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "Sosy Sosy",
+        "uri": "https://maps.google.com/maps/contrib/110001796783609459823"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-al-mathar/3.jpg",
+      "attribution": {
+        "displayName": "Shayma Bourkhis",
+        "uri": "https://maps.google.com/maps/contrib/108895050156243069197"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-al-mathar/4.jpg",
+      "attribution": {
+        "displayName": "Gerald",
+        "uri": "https://maps.google.com/maps/contrib/104198133064805069652"
+      }
+    }
+  ],
+  "waynes-coffee-al-mathar": [
+    {
+      "src": "/cafe-heroes/waynes-coffee-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "أحمد العودي_be",
+        "uri": "https://maps.google.com/maps/contrib/102918439547708976857"
+      }
+    },
+    {
+      "src": "/cafe-heroes/waynes-coffee-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "Jebin Varghese",
+        "uri": "https://maps.google.com/maps/contrib/100045678974520895566"
+      }
+    },
+    {
+      "src": "/cafe-heroes/waynes-coffee-al-mathar/3.jpg",
+      "attribution": {
+        "displayName": "Santhosh Nayak",
+        "uri": "https://maps.google.com/maps/contrib/105705969527188122150"
+      }
+    },
+    {
+      "src": "/cafe-heroes/waynes-coffee-al-mathar/4.jpg",
+      "attribution": {
+        "displayName": "Ahmed El-Sherbeeny",
+        "uri": "https://maps.google.com/maps/contrib/117783582525574744671"
+      }
+    }
+  ],
+  "peets-euromarche-al-mathar": [
+    {
+      "src": "/cafe-heroes/peets-euromarche-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "Eleno Cupay III",
+        "uri": "https://maps.google.com/maps/contrib/103209786538029414578"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peets-euromarche-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "Munira Mohammed",
+        "uri": "https://maps.google.com/maps/contrib/110157251521748153429"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peets-euromarche-al-mathar/3.jpg",
+      "attribution": {
+        "displayName": "Hasan Al botmah",
+        "uri": "https://maps.google.com/maps/contrib/112237136472683312258"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peets-euromarche-al-mathar/4.jpg",
+      "attribution": {
+        "displayName": "Hasan Al botmah",
+        "uri": "https://maps.google.com/maps/contrib/112237136472683312258"
+      }
+    }
+  ],
+  "starbucks-panorama-al-mathar": [
+    {
+      "src": "/cafe-heroes/starbucks-panorama-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "Chelsea Hall",
+        "uri": "https://maps.google.com/maps/contrib/115507166972252359063"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-panorama-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "Starbucks",
+        "uri": "https://maps.google.com/maps/contrib/104054018186820283624"
+      }
+    }
+  ],
+  "starbucks-tafaseel-al-mathar": [
+    {
+      "src": "/cafe-heroes/starbucks-tafaseel-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "Shane Sibal",
+        "uri": "https://maps.google.com/maps/contrib/117954033215742297761"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-tafaseel-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "Aziz PT",
+        "uri": "https://maps.google.com/maps/contrib/113981642715114339895"
+      }
+    }
+  ],
+  "starbucks-takhassusi-al-mathar": [
+    {
+      "src": "/cafe-heroes/starbucks-takhassusi-al-mathar/1.jpg",
+      "attribution": {
+        "displayName": "Starbucks",
+        "uri": "https://maps.google.com/maps/contrib/111591166738978316898"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-takhassusi-al-mathar/2.jpg",
+      "attribution": {
+        "displayName": "Nazla Kamal",
+        "uri": "https://maps.google.com/maps/contrib/112284313174027179124"
+      }
+    }
+  ],
+  "nafees-as-suwaidi-al-gharbi": [
+    {
+      "src": "/cafe-heroes/nafees-as-suwaidi-al-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "A S Alharbi",
+        "uri": "https://maps.google.com/maps/contrib/105065348326134908637"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nafees-as-suwaidi-al-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Fadwa Fahad",
+        "uri": "https://maps.google.com/maps/contrib/116221859792821805117"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nafees-as-suwaidi-al-gharbi/3.jpg",
+      "attribution": {
+        "displayName": "Ohara",
+        "uri": "https://maps.google.com/maps/contrib/104056714039858145433"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nafees-as-suwaidi-al-gharbi/4.jpg",
+      "attribution": {
+        "displayName": "Manar Qanas",
+        "uri": "https://maps.google.com/maps/contrib/106408859155633488455"
+      }
+    }
+  ],
+  "the-hat-as-salam": [
+    {
+      "src": "/cafe-heroes/the-hat-as-salam/1.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-hat-as-salam/2.jpg",
+      "attribution": {
+        "displayName": "Abdulaziz Alshammari",
+        "uri": "https://maps.google.com/maps/contrib/116719186238897270156"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-hat-as-salam/3.jpg",
+      "attribution": {
+        "displayName": "عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/101736433747703144471"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-hat-as-salam/4.jpg",
+      "attribution": {
+        "displayName": "Abdulaziz Alshammari",
+        "uri": "https://maps.google.com/maps/contrib/116719186238897270156"
+      }
+    }
+  ],
+  "disam-al-narjis": [
+    {
+      "src": "/cafe-heroes/disam-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "TMMD98",
+        "uri": "https://maps.google.com/maps/contrib/105892843271544972366"
+      }
+    },
+    {
+      "src": "/cafe-heroes/disam-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/disam-al-narjis/3.jpg",
+      "attribution": {
+        "displayName": "Faiz Rach",
+        "uri": "https://maps.google.com/maps/contrib/103164728152434914546"
+      }
+    }
   ]
 }

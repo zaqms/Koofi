@@ -192,6 +192,25 @@ assert(
   "Ar Rahmaniyyah catalog is Camel Step plus the 6 Batch I rows",
 );
 
+// Batch J (11 Oct): Al Mathar gains 8 cafés (4 local + 3 Starbucks and Peet's sit-down chains), plus 3 trending-verify adds elsewhere.
+const mathar = rows.find((row) => row.stableId === "al-mathar");
+assert(mathar?.nameEn === "Al Mathar" && mathar?.nameAr === "المعذر", "Al Mathar EN/AR lock");
+assert(mathar?.shopCountLive === 9, "Al Mathar sheet shop_count_live is 9 after Batch J");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "al-mathar").map((shop) => shop.id).join(",") ===
+    "opinion-al-mathar,drcafe-al-mathar,richony-cafe-al-mathar,leto-caffe-al-mathar,urth-caffe-al-mathar,waynes-coffee-al-mathar,peets-euromarche-al-mathar,starbucks-panorama-al-mathar,starbucks-tafaseel-al-mathar,starbucks-takhassusi-al-mathar",
+  "Al Mathar catalog is Opinion and the dr.CAFE drive-through plus the 8 Batch J rows",
+);
+const suwaidiGharbi = rows.find((row) => row.stableId === "as-suwaidi-al-gharbi");
+assert(suwaidiGharbi?.status === "dictionary_only", "as-suwaidi-al-gharbi sheet stays dictionary_only");
+assert(suwaidiGharbi?.nameEn === "As Suwaidi Al Gharbi" && suwaidiGharbi?.nameAr === "السويدي الغربي", "as-suwaidi-al-gharbi EN/AR lock");
+assert(suwaidiGharbi?.shopCountLive === 2, "As Suwaidi Al Gharbi sheet shop_count_live is 2 after Batch J");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "as-suwaidi-al-gharbi").map((shop) => shop.id).join(",") ===
+    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi",
+  "As Suwaidi Al Gharbi catalog is Tul Cafe plus Nafees",
+);
+
 const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
 assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");
 assert(dhahrat?.nameEn === "Dhahrat Al Badiah", "Dhahrat Al Badiah EN lock");
@@ -237,7 +256,7 @@ for (const [id, en, ar, shopId, onSheet] of [
 
 // Batch D3 (4 Oct): four new live districts, one cafe each, all on the locked sheet (dictionary_only).
 for (const [id, en, ar, shopId] of [
-  ["as-suwaidi-al-gharbi", "As Suwaidi Al Gharbi", "السويدي الغربي", "tul-cafe-as-suwaidi-al-gharbi"],
+  // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); asserted below.
   ["ash-shifa", "Ash Shifa", "الشفا", "tul-cafe-ash-shifa"],
   ["al-qadisiyah", "Al Qadisiyah", "القادسية", "on-off-coffee-al-qadisiyah"],
   ["dhahrat-laban", "Dhahrat Laban", "ظهرة لبن", "on-off-coffee-dhahrat-laban"],

@@ -378,6 +378,17 @@ Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
+  "al-mathar": {
+    lead: `Al Mathar (المعذر) runs along Al Takhassusi Road, around Panorama Mall. This page is the Al Mathar set on wain.lol so far.
+
+[Opinion](/en/c/opinion-al-mathar), [Richony Cafe](/en/c/richony-cafe-al-mathar), [L’ETO Caffe](/en/c/leto-caffe-al-mathar), and [Urth Caffé](/en/c/urth-caffe-al-mathar) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Mathar on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Mathar isn’t the stop, these lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Mathar. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+  },
   "al-rahmaniyyah": {
     lead: `Ar Rahmaniyyah (الرحمانية) sits between Olaya and Al Nakheel. This page is the Ar Rahmaniyyah set on wain.lol so far.
 
@@ -627,14 +638,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "as-salam": {
     lead: `As Salam (السلام) is on the east side of Riyadh. This page is the As Salam set on wain.lol so far.
 
-[A PLUS](/en/c/a-plus-as-salam) is the name on this list today. We don’t invent extras to fill the page.`,
+[THE HAT](/en/c/the-hat-as-salam) is the cafe on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from As Salam on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If As Salam isn’t the stop, these east Riyadh lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Salam. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in As Salam on wain.lol — a Riyadh neighborhood list including A PLUS, with a Maps link.",
+    meta: "{countCafe} in As Salam on wain.lol — a Riyadh neighborhood list including THE HAT, with a Maps link.",
   },
   ghubairah: {
     lead: `Ghubairah (غبيرة) sits south of the old-city stretch. This page is the Ghubairah set on wain.lol so far.
@@ -941,14 +952,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "as-suwaidi-al-gharbi": {
     lead: `As Suwaidi Al Gharbi (السويدي الغربي) sits on the southwest side of Riyadh. This page is the As Suwaidi Al Gharbi set on wain.lol so far.
 
-[Tul Cafe](/en/c/tul-cafe-as-suwaidi-al-gharbi) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from As Suwaidi Al Gharbi on the catalog today:`,
+[Tul Cafe](/en/c/tul-cafe-as-suwaidi-al-gharbi) and [Nafees](/en/c/nafees-as-suwaidi-al-gharbi) are the cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from As Suwaidi Al Gharbi on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If As Suwaidi Al Gharbi isn’t the stop, these southwest lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Suwaidi Al Gharbi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in As Suwaidi Al Gharbi on wain.lol — a Riyadh neighborhood list including Tul Cafe, with a Maps link.",
+    meta: "{countCafe} in As Suwaidi Al Gharbi on wain.lol — a Riyadh neighborhood list including Tul Cafe and Nafees, each with a Maps link.",
   },
   "ash-shifa": {
     lead: `Ash Shifa (الشفا) sits on the south side of Riyadh. This page is the Ash Shifa set on wain.lol so far.

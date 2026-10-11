@@ -135,7 +135,8 @@ const trending = read("components/home-trending.tsx");
 const trendingLanding = read("components/home-landing.tsx");
 assert(!trending.includes("DirectoryCard"), "Trending stays logo-plus-name tiles, not the listing card");
 assert(
-  trendingLanding.includes("shops={listTrendingThisWeekShops()}") &&
+  trendingLanding.includes("const trendingShops = listTrendingThisWeekShops()") &&
+    trendingLanding.includes("shops={trendingShops}") &&
     trendingLanding.includes("shops={listNewThisWeekShops()}"),
   "Trending and New this week are separate allowlists",
 );

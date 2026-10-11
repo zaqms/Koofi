@@ -552,8 +552,8 @@ export const copy = {
     en: "Trending this week",
   },
   trendingEmpty: {
-    ar: "ما فيه ترند هالأسبوع للحين.",
-    en: "Nothing trending this week yet.",
+    ar: "ما في مقهى تجاوز معيار الترند هالأسبوع، ارجع لنا الأسبوع الجاي.",
+    en: "No café cleared our trending bar this week. Check back next week.",
   },
   directory: {
     ar: "القائمة",

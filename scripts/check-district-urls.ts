@@ -188,9 +188,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 63, `expected 63 districts (62 + Shubra, Batch F), got ${areas.length}`);
-assert(listDiscoveryShops().length === 442, `specialty discovery is 442 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 515, `catalog is 515 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar) and Batch I (6 Ar Rahmaniyyah), got ${listRealShops().length}`);
+assert(areas.length === 64, `expected 64 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT), got ${areas.length}`);
+assert(listDiscoveryShops().length === 450, `specialty discovery is 450 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 527, `catalog is 527 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 4 other adds), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -300,7 +300,8 @@ assert(
   rawdah.every((shop) => shop.neighborhood === "al-rawdah"),
   "al-rawdah filter stays in district",
 );
-assert(rawdah.length === 3, `al-rawdah has 3 shops, got ${rawdah.length}`);
+assert(rawdah.length === 4, `al-rawdah has 4 shops (Robusta Bake, Batch J r2), got ${rawdah.length}`);
+assert(rawdah.some((shop) => shop.id === "robusta-bake-al-rawdah"), "al-rawdah includes robusta-bake-al-rawdah");
 assert(
   rawdah.some((shop) => shop.id === "hai-coffee-roasters-al-rawdah"),
   "al-rawdah includes hai-coffee-roasters-al-rawdah",
@@ -1381,10 +1382,12 @@ const MALAZ_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, "al-mathar");
-  assert(rows.length === 1, `al-mathar has 1 shop, got ${rows.length}`);
+  // Batch J (11 Oct): 4 local adds; Peet's and the 3 Starbucks are chains (listing/directory only, not discovery).
+  assert(rows.length === 5, `al-mathar has 5 local shops, got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "opinion-al-mathar"),
-    "al-mathar includes opinion-al-mathar",
+    rows.map((shop) => shop.id).sort().join(",") ===
+      "leto-caffe-al-mathar,opinion-al-mathar,richony-cafe-al-mathar,urth-caffe-al-mathar,waynes-coffee-al-mathar",
+    "al-mathar local set is Opinion plus Richony, L'ETO, Urth and Wayne's",
   );
   assert(neighborhoodLabel("al-mathar", "ar") === "المعذر", "al-mathar Arabic label");
   assert(neighborhoodLabel("al-mathar", "en") === "Al Mathar", "al-mathar English label");
@@ -1492,11 +1495,10 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("as-salam");
-  assert(rows.length === 1, `as-salam has 1 DT-lane shop, got ${rows.length}`);
-  assert(
-    rows.some((shop) => shop.id === "a-plus-as-salam"),
-    "as-salam includes a-plus-as-salam",
-  );
+  // Batch J: THE HAT is As Salam's first specialty café, so the page lists it and the A PLUS drive-through fallback steps back
+  // (A PLUS stays live on the drive-through directory).
+  assert(rows.length === 1, `as-salam has 1 shop, got ${rows.length}`);
+  assert(rows[0]?.id === "the-hat-as-salam", "as-salam lists the-hat-as-salam (DT fallback a-plus steps back)");
   assert(neighborhoodLabel("as-salam", "ar") === "السلام", "as-salam Arabic label");
   assert(neighborhoodLabel("as-salam", "en") === "As Salam", "as-salam English label");
   for (const ask of ["السلام", "as salam", "As Salam"]) {
@@ -1993,6 +1995,8 @@ const scoutPack: {
     | "al-rayyan"
     | "al-rawabi"
     | "al-fayha"
+    | "as-suwaidi-al-gharbi"
+    | "as-salam"
     | "al-raqban"
     | "al-munsiyah"
     | "an-nasim-ash-sharqi"
@@ -5216,6 +5220,163 @@ const scoutPack: {
     pin: { lat: 24.7150727, lng: 46.6598696 },
     coordsInUrl: true,
     placeId: "ChIJHaCCJQAdLz4RX71Bm29oGVI",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch J: Al Mathar (11 Oct 2026). Scout CLEAN.csv pins and Places ids; seating from Places except Starbucks Panorama (Places dineIn false, photo/review-verified sit-down -> seatingVerdict scout). Urth reuses its Tahlia sibling mark; Peet's ships the new peets-mark; Peet's and the 3 Starbucks are sit-down chains (no drive-through).
+  {
+    id: "richony-cafe-al-mathar",
+    hex: "0x3e2f0352b93a8aa7:0x1eb06862335651f9",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/richony-cafe-al-mathar.png",
+    pin: { lat: 24.6753917, lng: 46.6714109 },
+    coordsInUrl: true,
+    placeId: "ChIJp4o6uVIDLz4R-VFWM2JosB4",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "leto-caffe-al-mathar",
+    hex: "0x3e2f1d4e182d98fb:0x15f76b21ff79cd7b",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/leto-caffe-al-mathar.png",
+    pin: { lat: 24.6930923, lng: 46.669443199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJ-5gtGE4dLz4Re815_yFr9xU",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "urth-caffe-al-mathar",
+    hex: "0x3e2f1dccc5bdf00f:0xa2854508998ae640",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/urth-caffe-tahlia-sulimaniyah.jpg",
+    pin: { lat: 24.6927256, lng: 46.6699834 },
+    coordsInUrl: true,
+    placeId: "ChIJD_C9xcwdLz4RQOaKmQhFhaI",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "waynes-coffee-al-mathar",
+    hex: "0x3e2f035191887a33:0xd1ee24b466f2156a",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/waynes-coffee-al-mathar.png",
+    pin: { lat: 24.6755522, lng: 46.675840799999996 },
+    coordsInUrl: true,
+    placeId: "ChIJM3qIkVEDLz4RahXyZrQk7tE",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "peets-euromarche-al-mathar",
+    hex: "0x3e2f1d006675d1eb:0x6483b162c804ce77",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peets-mark.png",
+    pin: { lat: 24.704682599999998, lng: 46.665055699999996 },
+    coordsInUrl: true,
+    placeId: "ChIJ69F1ZgAdLz4Rd84EyGKxg2Q",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "starbucks-panorama-al-mathar",
+    hex: "0x3e2f1dd625b2dddf:0x20e2ea7a255101b4",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.692595999999998, lng: 46.669427 },
+    coordsInUrl: true,
+    placeId: "ChIJ392yJdYdLz4RtAFRJXrq4iA",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "starbucks-tafaseel-al-mathar",
+    hex: "0x3e2f1d41578717a7:0x87b1ca47c75a2b0b",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.6949124, lng: 46.6698309 },
+    coordsInUrl: true,
+    placeId: "ChIJpxeHV0EdLz4RCytax0fKsYc",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "starbucks-takhassusi-al-mathar",
+    hex: "0x3e2f0351a6003689:0x59052d3e776ef19a",
+    neighborhood: "al-mathar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.6763674, lng: 46.676508999999996 },
+    coordsInUrl: true,
+    placeId: "ChIJiTYAplEDLz4RmvFudz4tBVk",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  // Batch J other adds (11 Oct 2026, Scout verify packs): independent sit-down cafés; seating from photos + reviews (Places dineIn agrees). THE HAT is a letter tile; its Google hours are soft-open (QA-NOTE).
+  {
+    id: "nafees-as-suwaidi-al-gharbi",
+    hex: "0x3e2f11dc8cad355d:0xac81e41e4bb18926",
+    neighborhood: "as-suwaidi-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/nafees-as-suwaidi-al-gharbi.png",
+    pin: { lat: 24.5661742, lng: 46.6312943 },
+    coordsInUrl: true,
+    placeId: "ChIJXTWtjNwRLz4RJomxSx7kgaw",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "the-hat-as-salam",
+    hex: "0x3e2f079cfed38697:0xe7a0c4a289dea9bc",
+    neighborhood: "as-salam",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.703391699999997, lng: 46.8251047 },
+    coordsInUrl: true,
+    placeId: "ChIJl4bT_pwHLz4RvKneiaLEoOc",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "disam-al-narjis",
+    hex: "0x3e2ee3644fcee6e7:0x2870197edc094af1",
+    neighborhood: "al-narjis",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/disam-al-narjis.png",
+    pin: { lat: 24.811174899999997, lng: 46.6698777 },
+    coordsInUrl: true,
+    placeId: "ChIJ5-bOT2TjLj4R8UoJ3H4ZcCg",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch J r2: Robusta Bake (Ar Rawdah), Scout robusta recheck 11 Oct (4 Oct pack Details + photos). Places gives no dineIn/outdoor; indoor seating verified from Places frame idx 0 (tables + chairs), Scout seating notes and reviews -> seatingVerdict {dineIn: true, scout} (torre-al-rawabi precedent); outdoor stays null. Letter tile.
+  {
+    id: "robusta-bake-al-rawdah",
+    hex: "0x3e2f01ac532a591f:0x6c7e715e70eda9a8",
+    neighborhood: "al-rawdah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.740722299999998, lng: 46.757886199999994 },
+    coordsInUrl: true,
+    placeId: "ChIJH1kqU6wBLz4RqKntcF5xfmw",
     dineIn: true,
     outdoorSeating: null,
   },

@@ -42,7 +42,8 @@ export const CHAIN_BRANDS = {
     id: "peets",
     nameEn: "Peet's",
     nameAr: "بيتس",
-    logo: null,
+    // Batch J (11 Oct 2026): first catalog row (Euromarché, Al Mathar) ships the Peet's Coffee wordmark.
+    logo: "/logos/peets-mark.png",
   },
   "dr-cafe": {
     id: "dr-cafe",

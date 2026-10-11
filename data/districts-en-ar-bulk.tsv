@@ -28,7 +28,7 @@ al-malaz	Al Malaz	الملز	riyadh	al-malaz	5	shoug_locked_2026-09-21	live	EN p
 al-safa	As Safa	الصفا	riyadh	al-safa	5	shoug_locked_2026-09-21	live	
 al-mohammadiyah	Al Muhammadiyah	المحمدية	riyadh	al-mohammadiyah	4	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-wurud	Al Wurud	الورود	riyadh	al-wurud	4	shoug_locked_2026-09-21	live	
-al-rawdah	Ar Rawdah	الروضة	riyadh	al-rawdah	3	shoug_locked_2026-09-21	live	
+al-rawdah	Ar Rawdah	الروضة	riyadh	al-rawdah	4	shoug_locked_2026-09-21	live	Batch J r2 (11 Oct) adds Robusta Bake.
 al-wadi	Al Wadi	الوادي	riyadh	al-wadi	3	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 an-nasim-al-gharbi	An Nasim Al Gharbi	النسيم الغربي	riyadh	an-nasim-al-gharbi	3	shoug_locked_2026-09-21_plus_187	live	Added 21 Sep — missing from Shoug sheet; live via Scout #187 (Western).
 as-sahafah	As Sahafah	الصحافة	riyadh	as-sahafah	4	shoug_locked_2026-09-21	live	
@@ -38,7 +38,7 @@ al-rabi	Ar Rabi	الربيع	riyadh	al-rabi	2	shoug_locked_2026-09-21	live
 al-rawabi	Ar Rawabi	الروابي	riyadh	al-rawabi	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 an-nada	An Nada	الندى	riyadh	an-nada	2	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
 al-masif	Al Masif	المصيف	riyadh	al-masif	1	shoug_locked_2026-09-21	live	
-al-mathar	Al Mathar	المعذر	riyadh	al-mathar	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
+al-mathar	Al Mathar	المعذر	riyadh	al-mathar	9	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking. Catalog live — Opinion; 11 Oct adds Richony Cafe, L’ETO Caffe, Urth Caffé, Wayne’s Coffee, plus Peet’s Coffee and 3 Starbucks (chains).
 al-mughrizat	Al Mughrizat	المغرزات	riyadh	al-mughrizat	1	shoug_locked_2026-09-21	live	
 al-rahmaniyyah	Ar Rahmaniyyah	الرحمانية	riyadh	al-rahmaniyyah	7	shoug_locked_2026-09-21	live	Catalog live — Camel Step; 10 Oct adds Peaks – The Tent, November Coffee, Sipology, Ramli Cafe, plus Starbucks and Java Time (chains).
 al-raqban	Al Raqban	الرقبان	riyadh	al-raqban	1	shoug_locked_2026-09-21	live	EN proposed from slug — confirm with Shoug before locking
@@ -100,7 +100,7 @@ as-salam	As Salam	السلام	riyadh	as-salam		shoug_locked_2026-09-21	dictiona
 as-salihiyah	As Salihiyah	الصالحية	riyadh	as-salihiyah		shoug_locked_2026-09-21	dictionary_only	
 as-sulay	As Sulay	السلي	riyadh	as-sulay		shoug_locked_2026-09-21	dictionary_only	
 as-suwaidi	As Suwaidi	السويدي	riyadh	as-suwaidi	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 3 Oct — Alwaal Albari. Sheet status stays dictionary_only (21 Sep lock).
-as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe. Sheet status stays dictionary_only (21 Sep lock).
+as-suwaidi-al-gharbi	As Suwaidi Al Gharbi	السويدي الغربي	riyadh	as-suwaidi-al-gharbi	2	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe; 11 Oct adds Nafees (Scout verify). Sheet status stays dictionary_only (21 Sep lock).
 ash-shifa	Ash Shifa	الشفا	riyadh	ash-shifa	1	shoug_locked_2026-09-21	dictionary_only	Catalog live 4 Oct — Tul Cafe. Sheet status stays dictionary_only (21 Sep lock).
 ash-shumaisi	Ash Shumaisi	الشميسي	riyadh	ash-shumaisi		shoug_locked_2026-09-21	dictionary_only	
 ath-thumairi	Ath Thumairi	الثميري	riyadh	ath-thumairi		shoug_locked_2026-09-21	dictionary_only	

@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 472,
-  outdoor: 224,
+  nearby: 484,
+  outdoor: 231,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 527, "catalog is 527 after Batch J (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds)");
-assert(listListingShops().length === 472, "listing is 472 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds)");
-assert(listPublicShops().length === 472, "/api/shops pool is 472");
+assert(listRealShops().length === 539, "catalog is 539 after Batch K (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi)");
+assert(listListingShops().length === 484, "listing is 484 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi)");
+assert(listPublicShops().length === 484, "/api/shops pool is 484");
 assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
-assert(listSitemapLocs().length === 1235, "sitemap is 1235 (4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN)");
+assert(listSitemapLocs().length === 1259, "sitemap is 1259 (4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 22,
-  "nearby includes the 22 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal) + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar",
+  nearby.filter((shop) => isChainShop(shop)).length === 23,
+  "nearby includes the 23 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal) + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -107,8 +107,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 8 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 216,
-  "outdoor is 216 local + 8 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees)",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 223,
+  "outdoor is 223 local + 8 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
 );
 
 const coffee = listBestCoffeeShops();

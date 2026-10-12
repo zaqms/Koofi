@@ -651,6 +651,23 @@ const BATCH_J_MATHAR_HERO_COUNTS: Record<string, number> = {
 };
 const BATCH_J_MATHAR_IDS = Object.keys(BATCH_J_MATHAR_HERO_COUNTS);
 
+/** BATCH_K: Umm Al Hamam Al Gharbi (12 Oct 2026) Places galleries — Scout's 12 Oct frames only, hand-ordered; 0 Dev Places calls. Staff portraits, construction hoarding, a shared courtyard, a price-overlay graphic, a duplicate facade and Starbucks product stock / generic sign frames dropped (under-2 top-up rule not triggered). Google credit per frame. */
+const BATCH_K_UAHG_HERO_COUNTS: Record<string, number> = {
+  "archi-umm-al-hamam-al-gharbi": 3,
+  "book-of-beans-umm-al-hamam-al-gharbi": 4,
+  "caffeination-umm-al-hamam-al-gharbi": 3,
+  "cafe-kitsune-laysen-umm-al-hamam-al-gharbi": 4,
+  "jaam-coffee-umm-al-hamam-al-gharbi": 4,
+  "midway-coffee-umm-al-hamam-al-gharbi": 3,
+  "malmoum-cafe-umm-al-hamam-al-gharbi": 4,
+  "tobys-estate-laysen-umm-al-hamam-al-gharbi": 3,
+  "hamasat-coffee-umm-al-hamam-al-gharbi": 3,
+  "mazaj-cafe-umm-al-hamam-al-gharbi": 3,
+  "shafaq-cafe-umm-al-hamam-al-gharbi": 4,
+  "starbucks-oruba-square-umm-al-hamam-al-gharbi": 2,
+};
+const BATCH_K_UAHG_IDS = Object.keys(BATCH_K_UAHG_HERO_COUNTS);
+
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
 const BATCH14_HERO_COUNTS: Record<string, number> = {
   "plant-cafe-as-suwaidi": 4,
@@ -710,6 +727,7 @@ const batchGNafalHeroIds = BATCH_G_NAFAL_IDS.filter((id) => bakedHeroes[id]);
 const batchHIzdiharHeroIds = BATCH_H_IZDIHAR_IDS.filter((id) => bakedHeroes[id]);
 const batchIRahmaniyyahHeroIds = BATCH_I_RAHMANIYYAH_IDS.filter((id) => bakedHeroes[id]);
 const batchJMatharHeroIds = BATCH_J_MATHAR_IDS.filter((id) => bakedHeroes[id]);
+const batchKUahgHeroIds = BATCH_K_UAHG_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -733,8 +751,9 @@ assert(
       batchGNafalHeroIds.length +
       batchHIzdiharHeroIds.length +
       batchIRahmaniyyahHeroIds.length +
-      batchJMatharHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah and J Al Mathar merge in",
+      batchJMatharHeroIds.length +
+      batchKUahgHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar and K Umm Al Hamam Al Gharbi merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -758,10 +777,13 @@ assert(batchHIzdiharHeroIds.length === 7, "Batch H Al Izdihar hero set is comple
 assert(!("mccafe-uthman-al-izdihar" in bakedHeroes), "no McCafe gallery ships (dropped in r3)");
 assert(batchIRahmaniyyahHeroIds.length === 6, "Batch I Ar Rahmaniyyah hero set is complete (Grind Coffee dropped in r2)");
 assert(batchJMatharHeroIds.length === 12, "Batch J hero set is complete (8 Al Mathar + 4 other adds)");
+assert(batchKUahgHeroIds.length === 12, "Batch K Umm Al Hamam Al Gharbi hero set is complete (12; Java Time dropped, rule 5)");
+assert(!("java-time-umm-al-hamam-al-gharbi" in bakedHeroes), "no Java Time Umm Al Hamam gallery ships (kiosk, no seating)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],
   ["starbucks-takhassusi-al-mathar", "Starbucks|Nazla Kamal"],
+  ["starbucks-oruba-square-umm-al-hamam-al-gharbi", "ibYam|Louis Lee Bastareche"],
 ] as const) {
   assert(
     (bakedHeroes[id] as { attribution?: { displayName?: string } }[]).map((photo) => photo.attribution?.displayName).join("|") === credits,
@@ -889,6 +911,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH_H_IZDIHAR_HERO_COUNTS[id] != null) return BATCH_H_IZDIHAR_HERO_COUNTS[id]!;
   if (BATCH_I_RAHMANIYYAH_HERO_COUNTS[id] != null) return BATCH_I_RAHMANIYYAH_HERO_COUNTS[id]!;
   if (BATCH_J_MATHAR_HERO_COUNTS[id] != null) return BATCH_J_MATHAR_HERO_COUNTS[id]!;
+  if (BATCH_K_UAHG_HERO_COUNTS[id] != null) return BATCH_K_UAHG_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

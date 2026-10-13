@@ -211,6 +211,10 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch J other adds: Google lists ديسم, the sign says DISAM.
   "disam-al-narjis": ["disam", "ديسم", "disam cafe", "ديسم كافيه"],
   "the-hat-as-salam": ["the hat", "ذا هات", "the hat coffee", "ذا هات كافيه"],
+  // Batch L (13 Oct): Sill still shows as DRIPORA CAFE on Google (same placeId); brand-qualified only, bare sill / سيل / ملء are everyday words.
+  "sill-umm-al-hamam-ash-sharqi": ["sill cafe", "sill coffee", "sill umm al hamam", "مقهى سيل", "سيل كافيه", "مقهى ملء", "ملء للقهوة المختصة", "dripora", "dripora cafe", "دريبورا", "دريبورا كافيه"],
+  "molten-umm-al-hamam-ash-sharqi": ["molten cafe", "molten coffee", "molten umm al hamam", "مولتن كافيه"],
+  "elixir-bunn-umm-al-hamam-ash-sharqi": ["elixir umm al hamam", "elixir bunn umm al hamam", "اكسير ام الحمام"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -249,6 +253,9 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "leto-caffe-al-mathar": ["l"],
   // "bake" / «بيك» alone are generic (bakery asks; «بيك» is also everyday Arabic). "robusta" / «روبيستا» / full name still match.
   "robusta-bake-al-rawdah": ["bake", "بيك"],
+  // Batch L (13 Oct): everyday words never pin a café on their own; brand-qualified names still match.
+  "sill-umm-al-hamam-ash-sharqi": ["sill", "ملء"],
+  "molten-umm-al-hamam-ash-sharqi": ["molten"],
 };
 
 function chainBrandIdForShop(

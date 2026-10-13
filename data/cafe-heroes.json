@@ -14753,5 +14753,81 @@
         "uri": "https://maps.google.com/maps/contrib/100506136153835499465"
       }
     }
+  ],
+  "elixir-bunn-umm-al-hamam-ash-sharqi": [
+    {
+      "src": "/cafe-heroes/elixir-bunn-umm-al-hamam-ash-sharqi/1.jpg",
+      "attribution": {
+        "displayName": "Elixir Bunn Coffee Roasters",
+        "uri": "https://maps.google.com/maps/contrib/114159272351792597973"
+      }
+    },
+    {
+      "src": "/cafe-heroes/elixir-bunn-umm-al-hamam-ash-sharqi/2.jpg",
+      "attribution": {
+        "displayName": "Mashel Abdullah",
+        "uri": "https://maps.google.com/maps/contrib/108435173383912235270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/elixir-bunn-umm-al-hamam-ash-sharqi/3.jpg",
+      "attribution": {
+        "displayName": "Jonathan Aichele",
+        "uri": "https://maps.google.com/maps/contrib/105638706293287624303"
+      }
+    },
+    {
+      "src": "/cafe-heroes/elixir-bunn-umm-al-hamam-ash-sharqi/4.jpg",
+      "attribution": {
+        "displayName": "bravooo",
+        "uri": "https://maps.google.com/maps/contrib/116834567669497160905"
+      }
+    }
+  ],
+  "sill-umm-al-hamam-ash-sharqi": [
+    {
+      "src": "/cafe-heroes/sill-umm-al-hamam-ash-sharqi/1.jpg",
+      "attribution": {
+        "displayName": "مقهى ملء للقهوة المختصة",
+        "uri": "https://maps.google.com/maps/contrib/110858632396527654327"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sill-umm-al-hamam-ash-sharqi/2.jpg",
+      "attribution": {
+        "displayName": "ismail Abdulrahman",
+        "uri": "https://maps.google.com/maps/contrib/103859699937849944319"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sill-umm-al-hamam-ash-sharqi/3.jpg",
+      "attribution": {
+        "displayName": "مقهى ملء للقهوة المختصة",
+        "uri": "https://maps.google.com/maps/contrib/110858632396527654327"
+      }
+    }
+  ],
+  "molten-umm-al-hamam-ash-sharqi": [
+    {
+      "src": "/cafe-heroes/molten-umm-al-hamam-ash-sharqi/1.jpg",
+      "attribution": {
+        "displayName": "Mohammed Hussein",
+        "uri": "https://maps.google.com/maps/contrib/108933522267637005411"
+      }
+    },
+    {
+      "src": "/cafe-heroes/molten-umm-al-hamam-ash-sharqi/2.jpg",
+      "attribution": {
+        "displayName": "ALZA7F",
+        "uri": "https://maps.google.com/maps/contrib/112623204713220794547"
+      }
+    },
+    {
+      "src": "/cafe-heroes/molten-umm-al-hamam-ash-sharqi/3.jpg",
+      "attribution": {
+        "displayName": "Faiz Abedin",
+        "uri": "https://maps.google.com/maps/contrib/107840427926375386014"
+      }
+    }
   ]
 }

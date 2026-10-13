@@ -1128,6 +1128,25 @@ export const NEIGHBORHOODS: Record<
       "Umm Al Hamam Al Gharbi",
     ],
   },
+  // Batch L (13 Oct 2026): East sibling of Umm Al Hamam Al Gharbi (OSM relation 13254412). Every alias carries الشرقي / sharqi / east, so neither sibling claims bare «أم الحمام».
+  "umm-al-hamam-ash-sharqi": {
+    id: "umm-al-hamam-ash-sharqi",
+    ar: "أم الحمام الشرقي",
+    en: "Umm Al Hamam Ash Sharqi",
+    aliases: [
+      "أم الحمام الشرقي",
+      "ام الحمام الشرقي",
+      "أم الحمام الشرقية",
+      "ام الحمام الشرقيه",
+      "حي أم الحمام الشرقي",
+      "umm al hamam ash sharqi",
+      "umm-al-hamam-ash-sharqi",
+      "umm al hamam al sharqi",
+      "umm al-hamam east",
+      "east umm al hamam",
+      "Umm Al Hamam Ash Sharqi",
+    ],
+  },
   "an-nafal": {
     id: "an-nafal",
     ar: "النفل",

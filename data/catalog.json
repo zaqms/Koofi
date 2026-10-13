@@ -50575,6 +50575,297 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "elixir-bunn-umm-al-hamam-ash-sharqi",
+      "nameAr": "إكسير البُن",
+      "nameEn": "Elixir Bunn Coffee Roasters",
+      "city": "riyadh",
+      "neighborhood": "umm-al-hamam-ash-sharqi",
+      "neighborhoodAr": "أم الحمام الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dd878e3ca81:0xa66720d2394375a2!8m2!3d24.6756459!4d46.668079899999995",
+      "pin": {
+        "lat": 24.6756459,
+        "lng": 46.668079899999995
+      },
+      "logoUrl": "/logos/elixir-bunn-al-narjis.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJgcrjeNgdLz4RonVDOdIgZ6Y",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "sill-umm-al-hamam-ash-sharqi",
+      "nameAr": "مقهى ملء",
+      "nameEn": "Sill",
+      "city": "riyadh",
+      "neighborhood": "umm-al-hamam-ash-sharqi",
+      "neighborhoodAr": "أم الحمام الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d866443eadd:0x2843a2db691c23b7!8m2!3d24.673284499999998!4d46.6626701",
+      "pin": {
+        "lat": 24.673284499999998,
+        "lng": 46.6626701
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ3epDZIYdLz4RtyMcaduiQyg",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 5:00 AM – 3:00 AM",
+          "Tuesday: 5:00 AM – 3:00 AM",
+          "Wednesday: 5:00 AM – 3:00 AM",
+          "Thursday: 5:00 AM – 3:00 AM",
+          "Friday: 5:00 AM – 3:00 AM",
+          "Saturday: 5:00 AM – 3:00 AM",
+          "Sunday: 5:00 AM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 5,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "molten-umm-al-hamam-ash-sharqi",
+      "nameAr": "مولتن",
+      "nameEn": "molten",
+      "city": "riyadh",
+      "neighborhood": "umm-al-hamam-ash-sharqi",
+      "neighborhoodAr": "أم الحمام الشرقي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1cad767a153f:0x55c6f06007f71397!8m2!3d24.674384399999997!4d46.6683883",
+      "pin": {
+        "lat": 24.674384399999997,
+        "lng": 46.6683883
+      },
+      "logoUrl": "/logos/molten-umm-al-hamam-ash-sharqi.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJPxV6dq0cLz4RlxP3B2DwxlU",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 4:00 AM",
+          "Tuesday: 6:00 AM – 4:00 AM",
+          "Wednesday: 6:00 AM – 4:00 AM",
+          "Thursday: 6:00 AM – 4:00 AM",
+          "Friday: 12:30 PM – 4:00 AM",
+          "Saturday: 6:00 AM – 4:00 AM",
+          "Sunday: 6:00 AM – 4:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 4,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

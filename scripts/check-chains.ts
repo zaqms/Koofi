@@ -590,6 +590,39 @@ assert(
   // Urth Al Mathar follows its specialty sibling (Urth Caffé Tahlia): same mark, never a chain.
   assert(getShop("urth-caffe-tahlia-sulimaniyah")?.isChain !== true && getShop("urth-caffe-al-mathar")?.logoUrl === getShop("urth-caffe-tahlia-sulimaniyah")?.logoUrl, "Urth rows share the sibling mark and stay specialty");
 }
+// Batch L (13 Oct 2026): Umm Al Hamam Ash Sharqi opens with 3 local specialty cafés. molten (~3 Riyadh branches) is under the chain threshold; Elixir Bunn is a specialty sibling. The 4 traditional Sudanese / youth-majlis rows from Scout's pack are not listed.
+{
+  const ids = ["elixir-bunn-umm-al-hamam-ash-sharqi", "sill-umm-al-hamam-ash-sharqi", "molten-umm-al-hamam-ash-sharqi"] as const;
+  for (const id of ids) {
+    const shop = getShop(id);
+    assert(shop?.isChain !== true && !shop?.chainBrand && listDiscoveryShops().some((row) => row.id === id), `${id} is local specialty`);
+    assert(listDirectoryShopsForDistrict("umm-al-hamam-ash-sharqi").some((row) => row.id === id), `${id} shows on the Umm Al Hamam Ash Sharqi page`);
+  }
+  assert(getShop("elixir-bunn-umm-al-hamam-ash-sharqi")?.logoUrl === getShop("elixir-bunn-al-narjis")?.logoUrl, "Elixir Bunn Sharqi reuses the sibling mark");
+  assert(getShop("sill-umm-al-hamam-ash-sharqi")?.placeId === "ChIJ3epDZIYdLz4RtyMcaduiQyg" && getShop("sill-umm-al-hamam-ash-sharqi")?.nameEn === "Sill", "Sill keeps the DRIPORA CAFE placeId under its storefront name");
+  for (const gone of ["coffee-corner-sudanese", "rukn-al-talaqi", "sami-sudanese-coffee", "multaqa-al-shabab"]) {
+    assert(!getShop(`${gone}-umm-al-hamam-ash-sharqi`), `${gone} Umm Al Hamam Ash Sharqi is not listed (Batch L policy drop)`);
+  }
+  for (const [ask, id] of [
+    ["dripora", "sill-umm-al-hamam-ash-sharqi"],
+    ["دريبورا", "sill-umm-al-hamam-ash-sharqi"],
+    ["sill cafe", "sill-umm-al-hamam-ash-sharqi"],
+    ["مقهى ملء", "sill-umm-al-hamam-ash-sharqi"],
+    ["molten cafe", "molten-umm-al-hamam-ash-sharqi"],
+    ["مولتن", "molten-umm-al-hamam-ash-sharqi"],
+    ["elixir umm al hamam", "elixir-bunn-umm-al-hamam-ash-sharqi"],
+  ] as const) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === id, `${ask} matches ${id} first, got ${hits.join(",")}`);
+  }
+  const lIds = new Set<string>(ids);
+  for (const ask of ["sill", "سيل", "ملء", "molten", "molten cake", "corner", "ركن", "ملتقى", "الشباب", "ام الحمام", "window sill"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.some((hit) => lIds.has(hit)), `${ask} does not pin a Batch L row, got ${hits.join(",")}`);
+  }
+  const elixir = matchCatalogShops("elixir", listRealShops()).map((shop) => shop.id);
+  assert(elixir[0] === "elixir-bunn-al-nakheel", `bare elixir keeps the older Elixir Bunn rows first, got ${elixir.join(",")}`);
+}
 // Batch H (9 Oct 2026): McCafé Uthman Ibn Affan (Al Izdihar) was dropped per Amjad (r3); no McCafé row is live. Dunkin' stays out pending Amjad (donut-led rule).
 assert(
   !listRealShops().some((shop) => shop.chainBrand === "mccafe" || /mccaf|mc caf|ماك كافيه/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)),
@@ -1131,18 +1164,18 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 450, "specialty discovery is 450 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds; Veloce is a chain)");
-assert(listRealShops().length === 527, "catalog is 527 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 4 other adds)");
-assert(listLiveDistrictIds().length === 64, "specialty districts are 64 (62 + Shubra, Batch F + As Salam, Batch J THE HAT; the 3 Drive rows were not a district's only specialty cafe)");
+assert(listDiscoveryShops().length === 453, "specialty discovery is 453 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 3 Batch L Umm Al Hamam Ash Sharqi local; Veloce is a chain)");
+assert(listRealShops().length === 530, "catalog is 530 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) and Batch L (3 Umm Al Hamam Ash Sharqi)");
+assert(listLiveDistrictIds().length === 65, "specialty districts are 65 (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
-  catalogDistrictIdsFrom(listRealShops()).length === 78,
-  "catalog rows cover 78 districts (Jarir hidden; 4 Bisat batch + 4 Batch D3 districts)",
+  catalogDistrictIdsFrom(listRealShops()).length === 79,
+  "catalog rows cover 79 districts (Jarir hidden; 4 Bisat batch + 4 Batch D3 districts + Umm Al Hamam Ash Sharqi, Batch L)",
 );
-assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
+assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
 assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
-assert(listListingShops().length === 472, "listing is 450 local plus the 22 sit-down chains");
-assert(listPublicShops().length === 472, "public list includes the 22 sit-down chains");
-assert(listBrowseDirectoryShops().length === 476, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
+assert(listListingShops().length === 475, "listing is 453 local plus the 22 sit-down chains");
+assert(listPublicShops().length === 475, "public list includes the 22 sit-down chains");
+assert(listBrowseDirectoryShops().length === 479, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 22,
   "exactly 22 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar)",
@@ -1556,7 +1589,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "d62990fce50d84b933403564194e7eb0745eed7889b5ebad51bc04d74ab15c73",
+  copyHash === "f1da90fb290e4e8eae18e6eb0d1be1848b1d5ef0598da0d9ee89d93d385684a3",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1686,11 +1719,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "4f574ba7d6b2b1f29fd94d45e8b0737aadd54175e66ccba6fe4644d20eca7f95",
+  llmsHash === "a53367316af2195778db52c79da2e58bde9957e07ffdbd4894287bd70477f855",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("450 local, 22 chain branches"),
+  llms.includes("453 local, 22 chain branches"),
   "llms.txt names the 22 chain branches separately from specialty",
 );
 

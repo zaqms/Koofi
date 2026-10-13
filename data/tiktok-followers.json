@@ -3687,5 +3687,26 @@
     "status": "unverified",
     "dateChecked": "2026-10-11",
     "sharedBrandAccount": false
+  },
+  "elixir-bunn-umm-al-hamam-ash-sharqi": {
+    "handle": "@elixirbunn",
+    "followers": 1115,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
+  },
+  "sill-umm-al-hamam-ash-sharqi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-13",
+    "sharedBrandAccount": false
+  },
+  "molten-umm-al-hamam-ash-sharqi": {
+    "handle": "@molten.sa",
+    "followers": 1500,
+    "status": "found",
+    "dateChecked": "2026-10-13",
+    "sharedBrandAccount": true
   }
 }

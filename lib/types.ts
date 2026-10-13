@@ -74,6 +74,7 @@ export const NEIGHBORHOOD_IDS = [
   "al-izdihar",
   "dhahrat-al-badiah",
   "umm-al-hamam-al-gharbi",
+  "umm-al-hamam-ash-sharqi",
   "an-nafal",
   "king-salman",
   "as-suwaidi-al-gharbi",

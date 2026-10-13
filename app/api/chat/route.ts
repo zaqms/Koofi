@@ -18,6 +18,7 @@ import {
   readHalfwayInviteSession,
 } from "@/lib/halfway-invite-store";
 import { pinsMidpoint } from "@/lib/halfway-results-payload";
+import { claimHalfwayResultsNotify } from "@/lib/halfway-results-dedupe";
 import { notifyHalfwayResults } from "@/lib/halfway-results-webhook";
 import {
   isMeetHalfwayChipAsk,
@@ -48,6 +49,7 @@ type ChatRequest = {
   session?: string;
   halfway?: unknown;
   halfwayMore?: boolean;
+  halfwayReroll?: boolean;
   city?: string;
 };
 
@@ -113,6 +115,7 @@ export async function POST(request: Request) {
       }
     }
     const more = body.halfwayMore === true;
+    const reroll = body.halfwayReroll === true;
     if (sessionId && !more) {
       let storedShopIds: string[] = [];
       try {
@@ -174,19 +177,33 @@ export async function POST(request: Request) {
       language: landing,
     });
 
+    let frozeOk = false;
     if (sessionId && !more && picks.length > 0) {
       try {
-        await freezeHalfwayInviteResults({
+        const frozenSession = await freezeHalfwayInviteResults({
           id: sessionId,
           shopIds: picks.map((pick) => pick.id),
           locations: locations.flatMap((row) => (row.pin ? [row.pin] : [])),
         });
+        frozeOk = frozenSession !== null;
       } catch {
         // Overlay freeze is best-effort; the in-memory three still render.
       }
     }
 
-    if (picks.length > 0) {
+    // Results email: first result only, once per session (no 'more' pages,
+    // no rerolls; invites only after a successful freeze).
+    if (
+      claimHalfwayResultsNotify({
+        more,
+        reroll,
+        pickCount: picks.length,
+        sessionId,
+        frozeOk,
+        visitor: typeof body.session === "string" ? body.session : null,
+        locations,
+      })
+    ) {
       const midpoint = pinsMidpoint(locations.map((row) => row.pin));
       after(async () => {
         await notifyHalfwayResults({

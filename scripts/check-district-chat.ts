@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 64, `expected 64 live districts (62 + Shubra, Batch F + As Salam, Batch J), got ${live.length}`);
+assert(live.length === 65, `expected 65 live districts (62 + Shubra, Batch F + As Salam, Batch J + Umm Al Hamam Ash Sharqi, Batch L), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -139,6 +139,22 @@ assert(
   parseIntent("ظهرة البديعة").neighborhoods.join(",") === "dhahrat-al-badiah",
   "ظهرة البديعة is a حي",
 );
+// Batch L (13 Oct): Umm Al Hamam Ash Sharqi resolves in EN and AR; the Gharbi sibling keeps its own asks and bare «أم الحمام» claims neither.
+for (const [text, id] of [
+  ["Umm Al Hamam Ash Sharqi", "umm-al-hamam-ash-sharqi"],
+  ["أم الحمام الشرقي", "umm-al-hamam-ash-sharqi"],
+  ["ام الحمام الشرقي", "umm-al-hamam-ash-sharqi"],
+  ["east umm al hamam", "umm-al-hamam-ash-sharqi"],
+] as const) {
+  assert(extractPrimaryDistrict(text) === id, `${text} → ${id}`);
+  assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
+}
+assert(extractPrimaryDistrict("أم الحمام الغربي") === "umm-al-hamam-al-gharbi", "Gharbi keeps أم الحمام الغربي");
+assert(extractPrimaryDistrict("Umm Al Hamam Al Gharbi") === "umm-al-hamam-al-gharbi", "Gharbi keeps Umm Al Hamam Al Gharbi");
+assert(extractPrimaryDistrict("النسيم الشرقي") === "an-nasim-ash-sharqi", "Sharqi does not steal النسيم الشرقي");
+for (const bare of ["أم الحمام", "umm al hamam", "الشرقي", "sharqi"]) {
+  assert(extractPrimaryDistrict(bare) == null, `bare ${bare} is not a district ask`);
+}
 // Bisat batch (3 Oct): four new live districts resolve in EN and AR.
 for (const [text, id] of [
   ["Umm Al Hamam Al Gharbi", "umm-al-hamam-al-gharbi"],

@@ -188,9 +188,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 64, `expected 64 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT), got ${areas.length}`);
-assert(listDiscoveryShops().length === 461, `specialty discovery is 461 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 539, `catalog is 539 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) and Batch K (12 Umm Al Hamam Al Gharbi), got ${listRealShops().length}`);
+assert(areas.length === 65, `expected 65 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L), got ${areas.length}`);
+assert(listDiscoveryShops().length === 464, `specialty discovery is 464 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 542, `catalog is 542 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi) and Batch L (3 Umm Al Hamam Ash Sharqi), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -2034,6 +2034,7 @@ const scoutPack: {
     | "al-aziziyah"
     | "al-nakheel"
     | "umm-al-hamam-al-gharbi"
+    | "umm-al-hamam-ash-sharqi"
     | "an-nafal"
     | "king-salman"
     | "as-suwaidi";
@@ -5522,6 +5523,45 @@ const scoutPack: {
     pin: { lat: 24.702347099999997, lng: 46.6506573 },
     coordsInUrl: true,
     placeId: "ChIJC2N8rRgdLz4RpQmimIpgTk8",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  // Batch L (13 Oct 2026, Scout Umm Al Hamam Ash Sharqi pack): 3 local sit-down cafés; Places dineIn/outdoor. Fill («ملء»; earlier read as Sill) is DRIPORA CAFE on Google (same placeId).
+  {
+    id: "elixir-bunn-umm-al-hamam-ash-sharqi",
+    hex: "0x3e2f1dd878e3ca81:0xa66720d2394375a2",
+    neighborhood: "umm-al-hamam-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/elixir-bunn-al-narjis.jpg",
+    pin: { lat: 24.6756459, lng: 46.668079899999995 },
+    coordsInUrl: true,
+    placeId: "ChIJgcrjeNgdLz4RonVDOdIgZ6Y",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "fill-umm-al-hamam-ash-sharqi",
+    hex: "0x3e2f1d866443eadd:0x2843a2db691c23b7",
+    neighborhood: "umm-al-hamam-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.673284499999998, lng: 46.6626701 },
+    coordsInUrl: true,
+    placeId: "ChIJ3epDZIYdLz4RtyMcaduiQyg",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "molten-umm-al-hamam-ash-sharqi",
+    hex: "0x3e2f1cad767a153f:0x55c6f06007f71397",
+    neighborhood: "umm-al-hamam-ash-sharqi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/molten-umm-al-hamam-ash-sharqi.png",
+    pin: { lat: 24.674384399999997, lng: 46.6683883 },
+    coordsInUrl: true,
+    placeId: "ChIJPxV6dq0cLz4RlxP3B2DwxlU",
     dineIn: true,
     outdoorSeating: false,
   },

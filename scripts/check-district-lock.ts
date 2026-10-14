@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 68, `expected 68 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 69, `expected 69 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -221,6 +221,25 @@ assert(
     "way-coffee-dhahrat-al-badiah",
   "Dhahrat Al Badiah catalog is WAY only",
 );
+
+// Batch L (13 Oct): Umm Al Hamam Ash Sharqi goes live with 3 local cafés; on the locked sheet (dictionary_only), slug matches the al-gharbi sibling.
+{
+  const id = "umm-al-hamam-ash-sharqi";
+  const row = rows.find((r) => r.stableId === id);
+  assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);
+  assert(row?.nameEn === "Umm Al Hamam Ash Sharqi" && row?.nameAr === "أم الحمام الشرقي", `${id} sheet EN/AR lock`);
+  assert(neighborhoodLabel(id, "en") === "Umm Al Hamam Ash Sharqi" && neighborhoodLabel(id, "ar") === "أم الحمام الشرقي", `${id} labels`);
+  assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
+      "elixir-bunn-umm-al-hamam-ash-sharqi,fill-umm-al-hamam-ash-sharqi,molten-umm-al-hamam-ash-sharqi",
+    `${id} catalog is Elixir Bunn, Fill and molten`,
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    `sitemap lists ${id} AR + EN`,
+  );
+}
 
 // Bisat batch (3 Oct): four new live districts, one cafe each. Umm Al Hamam Al Gharbi and
 // As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.

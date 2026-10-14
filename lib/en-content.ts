@@ -237,6 +237,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "al-takhassusi", "al-mathar"],
   jarir: ["al-malaz", "al-murabba", "al-rabwah", "ghubairah"],
   "umm-al-hamam-al-gharbi": ["diplomatic-quarter", "al-mathar", "al-rahmaniyyah", "al-takhassusi"],
+  "umm-al-hamam-ash-sharqi": ["umm-al-hamam-al-gharbi", "al-mathar", "sulimaniyah", "al-rahmaniyyah"],
   "an-nafal": ["al-rabi", "al-masif", "al-wadi", "at-taawun"],
   "king-salman": ["al-mursalat", "an-nazhah", "al-wurud", "king-fahd"],
   "as-suwaidi-al-gharbi": ["dhahrat-al-badiah", "namar", "as-suwaidi", "ash-shifa"],
@@ -911,6 +912,18 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Umm Al Hamam Al Gharbi. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+  },
+  "umm-al-hamam-ash-sharqi": {
+    lead: `Umm Al Hamam Ash Sharqi (أم الحمام الشرقي) is the east half of Umm Al Hamam, off Makkah Road beside Al Mathar. This page is the Umm Al Hamam Ash Sharqi set on wain.lol so far.
+
+[Elixir Bunn Coffee Roasters](/en/c/elixir-bunn-umm-al-hamam-ash-sharqi), [Fill](/en/c/fill-umm-al-hamam-ash-sharqi), and [molten](/en/c/molten-umm-al-hamam-ash-sharqi) are the cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Umm Al Hamam Ash Sharqi on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Umm Al Hamam Ash Sharqi isn’t the stop, these west-central lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Umm Al Hamam Ash Sharqi. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in Umm Al Hamam Ash Sharqi on wain.lol — a Riyadh neighborhood list including Elixir Bunn, Fill, and molten, each with a Maps link.",
   },
   "an-nafal": {
     lead: `An Nafal (النفل) sits on the north side of Riyadh. This page is the An Nafal set on wain.lol so far.

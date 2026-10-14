@@ -165,6 +165,7 @@ for (const district of [
   "as-suwaidi",
   "al-falah",
   "umm-al-hamam-al-gharbi",
+  "umm-al-hamam-ash-sharqi",
   "an-nafal",
   "king-salman",
 ] as const) {

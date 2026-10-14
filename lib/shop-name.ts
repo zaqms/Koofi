@@ -214,6 +214,10 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch K (12 Oct): brand-qualified only. Bare "oruba" / "square" / «العروبة» never pin the chain; bare "archi" keeps the older rows first.
   "starbucks-oruba-square-umm-al-hamam-al-gharbi": ["starbucks oruba", "starbucks oruba square", "starbucks urubah", "ستاربكس العروبة", "ستاربكس العروبة سكوير", "ستاربكس عروبة سكوير"],
   "archi-umm-al-hamam-al-gharbi": ["archi umm al hamam", "ارتشي ام الحمام"],
+  // Batch L (13 Oct): Fill («ملء», earlier read as Sill) still shows as DRIPORA CAFE on Google (same placeId); brand-qualified only, bare fill / sill / سيل / ملء are everyday words. Sill and DRIPORA stay as aliases.
+  "fill-umm-al-hamam-ash-sharqi": ["fill cafe", "fill coffee", "fill umm al hamam", "sill cafe", "sill coffee", "sill umm al hamam", "مقهى سيل", "سيل كافيه", "مقهى ملء", "ملء للقهوة المختصة", "dripora", "dripora cafe", "دريبورا", "دريبورا كافيه"],
+  "molten-umm-al-hamam-ash-sharqi": ["molten cafe", "molten coffee", "molten umm al hamam", "مولتن كافيه"],
+  "elixir-bunn-umm-al-hamam-ash-sharqi": ["elixir umm al hamam", "elixir bunn umm al hamam", "اكسير ام الحمام"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -260,6 +264,9 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "mazaj-cafe-umm-al-hamam-al-gharbi": ["مزاج"],
   "shafaq-cafe-umm-al-hamam-al-gharbi": ["شفق"],
   "malmoum-cafe-umm-al-hamam-al-gharbi": ["ملموم"],
+  // Batch L (13 Oct): everyday words never pin a café on their own; brand-qualified names still match.
+  "fill-umm-al-hamam-ash-sharqi": ["fill", "sill", "ملء"],
+  "molten-umm-al-hamam-ash-sharqi": ["molten"],
 };
 
 function chainBrandIdForShop(

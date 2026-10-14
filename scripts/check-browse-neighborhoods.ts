@@ -187,10 +187,10 @@ assert(
     rowsEn.some(
       (row) =>
         row.id === id &&
-        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "an-nafal" ? 16 : id === "king-salman" ? 2 : 1),
+        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "an-nafal" ? 16 : id === "king-salman" ? 2 : id === "umm-al-hamam-al-gharbi" ? 13 : 1),
     ),
   ),
-  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1; An Nafal 16 after Batch G)",
+  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1; An Nafal 16 after Batch G; Umm Al Hamam Al Gharbi 13 after Batch K)",
 );
 assert(
   BATCH_D3_NEW_DISTRICTS.every((id) =>

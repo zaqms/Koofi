@@ -211,6 +211,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch J other adds: Google lists ديسم, the sign says DISAM.
   "disam-al-narjis": ["disam", "ديسم", "disam cafe", "ديسم كافيه"],
   "the-hat-as-salam": ["the hat", "ذا هات", "the hat coffee", "ذا هات كافيه"],
+  // Batch K (12 Oct): brand-qualified only. Bare "oruba" / "square" / «العروبة» never pin the chain; bare "archi" keeps the older rows first.
+  "starbucks-oruba-square-umm-al-hamam-al-gharbi": ["starbucks oruba", "starbucks oruba square", "starbucks urubah", "ستاربكس العروبة", "ستاربكس العروبة سكوير", "ستاربكس عروبة سكوير"],
+  "archi-umm-al-hamam-al-gharbi": ["archi umm al hamam", "ارتشي ام الحمام"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -249,6 +252,14 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "leto-caffe-al-mathar": ["l"],
   // "bake" / «بيك» alone are generic (bakery asks; «بيك» is also everyday Arabic). "robusta" / «روبيستا» / full name still match.
   "robusta-bake-al-rawdah": ["bake", "بيك"],
+  // Batch K (12 Oct): everyday words and venue names never pin a café on their own; full names still match.
+  "book-of-beans-umm-al-hamam-al-gharbi": ["book", "beans", "كتاب"],
+  "cafe-kitsune-laysen-umm-al-hamam-al-gharbi": ["caf"],
+  "tobys-estate-laysen-umm-al-hamam-al-gharbi": ["laysen", "valley"],
+  "hamasat-coffee-umm-al-hamam-al-gharbi": ["همسات"],
+  "mazaj-cafe-umm-al-hamam-al-gharbi": ["مزاج"],
+  "shafaq-cafe-umm-al-hamam-al-gharbi": ["شفق"],
+  "malmoum-cafe-umm-al-hamam-al-gharbi": ["ملموم"],
 };
 
 function chainBrandIdForShop(

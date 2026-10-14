@@ -128,7 +128,7 @@ export const CHAIN_BRANDS = {
     nameAr: "كوستا كوفي",
     logo: "/logos/costa-mark.png",
   },
-  // Batch M (14 Oct 2026): global chain, dozens of Riyadh branches — mass-market under the 8+ branch rule. No official mark on the box yet (letter tile).
+  // Batch M (14 Oct 2026): global chain, ~20 Riyadh branches (official cariboucoffee.safr.com.sa list) — mass-market under the 8+ branch rule. No official mark on the box yet (letter tile).
   caribou: {
     id: "caribou",
     nameEn: "Caribou Coffee",

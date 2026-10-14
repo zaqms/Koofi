@@ -211,8 +211,15 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch J other adds: Google lists ديسم, the sign says DISAM.
   "disam-al-narjis": ["disam", "ديسم", "disam cafe", "ديسم كافيه"],
   "the-hat-as-salam": ["the hat", "ذا هات", "the hat coffee", "ذا هات كافيه"],
+  // Batch K (12 Oct): brand-qualified only. Bare "oruba" / "square" / «العروبة» never pin the chain; bare "archi" keeps the older rows first.
+  "starbucks-oruba-square-umm-al-hamam-al-gharbi": ["starbucks oruba", "starbucks oruba square", "starbucks urubah", "ستاربكس العروبة", "ستاربكس العروبة سكوير", "ستاربكس عروبة سكوير"],
+  "archi-umm-al-hamam-al-gharbi": ["archi umm al hamam", "ارتشي ام الحمام"],
+  // Batch L (13 Oct): Fill («ملء», earlier read as Sill) still shows as DRIPORA CAFE on Google (same placeId); brand-qualified only, bare fill / sill / سيل / ملء are everyday words. Sill and DRIPORA stay as aliases.
+  "fill-umm-al-hamam-ash-sharqi": ["fill cafe", "fill coffee", "fill umm al hamam", "sill cafe", "sill coffee", "sill umm al hamam", "مقهى سيل", "سيل كافيه", "مقهى ملء", "ملء للقهوة المختصة", "dripora", "dripora cafe", "دريبورا", "دريبورا كافيه"],
+  "molten-umm-al-hamam-ash-sharqi": ["molten cafe", "molten coffee", "molten umm al hamam", "مولتن كافيه"],
+  "elixir-bunn-umm-al-hamam-ash-sharqi": ["elixir umm al hamam", "elixir bunn umm al hamam", "اكسير ام الحمام"],
   // Batch M (14 Oct 2026): brand-qualified Starbucks branch aliases only — bare safarat/oud/square stay unpinned.
-  "starbucks-safarat-diplomatic-quarter": ["starbucks diplomatic quarter", "starbucks dq", "ستاربكس السفارات", "ستاربكس الحي الدبلوماسي"],
+  "starbucks-safarat-diplomatic-quarter": ["starbucks safarat", "starbucks diplomatic quarter", "starbucks dq", "ستاربكس السفارات", "ستاربكس الحي الدبلوماسي"],
   "starbucks-oud-square-diplomatic-quarter": ["starbucks oud", "starbucks oud square", "ستاربكس العود", "ستاربكس ساحة العود"],
 };
 
@@ -252,11 +259,25 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "leto-caffe-al-mathar": ["l"],
   // "bake" / «بيك» alone are generic (bakery asks; «بيك» is also everyday Arabic). "robusta" / «روبيستا» / full name still match.
   "robusta-bake-al-rawdah": ["bake", "بيك"],
+  // Batch K (12 Oct): everyday words and venue names never pin a café on their own; full names still match.
+  "book-of-beans-umm-al-hamam-al-gharbi": ["book", "beans", "كتاب"],
+  "cafe-kitsune-laysen-umm-al-hamam-al-gharbi": ["caf"],
+  "tobys-estate-laysen-umm-al-hamam-al-gharbi": ["laysen", "valley"],
+  "hamasat-coffee-umm-al-hamam-al-gharbi": ["همسات"],
+  "mazaj-cafe-umm-al-hamam-al-gharbi": ["مزاج"],
+  "shafaq-cafe-umm-al-hamam-al-gharbi": ["شفق"],
+  "malmoum-cafe-umm-al-hamam-al-gharbi": ["ملموم"],
+  // Batch L (13 Oct): everyday words never pin a café on their own; brand-qualified names still match.
+  "fill-umm-al-hamam-ash-sharqi": ["fill", "sill", "ملء"],
+  "molten-umm-al-hamam-ash-sharqi": ["molten"],
   // Batch M (14 Oct 2026): generic words from DQ names never pin a café alone.
   "pink-camel-diplomatic-quarter": ["pink", "camel", "بينك", "كاميل"],
+  // QA #264: the DQ Starbucks cards carry branch suffixes; the branch words alone never pin them.
+  "starbucks-safarat-diplomatic-quarter": ["safarat", "السفارات"],
+  "starbucks-oud-square-diplomatic-quarter": ["oud", "العود", "square", "ساحة", "oud square", "ساحة العود"],
   "coffee-table-diplomatic-quarter": ["table", "تيبل", "ذا", "ذا تيبل"],
-  // QA #262 minor: bare "ash" is a common word; "ash bloom" / «آش بلوم» still find it.
-  "ash-bloom-al-nakheel": ["ash"],
+  // QA #262 / #264 minor: bare "ash" / «آش» are common words; "ash bloom" / «آش بلوم» still find it.
+  "ash-bloom-al-nakheel": ["ash", "آش"],
 };
 
 function chainBrandIdForShop(

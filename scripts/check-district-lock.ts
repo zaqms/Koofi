@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 68, `expected 68 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 69, `expected 69 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -222,10 +222,30 @@ assert(
   "Dhahrat Al Badiah catalog is WAY only",
 );
 
+// Batch L (13 Oct): Umm Al Hamam Ash Sharqi goes live with 3 local cafés; on the locked sheet (dictionary_only), slug matches the al-gharbi sibling.
+{
+  const id = "umm-al-hamam-ash-sharqi";
+  const row = rows.find((r) => r.stableId === id);
+  assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);
+  assert(row?.nameEn === "Umm Al Hamam Ash Sharqi" && row?.nameAr === "أم الحمام الشرقي", `${id} sheet EN/AR lock`);
+  assert(neighborhoodLabel(id, "en") === "Umm Al Hamam Ash Sharqi" && neighborhoodLabel(id, "ar") === "أم الحمام الشرقي", `${id} labels`);
+  assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
+      "elixir-bunn-umm-al-hamam-ash-sharqi,fill-umm-al-hamam-ash-sharqi,molten-umm-al-hamam-ash-sharqi",
+    `${id} catalog is Elixir Bunn, Fill and molten`,
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    `sitemap lists ${id} AR + EN`,
+  );
+}
+
 // Bisat batch (3 Oct): four new live districts, one cafe each. Umm Al Hamam Al Gharbi and
 // As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.
 for (const [id, en, ar, shopId, onSheet] of [
-  ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi", true],
+  // Batch K (12 Oct): Umm Al Hamam Al Gharbi gains 12 cafés (11 local + Starbucks Oruba Square sit-down chain; Java Time dropped).
+  ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi,archi-umm-al-hamam-al-gharbi,book-of-beans-umm-al-hamam-al-gharbi,caffeination-umm-al-hamam-al-gharbi,cafe-kitsune-laysen-umm-al-hamam-al-gharbi,jaam-coffee-umm-al-hamam-al-gharbi,midway-coffee-umm-al-hamam-al-gharbi,malmoum-cafe-umm-al-hamam-al-gharbi,tobys-estate-laysen-umm-al-hamam-al-gharbi,hamasat-coffee-umm-al-hamam-al-gharbi,mazaj-cafe-umm-al-hamam-al-gharbi,shafaq-cafe-umm-al-hamam-al-gharbi,starbucks-oruba-square-umm-al-hamam-al-gharbi", true],
   // Batch G (8 Oct): An Nafal gains 15 cafés (12 local + Costa, Starbucks and dr.CAFE sit-down chains).
   ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal,air-speciality-an-nafal,black-stamp-an-nafal,nafel-coffee-an-nafal,pivot-espresso-an-nafal,roastree-an-nafal,cave-cafe-an-nafal,kaseb-concept-an-nafal,hatheeth-an-nafal,percol-an-nafal,peacock-an-nafal,grotta-an-nafal,btw-an-nafal,costa-tala-mall-an-nafal,starbucks-tala-mall-an-nafal,drcafe-an-nafal", false],
   ["king-salman", "King Salman", "الملك سلمان", "rex-king-salman,tul-cafe-king-salman", false],

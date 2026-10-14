@@ -488,7 +488,7 @@ assert(
   "live 24cafe is tagged 24cafe",
 );
 const taggedLive = listRealShops().filter((shop) => shop.isChain === true);
-assert(taggedLive.length === 56, "exactly 56 rows are tagged (28 on main + 16 Drive Coffee + Veloce At Taawun, Batch E r2 + Half Million and Tim Hortons Shubra, Batch F + Costa, Starbucks and dr.CAFE An Nafal, Batch G; Batch H Al Izdihar adds no chain; + Starbucks and Java Time Ar Rahmaniyyah, Batch I; + Peet's Euromarché and Starbucks Panorama, Tafaseel and Takhassusi Al Mathar, Batch J)");
+assert(taggedLive.length === 60, "exactly 60 rows are tagged (28 on main + 16 Drive Coffee + Veloce At Taawun, Batch E r2 + Half Million and Tim Hortons Shubra, Batch F + Costa, Starbucks and dr.CAFE An Nafal, Batch G; Batch H Al Izdihar adds no chain; + Starbucks and Java Time Ar Rahmaniyyah, Batch I; + Peet's Euromarché and Starbucks Panorama, Tafaseel and Takhassusi Al Mathar, Batch J; + Costa, Caribou and 2 Starbucks Diplomatic Quarter, Batch M)");
 assert(
   taggedLive.filter((shop) => shop.chainBrand === "drive").length === 16 &&
     listRealShops()
@@ -521,10 +521,10 @@ assert(
 );
 // Batch G (8 Oct 2026): first Costa and Starbucks rows, both sit-down in Tala Mall (An Nafal).
 assert(
-  taggedLive.filter((shop) => shop.chainBrand === "costa").map((shop) => shop.id).join(",") === "costa-tala-mall-an-nafal" &&
+  taggedLive.filter((shop) => shop.chainBrand === "costa").map((shop) => shop.id).join(",") === "costa-tala-mall-an-nafal,costa-coffee-diplomatic-quarter" &&
     taggedLive.filter((shop) => shop.chainBrand === "starbucks").map((shop) => shop.id).join(",") ===
-      "starbucks-tala-mall-an-nafal,starbucks-the-plaza-al-rahmaniyyah,starbucks-panorama-al-mathar,starbucks-tafaseel-al-mathar,starbucks-takhassusi-al-mathar",
-  "Costa has one tagged row (Tala Mall An Nafal, Batch G); Starbucks has Tala Mall (Batch G), The Plaza Ar Rahmaniyyah (Batch I) and Panorama, Tafaseel and Takhassusi Al Mathar (Batch J)",
+      "starbucks-tala-mall-an-nafal,starbucks-the-plaza-al-rahmaniyyah,starbucks-panorama-al-mathar,starbucks-tafaseel-al-mathar,starbucks-takhassusi-al-mathar,starbucks-safarat-diplomatic-quarter,starbucks-oud-square-diplomatic-quarter",
+  "Costa has Tala Mall An Nafal (Batch G) and Diplomatic Quarter (Batch M); Starbucks has Tala Mall (Batch G), The Plaza Ar Rahmaniyyah (Batch I), Panorama, Tafaseel and Takhassusi Al Mathar (Batch J) and Safarat and Oud Square DQ (Batch M)",
 );
 // Batch I (10 Oct 2026): Java Time (~20 Riyadh branches, coffee-first) is its own chain brand, never Java Cafe.
 assert(
@@ -589,6 +589,105 @@ assert(
   }
   // Urth Al Mathar follows its specialty sibling (Urth Caffé Tahlia): same mark, never a chain.
   assert(getShop("urth-caffe-tahlia-sulimaniyah")?.isChain !== true && getShop("urth-caffe-al-mathar")?.logoUrl === getShop("urth-caffe-tahlia-sulimaniyah")?.logoUrl, "Urth rows share the sibling mark and stay specialty");
+}
+// Batch M (14 Oct 2026): Diplomatic Quarter — 9 local specialty cafés + 4 sit-down chains (Costa, first Caribou row, 2 Starbucks). DQ becomes a mixed district.
+{
+  const chainIds = ["costa-coffee-diplomatic-quarter", "caribou-coffee-diplomatic-quarter", "starbucks-safarat-diplomatic-quarter", "starbucks-oud-square-diplomatic-quarter"] as const;
+  const localIds = [
+    "ralphs-coffee-diplomatic-quarter", "onda-coffee-diplomatic-quarter", "draft-cafe-diplomatic-quarter", "wacafe-diplomatic-quarter", "archi-diplomatic-quarter",
+    "urth-caffe-diplomatic-quarter", "nua-diplomatic-quarter", "pink-camel-diplomatic-quarter", "coffee-table-diplomatic-quarter",
+  ] as const;
+  assert(
+    taggedLive.filter((shop) => shop.chainBrand === "caribou").map((shop) => shop.id).join(",") === "caribou-coffee-diplomatic-quarter",
+    "Caribou has one tagged row (Diplomatic Quarter, Batch M)",
+  );
+  const caribou = getShop("caribou-coffee-diplomatic-quarter");
+  assert(
+    caribou?.isChain === true && caribou.chainBrand === "caribou" && shopBrandKey(caribou) === "caribou" && !caribou.logoUrl && CHAIN_BRANDS.caribou.logo === null &&
+      caribou.nameEn === "Caribou Coffee" && caribou.nameAr === "كاريبو كوفي",
+    "Caribou DQ is brand caribou (letter tile, registry has no logo yet)",
+  );
+  const costa = getShop("costa-coffee-diplomatic-quarter");
+  assert(
+    costa?.isChain === true && costa.chainBrand === "costa" && shopBrandKey(costa) === "costa" && costa.logoUrl === CHAIN_BRANDS.costa.logo && costa.nameEn === "Costa Coffee",
+    "Costa DQ is brand costa with the registry mark",
+  );
+  for (const id of ["starbucks-safarat-diplomatic-quarter", "starbucks-oud-square-diplomatic-quarter"] as const) {
+    const shop = getShop(id);
+    assert(
+      shop?.isChain === true && shop.chainBrand === "starbucks" && shopBrandKey(shop) === "starbucks" && shop.logoUrl === "/logos/starbucks-mark.png" &&
+        shop.nameEn === "Starbucks" && shop.nameAr === "ستاربكس" && shop.dineIn === true && !(shop.momentTags ?? []).includes("drive-through"),
+      `${id} is a sit-down Starbucks with the siren mark, no drive-through tag`,
+    );
+  }
+  for (const id of chainIds) {
+    assert(listDirectoryShopsForDistrict("diplomatic-quarter").some((shop) => shop.id === id), `${id} shows on the Diplomatic Quarter page`);
+    assert(!listDiscoveryShops().some((shop) => shop.id === id), `${id} is not specialty discovery`);
+    assert(!listPopularPublicShops().some((shop) => shop.id === id), `${id} is not in Most popular`);
+    assert(!filterHalfwayEligible(listDiscoveryShops()).some((shop) => shop.id === id), `${id} is not in the بيننا pool`);
+    assert(!applyHideChains(listDirectoryShopsForDistrict("diplomatic-quarter"), true).some((shop) => shop.id === id), `${id} is hidden by Local only`);
+  }
+  for (const id of localIds) {
+    const shop = getShop(id);
+    assert(shop?.isChain !== true && !shop?.chainBrand && listDiscoveryShops().some((row) => row.id === id), `${id} is local specialty`);
+  }
+  // Specialty siblings reuse their catalog marks and stay specialty (ARCHI per Amjad; Urth follows Tahlia / Al Mathar).
+  for (const [id, sibling] of [
+    ["archi-diplomatic-quarter", "archi-al-bujairi-diriyah"],
+    ["urth-caffe-diplomatic-quarter", "urth-caffe-tahlia-sulimaniyah"],
+    ["draft-cafe-diplomatic-quarter", "draft-cafe-kafd"],
+    ["wacafe-diplomatic-quarter", "wacafe-al-rabi"],
+  ] as const) {
+    assert(getShop(id)?.logoUrl === getShop(sibling)?.logoUrl, `${id} reuses the ${sibling} mark`);
+  }
+  // No bare location word pins a DQ Starbucks; brand-qualified asks do.
+  const sb = new Set<string>(["starbucks-safarat-diplomatic-quarter", "starbucks-oud-square-diplomatic-quarter"]);
+  for (const id of sb) {
+    const aliases = shopNameAliases(getShop(id)!);
+    for (const bare of ["safarat", "السفارات", "oud", "العود", "square", "oud square", "ساحة العود", "diplomatic quarter", "الحي الدبلوماسي", "dq"]) {
+      assert(!aliases.includes(bare), `${id} has no bare alias ${bare}`);
+    }
+  }
+  for (const ask of ["safarat", "السفارات", "oud", "العود", "square", "oud square", "diplomatic quarter", "الحي الدبلوماسي", "قهوة السفارات", "coffee diplomatic quarter"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.some((hit) => sb.has(hit)), `${ask} does not name-pin a DQ Starbucks, got ${hits.join(",")}`);
+    for (let run = 0; run < 3; run += 1) {
+      assert(!sb.has(pickCafes({ text: ask }).picks[0]?.shop.id ?? ""), `${ask} does not pick a DQ Starbucks first`);
+    }
+  }
+  for (const [ask, id] of [
+    ["starbucks safarat", "starbucks-safarat-diplomatic-quarter"],
+    ["ستاربكس السفارات", "starbucks-safarat-diplomatic-quarter"],
+    ["starbucks oud square", "starbucks-oud-square-diplomatic-quarter"],
+    ["ستاربكس العود", "starbucks-oud-square-diplomatic-quarter"],
+    ["ralphs coffee", "ralphs-coffee-diplomatic-quarter"],
+    ["onda", "onda-coffee-diplomatic-quarter"],
+    ["nua", "nua-diplomatic-quarter"],
+    ["pink camel", "pink-camel-diplomatic-quarter"],
+    ["the coffee table", "coffee-table-diplomatic-quarter"],
+    ["caribou", "caribou-coffee-diplomatic-quarter"],
+    ["كاريبو", "caribou-coffee-diplomatic-quarter"],
+    ["ash bloom", "ash-bloom-al-nakheel"],
+  ] as const) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === id, `${ask} matches ${id} first, got ${hits.join(",")}`);
+  }
+  const mIds = new Set<string>([...chainIds, ...localIds]);
+  for (const ask of ["pink", "camel", "بينك", "كاميل", "table", "تيبل", "coffee", "كوفي"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.some((hit) => mIds.has(hit)), `${ask} does not pin a Batch M row, got ${hits.join(",")}`);
+  }
+  assert(!matchCatalogShops("ash", listRealShops()).some((shop) => shop.id === "ash-bloom-al-nakheel"), "bare ash does not pin Ash Bloom (QA #262 minor)");
+  for (const [ask, first] of [["archi", "archi-al-bujairi-diriyah"], ["urth", "urth-caffe-tahlia-sulimaniyah"], ["draft", "draft-cafe-kafd"], ["wacafe", "wacafe-al-rabi"], ["costa", "costa-tala-mall-an-nafal"]] as const) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === first, `bare ${ask} keeps the older row first, got ${hits.join(",")}`);
+  }
+  for (const id of [...chainIds, ...localIds]) {
+    const shop = getShop(id)!;
+    for (const name of [shop.nameEn, shop.nameAr]) {
+      assert(matchCatalogShops(name, listRealShops()).some((hit) => hit.id === id), `${name} name-matches ${id}`);
+    }
+  }
 }
 // Batch H (9 Oct 2026): McCafé Uthman Ibn Affan (Al Izdihar) was dropped per Amjad (r3); no McCafé row is live. Dunkin' stays out pending Amjad (donut-led rule).
 assert(
@@ -882,6 +981,9 @@ const SIT_DOWN_ONLY_CHAINS = new Set<string>([
   "starbucks-panorama-al-mathar",
   "starbucks-tafaseel-al-mathar",
   "starbucks-takhassusi-al-mathar",
+  "costa-coffee-diplomatic-quarter",
+  "caribou-coffee-diplomatic-quarter",
+  "starbucks-safarat-diplomatic-quarter", "starbucks-oud-square-diplomatic-quarter",
 ]);
 const dineInLaneRemoved = [
   // Drive Coffee rows that were never on the drive-through lane (tagged 4 Oct 2026).
@@ -914,6 +1016,10 @@ const dineInLaneRemoved = [
   "starbucks-panorama-al-mathar",
   "starbucks-tafaseel-al-mathar",
   "starbucks-takhassusi-al-mathar",
+  // Batch M (14 Oct): sit-down chains in the Diplomatic Quarter, no drive-through.
+  "costa-coffee-diplomatic-quarter",
+  "caribou-coffee-diplomatic-quarter",
+  "starbucks-safarat-diplomatic-quarter", "starbucks-oud-square-diplomatic-quarter",
 ] as const;
 const qaKiosks = [
   "drcafe-al-wadi",
@@ -1064,8 +1170,8 @@ assert(
 const brandIds = Object.keys(CHAIN_BRANDS);
 assert(
   brandIds.join(",") ===
-    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,java-time,24cafe,shqaf,coffee-day,kyan,dancafe,drive,half-million,tim-hortons,veloce,costa",
-  "registry is the mass-market set (Java Time added in Batch I)",
+    "starbucks,dunkin,mccafe,barns,peets,dr-cafe,java,java-time,24cafe,shqaf,coffee-day,kyan,dancafe,drive,half-million,tim-hortons,veloce,costa,caribou",
+  "registry is the mass-market set (Java Time added in Batch I; Caribou in Batch M)",
 );
 assert(!isChainBrandId("krispy-kreme"), "Krispy Kreme is not a chain brand");
 assert(isChainBrandId("shqaf") && CHAIN_BRANDS.shqaf.nameAr === "شقفه", "Shqaf is شقفه");
@@ -1131,8 +1237,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 450, "specialty discovery is 450 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds; Veloce is a chain)");
-assert(listRealShops().length === 527, "catalog is 527 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 4 other adds)");
+assert(listDiscoveryShops().length === 459, "specialty discovery is 459 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 9 Batch M Diplomatic Quarter local; Veloce is a chain)");
+assert(listRealShops().length === 540, "catalog is 540 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah) and Batch J (8 Al Mathar + 4 other adds) and Batch M (13 Diplomatic Quarter)");
 assert(listLiveDistrictIds().length === 64, "specialty districts are 64 (62 + Shubra, Batch F + As Salam, Batch J THE HAT; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 78,
@@ -1140,12 +1246,12 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F)");
 assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
-assert(listListingShops().length === 472, "listing is 450 local plus the 22 sit-down chains");
-assert(listPublicShops().length === 472, "public list includes the 22 sit-down chains");
-assert(listBrowseDirectoryShops().length === 476, "browse is 418 plus the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
+assert(listListingShops().length === 485, "listing is 459 local plus the 26 sit-down chains");
+assert(listPublicShops().length === 485, "public list includes the 26 sit-down chains");
+assert(listBrowseDirectoryShops().length === 489, "browse is 418 plus the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
 assert(
-  listListingShops().filter((shop) => shop.isChain).length === 22,
-  "exactly 22 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar)",
+  listListingShops().filter((shop) => shop.isChain).length === 26,
+  "exactly 26 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar)",
 );
 assert(
   listDirectoryShopsForDistrict("al-malaz").some((shop) => shop.id === "java-cafe-al-malaz") &&
@@ -1337,7 +1443,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "sulimaniyah,al-rahmaniyyah,al-mughrizat,al-manar,al-ghadeer,al-qirawan,al-malaz,al-mathar,at-taawun,namar,shubra,tuwaiq,as-suwaidi,an-nafal",
+  withMixedChainMeta.join(",") === "sulimaniyah,al-rahmaniyyah,al-mughrizat,al-manar,diplomatic-quarter,al-ghadeer,al-qirawan,al-malaz,al-mathar,at-taawun,namar,shubra,tuwaiq,as-suwaidi,an-nafal",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -1556,7 +1662,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "d62990fce50d84b933403564194e7eb0745eed7889b5ebad51bc04d74ab15c73",
+  copyHash === "6d8ba4bc41b21d88f9129ea4c15e5a80bac45ec72b29581f8f0345c714d59964",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1686,12 +1792,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "4f574ba7d6b2b1f29fd94d45e8b0737aadd54175e66ccba6fe4644d20eca7f95",
+  llmsHash === "df3121f6ec3f092a0efe8bc9418fd835b53098d0450c79ed87751cfb3972140b",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("450 local, 22 chain branches"),
-  "llms.txt names the 22 chain branches separately from specialty",
+  llms.includes("459 local, 26 chain branches"),
+  "llms.txt names the 26 chain branches separately from specialty",
 );
 
 // 16 Sep scope stays: no Starbucks row carries the drive-through tag or chip.

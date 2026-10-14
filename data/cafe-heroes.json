@@ -14753,5 +14753,346 @@
         "uri": "https://maps.google.com/maps/contrib/100506136153835499465"
       }
     }
+  ],
+  "ralphs-coffee-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/ralphs-coffee-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "herminio sanchez",
+        "uri": "https://maps.google.com/maps/contrib/100312759881868832907"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ralphs-coffee-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Ssenyonga Marvin",
+        "uri": "https://maps.google.com/maps/contrib/115839092320486761703"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ralphs-coffee-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Hadi Gharzan",
+        "uri": "https://maps.google.com/maps/contrib/101428547640378716187"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ralphs-coffee-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "Grace Toralba",
+        "uri": "https://maps.google.com/maps/contrib/113455860347549476530"
+      }
+    }
+  ],
+  "onda-coffee-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/onda-coffee-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "Hector Barrios-Garrido, PhD",
+        "uri": "https://maps.google.com/maps/contrib/105054263800057055379"
+      }
+    },
+    {
+      "src": "/cafe-heroes/onda-coffee-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Onda Coffee مقهى أوندا",
+        "uri": "https://maps.google.com/maps/contrib/100495903035596850162"
+      }
+    },
+    {
+      "src": "/cafe-heroes/onda-coffee-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Hector Barrios-Garrido, PhD",
+        "uri": "https://maps.google.com/maps/contrib/105054263800057055379"
+      }
+    }
+  ],
+  "draft-cafe-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/draft-cafe-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "ابو وسام",
+        "uri": "https://maps.google.com/maps/contrib/105692519078785853670"
+      }
+    },
+    {
+      "src": "/cafe-heroes/draft-cafe-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Shafiul Chowdhury",
+        "uri": "https://maps.google.com/maps/contrib/115621586864317577931"
+      }
+    },
+    {
+      "src": "/cafe-heroes/draft-cafe-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Rafik Ansari",
+        "uri": "https://maps.google.com/maps/contrib/111131672103795147662"
+      }
+    },
+    {
+      "src": "/cafe-heroes/draft-cafe-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "Nawaf Th",
+        "uri": "https://maps.google.com/maps/contrib/109795029850410420087"
+      }
+    }
+  ],
+  "wacafe-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/wacafe-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "Ms. Hope",
+        "uri": "https://maps.google.com/maps/contrib/108146111628110463615"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wacafe-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "azzoz riyad",
+        "uri": "https://maps.google.com/maps/contrib/110109577162679204946"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wacafe-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "م السبيعي",
+        "uri": "https://maps.google.com/maps/contrib/116319475879967018402"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wacafe-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "H",
+        "uri": "https://maps.google.com/maps/contrib/103219229554074268275"
+      }
+    }
+  ],
+  "archi-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/archi-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "Archi Oud square",
+        "uri": "https://maps.google.com/maps/contrib/107271744851457494660"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "أم جمانا",
+        "uri": "https://maps.google.com/maps/contrib/108709416503413675297"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Susana Fuentes",
+        "uri": "https://maps.google.com/maps/contrib/101797525760385788619"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "أم جمانا",
+        "uri": "https://maps.google.com/maps/contrib/108709416503413675297"
+      }
+    }
+  ],
+  "urth-caffe-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/urth-caffe-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "ثابت الصمدي",
+        "uri": "https://maps.google.com/maps/contrib/107852007266218079169"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Azizah",
+        "uri": "https://maps.google.com/maps/contrib/101452131493924723354"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Matthew Hollands",
+        "uri": "https://maps.google.com/maps/contrib/103539996159259921590"
+      }
+    },
+    {
+      "src": "/cafe-heroes/urth-caffe-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "Sendi I.btissem",
+        "uri": "https://maps.google.com/maps/contrib/105439333544535069745"
+      }
+    }
+  ],
+  "costa-coffee-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/costa-coffee-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "د. سليمان داود المعلم",
+        "uri": "https://maps.google.com/maps/contrib/104076952119347080038"
+      }
+    },
+    {
+      "src": "/cafe-heroes/costa-coffee-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Sofyan Faris",
+        "uri": "https://maps.google.com/maps/contrib/116951830039106799336"
+      }
+    },
+    {
+      "src": "/cafe-heroes/costa-coffee-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Abdulrahman Alghamdi",
+        "uri": "https://maps.google.com/maps/contrib/115418251892467939842"
+      }
+    }
+  ],
+  "caribou-coffee-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/caribou-coffee-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "كاريبو كوفي - Caribou Coffee",
+        "uri": "https://maps.google.com/maps/contrib/105554210150161577481"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caribou-coffee-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "كاريبو كوفي - Caribou Coffee",
+        "uri": "https://maps.google.com/maps/contrib/105554210150161577481"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caribou-coffee-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Zayed’s Experiences",
+        "uri": "https://maps.google.com/maps/contrib/102906277412210891041"
+      }
+    }
+  ],
+  "nua-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/nua-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "NUA",
+        "uri": "https://maps.google.com/maps/contrib/103407287108423911545"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nua-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Roo7",
+        "uri": "https://maps.google.com/maps/contrib/108485840035708843825"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nua-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "ali a",
+        "uri": "https://maps.google.com/maps/contrib/111425028260910441904"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nua-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "juulie1408",
+        "uri": "https://maps.google.com/maps/contrib/110537130513325459596"
+      }
+    }
+  ],
+  "pink-camel-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/pink-camel-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "Nawal",
+        "uri": "https://maps.google.com/maps/contrib/116479203116845014945"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pink-camel-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "آوركيد يحيى",
+        "uri": "https://maps.google.com/maps/contrib/106886266340186971841"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pink-camel-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "Yanan Fu",
+        "uri": "https://maps.google.com/maps/contrib/108255284110674416394"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pink-camel-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "Osama Alnahdi",
+        "uri": "https://maps.google.com/maps/contrib/114759711614329761311"
+      }
+    }
+  ],
+  "starbucks-safarat-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/starbucks-safarat-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "Nasser Sami",
+        "uri": "https://maps.google.com/maps/contrib/103902295172478013481"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-safarat-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "pang lele",
+        "uri": "https://maps.google.com/maps/contrib/109564882828897655990"
+      }
+    }
+  ],
+  "starbucks-oud-square-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/starbucks-oud-square-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "Y E",
+        "uri": "https://maps.google.com/maps/contrib/105355056871274106888"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-oud-square-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "Nourchene Atri",
+        "uri": "https://maps.google.com/maps/contrib/105355616800799897946"
+      }
+    }
+  ],
+  "coffee-table-diplomatic-quarter": [
+    {
+      "src": "/cafe-heroes/coffee-table-diplomatic-quarter/1.jpg",
+      "attribution": {
+        "displayName": "The Coffee Table",
+        "uri": "https://maps.google.com/maps/contrib/109172919490896376603"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-table-diplomatic-quarter/2.jpg",
+      "attribution": {
+        "displayName": "BRHOOM BRHOOM",
+        "uri": "https://maps.google.com/maps/contrib/115073371772228408689"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-table-diplomatic-quarter/3.jpg",
+      "attribution": {
+        "displayName": "The Coffee Table",
+        "uri": "https://maps.google.com/maps/contrib/109172919490896376603"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-table-diplomatic-quarter/4.jpg",
+      "attribution": {
+        "displayName": "The Coffee Table",
+        "uri": "https://maps.google.com/maps/contrib/109172919490896376603"
+      }
+    }
   ]
 }

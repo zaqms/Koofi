@@ -128,6 +128,13 @@ export const CHAIN_BRANDS = {
     nameAr: "كوستا كوفي",
     logo: "/logos/costa-mark.png",
   },
+  // Batch M (14 Oct 2026): global chain, dozens of Riyadh branches — mass-market under the 8+ branch rule. No official mark on the box yet (letter tile).
+  caribou: {
+    id: "caribou",
+    nameEn: "Caribou Coffee",
+    nameAr: "كاريبو كوفي",
+    logo: null,
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -156,6 +163,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   "tim-hortons": ["tim hortons", "tim horton", "timhortons", "تيم هورتنز", "تيم هورتن", "تيم هورتونز"],
   veloce: ["veloce", "veloce cafe", "فيلوتشي", "فيلوتشي كافيه", "فيلوتشي كافية"],
   costa: ["costa", "costa coffee", "كوستا", "كوستا كوفي", "كوستا كافيه"],
+  caribou: ["caribou", "caribou coffee", "كاريبو", "كاريبو كوفي", "كاريبو كافيه"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -209,6 +217,7 @@ export function chainBrandKeyFromName(latinName: string): string | null {
   }
   if (latinName.startsWith("veloce")) return "veloce";
   if (latinName.startsWith("costa")) return "costa";
+  if (latinName.startsWith("caribou")) return "caribou";
   if (
     latinName.startsWith("half million") ||
     compact.startsWith("halfmillion")

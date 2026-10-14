@@ -578,14 +578,13 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "diplomatic-quarter": {
     lead: `The Diplomatic Quarter (الحي الدبلوماسي) is its own Riyadh list — السفارات on the maps card. This page is the DQ set we’ve put on wain.lol so far.
 
-[Jazean DQ](/en/c/jazean-diplomatic-quarter) is the name on this page today. We don’t rank it.`,
-    hereIntro: `There is **{count}** cafe from the Diplomatic Quarter on the catalog today:`,
+[Jazean DQ](/en/c/jazean-diplomatic-quarter), [Ralph’s Coffee](/en/c/ralphs-coffee-diplomatic-quarter), [Onda Coffee](/en/c/onda-coffee-diplomatic-quarter), and [NUA](/en/c/nua-diplomatic-quarter) are among the local cafes on this list today. We don’t rank them.`,
+    hereIntro: `There are **{count}** cafes from the Diplomatic Quarter on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If the Diplomatic Quarter isn’t the stop, these Riyadh lists sit closer in on the site:`,
     about: `wain.lol helps you find coffee in Riyadh — three suggestions, or a neighborhood list like the Diplomatic Quarter. [About](/en/about).
 
 Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
-    meta: "{countCafe} in the Diplomatic Quarter on wain.lol — a Riyadh list including Jazean DQ, with a Maps link.",
   },
   "king-fahd": {
     lead: `King Fahd District (الملك فهد) is its own district on the catalog — Al Olaya Street runs through it, but this is not the Al Olaya page. This is the King Fahd District set on wain.lol.

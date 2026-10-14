@@ -50575,6 +50575,1584 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "ralphs-coffee-diplomatic-quarter",
+      "nameAr": "قهوة رالفز",
+      "nameEn": "Ralph's Coffee",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d000ae3161f:0xb196213d7fab734a!8m2!3d24.6860033!4d46.6281746",
+      "pin": {
+        "lat": 24.6860033,
+        "lng": 46.6281746
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJHxbjCgAdLz4RSnOrfz0hlrE",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 11:30 PM",
+          "Tuesday: 7:00 AM – 11:30 PM",
+          "Wednesday: 7:00 AM – 11:30 PM",
+          "Thursday: 7:00 AM – 11:30 PM",
+          "Friday: 7:00 AM – 11:30 PM",
+          "Saturday: 7:00 AM – 11:30 PM",
+          "Sunday: 7:00 AM – 11:30 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "onda-coffee-diplomatic-quarter",
+      "nameAr": "مقهى أوندا",
+      "nameEn": "Onda Coffee",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d13a420d253:0x8799f8bf083fb703!8m2!3d24.6907429!4d46.6279529",
+      "pin": {
+        "lat": 24.6907429,
+        "lng": 46.6279529
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJU9IgpBMdLz4RA7c_CL_4mYc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 3:00 AM",
+          "Friday: 6:00 AM – 3:00 AM",
+          "Saturday: 6:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "draft-cafe-diplomatic-quarter",
+      "nameAr": "درافت",
+      "nameEn": "DRAFT Café",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1da7c381e52f:0xa16b7e7db58c708f!8m2!3d24.6839911!4d46.6242174",
+      "pin": {
+        "lat": 24.6839911,
+        "lng": 46.6242174
+      },
+      "logoUrl": "/logos/draft-cafe-kafd.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJL-WBw6cdLz4Rj3CMtX1-a6E",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 12:30 AM",
+          "Tuesday: 7:00 AM – 12:30 AM",
+          "Wednesday: 7:00 AM – 12:30 AM",
+          "Thursday: 7:00 AM – 12:30 AM",
+          "Friday: 7:00 AM – 12:30 AM",
+          "Saturday: 7:00 AM – 12:30 AM",
+          "Sunday: 7:00 AM – 12:30 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "wacafe-diplomatic-quarter",
+      "nameAr": "وكف",
+      "nameEn": "Wacafe",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d2081b074e5:0x439509491bcd3c40!8m2!3d24.680665899999997!4d46.6232317",
+      "pin": {
+        "lat": 24.680665899999997,
+        "lng": 46.6232317
+      },
+      "logoUrl": "/logos/wacafe-al-rabi.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJ5XSwgSAdLz4RQDzNG0kJlUM",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 1:00 AM",
+          "Tuesday: 7:00 AM – 1:00 AM",
+          "Wednesday: 7:00 AM – 1:00 AM",
+          "Thursday: 7:00 AM – 1:00 AM",
+          "Friday: 7:00 AM – 1:00 AM",
+          "Saturday: 7:00 AM – 1:00 AM",
+          "Sunday: 7:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "archi-diplomatic-quarter",
+      "nameAr": "ارتشي",
+      "nameEn": "ARCHI",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d64527b7dbf:0xb44d7405c2e439d3!8m2!3d24.6747947!4d46.6249101",
+      "pin": {
+        "lat": 24.6747947,
+        "lng": 46.6249101
+      },
+      "logoUrl": "/logos/archi-diriyah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJv317UmQdLz4R0znkwgV0TbQ",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 6:00 AM – 12:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "urth-caffe-diplomatic-quarter",
+      "nameAr": "إيرث كافيه",
+      "nameEn": "Urth Caffé",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1df71d2c08b3:0x5cbbe79f6102b8ef!8m2!3d24.6750834!4d46.624641499999996",
+      "pin": {
+        "lat": 24.6750834,
+        "lng": 46.624641499999996
+      },
+      "logoUrl": "/logos/urth-caffe-tahlia-sulimaniyah.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJswgsHfcdLz4R77gCYZ_nu1w",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 1:00 AM",
+          "Tuesday: 7:00 AM – 1:00 AM",
+          "Wednesday: 7:00 AM – 1:00 AM",
+          "Thursday: 7:00 AM – 1:00 AM",
+          "Friday: 7:00 AM – 1:00 AM",
+          "Saturday: 7:00 AM – 1:00 AM",
+          "Sunday: 7:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "costa-coffee-diplomatic-quarter",
+      "isChain": true,
+      "chainBrand": "costa",
+      "nameAr": "كوستا كوفي",
+      "nameEn": "Costa Coffee",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f014cddc86c6b:0xfb5c8460381064c7!8m2!3d24.684483!4d46.6240868",
+      "pin": {
+        "lat": 24.684483,
+        "lng": 46.6240868
+      },
+      "logoUrl": "/logos/costa-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJa2zI3UwBLz4Rx2QQOGCEXPs",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 9:00 AM – 9:00 PM",
+          "Tuesday: 9:00 AM – 9:00 PM",
+          "Wednesday: 9:00 AM – 9:00 PM",
+          "Thursday: 9:00 AM – 9:00 PM",
+          "Friday: Closed",
+          "Saturday: Closed",
+          "Sunday: 9:00 AM – 9:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 21,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 21,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "caribou-coffee-diplomatic-quarter",
+      "isChain": true,
+      "chainBrand": "caribou",
+      "nameAr": "كاريبو كوفي",
+      "nameEn": "Caribou Coffee",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dc4deb50e49:0x2dc87cbf687e6739!8m2!3d24.680462!4d46.623304999999995",
+      "pin": {
+        "lat": 24.680462,
+        "lng": 46.623304999999995
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJSQ613sQdLz4ROWd-aL98yC0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 6:00 AM – 12:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "nua-diplomatic-quarter",
+      "nameAr": "نوا",
+      "nameEn": "NUA",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1dfb581f3c43:0xd8088b76a22e40b1!8m2!3d24.6859188!4d46.628523099999995",
+      "pin": {
+        "lat": 24.6859188,
+        "lng": 46.628523099999995
+      },
+      "logoUrl": "/logos/nua-diplomatic-quarter.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJQzwfWPsdLz4RsUAuonaLCNg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 3:00 PM – 12:00 AM",
+          "Tuesday: 3:00 PM – 12:00 AM",
+          "Wednesday: 3:00 PM – 12:00 AM",
+          "Thursday: 3:00 PM – 12:00 AM",
+          "Friday: 3:00 PM – 12:00 AM",
+          "Saturday: 3:00 PM – 12:00 AM",
+          "Sunday: 3:00 PM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "pink-camel-diplomatic-quarter",
+      "nameAr": "بينك كاميل",
+      "nameEn": "Pink Camel",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d93dca4aa8f:0x9780b84556519d47!8m2!3d24.678976499999997!4d46.623295399999996",
+      "pin": {
+        "lat": 24.678976499999997,
+        "lng": 46.623295399999996
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJj6qk3JMdLz4RR51RVkW4gJc",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 8:00 AM – 5:30 PM",
+          "Tuesday: 8:00 AM – 5:30 PM",
+          "Wednesday: 8:00 AM – 7:30 AM",
+          "Thursday: 8:00 AM – 5:30 PM",
+          "Friday: Closed",
+          "Saturday: Closed",
+          "Sunday: 8:00 AM – 5:30 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 17,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 17,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 17,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 7,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 17,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "starbucks-safarat-diplomatic-quarter",
+      "isChain": true,
+      "chainBrand": "starbucks",
+      "nameAr": "ستاربكس",
+      "nameEn": "Starbucks",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1c5b5f694c2b:0xc1ea22f19166bd18!8m2!3d24.6734719!4d46.623242399999995",
+      "pin": {
+        "lat": 24.6734719,
+        "lng": 46.623242399999995
+      },
+      "logoUrl": "/logos/starbucks-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJK0xpX1scLz4RGL1mkfEi6sE",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 10:00 PM",
+          "Tuesday: 6:00 AM – 10:00 PM",
+          "Wednesday: 6:00 AM – 10:00 PM",
+          "Thursday: 6:00 AM – 10:00 PM",
+          "Friday: 6:00 – 11:45 AM, 12:15 – 10:00 PM",
+          "Saturday: 6:00 AM – 10:00 PM",
+          "Sunday: 6:00 AM – 10:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 11,
+              "minute": 45
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 15
+            },
+            "close": {
+              "day": 5,
+              "hour": 22,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 22,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "starbucks-oud-square-diplomatic-quarter",
+      "isChain": true,
+      "chainBrand": "starbucks",
+      "nameAr": "ستاربكس",
+      "nameEn": "Starbucks",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1c5ba739a45f:0xc09b53ce248d3ba3!8m2!3d24.675478599999998!4d46.624784700000006",
+      "pin": {
+        "lat": 24.675478599999998,
+        "lng": 46.624784700000006
+      },
+      "logoUrl": "/logos/starbucks-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJX6Q5p1scLz4RozuNJM5Tm8A",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:30 AM – 12:00 AM",
+          "Tuesday: 6:30 AM – 12:00 AM",
+          "Wednesday: 6:30 AM – 12:00 AM",
+          "Thursday: 6:30 AM – 12:00 AM",
+          "Friday: 6:30 – 11:45 AM, 12:15 PM – 12:00 AM",
+          "Saturday: 6:30 AM – 12:00 AM",
+          "Sunday: 6:30 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 11,
+              "minute": 45
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 15
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "coffee-table-diplomatic-quarter",
+      "nameAr": "ذا كوفي تيبل",
+      "nameEn": "The Coffee Table",
+      "city": "riyadh",
+      "neighborhood": "diplomatic-quarter",
+      "neighborhoodAr": "الحي الدبلوماسي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1db6d38a42b1:0x796d3a7ea41b3842!8m2!3d24.6743101!4d46.623562199999995",
+      "pin": {
+        "lat": 24.6743101,
+        "lng": 46.623562199999995
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJsUKK07YdLz4RQjgbpH46bXk",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 11:00 PM",
+          "Tuesday: 7:00 AM – 11:00 PM",
+          "Wednesday: 7:00 AM – 11:00 PM",
+          "Thursday: 7:00 AM – 11:00 PM",
+          "Friday: 7:00 AM – 11:00 PM",
+          "Saturday: 7:00 AM – 11:00 PM",
+          "Sunday: 7:00 AM – 11:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

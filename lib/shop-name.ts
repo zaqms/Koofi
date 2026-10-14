@@ -211,6 +211,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch J other adds: Google lists ديسم, the sign says DISAM.
   "disam-al-narjis": ["disam", "ديسم", "disam cafe", "ديسم كافيه"],
   "the-hat-as-salam": ["the hat", "ذا هات", "the hat coffee", "ذا هات كافيه"],
+  // Batch M (14 Oct 2026): brand-qualified Starbucks branch aliases only — bare safarat/oud/square stay unpinned.
+  "starbucks-safarat-diplomatic-quarter": ["starbucks diplomatic quarter", "starbucks dq", "ستاربكس السفارات", "ستاربكس الحي الدبلوماسي"],
+  "starbucks-oud-square-diplomatic-quarter": ["starbucks oud", "starbucks oud square", "ستاربكس العود", "ستاربكس ساحة العود"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -249,6 +252,11 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "leto-caffe-al-mathar": ["l"],
   // "bake" / «بيك» alone are generic (bakery asks; «بيك» is also everyday Arabic). "robusta" / «روبيستا» / full name still match.
   "robusta-bake-al-rawdah": ["bake", "بيك"],
+  // Batch M (14 Oct 2026): generic words from DQ names never pin a café alone.
+  "pink-camel-diplomatic-quarter": ["pink", "camel", "بينك", "كاميل"],
+  "coffee-table-diplomatic-quarter": ["table", "تيبل", "ذا", "ذا تيبل"],
+  // QA #262 minor: bare "ash" is a common word; "ash bloom" / «آش بلوم» still find it.
+  "ash-bloom-al-nakheel": ["ash"],
 };
 
 function chainBrandIdForShop(

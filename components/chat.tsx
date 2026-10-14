@@ -1656,6 +1656,7 @@ export function Chat({
                 id: halfwayInvite?.id ?? halfwayWaitingId ?? undefined,
               },
               halfwayMore: paging || undefined,
+              halfwayReroll: reroll || undefined,
               beenIds: paging
                 ? Array.from(new Set([...shownIds, ...been.ids]))
                 : been.ids,

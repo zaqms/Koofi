@@ -328,7 +328,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1243, `sitemap is 1243 (4 legal pages AR/EN + 1111 plus 10 Batch E cafés, 9 Batch F cafés, 15 Batch G cafés, 7 Batch H cafés, 6 Batch I cafés, 8 + 4 Batch J cafés and 3 Batch L cafés × AR/EN, plus the Shubra and Umm Al Hamam Ash Sharqi districts AR/EN), got ${locs.length}`);
+assert(locs.length === 1267, `sitemap is 1267 (4 legal pages AR/EN + 1111 plus 10 Batch E cafés, 9 Batch F cafés, 15 Batch G cafés, 7 Batch H cafés, 6 Batch I cafés, 8 + 4 Batch J cafés 12 Batch K cafés and 3 Batch L cafés × AR/EN, plus the Shubra and Umm Al Hamam Ash Sharqi districts AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

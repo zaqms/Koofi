@@ -211,8 +211,11 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch J other adds: Google lists ديسم, the sign says DISAM.
   "disam-al-narjis": ["disam", "ديسم", "disam cafe", "ديسم كافيه"],
   "the-hat-as-salam": ["the hat", "ذا هات", "the hat coffee", "ذا هات كافيه"],
-  // Batch L (13 Oct): Sill still shows as DRIPORA CAFE on Google (same placeId); brand-qualified only, bare sill / سيل / ملء are everyday words.
-  "sill-umm-al-hamam-ash-sharqi": ["sill cafe", "sill coffee", "sill umm al hamam", "مقهى سيل", "سيل كافيه", "مقهى ملء", "ملء للقهوة المختصة", "dripora", "dripora cafe", "دريبورا", "دريبورا كافيه"],
+  // Batch K (12 Oct): brand-qualified only. Bare "oruba" / "square" / «العروبة» never pin the chain; bare "archi" keeps the older rows first.
+  "starbucks-oruba-square-umm-al-hamam-al-gharbi": ["starbucks oruba", "starbucks oruba square", "starbucks urubah", "ستاربكس العروبة", "ستاربكس العروبة سكوير", "ستاربكس عروبة سكوير"],
+  "archi-umm-al-hamam-al-gharbi": ["archi umm al hamam", "ارتشي ام الحمام"],
+  // Batch L (13 Oct): Fill («ملء», earlier read as Sill) still shows as DRIPORA CAFE on Google (same placeId); brand-qualified only, bare fill / sill / سيل / ملء are everyday words. Sill and DRIPORA stay as aliases.
+  "fill-umm-al-hamam-ash-sharqi": ["fill cafe", "fill coffee", "fill umm al hamam", "sill cafe", "sill coffee", "sill umm al hamam", "مقهى سيل", "سيل كافيه", "مقهى ملء", "ملء للقهوة المختصة", "dripora", "dripora cafe", "دريبورا", "دريبورا كافيه"],
   "molten-umm-al-hamam-ash-sharqi": ["molten cafe", "molten coffee", "molten umm al hamam", "مولتن كافيه"],
   "elixir-bunn-umm-al-hamam-ash-sharqi": ["elixir umm al hamam", "elixir bunn umm al hamam", "اكسير ام الحمام"],
 };
@@ -253,8 +256,16 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "leto-caffe-al-mathar": ["l"],
   // "bake" / «بيك» alone are generic (bakery asks; «بيك» is also everyday Arabic). "robusta" / «روبيستا» / full name still match.
   "robusta-bake-al-rawdah": ["bake", "بيك"],
+  // Batch K (12 Oct): everyday words and venue names never pin a café on their own; full names still match.
+  "book-of-beans-umm-al-hamam-al-gharbi": ["book", "beans", "كتاب"],
+  "cafe-kitsune-laysen-umm-al-hamam-al-gharbi": ["caf"],
+  "tobys-estate-laysen-umm-al-hamam-al-gharbi": ["laysen", "valley"],
+  "hamasat-coffee-umm-al-hamam-al-gharbi": ["همسات"],
+  "mazaj-cafe-umm-al-hamam-al-gharbi": ["مزاج"],
+  "shafaq-cafe-umm-al-hamam-al-gharbi": ["شفق"],
+  "malmoum-cafe-umm-al-hamam-al-gharbi": ["ملموم"],
   // Batch L (13 Oct): everyday words never pin a café on their own; brand-qualified names still match.
-  "sill-umm-al-hamam-ash-sharqi": ["sill", "ملء"],
+  "fill-umm-al-hamam-ash-sharqi": ["fill", "sill", "ملء"],
   "molten-umm-al-hamam-ash-sharqi": ["molten"],
 };
 

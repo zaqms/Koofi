@@ -232,8 +232,8 @@ assert(
   assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
   assert(
     listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
-      "elixir-bunn-umm-al-hamam-ash-sharqi,sill-umm-al-hamam-ash-sharqi,molten-umm-al-hamam-ash-sharqi",
-    `${id} catalog is Elixir Bunn, Sill and molten`,
+      "elixir-bunn-umm-al-hamam-ash-sharqi,fill-umm-al-hamam-ash-sharqi,molten-umm-al-hamam-ash-sharqi",
+    `${id} catalog is Elixir Bunn, Fill and molten`,
   );
   assert(
     sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
@@ -244,7 +244,8 @@ assert(
 // Bisat batch (3 Oct): four new live districts, one cafe each. Umm Al Hamam Al Gharbi and
 // As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.
 for (const [id, en, ar, shopId, onSheet] of [
-  ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi", true],
+  // Batch K (12 Oct): Umm Al Hamam Al Gharbi gains 12 cafés (11 local + Starbucks Oruba Square sit-down chain; Java Time dropped).
+  ["umm-al-hamam-al-gharbi", "Umm Al Hamam Al Gharbi", "أم الحمام الغربي", "bisat-umm-al-hamam-al-gharbi,archi-umm-al-hamam-al-gharbi,book-of-beans-umm-al-hamam-al-gharbi,caffeination-umm-al-hamam-al-gharbi,cafe-kitsune-laysen-umm-al-hamam-al-gharbi,jaam-coffee-umm-al-hamam-al-gharbi,midway-coffee-umm-al-hamam-al-gharbi,malmoum-cafe-umm-al-hamam-al-gharbi,tobys-estate-laysen-umm-al-hamam-al-gharbi,hamasat-coffee-umm-al-hamam-al-gharbi,mazaj-cafe-umm-al-hamam-al-gharbi,shafaq-cafe-umm-al-hamam-al-gharbi,starbucks-oruba-square-umm-al-hamam-al-gharbi", true],
   // Batch G (8 Oct): An Nafal gains 15 cafés (12 local + Costa, Starbucks and dr.CAFE sit-down chains).
   ["an-nafal", "An Nafal", "النفل", "bisat-an-nafal,air-speciality-an-nafal,black-stamp-an-nafal,nafel-coffee-an-nafal,pivot-espresso-an-nafal,roastree-an-nafal,cave-cafe-an-nafal,kaseb-concept-an-nafal,hatheeth-an-nafal,percol-an-nafal,peacock-an-nafal,grotta-an-nafal,btw-an-nafal,costa-tala-mall-an-nafal,starbucks-tala-mall-an-nafal,drcafe-an-nafal", false],
   ["king-salman", "King Salman", "الملك سلمان", "rex-king-salman,tul-cafe-king-salman", false],

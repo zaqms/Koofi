@@ -119,7 +119,7 @@ const MALAZ_REFILL_DISTRICTS = ["al-malaz"] as const;
 const BISAT_BATCH_NEW_DISTRICTS = ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const;
 // Batch D3 (4 Oct 2026): Tul Cafe opens As Suwaidi Al Gharbi + Ash Shifa; ON OFF Coffee opens Al Qadisiyah + Dhahrat Laban.
 const BATCH_D3_NEW_DISTRICTS = ["as-suwaidi-al-gharbi", "ash-shifa", "al-qadisiyah", "dhahrat-laban"] as const;
-// Batch L (13 Oct 2026): Elixir Bunn, Sill and molten open Umm Al Hamam Ash Sharqi (3 local cafés, no chain).
+// Batch L (13 Oct 2026): Elixir Bunn, Fill and molten open Umm Al Hamam Ash Sharqi (3 local cafés, no chain).
 const BATCH_L_NEW_DISTRICT = "umm-al-hamam-ash-sharqi";
 // Batch F (5 Oct 2026): Shubra was chain-only (dr.CAFE drive-through lane); 7 local cafés + 2 sit-down chains open it.
 const BATCH_F_SHUBRA_CAFES = 9;
@@ -189,10 +189,10 @@ assert(
     rowsEn.some(
       (row) =>
         row.id === id &&
-        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "an-nafal" ? 16 : id === "king-salman" ? 2 : 1),
+        row.cafeCount === (id === "as-suwaidi" ? 8 : id === "an-nafal" ? 16 : id === "king-salman" ? 2 : id === "umm-al-hamam-al-gharbi" ? 13 : 1),
     ),
   ),
-  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1; An Nafal 16 after Batch G)",
+  "Bisat batch districts stay on live browse (King Salman 2 after Tul Cafe; As Suwaidi 8 after Batch D1; An Nafal 16 after Batch G; Umm Al Hamam Al Gharbi 13 after Batch K)",
 );
 assert(
   BATCH_D3_NEW_DISTRICTS.every((id) =>

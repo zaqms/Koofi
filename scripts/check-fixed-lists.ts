@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 475,
-  outdoor: 224,
+  nearby: 487,
+  outdoor: 231,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 530, "catalog is 530 after Batch L (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 3 Umm Al Hamam Ash Sharqi)");
-assert(listListingShops().length === 475, "listing is 475 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 3 Batch L Umm Al Hamam Ash Sharqi)");
-assert(listPublicShops().length === 475, "/api/shops pool is 475");
+assert(listRealShops().length === 542, "catalog is 542 after Batch L (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi)");
+assert(listListingShops().length === 487, "listing is 487 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi)");
+assert(listPublicShops().length === 487, "/api/shops pool is 487");
 assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
-assert(listSitemapLocs().length === 1243, "sitemap is 1243 (4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN)");
+assert(listSitemapLocs().length === 1267, "sitemap is 1267 (4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 22,
-  "nearby includes the 22 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal) + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar",
+  nearby.filter((shop) => isChainShop(shop)).length === 23,
+  "nearby includes the 23 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal) + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -107,8 +107,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 8 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 216,
-  "outdoor is 216 local + 8 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees)",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 223,
+  "outdoor is 223 local + 8 chains (Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
 );
 
 const coffee = listBestCoffeeShops();

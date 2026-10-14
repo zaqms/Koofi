@@ -97,6 +97,11 @@ import {
   notifyHalfwayResults,
 } from "../lib/halfway-results-webhook";
 import {
+  claimHalfwayResultsNotify,
+  HALFWAY_NOTIFY_WINDOW_MS,
+  resetHalfwayNotifyGuard,
+} from "../lib/halfway-results-dedupe";
+import {
   GTM_EVENT_TIMEOUT_MS,
   meetHalfwayFeedbackParams,
   meetHalfwayResultsParams,
@@ -1669,6 +1674,80 @@ assert(
     /notifyHalfwayResults\(\{[\s\S]*?\blocations,/.test(chat) &&
     !chat.includes("HALFWAY_RESULTS_WEBHOOK_KEY"),
   "chat API fire-and-forgets the server webhook after a fresh compute",
+);
+
+{
+  const pinsA = [
+    { pin: { lat: 24.7741, lng: 46.6612 } },
+    { pin: { lat: 24.7112, lng: 46.6744 } },
+  ];
+  const t0 = 1_800_000_000_000;
+  const base = {
+    more: false,
+    reroll: false,
+    pickCount: 3,
+    frozeOk: true,
+    visitor: "visitor-a",
+    locations: pinsA,
+  };
+  const posts: string[] = [];
+  const run = (label: string, input: Parameters<typeof claimHalfwayResultsNotify>[0]) => {
+    if (claimHalfwayResultsNotify(input)) posts.push(label);
+  };
+  resetHalfwayNotifyGuard();
+  // Fresh keys: 'more' pages and rerolls never post, even as the first call.
+  run("fresh-more", { ...base, sessionId: "sess-m", more: true, now: t0 });
+  run("fresh-reroll", { ...base, sessionId: "sess-r", reroll: true, now: t0 });
+  run("fresh-local-more", { ...base, sessionId: null, visitor: "v-m", more: true, now: t0 });
+  run("fresh-local-reroll", { ...base, sessionId: null, visitor: "v-r", reroll: true, now: t0 });
+  assert(posts.length === 0, "'more' and reroll post nothing");
+  // Invite session: first result posts once; repeat, 'more' and reroll post nothing.
+  run("first", { ...base, sessionId: "sess-1", now: t0 });
+  run("repeat", { ...base, sessionId: "sess-1", now: t0 + 60_000 });
+  run("more", { ...base, sessionId: "sess-1", more: true, now: t0 + 70_000 });
+  run("reroll", { ...base, sessionId: "sess-1", reroll: true, now: t0 + 80_000 });
+  assert(posts.join(",") === "first", "invite session posts the first result once only");
+  // Failed freeze never posts for an invite session.
+  run("unfrozen", { ...base, sessionId: "sess-2", frozeOk: false, now: t0 });
+  assert(!posts.includes("unfrozen"), "invite posts only after a successful freeze");
+  // Empty result never posts.
+  run("empty", { ...base, sessionId: "sess-3", pickCount: 0, now: t0 });
+  assert(!posts.includes("empty"), "no picks, no post");
+  // Local (no session id): visitor + rounded pins, 30 minutes.
+  run("local1", { ...base, sessionId: null, now: t0 });
+  run("local-jitter", {
+    ...base,
+    sessionId: null,
+    locations: [
+      { pin: { lat: 24.77412, lng: 46.66118 } },
+      { pin: { lat: 24.71118, lng: 46.67441 } },
+    ],
+    now: t0 + 5_000,
+  });
+  run("local-more", { ...base, sessionId: null, more: true, now: t0 + 6_000 });
+  run("local-reroll", { ...base, sessionId: null, reroll: true, now: t0 + 7_000 });
+  run("local-other-visitor", { ...base, sessionId: null, visitor: "visitor-b", now: t0 + 8_000 });
+  run("local-after-window", {
+    ...base,
+    sessionId: null,
+    now: t0 + HALFWAY_NOTIFY_WINDOW_MS + 1,
+  });
+  assert(
+    posts.join(",") === "first,local1,local-other-visitor,local-after-window",
+    "local dedupe by visitor + rounded pins for 30 minutes",
+  );
+  resetHalfwayNotifyGuard();
+}
+assert(
+  chat.includes("claimHalfwayResultsNotify(") &&
+    chat.includes("body.halfwayReroll === true") &&
+    /frozeOk = frozenSession !== null/.test(chat) &&
+    !/if \(picks\.length > 0\) \{\s*const midpoint/.test(chat),
+  "chat API gates the results email on the first-result guard",
+);
+assert(
+  chatUi.includes("halfwayReroll: reroll || undefined"),
+  "client flags rerolls so the server never emails them",
 );
 
 const resultPicks = meetHalfwayChatPicks({

@@ -3792,5 +3792,96 @@
     "status": "found",
     "dateChecked": "2026-10-13",
     "sharedBrandAccount": true
+  },
+  "ralphs-coffee-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "onda-coffee-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "draft-cafe-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "wacafe-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "archi-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "urth-caffe-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "costa-coffee-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "caribou-coffee-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "nua-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "pink-camel-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "starbucks-safarat-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "starbucks-oud-square-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
+  },
+  "coffee-table-diplomatic-quarter": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-14",
+    "sharedBrandAccount": false
   }
 }

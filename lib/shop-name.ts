@@ -218,6 +218,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "fill-umm-al-hamam-ash-sharqi": ["fill cafe", "fill coffee", "fill umm al hamam", "sill cafe", "sill coffee", "sill umm al hamam", "مقهى سيل", "سيل كافيه", "مقهى ملء", "ملء للقهوة المختصة", "dripora", "dripora cafe", "دريبورا", "دريبورا كافيه"],
   "molten-umm-al-hamam-ash-sharqi": ["molten cafe", "molten coffee", "molten umm al hamam", "مولتن كافيه"],
   "elixir-bunn-umm-al-hamam-ash-sharqi": ["elixir umm al hamam", "elixir bunn umm al hamam", "اكسير ام الحمام"],
+  // Batch M (14 Oct 2026): brand-qualified Starbucks branch aliases only — bare safarat/oud/square stay unpinned.
+  "starbucks-safarat-diplomatic-quarter": ["starbucks safarat", "starbucks diplomatic quarter", "starbucks dq", "ستاربكس السفارات", "ستاربكس الحي الدبلوماسي"],
+  "starbucks-oud-square-diplomatic-quarter": ["starbucks oud", "starbucks oud square", "ستاربكس العود", "ستاربكس ساحة العود"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -267,6 +270,14 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   // Batch L (13 Oct): everyday words never pin a café on their own; brand-qualified names still match.
   "fill-umm-al-hamam-ash-sharqi": ["fill", "sill", "ملء"],
   "molten-umm-al-hamam-ash-sharqi": ["molten"],
+  // Batch M (14 Oct 2026): generic words from DQ names never pin a café alone.
+  "pink-camel-diplomatic-quarter": ["pink", "camel", "بينك", "كاميل"],
+  // QA #264: the DQ Starbucks cards carry branch suffixes; the branch words alone never pin them.
+  "starbucks-safarat-diplomatic-quarter": ["safarat", "السفارات"],
+  "starbucks-oud-square-diplomatic-quarter": ["oud", "العود", "square", "ساحة", "oud square", "ساحة العود"],
+  "coffee-table-diplomatic-quarter": ["table", "تيبل", "ذا", "ذا تيبل"],
+  // QA #262 / #264 minor: bare "ash" / «آش» are common words; "ash bloom" / «آش بلوم» still find it.
+  "ash-bloom-al-nakheel": ["ash", "آش"],
 };
 
 function chainBrandIdForShop(

@@ -196,9 +196,14 @@ assert(
 );
 assert(
   BATCH_D3_NEW_DISTRICTS.every((id) =>
-    rowsEn.some((row) => row.id === id && row.cafeCount === (id === "as-suwaidi-al-gharbi" ? 2 : 1)),
+    rowsEn.some(
+      (row) =>
+        row.id === id &&
+        row.cafeCount ===
+          (id === "as-suwaidi-al-gharbi" ? 2 : id === "dhahrat-laban" ? 16 : 1),
+    ),
   ),
-  "Batch D3 districts (As Suwaidi Al Gharbi, Ash Shifa, Al Qadisiyah, Dhahrat Laban) stay on live browse (one cafe each; As Suwaidi Al Gharbi 2 after Batch J Nafees)",
+  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 2 after Batch J; Dhahrat Laban 16 after Batch N; Ash Shifa and Al Qadisiyah one each)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),

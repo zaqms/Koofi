@@ -691,6 +691,26 @@ const BATCH_M_DQ_HERO_COUNTS: Record<string, number> = {
   "coffee-table-diplomatic-quarter": 4,
 };
 const BATCH_M_DQ_IDS = Object.keys(BATCH_M_DQ_HERO_COUNTS);
+/** BATCH_N: Dhahrat Laban (15 Oct 2026) Places galleries — Scout's 15 Oct frames only, hand-ordered; 0 Dev Places calls. Stock/product studio shots (Veloce), a promo graphic (Coffee Address), a face mural (Nakhat), a birthday-cake frame (Arco), a food-only tray (dr.CAFE), a hand-held cup (Jadeel), staff behind the bar (Portafilter) and a barista-behind-counter frame (Qasura) dropped. No black-bar or social-overlay frames. Google credit per frame. */
+const BATCH_N_DL_HERO_COUNTS: Record<string, number> = {
+  "filter-cafe-dhahrat-laban": 4,
+  "veloce-dhahrat-laban": 2,
+  "nakhat-almashrub-dhahrat-laban": 3,
+  "crete-cafe-dhahrat-laban": 4,
+  "arco-coffee-dhahrat-laban": 3,
+  "coffee-address-najd-dhahrat-laban": 3,
+  "angel-coffee-dhahrat-laban": 4,
+  "ezwa-cafe-dhahrat-laban": 3,
+  "sidedoor-dhahrat-laban": 4,
+  "portafilter-dhahrat-laban": 3,
+  "qasura-coffee-dhahrat-laban": 3,
+  "shafel-coffee-dhahrat-laban": 4,
+  "yabub-coffee-dhahrat-laban": 4,
+  "jadeel-coffee-dhahrat-laban": 3,
+  "drcafe-park-dhahrat-laban": 3,
+};
+const BATCH_N_DL_IDS = Object.keys(BATCH_N_DL_HERO_COUNTS);
+
 
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
 const BATCH14_HERO_COUNTS: Record<string, number> = {
@@ -754,6 +774,7 @@ const batchJMatharHeroIds = BATCH_J_MATHAR_IDS.filter((id) => bakedHeroes[id]);
 const batchKUahgHeroIds = BATCH_K_UAHG_IDS.filter((id) => bakedHeroes[id]);
 const batchLSharqiHeroIds = BATCH_L_SHARQI_IDS.filter((id) => bakedHeroes[id]);
 const batchMDqHeroIds = BATCH_M_DQ_IDS.filter((id) => bakedHeroes[id]);
+const batchNDlHeroIds = BATCH_N_DL_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -780,8 +801,9 @@ assert(
       batchJMatharHeroIds.length +
       batchKUahgHeroIds.length +
       batchLSharqiHeroIds.length +
-      batchMDqHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi and M Diplomatic Quarter merge in",
+      batchMDqHeroIds.length +
+      batchNDlHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter and N Dhahrat Laban merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -809,6 +831,7 @@ assert(batchKUahgHeroIds.length === 12, "Batch K Umm Al Hamam Al Gharbi hero set
 assert(!("java-time-umm-al-hamam-al-gharbi" in bakedHeroes), "no Java Time Umm Al Hamam gallery ships (kiosk, no seating)");
 assert(batchLSharqiHeroIds.length === 3, "Batch L Umm Al Hamam Ash Sharqi hero set is complete (3; 4 Sudanese / youth-majlis rows dropped)");
 assert(batchMDqHeroIds.length === 13, "Batch M Diplomatic Quarter hero set is complete (13)");
+assert(batchNDlHeroIds.length === 15, "Batch N Dhahrat Laban hero set is complete (15)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],
@@ -944,6 +967,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH_K_UAHG_HERO_COUNTS[id] != null) return BATCH_K_UAHG_HERO_COUNTS[id]!;
   if (BATCH_L_SHARQI_HERO_COUNTS[id] != null) return BATCH_L_SHARQI_HERO_COUNTS[id]!;
   if (BATCH_M_DQ_HERO_COUNTS[id] != null) return BATCH_M_DQ_HERO_COUNTS[id]!;
+  if (BATCH_N_DL_HERO_COUNTS[id] != null) return BATCH_N_DL_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

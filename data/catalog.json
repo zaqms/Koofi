@@ -55374,6 +55374,346 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "java-cafe-namar",
+      "isChain": true,
+      "chainBrand": "java",
+      "nameAr": "جافا كافيه",
+      "nameEn": "Java Cafe",
+      "city": "riyadh",
+      "neighborhood": "namar",
+      "neighborhoodAr": "نمار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0f7829b3d0f1:0xe8ceed4e7e921359!8m2!3d24.584281999999998!4d46.691123",
+      "pin": {
+        "lat": 24.584281999999998,
+        "lng": 46.691123
+      },
+      "logoUrl": "/logos/java-cafe.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ8dCzKXgPLz4RWROSfk7tzug",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "pandemic-coffee-namar",
+      "nameAr": "بانديمك كوفي",
+      "nameEn": "Pandemic Coffee",
+      "city": "riyadh",
+      "neighborhood": "namar",
+      "neighborhoodAr": "نمار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f110050621189:0x5dd11c40aba108a5!8m2!3d24.568403999999997!4d46.6637437",
+      "pin": {
+        "lat": 24.568403999999997,
+        "lng": 46.6637437
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJiRFiUAARLz4RpQihq0Ac0V0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 4:00 PM – 4:00 AM",
+          "Tuesday: 4:00 PM – 4:00 AM",
+          "Wednesday: 4:00 PM – 4:00 AM",
+          "Thursday: 4:00 PM – 4:00 AM",
+          "Friday: 4:00 PM – 3:00 AM",
+          "Saturday: 4:00 PM – 3:00 AM",
+          "Sunday: 4:00 PM – 4:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 4,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "coffee-bean-tea-leaf-namar",
+      "isChain": true,
+      "chainBrand": "coffee-bean",
+      "nameAr": "ذا كوفي بين آند تي ليف",
+      "nameEn": "The Coffee Bean & Tea Leaf",
+      "city": "riyadh",
+      "neighborhood": "namar",
+      "neighborhoodAr": "نمار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1149fd110143:0x90dae8e37b5f580e!8m2!3d24.568419!4d46.6638178",
+      "pin": {
+        "lat": 24.568419,
+        "lng": 46.6638178
+      },
+      "logoUrl": "/logos/coffee-bean-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJQwER_UkRLz4RDlhfe-Po2pA",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "freedom-coffee-namar",
+      "nameAr": "فريدم كافيه",
+      "nameEn": "Freedom Coffee",
+      "city": "riyadh",
+      "neighborhood": "namar",
+      "neighborhoodAr": "نمار",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0fb244bf4a5d:0x9c9089a892d91926!8m2!3d24.5781817!4d46.6909327",
+      "pin": {
+        "lat": 24.5781817,
+        "lng": 46.6909327
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJXUq_RLIPLz4RJhnZkqiJkJw",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 3:00 PM – 3:00 AM",
+          "Tuesday: 3:00 PM – 3:00 AM",
+          "Wednesday: 3:00 PM – 3:00 AM",
+          "Thursday: 3:00 PM – 3:00 AM",
+          "Friday: 3:00 PM – 3:00 AM",
+          "Saturday: 3:00 PM – 3:00 AM",
+          "Sunday: 3:00 PM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 15,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

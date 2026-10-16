@@ -3988,5 +3988,33 @@
     "status": "unverified",
     "dateChecked": "2026-10-15",
     "sharedBrandAccount": false
+  },
+  "java-cafe-namar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-16",
+    "sharedBrandAccount": false
+  },
+  "pandemic-coffee-namar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-16",
+    "sharedBrandAccount": false
+  },
+  "coffee-bean-tea-leaf-namar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-16",
+    "sharedBrandAccount": false
+  },
+  "freedom-coffee-namar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-16",
+    "sharedBrandAccount": false
   }
 }

@@ -237,6 +237,10 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "yabub-coffee-dhahrat-laban": ["yabub coffee", "يعبوب قهوة", "يعبوب كافية"],
   "jadeel-coffee-dhahrat-laban": ["jadeel dhahrat", "jadeel laban", "جديل ظهرة لبن", "جديل لبن"],
   "drcafe-park-dhahrat-laban": ["dr cafe park", "drcafe park", "dr cafe laban", "د.كيف حديقة", "د كيف حديقة", "د.كيف ظهرة لبن"],
+  // Batch O (16 Oct 2026): «بانديمك كوفي» is a second Google pin for the same café (alias only, not a row).
+  "pandemic-coffee-namar": ["pandemic coffee", "pandemic cafe", "بانديمك كوفي", "بانديمك", "باندميك كوفي"],
+  "freedom-coffee-namar": ["freedom coffee", "freedom cafe", "فريدم كافيه", "فريدم كوفي"],
+  "java-cafe-namar": ["java namar", "java cafe namar", "جافا نمار"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -306,6 +310,9 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "nakhat-almashrub-dhahrat-laban": ["nakhat", "نكهة", "نكهه"],
   "coffee-address-najd-dhahrat-laban": ["najd", "نجد"],
   "qasura-coffee-dhahrat-laban": ["qasura", "قسورة", "قسوره"],
+  // Batch O (16 Oct 2026): everyday tokens never pin a café alone; brand-qualified names still match.
+  "coffee-bean-tea-leaf-namar": ["bean", "tea", "leaf", "bean tea", "tea leaf", "coffee bean", "ذا", "بين", "آند", "اند", "تي", "ليف", "بين آند", "بين اند"],
+  "freedom-coffee-namar": ["freedom", "فريدم"],
 };
 
 function chainBrandIdForShop(

@@ -237,6 +237,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "yabub-coffee-dhahrat-laban": ["yabub coffee", "يعبوب قهوة", "يعبوب كافية"],
   "jadeel-coffee-dhahrat-laban": ["jadeel dhahrat", "jadeel laban", "جديل ظهرة لبن", "جديل لبن"],
   "drcafe-park-dhahrat-laban": ["dr cafe park", "drcafe park", "dr cafe laban", "د.كيف حديقة", "د كيف حديقة", "د.كيف ظهرة لبن"],
+  // AJ add (16 Oct 2026): bare "found" is an everyday word; brand-qualified names and «فاوند» match.
+  "found-ar-rabwah": ["found cafe", "found coffee", "found rabwah", "فاوند كافيه", "فاوند كوفي"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -306,6 +308,8 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "nakhat-almashrub-dhahrat-laban": ["nakhat", "نكهة", "نكهه"],
   "coffee-address-najd-dhahrat-laban": ["najd", "نجد"],
   "qasura-coffee-dhahrat-laban": ["qasura", "قسورة", "قسوره"],
+  // AJ add (16 Oct 2026): "found" alone ("I found…", lost & found) never pins the café.
+  "found-ar-rabwah": ["found"],
 };
 
 function chainBrandIdForShop(

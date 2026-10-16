@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 65, `expected 65 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L), got ${areas.length}`);
-assert(listDiscoveryShops().length === 486, `specialty discovery is 486 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 570, `catalog is 570 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 487, `specialty discovery is 487 (1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 571, `catalog is 571 after Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -5914,6 +5914,19 @@ const scoutPack: {
     pin: { lat: 24.6373125, lng: 46.5544375 },
     coordsInUrl: true,
     placeId: "ChIJxZyaecYfLz4RZJiUArRaxkQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // AJ add (16 Oct 2026): Found Ar Rabwah, letter tile; Places dineIn null (Scout seatingVerdict).
+  {
+    id: "found-ar-rabwah",
+    hex: "0x3e2f03662230790d:0x9128b81fce8e5c",
+    neighborhood: "al-rabwah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6953922, lng: 46.745342199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJDXkwImYDLz4RXI7OH7gokQA",
     dineIn: true,
     outdoorSeating: null,
   },

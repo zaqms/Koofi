@@ -878,6 +878,21 @@ for (const [ask, id] of [
   }
   assert(listDirectoryShopsForDistrict("dhahrat-laban").length === 16, "Dhahrat Laban page has 16 cafés (ON OFF + 15 Batch N)");
 }
+// AJ add (16 Oct 2026): Found / فاوند, Ar Rabwah — local specialty, letter tile; Places dineIn null → Scout seatingVerdict.
+{
+  const found = getShop("found-ar-rabwah");
+  assert(found && found.isChain !== true && !found.chainBrand && !found.logoUrl && listDiscoveryShops().some((s) => s.id === "found-ar-rabwah"), "Found Ar Rabwah is local specialty with a letter tile");
+  assert(found?.seatingVerdict?.source === "scout" && found.dineIn === true, "Found has a Scout seatingVerdict (Places dineIn was null)");
+  assert(listDirectoryShopsForDistrict("al-rabwah").some((s) => s.id === "found-ar-rabwah"), "Found shows on the Ar Rabwah page");
+  for (const ask of ["found cafe", "فاوند", "فاوند كافيه"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === "found-ar-rabwah", `${ask} matches Found first, got ${hits.join(",")}`);
+  }
+  for (const ask of ["found", "i found a cafe", "lost and found"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.includes("found-ar-rabwah"), `${ask} does not pin Found, got ${hits.join(",")}`);
+  }
+}
 // Batch H (9 Oct 2026): McCafé Uthman Ibn Affan (Al Izdihar) was dropped per Amjad (r3); no McCafé row is live. Dunkin' stays out pending Amjad (donut-led rule).
 assert(
   !listRealShops().some((shop) => shop.chainBrand === "mccafe" || /mccaf|mc caf|ماك كافيه/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)),
@@ -1434,8 +1449,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 486, "specialty discovery is 486 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
-assert(listRealShops().length === 570, "catalog is 570 after D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
+assert(listDiscoveryShops().length === 487, "specialty discovery is 487 (1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
+assert(listRealShops().length === 571, "catalog is 571 after Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
 assert(listLiveDistrictIds().length === 65, "specialty districts are 65 (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 79,
@@ -1443,9 +1458,9 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
 assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
-assert(listListingShops().length === 515, "listing is 486 local plus the 29 sit-down chains");
-assert(listPublicShops().length === 515, "public list includes the 29 sit-down chains");
-assert(listBrowseDirectoryShops().length === 519, "browse is 418 plus the 15 Batch N Dhahrat Laban rows, the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 12 Batch K Umm Al Hamam Al Gharbi rows and the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
+assert(listListingShops().length === 516, "listing is 487 local plus the 29 sit-down chains");
+assert(listPublicShops().length === 516, "public list includes the 29 sit-down chains");
+assert(listBrowseDirectoryShops().length === 520, "browse is 418 plus the 1 Found Ar Rabwah row, the 15 Batch N Dhahrat Laban rows, the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 12 Batch K Umm Al Hamam Al Gharbi rows and the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 29,
   "exactly 29 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi + Costa, Caribou and 2 Starbucks Diplomatic Quarter + Veloce and dr.CAFE Dhahrat Laban)",
@@ -1859,7 +1874,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "c6e1d56a41ce1ecd29c1e9c3c582a3c3a32935b6cc38b109ed85b1f50333c969",
+  copyHash === "fe00983afd637115347c9c54ff7d77d6515596b6d849202be53f60f00a46c1a3",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -1989,11 +2004,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "b54d94feb613e026e236524fdd716a7c8cf14567802846c18008e1646617ad1d",
+  llmsHash === "ac5afc5aef77a5bd58875da55ef037ca12f0ecc6ddf6746da61618c583467cd7",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("486 local, 29 chain branches"),
+  llms.includes("487 local, 29 chain branches"),
   "llms.txt names the 29 chain branches separately from specialty",
 );
 

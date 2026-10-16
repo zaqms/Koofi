@@ -999,14 +999,13 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "dhahrat-laban": {
     lead: `Dhahrat Laban (ظهرة لبن) sits on the west side of Riyadh. This page is the Dhahrat Laban set on wain.lol so far.
 
-[ON OFF Coffee](/en/c/on-off-coffee-dhahrat-laban) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Dhahrat Laban on the catalog today:`,
+[ON OFF Coffee](/en/c/on-off-coffee-dhahrat-laban), [Filter Cafe](/en/c/filter-cafe-dhahrat-laban), [Crete Cafe](/en/c/crete-cafe-dhahrat-laban), [Sidedoor](/en/c/sidedoor-dhahrat-laban), and [Jadeel Coffee](/en/c/jadeel-coffee-dhahrat-laban) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Dhahrat Laban on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Dhahrat Laban isn’t the stop, these west lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Dhahrat Laban. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Dhahrat Laban on wain.lol — a Riyadh neighborhood list including ON OFF Coffee, with a Maps link.",
   },
 };
 

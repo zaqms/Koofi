@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 65, `expected 65 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L), got ${areas.length}`);
-assert(listDiscoveryShops().length === 473, `specialty discovery is 473 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 555, `catalog is 555 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 486, `specialty discovery is 486 (403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 570, `catalog is 570 after D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1680,10 +1680,10 @@ const MALAZ_REFILL = {
     "kkia page omits the drive-through chain; open dr.CAFE stays on Drive-through",
   );
   const drcafe = listRealShops().filter((shop) => shop.id.startsWith("drcafe-"));
-  assert(drcafe.length === 20, `20 dr.CAFE rows (19 + An Nafal Park, Batch G), got ${drcafe.length}`);
+  assert(drcafe.length === 21, `21 dr.CAFE rows (20 + Dhahrat Laban Park, Batch N), got ${drcafe.length}`);
   assert(
     drcafe.every((shop) => shop.logoUrl === "/logos/drcafe-mark.png"),
-    "all 20 dr.CAFE rows use the official mark",
+    "all 21 dr.CAFE rows use the official mark",
   );
   assert(
     getShop("threes-al-yasmin")?.logoUrl === "/logos/threes-mark.png",
@@ -2035,6 +2035,7 @@ const scoutPack: {
     | "al-nakheel"
     | "umm-al-hamam-al-gharbi"
     | "umm-al-hamam-ash-sharqi"
+    | "dhahrat-laban"
     | "an-nafal"
     | "king-salman"
     | "as-suwaidi";
@@ -5729,6 +5730,192 @@ const scoutPack: {
     placeId: "ChIJsUKK07YdLz4RQjgbpH46bXk",
     dineIn: true,
     outdoorSeating: true,
+  },
+  // Batch N (15 Oct 2026, Scout Dhahrat Laban pack): 13 local sit-down cafés + 2 sit-down chains (Veloce, dr.CAFE); Places dineIn/outdoor (Shafel seatingVerdict).
+  {
+    id: "filter-cafe-dhahrat-laban",
+    hex: "0x3e2f1f457bfc6823:0xb4e3fe05450a02ae",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.634499899999998, lng: 46.565118399999996 },
+    coordsInUrl: true,
+    placeId: "ChIJI2j8e0UfLz4RrgIKRQX-47Q",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "veloce-dhahrat-laban",
+    hex: "0x3e2f1f8e5cc8c725:0xdc6b7dd4d190104c",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/veloce-cafe-at-taawun.png",
+    pin: { lat: 24.6318612, lng: 46.5651625 },
+    coordsInUrl: true,
+    placeId: "ChIJJcfIXI4fLz4RTBCQ0dR9a9w",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "nakhat-almashrub-dhahrat-laban",
+    hex: "0x3e2f1f5098ee7793:0x2dcf0799a465235e",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.633866299999998, lng: 46.565485599999995 },
+    coordsInUrl: true,
+    placeId: "ChIJk3fumFAfLz4RXiNlpJkHzy0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "crete-cafe-dhahrat-laban",
+    hex: "0x3e2f1fde609f806d:0x759cd3d6a245af58",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6396528, lng: 46.5398652 },
+    coordsInUrl: true,
+    placeId: "ChIJbYCfYN4fLz4RWK9FotbTnHU",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "arco-coffee-dhahrat-laban",
+    hex: "0x3e2f1f1f6f368e9b:0x64bc3304d13b3833",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/arco-al-rabi.jpg",
+    pin: { lat: 24.6391214, lng: 46.5632563 },
+    coordsInUrl: true,
+    placeId: "ChIJm442bx8fLz4RMzg70QQzvGQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-najd-dhahrat-laban",
+    hex: "0x3e2f1f44af52c84b:0x385d2131492a6686",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.6341072, lng: 46.5688543 },
+    coordsInUrl: true,
+    placeId: "ChIJS8hSr0QfLz4RhmYqSTEhXTg",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "angel-coffee-dhahrat-laban",
+    hex: "0x3e2f1f1ca9ec623f:0xec15ba407e9f7506",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.632946000000004, lng: 46.554540599999996 },
+    coordsInUrl: true,
+    placeId: "ChIJP2LsqRwfLz4RBnWffkC6Few",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "ezwa-cafe-dhahrat-laban",
+    hex: "0x3e2f1ff8d534d847:0xdd3d85ca60d9ff7",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.643956499999998, lng: 46.5574065 },
+    coordsInUrl: true,
+    placeId: "ChIJR9g01fgfLz4R958NplzY0w0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "sidedoor-dhahrat-laban",
+    hex: "0x3e2f1f003eca348f:0xaa44b081d8adfb46",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6395625, lng: 46.564187499999996 },
+    coordsInUrl: true,
+    placeId: "ChIJjzTKPgAfLz4RRvut2IGwRKo",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "portafilter-dhahrat-laban",
+    hex: "0x3e2f1fa67b70d5a3:0x2be6ca49e78857bb",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6276138, lng: 46.5547562 },
+    coordsInUrl: true,
+    placeId: "ChIJo9Vwe6YfLz4Ru1eI50nK5is",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "qasura-coffee-dhahrat-laban",
+    hex: "0x3e2f1f868309d8e3:0xa9cd13fb0452458c",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6423433, lng: 46.5735246 },
+    coordsInUrl: true,
+    placeId: "ChIJ49gJg4YfLz4RjEVSBPsTzak",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "shafel-coffee-dhahrat-laban",
+    hex: "0x3e2f1f1afb872705:0x148fd96efe18e2f5",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/shafel-roastery-al-nahdah.png",
+    pin: { lat: 24.634803299999998, lng: 46.5699701 },
+    coordsInUrl: true,
+    placeId: "ChIJBSeH-xofLz4R9eIY_m7ZjxQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "yabub-coffee-dhahrat-laban",
+    hex: "0x3e2f1f885cc36089:0x2238af966eb88748",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.627400599999998, lng: 46.542761299999995 },
+    coordsInUrl: true,
+    placeId: "ChIJiWDDXIgfLz4RSIe4bpavOCI",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "jadeel-coffee-dhahrat-laban",
+    hex: "0x3e2f1f004d4dda01:0x5e4bc5ee53a7086e",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6533923, lng: 46.570778399999995 },
+    coordsInUrl: true,
+    placeId: "ChIJAdpNTQAfLz4RbginU-7FS14",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "drcafe-park-dhahrat-laban",
+    hex: "0x3e2f1fc6799a9cc5:0x44c65ab402949864",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/drcafe-mark.png",
+    pin: { lat: 24.6373125, lng: 46.5544375 },
+    coordsInUrl: true,
+    placeId: "ChIJxZyaecYfLz4RZJiUArRaxkQ",
+    dineIn: true,
+    outdoorSeating: null,
   },
 ];
 

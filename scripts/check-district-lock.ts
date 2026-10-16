@@ -241,6 +241,25 @@ assert(
   );
 }
 
+// Batch N (15 Oct): Dhahrat Laban gains 15 cafés (13 local + Veloce and dr.CAFE sit-down chains); was one ON OFF row.
+{
+  const id = "dhahrat-laban" as const;
+  const row = rows.find((r) => r.stableId === id);
+  assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);
+  assert(row?.nameEn === "Dhahrat Laban" && row?.nameAr === "ظهرة لبن", `${id} sheet EN/AR lock`);
+  assert(neighborhoodLabel(id, "en") === "Dhahrat Laban" && neighborhoodLabel(id, "ar") === "ظهرة لبن", `${id} labels`);
+  assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
+      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban",
+    `${id} catalog is ON OFF plus the 15 Batch N rows`,
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    `sitemap lists ${id} AR + EN`,
+  );
+}
+
 // Bisat batch (3 Oct): four new live districts, one cafe each. Umm Al Hamam Al Gharbi and
 // As Suwaidi are on the locked sheet (dictionary_only); An Nafal and King Salman are not.
 for (const [id, en, ar, shopId, onSheet] of [
@@ -279,7 +298,6 @@ for (const [id, en, ar, shopId] of [
   // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); asserted below.
   ["ash-shifa", "Ash Shifa", "الشفا", "tul-cafe-ash-shifa"],
   ["al-qadisiyah", "Al Qadisiyah", "القادسية", "on-off-coffee-al-qadisiyah"],
-  ["dhahrat-laban", "Dhahrat Laban", "ظهرة لبن", "on-off-coffee-dhahrat-laban"],
 ] as const) {
   const row = rows.find((r) => r.stableId === id);
   assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);

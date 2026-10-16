@@ -221,6 +221,22 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch M (14 Oct 2026): brand-qualified Starbucks branch aliases only — bare safarat/oud/square stay unpinned.
   "starbucks-safarat-diplomatic-quarter": ["starbucks safarat", "starbucks diplomatic quarter", "starbucks dq", "ستاربكس السفارات", "ستاربكس الحي الدبلوماسي"],
   "starbucks-oud-square-diplomatic-quarter": ["starbucks oud", "starbucks oud square", "ستاربكس العود", "ستاربكس ساحة العود"],
+  // Batch N (15 Oct 2026): brand-qualified only. Bare filter / angel / crete / address / door / porta / jadeel never pin a café.
+  "filter-cafe-dhahrat-laban": ["filter cafe", "filter coffee", "filter roastery", "فلتر كافيه", "فلتر كافية"],
+  "veloce-dhahrat-laban": ["veloce dhahrat", "veloce laban", "فيلوتشي ظهرة لبن", "فيلوتشي لبن"],
+  "nakhat-almashrub-dhahrat-laban": ["nakhat almashrub", "نكهة المشروب", "نكهه المشروب"],
+  "crete-cafe-dhahrat-laban": ["crete cafe", "crete coffee", "كريت كافية", "كريت كافيه"],
+  "arco-coffee-dhahrat-laban": ["arco dhahrat", "arco laban", "arco coffee laban", "أركو ظهرة لبن", "اركو لبن"],
+  "coffee-address-najd-dhahrat-laban": ["coffee address najd", "address najd", "عنوان القهوة نجد", "عنوان القهوه نجد"],
+  "angel-coffee-dhahrat-laban": ["angel coffee", "angel cafe", "انجل كوفي", "انجل كافيه"],
+  "ezwa-cafe-dhahrat-laban": ["ezwa cafe", "عزوة كافيه"],
+  "sidedoor-dhahrat-laban": ["sidedoor", "side door", "سايد دور", "سايددور"],
+  "portafilter-dhahrat-laban": ["portafilter", "porta filter", "بورتافلتر", "بورتا فلتر", "بورتافلتر كافية"],
+  "qasura-coffee-dhahrat-laban": ["qasura coffee", "قسورة كوفي", "قسوره كوفي"],
+  "shafel-coffee-dhahrat-laban": ["shafel dhahrat", "shafel laban", "شفل ظهرة لبن", "شفل لبن"],
+  "yabub-coffee-dhahrat-laban": ["yabub coffee", "يعبوب قهوة", "يعبوب كافية"],
+  "jadeel-coffee-dhahrat-laban": ["jadeel dhahrat", "jadeel laban", "جديل ظهرة لبن", "جديل لبن"],
+  "drcafe-park-dhahrat-laban": ["dr cafe park", "drcafe park", "dr cafe laban", "د.كيف حديقة", "د كيف حديقة", "د.كيف ظهرة لبن"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -278,6 +294,18 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "coffee-table-diplomatic-quarter": ["table", "تيبل", "ذا", "ذا تيبل"],
   // QA #262 / #264 minor: bare "ash" / «آش» are common words; "ash bloom" / «آش بلوم» still find it.
   "ash-bloom-al-nakheel": ["ash", "آش"],
+  // Batch N (15 Oct 2026): everyday tokens never pin a café alone; brand-qualified names still match.
+  "filter-cafe-dhahrat-laban": ["filter", "فلتر"],
+  "crete-cafe-dhahrat-laban": ["crete", "كريت"],
+  "angel-coffee-dhahrat-laban": ["angel", "انجل"],
+  "ezwa-cafe-dhahrat-laban": ["ezwa", "عزوة", "عزوه"],
+  "sidedoor-dhahrat-laban": ["side", "door", "سايد", "دور"],
+  "portafilter-dhahrat-laban": ["porta", "بورتا"],
+  "yabub-coffee-dhahrat-laban": ["yabub", "يعبوب"],
+  "jadeel-coffee-dhahrat-laban": ["jadeel", "جديل"],
+  "nakhat-almashrub-dhahrat-laban": ["nakhat", "نكهة", "نكهه"],
+  "coffee-address-najd-dhahrat-laban": ["najd", "نجد"],
+  "qasura-coffee-dhahrat-laban": ["qasura", "قسورة", "قسوره"],
 };
 
 function chainBrandIdForShop(

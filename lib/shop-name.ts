@@ -241,6 +241,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "pandemic-coffee-namar": ["pandemic coffee", "pandemic cafe", "بانديمك كوفي", "بانديمك", "باندميك كوفي"],
   "freedom-coffee-namar": ["freedom coffee", "freedom cafe", "فريدم كافيه", "فريدم كوفي"],
   "java-cafe-namar": ["java namar", "java cafe namar", "جافا نمار"],
+  // AJ add (16 Oct 2026): bare "found" is an everyday word; brand-qualified names and «فاوند» match.
+  "found-ar-rabwah": ["found cafe", "found coffee", "found rabwah", "فاوند كافيه", "فاوند كوفي"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -313,6 +315,8 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   // Batch O (16 Oct 2026): everyday tokens never pin a café alone; brand-qualified names still match.
   "coffee-bean-tea-leaf-namar": ["bean", "tea", "leaf", "bean tea", "tea leaf", "coffee bean", "ذا", "بين", "آند", "اند", "تي", "ليف", "بين آند", "بين اند"],
   "freedom-coffee-namar": ["freedom", "فريدم"],
+  // AJ add (16 Oct 2026): "found" alone ("I found…", lost & found) never pins the café.
+  "found-ar-rabwah": ["found"],
 };
 
 function chainBrandIdForShop(

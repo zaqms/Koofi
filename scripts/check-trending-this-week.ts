@@ -328,7 +328,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1331, `sitemap is 1331 (4 legal pages AR/EN + 1111 plus 10 Batch E cafés, 9 Batch F cafés, 15 Batch G cafés, 7 Batch H cafés, 6 Batch I cafés, 8 + 4 Batch J cafés, 12 Batch K cafés, 3 Batch L cafés 13 Batch M cafés and 15 Batch N cafés and 4 Batch O cafés × AR/EN, plus the Shubra and Umm Al Hamam Ash Sharqi districts AR/EN), got ${locs.length}`);
+assert(locs.length === 1333, `sitemap is 1333 (Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 plus 10 Batch E cafés, 9 Batch F cafés, 15 Batch G cafés, 7 Batch H cafés, 6 Batch I cafés, 8 + 4 Batch J cafés, 12 Batch K cafés, 3 Batch L cafés 13 Batch M cafés and 15 Batch N cafés and 4 Batch O cafés × AR/EN, plus the Shubra and Umm Al Hamam Ash Sharqi districts AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 519,
+  nearby: 520,
   outdoor: 247,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 574, "catalog is 574 after Batch O (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 4 Namar)");
-assert(listListingShops().length === 519, "listing is 519 (413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
-assert(listPublicShops().length === 519, "/api/shops pool is 519");
+assert(listRealShops().length === 575, "catalog is 575 after Batch O and Found Ar Rabwah (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 4 Namar)");
+assert(listListingShops().length === 520, "listing is 520 (1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
+assert(listPublicShops().length === 520, "/api/shops pool is 520");
 assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
-assert(listSitemapLocs().length === 1331, "sitemap is 1331 (4 Batch O Namar cafés × AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
+assert(listSitemapLocs().length === 1333, "sitemap is 1333 (4 Batch O Namar cafés × AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");

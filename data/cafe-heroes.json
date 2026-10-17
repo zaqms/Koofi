@@ -15841,6 +15841,29 @@
       }
     }
   ],
+  "found-ar-rabwah": [
+    {
+      "src": "/cafe-heroes/found-ar-rabwah/1.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/found-ar-rabwah/2.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/found-ar-rabwah/3.jpg",
+      "attribution": {
+        "displayName": "هناء الدوسري",
+        "uri": "https://maps.google.com/maps/contrib/105216265630881835256"
+      }
+    }
+  ],
   "java-cafe-namar": [
     {
       "src": "/cafe-heroes/java-cafe-namar/1.jpg",

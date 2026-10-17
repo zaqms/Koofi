@@ -710,9 +710,35 @@ const BATCH_N_DL_HERO_COUNTS: Record<string, number> = {
   "drcafe-park-dhahrat-laban": 3,
 };
 const BATCH_N_DL_IDS = Object.keys(BATCH_N_DL_HERO_COUNTS);
+/** BATCH_O: Namar (16 Oct 2026) Places galleries — Scout's 16 Oct frames only, hand-ordered; 0 Dev Places calls. Java: brand product-box shot and logo graphic dropped (2 left). Pandemic: interior hero, storefront with people last. Coffee Bean: duplicate night storefront (car hood) dropped. */
+const BATCH_O_NAMAR_HERO_COUNTS: Record<string, number> = {
+  "java-cafe-namar": 2,
+  "pandemic-coffee-namar": 4,
+  "coffee-bean-tea-leaf-namar": 3,
+  "freedom-coffee-namar": 4,
+};
+const BATCH_O_NAMAR_IDS = Object.keys(BATCH_O_NAMAR_HERO_COUNTS);
 /** AJ add (16 Oct 2026): Found Ar Rabwah — Scout's 4 Places frames; the owner's duck-logo graphic (idx 2) dropped; a parked car's plate in idx 0 blurred. 0 Dev Places calls. */
 const AJ_FOUND_HERO_COUNTS: Record<string, number> = { "found-ar-rabwah": 3 };
 const AJ_FOUND_IDS = Object.keys(AJ_FOUND_HERO_COUNTS);
+/** BATCH_P: Tuwaiq (17 Oct 2026) Places galleries — Scout's 17 Oct frames only, hand-ordered; 0 Dev Places calls. Dropped: Ratio's 2 owner studio product shots; Lihaf's phone screenshot and owner studio cake; Era's owner promo poster; Taghrid's storefront with 3 parked cars' plates (a second storefront frame kept); Shathb's staff-at-counter frame. */
+const BATCH_P_TUWAIQ_HERO_COUNTS: Record<string, number> = {
+  "irlo-tuwaiq": 4,
+  "ratio-speciality-tuwaiq": 2,
+  "quba-tuwaiq": 4,
+  "oldlane-tuwaiq": 4,
+  "gedeb-tuwaiq": 4,
+  "breath-tuwaiq": 4,
+  "lihaf-tuwaiq": 2,
+  "saaf-tuwaiq": 4,
+  "inverno-tuwaiq": 4,
+  "era-coffee-tuwaiq": 3,
+  "haqwa-tuwaiq": 4,
+  "taghrid-tuwaiq": 3,
+  "nv-coffee-tuwaiq": 4,
+  "shathb-tuwaiq": 3,
+};
+const BATCH_P_TUWAIQ_IDS = Object.keys(BATCH_P_TUWAIQ_HERO_COUNTS);
 
 
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
@@ -778,7 +804,9 @@ const batchKUahgHeroIds = BATCH_K_UAHG_IDS.filter((id) => bakedHeroes[id]);
 const batchLSharqiHeroIds = BATCH_L_SHARQI_IDS.filter((id) => bakedHeroes[id]);
 const batchMDqHeroIds = BATCH_M_DQ_IDS.filter((id) => bakedHeroes[id]);
 const batchNDlHeroIds = BATCH_N_DL_IDS.filter((id) => bakedHeroes[id]);
+const batchONamarHeroIds = BATCH_O_NAMAR_IDS.filter((id) => bakedHeroes[id]);
 const ajFoundHeroIds = AJ_FOUND_IDS.filter((id) => bakedHeroes[id]);
+const batchPTuwaiqHeroIds = BATCH_P_TUWAIQ_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -807,8 +835,10 @@ assert(
       batchLSharqiHeroIds.length +
       batchMDqHeroIds.length +
       batchNDlHeroIds.length +
-      ajFoundHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban and the Found Ar Rabwah AJ add merge in",
+      batchONamarHeroIds.length +
+      ajFoundHeroIds.length +
+      batchPTuwaiqHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar and P Tuwaiq merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -837,7 +867,9 @@ assert(!("java-time-umm-al-hamam-al-gharbi" in bakedHeroes), "no Java Time Umm A
 assert(batchLSharqiHeroIds.length === 3, "Batch L Umm Al Hamam Ash Sharqi hero set is complete (3; 4 Sudanese / youth-majlis rows dropped)");
 assert(batchMDqHeroIds.length === 13, "Batch M Diplomatic Quarter hero set is complete (13)");
 assert(batchNDlHeroIds.length === 15, "Batch N Dhahrat Laban hero set is complete (15)");
+assert(batchONamarHeroIds.length === 4, "Batch O Namar hero set is complete (4)");
 assert(ajFoundHeroIds.length === 1, "Found Ar Rabwah hero set is present");
+assert(batchPTuwaiqHeroIds.length === 14, "Batch P Tuwaiq hero set is complete (14)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],
@@ -974,7 +1006,9 @@ function expectedHeroCount(id: string): number {
   if (BATCH_L_SHARQI_HERO_COUNTS[id] != null) return BATCH_L_SHARQI_HERO_COUNTS[id]!;
   if (BATCH_M_DQ_HERO_COUNTS[id] != null) return BATCH_M_DQ_HERO_COUNTS[id]!;
   if (BATCH_N_DL_HERO_COUNTS[id] != null) return BATCH_N_DL_HERO_COUNTS[id]!;
+  if (BATCH_O_NAMAR_HERO_COUNTS[id] != null) return BATCH_O_NAMAR_HERO_COUNTS[id]!;
   if (AJ_FOUND_HERO_COUNTS[id] != null) return AJ_FOUND_HERO_COUNTS[id]!;
+  if (BATCH_P_TUWAIQ_HERO_COUNTS[id] != null) return BATCH_P_TUWAIQ_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

@@ -237,8 +237,21 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "yabub-coffee-dhahrat-laban": ["yabub coffee", "يعبوب قهوة", "يعبوب كافية"],
   "jadeel-coffee-dhahrat-laban": ["jadeel dhahrat", "jadeel laban", "جديل ظهرة لبن", "جديل لبن"],
   "drcafe-park-dhahrat-laban": ["dr cafe park", "drcafe park", "dr cafe laban", "د.كيف حديقة", "د كيف حديقة", "د.كيف ظهرة لبن"],
+  // Batch O (16 Oct 2026): «بانديمك كوفي» is a second Google pin for the same café (alias only, not a row).
+  "pandemic-coffee-namar": ["pandemic coffee", "pandemic cafe", "بانديمك كوفي", "بانديمك", "باندميك كوفي"],
+  "freedom-coffee-namar": ["freedom coffee", "freedom cafe", "فريدم كافيه", "فريدم كوفي"],
+  "java-cafe-namar": ["java namar", "java cafe namar", "جافا نمار"],
   // AJ add (16 Oct 2026): bare "found" is an everyday word; brand-qualified names and «فاوند» match.
   "found-ar-rabwah": ["found cafe", "found coffee", "found rabwah", "فاوند كافيه", "فاوند كوفي"],
+  // Batch P (17 Oct 2026): Tuwaiq — brand-qualified names for rows whose bare word is blocked below; Quba's Places log key was "qoba".
+  "ratio-speciality-tuwaiq": ["ratio tuwaiq", "ريشيو طويق"],
+  "quba-tuwaiq": ["qoba", "quba cafe", "quba roasters", "قوبا كافيه", "محمصة قوبا"],
+  "oldlane-tuwaiq": ["old lane", "oldlane cafe", "اولد لين"],
+  "breath-tuwaiq": ["breath coffee", "breath cafe", "بريث كافيه", "بريث كوفي"],
+  "lihaf-tuwaiq": ["lihaf coffee", "lihaf cafe", "لحاف قهوة", "لحاف كافيه"],
+  "saaf-tuwaiq": ["saaf cafe", "saaf coffee", "سعف كافيه", "مقهى سعف", "قهوة سعف"],
+  "era-coffee-tuwaiq": ["era tuwaiq", "إرا طويق"],
+  "taghrid-tuwaiq": ["taghrid coffee", "تغاريد كوفي"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -308,8 +321,20 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "nakhat-almashrub-dhahrat-laban": ["nakhat", "نكهة", "نكهه"],
   "coffee-address-najd-dhahrat-laban": ["najd", "نجد"],
   "qasura-coffee-dhahrat-laban": ["qasura", "قسورة", "قسوره"],
+  // Batch O (16 Oct 2026): everyday tokens never pin a café alone; brand-qualified names still match.
+  "coffee-bean-tea-leaf-namar": ["bean", "tea", "leaf", "bean tea", "tea leaf", "coffee bean", "ذا", "بين", "آند", "اند", "تي", "ليف", "بين آند", "بين اند"],
+  "freedom-coffee-namar": ["freedom", "فريدم"],
   // AJ add (16 Oct 2026): "found" alone ("I found…", lost & found) never pins the café.
   "found-ar-rabwah": ["found"],
+  // Batch P (17 Oct 2026): everyday words never pin a Tuwaiq row alone (breath, era, ratio; لحاف blanket, تغاريد chirps; «ان في» is "that in").
+  // «بريث» and «سعف» stay: each is the café's whole Arabic name (check-plg needs nameAr to match), and «بريث» is only a transliteration.
+  // Ratio and Era keep their older branches (Al Yarmouk, As Suwaidi) on the bare brand word, same as Jadeel in Batch N.
+  "ratio-speciality-tuwaiq": ["ratio", "ريشيو", "ratio speciality"],
+  "breath-tuwaiq": ["breath"],
+  "era-coffee-tuwaiq": ["era", "إرا", "ارا", "ايرا"],
+  "lihaf-tuwaiq": ["lihaf", "لحاف"],
+  "taghrid-tuwaiq": ["taghrid", "تغاريد"],
+  "nv-coffee-tuwaiq": ["ان في", "ان", "في"],
 };
 
 function chainBrandIdForShop(

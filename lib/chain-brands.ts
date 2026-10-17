@@ -135,6 +135,13 @@ export const CHAIN_BRANDS = {
     nameAr: "كاريبو كوفي",
     logo: null,
   },
+  // Batch O (16 Oct 2026): international chain, ~6+ Riyadh stores (2024 openings) — mass-market, isChain. Pending Amjad's ruling (FYI flagged in the PR). Official coffeebean.com mark.
+  "coffee-bean": {
+    id: "coffee-bean",
+    nameEn: "The Coffee Bean & Tea Leaf",
+    nameAr: "ذا كوفي بين آند تي ليف",
+    logo: "/logos/coffee-bean-mark.png",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -164,6 +171,8 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   veloce: ["veloce", "veloce cafe", "فيلوتشي", "فيلوتشي كافيه", "فيلوتشي كافية"],
   costa: ["costa", "costa coffee", "كوستا", "كوستا كوفي", "كوستا كافيه"],
   caribou: ["caribou", "caribou coffee", "كاريبو", "كاريبو كوفي", "كاريبو كافيه"],
+  // Brand-qualified only: bare "coffee bean" / bean / tea / leaf are everyday words.
+  "coffee-bean": ["coffee bean & tea leaf", "coffee bean and tea leaf", "coffee bean tea leaf", "the coffee bean", "cbtl", "كوفي بين آند تي ليف", "كوفي بين اند تي ليف", "ذا كوفي بين", "كوفي بين"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -218,6 +227,7 @@ export function chainBrandKeyFromName(latinName: string): string | null {
   if (latinName.startsWith("veloce")) return "veloce";
   if (latinName.startsWith("costa")) return "costa";
   if (latinName.startsWith("caribou")) return "caribou";
+  if (latinName.startsWith("the coffee bean") || latinName.startsWith("coffee bean & tea") || latinName.startsWith("coffee bean and tea")) return "coffee-bean";
   if (
     latinName.startsWith("half million") ||
     compact.startsWith("halfmillion")

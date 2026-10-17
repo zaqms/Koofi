@@ -15863,5 +15863,104 @@
         "uri": "https://maps.google.com/maps/contrib/105216265630881835256"
       }
     }
+  ],
+  "java-cafe-namar": [
+    {
+      "src": "/cafe-heroes/java-cafe-namar/1.jpg",
+      "attribution": {
+        "displayName": "منون Moq",
+        "uri": "https://maps.google.com/maps/contrib/117883035294653785529"
+      }
+    },
+    {
+      "src": "/cafe-heroes/java-cafe-namar/2.jpg",
+      "attribution": {
+        "displayName": "عبدالله الدهمي",
+        "uri": "https://maps.google.com/maps/contrib/110933063428433062604"
+      }
+    }
+  ],
+  "pandemic-coffee-namar": [
+    {
+      "src": "/cafe-heroes/pandemic-coffee-namar/1.jpg",
+      "attribution": {
+        "displayName": "عجيبة الدوسري",
+        "uri": "https://maps.google.com/maps/contrib/115728819125581215167"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pandemic-coffee-namar/2.jpg",
+      "attribution": {
+        "displayName": "tag 66614",
+        "uri": "https://maps.google.com/maps/contrib/114507349635955895189"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pandemic-coffee-namar/3.jpg",
+      "attribution": {
+        "displayName": "Pandemic coffee",
+        "uri": "https://maps.google.com/maps/contrib/109245640000754553661"
+      }
+    },
+    {
+      "src": "/cafe-heroes/pandemic-coffee-namar/4.jpg",
+      "attribution": {
+        "displayName": "Pandemic coffee",
+        "uri": "https://maps.google.com/maps/contrib/109245640000754553661"
+      }
+    }
+  ],
+  "coffee-bean-tea-leaf-namar": [
+    {
+      "src": "/cafe-heroes/coffee-bean-tea-leaf-namar/1.jpg",
+      "attribution": {
+        "displayName": "Nouf A",
+        "uri": "https://maps.google.com/maps/contrib/102574485520507037766"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-bean-tea-leaf-namar/2.jpg",
+      "attribution": {
+        "displayName": "Dina Mohamed",
+        "uri": "https://maps.google.com/maps/contrib/110397945962376135580"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-bean-tea-leaf-namar/3.jpg",
+      "attribution": {
+        "displayName": "ذا كوفي بين آند تي ليف",
+        "uri": "https://maps.google.com/maps/contrib/103674450519811140716"
+      }
+    }
+  ],
+  "freedom-coffee-namar": [
+    {
+      "src": "/cafe-heroes/freedom-coffee-namar/1.jpg",
+      "attribution": {
+        "displayName": "فريدم كافيه و مطعم",
+        "uri": "https://maps.google.com/maps/contrib/100523437341885832394"
+      }
+    },
+    {
+      "src": "/cafe-heroes/freedom-coffee-namar/2.jpg",
+      "attribution": {
+        "displayName": "بنت الجنوب Z",
+        "uri": "https://maps.google.com/maps/contrib/101018168692587345343"
+      }
+    },
+    {
+      "src": "/cafe-heroes/freedom-coffee-namar/3.jpg",
+      "attribution": {
+        "displayName": "فريدم كافيه و مطعم",
+        "uri": "https://maps.google.com/maps/contrib/100523437341885832394"
+      }
+    },
+    {
+      "src": "/cafe-heroes/freedom-coffee-namar/4.jpg",
+      "attribution": {
+        "displayName": "Mohamad Abas",
+        "uri": "https://maps.google.com/maps/contrib/107905562076281007196"
+      }
+    }
   ]
 }

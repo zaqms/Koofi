@@ -95,11 +95,9 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "الأكثر طلباً",
     "الأكثر طلبا",
     "اللي عليها طلب",
-    "ترند",
     "popular",
     "most popular",
     "most requested",
-    "trending",
     "trendy",
   ],
   pastry: [
@@ -248,6 +246,14 @@ function isAvoidedMention(haystack: string, alias: string): boolean {
   if (index < 0) return false;
   const before = haystack.slice(Math.max(0, index - 24), index);
   return AVOID_MARKERS.some((marker) => before.includes(marker));
+}
+
+const TRENDING_WEEK_ALIASES = ["trending", "ترند"] as const;
+
+/** Weekly trending ask. Not the Most Popular rank. */
+export function isTrendingWeekAsk(raw: string): boolean {
+  const haystack = normalize(raw);
+  return TRENDING_WEEK_ALIASES.some((alias) => includesAlias(haystack, alias));
 }
 
 export function parseIntent(

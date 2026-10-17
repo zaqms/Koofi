@@ -75,12 +75,14 @@ export function HomeLanding({
       : pageChipId && pageChipId !== "popular"
         ? chipSharePath(pageChipId, language)
         : mostPopularPath(language);
+  const trendingShops = listTrendingThisWeekShops();
   const homeDiscovery = bareHome ? (
     <CityDiscovery>
-      <HomeTrending language={language} shops={listTrendingThisWeekShops()} />
+      <HomeTrending language={language} shops={trendingShops} />
       <BrowseNeighborhoods
         language={language}
         candidates={neighborhoodCandidates}
+        flushTop={trendingShops.length === 0}
       />
       <ShopDirectory
         language={language}

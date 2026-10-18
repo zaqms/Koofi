@@ -220,7 +220,7 @@ assert(liveCatalog.includes("ash-shifa"), "ash-shifa is a live catalog district"
 assert(listLiveDistrictIds().includes("ash-shifa"), "ash-shifa is a live specialty district");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "ash-shifa").map((shop) => shop.id).join(",") ===
-    "tul-cafe-ash-shifa,yamm-ash-shifa,coffee-address-ash-shifa,folk-coffee-ash-shifa,light-dose-ash-shifa,third-place-ash-shifa,butterfly-cafe-ash-shifa,rwy-ash-shifa,icon-ash-shifa,lenore-ash-shifa,java-cafe-ash-shifa,half-million-ibn-taymiyyah-ash-shifa,half-million-tirmidhi-ash-shifa",
+    "tul-cafe-ash-shifa,yamm-ash-shifa,coffee-address-ash-shifa,folk-coffee-ash-shifa,light-dose-ash-shifa,third-place-ash-shifa,butterfly-cafe-ash-shifa,rwy-ash-shifa,icon-ash-shifa,linor-ash-shifa,java-cafe-ash-shifa,half-million-ibn-taymiyyah-ash-shifa,half-million-tirmidhi-ash-shifa",
   "Ash Shifa catalog is Tul Cafe plus the 12 Batch Q rows (9 local, 3 chain)",
 );
 assert(

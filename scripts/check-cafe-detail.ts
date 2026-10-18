@@ -749,7 +749,7 @@ const BATCH_Q_ASH_SHIFA_HERO_COUNTS: Record<string, number> = {
   "butterfly-cafe-ash-shifa": 4,
   "rwy-ash-shifa": 4,
   "icon-ash-shifa": 4,
-  "lenore-ash-shifa": 4,
+  "linor-ash-shifa": 4,
   "java-cafe-ash-shifa": 3,
   "half-million-ibn-taymiyyah-ash-shifa": 4,
   "half-million-tirmidhi-ash-shifa": 2,

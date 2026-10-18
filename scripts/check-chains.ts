@@ -1014,10 +1014,10 @@ for (const [ask, id] of [
 {
   const localIds = [
     "yamm-ash-shifa", "coffee-address-ash-shifa", "folk-coffee-ash-shifa", "light-dose-ash-shifa", "third-place-ash-shifa",
-    "butterfly-cafe-ash-shifa", "rwy-ash-shifa", "icon-ash-shifa", "lenore-ash-shifa",
+    "butterfly-cafe-ash-shifa", "rwy-ash-shifa", "icon-ash-shifa", "linor-ash-shifa",
   ] as const;
   const chainIds = ["java-cafe-ash-shifa", "half-million-ibn-taymiyyah-ash-shifa", "half-million-tirmidhi-ash-shifa"] as const;
-  const tiles = new Set<string>(["folk-coffee-ash-shifa", "light-dose-ash-shifa", "rwy-ash-shifa", "icon-ash-shifa", "lenore-ash-shifa"]);
+  const tiles = new Set<string>(["folk-coffee-ash-shifa", "light-dose-ash-shifa", "rwy-ash-shifa", "icon-ash-shifa", "linor-ash-shifa"]);
   const siblingLogo: Record<string, string> = {
     "yamm-ash-shifa": "/logos/yamm-olaya.jpg",
     "coffee-address-ash-shifa": "/logos/coffee-address-mark.png",
@@ -1031,8 +1031,9 @@ for (const [ask, id] of [
     else if (siblingLogo[id]) assert(shop?.logoUrl === siblingLogo[id], `${id} reuses its sibling brand mark`);
     else assert(shop?.logoUrl === `/logos/${id}.png` && existsSync(join(process.cwd(), `public/logos/${id}.png`)), `${id} has its TikTok mark`);
   }
-  const lenore = getShop("lenore-ash-shifa");
-  assert(lenore?.seatingVerdict?.source === "scout" && lenore.dineIn === true, "Lenore has a Scout seatingVerdict (Places dineIn was null)");
+  const linor = getShop("linor-ash-shifa");
+  assert(linor?.nameEn === "Linor Coffee" && linor?.seatingVerdict?.source === "scout" && linor.dineIn === true, "Linor Coffee (r2 rename from Lenore) has a Scout seatingVerdict (Places dineIn was null)");
+  assert(getShop("icon-ash-shifa")?.nameEn === "Ayquna Cafe", "Icon EN name is Ayquna Cafe (r2)");
   for (const id of chainIds) {
     const shop = getShop(id);
     const brand = id.startsWith("java") ? "java" : "half-million";
@@ -1063,8 +1064,13 @@ for (const [ask, id] of [
     ["icon cafe", "icon-ash-shifa"],
     ["ayquna", "icon-ash-shifa"],
     ["أيقونة حي الشفا", "icon-ash-shifa"],
-    ["lenore", "lenore-ash-shifa"],
-    ["لينور", "lenore-ash-shifa"],
+    ["linor", "linor-ash-shifa"],
+    ["linor coffee", "linor-ash-shifa"],
+    ["lenore", "linor-ash-shifa"],
+    ["ayquna cafe", "icon-ash-shifa"],
+    ["icon cafe", "icon-ash-shifa"],
+    ["icon coffee", "icon-ash-shifa"],
+    ["لينور", "linor-ash-shifa"],
     ["java shifa", "java-cafe-ash-shifa"],
     ["half million ibn taymiyyah", "half-million-ibn-taymiyyah-ash-shifa"],
     ["half million tirmidhi", "half-million-tirmidhi-ash-shifa"],
@@ -1884,7 +1890,7 @@ assert(
 );
 assert(
   listDirectoryShopsForDistrict("ash-shifa").map((shop) => shop.id).sort().join(",") ===
-    "butterfly-cafe-ash-shifa,coffee-address-ash-shifa,folk-coffee-ash-shifa,half-million-ibn-taymiyyah-ash-shifa,half-million-tirmidhi-ash-shifa,icon-ash-shifa,java-cafe-ash-shifa,lenore-ash-shifa,light-dose-ash-shifa,rwy-ash-shifa,third-place-ash-shifa,tul-cafe-ash-shifa,yamm-ash-shifa",
+    "butterfly-cafe-ash-shifa,coffee-address-ash-shifa,folk-coffee-ash-shifa,half-million-ibn-taymiyyah-ash-shifa,half-million-tirmidhi-ash-shifa,icon-ash-shifa,java-cafe-ash-shifa,light-dose-ash-shifa,linor-ash-shifa,rwy-ash-shifa,third-place-ash-shifa,tul-cafe-ash-shifa,yamm-ash-shifa",
   "Ash Shifa lists Tul Cafe plus the 12 Batch Q rows (9 local, 3 chain)",
 );
 assert(
@@ -2109,7 +2115,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "76218f726e783263258d103b911da1e821cca84730243de38a375176eb855e17",
+  copyHash === "0b00c395e462a027d81603eb8e08cca5c765d8456575d42b53c06db55b02499f",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(

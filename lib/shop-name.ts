@@ -260,8 +260,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "third-place-ash-shifa": ["third place cafe", "third place coffee", "thirdplace", "ثيرد بليس كافيه"],
   "butterfly-cafe-ash-shifa": ["butterfly coffee", "بترفلاي كوفي"],
   "rwy-ash-shifa": ["rwy roastery", "rwy cafe", "محمصة rwy"],
-  "icon-ash-shifa": ["ayquna", "icon coffee", "أيقونة كافيه", "مقهى أيقونة", "قهوة أيقونة"],
-  "lenore-ash-shifa": ["lenore cafe", "لينور كافيه"],
+  "icon-ash-shifa": ["ayquna", "icon cafe", "icon coffee", "أيقونة كافيه", "مقهى أيقونة", "قهوة أيقونة"],
+  // r2 (QA M1): sign, cups and @linor.sa read LINOR; "Lenore" spellings stay as aliases.
+  "linor-ash-shifa": ["linor", "linor cafe", "linor sa", "lenore", "lenore coffee", "lenore cafe", "لينور كافيه"],
   "java-cafe-ash-shifa": ["java shifa", "java cafe shifa", "جافا الشفا"],
   "half-million-ibn-taymiyyah-ash-shifa": ["half million ibn taymiyyah", "هاف مليون ابن تيمية"],
   "half-million-tirmidhi-ash-shifa": ["half million tirmidhi", "هاف مليون الترمذي"],

@@ -6265,7 +6265,7 @@ const scoutPack: {
     outdoorSeating: null,
   },
   {
-    id: "lenore-ash-shifa",
+    id: "linor-ash-shifa",
     hex: "0x3e2f0fc1f12c3be7:0xc7a5c10293c1499d",
     neighborhood: "ash-shifa",
     vibe: ["قهوة"],

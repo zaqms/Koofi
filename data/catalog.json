@@ -58125,7 +58125,7 @@
     {
       "id": "icon-ash-shifa",
       "nameAr": "أيقونة حي الشفا",
-      "nameEn": "Icon Cafe",
+      "nameEn": "Ayquna Cafe",
       "city": "riyadh",
       "neighborhood": "ash-shifa",
       "neighborhoodAr": "الشفا",
@@ -58168,9 +58168,9 @@
       "example": false
     },
     {
-      "id": "lenore-ash-shifa",
+      "id": "linor-ash-shifa",
       "nameAr": "قهوة لينور",
-      "nameEn": "Lenore Coffee",
+      "nameEn": "Linor Coffee",
       "city": "riyadh",
       "neighborhood": "ash-shifa",
       "neighborhoodAr": "الشفا",

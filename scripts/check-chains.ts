@@ -893,7 +893,11 @@ for (const [ask, id] of [
   }
   const first: Array<[string, string]> = [
     ["dwell cafe", "dwell-dhahrat-laban"], ["دويل", "dwell-dhahrat-laban"],
-    ["in row", "in-row-al-fayha"], ["ان رو", "in-row-al-fayha"],
+    ["in row", "in-row-al-fayha"], ["ان رو", "in-row-al-fayha"], ["إن رو", "in-row-al-fayha"],
+    // r2 (QA M1): branch + district short forms rank the Suwaidi Al Gharbi branch first; Google's «كلتورا» spelling matches.
+    ["kultura suwaidi", "kultura-as-suwaidi-al-gharbi"], ["كولتورا السويدي", "kultura-as-suwaidi-al-gharbi"],
+    ["كلتورا السويدي", "kultura-as-suwaidi-al-gharbi"], ["كولتورا السويدي الغربي", "kultura-as-suwaidi-al-gharbi"],
+    ["كلتورا حطين", "kultura-hittin"],
     ["veni", "veni-al-nakheel"], ["فيني", "veni-al-nakheel"],
     ["horus house", "horus-house-olaya"], ["بيت حورس", "horus-house-olaya"],
     ["espresso culture", "espresso-culture-al-mursalat"], ["إسبريسو كالتشر", "espresso-culture-al-mursalat"],
@@ -904,9 +908,15 @@ for (const [ask, id] of [
     assert(hits[0] === id, `${ask} matches ${id} first, got ${hits.join(",")}`);
   }
   assert(matchCatalogShops("كولتورا", listRealShops()).some((s) => s.id === "kultura-as-suwaidi-al-gharbi"), "كولتورا includes the Suwaidi Al Gharbi branch");
+  {
+    const k = matchCatalogShops("كلتورا", listRealShops()).map((s) => s.id).filter((id) => id.startsWith("kultura-")).sort();
+    assert(k.join(",") === "kultura-al-ghadeer,kultura-al-malqa,kultura-al-rayyan,kultura-as-suwaidi-al-gharbi,kultura-hittin", `كلتورا (Google spelling) matches all 5 Kultura rows, got ${k.join(",")}`);
+  }
+  assert(pickCafes({ text: "kultura suwaidi" }).picks[0]?.shop.id === "kultura-as-suwaidi-al-gharbi", "picker leads with the Suwaidi Al Gharbi branch for kultura suwaidi");
+  assert(getShop("in-row-al-fayha")?.nameAr === "إن رو", "in row AR name is «إن رو» (r2, QA policy default 4)");
   const guards: Array<[string, string]> = [
     ["row", "in-row-al-fayha"], ["ان", "in-row-al-fayha"], ["رو", "in-row-al-fayha"],
-    ["بيت", "horus-house-olaya"], ["espresso", "espresso-culture-al-mursalat"], ["اسبريسو", "espresso-culture-al-mursalat"], ["culture", "espresso-culture-al-mursalat"],
+    ["بيت", "horus-house-olaya"], ["espresso", "espresso-culture-al-mursalat"], ["اسبريسو", "espresso-culture-al-mursalat"], ["culture", "espresso-culture-al-mursalat"], ["كالتشر", "espresso-culture-al-mursalat"],
   ];
   for (const [ask, id] of guards) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
@@ -1925,7 +1935,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "ca6cf3af8c923953321deaa08a4f3bb32baea4df4f68677c74e216dfdd3212ee",
+  copyHash === "f3b8f5f9e25db6d8bf99cace260c254784de624c1c5cd167eaea1ac76aaaa9b1",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(

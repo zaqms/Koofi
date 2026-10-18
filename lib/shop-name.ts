@@ -243,10 +243,16 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "trace-al-mursalat": ["trace cafe", "trace coffee", "trace mursalat", "trace manual brewing bar", "تريس كافيه", "تريس كوفي", "تريس المرسلات"],
   // Trending adds (18 Oct 2026).
   "dwell-dhahrat-laban": ["dwell cafe", "dwell coffee", "دويل كافيه"],
-  "in-row-al-fayha": ["in row cafe", "in row coffee", "inrow", "together in row", "ان رو كافيه"],
+  "in-row-al-fayha": ["in row cafe", "in row coffee", "inrow", "together in row", "ان رو", "ان رو كافيه", "إن رو كافيه"],
   "veni-al-nakheel": ["veni cafe", "veni coffee", "فيني كافيه"],
   "horus-house-olaya": ["horus house caffee", "horus house cafe", "horus cafe", "بيت حورس كافيه"],
   "espresso-culture-al-mursalat": ["espresso culture cafe", "اسبريسو كالتشر كافيه"],
+  // r2 (QA M1/Low): Google and TikTok spell the brand «كلتورا»; branch + district short forms rank that branch first.
+  "kultura-as-suwaidi-al-gharbi": ["كلتورا", "kultura suwaidi", "kultura suwaidi al gharbi", "كولتورا السويدي", "كولتورا السويدي الغربي", "كلتورا السويدي", "كلتورا السويدي الغربي"],
+  "kultura-hittin": ["كلتورا", "كلتورا حطين"],
+  "kultura-al-malqa": ["كلتورا", "كلتورا الملقا"],
+  "kultura-al-rayyan": ["كلتورا", "كلتورا الريان"],
+  "kultura-al-ghadeer": ["كلتورا", "كلتورا الغدير"],
   "shal-al-mohammadiyah": ["shal coffee", "shal cafe", "شال كافيه", "قهوة شال"],
 };
 
@@ -324,7 +330,7 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   // Trending adds (18 Oct 2026): common words never pin these cafés on their own.
   "in-row-al-fayha": ["row", "ان", "رو"],
   "horus-house-olaya": ["بيت"],
-  "espresso-culture-al-mursalat": ["espresso", "اسبريسو", "culture"],
+  "espresso-culture-al-mursalat": ["espresso", "اسبريسو", "culture", "كالتشر"],
 };
 
 function chainBrandIdForShop(

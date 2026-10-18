@@ -975,14 +975,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "ash-shifa": {
     lead: `Ash Shifa (الشفا) sits on the south side of Riyadh. This page is the Ash Shifa set on wain.lol so far.
 
-[Tul Cafe](/en/c/tul-cafe-ash-shifa) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Ash Shifa on the catalog today:`,
+[Tul Cafe](/en/c/tul-cafe-ash-shifa), [Yamm](/en/c/yamm-ash-shifa), [Butterfly](/en/c/butterfly-cafe-ash-shifa), [Coffee Address](/en/c/coffee-address-ash-shifa), and [Third Place](/en/c/third-place-ash-shifa) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Ash Shifa on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Ash Shifa isn’t the stop, these south lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ash Shifa. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Ash Shifa on wain.lol — a Riyadh neighborhood list including Tul Cafe, with a Maps link.",
+    meta: "{countCafe} in Ash Shifa on wain.lol — a Riyadh neighborhood list including Tul Cafe and Yamm, each with a Maps link.",
   },
   "al-qadisiyah": {
     lead: `Al Qadisiyah (القادسية) sits on the east side of Riyadh. This page is the Al Qadisiyah set on wain.lol so far.

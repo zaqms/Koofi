@@ -200,10 +200,10 @@ assert(
       (row) =>
         row.id === id &&
         row.cafeCount ===
-          (id === "as-suwaidi-al-gharbi" ? 2 : id === "dhahrat-laban" ? 16 : 1),
+          (id === "as-suwaidi-al-gharbi" ? 2 : id === "dhahrat-laban" ? 16 : id === "ash-shifa" ? 13 : 1),
     ),
   ),
-  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 2 after Batch J; Dhahrat Laban 16 after Batch N; Ash Shifa and Al Qadisiyah one each)",
+  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 2 after Batch J; Dhahrat Laban 16 after Batch N; Ash Shifa 13 after Batch Q; Al Qadisiyah one)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),

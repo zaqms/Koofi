@@ -239,6 +239,15 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "drcafe-park-dhahrat-laban": ["dr cafe park", "drcafe park", "dr cafe laban", "د.كيف حديقة", "د كيف حديقة", "د.كيف ظهرة لبن"],
   // AJ add (16 Oct 2026): bare "found" is an everyday word; brand-qualified names and «فاوند» match.
   "found-ar-rabwah": ["found cafe", "found coffee", "found rabwah", "فاوند كافيه", "فاوند كوفي"],
+  // AJ add (18 Oct 2026): bare "trace" is an everyday word; brand-qualified names and «تريس» match.
+  "trace-al-mursalat": ["trace cafe", "trace coffee", "trace mursalat", "trace manual brewing bar", "تريس كافيه", "تريس كوفي", "تريس المرسلات"],
+  // Trending adds (18 Oct 2026).
+  "dwell-dhahrat-laban": ["dwell cafe", "dwell coffee", "دويل كافيه"],
+  "in-row-al-fayha": ["in row cafe", "in row coffee", "inrow", "together in row", "ان رو كافيه"],
+  "veni-al-nakheel": ["veni cafe", "veni coffee", "فيني كافيه"],
+  "horus-house-olaya": ["horus house caffee", "horus house cafe", "horus cafe", "بيت حورس كافيه"],
+  "espresso-culture-al-mursalat": ["espresso culture cafe", "اسبريسو كالتشر كافيه"],
+  "shal-al-mohammadiyah": ["shal coffee", "shal cafe", "شال كافيه", "قهوة شال"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -310,6 +319,12 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "qasura-coffee-dhahrat-laban": ["qasura", "قسورة", "قسوره"],
   // AJ add (16 Oct 2026): "found" alone ("I found…", lost & found) never pins the café.
   "found-ar-rabwah": ["found"],
+  // AJ add (18 Oct 2026): "trace" alone (a trace of, track and trace) never pins the café.
+  "trace-al-mursalat": ["trace"],
+  // Trending adds (18 Oct 2026): common words never pin these cafés on their own.
+  "in-row-al-fayha": ["row", "ان", "رو"],
+  "horus-house-olaya": ["بيت"],
+  "espresso-culture-al-mursalat": ["espresso", "اسبريسو", "culture"],
 };
 
 function chainBrandIdForShop(

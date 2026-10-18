@@ -713,6 +713,20 @@ const BATCH_N_DL_IDS = Object.keys(BATCH_N_DL_HERO_COUNTS);
 /** AJ add (16 Oct 2026): Found Ar Rabwah — Scout's 4 Places frames; the owner's duck-logo graphic (idx 2) dropped; a parked car's plate in idx 0 blurred. 0 Dev Places calls. */
 const AJ_FOUND_HERO_COUNTS: Record<string, number> = { "found-ar-rabwah": 3 };
 const AJ_FOUND_IDS = Object.keys(AJ_FOUND_HERO_COUNTS);
+/** AJ add (18 Oct 2026): Trace Al Mursalat — Places idx 0/2/3 (storefront + two cup tables); idx 1 (readable car plates) not shipped. Scout's 18 Oct files were lost in a box restore, so Dev re-fetched the 3 frames (1 Details + 3 Photos). */
+const AJ_TRACE_HERO_COUNTS: Record<string, number> = { "trace-al-mursalat": 3 };
+const AJ_TRACE_IDS = Object.keys(AJ_TRACE_HERO_COUNTS);
+/** Trending adds 18 Oct 2026: Scout's Places frames, hand-ordered; staff/customer-face, other-brand and duplicate frames dropped. 0 Dev Places calls. */
+const TRENDING_1018_HERO_COUNTS: Record<string, number> = {
+  "dwell-dhahrat-laban": 4,
+  "in-row-al-fayha": 4,
+  "veni-al-nakheel": 2,
+  "horus-house-olaya": 4,
+  "espresso-culture-al-mursalat": 2,
+  "kultura-as-suwaidi-al-gharbi": 3,
+  "shal-al-mohammadiyah": 3,
+};
+const TRENDING_1018_IDS = Object.keys(TRENDING_1018_HERO_COUNTS);
 
 
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
@@ -779,6 +793,8 @@ const batchLSharqiHeroIds = BATCH_L_SHARQI_IDS.filter((id) => bakedHeroes[id]);
 const batchMDqHeroIds = BATCH_M_DQ_IDS.filter((id) => bakedHeroes[id]);
 const batchNDlHeroIds = BATCH_N_DL_IDS.filter((id) => bakedHeroes[id]);
 const ajFoundHeroIds = AJ_FOUND_IDS.filter((id) => bakedHeroes[id]);
+const ajTraceHeroIds = AJ_TRACE_IDS.filter((id) => bakedHeroes[id]);
+const trending1018HeroIds = TRENDING_1018_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -807,8 +823,10 @@ assert(
       batchLSharqiHeroIds.length +
       batchMDqHeroIds.length +
       batchNDlHeroIds.length +
-      ajFoundHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban and the Found Ar Rabwah AJ add merge in",
+      ajFoundHeroIds.length +
+      ajTraceHeroIds.length +
+      trending1018HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban and the Found Ar Rabwah and Trace Al Mursalat AJ adds and the 18 Oct trending adds merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -838,6 +856,8 @@ assert(batchLSharqiHeroIds.length === 3, "Batch L Umm Al Hamam Ash Sharqi hero s
 assert(batchMDqHeroIds.length === 13, "Batch M Diplomatic Quarter hero set is complete (13)");
 assert(batchNDlHeroIds.length === 15, "Batch N Dhahrat Laban hero set is complete (15)");
 assert(ajFoundHeroIds.length === 1, "Found Ar Rabwah hero set is present");
+assert(ajTraceHeroIds.length === 1, "Trace Al Mursalat hero set is present");
+assert(trending1018HeroIds.length === 7, "18 Oct trending adds hero sets are present");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],
@@ -975,6 +995,8 @@ function expectedHeroCount(id: string): number {
   if (BATCH_M_DQ_HERO_COUNTS[id] != null) return BATCH_M_DQ_HERO_COUNTS[id]!;
   if (BATCH_N_DL_HERO_COUNTS[id] != null) return BATCH_N_DL_HERO_COUNTS[id]!;
   if (AJ_FOUND_HERO_COUNTS[id] != null) return AJ_FOUND_HERO_COUNTS[id]!;
+  if (AJ_TRACE_HERO_COUNTS[id] != null) return AJ_TRACE_HERO_COUNTS[id]!;
+  if (TRENDING_1018_HERO_COUNTS[id] != null) return TRENDING_1018_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

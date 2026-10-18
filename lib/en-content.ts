@@ -614,14 +614,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-mursalat": {
     lead: `Al Mursalat (المرسلات) sits between Al Mughrizat and Al Masif. This page is the Al Mursalat set on wain.lol so far.
 
-[Camel Step](/en/c/camel-step-al-mursalat) is the name on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Al Mursalat on the catalog today:`,
+[Trace](/en/c/trace-al-mursalat) and [Espresso Culture](/en/c/espresso-culture-al-mursalat) are the names on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Mursalat on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Mursalat isn’t the stop, these central-north lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Mursalat. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Al Mursalat on wain.lol — a Riyadh neighborhood list including Camel Step, with a Maps link.",
+    meta: "{countCafe} in Al Mursalat on wain.lol — a Riyadh neighborhood list including Trace and Espresso Culture, each with a Maps link.",
   },
   "al-murabba": {
     lead: `Al Murabba (المربع) sits by Al Malaz and Al Olaya. This page is the Al Murabba set on wain.lol so far.

@@ -876,7 +876,58 @@ for (const [ask, id] of [
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(hits[0] === first, `bare ${ask} keeps the older row first, got ${hits.join(",")}`);
   }
-  assert(listDirectoryShopsForDistrict("dhahrat-laban").length === 16, "Dhahrat Laban page has 16 cafés (ON OFF + 15 Batch N)");
+  assert(listDirectoryShopsForDistrict("dhahrat-laban").length === 17, "Dhahrat Laban page has 17 cafés (ON OFF + 15 Batch N + Dwell, trending add 18 Oct)");
+}
+// Trending adds (18 Oct 2026): 7 local specialty rows from Scout's trending verify.
+{
+  const TILES = ["dwell-dhahrat-laban", "veni-al-nakheel", "horus-house-olaya", "espresso-culture-al-mursalat", "shal-al-mohammadiyah"];
+  const LOGOS: Record<string, string> = { "in-row-al-fayha": "/logos/in-row-al-fayha.png", "kultura-as-suwaidi-al-gharbi": "/logos/kultura-as-suwaidi-al-gharbi.jpg" };
+  for (const id of [...TILES, ...Object.keys(LOGOS)]) {
+    const shop = getShop(id);
+    assert(shop && shop.isChain !== true && !shop.chainBrand && listDiscoveryShops().some((s) => s.id === id), `${id} is local specialty`);
+    assert(TILES.includes(id) ? !shop.logoUrl : shop.logoUrl === LOGOS[id], `${id} logo/tile`);
+    assert(listDirectoryShopsForDistrict(shop.neighborhood).some((s) => s.id === id), `${id} shows on its district page`);
+  }
+  for (const id of ["kultura-hittin", "kultura-al-malqa", "kultura-al-rayyan", "kultura-al-ghadeer"]) {
+    assert(getShop(id)?.logoUrl === `/logos/${id}.jpg`, `${id} keeps its logo path (file now the 512px official mark)`);
+  }
+  const first: Array<[string, string]> = [
+    ["dwell cafe", "dwell-dhahrat-laban"], ["دويل", "dwell-dhahrat-laban"],
+    ["in row", "in-row-al-fayha"], ["ان رو", "in-row-al-fayha"],
+    ["veni", "veni-al-nakheel"], ["فيني", "veni-al-nakheel"],
+    ["horus house", "horus-house-olaya"], ["بيت حورس", "horus-house-olaya"],
+    ["espresso culture", "espresso-culture-al-mursalat"], ["إسبريسو كالتشر", "espresso-culture-al-mursalat"],
+    ["shal coffee", "shal-al-mohammadiyah"], ["شال", "shal-al-mohammadiyah"],
+  ];
+  for (const [ask, id] of first) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === id, `${ask} matches ${id} first, got ${hits.join(",")}`);
+  }
+  assert(matchCatalogShops("كولتورا", listRealShops()).some((s) => s.id === "kultura-as-suwaidi-al-gharbi"), "كولتورا includes the Suwaidi Al Gharbi branch");
+  const guards: Array<[string, string]> = [
+    ["row", "in-row-al-fayha"], ["ان", "in-row-al-fayha"], ["رو", "in-row-al-fayha"],
+    ["بيت", "horus-house-olaya"], ["espresso", "espresso-culture-al-mursalat"], ["اسبريسو", "espresso-culture-al-mursalat"], ["culture", "espresso-culture-al-mursalat"],
+  ];
+  for (const [ask, id] of guards) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.includes(id), `${ask} does not pin ${id}, got ${hits.join(",")}`);
+  }
+}
+// AJ add (18 Oct 2026): Trace / تريس, Al Mursalat — local specialty, letter tile; Places dineIn true.
+{
+  const trace = getShop("trace-al-mursalat");
+  assert(trace && trace.isChain !== true && !trace.chainBrand && !trace.logoUrl && listDiscoveryShops().some((s) => s.id === "trace-al-mursalat"), "Trace Al Mursalat is local specialty with a letter tile");
+  assert(trace?.dineIn === true, "Trace is dine-in on Places");
+  const mursalat = listDirectoryShopsForDistrict("al-mursalat").map((s) => s.id);
+  assert(mursalat.length === 2 && mursalat.includes("trace-al-mursalat") && mursalat.includes("espresso-culture-al-mursalat"), `Trace and Espresso Culture are the Al Mursalat page rows (Camel Step DT-lane fallback drops off), got ${mursalat.join(",")}`);
+  for (const ask of ["trace cafe", "trace coffee", "تريس", "تريس كافيه"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === "trace-al-mursalat", `${ask} matches Trace first, got ${hits.join(",")}`);
+  }
+  for (const ask of ["trace", "track and trace", "no trace of coffee"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.includes("trace-al-mursalat"), `${ask} does not pin Trace, got ${hits.join(",")}`);
+  }
 }
 // AJ add (16 Oct 2026): Found / فاوند, Ar Rabwah — local specialty, letter tile; Places dineIn null → Scout seatingVerdict.
 {
@@ -1449,18 +1500,18 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 487, "specialty discovery is 487 (1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
-assert(listRealShops().length === 571, "catalog is 571 after Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
-assert(listLiveDistrictIds().length === 65, "specialty districts are 65 (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L; the 3 Drive rows were not a district's only specialty cafe)");
+assert(listDiscoveryShops().length === 495, "specialty discovery is 495 (7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
+assert(listRealShops().length === 579, "catalog is 579 after the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
+assert(listLiveDistrictIds().length === 66, "specialty districts are 66 (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add; the 3 Drive rows were not a district's only specialty cafe)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 79,
   "catalog rows cover 79 districts (Jarir hidden; 4 Bisat batch + 4 Batch D3 districts + Umm Al Hamam Ash Sharqi, Batch L)",
 );
 assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
 assert(listDriveThroughDirectoryShops().length === 74, "drive-through is 74 (73 + Tim Hortons Shubra, sit-down + drive-through)");
-assert(listListingShops().length === 516, "listing is 487 local plus the 29 sit-down chains");
-assert(listPublicShops().length === 516, "public list includes the 29 sit-down chains");
-assert(listBrowseDirectoryShops().length === 520, "browse is 418 plus the 1 Found Ar Rabwah row, the 15 Batch N Dhahrat Laban rows, the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 12 Batch K Umm Al Hamam Al Gharbi rows and the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
+assert(listListingShops().length === 524, "listing is 495 local plus the 29 sit-down chains");
+assert(listPublicShops().length === 524, "public list includes the 29 sit-down chains");
+assert(listBrowseDirectoryShops().length === 527, "browse is 418 plus the 7 trending-add rows (18 Oct), the 1 Trace Al Mursalat row (which replaces the Camel Step DT-lane fallback on the Al Mursalat page), the 1 Found Ar Rabwah row, the 15 Batch N Dhahrat Laban rows, the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 12 Batch K Umm Al Hamam Al Gharbi rows and the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 29,
   "exactly 29 sit-down chains are listed (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi + Costa, Caribou and 2 Starbucks Diplomatic Quarter + Veloce and dr.CAFE Dhahrat Laban)",
@@ -1507,8 +1558,8 @@ assert(
 );
 assert(
   districtEnMeta("olaya") ===
-    "29 cafes in Al Olaya on wain.lol — a Riyadh neighborhood list, with Maps links.",
-  "Al Olaya EN meta counts Trov (Batch D3)",
+    "30 cafes in Al Olaya on wain.lol — a Riyadh neighborhood list, with Maps links.",
+  "Al Olaya EN meta counts Trov (Batch D3) and HORUS House (trending add 18 Oct)",
 );
 const wordingMatrix: {
   total: number;
@@ -1874,7 +1925,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "fe00983afd637115347c9c54ff7d77d6515596b6d849202be53f60f00a46c1a3",
+  copyHash === "ca6cf3af8c923953321deaa08a4f3bb32baea4df4f68677c74e216dfdd3212ee",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -2004,11 +2055,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "ac5afc5aef77a5bd58875da55ef037ca12f0ecc6ddf6746da61618c583467cd7",
+  llmsHash === "1930f7d563fc8ccc676069390434e457da3ef9034d561fa80d56167d38b51006",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
-  llms.includes("487 local, 29 chain branches"),
+  llms.includes("495 local, 29 chain branches"),
   "llms.txt names the 29 chain branches separately from specialty",
 );
 
@@ -2342,14 +2393,15 @@ assert(
       suwaidiAr.includes("هذي أقرب 3 قوائم بالموقع. الوشام قريب بعد، بس قهوته الوحيدة درايف ثرو"),
     "As Suwaidi nearby intro says 3 lists and why (AR digits from 3)",
   );
-  // Five pages show 3 nearby, each because one listed neighbor only has drive-thru rows.
+  // Four pages show 3 nearby, each because one listed neighbor only has drive-thru rows.
+  // (AJ add 18 Oct 2026: Trace makes Al Mursalat a specialty list, so King Salman gets its 4th nearby back.)
   const listed = new Set(listDirectoryShops().map((shop) => shop.neighborhood));
   const shortNearby = (Object.keys(NEARBY_DISTRICTS) as NeighborhoodId[])
     .filter((id) => listed.has(id))
     .filter((id) => NEARBY_DISTRICTS[id].filter((n) => listed.has(n) && n !== id).length < 4)
     .sort();
   assert(
-    shortNearby.join(",") === "al-aziziyah,as-suwaidi,badr,king-salman,tuwaiq",
+    shortNearby.join(",") === "al-aziziyah,as-suwaidi,badr,tuwaiq",
     `nearby lists with 3 rows: ${shortNearby.join(",")}`,
   );
 }

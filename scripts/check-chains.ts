@@ -950,7 +950,7 @@ for (const [ask, id] of [
     "irlo-tuwaiq", "ratio-speciality-tuwaiq", "quba-tuwaiq", "oldlane-tuwaiq", "gedeb-tuwaiq", "breath-tuwaiq", "lihaf-tuwaiq",
     "saaf-tuwaiq", "inverno-tuwaiq", "era-coffee-tuwaiq", "haqwa-tuwaiq", "taghrid-tuwaiq", "nv-coffee-tuwaiq", "shathb-tuwaiq",
   ] as const;
-  const tiles = new Set<string>(["lihaf-tuwaiq", "saaf-tuwaiq", "taghrid-tuwaiq", "nv-coffee-tuwaiq", "shathb-tuwaiq"]);
+  const tiles = new Set<string>(["saaf-tuwaiq", "taghrid-tuwaiq", "nv-coffee-tuwaiq", "shathb-tuwaiq"]);
   const siblingLogo: Record<string, string> = {
     "ratio-speciality-tuwaiq": "/logos/ratio-speciality-al-yarmouk.png",
     "gedeb-tuwaiq": "/logos/gedeb-al-olaya.jpg",
@@ -963,7 +963,7 @@ for (const [ask, id] of [
     assert(listDirectoryShopsForDistrict("tuwaiq").some((row) => row.id === id), `${id} shows on the Tuwaiq page`);
     if (tiles.has(id)) assert(!shop?.logoUrl, `${id} is a letter tile`);
     else if (siblingLogo[id]) assert(shop?.logoUrl === siblingLogo[id], `${id} reuses its sibling brand mark`);
-    else assert(shop?.logoUrl === `/logos/${id}.png` && existsSync(join(process.cwd(), `public/logos/${id}.png`)), `${id} has its TikTok mark`);
+    else assert(shop?.logoUrl === `/logos/${id}.png` && existsSync(join(process.cwd(), `public/logos/${id}.png`)), `${id} has its own mark (TikTok, or Lihaf's Maps-linked site wordmark in r2)`);
   }
   for (const [ask, id] of [
     ["irlo", "irlo-tuwaiq"],

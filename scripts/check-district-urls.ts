@@ -6017,6 +6017,7 @@ const scoutPack: {
     neighborhood: "tuwaiq",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/lihaf-tuwaiq.png",
     pin: { lat: 24.5554386, lng: 46.5544705 },
     coordsInUrl: true,
     placeId: "ChIJCakEKwAZLz4R-It-s4st8dU",

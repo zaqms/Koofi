@@ -987,14 +987,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-qadisiyah": {
     lead: `Al Qadisiyah (القادسية) sits on the east side of Riyadh. This page is the Al Qadisiyah set on wain.lol so far.
 
-[ON OFF Coffee](/en/c/on-off-coffee-al-qadisiyah) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Al Qadisiyah on the catalog today:`,
+[ON OFF Coffee](/en/c/on-off-coffee-al-qadisiyah), [heet coffee](/en/c/heet-coffee-al-qadisiyah), [Tu Momento Cafe](/en/c/tu-momento-al-qadisiyah), and [Rewanted](/en/c/rewanted-al-qadisiyah) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Qadisiyah on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Qadisiyah isn’t the stop, these east-Riyadh lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Qadisiyah. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Al Qadisiyah on wain.lol — a Riyadh neighborhood list including ON OFF Coffee, with a Maps link.",
+    meta: "{countCafe} in Al Qadisiyah on wain.lol — a Riyadh neighborhood list including ON OFF Coffee and heet coffee, each with a Maps link.",
   },
   "dhahrat-laban": {
     lead: `Dhahrat Laban (ظهرة لبن) sits on the west side of Riyadh. This page is the Dhahrat Laban set on wain.lol so far.

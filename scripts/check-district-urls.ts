@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 65, `expected 65 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L), got ${areas.length}`);
-assert(listDiscoveryShops().length === 487, `specialty discovery is 487 (1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 571, `catalog is 571 after Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 490, `specialty discovery is 490 (3 Batch R Al Qadisiyah local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 579, `catalog is 579 after Batch R (8 Al Qadisiyah), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1553,7 +1553,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 74, `Drive-through directory (moment tag) is 74 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra), got ${dt.length}`);
+  assert(dt.length === 75, `Drive-through directory (moment tag) is 75 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -1616,11 +1616,22 @@ const MALAZ_REFILL = {
   // 16 Sep scope: no Starbucks row carries the drive-through tag or chip.
   // Sit-down Starbucks (Tala Mall, Batch G) stays. Most popular, بيننا, and trending
   // still leave chains out the way those lists already do.
+  // Batch R (19 Oct 2026) AJ carve-out: Starbucks Tamimi Al Qadisiyah has indoor seating
+  // and a drive-through lane, so it is the one sit-down Starbucks with the moment tag
+  // (no catalogLane, not DT-only). Every other Starbucks row keeps the ban.
+  const STARBUCKS_DT_CARVE_OUT = "starbucks-tamimi-al-qadisiyah";
   const DRIVE_THROUGH_CHIP = /drive-through|طلبات السيار|درايف ثرو/i;
+  const tamimi = getShop(STARBUCKS_DT_CARVE_OUT);
+  assert(
+    tamimi?.chainBrand === "starbucks" && tamimi.dineIn === true && tamimi.catalogLane !== "drive-through" &&
+      tamimi.momentTags.includes("drive-through") && !tamimi.vibeTags.some((tag) => DRIVE_THROUGH_CHIP.test(tag)),
+    "Starbucks Tamimi is sit-down with the drive-through moment tag only (no lane, no DT vibe tag)",
+  );
   const starbucksRows = listRealShops().filter(
     (shop) =>
-      shop.chainBrand === "starbucks" ||
-      /starbucks|ستاربكس/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`),
+      shop.id !== STARBUCKS_DT_CARVE_OUT &&
+      (shop.chainBrand === "starbucks" ||
+        /starbucks|ستاربكس/i.test(`${shop.id} ${shop.nameEn} ${shop.nameAr}`)),
   );
   assert(starbucksRows.length > 0, "a sit-down Starbucks row is in the catalog");
   assert(
@@ -1999,6 +2010,7 @@ const scoutPack: {
     | "as-salam"
     | "al-raqban"
     | "al-munsiyah"
+    | "al-qadisiyah"
     | "an-nasim-ash-sharqi"
     | "an-nasim-al-gharbi"
     | "an-nada"
@@ -5927,6 +5939,110 @@ const scoutPack: {
     pin: { lat: 24.6953922, lng: 46.745342199999996 },
     coordsInUrl: true,
     placeId: "ChIJDXkwImYDLz4RXI7OH7gokQA",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch R (19 Oct 2026): Al Qadisiyah — 3 local (Tu Momento letter tile) + 5 sit-down chains on the sibling marks.
+  {
+    id: "tu-momento-al-qadisiyah",
+    hex: "0x3e2e55a6c1516a53:0x440a0876d66d7a97",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.820297699999998, lng: 46.8328829 },
+    coordsInUrl: true,
+    placeId: "ChIJU2pRwaZVLj4Rl3pt1nYICkQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "heet-coffee-al-qadisiyah",
+    hex: "0x3e2eff965a926fb9:0x2a22367545df6b84",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/heet-coffee-al-qadisiyah.png",
+    pin: { lat: 24.8080625, lng: 46.8104375 },
+    coordsInUrl: true,
+    placeId: "ChIJuW-SWpb_Lj4RhGvfRXU2Iio",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "rewanted-al-qadisiyah",
+    hex: "0x3e2e55b4b118cc03:0xaf82c3205bd79404",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rewanted-al-qadisiyah.png",
+    pin: { lat: 24.8160299, lng: 46.834551999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJA8wYsbRVLj4RBJTXWyDDgq8",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "peets-sheikh-jaber-al-qadisiyah",
+    hex: "0x3e2eff0329d3a107:0xb3419d1fde323079",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/peets-mark.png",
+    pin: { lat: 24.805823999999998, lng: 46.8120196 },
+    coordsInUrl: true,
+    placeId: "ChIJB6HTKQP_Lj4ReTAy3h-dQbM",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "half-million-al-qadisiyah",
+    hex: "0x3e2eff3d3ec0894d:0xf4d272c025806d4e",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/half-million-mark.png",
+    pin: { lat: 24.815109999999997, lng: 46.80512100000001 },
+    coordsInUrl: true,
+    placeId: "ChIJTYnAPj3_Lj4RTm2AJcBy0vQ",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "starbucks-rakaa-plaza-al-qadisiyah",
+    hex: "0x3e2f1da3e6270a17:0xeafad12fed10ece9",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.817978999999998, lng: 46.803059999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJFwon5qMdLz4R6ewQ7S_R-uo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "starbucks-tamimi-al-qadisiyah",
+    hex: "0x3e2eff1eba820f5d:0x68bb7bf50b0b9ea1",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa", "drive-through"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.8054431, lng: 46.8122715 },
+    coordsInUrl: true,
+    placeId: "ChIJXQ-Cuh7_Lj4RoZ4LC_V7u2g",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "tim-hortons-sheikh-jaber-al-qadisiyah",
+    hex: "0x3e2eff6863a04cc5:0xede678d52bab4bf4",
+    neighborhood: "al-qadisiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tim-hortons-wordmark.png",
+    pin: { lat: 24.804333, lng: 46.812858999999996 },
+    coordsInUrl: true,
+    placeId: "ChIJxUygY2j_Lj4R9EurK9V45u0",
     dineIn: true,
     outdoorSeating: null,
   },

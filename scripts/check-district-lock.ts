@@ -210,6 +210,24 @@ assert(
     "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi",
   "As Suwaidi Al Gharbi catalog is Tul Cafe plus Nafees",
 );
+const ashShifa = rows.find((row) => row.stableId === "ash-shifa");
+assert(ashShifa?.status === "dictionary_only", "ash-shifa sheet stays dictionary_only");
+assert(ashShifa?.nameEn === "Ash Shifa" && ashShifa?.nameAr === "الشفا", "ash-shifa EN/AR lock");
+assert(ashShifa?.shopCountLive === 13, "Ash Shifa sheet shop_count_live is 13 after Batch Q");
+assert(neighborhoodLabel("ash-shifa", "en") === "Ash Shifa", "ash-shifa EN label is Ash Shifa");
+assert(neighborhoodLabel("ash-shifa", "ar") === "الشفا", "ash-shifa AR label is الشفا");
+assert(liveCatalog.includes("ash-shifa"), "ash-shifa is a live catalog district");
+assert(listLiveDistrictIds().includes("ash-shifa"), "ash-shifa is a live specialty district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "ash-shifa").map((shop) => shop.id).join(",") ===
+    "tul-cafe-ash-shifa,yamm-ash-shifa,coffee-address-ash-shifa,folk-coffee-ash-shifa,light-dose-ash-shifa,third-place-ash-shifa,butterfly-cafe-ash-shifa,rwy-ash-shifa,icon-ash-shifa,linor-ash-shifa,java-cafe-ash-shifa,half-million-ibn-taymiyyah-ash-shifa,half-million-tirmidhi-ash-shifa",
+  "Ash Shifa catalog is Tul Cafe plus the 12 Batch Q rows (9 local, 3 chain)",
+);
+assert(
+  sitemap.includes(`https://wain.lol${districtPath("ash-shifa", "ar")}`) &&
+    sitemap.includes(`https://wain.lol${districtPath("ash-shifa", "en")}`),
+  "sitemap lists ash-shifa AR + EN",
+);
 
 const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
 assert(dhahrat?.status === "dictionary_only", "Dhahrat Al Badiah sheet stays dictionary_only");
@@ -295,8 +313,7 @@ for (const [id, en, ar, shopId, onSheet] of [
 
 // Batch D3 (4 Oct): four new live districts, one cafe each, all on the locked sheet (dictionary_only).
 for (const [id, en, ar, shopId] of [
-  // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); asserted below.
-  ["ash-shifa", "Ash Shifa", "الشفا", "tul-cafe-ash-shifa"],
+  // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); Ash Shifa left in Batch Q (12 added). Both asserted below.
   ["al-qadisiyah", "Al Qadisiyah", "القادسية", "on-off-coffee-al-qadisiyah"],
 ] as const) {
   const row = rows.find((r) => r.stableId === id);

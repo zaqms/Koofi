@@ -252,6 +252,20 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "saaf-tuwaiq": ["saaf cafe", "saaf coffee", "سعف كافيه", "مقهى سعف", "قهوة سعف"],
   "era-coffee-tuwaiq": ["era tuwaiq", "إرا طويق"],
   "taghrid-tuwaiq": ["taghrid coffee", "تغاريد كوفي"],
+  // Batch Q (18 Oct 2026): Ash Shifa — brand-qualified names for rows whose bare word is blocked below, plus per-branch names for the sibling/chain rows.
+  "yamm-ash-shifa": ["yamm shifa", "يم الشفا"],
+  "coffee-address-ash-shifa": ["coffee address shifa", "عنوان القهوة الشفا"],
+  "folk-coffee-ash-shifa": ["folk cafe", "فوك كوفي", "فوك كافيه"],
+  "light-dose-ash-shifa": ["light dose coffee", "لايت دوز"],
+  "third-place-ash-shifa": ["third place cafe", "third place coffee", "thirdplace", "ثيرد بليس كافيه"],
+  "butterfly-cafe-ash-shifa": ["butterfly coffee", "بترفلاي كوفي"],
+  "rwy-ash-shifa": ["rwy roastery", "rwy cafe", "محمصة rwy"],
+  "icon-ash-shifa": ["ayquna", "icon cafe", "icon coffee", "أيقونة كافيه", "مقهى أيقونة", "قهوة أيقونة"],
+  // r2 (QA M1): sign, cups and @linor.sa read LINOR; "Lenore" spellings stay as aliases.
+  "linor-ash-shifa": ["linor", "linor cafe", "linor sa", "lenore", "lenore coffee", "lenore cafe", "لينور كافيه"],
+  "java-cafe-ash-shifa": ["java shifa", "java cafe shifa", "جافا الشفا"],
+  "half-million-ibn-taymiyyah-ash-shifa": ["half million ibn taymiyyah", "هاف مليون ابن تيمية"],
+  "half-million-tirmidhi-ash-shifa": ["half million tirmidhi", "هاف مليون الترمذي"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -335,6 +349,15 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "lihaf-tuwaiq": ["lihaf", "لحاف"],
   "taghrid-tuwaiq": ["taghrid", "تغاريد"],
   "nv-coffee-tuwaiq": ["ان في", "ان", "في"],
+  // Batch Q (18 Oct 2026): everyday words never pin an Ash Shifa row alone (folk, light/dose, third/place, butterfly, icon;
+  // «حي» is "neighborhood", «جرعة»/«خفيفة» "dose"/"light", «بليس» "place", «ومقهى» "and café").
+  // Whole Arabic names stay matchable (check-plg): «فوك», «جرعة خفيفة», «ثيرد بليس», «أيقونة حي الشفا».
+  "folk-coffee-ash-shifa": ["folk"],
+  "light-dose-ash-shifa": ["light", "dose", "light dose", "جرعة", "خفيفة"],
+  "third-place-ash-shifa": ["third", "place", "third place", "ثيرد", "بليس"],
+  "butterfly-cafe-ash-shifa": ["butterfly"],
+  "rwy-ash-shifa": ["ومقهى", "ومقهى rwy"],
+  "icon-ash-shifa": ["icon", "أيقونة", "حي", "أيقونة حي"],
 };
 
 function chainBrandIdForShop(

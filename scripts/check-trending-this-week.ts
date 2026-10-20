@@ -205,6 +205,13 @@ assert(
   "Trending column count follows 1, 2, or 3 rows, and four sit two-by-two",
 );
 assert(trendingUi.includes("const HOME_TRENDING_COUNT = 4;"), "home shows up to four Trending tiles");
+assert(
+  trendingUi.includes("const narrow = rows.length === 3;") &&
+    trendingUi.includes('narrow ? "size-10" : "size-[3.25rem]"') &&
+    trendingUi.includes('narrow ? "text-xs" : "text-[13px]"') &&
+    trendingUi.includes("[overflow-wrap:anywhere]"),
+  "three-across tiles use the smaller visual and name, and names wrap instead of clipping",
+);
 
 const names = listRealShops().flatMap((shop) => [
   shop.id,
@@ -246,7 +253,7 @@ function trendingIds(language: Language): string[] {
     assert(!html.includes(escapeHtml(row.lineEn)), `${language} does not render the English line`);
   }
   assert(html.includes("grid-cols-3"), `${language} lays three rows out three across`);
-  assert(!html.includes("grid-cols-2"), `${language} does not leave a lone tile on a second row`);
+  assert(!html.includes("grid-cols-2"), `${language} three rows do not use the two-column grid`);
   assert(
     html.includes(language === "ar" ? "ترند الأسبوع" : "Trending this week"),
     `${language} keeps the existing heading`,

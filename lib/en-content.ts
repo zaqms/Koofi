@@ -638,14 +638,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "as-salam": {
     lead: `As Salam (السلام) is on the east side of Riyadh. This page is the As Salam set on wain.lol so far.
 
-[THE HAT](/en/c/the-hat-as-salam) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from As Salam on the catalog today:`,
+[THE HAT](/en/c/the-hat-as-salam), [Sakaf Cafe](/en/c/sakaf-as-salam), [Heddah Roaster](/en/c/heddah-roaster-as-salam), [Bu'd Art Cafe](/en/c/bud-art-cafe-as-salam), [Smpl](/en/c/smpl-as-salam), [Namq Cafe](/en/c/namq-as-salam), and [Breehant](/en/c/breehant-as-salam) are on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from As Salam on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If As Salam isn’t the stop, these east Riyadh lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like As Salam. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in As Salam on wain.lol — a Riyadh neighborhood list including THE HAT, with a Maps link.",
+    meta: "{countCafe} in As Salam on wain.lol — a Riyadh neighborhood list including THE HAT and Sakaf Cafe, each with a Maps link.",
   },
   ghubairah: {
     lead: `Ghubairah (غبيرة) sits south of the old-city stretch. This page is the Ghubairah set on wain.lol so far.

@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 524,
-  outdoor: 246,
-  coffee: 67,
+  nearby: 530,
+  outdoor: 248,
+  coffee: 69,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 579, "catalog is 579 after Batch R Al Qadisiyah (8 adds) and Found Ar Rabwah (AJ add) (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 8 Batch R Al Qadisiyah)");
-assert(listListingShops().length === 524, "listing is 524 (8 Batch R Al Qadisiyah + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban)");
-assert(listPublicShops().length === 524, "/api/shops pool is 524");
+assert(listRealShops().length === 585, "catalog is 585 after Batch S As Salam (6 adds), Batch R Al Qadisiyah (8 adds) and Found Ar Rabwah (AJ add) (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 8 Batch R Al Qadisiyah)");
+assert(listListingShops().length === 530, "listing is 530 (6 Batch S As Salam + 8 Batch R Al Qadisiyah + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban)");
+assert(listPublicShops().length === 530, "/api/shops pool is 530");
 assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
-assert(listSitemapLocs().length === 1341, "sitemap is 1341 (8 Batch R Al Qadisiyah cafés × AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
+assert(listSitemapLocs().length === 1353, "sitemap is 1353 (6 Batch S As Salam cafés × AR/EN + 8 Batch R Al Qadisiyah cafés × AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -107,8 +107,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 12 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 234,
-  "outdoor is 234 local + 12 chains (Batch R adds Half Million and Starbucks Rakaa Plaza Al Qadisiyah as chains; Batch N adds Crete, Ezwa and Jadeel Dhahrat Laban; Batch M adds 8 Diplomatic Quarter local cafés plus Costa and Caribou DQ as chains; Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 236,
+  "outdoor is 236 local + 12 chains (Batch S adds Sakaf and Breehant As Salam; Batch R adds Half Million and Starbucks Rakaa Plaza Al Qadisiyah as chains; Batch N adds Crete, Ezwa and Jadeel Dhahrat Laban; Batch M adds 8 Diplomatic Quarter local cafés plus Costa and Caribou DQ as chains; Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
 );
 
 const coffee = listBestCoffeeShops();

@@ -17,6 +17,8 @@ const KNOWN_BRANDS = [
   "camel step",
   "woods",
   "breehant",
+  // Batch S (20 Oct 2026): Namq Al Malqa + As Salam share a brand key (dedupe, older row first).
+  "namq",
   "roasting house",
   "percent arabica",
   "sand clock",

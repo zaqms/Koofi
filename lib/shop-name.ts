@@ -281,6 +281,11 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "kultura-al-rayyan": ["كلتورا", "كلتورا الريان"],
   "kultura-al-ghadeer": ["كلتورا", "كلتورا الغدير"],
   "shal-al-mohammadiyah": ["shal coffee", "shal cafe", "شال كافيه", "قهوة شال"],
+  // Batch R (19 Oct 2026), Al Qadisiyah: brand-qualified names; bare tokens are blocked below.
+  "tu-momento-al-qadisiyah": ["tu momento", "تو مومنتو"],
+  "rewanted-al-qadisiyah": ["rewanted", "re wanted", "ري ونتد", "ريونتد"],
+  "starbucks-rakaa-plaza-al-qadisiyah": ["starbucks rakaa", "ستاربكس ركاء"],
+  "starbucks-tamimi-al-qadisiyah": ["starbucks tamimi", "ستاربكس التميمي"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -379,6 +384,12 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "in-row-al-fayha": ["row", "ان", "رو"],
   "horus-house-olaya": ["بيت"],
   "espresso-culture-al-mursalat": ["espresso", "اسبريسو", "culture", "كالتشر"],
+  // Batch R (19 Oct 2026): «تو» ("just now"), «ري» (Re Matcha), plaza / markets / Tamimi
+  // (the supermarket) are everyday tokens and never pin a single Al Qadisiyah café alone.
+  "tu-momento-al-qadisiyah": ["tu", "تو", "cafe", "كافيه"],
+  "rewanted-al-qadisiyah": ["ري"],
+  "starbucks-rakaa-plaza-al-qadisiyah": ["plaza", "بلازا"],
+  "starbucks-tamimi-al-qadisiyah": ["tamimi", "التميمي", "markets", "ماركت"],
 };
 
 function chainBrandIdForShop(

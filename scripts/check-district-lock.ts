@@ -314,7 +314,8 @@ for (const [id, en, ar, shopId, onSheet] of [
 // Batch D3 (4 Oct): four new live districts, one cafe each, all on the locked sheet (dictionary_only).
 for (const [id, en, ar, shopId] of [
   // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); Ash Shifa left in Batch Q (12 added). Both asserted below.
-  ["al-qadisiyah", "Al Qadisiyah", "القادسية", "on-off-coffee-al-qadisiyah"],
+  // Batch R (19 Oct): Al Qadisiyah adds 3 local + 5 sit-down chains beside ON OFF.
+  ["al-qadisiyah", "Al Qadisiyah", "القادسية", "on-off-coffee-al-qadisiyah,tu-momento-al-qadisiyah,heet-coffee-al-qadisiyah,rewanted-al-qadisiyah,peets-sheikh-jaber-al-qadisiyah,half-million-al-qadisiyah,starbucks-rakaa-plaza-al-qadisiyah,starbucks-tamimi-al-qadisiyah,tim-hortons-sheikh-jaber-al-qadisiyah"],
 ] as const) {
   const row = rows.find((r) => r.stableId === id);
   assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);

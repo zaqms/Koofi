@@ -59375,6 +59375,704 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "tu-momento-al-qadisiyah",
+      "nameAr": "تو مومنتو كافيه",
+      "nameEn": "Tu Momento Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e55a6c1516a53:0x440a0876d66d7a97!8m2!3d24.820297699999998!4d46.8328829",
+      "pin": {
+        "lat": 24.820297699999998,
+        "lng": 46.8328829
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJU2pRwaZVLj4Rl3pt1nYICkQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Closed",
+          "Tuesday: 12:00 PM – 1:00 AM",
+          "Wednesday: 12:00 PM – 1:00 AM",
+          "Thursday: 12:00 PM – 1:00 AM",
+          "Friday: 4:00 PM – 1:00 AM",
+          "Saturday: 12:00 PM – 1:00 AM",
+          "Sunday: 12:00 PM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "heet-coffee-al-qadisiyah",
+      "nameAr": "هيت",
+      "nameEn": "heet coffee",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff965a926fb9:0x2a22367545df6b84!8m2!3d24.8080625!4d46.8104375",
+      "pin": {
+        "lat": 24.8080625,
+        "lng": 46.8104375
+      },
+      "logoUrl": "/logos/heet-coffee-al-qadisiyah.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJuW-SWpb_Lj4RhGvfRXU2Iio",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:30 AM",
+          "Tuesday: 6:00 AM – 12:30 AM",
+          "Wednesday: 6:00 AM – 12:30 AM",
+          "Thursday: 6:00 AM – 1:30 AM",
+          "Friday: 1:00 PM – 1:30 AM",
+          "Saturday: 6:00 AM – 12:30 AM",
+          "Sunday: 6:00 AM – 12:30 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "rewanted-al-qadisiyah",
+      "nameAr": "ري ونتد",
+      "nameEn": "Rewanted",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2e55b4b118cc03:0xaf82c3205bd79404!8m2!3d24.8160299!4d46.834551999999995",
+      "pin": {
+        "lat": 24.8160299,
+        "lng": 46.834551999999995
+      },
+      "logoUrl": "/logos/rewanted-al-qadisiyah.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJA8wYsbRVLj4RBJTXWyDDgq8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "peets-sheikh-jaber-al-qadisiyah",
+      "isChain": true,
+      "chainBrand": "peets",
+      "nameAr": "بيتس كوفي",
+      "nameEn": "Peet's Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff0329d3a107:0xb3419d1fde323079!8m2!3d24.805823999999998!4d46.8120196",
+      "pin": {
+        "lat": 24.805823999999998,
+        "lng": 46.8120196
+      },
+      "logoUrl": "/logos/peets-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJB6HTKQP_Lj4ReTAy3h-dQbM",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "half-million-al-qadisiyah",
+      "isChain": true,
+      "chainBrand": "half-million",
+      "nameAr": "هاف مليون",
+      "nameEn": "Half Million",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff3d3ec0894d:0xf4d272c025806d4e!8m2!3d24.815109999999997!4d46.80512100000001",
+      "pin": {
+        "lat": 24.815109999999997,
+        "lng": 46.80512100000001
+      },
+      "logoUrl": "/logos/half-million-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJTYnAPj3_Lj4RTm2AJcBy0vQ",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "starbucks-rakaa-plaza-al-qadisiyah",
+      "isChain": true,
+      "chainBrand": "starbucks",
+      "nameAr": "ستاربكس ركاء بلازا",
+      "nameEn": "Starbucks Rakaa Plaza",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1da3e6270a17:0xeafad12fed10ece9!8m2!3d24.817978999999998!4d46.803059999999995",
+      "pin": {
+        "lat": 24.817978999999998,
+        "lng": 46.803059999999995
+      },
+      "logoUrl": "/logos/starbucks-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJFwon5qMdLz4R6ewQ7S_R-uo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: 1:00 – 11:45 AM, 12:15 PM – 12:00 AM",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 11,
+              "minute": 45
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 15
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "starbucks-tamimi-al-qadisiyah",
+      "isChain": true,
+      "chainBrand": "starbucks",
+      "nameAr": "ستاربكس التميمي",
+      "nameEn": "Starbucks Tamimi Markets",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa",
+        "drive-through"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff1eba820f5d:0x68bb7bf50b0b9ea1!8m2!3d24.8054431!4d46.8122715",
+      "pin": {
+        "lat": 24.8054431,
+        "lng": 46.8122715
+      },
+      "logoUrl": "/logos/starbucks-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJXQ-Cuh7_Lj4RoZ4LC_V7u2g",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:30 AM – 12:30 AM",
+          "Tuesday: 6:30 AM – 12:30 AM",
+          "Wednesday: 6:30 AM – 12:30 AM",
+          "Thursday: 6:30 AM – 12:30 AM",
+          "Friday: 6:30 – 11:45 AM, 12:15 PM – 12:30 AM",
+          "Saturday: 6:30 AM – 12:30 AM",
+          "Sunday: 6:30 AM – 12:30 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 11,
+              "minute": 45
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 15
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tim-hortons-sheikh-jaber-al-qadisiyah",
+      "isChain": true,
+      "chainBrand": "tim-hortons",
+      "nameAr": "تيم هورتنز",
+      "nameEn": "Tim Hortons",
+      "city": "riyadh",
+      "neighborhood": "al-qadisiyah",
+      "neighborhoodAr": "القادسية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff6863a04cc5:0xede678d52bab4bf4!8m2!3d24.804333!4d46.812858999999996",
+      "pin": {
+        "lat": 24.804333,
+        "lng": 46.812858999999996
+      },
+      "logoUrl": "/logos/tim-hortons-wordmark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJxUygY2j_Lj4R9EurK9V45u0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

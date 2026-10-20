@@ -237,8 +237,50 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "yabub-coffee-dhahrat-laban": ["yabub coffee", "يعبوب قهوة", "يعبوب كافية"],
   "jadeel-coffee-dhahrat-laban": ["jadeel dhahrat", "jadeel laban", "جديل ظهرة لبن", "جديل لبن"],
   "drcafe-park-dhahrat-laban": ["dr cafe park", "drcafe park", "dr cafe laban", "د.كيف حديقة", "د كيف حديقة", "د.كيف ظهرة لبن"],
+  // Batch O (16 Oct 2026): «بانديمك كوفي» is a second Google pin for the same café (alias only, not a row).
+  "pandemic-coffee-namar": ["pandemic coffee", "pandemic cafe", "بانديمك كوفي", "بانديمك", "باندميك كوفي"],
+  "freedom-coffee-namar": ["freedom coffee", "freedom cafe", "فريدم كافيه", "فريدم كوفي"],
+  "java-cafe-namar": ["java namar", "java cafe namar", "جافا نمار"],
   // AJ add (16 Oct 2026): bare "found" is an everyday word; brand-qualified names and «فاوند» match.
   "found-ar-rabwah": ["found cafe", "found coffee", "found rabwah", "فاوند كافيه", "فاوند كوفي"],
+  // Batch P (17 Oct 2026): Tuwaiq — brand-qualified names for rows whose bare word is blocked below; Quba's Places log key was "qoba".
+  "ratio-speciality-tuwaiq": ["ratio tuwaiq", "ريشيو طويق"],
+  "quba-tuwaiq": ["qoba", "quba cafe", "quba roasters", "قوبا كافيه", "محمصة قوبا"],
+  "oldlane-tuwaiq": ["old lane", "oldlane cafe", "اولد لين"],
+  "breath-tuwaiq": ["breath coffee", "breath cafe", "بريث كافيه", "بريث كوفي"],
+  "lihaf-tuwaiq": ["lihaf coffee", "lihaf cafe", "لحاف قهوة", "لحاف كافيه"],
+  "saaf-tuwaiq": ["saaf cafe", "saaf coffee", "سعف كافيه", "مقهى سعف", "قهوة سعف"],
+  "era-coffee-tuwaiq": ["era tuwaiq", "إرا طويق"],
+  "taghrid-tuwaiq": ["taghrid coffee", "تغاريد كوفي"],
+  // Batch Q (18 Oct 2026): Ash Shifa — brand-qualified names for rows whose bare word is blocked below, plus per-branch names for the sibling/chain rows.
+  "yamm-ash-shifa": ["yamm shifa", "يم الشفا"],
+  "coffee-address-ash-shifa": ["coffee address shifa", "عنوان القهوة الشفا"],
+  "folk-coffee-ash-shifa": ["folk cafe", "فوك كوفي", "فوك كافيه"],
+  "light-dose-ash-shifa": ["light dose coffee", "لايت دوز"],
+  "third-place-ash-shifa": ["third place cafe", "third place coffee", "thirdplace", "ثيرد بليس كافيه"],
+  "butterfly-cafe-ash-shifa": ["butterfly coffee", "بترفلاي كوفي"],
+  "rwy-ash-shifa": ["rwy roastery", "rwy cafe", "محمصة rwy"],
+  "icon-ash-shifa": ["ayquna", "icon cafe", "icon coffee", "أيقونة كافيه", "مقهى أيقونة", "قهوة أيقونة"],
+  // r2 (QA M1): sign, cups and @linor.sa read LINOR; "Lenore" spellings stay as aliases.
+  "linor-ash-shifa": ["linor", "linor cafe", "linor sa", "lenore", "lenore coffee", "lenore cafe", "لينور كافيه"],
+  "java-cafe-ash-shifa": ["java shifa", "java cafe shifa", "جافا الشفا"],
+  "half-million-ibn-taymiyyah-ash-shifa": ["half million ibn taymiyyah", "هاف مليون ابن تيمية"],
+  "half-million-tirmidhi-ash-shifa": ["half million tirmidhi", "هاف مليون الترمذي"],
+  // AJ add (18 Oct 2026): bare "trace" is an everyday word; brand-qualified names and «تريس» match.
+  "trace-al-mursalat": ["trace cafe", "trace coffee", "trace mursalat", "trace manual brewing bar", "تريس كافيه", "تريس كوفي", "تريس المرسلات"],
+  // Trending adds (18 Oct 2026).
+  "dwell-dhahrat-laban": ["dwell cafe", "dwell coffee", "دويل كافيه"],
+  "in-row-al-fayha": ["in row cafe", "in row coffee", "inrow", "together in row", "ان رو", "ان رو كافيه", "إن رو كافيه"],
+  "veni-al-nakheel": ["veni cafe", "veni coffee", "فيني كافيه"],
+  "horus-house-olaya": ["horus house caffee", "horus house cafe", "horus cafe", "بيت حورس كافيه"],
+  "espresso-culture-al-mursalat": ["espresso culture cafe", "اسبريسو كالتشر كافيه"],
+  // r2 (QA M1/Low): Google and TikTok spell the brand «كلتورا»; branch + district short forms rank that branch first.
+  "kultura-as-suwaidi-al-gharbi": ["كلتورا", "kultura suwaidi", "kultura suwaidi al gharbi", "كولتورا السويدي", "كولتورا السويدي الغربي", "كلتورا السويدي", "كلتورا السويدي الغربي"],
+  "kultura-hittin": ["كلتورا", "كلتورا حطين"],
+  "kultura-al-malqa": ["كلتورا", "كلتورا الملقا"],
+  "kultura-al-rayyan": ["كلتورا", "كلتورا الريان"],
+  "kultura-al-ghadeer": ["كلتورا", "كلتورا الغدير"],
+  "shal-al-mohammadiyah": ["shal coffee", "shal cafe", "شال كافيه", "قهوة شال"],
   // Batch R (19 Oct 2026), Al Qadisiyah: brand-qualified names; bare tokens are blocked below.
   "tu-momento-al-qadisiyah": ["tu momento", "تو مومنتو"],
   "rewanted-al-qadisiyah": ["rewanted", "re wanted", "ري ونتد", "ريونتد"],
@@ -319,8 +361,35 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "nakhat-almashrub-dhahrat-laban": ["nakhat", "نكهة", "نكهه"],
   "coffee-address-najd-dhahrat-laban": ["najd", "نجد"],
   "qasura-coffee-dhahrat-laban": ["qasura", "قسورة", "قسوره"],
+  // Batch O (16 Oct 2026): everyday tokens never pin a café alone; brand-qualified names still match.
+  "coffee-bean-tea-leaf-namar": ["bean", "tea", "leaf", "bean tea", "tea leaf", "coffee bean", "ذا", "بين", "آند", "اند", "تي", "ليف", "بين آند", "بين اند"],
+  "freedom-coffee-namar": ["freedom", "فريدم"],
   // AJ add (16 Oct 2026): "found" alone ("I found…", lost & found) never pins the café.
   "found-ar-rabwah": ["found"],
+  // Batch P (17 Oct 2026): everyday words never pin a Tuwaiq row alone (breath, era, ratio; لحاف blanket, تغاريد chirps; «ان في» is "that in").
+  // «بريث» and «سعف» stay: each is the café's whole Arabic name (check-plg needs nameAr to match), and «بريث» is only a transliteration.
+  // Ratio and Era keep their older branches (Al Yarmouk, As Suwaidi) on the bare brand word, same as Jadeel in Batch N.
+  "ratio-speciality-tuwaiq": ["ratio", "ريشيو", "ratio speciality"],
+  "breath-tuwaiq": ["breath"],
+  "era-coffee-tuwaiq": ["era", "إرا", "ارا", "ايرا"],
+  "lihaf-tuwaiq": ["lihaf", "لحاف"],
+  "taghrid-tuwaiq": ["taghrid", "تغاريد"],
+  "nv-coffee-tuwaiq": ["ان في", "ان", "في"],
+  // Batch Q (18 Oct 2026): everyday words never pin an Ash Shifa row alone (folk, light/dose, third/place, butterfly, icon;
+  // «حي» is "neighborhood", «جرعة»/«خفيفة» "dose"/"light", «بليس» "place", «ومقهى» "and café").
+  // Whole Arabic names stay matchable (check-plg): «فوك», «جرعة خفيفة», «ثيرد بليس», «أيقونة حي الشفا».
+  "folk-coffee-ash-shifa": ["folk"],
+  "light-dose-ash-shifa": ["light", "dose", "light dose", "جرعة", "خفيفة"],
+  "third-place-ash-shifa": ["third", "place", "third place", "ثيرد", "بليس"],
+  "butterfly-cafe-ash-shifa": ["butterfly"],
+  "rwy-ash-shifa": ["ومقهى", "ومقهى rwy"],
+  "icon-ash-shifa": ["icon", "أيقونة", "حي", "أيقونة حي"],
+  // AJ add (18 Oct 2026): "trace" alone (a trace of, track and trace) never pins the café.
+  "trace-al-mursalat": ["trace"],
+  // Trending adds (18 Oct 2026): common words never pin these cafés on their own.
+  "in-row-al-fayha": ["row", "ان", "رو"],
+  "horus-house-olaya": ["بيت"],
+  "espresso-culture-al-mursalat": ["espresso", "اسبريسو", "culture", "كالتشر"],
   // Batch R (19 Oct 2026): «تو» ("just now"), «ري» (Re Matcha), plaza / markets / Tamimi
   // (the supermarket) are everyday tokens and never pin a single Al Qadisiyah café alone.
   "tu-momento-al-qadisiyah": ["tu", "تو", "cafe", "كافيه"],

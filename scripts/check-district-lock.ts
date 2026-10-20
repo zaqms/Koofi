@@ -207,8 +207,26 @@ assert(suwaidiGharbi?.nameEn === "As Suwaidi Al Gharbi" && suwaidiGharbi?.nameAr
 assert(suwaidiGharbi?.shopCountLive === 2, "As Suwaidi Al Gharbi sheet shop_count_live is 2 after Batch J");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "as-suwaidi-al-gharbi").map((shop) => shop.id).join(",") ===
-    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi",
-  "As Suwaidi Al Gharbi catalog is Tul Cafe plus Nafees",
+    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi,kultura-as-suwaidi-al-gharbi",
+  "As Suwaidi Al Gharbi catalog is Tul Cafe, Nafees and Kultúra (trending add 18 Oct)",
+);
+const ashShifa = rows.find((row) => row.stableId === "ash-shifa");
+assert(ashShifa?.status === "dictionary_only", "ash-shifa sheet stays dictionary_only");
+assert(ashShifa?.nameEn === "Ash Shifa" && ashShifa?.nameAr === "الشفا", "ash-shifa EN/AR lock");
+assert(ashShifa?.shopCountLive === 13, "Ash Shifa sheet shop_count_live is 13 after Batch Q");
+assert(neighborhoodLabel("ash-shifa", "en") === "Ash Shifa", "ash-shifa EN label is Ash Shifa");
+assert(neighborhoodLabel("ash-shifa", "ar") === "الشفا", "ash-shifa AR label is الشفا");
+assert(liveCatalog.includes("ash-shifa"), "ash-shifa is a live catalog district");
+assert(listLiveDistrictIds().includes("ash-shifa"), "ash-shifa is a live specialty district");
+assert(
+  listRealShops().filter((shop) => shop.neighborhood === "ash-shifa").map((shop) => shop.id).join(",") ===
+    "tul-cafe-ash-shifa,yamm-ash-shifa,coffee-address-ash-shifa,folk-coffee-ash-shifa,light-dose-ash-shifa,third-place-ash-shifa,butterfly-cafe-ash-shifa,rwy-ash-shifa,icon-ash-shifa,linor-ash-shifa,java-cafe-ash-shifa,half-million-ibn-taymiyyah-ash-shifa,half-million-tirmidhi-ash-shifa",
+  "Ash Shifa catalog is Tul Cafe plus the 12 Batch Q rows (9 local, 3 chain)",
+);
+assert(
+  sitemap.includes(`https://wain.lol${districtPath("ash-shifa", "ar")}`) &&
+    sitemap.includes(`https://wain.lol${districtPath("ash-shifa", "en")}`),
+  "sitemap lists ash-shifa AR + EN",
 );
 
 const dhahrat = rows.find((row) => row.stableId === "dhahrat-al-badiah");
@@ -251,8 +269,8 @@ assert(
   assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
   assert(
     listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
-      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban",
-    `${id} catalog is ON OFF plus the 15 Batch N rows`,
+      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban,dwell-dhahrat-laban",
+    `${id} catalog is ON OFF plus the 15 Batch N rows and Dwell (trending add 18 Oct)`,
   );
   assert(
     sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
@@ -295,8 +313,7 @@ for (const [id, en, ar, shopId, onSheet] of [
 
 // Batch D3 (4 Oct): four new live districts, one cafe each, all on the locked sheet (dictionary_only).
 for (const [id, en, ar, shopId] of [
-  // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); asserted below.
-  ["ash-shifa", "Ash Shifa", "الشفا", "tul-cafe-ash-shifa"],
+  // As Suwaidi Al Gharbi left this loop in Batch J (Nafees added); Ash Shifa left in Batch Q (12 added). Both asserted below.
   // Batch R (19 Oct): Al Qadisiyah adds 3 local + 5 sit-down chains beside ON OFF.
   ["al-qadisiyah", "Al Qadisiyah", "القادسية", "on-off-coffee-al-qadisiyah,tu-momento-al-qadisiyah,heet-coffee-al-qadisiyah,rewanted-al-qadisiyah,peets-sheikh-jaber-al-qadisiyah,half-million-al-qadisiyah,starbucks-rakaa-plaza-al-qadisiyah,starbucks-tamimi-al-qadisiyah,tim-hortons-sheikh-jaber-al-qadisiyah"],
 ] as const) {

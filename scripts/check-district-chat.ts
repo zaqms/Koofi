@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 65, `expected 65 live districts (62 + Shubra, Batch F + As Salam, Batch J + Umm Al Hamam Ash Sharqi, Batch L), got ${live.length}`);
+assert(live.length === 66, `expected 66 live districts (62 + Shubra, Batch F + As Salam, Batch J + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",

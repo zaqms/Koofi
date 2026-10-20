@@ -64,8 +64,8 @@ const shops = listPublicShops();
 assert(
   shops.length === listListingShops().length &&
     shops.length === listDiscoveryShops().length + shops.filter((shop) => shop.isChain).length &&
-    shops.filter((shop) => shop.isChain).length === 34,
-  "public list is specialty plus the 34 sit-down chains (29 + 5 Batch R Al Qadisiyah)",
+    shops.filter((shop) => shop.isChain).length === 39,
+  "public list is specialty plus the 39 sit-down chains (34 + 5 Batch R Al Qadisiyah)",
 );
 assert(shops.length > 0, "catalog is not empty");
 
@@ -715,7 +715,7 @@ const outdoorList = fixedListItemListJsonLd("outdoor", "ar");
 const coffeeList = fixedListItemListJsonLd("coffee", "en");
 const workList = fixedListItemListJsonLd("work", "ar");
 assert(fixedListItemListJsonLd("nearby", "ar") == null, "nearby has no ItemList");
-assert(outdoorList?.numberOfItems === 246, "outdoor ItemList is 246 (+ Half Million and Starbucks Rakaa Plaza Al Qadisiyah, Batch R)");
+assert(outdoorList?.numberOfItems === 263, "outdoor ItemList is 263 (+ Half Million and Starbucks Rakaa Plaza Al Qadisiyah, Batch R)");
 assert(coffeeList?.numberOfItems === 67, "best coffee ItemList is 67");
 assert(workList?.numberOfItems === 65, "work ItemList is 65");
 assert(outdoorList?.name === "قهاوي فيها جلسات خارجية في الرياض", "outdoor ItemList name is the H1");

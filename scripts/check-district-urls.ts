@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 66, `expected 66 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
-assert(listDiscoveryShops().length === 523, `specialty discovery is 523 (3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 617, `catalog is 617 after Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 529, `specialty discovery is 529 (6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 623, `catalog is 623 after Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1503,8 +1503,9 @@ const MALAZ_REFILL = {
   const rows = listDirectoryShopsForDistrict("as-salam");
   // Batch J: THE HAT is As Salam's first specialty café, so the page lists it and the A PLUS drive-through fallback steps back
   // (A PLUS stays live on the drive-through directory).
-  assert(rows.length === 1, `as-salam has 1 shop, got ${rows.length}`);
-  assert(rows[0]?.id === "the-hat-as-salam", "as-salam lists the-hat-as-salam (DT fallback a-plus steps back)");
+  // Batch S (20 Oct 2026): 6 more As Salam specialty cafés; THE HAT stays first, A PLUS still steps back.
+  assert(rows.length === 7, `as-salam has 7 shops, got ${rows.length}`);
+  assert(rows.some((row) => row.id === "the-hat-as-salam") && !rows.some((row) => row.id === "a-plus-as-salam"), "as-salam lists the-hat-as-salam (DT fallback a-plus steps back)");
   assert(neighborhoodLabel("as-salam", "ar") === "السلام", "as-salam Arabic label");
   assert(neighborhoodLabel("as-salam", "en") === "As Salam", "as-salam English label");
   for (const ask of ["السلام", "as salam", "As Salam"]) {
@@ -6549,6 +6550,83 @@ const scoutPack: {
     placeId: "ChIJxUygY2j_Lj4R9EurK9V45u0",
     dineIn: true,
     outdoorSeating: null,
+  },
+  // Batch S (20 Oct 2026): As Salam — 6 local specialty (Smpl and Bu'd Art letter tiles; Namq / Breehant reuse catalog marks).
+  {
+    id: "namq-as-salam",
+    hex: "0x3e2fa96624b76f27:0xb299c07ab8fde67f",
+    neighborhood: "as-salam",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/namq-al-malqa.jpg",
+    pin: { lat: 24.700767, lng: 46.827324999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJJ2-3JGapLz4Rf-b9uHrAmbI",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "smpl-as-salam",
+    hex: "0x3e2f0700713b9afd:0xee12de89e22bb1c3",
+    neighborhood: "as-salam",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7065007, lng: 46.799544999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJ_Zo7cQAHLz4Rw7Er4oneEu4",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "bud-art-cafe-as-salam",
+    hex: "0x3e2f070075c37885:0xa513327dc3fa1f03",
+    neighborhood: "as-salam",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7068667, lng: 46.7993293 },
+    coordsInUrl: true,
+    placeId: "ChIJhXjDdQAHLz4RAx_6w30yE6U",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "heddah-roaster-as-salam",
+    hex: "0x3e2f07dc5ae1b26d:0x4fbf222d72848387",
+    neighborhood: "as-salam",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/heddah-roaster-as-salam.png",
+    pin: { lat: 24.7205135, lng: 46.812480199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJbbLhWtwHLz4Rh4OEci0iv08",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "sakaf-as-salam",
+    hex: "0x3e2f07a91fc45f5b:0x293676b0436a0f2f",
+    neighborhood: "as-salam",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/sakaf-as-salam.png",
+    pin: { lat: 24.696947599999998, lng: 46.80711120000001 },
+    coordsInUrl: true,
+    placeId: "ChIJW1_EH6kHLz4RLw9qQ7B2Nik",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "breehant-as-salam",
+    hex: "0x3e2f07631f6c67ed:0x9b60a465a4fddd37",
+    neighborhood: "as-salam",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/breehant-al-yasmin.jpg",
+    pin: { lat: 24.7065524, lng: 46.8097911 },
+    coordsInUrl: true,
+    placeId: "ChIJ7WdsH2MHLz4RN939pGWkYJs",
+    dineIn: true,
+    outdoorSeating: true,
   },
 ];
 

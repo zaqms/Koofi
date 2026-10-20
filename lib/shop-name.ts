@@ -286,6 +286,12 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "rewanted-al-qadisiyah": ["rewanted", "re wanted", "ري ونتد", "ريونتد"],
   "starbucks-rakaa-plaza-al-qadisiyah": ["starbucks rakaa", "ستاربكس ركاء"],
   "starbucks-tamimi-al-qadisiyah": ["starbucks tamimi", "ستاربكس التميمي"],
+  // Batch S (20 Oct 2026), As Salam: branch-qualified names; bare tokens are blocked below.
+  "namq-as-salam": ["namq salam", "namq as salam", "نمق السلام"],
+  "bud-art-cafe-as-salam": ["bud art", "bu'd art", "buad art", "بعد آرت", "بعد ارت"],
+  "heddah-roaster-as-salam": ["heddah", "heddah roaster", "محمصة حدة", "محمصة حده"],
+  "sakaf-as-salam": ["sakaf", "sakaf cafe", "سكف"],
+  "breehant-as-salam": ["breehant salam", "breehant as salam", "بريهانت السلام"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -390,6 +396,10 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "rewanted-al-qadisiyah": ["ري"],
   "starbucks-rakaa-plaza-al-qadisiyah": ["plaza", "بلازا"],
   "starbucks-tamimi-al-qadisiyah": ["tamimi", "التميمي", "markets", "ماركت"],
+  // Batch S (20 Oct 2026): «بعد» ("after"), «حدة» ("sharpness"), bud / art / آرت / cafe
+  // are everyday tokens and never pin a single As Salam café alone.
+  "bud-art-cafe-as-salam": ["bud", "bu d", "بعد", "art", "آرت", "ارت", "art cafe", "آرت كافيه", "cafe", "كافيه"],
+  "heddah-roaster-as-salam": ["حدة", "حده", "حِدّة", "roaster", "محمصة"],
 };
 
 function chainBrandIdForShop(

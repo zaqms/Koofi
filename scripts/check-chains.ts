@@ -713,9 +713,11 @@ for (const [ask, id] of [
   );
   const caribou = getShop("caribou-coffee-diplomatic-quarter");
   assert(
-    caribou?.isChain === true && caribou.chainBrand === "caribou" && shopBrandKey(caribou) === "caribou" && !caribou.logoUrl && CHAIN_BRANDS.caribou.logo === null &&
+    caribou?.isChain === true && caribou.chainBrand === "caribou" && shopBrandKey(caribou) === "caribou" &&
+      caribou.logoUrl === "/logos/caribou-coffee-diplomatic-quarter.png" && existsSync(join(process.cwd(), "public/logos/caribou-coffee-diplomatic-quarter.png")) &&
+      CHAIN_BRANDS.caribou.logo === null &&
       caribou.nameEn === "Caribou Coffee" && caribou.nameAr === "كاريبو كوفي",
-    "Caribou DQ is brand caribou (letter tile, registry has no logo yet)",
+    "Caribou DQ is brand caribou (official cariboucoffee.safr.com.sa mark on the row, logo sweep 18 Oct; registry logo stays null)",
   );
   const costa = getShop("costa-coffee-diplomatic-quarter");
   assert(

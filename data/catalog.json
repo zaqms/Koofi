@@ -39761,7 +39761,7 @@
         "lat": 24.7042687,
         "lng": 46.7862529
       },
-      "logoUrl": "/logos/torre-al-rawabi.jpg",
+      "logoUrl": "/logos/torre-al-rawabi.png",
       "popularityIndex": 40,
       "placeId": "ChIJ4aJS_VoHLz4RF3zj8w9qA1Q",
       "dineIn": true,
@@ -47129,6 +47129,7 @@
         "lat": 24.7795223,
         "lng": 46.6824388
       },
+      "logoUrl": "/logos/percol-an-nafal.png",
       "popularityIndex": 40,
       "placeId": "ChIJpSp8rmH9Lj4R9f8UgYH3ZQU",
       "dineIn": true,
@@ -48117,6 +48118,7 @@
         "lat": 24.7768862,
         "lng": 46.72633630000001
       },
+      "logoUrl": "/logos/knoll-al-izdihar.png",
       "popularityIndex": 40,
       "placeId": "ChIJo26zf5P9Lj4RA5hlfFuYwh4",
       "dineIn": true,
@@ -50467,6 +50469,7 @@
         "lat": 24.740722299999998,
         "lng": 46.757886199999994
       },
+      "logoUrl": "/logos/robusta-bake-al-rawdah.png",
       "popularityIndex": 40,
       "placeId": "ChIJH1kqU6wBLz4RqKntcF5xfmw",
       "dineIn": true,
@@ -50885,6 +50888,7 @@
         "lat": 24.689811,
         "lng": 46.6339073
       },
+      "logoUrl": "/logos/cafe-kitsune-laysen-umm-al-hamam-al-gharbi.png",
       "popularityIndex": 40,
       "placeId": "ChIJlzFhJwAdLz4RiiN9Th0mhEk",
       "dineIn": true,
@@ -52279,6 +52283,7 @@
         "lat": 24.6860033,
         "lng": 46.6281746
       },
+      "logoUrl": "/logos/ralphs-coffee-diplomatic-quarter.png",
       "popularityIndex": 40,
       "placeId": "ChIJHxbjCgAdLz4RSnOrfz0hlrE",
       "dineIn": true,
@@ -52401,6 +52406,7 @@
         "lat": 24.6907429,
         "lng": 46.6279529
       },
+      "logoUrl": "/logos/onda-coffee-diplomatic-quarter.png",
       "popularityIndex": 40,
       "placeId": "ChIJU9IgpBMdLz4RA7c_CL_4mYc",
       "dineIn": true,
@@ -53118,6 +53124,7 @@
         "lat": 24.680462,
         "lng": 46.623304999999995
       },
+      "logoUrl": "/logos/caribou-coffee-diplomatic-quarter.png",
       "popularityIndex": 40,
       "placeId": "ChIJSQ613sQdLz4ROWd-aL98yC0",
       "dineIn": true,
@@ -53363,6 +53370,7 @@
         "lat": 24.678976499999997,
         "lng": 46.623295399999996
       },
+      "logoUrl": "/logos/pink-camel-diplomatic-quarter.png",
       "popularityIndex": 40,
       "placeId": "ChIJj6qk3JMdLz4RR51RVkW4gJc",
       "dineIn": true,
@@ -53857,6 +53865,7 @@
         "lat": 24.634499899999998,
         "lng": 46.565118399999996
       },
+      "logoUrl": "/logos/filter-cafe-dhahrat-laban.png",
       "popularityIndex": 40,
       "placeId": "ChIJI2j8e0UfLz4RrgIKRQX-47Q",
       "dineIn": true,
@@ -54027,6 +54036,7 @@
         "lat": 24.633866299999998,
         "lng": 46.565485599999995
       },
+      "logoUrl": "/logos/nakhat-almashrub-dhahrat-laban.png",
       "popularityIndex": 40,
       "placeId": "ChIJk3fumFAfLz4RXiNlpJkHzy0",
       "dineIn": true,
@@ -54684,6 +54694,7 @@
         "lat": 24.6395625,
         "lng": 46.564187499999996
       },
+      "logoUrl": "/logos/sidedoor-dhahrat-laban.png",
       "popularityIndex": 40,
       "placeId": "ChIJjzTKPgAfLz4RRvut2IGwRKo",
       "dineIn": true,
@@ -55141,6 +55152,7 @@
       "momentTags": [
         "qahwa"
       ],
+      "logoUrl": "/logos/jadeel-coffee-at-taawun.png",
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1f004d4dda01:0x5e4bc5ee53a7086e!8m2!3d24.6533923!4d46.570778399999995",
       "pin": {
         "lat": 24.6533923,

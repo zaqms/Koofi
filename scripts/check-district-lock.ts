@@ -207,8 +207,8 @@ assert(suwaidiGharbi?.nameEn === "As Suwaidi Al Gharbi" && suwaidiGharbi?.nameAr
 assert(suwaidiGharbi?.shopCountLive === 2, "As Suwaidi Al Gharbi sheet shop_count_live is 2 after Batch J");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "as-suwaidi-al-gharbi").map((shop) => shop.id).join(",") ===
-    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi",
-  "As Suwaidi Al Gharbi catalog is Tul Cafe plus Nafees",
+    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi,kultura-as-suwaidi-al-gharbi",
+  "As Suwaidi Al Gharbi catalog is Tul Cafe, Nafees and Kultúra (trending add 18 Oct)",
 );
 const ashShifa = rows.find((row) => row.stableId === "ash-shifa");
 assert(ashShifa?.status === "dictionary_only", "ash-shifa sheet stays dictionary_only");
@@ -269,8 +269,8 @@ assert(
   assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
   assert(
     listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
-      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban",
-    `${id} catalog is ON OFF plus the 15 Batch N rows`,
+      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban,dwell-dhahrat-laban",
+    `${id} catalog is ON OFF plus the 15 Batch N rows and Dwell (trending add 18 Oct)`,
   );
   assert(
     sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),

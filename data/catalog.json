@@ -58449,6 +58449,932 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "trace-al-mursalat",
+      "nameAr": "تريس",
+      "nameEn": "Trace",
+      "city": "riyadh",
+      "neighborhood": "al-mursalat",
+      "neighborhoodAr": "المرسلات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03864359adf7:0xda0ddf2ee8a75ad7!8m2!3d24.739761500000004!4d46.6880974",
+      "pin": {
+        "lat": 24.739761500000004,
+        "lng": 46.6880974
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ961ZQ4YDLz4R11qn6C7fDdo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 1:00 PM – 12:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "dwell-dhahrat-laban",
+      "nameAr": "دويل",
+      "nameEn": "Dwell",
+      "city": "riyadh",
+      "neighborhood": "dhahrat-laban",
+      "neighborhoodAr": "ظهرة لبن",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1fff3633a231:0x1f1c3c32a3036078!8m2!3d24.633279299999998!4d46.5559072",
+      "pin": {
+        "lat": 24.633279299999998,
+        "lng": 46.5559072
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJMaIzNv8fLz4ReGADozI8HB8",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 4:00 PM – 1:00 AM",
+          "Tuesday: 4:00 PM – 1:00 AM",
+          "Wednesday: 4:00 PM – 1:00 AM",
+          "Thursday: 4:00 PM – 1:00 AM",
+          "Friday: 4:00 PM – 1:00 AM",
+          "Saturday: 4:00 PM – 1:00 AM",
+          "Sunday: 4:00 PM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "in-row-al-fayha",
+      "nameAr": "إن رو",
+      "nameEn": "in row",
+      "city": "riyadh",
+      "neighborhood": "al-fayha",
+      "neighborhoodAr": "الفيحاء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f0778085344e9:0xdc17c03d45ed79da!8m2!3d24.6823341!4d46.8165098",
+      "pin": {
+        "lat": 24.6823341,
+        "lng": 46.8165098
+      },
+      "logoUrl": "/logos/in-row-al-fayha.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ6URTCHgHLz4R2nntRT3AF9w",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-18"
+      },
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 12:00 AM",
+          "Friday: 1:00 PM – 12:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "veni-al-nakheel",
+      "nameAr": "فيني",
+      "nameEn": "Veni",
+      "city": "riyadh",
+      "neighborhood": "al-nakheel",
+      "neighborhoodAr": "النخيل",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee30066bef1df:0xd8a372a55e45a351!8m2!3d24.7425367!4d46.6204465",
+      "pin": {
+        "lat": 24.7425367,
+        "lng": 46.6204465
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ3_G-ZgDjLj4RUaNFXqVyo9g",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 6:00 PM",
+          "Tuesday: 6:00 AM – 6:00 PM",
+          "Wednesday: 6:00 AM – 6:00 PM",
+          "Thursday: 6:00 AM – 6:00 PM",
+          "Friday: 8:00 AM – 6:00 PM",
+          "Saturday: 8:00 AM – 6:00 PM",
+          "Sunday: 6:00 AM – 6:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 18,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 18,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "horus-house-olaya",
+      "nameAr": "بيت حورس",
+      "nameEn": "HORUS House",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3425fff5273:0x4b29dc83388e3a7a!8m2!3d24.6884826!4d46.6880691",
+      "pin": {
+        "lat": 24.6884826,
+        "lng": 46.6880691
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJc1L_X0LjLj4RejqOOIPcKUs",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-18"
+      },
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 3:00 AM",
+          "Tuesday: 7:00 AM – 3:00 AM",
+          "Wednesday: 7:00 AM – 3:00 AM",
+          "Thursday: 7:00 AM – 3:00 AM",
+          "Friday: 1:00 PM – 3:00 AM",
+          "Saturday: 7:00 AM – 3:00 AM",
+          "Sunday: 7:00 AM – 3:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 3,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "espresso-culture-al-mursalat",
+      "nameAr": "إسبريسو كالتشر",
+      "nameEn": "Espresso Culture",
+      "city": "riyadh",
+      "neighborhood": "al-mursalat",
+      "neighborhoodAr": "المرسلات",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f038c7cab1b79:0x4d5b0212cc5ffded!8m2!3d24.739974099999998!4d46.6917963",
+      "pin": {
+        "lat": 24.739974099999998,
+        "lng": 46.6917963
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJeRurfIwDLz4R7f1fzBICW00",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-18"
+      },
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 11:30 PM",
+          "Tuesday: 7:00 AM – 11:30 PM",
+          "Wednesday: 7:00 AM – 11:30 PM",
+          "Thursday: 7:00 AM – 11:30 PM",
+          "Friday: 7:00 AM – 11:30 PM",
+          "Saturday: 7:00 AM – 11:30 PM",
+          "Sunday: 7:00 AM – 11:30 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "kultura-as-suwaidi-al-gharbi",
+      "nameAr": "كولتورا",
+      "nameEn": "Kultúra",
+      "city": "riyadh",
+      "neighborhood": "as-suwaidi-al-gharbi",
+      "neighborhoodAr": "السويدي الغربي",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f115575be1149:0xede8bacfb0f8ab8b!8m2!3d24.561901499999998!4d46.6431373",
+      "pin": {
+        "lat": 24.561901499999998,
+        "lng": 46.6431373
+      },
+      "logoUrl": "/logos/kultura-as-suwaidi-al-gharbi.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJSRG-dVURLz4Ri6v4sM-66O0",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-18"
+      },
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 1:30 AM – 12:00 AM",
+          "Tuesday: 4:00 PM – 12:00 AM",
+          "Wednesday: 4:00 PM – 12:00 AM",
+          "Thursday: 4:00 PM – 12:00 AM",
+          "Friday: 4:00 PM – 12:00 AM",
+          "Saturday: 4:00 PM – 12:00 AM",
+          "Sunday: 4:00 PM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 1,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "shal-al-mohammadiyah",
+      "nameAr": "شال",
+      "nameEn": "Shal",
+      "city": "riyadh",
+      "neighborhood": "al-mohammadiyah",
+      "neighborhoodAr": "المحمدية",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee32908746d67:0x44151f78df634e6b!8m2!3d24.735758699999998!4d46.6483584",
+      "pin": {
+        "lat": 24.735758699999998,
+        "lng": 46.6483584
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJZ210CCnjLj4Ra05j33gfFUQ",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-18"
+      },
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

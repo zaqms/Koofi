@@ -200,10 +200,10 @@ assert(
       (row) =>
         row.id === id &&
         row.cafeCount ===
-          (id === "as-suwaidi-al-gharbi" ? 2 : id === "dhahrat-laban" ? 16 : id === "ash-shifa" ? 13 : 1),
+          (id === "as-suwaidi-al-gharbi" ? 3 : id === "dhahrat-laban" ? 17 : id === "ash-shifa" ? 13 : 1),
     ),
   ),
-  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 2 after Batch J; Dhahrat Laban 16 after Batch N; Ash Shifa 13 after Batch Q; Al Qadisiyah one)",
+  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 3 after Kultúra 18 Oct; Dhahrat Laban 17 after Dwell 18 Oct; Ash Shifa 13 after Batch Q; Al Qadisiyah one)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -256,8 +256,8 @@ for (const row of rowsEn) {
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 5,
-      `${row.id} Mohammadiyah refill has 5 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 6,
+      `${row.id} Mohammadiyah refill has 6 cafes (5 + Shal, trending add 18 Oct), got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(

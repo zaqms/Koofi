@@ -188,9 +188,9 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 65, `expected 65 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L), got ${areas.length}`);
-assert(listDiscoveryShops().length === 512, `specialty discovery is 512 (9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 601, `catalog is 601 after Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(areas.length === 66, `expected 66 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
+assert(listDiscoveryShops().length === 520, `specialty discovery is 520 (7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 609, `catalog is 609 after the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -803,8 +803,8 @@ for (const ask of ["الروابي", "روابي", "rawabi", "al rawabi", "ar-ra
 }
 
 const fayha = filterDirectoryShops(shops, "al-fayha");
-assert(fayha.length === 2, `al-fayha has 2 shops, got ${fayha.length}`);
-for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha"]) {
+assert(fayha.length === 3, `al-fayha has 3 shops (+ in row, trending add 18 Oct), got ${fayha.length}`);
+for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha", "in-row-al-fayha"]) {
   assert(fayha.some((shop) => shop.id === id), `al-fayha includes ${id}`);
 }
 assert(neighborhoodLabel("al-fayha", "ar") === "الفيحاء", "al-fayha Arabic label");
@@ -1297,7 +1297,8 @@ const MOH_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, MOH_REFILL.id);
-  assert(rows.length === 5, `al-mohammadiyah has 5 shops, got ${rows.length}`);
+  assert(rows.length === 6, `al-mohammadiyah has 6 shops (5 + Shal, trending add 18 Oct), got ${rows.length}`);
+  assert(rows.some((shop) => shop.id === "shal-al-mohammadiyah"), "al-mohammadiyah includes shal-al-mohammadiyah");
   assert(
     rows.every((shop) => shop.neighborhood === "al-mohammadiyah"),
     "al-mohammadiyah filter stays in district",
@@ -1461,10 +1462,15 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-mursalat");
-  assert(rows.length === 1, `al-mursalat has 1 DT-lane shop, got ${rows.length}`);
+  // AJ add + trending add (18 Oct 2026): Trace and Espresso Culture are specialty, so the DT-lane fallback (Camel Step) no longer fills the page.
+  assert(rows.length === 2, `al-mursalat has 2 specialty shops (Trace, Espresso Culture), got ${rows.length}`);
   assert(
-    rows.some((shop) => shop.id === "camel-step-al-mursalat"),
-    "al-mursalat includes camel-step-al-mursalat",
+    ["trace-al-mursalat", "espresso-culture-al-mursalat"].every((id) => rows.some((shop) => shop.id === id)),
+    "al-mursalat lists Trace and Espresso Culture",
+  );
+  assert(
+    !rows.some((shop) => shop.id === "camel-step-al-mursalat"),
+    "camel-step-al-mursalat (DT lane) drops off once al-mursalat has specialty",
   );
   assert(neighborhoodLabel("al-mursalat", "ar") === "المرسلات", "al-mursalat Arabic label");
   assert(neighborhoodLabel("al-mursalat", "en") === "Al Mursalat", "al-mursalat English label");
@@ -2039,6 +2045,7 @@ const scoutPack: {
     | "namar"
     | "tuwaiq"
     | "ash-shifa"
+    | "al-mursalat"
     | "an-nafal"
     | "king-salman"
     | "as-suwaidi";
@@ -6326,6 +6333,107 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: true,
   },
+  // AJ add (18 Oct 2026): Trace Al Mursalat, letter tile; Places dineIn true.
+  {
+    id: "trace-al-mursalat",
+    hex: "0x3e2f03864359adf7:0xda0ddf2ee8a75ad7",
+    neighborhood: "al-mursalat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.739761500000004, lng: 46.6880974 },
+    coordsInUrl: true,
+    placeId: "ChIJ961ZQ4YDLz4R11qn6C7fDdo",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Trending adds (18 Oct 2026): Scout trending verify; seating from Scout where Places dineIn is null.
+  {
+    id: "dwell-dhahrat-laban",
+    hex: "0x3e2f1fff3633a231:0x1f1c3c32a3036078",
+    neighborhood: "dhahrat-laban",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.633279299999998, lng: 46.5559072 },
+    coordsInUrl: true,
+    placeId: "ChIJMaIzNv8fLz4ReGADozI8HB8",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "in-row-al-fayha",
+    hex: "0x3e2f0778085344e9:0xdc17c03d45ed79da",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/in-row-al-fayha.png",
+    pin: { lat: 24.6823341, lng: 46.8165098 },
+    coordsInUrl: true,
+    placeId: "ChIJ6URTCHgHLz4R2nntRT3AF9w",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "veni-al-nakheel",
+    hex: "0x3e2ee30066bef1df:0xd8a372a55e45a351",
+    neighborhood: "al-nakheel",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7425367, lng: 46.6204465 },
+    coordsInUrl: true,
+    placeId: "ChIJ3_G-ZgDjLj4RUaNFXqVyo9g",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "horus-house-olaya",
+    hex: "0x3e2ee3425fff5273:0x4b29dc83388e3a7a",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6884826, lng: 46.6880691 },
+    coordsInUrl: true,
+    placeId: "ChIJc1L_X0LjLj4RejqOOIPcKUs",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "espresso-culture-al-mursalat",
+    hex: "0x3e2f038c7cab1b79:0x4d5b0212cc5ffded",
+    neighborhood: "al-mursalat",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.739974099999998, lng: 46.6917963 },
+    coordsInUrl: true,
+    placeId: "ChIJeRurfIwDLz4R7f1fzBICW00",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "kultura-as-suwaidi-al-gharbi",
+    hex: "0x3e2f115575be1149:0xede8bacfb0f8ab8b",
+    neighborhood: "as-suwaidi-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/kultura-as-suwaidi-al-gharbi.jpg",
+    pin: { lat: 24.561901499999998, lng: 46.6431373 },
+    coordsInUrl: true,
+    placeId: "ChIJSRG-dVURLz4Ri6v4sM-66O0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "shal-al-mohammadiyah",
+    hex: "0x3e2ee32908746d67:0x44151f78df634e6b",
+    neighborhood: "al-mohammadiyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.735758699999998, lng: 46.6483584 },
+    coordsInUrl: true,
+    placeId: "ChIJZ210CCnjLj4Ra05j33gfFUQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+
 ];
 
 for (const row of scoutPack) {

@@ -16630,5 +16630,196 @@
         "uri": "https://maps.google.com/maps/contrib/103841311129856754594"
       }
     }
+  ],
+  "trace-al-mursalat": [
+    {
+      "src": "/cafe-heroes/trace-al-mursalat/1.jpg",
+      "attribution": {
+        "displayName": "Abdulrahman Alshuhail",
+        "uri": "https://maps.google.com/maps/contrib/118277645861691607619"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trace-al-mursalat/2.jpg",
+      "attribution": {
+        "displayName": "Fay",
+        "uri": "https://maps.google.com/maps/contrib/117010095433440080862"
+      }
+    },
+    {
+      "src": "/cafe-heroes/trace-al-mursalat/3.jpg",
+      "attribution": {
+        "displayName": "عبير عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/110105163785629556035"
+      }
+    }
+  ],
+  "dwell-dhahrat-laban": [
+    {
+      "src": "/cafe-heroes/dwell-dhahrat-laban/1.jpg",
+      "attribution": {
+        "displayName": "Dwell cafe",
+        "uri": "https://maps.google.com/maps/contrib/107132814783420278680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/dwell-dhahrat-laban/2.jpg",
+      "attribution": {
+        "displayName": "Grace Forever",
+        "uri": "https://maps.google.com/maps/contrib/113223483691351739214"
+      }
+    },
+    {
+      "src": "/cafe-heroes/dwell-dhahrat-laban/3.jpg",
+      "attribution": {
+        "displayName": "Rooz Moha",
+        "uri": "https://maps.google.com/maps/contrib/101681246373224935878"
+      }
+    },
+    {
+      "src": "/cafe-heroes/dwell-dhahrat-laban/4.jpg",
+      "attribution": {
+        "displayName": "Asayel",
+        "uri": "https://maps.google.com/maps/contrib/109559628824658788211"
+      }
+    }
+  ],
+  "in-row-al-fayha": [
+    {
+      "src": "/cafe-heroes/in-row-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/in-row-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "مي",
+        "uri": "https://maps.google.com/maps/contrib/100045544682847964492"
+      }
+    },
+    {
+      "src": "/cafe-heroes/in-row-al-fayha/3.jpg",
+      "attribution": {
+        "displayName": "Malek",
+        "uri": "https://maps.google.com/maps/contrib/112944185989741153458"
+      }
+    },
+    {
+      "src": "/cafe-heroes/in-row-al-fayha/4.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    }
+  ],
+  "veni-al-nakheel": [
+    {
+      "src": "/cafe-heroes/veni-al-nakheel/1.jpg",
+      "attribution": {
+        "displayName": "Van Gervie Evalaroza",
+        "uri": "https://maps.google.com/maps/contrib/101201014856147735510"
+      }
+    },
+    {
+      "src": "/cafe-heroes/veni-al-nakheel/2.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    }
+  ],
+  "horus-house-olaya": [
+    {
+      "src": "/cafe-heroes/horus-house-olaya/1.jpg",
+      "attribution": {
+        "displayName": "Horus House Caffee",
+        "uri": "https://maps.google.com/maps/contrib/106216052867265750409"
+      }
+    },
+    {
+      "src": "/cafe-heroes/horus-house-olaya/2.jpg",
+      "attribution": {
+        "displayName": "yasersafeer1",
+        "uri": "https://maps.google.com/maps/contrib/113507694002719738551"
+      }
+    },
+    {
+      "src": "/cafe-heroes/horus-house-olaya/3.jpg",
+      "attribution": {
+        "displayName": "Horus House Caffee",
+        "uri": "https://maps.google.com/maps/contrib/106216052867265750409"
+      }
+    },
+    {
+      "src": "/cafe-heroes/horus-house-olaya/4.jpg",
+      "attribution": {
+        "displayName": "dindarestu dindarestu",
+        "uri": "https://maps.google.com/maps/contrib/106950255060912232721"
+      }
+    }
+  ],
+  "espresso-culture-al-mursalat": [
+    {
+      "src": "/cafe-heroes/espresso-culture-al-mursalat/1.jpg",
+      "attribution": {
+        "displayName": "Grace Forever",
+        "uri": "https://maps.google.com/maps/contrib/113223483691351739214"
+      }
+    },
+    {
+      "src": "/cafe-heroes/espresso-culture-al-mursalat/2.jpg",
+      "attribution": {
+        "displayName": "عبدالاله",
+        "uri": "https://maps.google.com/maps/contrib/103777611395735344247"
+      }
+    }
+  ],
+  "kultura-as-suwaidi-al-gharbi": [
+    {
+      "src": "/cafe-heroes/kultura-as-suwaidi-al-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "اماني القرني",
+        "uri": "https://maps.google.com/maps/contrib/115706947208595019216"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kultura-as-suwaidi-al-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Sara Sara",
+        "uri": "https://maps.google.com/maps/contrib/102685990723506806006"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kultura-as-suwaidi-al-gharbi/3.jpg",
+      "attribution": {
+        "displayName": "Shmayl Kl",
+        "uri": "https://maps.google.com/maps/contrib/104891560223651167246"
+      }
+    }
+  ],
+  "shal-al-mohammadiyah": [
+    {
+      "src": "/cafe-heroes/shal-al-mohammadiyah/1.jpg",
+      "attribution": {
+        "displayName": "Reem K",
+        "uri": "https://maps.google.com/maps/contrib/112442111894902925274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/shal-al-mohammadiyah/2.jpg",
+      "attribution": {
+        "displayName": "شال",
+        "uri": "https://maps.google.com/maps/contrib/109294756024824898595"
+      }
+    },
+    {
+      "src": "/cafe-heroes/shal-al-mohammadiyah/3.jpg",
+      "attribution": {
+        "displayName": "Johara Almurshed",
+        "uri": "https://maps.google.com/maps/contrib/114548848220601928661"
+      }
+    }
   ]
 }

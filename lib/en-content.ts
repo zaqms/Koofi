@@ -770,8 +770,8 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   namar: {
     lead: `Namar (نمار) sits on the south side of Riyadh. This page is the Namar set on wain.lol so far.
 
-[ON OFF Coffee](/en/c/on-off-coffee-namar) is the local cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Namar on the catalog today:`,
+[ON OFF Coffee](/en/c/on-off-coffee-namar), [Pandemic Coffee](/en/c/pandemic-coffee-namar), and [Freedom Coffee](/en/c/freedom-coffee-namar) are the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Namar on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Namar isn’t the stop, these south lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Namar. [About](/en/about).

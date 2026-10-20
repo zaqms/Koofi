@@ -189,8 +189,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 65, `expected 65 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L), got ${areas.length}`);
-assert(listDiscoveryShops().length === 487, `specialty discovery is 487 (1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 571, `catalog is 571 after Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 489, `specialty discovery is 489 (2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 575, `catalog is 575 after Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length > 0, "ghirnatah has shops");
@@ -1637,8 +1637,8 @@ const MALAZ_REFILL = {
   );
   const namar = listDirectoryShopsForDistrict("namar");
   assert(
-    namar.map((shop) => shop.id).sort().join(",") === "drcafe-namar,on-off-coffee-namar",
-    "namar lists the dine-in dr.CAFE and ON OFF Coffee (Batch D3)",
+    namar.map((shop) => shop.id).sort().join(",") === "coffee-bean-tea-leaf-namar,drcafe-namar,freedom-coffee-namar,java-cafe-namar,on-off-coffee-namar,pandemic-coffee-namar",
+    "namar lists the dine-in dr.CAFE and ON OFF Coffee (Batch D3) plus Batch O's Pandemic, Freedom, Java Cafe and The Coffee Bean & Tea Leaf",
   );
   assert(
     listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-namar"),
@@ -2036,6 +2036,7 @@ const scoutPack: {
     | "umm-al-hamam-al-gharbi"
     | "umm-al-hamam-ash-sharqi"
     | "dhahrat-laban"
+    | "namar"
     | "an-nafal"
     | "king-salman"
     | "as-suwaidi";
@@ -5940,6 +5941,57 @@ const scoutPack: {
     placeId: "ChIJDXkwImYDLz4RXI7OH7gokQA",
     dineIn: true,
     outdoorSeating: null,
+  },
+  // Batch O (16 Oct 2026, Scout Namar pack): 2 local sit-down cafés + 2 sit-down chains (Java Cafe; The Coffee Bean & Tea Leaf, new brand).
+  {
+    id: "java-cafe-namar",
+    hex: "0x3e2f0f7829b3d0f1:0xe8ceed4e7e921359",
+    neighborhood: "namar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/java-cafe.png",
+    pin: { lat: 24.584281999999998, lng: 46.691123 },
+    coordsInUrl: true,
+    placeId: "ChIJ8dCzKXgPLz4RWROSfk7tzug",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "pandemic-coffee-namar",
+    hex: "0x3e2f110050621189:0x5dd11c40aba108a5",
+    neighborhood: "namar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.568403999999997, lng: 46.6637437 },
+    coordsInUrl: true,
+    placeId: "ChIJiRFiUAARLz4RpQihq0Ac0V0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-bean-tea-leaf-namar",
+    hex: "0x3e2f1149fd110143:0x90dae8e37b5f580e",
+    neighborhood: "namar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-bean-mark.png",
+    pin: { lat: 24.568419, lng: 46.6638178 },
+    coordsInUrl: true,
+    placeId: "ChIJQwER_UkRLz4RDlhfe-Po2pA",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "freedom-coffee-namar",
+    hex: "0x3e2f0fb244bf4a5d:0x9c9089a892d91926",
+    neighborhood: "namar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.5781817, lng: 46.6909327 },
+    coordsInUrl: true,
+    placeId: "ChIJXUq_RLIPLz4RJhnZkqiJkJw",
+    dineIn: true,
+    outdoorSeating: true,
   },
 ];
 

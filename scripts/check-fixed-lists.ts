@@ -54,17 +54,17 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 524,
-  outdoor: 244,
+  nearby: 554,
+  outdoor: 261,
   coffee: 67,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 579, "catalog is 579 after the 18 Oct trending adds (7) and Trace Al Mursalat (AJ add) (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 1 Trace Al Mursalat + 7 trending adds 18 Oct)");
-assert(listListingShops().length === 524, "listing is 524 (7 trending adds 18 Oct + 1 Trace Al Mursalat + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban)");
-assert(listPublicShops().length === 524, "/api/shops pool is 524");
+assert(listRealShops().length === 609, "catalog is 609 after the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q, Batch P, Batch O and Found Ar Rabwah (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 4 Namar + 14 Tuwaiq + 12 Ash Shifa + 1 Trace Al Mursalat + 7 trending adds 18 Oct)");
+assert(listListingShops().length === 554, "listing is 554 (7 trending adds 18 Oct + 1 Trace Al Mursalat + 12 Batch Q Ash Shifa + 14 Batch P Tuwaiq + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
+assert(listPublicShops().length === 554, "/api/shops pool is 554");
 assert(listLiveCatalogDistrictIds().length === 69, "district pages are 69 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
-assert(listSitemapLocs().length === 1341, "sitemap is 1341 (7 trending adds 18 Oct AR/EN + Trace Al Mursalat AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
+assert(listSitemapLocs().length === 1401, "sitemap is 1401 (7 trending adds 18 Oct AR/EN + Trace Al Mursalat AR/EN + 12 Batch Q Ash Shifa cafés × AR/EN + 14 Batch P Tuwaiq cafés × AR/EN + 4 Batch O Namar cafés × AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");
@@ -77,8 +77,8 @@ assert(
   "nearby is listing rows with official coords",
 );
 assert(
-  nearby.filter((shop) => isChainShop(shop)).length === 29,
-  "nearby includes the 29 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal) + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi + Costa, Caribou and 2 Starbucks Diplomatic Quarter + Veloce and dr.CAFE Dhahrat Laban",
+  nearby.filter((shop) => isChainShop(shop)).length === 34,
+  "nearby includes the 34 listed chains (8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal) + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi + Costa, Caribou and 2 Starbucks Diplomatic Quarter + Veloce and dr.CAFE Dhahrat Laban + Java Cafe and The Coffee Bean & Tea Leaf Namar + Java Cafe and 2 Half Million Ash Shifa",
 );
 assert(
   new Set(nearby.map((shop) => shop.id)).size === nearby.length,
@@ -106,9 +106,9 @@ assert(
   "outdoor filter carries the spec's not-pickup-only guard",
 );
 assert(
-  outdoor.filter((shop) => isChainShop(shop)).length === 10 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 234,
-  "outdoor is 234 local + 10 chains (Batch N adds Crete, Ezwa and Jadeel Dhahrat Laban; Batch M adds 8 Diplomatic Quarter local cafés plus Costa and Caribou DQ as chains; Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
+  outdoor.filter((shop) => isChainShop(shop)).length === 14 &&
+    outdoor.filter((shop) => !isChainShop(shop)).length === 247,
+  "outdoor is 247 local + 14 chains (Batch Q adds Light Dose and Butterfly Ash Shifa, plus Java Cafe and Half Million Tirmidhi Ash Shifa as chains; Batch P adds IRLO, Ratio, Quba, Gedeb, BREATH, Lihaf, Inverno, Era, Haqwa and Nv Tuwaiq; Batch O adds Freedom Namar, plus Java Cafe and The Coffee Bean & Tea Leaf Namar as chains; Batch N adds Crete, Ezwa and Jadeel Dhahrat Laban; Batch M adds 8 Diplomatic Quarter local cafés plus Costa and Caribou DQ as chains; Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
 );
 
 const coffee = listBestCoffeeShops();

@@ -770,8 +770,8 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   namar: {
     lead: `Namar (نمار) sits on the south side of Riyadh. This page is the Namar set on wain.lol so far.
 
-[ON OFF Coffee](/en/c/on-off-coffee-namar) is the local cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Namar on the catalog today:`,
+[ON OFF Coffee](/en/c/on-off-coffee-namar), [Pandemic Coffee](/en/c/pandemic-coffee-namar), and [Freedom Coffee](/en/c/freedom-coffee-namar) are the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Namar on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Namar isn’t the stop, these south lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Namar. [About](/en/about).
@@ -856,8 +856,8 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   tuwaiq: {
     lead: `Tuwaiq (طويق) sits on the southwest side of Riyadh. This page is the Tuwaiq set on wain.lol so far.
 
-[Drip](/en/c/drip-tuwaiq) is the local cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Tuwaiq on the catalog today:`,
+[Drip](/en/c/drip-tuwaiq), [IRLO](/en/c/irlo-tuwaiq), [Quba](/en/c/quba-tuwaiq), [Oldlane](/en/c/oldlane-tuwaiq), and [BREATH](/en/c/breath-tuwaiq) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Tuwaiq on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Tuwaiq isn’t the stop, these are the nearest lists on the site so far. Al Hazm is close too, but its only cafe is a drive-thru, so it isn’t listed here:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Tuwaiq. [About](/en/about).
@@ -975,14 +975,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "ash-shifa": {
     lead: `Ash Shifa (الشفا) sits on the south side of Riyadh. This page is the Ash Shifa set on wain.lol so far.
 
-[Tul Cafe](/en/c/tul-cafe-ash-shifa) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Ash Shifa on the catalog today:`,
+[Tul Cafe](/en/c/tul-cafe-ash-shifa), [Yamm](/en/c/yamm-ash-shifa), [Butterfly](/en/c/butterfly-cafe-ash-shifa), [Coffee Address](/en/c/coffee-address-ash-shifa), and [Third Place](/en/c/third-place-ash-shifa) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Ash Shifa on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Ash Shifa isn’t the stop, these south lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ash Shifa. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Ash Shifa on wain.lol — a Riyadh neighborhood list including Tul Cafe, with a Maps link.",
+    meta: "{countCafe} in Ash Shifa on wain.lol — a Riyadh neighborhood list including Tul Cafe and Yamm, each with a Maps link.",
   },
   "al-qadisiyah": {
     lead: `Al Qadisiyah (القادسية) sits on the east side of Riyadh. This page is the Al Qadisiyah set on wain.lol so far.

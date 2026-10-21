@@ -267,6 +267,8 @@ export type PickResult = {
   /** Set when the ask named a live district. All picks stay in that حي. */
   matchedDistrict?: NeighborhoodId;
   mode?: PickMode;
+  /** Nearby list ordered by distance from a known pin. The heading says closest. */
+  distanceSorted?: boolean;
   /** Relevant matches before the search cap. Browse leaves this unset. */
   matchCount?: number;
   /** The ask was below the relevance threshold. Picks stay empty. */

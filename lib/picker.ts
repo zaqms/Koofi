@@ -105,10 +105,50 @@ export function isRecommendationAsk(raw: string): boolean {
   return tokens.length > 0 && tokens.every((token) => RECOMMENDATION_WORDS.has(token));
 }
 
-/** The Nearby chip, typed. Other suggestion words stay a shuffled three-pack. */
+/**
+ * Proximity asks. "coffee" and "مقاهي" are filler, so "coffee near me" and
+ * "nearby cafes" are the same distance list as "nearby". A brand token
+ * ("Starbucks near me") stays a name search.
+ */
+const NEARBY_FILLERS = new Set(
+  [
+    "me",
+    "near",
+    "cafe",
+    "cafes",
+    "café",
+    "coffee",
+    "قهوة",
+    "قهاوي",
+    "مقاهي",
+    "مقهى",
+    "كافيه",
+    "كوفي",
+    "كوفيه",
+    "مني",
+    "من",
+  ].map((word) => normalizeShopText(word)),
+);
+
 function isNearbyAsk(raw: string): boolean {
   const hay = normalizeShopText(raw);
-  return hay === "nearby" || hay === normalizeShopText("قريب مني");
+  const tokens = hay.split(" ").filter(Boolean);
+  if (tokens.length === 0) return false;
+  const qareeb = normalizeShopText("قريب");
+  const qareeba = normalizeShopText("قريبة");
+  const proximity =
+    tokens.includes("nearby") ||
+    tokens.includes(qareeb) ||
+    tokens.includes(qareeba) ||
+    (tokens.includes("near") && tokens.includes("me"));
+  if (!proximity) return false;
+  return tokens.every(
+    (token) =>
+      token === "nearby" ||
+      token === qareeb ||
+      token === qareeba ||
+      NEARBY_FILLERS.has(token),
+  );
 }
 
 function groupKey(shop: Shop): string {
@@ -194,16 +234,30 @@ function branchTokensMatch(askToken: string, idToken: string): boolean {
 }
 
 /**
+ * Generic words sit in brand names ("Costa Coffee") and in some branch ids.
+ * They are not a branch. "panorama" still is.
+ */
+const GENERIC_BRANCH_TOKENS = new Set(
+  ["coffee", "cafe", "café", "قهوة", "كافيه", "كوفي", "roastery", "محمصة"].map((word) =>
+    normalizeShopText(word),
+  ),
+);
+
+/**
  * A branch word may live only in the shop id ("panorama"), including the
  * other script ("بانوراما"). A token every branch carries is the brand.
  */
 function narrowByBranchToken(hay: string, group: NamedHit[]): NamedHit[] | null {
-  const askTokens = hay.split(" ").filter((token) => token.length >= 4);
+  const askTokens = hay
+    .split(" ")
+    .filter((token) => token.length >= 4 && !GENERIC_BRANCH_TOKENS.has(token));
   let bestToken = "";
   let bestRows: NamedHit[] = [];
   for (const token of askTokens) {
     const rows = group.filter((hit) =>
-      hit.shop.id.split("-").some((part) => branchTokensMatch(token, part)),
+      hit.shop.id.split("-").some(
+        (part) => !GENERIC_BRANCH_TOKENS.has(part) && branchTokensMatch(token, part),
+      ),
     );
     if (rows.length === 0 || rows.length === group.length) continue;
     if (token.length > bestToken.length) {
@@ -243,6 +297,51 @@ function narrowGroup(hay: string, group: NamedHit[], cache: Map<string, string[]
  * every branch of each named brand. A branch word ("panorama", "بانوراما")
  * still narrows. One shared word ("half", "drip") does not pull in a second brand.
  */
+/** "black" sits inside "black wolf". The longer phrase is the brand. */
+function aliasContainedIn(shorter: string, longer: string): boolean {
+  if (!shorter || shorter === longer) return false;
+  return ` ${longer} `.includes(` ${shorter} `);
+}
+
+/**
+ * A one-word overlap is not a second brand. Black Wolf keeps Black Wolf.
+ * Black Stamp stays out unless the ask is Black Stamp.
+ */
+function dropSubsetBrands(
+  hits: NamedHit[],
+  hay: string,
+  cache: Map<string, string[]>,
+): NamedHit[] {
+  const groups = new Map<string, NamedHit[]>();
+  for (const hit of hits) {
+    const key = groupKey(hit.shop);
+    const list = groups.get(key) ?? [];
+    list.push(hit);
+    groups.set(key, list);
+  }
+  const matched = new Map<string, string[]>();
+  for (const [key, group] of groups) {
+    matched.set(
+      key,
+      sharedGroupAliases(group, cache).filter((alias) => shopTextIncludesAlias(hay, alias)),
+    );
+  }
+  const drop = new Set<string>();
+  for (const [key, aliases] of matched) {
+    if (aliases.length === 0) continue;
+    const kept = aliases.some(
+      (alias) =>
+        ![...matched.entries()].some(
+          ([otherKey, others]) =>
+            otherKey !== key && others.some((longer) => aliasContainedIn(alias, longer)),
+        ),
+    );
+    if (!kept) drop.add(key);
+  }
+  if (drop.size === 0) return hits;
+  return hits.filter((hit) => !drop.has(groupKey(hit.shop)));
+}
+
 function narrowNamedHits(raw: string, hits: NamedHit[]): NamedHit[] {
   const hay = normalizeShopText(raw);
   const groups = new Map<string, NamedHit[]>();
@@ -271,7 +370,11 @@ function narrowNamedHits(raw: string, hits: NamedHit[]): NamedHit[] {
   }
 
   if (namedKeys.length > 0) {
-    return namedKeys.flatMap((key) => narrowGroup(hay, groups.get(key) ?? [], cache));
+    return dropSubsetBrands(
+      namedKeys.flatMap((key) => narrowGroup(hay, groups.get(key) ?? [], cache)),
+      hay,
+      cache,
+    );
   }
 
   if (hits.length === 0) return [];
@@ -288,7 +391,7 @@ function narrowNamedHits(raw: string, hits: NamedHit[]): NamedHit[] {
     }
     selected.push(...group.filter((hit) => hit.score === best));
   }
-  return selected;
+  return dropSubsetBrands(selected, hay, cache);
 }
 
 function outsideAreaLabel(
@@ -578,6 +681,7 @@ export function pickCafes(input: {
       })),
       thinCatalog: shops.length < TARGET_PICKS,
       mode: "browse",
+      ...(origin ? { distanceSorted: true } : {}),
       ...asked,
     };
   }
@@ -766,6 +870,11 @@ export function headingForPicks(result: PickResult): string {
   }
   if (result.mode === "search") return searchCountHeading(result.language, count);
   if (result.picks.length === 0) return copy.emptyCatalog[result.language];
+  if (result.distanceSorted) {
+    return result.picks.length === TARGET_PICKS
+      ? copy.closestPicks[result.language]
+      : copy.closestFewer[result.language];
+  }
   return result.picks.length === TARGET_PICKS
     ? copy.threePicks[result.language]
     : copy.fewerPicks[result.language];

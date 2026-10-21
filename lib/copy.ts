@@ -105,6 +105,14 @@ export const copy = {
     ar: "ثلاث قهاوي تناسب اختيارك",
     en: "Three cafes that suit your choice:",
   },
+  closestPicks: {
+    ar: "أقرب ثلاث قهاوي لك",
+    en: "Three cafés closest to you:",
+  },
+  closestFewer: {
+    ar: "أقرب القهاوي لك",
+    en: "The closest cafés:",
+  },
   fewerPicks: {
     ar: "هذي اللي أقدر أقترحها الحين:",
     en: "This is what I can suggest right now:",

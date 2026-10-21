@@ -1404,8 +1404,8 @@ export function Chat({
       picks.length === 0
         ? copy.emptyCatalog[landing]
         : picks.length === 3
-          ? copy.threePicks[landing]
-          : copy.fewerPicks[landing];
+          ? copy.closestPicks[landing]
+          : copy.closestFewer[landing];
 
     applyAssistant({
       id: crypto.randomUUID(),

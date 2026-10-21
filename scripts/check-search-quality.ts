@@ -315,6 +315,94 @@ assert(
   "قريب مني without a pin must not shuffle",
 );
 
+for (const ask of ["Costa Coffee", "Caribou Coffee", "Veloce Cafe"] as const) {
+  const result = idsOf(ask, "en");
+  const brand = ask.split(" ")[0]!.toLowerCase();
+  assert(result.picks.length === 2, `${ask} should return both branches, got ${result.picks.length}`);
+  assert(
+    result.picks.every((pick) => pick.shop.chainBrand === brand),
+    `${ask} pulled in ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
+assert(
+  idsOf("Costa", "en").picks.length === 2 && idsOf("كوستا", "ar").picks.length === 2,
+  "Costa without the word coffee still returns both branches",
+);
+
+for (const ask of [
+  "nearby cafes",
+  "cafes nearby",
+  "nearby coffee",
+  "مقاهي قريبة",
+  "near me",
+  "coffee near me",
+  "قريب",
+] as const) {
+  const language = /[A-Za-z]/.test(ask) ? "en" : "ar";
+  const result = pickCafes({ text: ask, language, origin: nearOrigin });
+  assert(result.noMatch !== true, `${ask} should not be a no-match`);
+  assert(result.distanceSorted === true, `${ask} should sort by distance`);
+  assert(
+    result.picks.map((pick) => pick.shop.id).join(",") === nearbyIds.join(","),
+    `${ask} should use the nearby distance order`,
+  );
+  const heading = headingForPicks(result);
+  assert(
+    language === "en" ? heading === copy.closestPicks.en : heading === copy.closestPicks.ar,
+    `${ask} heading should say closest: ${heading}`,
+  );
+  assert(
+    !heading.includes("Three cafes") && !heading.includes("ثلاث قهاوي تناسب اختيارك"),
+    `${ask} should not use the generic three-pack line`,
+  );
+}
+const nearbyCafesPlain = pickCafes({ text: "nearby cafes", language: "en" });
+assert(nearbyCafesPlain.noMatch !== true, "nearby cafes without a pin is still a recommendation");
+assert(nearbyCafesPlain.distanceSorted !== true, "nearby cafes without a pin is not a distance sort");
+assert(
+  headingForPicks(nearbyCafesPlain) === copy.threePicks.en,
+  "nearby cafes without a pin keeps the three-pack line",
+);
+const coffeeAlone = pickCafes({ text: "coffee", language: "en", origin: nearOrigin });
+assert(coffeeAlone.distanceSorted !== true, "coffee alone is not a nearby sort");
+const starbucksNear = pickCafes({ text: "Starbucks near me", language: "en", origin: nearOrigin });
+assert(starbucksNear.mode === "search" && starbucksNear.distanceSorted !== true, "Starbucks near me stays a brand search");
+
+function pickedIds(text: string, language: "ar" | "en" = "en"): string[] {
+  return pickCafes({ text, language }).picks.map((pick) => pick.shop.id);
+}
+function lacks(ids: string[], needle: string, label: string) {
+  assert(!ids.some((id) => id.includes(needle)), `${label} included ${ids.filter((id) => id.includes(needle)).join(",")}`);
+}
+const blackWolf = pickedIds("Black Wolf");
+assert(blackWolf.length > 0 && blackWolf.every((id) => id.startsWith("black-wolf")), `Black Wolf: ${blackWolf.join(",")}`);
+lacks(blackWolf, "black-stamp", "Black Wolf");
+lacks(pickedIds("بلاك وولف", "ar"), "black-stamp", "بلاك وولف");
+const pinkCamel = pickedIds("Pink Camel");
+assert(pinkCamel.length > 0 && pinkCamel.every((id) => id.startsWith("pink-camel")), `Pink Camel: ${pinkCamel.join(",")}`);
+lacks(pinkCamel, "camel-step", "Pink Camel");
+const javaTime = pickedIds("Java Time");
+assert(javaTime.length > 0 && javaTime.every((id) => id.includes("java-time")), `Java Time: ${javaTime.join(",")}`);
+lacks(javaTime, "java-cafe", "Java Time");
+lacks(pickedIds("جافا تايم", "ar"), "java-cafe", "جافا تايم");
+lacks(pickedIds("Espresso Culture"), "pivot-espresso", "Espresso Culture");
+lacks(pickedIds("إسبريسو كالتشر", "ar"), "pivot-espresso", "إسبريسو كالتشر");
+lacks(pickedIds("Book of Beans"), "seven-beans", "Book of Beans");
+lacks(pickedIds("The Coffee Bean & Tea Leaf"), "specialty-bean", "The Coffee Bean & Tea Leaf");
+lacks(pickedIds("illy caffè – Granada Mall"), "bacha-coffee", "illy");
+lacks(pickedIds("كافيه مزاج", "ar"), "mezaj-", "كافيه مزاج");
+lacks(pickedIds("مقهى ومحمصة وودز", "ar"), "maqha-mahamasa", "مقهى ومحمصة وودز");
+assert(pickedIds("Black Stamp").every((id) => id.startsWith("black-stamp")), "Black Stamp is its own full phrase");
+assert(pickedIds("Camel Step").every((id) => id.startsWith("camel-step")), "Camel Step is its own full phrase");
+assert(pickedIds("Java Cafe").every((id) => id.startsWith("java-cafe")), "Java Cafe is its own full phrase");
+assert(pickedIds("Cord").join(",") === "cord-cafe-al-hamra", "Cord is not Chord");
+assert(pickedIds("Chord").join(",") === "chord-daily-coffee-al-nahdah", "Chord is not Cord");
+const sharedCord = pickedIds("كورد قهوة يومية", "ar").sort().join(",");
+assert(
+  sharedCord === "chord-daily-coffee-al-nahdah,cord-cafe-al-hamra",
+  `both cards use كورد قهوة يومية, got ${sharedCord}`,
+);
+
 const spokenList = listedResultForWhatsApp(dr);
 assert(spokenList.picks.length === 8, `WhatsApp speech list is ${spokenList.picks.length}`);
 assert(spokenList.matchCount === dr.matchCount, "WhatsApp speech keeps the full count");

@@ -615,7 +615,12 @@ for (const [ask, lead] of [
   assert(fixture.mode === "search", "55-branch fixture is a search");
   assert(fixture.picks.length <= 30, `cap is 30, got ${fixture.picks.length}`);
   assert(fixture.matchCount === fixture.picks.length, `heading count ${fixture.matchCount} = shown ${fixture.picks.length}`);
-  assert(!headingForPicks(fixture).includes("55"), "heading never counts unshown cafés");
+  // Past the cap the heading says how many match and how many show (QA r2 Low 3).
+  assert(fixture.matchTotal === 55, `fixture total ${fixture.matchTotal}`);
+  assert(
+    headingForPicks(fixture) === `55 cafés match your search. Showing the first ${fixture.picks.length}`,
+    `capped heading: ${headingForPicks(fixture)}`,
+  );
   const ids = shops.slice(0, 35).map((shop) => shop.id);
   assert(decodePackId(encodePackId({ locale: "en", shopIds: ids, ask: "x", search: true }))?.shopIds.length === 30, "pack cap is 30");
 }

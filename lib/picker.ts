@@ -9,7 +9,7 @@ import {
   isExactDistrictAsk,
 } from "./district-dictionary";
 import { rankByPopularity, rankInDistrict } from "./district-rank";
-import { fuzzyNameHit } from "./fuzzy-name";
+import { fuzzyNameHit, isNonWordLookup } from "./fuzzy-name";
 import { isMeetHalfwayChipAsk } from "./meet-halfway";
 import { coffeeShopsInDistrict } from "./directory-category";
 import { haversineKm } from "./distance";
@@ -33,7 +33,6 @@ import {
   brandLabel,
   brandRows,
   groupKey,
-  isGenericAsk,
   strongNamedGroups,
 } from "./brand-search";
 import {
@@ -399,7 +398,8 @@ function searchResult(input: {
   const kept = pool.filter((hit) => !avoided.has(hit.shop.neighborhood));
   if (kept.length > 0) pool = kept;
 
-  const shown = sortSearchHits(pool).slice(0, SEARCH_MATCH_CAP);
+  const sorted = sortSearchHits(pool);
+  const shown = sorted.slice(0, SEARCH_MATCH_CAP);
   // Keep every branch. A shared why-line must not drop a second café in the same حي.
   const whys = uniqueWhyLines(shown, input.language, input.intent.moments);
   const picks = shown.map((shop, index) => ({
@@ -411,8 +411,10 @@ function searchResult(input: {
     picks,
     thinCatalog: false,
     mode: "search",
-    // The heading counts the cards on screen, never more.
+    // The heading counts the cards on screen. Past the cap it also says how
+    // many match, so 30 cards never pass for the whole list.
     matchCount: picks.length,
+    ...(sorted.length > picks.length ? { matchTotal: sorted.length } : {}),
     ...(outsideArea ? { outsideArea } : {}),
     ...(input.didYouMean ? { didYouMean: input.didYouMean } : {}),
     askedNeighborhoods: input.intent.neighborhoods,
@@ -523,14 +525,20 @@ export function pickCafes(input: {
     if (brand) return brand;
   }
 
+  const streetIds = streetShopIdsForAsk(input.text);
+  // A failed café-name lookup is the only empty state. Set below.
+  let nameLookupFailed = false;
+
   // A vibe word ("quiet", "coffee") stays a three-pack. A bare misspelling does not.
   if (
     namedHits.length === 0 &&
     !exactDistrict &&
+    !streetIds &&
     intent.moments.length === 0 &&
     !isRecommendationAsk(input.text)
   ) {
     const fuzzy = fuzzyNameHit(input.text, real);
+    if (fuzzy?.kind === "ambiguous") nameLookupFailed = true;
     if (fuzzy?.kind === "excluded") {
       return {
         language,
@@ -586,7 +594,6 @@ export function pickCafes(input: {
     };
   }
 
-  const streetIds = streetShopIdsForAsk(input.text);
   if (!matchedDistrict && streetIds) {
     const allowed = new Set(streetIds);
     const pool = citywide.filter((shop) => allowed.has(shop.id));
@@ -644,16 +651,17 @@ export function pickCafes(input: {
     };
   }
 
-  // Nothing names a café. Everyday words («مقهى», "best", "wifi", "not starbucks")
-  // are a normal three-pack; only a name-looking unknown gets the no-match reply.
+  // Nothing names a café. Only a failed name lookup gets the no-match reply:
+  // a whole-ask near-miss on two names, or a non-word ("xyzcafe123").
+  // Everything else («كابتشينو», "cheap", «مفتوح الحين», ☕) is main's three-pack.
   if (
     namedHits.length === 0 &&
     !matchedDistrict &&
+    !streetIds &&
     intent.moments.length === 0 &&
     intent.neighborhoods.length === 0 &&
-    !isRecommendationAsk(input.text) &&
-    !isGenericAsk(input.text) &&
-    negatedChainBrandIds(input.text).size === 0
+    negatedChainBrandIds(input.text).size === 0 &&
+    (nameLookupFailed || isNonWordLookup(input.text))
   ) {
     return {
       language,
@@ -753,6 +761,18 @@ export function headingForPicks(result: PickResult): string {
     return fill(copy.searchOutsideArea[result.language], { name, area: place });
   }
   const count = result.matchCount ?? result.picks.length;
+  const total = result.matchTotal ?? 0;
+  if (result.mode === "search" && total > count) {
+    const values = { count: String(count), total: String(total) };
+    if (result.didYouMean) {
+      const name =
+        result.language === "ar"
+          ? result.didYouMean.nameAr
+          : result.didYouMean.nameEn;
+      return fill(copy.didYouMeanCapped[result.language], { ...values, name });
+    }
+    return fill(copy.searchMatchCapped[result.language], values);
+  }
   if (result.didYouMean && result.mode === "search") {
     const name =
       result.language === "ar"
@@ -770,6 +790,7 @@ export function headingForPicks(result: PickResult): string {
   }
   if (result.mode === "search") return searchCountHeading(result.language, count);
   if (result.picks.length === 0) return copy.emptyCatalog[result.language];
+  // Unused until the owner signs off on retiring the locked heading; nothing sets distanceSorted.
   if (result.distanceSorted) {
     return result.picks.length === TARGET_PICKS
       ? copy.closestPicks[result.language]

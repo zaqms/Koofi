@@ -105,6 +105,8 @@ export const copy = {
     ar: "ثلاث قهاوي تناسب اختيارك",
     en: "Three cafes that suit your choice:",
   },
+  // closestPicks / closestFewer are unused on purpose. Retiring the locked
+  // three-pick heading for nearby needs the owner's sign-off; see PickResult.distanceSorted.
   closestPicks: {
     ar: "أقرب ثلاث قهاوي لك",
     en: "Three cafés closest to you:",
@@ -132,6 +134,14 @@ export const copy = {
   searchMatchMany: {
     ar: "لقينا {count} قهوة تناسب بحثك",
     en: "{count} cafés match your search",
+  },
+  searchMatchCapped: {
+    ar: "لقينا {total} قهوة تناسب بحثك، هذي أول {count}",
+    en: "{total} cafés match your search. Showing the first {count}",
+  },
+  didYouMeanCapped: {
+    ar: "قصدك {name}؟ لقينا {total} فرع، هذي أول {count}",
+    en: "Did you mean {name}? {total} branches match. Showing the first {count}",
   },
   didYouMeanOne: {
     ar: "قصدك {name}؟",

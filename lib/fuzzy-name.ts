@@ -207,7 +207,9 @@ export type FuzzyNameHit =
       nameAr: string;
       lookup: string;
       distance: number;
-    };
+    }
+  /** The whole ask is one or two edits from two different names. */
+  | { kind: "ambiguous" };
 
 type Attempt = { raw: string; norm: string; full: boolean; leadingAlef?: boolean };
 
@@ -239,7 +241,8 @@ function escapeRegExp(value: string): string {
 
 /**
  * Closest catalog or excluded-brand name for a misspelling.
- * Returns null when nothing is close enough, or when two different names tie.
+ * Returns null when nothing is close enough. A whole-ask tie between two
+ * different names is "ambiguous": a failed name lookup, not a three-pack.
  */
 function sharesStart(left: string, right: string): boolean {
   const a = Array.from(left);
@@ -312,7 +315,7 @@ export function fuzzyNameHit(
       row.nameEn !== best.nameEn &&
       row.brandId !== best.brandId,
   );
-  if (rival) return null;
+  if (rival) return best.attempt.full ? { kind: "ambiguous" } : null;
 
   if (best.brandId && !best.listed) {
     return { kind: "excluded", nameEn: best.nameEn, nameAr: best.nameAr };
@@ -334,4 +337,21 @@ export function fuzzyNameHit(
     lookup: lookup.trim() || best.lookup,
     distance: best.distance,
   };
+}
+
+/**
+ * A name-looking ask that is no word at all: letters glued to digits
+ * ("xyzcafe123") or a five-plus letter mash with no vowel ("xyzzyq").
+ * Times ("24h", "7am") and everyday words are never this.
+ */
+export function isNonWordLookup(raw: string): boolean {
+  const text = raw.trim().toLowerCase();
+  if (!text || /\s/.test(text)) return false;
+  if (!/^[a-z0-9]+$/.test(text)) return false;
+  if (/^\d+(h|hr|hrs|hour|hours|am|pm|min|mins|k|km|m|sar|sr|riyal|riyals)$/.test(text)) {
+    return false;
+  }
+  const letters = text.replace(/\d/g, "");
+  if (/\d/.test(text)) return letters.length >= 3;
+  return letters.length >= 5 && !/[aeiou]/.test(letters) && /[qxzj]/.test(letters);
 }

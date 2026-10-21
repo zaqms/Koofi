@@ -279,10 +279,16 @@ export type PickResult = {
   /** Set when the ask named a live district. All picks stay in that حي. */
   matchedDistrict?: NeighborhoodId;
   mode?: PickMode;
-  /** Nearby list ordered by distance from a known pin. The heading says closest. */
+  /**
+   * Nearby list ordered by distance from a known pin. The heading says closest.
+   * Nothing sets this yet: «أقرب ثلاث قهاوي لك» would retire the locked
+   * three-pick heading, and that needs the owner's sign-off. Kept on purpose until then.
+   */
   distanceSorted?: boolean;
-  /** Relevant matches before the search cap. Browse leaves this unset. */
+  /** Search cards on screen. Browse leaves this unset. */
   matchCount?: number;
+  /** Every search match when more exist than the cap shows (33 when 30 show). */
+  matchTotal?: number;
   /** The ask was below the relevance threshold. Picks stay empty. */
   noMatch?: boolean;
   /** Fuzzy correction when the typed name was close to a listed shop or brand. */

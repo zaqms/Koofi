@@ -91,6 +91,31 @@ export function isDiscoveryShop(
 }
 
 /**
+ * Homepage specialty feed, the sit-down directory, café pages, and the
+ * drive-through list. One switch so a caller does not grow a second filter.
+ */
+export type CatalogView = "pages" | "listing" | "discovery" | "drive-through";
+
+export function selectCatalogShops<T extends Shop>(
+  shops: readonly T[],
+  view: CatalogView,
+): T[] {
+  switch (view) {
+    case "pages":
+      return shops.filter((shop) => !isExampleShop(shop));
+    case "listing":
+      return shops.filter((shop) => isListingShop(shop));
+    case "discovery":
+      return shops.filter((shop) => isDiscoveryShop(shop));
+    case "drive-through":
+      return shops.filter(
+        (shop) =>
+          !isExampleShop(shop) && shop.momentTags.includes("drive-through"),
+      );
+  }
+}
+
+/**
  * A chain is listed only when it is sit-down, not a drive-through lane,
  * and not pickup-only. A drive-through moment tag by itself does not hide
  * a sit-down chain — those rows stay on the drive-through list via the tag.

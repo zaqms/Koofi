@@ -21,7 +21,7 @@ type Listener = () => void;
 const listeners = new Set<Listener>();
 const pendingSnapshot: VisitorLocation = { status: "pending" };
 
-/** Boolean only — never lat/lng. Lets Safari-lying-as-prompt still auto-Ready. */
+/** Boolean only — never lat/lng. Not enough to call getCurrentPosition. */
 export const VISITOR_GEO_GRANTED_KEY = "wain.visitorGeoGranted.v1";
 
 let snapshot: VisitorLocation = pendingSnapshot;
@@ -223,7 +223,7 @@ async function runPeek(): Promise<VisitorLocation> {
     snapshotStatus: snapshot.status,
     permission,
     inflight: Boolean(inflight),
-    rememberedGranted: readRememberedGeoGranted(),
+    rememberedGranted: false,
   });
   if (action === "request") return requestVisitorLocation({ retry: true });
   if (snapshot.status === "unavailable" || snapshot.status === "denied") {
@@ -242,10 +242,13 @@ function readySnapshotUsable(): boolean {
 
 export function requestVisitorLocation(options?: {
   retry?: boolean;
+  /** Skip a ready pin and read again. Still joins a read already in flight. */
+  fresh?: boolean;
 }): Promise<VisitorLocation> {
-  if (readySnapshotUsable()) return Promise.resolve(snapshot);
+  if (!options?.fresh && readySnapshotUsable()) return Promise.resolve(snapshot);
   if (inflight) return inflight;
   if (
+    !options?.fresh &&
     (snapshot.status === "unavailable" || snapshot.status === "denied") &&
     !options?.retry
   ) {

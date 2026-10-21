@@ -1,9 +1,5 @@
-import {
-  CHAIN_BRANDS,
-  isChainBrandId,
-  isChainShop,
-} from "./chain-brands";
-import { isDriveThroughLane, listRealShops } from "./catalog";
+import { CHAIN_BRANDS, isChainBrandId } from "./chain-brands";
+import { listRealShops, selectCatalogShops } from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
@@ -537,10 +533,8 @@ export function pickCafes(input: {
   const real = input.shops
     ? input.shops.filter((shop) => shop.city === city && !isExampleShop(shop))
     : listRealShops(city);
-  // Generic three-picks stay local. A chain is never specialty.
-  const catalog = real.filter(
-    (shop) => !isDriveThroughLane(shop) && !isChainShop(shop),
-  );
+  // Generic three-picks use the discovery view. A chain is never specialty.
+  const catalog = selectCatalogShops(real, "discovery");
   const namedHits = scoreCatalogShops(input.text, real);
   const citywide = catalog.filter(
     (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),

@@ -13,8 +13,12 @@ export type VisitorLocationPeekAction =
   | "idle";
 
 /**
- * بيننا auto-Ready: read only when the browser already allowed location.
- * Never opens the prompt. My pin / موقعي still calls requestVisitorLocation.
+ * Silent read only. `getCurrentPosition` runs when the Permissions API
+ * already says granted, which does not open a prompt.
+ * `rememberedGranted` is ignored on purpose: after a reset the permission
+ * is `prompt` (or `unknown` where the API is missing) and a stored flag
+ * would open the dialog on page load. A Nearby tap still calls
+ * `requestVisitorLocation`.
  */
 export function decideVisitorLocationPeek(input: {
   snapshotStatus: VisitorLocationStatus;
@@ -24,9 +28,7 @@ export function decideVisitorLocationPeek(input: {
 }): VisitorLocationPeekAction {
   if (input.snapshotStatus === "ready") return "use-ready";
   if (input.inflight) return "await-inflight";
-  if (input.permission === "denied") return "idle";
-  if (input.permission === "granted" || input.rememberedGranted) {
-    return "request";
-  }
+  if (input.permission === "granted") return "request";
+  void input.rememberedGranted;
   return "idle";
 }

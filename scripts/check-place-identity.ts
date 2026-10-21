@@ -5,6 +5,7 @@
  *  1. No placeId is shared by two catalog rows.
  *  2. Each row's placeId decodes to the same Maps feature id as its share
  *     link (`!1s0x…:0x…`, or a cid-only link via data/place-identity-cid-map.json).
+ *     No allow-list: a stale hex has to be regenerated from the placeId.
  *
  * A ChIJ place id is base64url of `0a 12 09 <hi u64 LE> 11 <lo u64 LE>`;
  * the feature id is `0x<hi>:0x<lo>` and the Maps cid is <lo> in decimal.
@@ -15,19 +16,6 @@ import { listRealShops } from "../lib/catalog";
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
 }
-
-/**
- * Rows whose share link is an older feature id that Google now resolves to
- * the stored placeId (Place Details on the hex-derived id returns the stored
- * id). Same place, so it is allowed. Keep this list tiny and explain each.
- */
-const IDENTITY_ALLOWLIST: Record<string, { placeId: string; shareFeatureId: string; why: string }> = {
-  "y97-specialty-coffee-as-sahafah": {
-    placeId: "ChIJc4imk-blLj4R7dr8sHHpDYU",
-    shareFeatureId: "0x3e2ee500353c8e81:0xb2f5e1092e400825",
-    why: "Stale Maps hex: ChIJgY48NQDlLj4RJQhALgnh9bI resolves to the stored id (audit 2026-10-02).",
-  },
-};
 
 type FeatureId = { hi: bigint; lo: bigint };
 
@@ -76,17 +64,11 @@ for (const shop of shops) {
     continue;
   }
   if (same(fromId, fromUrl)) continue;
-  const allow = IDENTITY_ALLOWLIST[shop.id];
-  if (allow && allow.placeId === placeId && allow.shareFeatureId === fmt(fromUrl)) continue;
   problems.push(`${shop.id}: placeId ${placeId} is ${fmt(fromId)} but the share link is ${fmt(fromUrl)}`);
 }
 
 for (const [placeId, ids] of byPlaceId) {
   if (ids.length > 1) problems.push(`placeId ${placeId} is shared by ${ids.join(", ")}`);
-}
-
-for (const id of Object.keys(IDENTITY_ALLOWLIST)) {
-  assert(shops.some((shop) => shop.id === id), `allow-listed ${id} is still in the catalog`);
 }
 
 assert(problems.length === 0, `place identity:\n  ${problems.join("\n  ")}`);
@@ -95,4 +77,4 @@ assert(
   "every catalog row carries a placeId",
 );
 
-console.log(`check-place-identity: ${shops.length} rows, unique placeIds, placeId = share-link feature id (1 allow-listed).`);
+console.log(`check-place-identity: ${shops.length} rows, unique placeIds, every maps link matches its placeId.`);

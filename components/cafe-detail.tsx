@@ -36,7 +36,7 @@ import { shopMapsHref } from "@/lib/public-url";
 import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import { SHOW_DETAIL_FAVORITE } from "@/lib/tonight";
 import type { Language, Shop } from "@/lib/types";
-import { useVisitorLocation } from "@/lib/visitor-location";
+import { usePeekVisitorLocation } from "@/lib/visitor-location";
 
 type CafeDetailProps = {
   shop: Shop;
@@ -383,7 +383,7 @@ function CafeDetailLocation({
   lat?: number;
   lng?: number;
 }) {
-  const visitor = useVisitorLocation();
+  const visitor = usePeekVisitorLocation();
   const display = shopDistanceForVisitor({
     status: visitor.status,
     lat: visitor.status === "ready" ? visitor.lat : undefined,

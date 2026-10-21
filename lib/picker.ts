@@ -1,5 +1,4 @@
-import { isChainShop } from "./chain-brands";
-import { isDriveThroughLane, listRealShops } from "./catalog";
+import { listRealShops, selectCatalogShops } from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { shopToChatPick } from "./chat-pick";
 import { copy } from "./copy";
@@ -13,7 +12,7 @@ import { isMeetHalfwayChipAsk } from "./meet-halfway";
 import { coffeeShopsInDistrict } from "./directory-category";
 import { haversineKm } from "./distance";
 import { neighborhoodTightShops } from "./neighborhood-tight";
-import { neighborhoodLabel } from "./neighborhoods";
+import { neighborhoodLabel, streetShopIdsForAsk } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import { parseIntent } from "./parse-intent";
 import {
@@ -256,10 +255,8 @@ export function pickCafes(input: {
   const real = input.shops
     ? input.shops.filter((shop) => shop.city === city && !isExampleShop(shop))
     : listRealShops(city);
-  // Generic three-picks stay local. A chain is never specialty.
-  const catalog = real.filter(
-    (shop) => !isDriveThroughLane(shop) && !isChainShop(shop),
-  );
+  // Generic three-picks use the discovery view. A chain is never specialty.
+  const catalog = selectCatalogShops(real, "discovery");
   const named = preferAskedNeighborhood(
     matchCatalogShops(input.text, real),
     intent.neighborhoods,
@@ -289,6 +286,30 @@ export function pickCafes(input: {
       askedMoments: intent.moments,
       matchedDistrict,
     };
+  }
+
+  const streetIds = streetShopIdsForAsk(input.text);
+  if (!matchedDistrict && streetIds) {
+    const allowed = new Set(streetIds);
+    const pool = citywide.filter((shop) => allowed.has(shop.id));
+    if (pool.length > 0) {
+      const picks: PickReason[] = shopsWithUniqueWhy(
+        diversify(
+          dedupeSameBrand(rankShops(pool, [], intent.moments)),
+          intent.moments,
+        ),
+        language,
+        intent.moments,
+      );
+      return {
+        language,
+        picks,
+        thinCatalog: pool.length < TARGET_PICKS || picks.length < TARGET_PICKS,
+        askedNeighborhoods: intent.neighborhoods,
+        avoidedNeighborhoods: intent.avoidedNeighborhoods,
+        askedMoments: intent.moments,
+      };
+    }
   }
 
   if (named.length > 0) {

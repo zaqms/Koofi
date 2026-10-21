@@ -6,6 +6,7 @@ import {
   PRODUCT_NAME,
   SOCIAL_TWITTER_CARD,
 } from "@/lib/product";
+import { DEFAULT_LIVE_CITY } from "@/lib/cities";
 import { websiteJsonLd } from "@/lib/structured-data";
 
 const homeOg = listingOgImage({ kind: "home", language: "en" }, LOCKED_OPENER_EN);
@@ -36,7 +37,7 @@ export default function EnglishHome() {
   return (
     <>
       <JsonLd data={websiteJsonLd("en")} />
-      <HomeLanding language="en" />
+      <HomeLanding language="en" city={DEFAULT_LIVE_CITY} />
     </>
   );
 }

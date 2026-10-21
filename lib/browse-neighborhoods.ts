@@ -47,7 +47,6 @@ export const POPULAR_NEIGHBORHOODS_BY_CITY = {
   riyadh: [
     "hittin",
     "al-malqa",
-    "al-takhassusi",
     "olaya",
     "al-yasmin",
     "al-nakheel",
@@ -144,7 +143,6 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   "an-nada": "tree",
   "diplomatic-quarter": "landmark",
   "king-fahd": "towers",
-  "al-takhassusi": "building",
   "al-aqiq": "diamond",
   "al-ghadeer": "waves",
   "al-arid": "tree",

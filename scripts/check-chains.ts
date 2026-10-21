@@ -1961,14 +1961,14 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 543, "specialty discovery is 543 (− BOSS.CO Roastery Al Olaya (closed, AGRIO took over the unit), 21 Oct; 10 trending adds 21 Oct − 2 Namq now chain, 21 Oct + 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
-assert(listRealShops().length === 646, "catalog is 646 (− BOSS.CO Roastery Al Olaya (closed, AGRIO took over the unit), 21 Oct; after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
-assert(listLiveDistrictIds().length === 65, "specialty districts are 65 (− Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add; the 3 Drive rows were not a district's only specialty cafe)");
+assert(listDiscoveryShops().length === 543, "specialty discovery is 543 (− BOSS.CO Roastery Al Olaya (closed, AGRIO took over the unit), 21 Oct; 10 trending adds 21 Oct − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
+assert(listRealShops().length === 646, "catalog is 646 (− BOSS.CO Roastery Al Olaya (closed, AGRIO took over the unit), 21 Oct) after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
+assert(listLiveDistrictIds().length === 64, "specialty districts are 64 (Al Raqban into As Salam, and the Takhassusi street retired)");
 assert(
-  catalogDistrictIdsFrom(listRealShops()).length === 78,
-  "catalog rows cover 78 districts (Al Raqban folded into As Salam, 21 Oct; Jarir hidden; 4 Bisat batch + 4 Batch D3 districts + Umm Al Hamam Ash Sharqi, Batch L)",
+  catalogDistrictIdsFrom(listRealShops()).length === 77,
+  "catalog rows cover 77 districts (Al Raqban and the Takhassusi street retired; Jarir hidden)",
 );
-assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L, minus Al Raqban folded into As Salam 21 Oct)");
+assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (Al Raqban and the Takhassusi street retired)");
 assert(listDriveThroughDirectoryShops().length === 75, "drive-through is 75 (73 + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah, sit-down + drive-through)");
 assert(listListingShops().length === 591, "listing is 543 local plus the 48 sit-down chains");
 assert(listPublicShops().length === 591, "public list includes the 48 sit-down chains");
@@ -2396,7 +2396,7 @@ assert(
     "Tuwaiq intro names only local cafes (Drip + 4 Batch P)",
   );
   assert(
-    tuwaiqEn.includes("- {chain} [dr.CAFE](/en/c/drcafe-tuwaiq)"),
+    tuwaiqEn.includes("- {chain} [dr.CAFE · Jeddah Hwy](/en/c/drcafe-tuwaiq)"),
     "Tuwaiq dr.CAFE stays a {chain} list row (hidden with Local only on)",
   );
   const shifaEn = districtEnMarkdown("ash-shifa");
@@ -2413,7 +2413,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "bbd860be0275f66497f31b5212ab790392ffdc8e55b8b8135b5fd55e5c716578",
+  copyHash === "4a52defbb5eb89630c8083421ff51e6ce423f79a4ab6b13d3b13299299fd14b3",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -2446,7 +2446,13 @@ for (const id of mainDistrictPages) {
   if (rows.some((shop) => !isChainShop(shop))) {
     assert(onPage, `${id} has a non-chain row and keeps its prod page`);
   }
-  if (!onPage) disappeared.push(id);
+  if (!onPage) {
+    if (id === ("al-takhassusi" as NeighborhoodId)) {
+      assert(rows.length === 0, "retired Al Takhassusi street has no catalog rows");
+      continue;
+    }
+    disappeared.push(id);
+  }
 }
 // 21 Oct 2026: Al Raqban (a street inside As Salam) folds into as-salam; its old URLs 308 there.
 const foldedDistricts = new Map<string, NeighborhoodId>([["al-raqban", "as-salam"]]);
@@ -2559,12 +2565,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "61655b3a359e95c631ed77c9c049ca04b6ee1fca8cee76acdd43652ebb01f00b",
-  `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
+  llmsHash === "f50cf8185b3018a6824133d1a858b0ec45ad98abe32ad5a5017609f1f370748d",
+  `llms.txt headline follows the default catalog: ${llmsHash}`,
 );
 assert(
-  llms.includes("543 local, 48 chain branches"),
-  "llms.txt names the 48 chain branches separately from specialty",
+  llms.includes("591: 543 local, 48 chain branches"),
+  "llms.txt names the sit-down total and the 48 chain branches",
 );
 
 // 16 Sep scope stays: no Starbucks row carries the drive-through tag or chip.
@@ -2704,9 +2710,13 @@ assert(
 );
 assert(
   structuredSrc.includes("publicShopsInDistrict(district)") &&
-    structuredSrc.includes("listListingDirectoryShops()") &&
+    structuredSrc.includes("listListingDirectoryShops(city)") &&
     structuredSrc.includes("const shops = listPublicShops()"),
   "JSON-LD and llms.txt are built from public listing shops",
+);
+assert(
+  structuredSrc.includes("listDriveThroughDirectoryShops(city)"),
+  "the drive-through catalog view keeps the requested city",
 );
 
 const layoutSrc = read("app/layout.tsx");

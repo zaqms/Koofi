@@ -17,7 +17,8 @@ import {
   mostPopularHeading,
   mostPopularPath,
 } from "./product";
-import type { Language, Shop } from "./types";
+import { DEFAULT_LIVE_CITY } from "./cities";
+import type { City, Language, Shop } from "./types";
 
 export { MOST_POPULAR_HEADING, mostPopularHeading };
 
@@ -84,10 +85,17 @@ export function categoryListingStaticParams(): {
   ];
 }
 
-/** Full catalog by effective popularityIndex. No brand-dedupe — directory cards. */
-export function listPopularDirectoryShops(): DirectoryShop[] {
-  const byId = new Map(listDirectoryShops().map((shop) => [shop.id, shop]));
-  return rankByPopularity(listDiscoveryShops())
+/**
+ * Homepage and Most Popular cards, ranked by popularityIndex.
+ * Discovery view only: local specialty, no chains, no drive-through-only.
+ * Sit-down chains stay on district listings. Every café page, including
+ * chains and drive-through-only, is on `GET /api/shops`.
+ */
+export function listPopularDirectoryShops(
+  city: City = DEFAULT_LIVE_CITY,
+): DirectoryShop[] {
+  const byId = new Map(listDirectoryShops(city).map((shop) => [shop.id, shop]));
+  return rankByPopularity(listDiscoveryShops(city))
     .map((shop) => byId.get(shop.id))
     .filter((shop): shop is DirectoryShop => shop !== undefined);
 }

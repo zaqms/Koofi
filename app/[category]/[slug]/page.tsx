@@ -6,7 +6,9 @@ import { JsonLd } from "@/components/json-ld";
 import { chipPageMetadata } from "@/lib/chip-page";
 import { isFixedListId } from "@/lib/fixed-list-ids";
 import { fixedListMetadata } from "@/lib/fixed-lists";
+import { DEFAULT_LIVE_CITY } from "@/lib/cities";
 import { districtMetadata, resolveDistrictSlug } from "@/lib/district";
+import { districtCity } from "@/lib/district-city";
 import { districtPageHidden, hiddenDistrictRedirect } from "@/lib/district-dictionary";
 import { isDirectoryCategory } from "@/lib/directory-category";
 import { TrendingThisWeekPage } from "@/components/trending-this-week-page";
@@ -71,7 +73,7 @@ export default async function CategoryDistrictPage({
     return (
       <>
         <JsonLd data={mostPopularItemListJsonLd("ar")} />
-        <HomeLanding language="ar" listing="popular" />
+        <HomeLanding language="ar" city={DEFAULT_LIVE_CITY} listing="popular" />
       </>
     );
   }
@@ -90,7 +92,13 @@ export default async function CategoryDistrictPage({
         </>
       );
     }
-    return <HomeLanding language="ar" selectedChipId={chipId} />;
+    return (
+      <HomeLanding
+        language="ar"
+        city={DEFAULT_LIVE_CITY}
+        selectedChipId={chipId}
+      />
+    );
   }
   const district = resolveDistrictSlug(slug);
   if (!district) notFound();
@@ -99,7 +107,11 @@ export default async function CategoryDistrictPage({
   return (
     <>
       <JsonLd data={districtItemListJsonLd(district, "ar")} />
-      <DistrictPage language="ar" district={district} />
+      <DistrictPage
+        language="ar"
+        district={district}
+        city={districtCity(district)}
+      />
     </>
   );
 }

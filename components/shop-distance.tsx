@@ -2,7 +2,7 @@
 
 import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import type { Language, Pin } from "@/lib/types";
-import { useVisitorLocation } from "@/lib/visitor-location";
+import { usePeekVisitorLocation } from "@/lib/visitor-location";
 
 type ShopDistanceProps = {
   coords?: Pin | null;
@@ -15,7 +15,7 @@ type ShopDistanceProps = {
  * Matcha + Drive-through Nearby share this slot — never a silent omit.
  */
 export function ShopDistance({ coords, language }: ShopDistanceProps) {
-  const visitor = useVisitorLocation();
+  const visitor = usePeekVisitorLocation();
   const display = shopDistanceForVisitor({
     status: visitor.status,
     lat: visitor.status === "ready" ? visitor.lat : undefined,

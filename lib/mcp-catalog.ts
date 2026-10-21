@@ -4,12 +4,14 @@ import {
   type McpServer,
 } from "@modelcontextprotocol/server";
 import { z } from "zod";
+import { getShop } from "./catalog";
 import { directoryNeighborhoods } from "./directory";
-import { isNeighborhoodId, NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
-import { PRODUCT_NAME, PUBLIC_SITE_URL } from "./product";
+import { isNeighborhoodId, NEIGHBORHOODS, neighborhoodLabel, streetShopIdsForAsk } from "./neighborhoods";
+import { PRODUCT_NAME, PUBLIC_SITE_URL, shopDisplayName } from "./product";
 import {
   districtCanonicalUrl,
   jsonHasForbiddenPublicFields,
+  listCatalogShops,
   listPublicShops,
   publicShopPayload,
   publicShopRecord,
@@ -73,20 +75,21 @@ function jsonToolResult<T extends Record<string, unknown>>(
 }
 
 function shopTitle(shop: Shop): string {
-  return `${shop.nameEn} / ${shop.nameAr}`;
+  return `${shopDisplayName(shop, "en")} / ${shopDisplayName(shop, "ar")}`;
 }
 
 function shopCitationUrl(shop: Shop): string {
   return `${PUBLIC_SITE_URL}/c/${shop.id}`;
 }
 
-/** Directory-order catalog filter. No ranking, scores, or vibe picker. */
+/** Directory-order catalog filter. Every café page. No ranking, scores, or vibe picker. */
 export function searchPublicShops(query: string): Shop[] {
-  const shops = listPublicShops();
+  const shops = listCatalogShops("pages");
   const trimmed = query.trim();
   if (!trimmed) return shops;
 
   const needle = trimmed.toLowerCase();
+  const streetIds = new Set(streetShopIdsForAsk(trimmed) ?? []);
   const districts = new Set<NeighborhoodId>();
 
   for (const place of Object.values(NEIGHBORHOODS)) {
@@ -104,6 +107,7 @@ export function searchPublicShops(query: string): Shop[] {
   }
 
   return shops.filter((shop) => {
+    if (streetIds.has(shop.id)) return true;
     if (districts.has(shop.neighborhood)) return true;
     if (shop.id.toLowerCase().includes(needle)) return true;
     if (shop.nameEn.toLowerCase().includes(needle)) return true;
@@ -126,7 +130,7 @@ export function searchShopResults(query: string) {
 }
 
 export function fetchShopDocument(id: string) {
-  const shop = listPublicShops().find((row) => row.id === id);
+  const shop = getShop(id);
   const payload = publicShopPayload(id);
   if (!shop || !payload) return null;
 
@@ -185,7 +189,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: "Search shops",
       description:
-        "Search the wain.lol curated Riyadh coffee catalog by shop name, catalog id, or district (Arabic or English). Same shops as GET https://wain.lol/api/shops, in directory order — not ranked. Returns ChatGPT-compatible { results: [{ id, title, url }] }. Cite the url. Prefer list_shops / get_shop when you want the full schema.org records.",
+        "Search every wain.lol café page by shop name, catalog id, or district (Arabic or English). Same shops as GET https://wain.lol/api/shops, in directory order — not ranked. Drive-through-only shops are included. Returns ChatGPT-compatible { results: [{ id, title, url }] }. Cite the url. Prefer list_shops / get_shop when you want catalogLane and isChain.",
       inputSchema: z.object({
         query: z
           .string()
@@ -223,7 +227,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: "List shops",
       description:
-        "Return the full curated catalog. Identical to GET https://wain.lol/api/shops: schema.org ItemList of CafeOrCoffeeShop. Catalog-only fields. No hours, ratings, phone, price, reviews, images, or votes.",
+        "Return every café page. Identical to GET https://wain.lol/api/shops: schema.org ItemList of CafeOrCoffeeShop. Drive-through-only shops include catalogLane \"drive-through\". Chains include isChain. The sit-down directory is GET /api/shops?view=listing. No hours, ratings, phone, price, reviews, images, or votes.",
       inputSchema: z.object({}),
       annotations: READ_ONLY,
     },
@@ -255,7 +259,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: "List shops by district",
       description:
-        "Return the curated shops in one Riyadh district, same records as GET https://wain.lol/api/shops filtered to that neighborhood. district is the catalog slug (al-malqa, hittin, olaya, …).",
+        "Return the sit-down directory for one Riyadh district (local specialty plus dine-in chains), the same rows as the district page. Drive-through-only shops stay on GET /api/shops with catalogLane \"drive-through\" and off this list. district is the catalog slug (al-malqa, hittin, olaya, …).",
       inputSchema: z.object({
         district: z
           .string()
@@ -295,7 +299,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     "shop",
     new ResourceTemplate(`${publicShopsApiUrl()}/{id}`, {
       list: async () => ({
-        resources: listPublicShops().map((shop) => ({
+        resources: listCatalogShops("pages").map((shop) => ({
           uri: publicShopsApiUrl(shop.id),
           name: shop.id,
           title: shopTitle(shop),
@@ -305,7 +309,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
       }),
       complete: {
         id: (value) =>
-          listPublicShops()
+          listCatalogShops("pages")
             .map((shop) => shop.id)
             .filter((id) => id.toLowerCase().startsWith(value.toLowerCase())),
       },

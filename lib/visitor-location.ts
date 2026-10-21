@@ -21,7 +21,7 @@ type Listener = () => void;
 const listeners = new Set<Listener>();
 const pendingSnapshot: VisitorLocation = { status: "pending" };
 
-/** Boolean only — never lat/lng. Lets Safari-lying-as-prompt still auto-Ready. */
+/** Boolean only — never lat/lng. Not enough to call getCurrentPosition. */
 export const VISITOR_GEO_GRANTED_KEY = "wain.visitorGeoGranted.v1";
 
 let snapshot: VisitorLocation = pendingSnapshot;
@@ -190,10 +190,13 @@ function readySnapshotUsable(): boolean {
 
 export function requestVisitorLocation(options?: {
   retry?: boolean;
+  /** Skip a ready pin and read again. Still joins a read already in flight. */
+  fresh?: boolean;
 }): Promise<VisitorLocation> {
-  if (readySnapshotUsable()) return Promise.resolve(snapshot);
+  if (!options?.fresh && readySnapshotUsable()) return Promise.resolve(snapshot);
   if (inflight) return inflight;
   if (
+    !options?.fresh &&
     (snapshot.status === "unavailable" || snapshot.status === "denied") &&
     !options?.retry
   ) {
@@ -223,11 +226,18 @@ export function usePeekVisitorLocation(): VisitorLocation {
   return location;
 }
 
+/**
+ * Subscribe to the shared snapshot. Does not ask on mount.
+ * `auto: true` is kept for an explicit caller; home, cards, and café
+ * pages do not pass it. A Nearby chip, a nearby sort, or “use my
+ * location” calls `requestVisitorLocation`. `usePeekVisitorLocation`
+ * paints distance when the browser permission is already granted.
+ */
 export function useVisitorLocation(options?: {
   auto?: boolean;
 }): VisitorLocation {
   const location = useVisitorLocationSnapshot();
-  const auto = options?.auto !== false;
+  const auto = options?.auto === true;
 
   useEffect(() => {
     if (!auto) return;

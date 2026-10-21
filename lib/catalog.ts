@@ -73,8 +73,68 @@ export function shopCardNumber(id: string): string {
   return String(index + 1).padStart(2, "0");
 }
 
+/**
+ * The only catalog filter. Sitemap café pages, `GET /api/shops`, the
+ * homepage feed, district listings, and the drive-through directory all
+ * call this. Do not add a second `.filter` for the same decision.
+ *
+ * - `pages` — every real shop with a café page (`/c/{id}` in the sitemap).
+ *   Drive-through-only shops stay in this set and are tagged
+ *   `catalogLane: "drive-through"`. This is the default `GET /api/shops`.
+ * - `listing` — the sit-down directory: local specialty plus dine-in
+ *   chains. Drive-through-only rows stay out. District pages, browse,
+ *   and `GET /api/shops?view=listing` (the previous API default).
+ * - `discovery` — homepage specialty feed and Most Popular. Drops every
+ *   chain and every drive-through-only row on purpose. Chains stay on
+ *   district listings and in `pages`.
+ * - `drive-through` — the drive-through directory. Moment tag
+ *   `drive-through`, including a sit-down café that also serves cars.
+ *   Drive-through-only rows are tagged with `catalogLane` as well.
+ *
+ * A district page uses `districtListingFrom` on top of these rules: it
+ * shows the listing rows, and a drive-through-only local café only when
+ * that district has no specialty shop.
+ */
+export type CatalogView = "pages" | "listing" | "discovery" | "drive-through";
+
+export function selectCatalogShops<T extends Shop>(
+  shops: readonly T[],
+  view: CatalogView,
+): T[] {
+  switch (view) {
+    case "pages":
+      return shops.filter((shop) => !isExampleShop(shop));
+    case "listing":
+      return shops.filter((shop) => isListingShop(shop));
+    case "discovery":
+      return shops.filter((shop) => isDiscoveryShop(shop));
+    case "drive-through":
+      return shops.filter(
+        (shop) =>
+          !isExampleShop(shop) && shop.momentTags.includes("drive-through"),
+      );
+  }
+}
+
+/**
+ * `GET /api/shops` query. Missing, `pages`, and `all` are every café page.
+ * `listing`, `discovery`, and `drive-through` are the named views above.
+ */
+export function catalogViewFromQuery(
+  value: string | null | undefined,
+): CatalogView {
+  if (
+    value === "listing" ||
+    value === "discovery" ||
+    value === "drive-through"
+  ) {
+    return value;
+  }
+  return "pages";
+}
+
 export function listRealShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
-  return listShops(city).filter((shop) => !isExampleShop(shop));
+  return selectCatalogShops(listShops(city), "pages");
 }
 
 export function isDriveThroughLane(
@@ -138,11 +198,11 @@ export function isListingShop(
 }
 
 export function discoveryShopsFrom(shops: readonly Shop[]): Shop[] {
-  return shops.filter((shop) => isDiscoveryShop(shop));
+  return selectCatalogShops(shops, "discovery");
 }
 
 export function listingShopsFrom(shops: readonly Shop[]): Shop[] {
-  return shops.filter((shop) => isListingShop(shop));
+  return selectCatalogShops(shops, "listing");
 }
 
 /**
@@ -216,14 +276,14 @@ export function listedDistrictIdsFrom(shops: readonly Shop[]): NeighborhoodId[] 
   return directoryNeighborhoods(rows);
 }
 
-/** Default specialty discovery — excludes drive-through lanes and chains. */
+/** Homepage specialty feed. See `selectCatalogShops(..., "discovery")`. */
 export function listDiscoveryShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
-  return discoveryShopsFrom(listRealShops(city));
+  return selectCatalogShops(listShops(city), "discovery");
 }
 
-/** Local specialty plus dine-in chain branches. Drive-through lanes stay out. */
+/** Sit-down directory. See `selectCatalogShops(..., "listing")`. */
 export function listListingShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
-  return listingShopsFrom(listRealShops(city));
+  return selectCatalogShops(listShops(city), "listing");
 }
 
 export function realShopCount(): number {
@@ -248,6 +308,8 @@ function directoryShopFrom(
     id: shop.id,
     nameAr: shop.nameAr,
     nameEn: shop.nameEn,
+    ...(shop.branchEn ? { branchEn: shop.branchEn } : {}),
+    ...(shop.branchAr ? { branchAr: shop.branchAr } : {}),
     neighborhood: shop.neighborhood,
     neighborhoodAr: shop.neighborhoodAr,
     vibeTags: shop.vibeTags,
@@ -294,10 +356,12 @@ export function listAllDirectoryShops(city: City = DEFAULT_LIVE_CITY): Directory
   return toDirectoryShops(listRealShops(city));
 }
 
-/** Unified Drive-through directory — specialty TAG rows + DT-lane additions. */
-export function listDriveThroughDirectoryShops(): DirectoryShop[] {
+/** Drive-through directory. See `selectCatalogShops(..., "drive-through")`. */
+export function listDriveThroughDirectoryShops(
+  city: City = DEFAULT_LIVE_CITY,
+): DirectoryShop[] {
   return toDirectoryShops(
-    listRealShops().filter((shop) => shop.momentTags.includes("drive-through")),
+    selectCatalogShops(listShops(city), "drive-through"),
   );
 }
 
@@ -308,15 +372,28 @@ export function listListingDirectoryShops(
   return toDirectoryShops(listListingShops(city));
 }
 
+/** Keep rows whose catalog city is the page's city. */
+export function shopsInCity<T extends { city: City }>(
+  shops: readonly T[],
+  city: City,
+): T[] {
+  return shops.filter((shop) => shop.city === city);
+}
+
 /**
  * Prod rows for non-chains, plus sit-down chain branches. A district whose
- * rows are all non-qualifying chains returns nothing.
+ * rows are all non-qualifying chains returns nothing. A page city that is
+ * not this district's city returns nothing, so a Jeddah page cannot keep
+ * Riyadh rows.
  */
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,
+  city: City = districtCity(district),
 ): DirectoryShop[] {
-  const city = districtCity(district);
-  return toDirectoryShops(districtListingFrom(listRealShops(city), district));
+  if (city !== districtCity(district)) return [];
+  return toDirectoryShops(
+    shopsInCity(districtListingFrom(listRealShops(city), district), city),
+  );
 }
 
 /** Neighborhood index: the same rows the district pages show. */

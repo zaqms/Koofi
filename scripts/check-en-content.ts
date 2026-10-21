@@ -181,7 +181,7 @@ for (const district of [
 }
 
 assert(
-  districtEnMarkdown("as-suwaidi").includes("- {chain} [dr.CAFE](/en/c/drcafe-as-suwaidi)"),
+  districtEnMarkdown("as-suwaidi").includes("- {chain} [dr.CAFE · Al Qasr](/en/c/drcafe-as-suwaidi)"),
   "as-suwaidi EN lists the operational dr.CAFE as a {chain} row (Batch D1)",
 );
 assert(
@@ -342,7 +342,7 @@ assert(
   "district body is wired",
 );
 const shopDirectory = readRepo("components/shop-directory.tsx");
-const cafeListMarkup = '<ul className="mt-4 grid gap-3">';
+const cafeListMarkup = 'className={homeList ? "mt-8 grid gap-3" : "mt-4 grid gap-3"}';
 assert(shopDirectory.includes(cafeListMarkup), "directory renders cafe cards");
 assert(
   shopDirectory.indexOf(cafeListMarkup) < shopDirectory.lastIndexOf("{intro}"),
@@ -574,7 +574,7 @@ for (const district of liveDistricts) {
 }
 
 assert(
-  districtArMarkdown("as-suwaidi").includes("- {chain} [د.كيف كافيه](/c/drcafe-as-suwaidi)"),
+  districtArMarkdown("as-suwaidi").includes("- {chain} [د.كيف كافيه · القصر](/c/drcafe-as-suwaidi)"),
   "as-suwaidi AR lists the operational dr.CAFE as a {chain} row (Batch D1)",
 );
 assert(

@@ -1,5 +1,5 @@
 import { listRealShops } from "./catalog";
-import { parseIntent } from "./parse-intent";
+import { isTrendingWeekAsk, parseIntent } from "./parse-intent";
 import { MEET_HALFWAY_CHIP, NEARBY_CHIP, VIBE_CHIPS } from "./product";
 import { matchCatalogShops } from "./shop-name";
 
@@ -69,6 +69,7 @@ function hasCafeSignal(text: string): boolean {
 }
 
 export function isOffTopicAsk(text: string): boolean {
+  if (isTrendingWeekAsk(text)) return false;
   const haystack = normalize(text);
   if (!haystack || hasCafeSignal(text)) return false;
   if (OFF_TOPIC_TOPICS.test(haystack)) return true;

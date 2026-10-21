@@ -186,9 +186,11 @@ assert(
     copy.includes("meetHalfwayBadMaps") &&
     copy.includes("meetHalfwayLocationOff") &&
     copy.includes("That Maps share link didn’t drop a pin") &&
-    copy.includes("Location is off on this phone") &&
+    copy.includes("Location is off in the browser") &&
+    !copy.includes("on this phone") &&
     copy.includes("رابط المشاركة ما طلع دبوس") &&
-    copy.includes("الموقع مقفل على هالجوال") &&
+    copy.includes("الموقع مقفل من المتصفح") &&
+    !copy.includes("هالجوال") &&
     copy.includes("نلقى لكم الاثنين أنسب مكان.") &&
     copy.includes("Find the fairest spot for both of you.") &&
     copy.includes("انسخ الرابط") &&
@@ -1385,7 +1387,8 @@ assert(
     chatUi.includes("locations,") &&
     chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
-    chatUi.includes("auto: !listFirst && !halfwayInvite && !meetHalfwayOpen"),
+    chatUi.includes("usePeekVisitorLocation") &&
+    !chatUi.includes("useVisitorLocation("),
   "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
 );
 assert(

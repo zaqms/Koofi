@@ -50,7 +50,7 @@ Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh cof
 
 | Surface | What it is |
 | --- | --- |
-| `GET /api/shops` | Full curated catalog. schema.org `ItemList` of `CafeOrCoffeeShop`. CORS open for GET. `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400` |
+| `GET /api/shops` | Every café page (same ids as the sitemap). schema.org `ItemList` of `CafeOrCoffeeShop`. Drive-through-only rows include `catalogLane: "drive-through"`; chains include `isChain`. `?view=listing` is the previous sit-down directory, `?view=discovery` the homepage specialty feed, `?view=drive-through` the drive-through directory. CORS open for GET. `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400` |
 | `GET /api/shops/[id]` | One shop. 404 `{ "error": "not_found" }` if missing |
 | `/c/[id]` and `/en/c/[id]` | `CafeOrCoffeeShop` JSON-LD in `<script type="application/ld+json">`. Metadata only — cafe-card layout is unchanged |
 | `/coffee-shops/{slug}` and `/en/coffee-shops/{slug}` | `ItemList` JSON-LD of shops in that district |
@@ -74,6 +74,8 @@ Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh cof
 | `urlEn` | English card (`/en/c/{id}`) |
 | `sameAs` / `hasMap` | Maps share URL (and `officialSite` if present) |
 | `geo` | `{ @type: GeoCoordinates, latitude, longitude }` only when official place coords exist |
+| `isChain` / `brand` | Present on a mass-market branch. Omitted on a local café |
+| `catalogLane` | `"drive-through"` on a drive-through-only shop. Omitted on sit-down rows |
 
 Not in the public payload: hours, ratings, phone, price, reviews, images, upvote counts, or any secret.
 
@@ -81,7 +83,7 @@ Page JSON-LD uses schema.org `name` / `alternateName` / `address` for the page l
 
 ### MCP (same catalog)
 
-Public Streamable HTTP MCP at **`https://wain.lol/api/mcp`** (alias **`https://wain.lol/mcp`**). No auth. CORS open. Tools and resources read `listPublicShops()` / `publicShopPayload()` — the same objects as `GET /api/shops`.
+Public Streamable HTTP MCP at **`https://wain.lol/api/mcp`** (alias **`https://wain.lol/mcp`**). No auth. CORS open. `list_shops` matches `GET /api/shops` (every café page). `list_shops_by_district` is the sit-down directory, `listPublicShops()` / `?view=listing`.
 
 | Tool | What it returns |
 | --- | --- |

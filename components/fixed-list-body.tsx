@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { DirectoryCard } from "@/components/directory-card";
@@ -32,7 +33,7 @@ import {
   type FixedListId,
   type NearbyExplainerState,
 } from "@/lib/fixed-list-ids";
-import { mostPopularHeading } from "@/lib/product";
+import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import { trackEvent } from "@/lib/track";
 import type { Language, Pin } from "@/lib/types";
@@ -210,21 +211,33 @@ export function FixedListBody({
 
       {popularFallbackOn ? (
         <div className="mt-4" data-fixed-list-locate="">
-          <button
-            type="button"
-            data-use-my-location=""
-            data-location-state={
-              locationDenied ? "blocked" : locationUnread ? "unread" : "prompt"
-            }
-            onClick={useMyLocation}
-            className="inline-flex h-10 items-center rounded-full bg-bean px-4 text-sm text-foam"
-          >
-            {locationDenied
-              ? FIXED_LIST_ACTION.locationBlocked[language]
-              : locationUnread
+          {locationDenied ? (
+            <p
+              className="rounded-xl border border-line bg-foam px-3 py-2 text-sm leading-5 text-ink"
+              data-location-notice="blocked"
+              role="status"
+            >
+              {FIXED_LIST_ACTION.locationBlocked[language]}{" "}
+              <Link
+                href={neighborhoodsPath(language)}
+                className="font-medium underline underline-offset-2"
+              >
+                {FIXED_LIST_ACTION.pickNeighborhood[language]}
+              </Link>
+            </p>
+          ) : (
+            <button
+              type="button"
+              data-use-my-location=""
+              data-location-state={locationUnread ? "unread" : "prompt"}
+              onClick={useMyLocation}
+              className="inline-flex h-10 items-center rounded-full bg-bean px-4 text-sm text-foam"
+            >
+              {locationUnread
                 ? FIXED_LIST_ACTION.retryLocation[language]
                 : FIXED_LIST_ACTION.useLocation[language]}
-          </button>
+            </button>
+          )}
           {neighborhoodCandidates.length > 0 ? (
             <BrowseNeighborhoods
               language={language}

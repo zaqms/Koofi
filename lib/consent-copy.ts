@@ -14,6 +14,12 @@ export const consentCopy = {
     en: "We'd like to use analytics and advertising tools (Google, X, OpenAI, DataFast and Vercel) to understand how the site is used and to measure our ads. They only run if you accept, and the site works the same if you reject. You can change your mind any time from \u201cCookie settings\u201d at the bottom of the page.",
   },
   details: { ar: "التفاصيل في سياسة الخصوصية", en: "Details in the privacy policy" },
+  /** One line for the small-screen bar. The long body stays on desktop and on the privacy page. */
+  compact: {
+    ar: "كوكيز التحليل والإعلانات، بس إذا وافقت.",
+    en: "Analytics and ads cookies — only if you accept.",
+  },
+  compactDetails: { ar: "التفاصيل", en: "Details" },
   accept: { ar: "أوافق", en: "Accept" },
   reject: { ar: "أرفض", en: "Reject" },
   current: {
@@ -23,7 +29,17 @@ export const consentCopy = {
   settingsLink: { ar: "إعدادات الكوكيز", en: "Cookie settings" },
 } as const satisfies Record<string, unknown>;
 
-export function consentText<K extends "title" | "body" | "details" | "accept" | "reject" | "settingsLink">(
+export function consentText<
+  K extends
+    | "title"
+    | "body"
+    | "details"
+    | "compact"
+    | "compactDetails"
+    | "accept"
+    | "reject"
+    | "settingsLink"
+>(
   key: K,
   language: Language,
 ): string {

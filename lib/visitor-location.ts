@@ -223,11 +223,18 @@ export function usePeekVisitorLocation(): VisitorLocation {
   return location;
 }
 
+/**
+ * Subscribe to the shared snapshot. Does not ask on mount.
+ * `auto: true` is kept for an explicit caller; home, cards, and café
+ * pages do not pass it. A Nearby chip, a nearby sort, or “use my
+ * location” calls `requestVisitorLocation`. `usePeekVisitorLocation`
+ * paints distance when the browser permission is already granted.
+ */
 export function useVisitorLocation(options?: {
   auto?: boolean;
 }): VisitorLocation {
   const location = useVisitorLocationSnapshot();
-  const auto = options?.auto !== false;
+  const auto = options?.auto === true;
 
   useEffect(() => {
     if (!auto) return;

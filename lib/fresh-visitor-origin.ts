@@ -72,8 +72,8 @@ function readOnce(options: PositionOptions): Promise<PositionRead> {
 
 /**
  * Subscribe and read a fresh fix when location is already allowed.
- * Does not open a second browser prompt: the home chat still owns the
- * first ask. Denied, timeout, and unusable fixes stay `unavailable`
+ * Does not open the browser prompt. A Nearby chip or another location
+ * control asks. Denied, timeout, and unusable fixes stay `unavailable`
  * so the rail can keep the city fallback. Returning to the tab reads again.
  */
 export function useFreshHomeOrigin(): VisitorLocation {

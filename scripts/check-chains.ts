@@ -2559,7 +2559,7 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "98e03c9b7726efcd88d4a21fa8c8310ae955a0a98031b7efa8b8ed0786d1f999",
+  llmsHash === "c1063e8acf990d162fae36e0808e3965cbb3a9dea46ef6e427eeabc581740891",
   `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
 );
 assert(
@@ -2704,7 +2704,7 @@ assert(
 );
 assert(
   structuredSrc.includes("publicShopsInDistrict(district)") &&
-    structuredSrc.includes("listListingDirectoryShops()") &&
+    structuredSrc.includes("listListingDirectoryShops(city)") &&
     structuredSrc.includes("const shops = listPublicShops()"),
   "JSON-LD and llms.txt are built from public listing shops",
 );

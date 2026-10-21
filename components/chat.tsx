@@ -90,7 +90,7 @@ import {
 } from "@/lib/track";
 import {
   requestVisitorLocation,
-  useVisitorLocation,
+  usePeekVisitorLocation,
 } from "@/lib/visitor-location";
 import type { DistrictMatch, Language, Pin } from "@/lib/types";
 
@@ -893,7 +893,7 @@ export function Chat({
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   const listFirst = isFixedListChip(selectedChipId);
-  useVisitorLocation({ auto: !listFirst && !halfwayInvite && !meetHalfwayOpen });
+  usePeekVisitorLocation();
 
   useEffect(() => {
     if (!halfwayInvite) return;

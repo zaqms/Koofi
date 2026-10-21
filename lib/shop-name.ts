@@ -295,6 +295,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // Batch SD1 (21 Oct 2026), Al Shohda: branch-qualified names for the second BeFine / Arco
   // rows and the Granada Mall chain branches; bare tokens are blocked below.
   "befine-coffee-al-shohda": ["befine shohda", "befine shuhada", "بي فاين الشهداء"],
+  // Trending adds 21 Oct: multi-branch brands get a district alias so "brand + district" pins the new branch.
+  "hjeen-roasters-at-taawun": ["hjeen taawun", "hjeen at taawun", "هجين التعاون"],
+  "agrio-olaya": ["agrio olaya", "اقريو العليا"],
   "arco-al-shohda": ["arco shohda", "arco shuhada", "اركو الشهداء"],
   "tahn-al-shohda": ["tahn", "tahn coffee", "طحن قهوة", "طحن قهوة مختصة"],
   "illy-cafe-granada-mall-al-shohda": ["illy", "illy cafe", "illy caffe", "ايلي", "ايللي", "ايلي كافيه"],

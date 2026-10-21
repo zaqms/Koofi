@@ -17521,5 +17521,263 @@
         "uri": "https://maps.google.com/maps/contrib/101770881966719645465"
       }
     }
+  ],
+  "sample-roastery-al-rayyan": [
+    {
+      "src": "/cafe-heroes/sample-roastery-al-rayyan/1.jpg",
+      "attribution": {
+        "displayName": "Sample Roastery | Al Rayyan",
+        "uri": "https://maps.google.com/maps/contrib/116349895465893646822"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sample-roastery-al-rayyan/2.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sample-roastery-al-rayyan/3.jpg",
+      "attribution": {
+        "displayName": "M U U M",
+        "uri": "https://maps.google.com/maps/contrib/100758138353190625339"
+      }
+    }
+  ],
+  "nuviq-al-malqa": [
+    {
+      "src": "/cafe-heroes/nuviq-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "Elham Ahmed",
+        "uri": "https://maps.google.com/maps/contrib/113977899047270829200"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nuviq-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "تركي الغيث",
+        "uri": "https://maps.google.com/maps/contrib/115968381111460210649"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nuviq-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "AbdullaH",
+        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nuviq-al-malqa/4.jpg",
+      "attribution": {
+        "displayName": "nwsbdr",
+        "uri": "https://maps.google.com/maps/contrib/106252844375903777867"
+      }
+    }
+  ],
+  "fyne-coffee-al-malqa": [
+    {
+      "src": "/cafe-heroes/fyne-coffee-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "FYNE COFFEE | فاين كافيه",
+        "uri": "https://maps.google.com/maps/contrib/114910301129914126077"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fyne-coffee-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "nouf altami",
+        "uri": "https://maps.google.com/maps/contrib/111247679795846616914"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fyne-coffee-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "عبدالرحمن عبدالعزيز",
+        "uri": "https://maps.google.com/maps/contrib/117826009629397587675"
+      }
+    }
+  ],
+  "savura-al-muruj": [
+    {
+      "src": "/cafe-heroes/savura-al-muruj/1.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/savura-al-muruj/2.jpg",
+      "attribution": {
+        "displayName": "Amarooesh A",
+        "uri": "https://maps.google.com/maps/contrib/112798549118130618599"
+      }
+    },
+    {
+      "src": "/cafe-heroes/savura-al-muruj/3.jpg",
+      "attribution": {
+        "displayName": "عبدالله الجمّال",
+        "uri": "https://maps.google.com/maps/contrib/111638082978679373028"
+      }
+    },
+    {
+      "src": "/cafe-heroes/savura-al-muruj/4.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    }
+  ],
+  "agrio-olaya": [
+    {
+      "src": "/cafe-heroes/agrio-olaya/1.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/agrio-olaya/2.jpg",
+      "attribution": {
+        "displayName": "Noura",
+        "uri": "https://maps.google.com/maps/contrib/103543382410792822132"
+      }
+    }
+  ],
+  "hjeen-roasters-at-taawun": [
+    {
+      "src": "/cafe-heroes/hjeen-roasters-at-taawun/1.jpg",
+      "attribution": {
+        "displayName": "Hjeen Roasters",
+        "uri": "https://maps.google.com/maps/contrib/103477949406272683364"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roasters-at-taawun/2.jpg",
+      "attribution": {
+        "displayName": "Abdulelah Bakkar",
+        "uri": "https://maps.google.com/maps/contrib/105150838035818809369"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roasters-at-taawun/3.jpg",
+      "attribution": {
+        "displayName": "نورة",
+        "uri": "https://maps.google.com/maps/contrib/110859543007809759681"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hjeen-roasters-at-taawun/4.jpg",
+      "attribution": {
+        "displayName": "خوخه سلطان",
+        "uri": "https://maps.google.com/maps/contrib/110510664709150261122"
+      }
+    }
+  ],
+  "haseel-al-malqa": [
+    {
+      "src": "/cafe-heroes/haseel-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "Haseel cafe & bakery",
+        "uri": "https://maps.google.com/maps/contrib/111562888718899759113"
+      }
+    },
+    {
+      "src": "/cafe-heroes/haseel-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "منور الاحمري",
+        "uri": "https://maps.google.com/maps/contrib/106967941948874327095"
+      }
+    },
+    {
+      "src": "/cafe-heroes/haseel-al-malqa/3.jpg",
+      "attribution": {
+        "displayName": "Nona",
+        "uri": "https://maps.google.com/maps/contrib/115639416544031107619"
+      }
+    },
+    {
+      "src": "/cafe-heroes/haseel-al-malqa/4.jpg",
+      "attribution": {
+        "displayName": "Haseel cafe & bakery",
+        "uri": "https://maps.google.com/maps/contrib/111562888718899759113"
+      }
+    }
+  ],
+  "mid-sajj-al-ghadeer": [
+    {
+      "src": "/cafe-heroes/mid-sajj-al-ghadeer/1.jpg",
+      "attribution": {
+        "displayName": "امـجـد بـن عـادل",
+        "uri": "https://maps.google.com/maps/contrib/105012946015020211787"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mid-sajj-al-ghadeer/2.jpg",
+      "attribution": {
+        "displayName": "مانع !!",
+        "uri": "https://maps.google.com/maps/contrib/105768724405599309605"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mid-sajj-al-ghadeer/3.jpg",
+      "attribution": {
+        "displayName": "Nouf",
+        "uri": "https://maps.google.com/maps/contrib/114565905290589580236"
+      }
+    }
+  ],
+  "kaffo-al-aqiq": [
+    {
+      "src": "/cafe-heroes/kaffo-al-aqiq/1.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kaffo-al-aqiq/2.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kaffo-al-aqiq/3.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kaffo-al-aqiq/4.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    }
+  ],
+  "harmony-cafe-al-nakheel": [
+    {
+      "src": "/cafe-heroes/harmony-cafe-al-nakheel/1.jpg",
+      "attribution": {
+        "displayName": "هارموني كافيه",
+        "uri": "https://maps.google.com/maps/contrib/111243280501379393548"
+      }
+    },
+    {
+      "src": "/cafe-heroes/harmony-cafe-al-nakheel/2.jpg",
+      "attribution": {
+        "displayName": "BRHOOM BRHOOM",
+        "uri": "https://maps.google.com/maps/contrib/115073371772228408689"
+      }
+    },
+    {
+      "src": "/cafe-heroes/harmony-cafe-al-nakheel/3.jpg",
+      "attribution": {
+        "displayName": "Om azoz",
+        "uri": "https://maps.google.com/maps/contrib/115286003376762679227"
+      }
+    }
   ]
 }

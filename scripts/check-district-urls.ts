@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 65, `expected 65 districts (Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
-assert(listDiscoveryShops().length === 534, `specialty discovery is 534 (− 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 637, `catalog is 637 after Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -774,8 +774,9 @@ assert(
 );
 
 const rayyan = filterDirectoryShops(shops, "al-rayyan");
-assert(rayyan.length === 7, `al-rayyan has 7 shops, got ${rayyan.length}`);
+assert(rayyan.length === 8, `al-rayyan has 8 shops (7 + Sample Roastery, trending add 21 Oct), got ${rayyan.length}`);
 for (const id of [
+  "sample-roastery-al-rayyan",
   "kultura-al-rayyan",
   "da-nonna-al-rayyan",
   "amber-speciality-al-rayyan",
@@ -1142,6 +1143,7 @@ const WAVE1_DISTRICTS: {
       "the-coffee-kingdom-al-aqiq",
       "file-coffee-al-aqiq",
       "nahl-al-aqiq",
+      "kaffo-al-aqiq",
     ],
   },
   {
@@ -1157,6 +1159,7 @@ const WAVE1_DISTRICTS: {
       "brsk-al-ghadeer",
       "ghandoura-al-ghadeer",
       "iota-al-ghadeer",
+      "mid-sajj-al-ghadeer",
     ],
   },
   {
@@ -1257,12 +1260,14 @@ const MURUJ_REFILL = {
     "otto-al-muruj",
     "behind-al-muruj",
     "cherie-al-muruj",
+    "savura-al-muruj",
   ],
 };
 
 {
   const rows = filterDirectoryShops(shops, MURUJ_REFILL.id);
-  assert(rows.length === 10, `al-muruj has 10 shops, got ${rows.length}`);
+  assert(rows.length === 11, `al-muruj has 11 shops (10 + Savura, trending add 21 Oct), got ${rows.length}`);
+  assert(rows.some((shop) => shop.id === "savura-al-muruj"), "al-muruj includes savura-al-muruj");
   assert(
     rows.every((shop) => shop.neighborhood === "al-muruj"),
     "al-muruj filter stays in district",
@@ -1419,12 +1424,12 @@ const MALAZ_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, "at-taawun");
-  assert(rows.length === 10, `at-taawun has 10 specialty shops after Batch E r2 (Veloce is a chain), got ${rows.length}`);
+  assert(rows.length === 11, `at-taawun has 11 specialty shops (Batch E r2 10 + Hjeen, trending add 21 Oct; Veloce is a chain), got ${rows.length}`);
   const pageRows = listDirectoryShopsForDistrict("at-taawun");
   assert(
-    pageRows.length === 11 &&
+    pageRows.length === 12 &&
       pageRows.filter((shop) => shop.isChain).map((shop) => shop.id).join(",") === "veloce-cafe-at-taawun",
-    `at-taawun page lists 11 rows: 10 local + Veloce behind Local only, got ${pageRows.map((shop) => shop.id + (shop.isChain ? "{chain}" : "")).join(",")}`,
+    `at-taawun page lists 12 rows: 11 local + Veloce behind Local only, got ${pageRows.map((shop) => shop.id + (shop.isChain ? "{chain}" : "")).join(",")}`,
   );
   assert(
     rows.some((shop) => shop.id === "flow-matcha-at-taawun"),

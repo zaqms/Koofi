@@ -370,15 +370,28 @@ export function listListingDirectoryShops(
   return toDirectoryShops(listListingShops(city));
 }
 
+/** Keep rows whose catalog city is the page's city. */
+export function shopsInCity<T extends { city: City }>(
+  shops: readonly T[],
+  city: City,
+): T[] {
+  return shops.filter((shop) => shop.city === city);
+}
+
 /**
  * Prod rows for non-chains, plus sit-down chain branches. A district whose
- * rows are all non-qualifying chains returns nothing.
+ * rows are all non-qualifying chains returns nothing. A page city that is
+ * not this district's city returns nothing, so a Jeddah page cannot keep
+ * Riyadh rows.
  */
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,
+  city: City = districtCity(district),
 ): DirectoryShop[] {
-  const city = districtCity(district);
-  return toDirectoryShops(districtListingFrom(listRealShops(city), district));
+  if (city !== districtCity(district)) return [];
+  return toDirectoryShops(
+    shopsInCity(districtListingFrom(listRealShops(city), district), city),
+  );
 }
 
 /** Neighborhood index: the same rows the district pages show. */

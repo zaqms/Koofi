@@ -520,11 +520,10 @@ export function buildLlmsTxt(): string {
   const pages = listCatalogShops("pages");
   const pageChains = pages.filter((shop) => isChainShop(shop)).length;
   const pageLocal = pages.length - pageChains;
-  const pagesLabel = llmsCatalogCountLabel(pageLocal, pageChains);
   return [
     `# ${PRODUCT_NAME}`,
     "",
-    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${pages.length} (${pagesLabel})). Public catalog for people and agents.`,
+    `> ${pages.length} café pages: ${pageLocal} local cafés and ${pageChains} chain branches.`,
     "",
     `${PRODUCT_NAME} is a ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
     "",

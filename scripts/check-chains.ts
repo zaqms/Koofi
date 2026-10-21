@@ -2559,7 +2559,7 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "556018166a3f6d871d643a87dc808f1a221da76e5cf5b5f58e0805b8f3961504",
+  llmsHash === "3e509af04256063c12ab56412a7291e8196e7b2f7748b508a6a2620c42291426",
   `llms.txt headline follows the default catalog: ${llmsHash}`,
 );
 assert(

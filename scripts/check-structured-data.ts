@@ -204,7 +204,7 @@ const llms = buildLlmsTxt();
 const pageChains = pages.filter((shop) => shop.isChain).length;
 assert(
   llms.includes(
-    `${pages.length} (${pages.length - pageChains} local, ${pageChains} chain branches)`,
+    `${pages.length} café pages: ${pages.length - pageChains} local cafés and ${pageChains} chain branches`,
   ),
   "llms.txt headline states the default catalog total and the local/chain split",
 );

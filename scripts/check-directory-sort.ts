@@ -1,10 +1,13 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { homeLandingDirectory } from "../components/home-landing";
 import {
   listDirectoryShops,
+  listDirectoryShopsForDistrict,
   listDriveThroughDirectoryShops,
   listRealShops,
 } from "../lib/catalog";
+import { districtCity } from "../lib/district-city";
 import { copy } from "../lib/copy";
 import { filterDirectoryShopsByMoment } from "../lib/directory";
 import {
@@ -22,7 +25,7 @@ import {
 } from "../lib/place-coords";
 import { shopDisplayName } from "../lib/product";
 import { shopDistanceDisplay } from "../lib/shop-distance-label";
-import type { Pin } from "../lib/types";
+import type { City, Pin } from "../lib/types";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -212,6 +215,55 @@ assert(
 assert(
   landing.includes("chipDirectoryMoment") && landing.includes("moment={chipMoment}"),
   "moment filter wiring is unchanged",
+);
+assert(
+  landing.includes("city: City") && !landing.includes("city = DEFAULT_LIVE_CITY"),
+  "HomeLanding requires the page city and does not fall back to Riyadh",
+);
+for (const file of [
+  "app/page.tsx",
+  "app/en/page.tsx",
+  "app/halfway/page.tsx",
+  "app/en/halfway/page.tsx",
+  "app/[category]/[slug]/page.tsx",
+  "app/en/[category]/[slug]/page.tsx",
+]) {
+  const src = read(file);
+  assert(
+    !src.includes("<HomeLanding") || src.includes("city="),
+    `${file} passes its city into HomeLanding`,
+  );
+}
+const jeddah = "jeddah" as City;
+for (const kind of ["popular", "drive-through", "discovery"] as const) {
+  assert(
+    homeLandingDirectory(jeddah, kind).every((shop) => shop.city === "jeddah"),
+    `a non-Riyadh ${kind} landing stays on that city`,
+  );
+}
+assert(
+  homeLandingDirectory("riyadh", "discovery").length > 0 &&
+    homeLandingDirectory(jeddah, "discovery").length === 0,
+  "a Jeddah landing does not receive the Riyadh discovery list",
+);
+const malqa = listDirectoryShopsForDistrict(
+  "al-malqa",
+  districtCity("al-malqa"),
+);
+assert(
+  malqa.length > 0 &&
+    malqa.every((shop) => districtCity(shop.neighborhood) === "riyadh"),
+  "Al Malqa keeps the cafés in its own city",
+);
+assert(
+  listDirectoryShopsForDistrict("al-malqa", jeddah).length === 0,
+  "a non-Riyadh district page does not keep Riyadh cafés",
+);
+assert(
+  read("components/district-page.tsx").includes(
+    "listDirectoryShopsForDistrict(district, city)",
+  ),
+  "DistrictPage passes the page city into the district listing",
 );
 
 const chips = read("components/vibe-chips.tsx");

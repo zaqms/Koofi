@@ -507,16 +507,20 @@ export function jsonHasForbiddenPublicFields(value: unknown): string[] {
   return [...found];
 }
 
-export function llmsCatalogCountLabel(local: number, chains: number): string {
-  if (chains === 0) return String(local);
-  return `${local} local, ${chains} chain branches`;
+export function llmsCatalogCountLabel(
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  if (chains === 0) return String(total);
+  return `${total}: ${local} local, ${chains} chain branches`;
 }
 
 export function buildLlmsTxt(): string {
   const shops = listPublicShops();
   const chains = shops.filter((shop) => isChainShop(shop)).length;
   const local = shops.length - chains;
-  const countLabel = llmsCatalogCountLabel(local, chains);
+  const countLabel = llmsCatalogCountLabel(shops.length, local, chains);
   const pages = listCatalogShops("pages");
   const pageChains = pages.filter((shop) => isChainShop(shop)).length;
   const pageLocal = pages.length - pageChains;

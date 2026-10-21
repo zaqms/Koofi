@@ -236,16 +236,13 @@ for (const file of [
 }
 const jeddah = "jeddah" as City;
 for (const kind of ["popular", "drive-through", "discovery"] as const) {
+  const riyadhShops = homeLandingDirectory("riyadh", kind);
+  const jeddahShops = homeLandingDirectory(jeddah, kind);
   assert(
-    homeLandingDirectory(jeddah, kind).every((shop) => shop.city === "jeddah"),
-    `a non-Riyadh ${kind} landing stays on that city`,
+    riyadhShops.length > 0 && jeddahShops.length === 0,
+    `a ${kind} landing for Jeddah is empty and the Riyadh list is not`,
   );
 }
-assert(
-  homeLandingDirectory("riyadh", "discovery").length > 0 &&
-    homeLandingDirectory(jeddah, "discovery").length === 0,
-  "a Jeddah landing does not receive the Riyadh discovery list",
-);
 const malqa = listDirectoryShopsForDistrict(
   "al-malqa",
   districtCity("al-malqa"),

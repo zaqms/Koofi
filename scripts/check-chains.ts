@@ -2559,12 +2559,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "3e509af04256063c12ab56412a7291e8196e7b2f7748b508a6a2620c42291426",
+  llmsHash === "ae9a3a98d268636dbefc1657b29714edd7115db5b202ab8636e79d22f3748456",
   `llms.txt headline follows the default catalog: ${llmsHash}`,
 );
 assert(
-  llms.includes("544 local, 48 chain branches"),
-  "llms.txt names the 48 chain branches separately from specialty",
+  llms.includes("592: 544 local, 48 chain branches"),
+  "llms.txt names the sit-down total and the 48 chain branches",
 );
 
 // 16 Sep scope stays: no Starbucks row carries the drive-through tag or chip.

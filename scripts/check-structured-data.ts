@@ -208,6 +208,13 @@ assert(
   ),
   "llms.txt headline states the default catalog total and the local/chain split",
 );
+const listingChains = shops.filter((shop) => shop.isChain).length;
+assert(
+  llms.includes(
+    `${shops.length}: ${shops.length - listingChains} local, ${listingChains} chain branches`,
+  ),
+  "llms.txt sit-down sentence states the listing total and the local/chain split",
+);
 assert(llms.includes("https://wain.lol/api/shops"), "llms.txt points at /api/shops");
 assert(llms.includes("https://wain.lol/api/mcp"), "llms.txt points at MCP");
 assert(llms.includes("/c/{id}"), "llms.txt mentions cafe cards");

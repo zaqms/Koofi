@@ -183,7 +183,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-mughrizat": ["olaya", "sulimaniyah", "al-rabwah", "qurtubah"],
   ghirnatah: ["al-rabwah", "qurtubah", "al-rawdah", "al-safa"],
   "al-shohda": ["ghirnatah", "qurtubah", "al-safa", "al-rawdah"],
-  "al-safa": ["ghirnatah", "al-rawdah", "qurtubah", "al-hamra"],
+  "al-safa": ["ghirnatah", "al-rawdah", "qurtubah", "al-shohda"],
   "al-rawdah": ["ghirnatah", "al-safa", "al-rabwah", "qurtubah"],
   qurtubah: ["ghirnatah", "al-rawdah", "al-mughrizat", "al-safa"],
   "an-nazhah": ["qurtubah", "al-malqa", "al-yasmin", "olaya"],
@@ -313,9 +313,7 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   ghirnatah: {
-    lead: `Ghirnatah (غرناطة) is east Riyadh. OSM puts this Granada cluster in غرناطة, including the cafés that were filed under Ash Shuhada. This page is that set.
-
-[Camel Step – Granada Business](/en/c/camel-step-granada-business) is at Granada Business Park. [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda), [Specialty Bean Roastery](/en/c/specialty-bean-ghirnatah), [Mkth](/en/c/mkth-ghirnatah), [BIND Specialty Coffee](/en/c/bind-specialty-coffee-ghirnatah), [JAE Specialty Coffee](/en/c/jae-specialty-coffee-ghirnatah), [Semi Specialty Cafe](/en/c/semi-specialty-cafe-ghirnatah), and [Archi Granada](/en/c/archi-ghirnatah) are among the local cafes on this list today.`,
+    lead: `Ghirnatah (غرناطة) is east Riyadh. This page is the Granada-area cafes we’ve put on wain.lol so far.`,
     hereIntro: `There are **{count}** cafes from Ghirnatah on the list right now:`,
     hereOutro: `Pick one that sounds right, open the card, and hit **Take me there** when you want the pin.`,
     about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about).
@@ -402,14 +400,16 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   "al-shohda": {
-    lead: `Ash Shuhada (الشهداء) no longer has its own list. Those pins are on the Ghirnatah page.`,
+    lead: `Ash Shuhada (الشهداء) sits on the east side of Riyadh. This page is the Ash Shuhada set on wain.lol so far.
+
+[Camel Step – Granada Business](/en/c/camel-step-granada-business), [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda), [Specialty Bean Roastery](/en/c/specialty-bean-ghirnatah), [Mkth](/en/c/mkth-ghirnatah), [BIND Specialty Coffee](/en/c/bind-specialty-coffee-ghirnatah), [JAE Specialty Coffee](/en/c/jae-specialty-coffee-ghirnatah), [Semi Specialty Cafe](/en/c/semi-specialty-cafe-ghirnatah), and [Archi Granada](/en/c/archi-ghirnatah) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There are **{count}** cafes from Ash Shuhada on the catalog today:`,
-    hereOutro: `The Granada-area cafés are on the Ghirnatah page.`,
-    nearbyIntro: `These east-Riyadh lists sit next door on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. [Coffee shops in Ghirnatah](/en/coffee-shops/ghirnatah) is the list for these pins. [About](/en/about).
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Ash Shuhada isn’t the stop, these east-Riyadh lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ash Shuhada. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "Ash Shuhada cafés are listed under Ghirnatah on wain.lol.",
+    meta: "{countCafe} in Ash Shuhada on wain.lol — a Riyadh neighborhood list including Andarena Cafe and Camel Step, each with a Maps link.",
   },
   "al-safa": {
     lead: `As Safa is an east Riyadh neighborhood on the list. Here are the Safa places we’ve added.`,

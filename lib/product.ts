@@ -475,8 +475,6 @@ const REMOVED_SHOP_REDIRECTS = REMOVED_SHOP_TARGETS.flatMap(([slug, target]) => 
  * Retired district slugs. One map: locale × path prefix → permanent destination.
  * Al Raqban is a street inside As Salam (21 Oct 2026). Al Takhassusi is a
  * street that crosses several districts, so its old URLs go to the index.
- * Ash Shuhada’s catalog pins are in Ghirnatah, so the empty district URLs
- * follow the cafés there.
  */
 const LEGACY_DISTRICT_ROUTES = [
   {
@@ -489,11 +487,6 @@ const LEGACY_DISTRICT_ROUTES = [
     prefixes: [`/${COFFEE_SHOPS_CATEGORY}`, LEGACY_DISTRICT_PATH_PREFIX] as const,
     destination: (locale: "" | "/en") =>
       locale === "/en" ? `/en${NEIGHBORHOODS_PATH}` : NEIGHBORHOODS_PATH,
-  },
-  {
-    slug: "al-shohda",
-    prefixes: [`/${COFFEE_SHOPS_CATEGORY}`, LEGACY_DISTRICT_PATH_PREFIX] as const,
-    destination: (locale: "" | "/en") => `${locale}/${COFFEE_SHOPS_CATEGORY}/ghirnatah`,
   },
 ] as const;
 

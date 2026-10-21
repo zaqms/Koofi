@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 66, `expected 66 district pages (Ash Shuhada folded into Ghirnatah), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 67, `expected 67 district pages (Al Raqban folded in; the Takhassusi street retired), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 

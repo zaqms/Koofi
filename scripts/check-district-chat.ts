@@ -48,7 +48,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 63, `expected 63 live districts (Ash Shuhada folded into Ghirnatah), got ${live.length}`);
+assert(live.length === 64, `expected 64 live districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -59,12 +59,6 @@ for (const id of dictionaryDistrictIds()) {
   assert(place, `live district ${id} has no dictionary row`);
   assert(place.ar.trim().length > 0, `${id} missing AR label`);
   assert(place.en.trim().length > 0, `${id} missing EN label`);
-  if (id === "al-shohda") {
-    assert(place.aliases.length === 0, "Ash Shuhada aliases moved to Ghirnatah");
-    assert(extractPrimaryDistrict("الشهداء") === "ghirnatah", "الشهداء extracts Ghirnatah");
-    assert(extractPrimaryDistrict("Ash Shuhada") === "ghirnatah", "Ash Shuhada extracts Ghirnatah");
-    continue;
-  }
   assert(place.aliases.length > 0, `${id} missing aliases`);
   assert(
     extractPrimaryDistrict(place.en) === id,
@@ -119,7 +113,7 @@ assert(extractPrimaryDistrict("Al Olaya") === "olaya", "Al Olaya");
 assert(extractPrimaryDistrict("As Sulimaniyah") === "sulimaniyah", "As Sulimaniyah");
 assert(extractPrimaryDistrict("An Narjis") === "al-narjis", "An Narjis");
 assert(extractPrimaryDistrict("An Nakheel") === "al-nakheel", "An Nakheel");
-assert(extractPrimaryDistrict("Ash Shuhada") === "ghirnatah", "Ash Shuhada search lands on Ghirnatah");
+assert(extractPrimaryDistrict("Ash Shuhada") === "al-shohda", "Ash Shuhada");
 assert(extractPrimaryDistrict("Al Ghadir") === "al-ghadeer", "Al Ghadir");
 assert(extractPrimaryDistrict("King Fahd District") === "king-fahd", "King Fahd District");
 assert(extractPrimaryDistrict("العليا") === "olaya", "العليا");

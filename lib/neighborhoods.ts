@@ -272,8 +272,13 @@ export const NEIGHBORHOODS: Record<
       "al ghirnatah",
       "al-ghirnatah",
       "gharnatah",
-      // 21 Oct 2026: Shoug — OSM puts the old Ash Shuhada pins in غرناطة.
-      // Search for الشهداء lands on this district. The old URLs 308 here.
+    ],
+  },
+  "al-shohda": {
+    id: "al-shohda",
+    ar: "الشهداء",
+    en: "Ash Shuhada",
+    aliases: [
       "الشهداء",
       "شهداء",
       "shohda",
@@ -290,12 +295,6 @@ export const NEIGHBORHOODS: Record<
       "alshohda",
       "shuhadaa",
     ],
-  },
-  "al-shohda": {
-    id: "al-shohda",
-    ar: "الشهداء",
-    en: "Ash Shuhada",
-    aliases: [],
   },
   "al-safa": {
     id: "al-safa",

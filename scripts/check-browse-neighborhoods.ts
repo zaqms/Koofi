@@ -395,7 +395,7 @@ assert(
   "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 66, "A–Z drops chain-only districts, Al Raqban, Al Takhassusi, and the empty Ash Shuhada page");
+assert(az.length === 67, "A–Z drops chain-only districts, Al Raqban, and the Takhassusi street");
 assert(
   rowsEn.some((row) => row.id === BATCH_L_NEW_DISTRICT && row.cafeCount === 3),
   "Umm Al Hamam Ash Sharqi joins live browse with 3 cafes (Batch L)",

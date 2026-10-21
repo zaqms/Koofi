@@ -70,6 +70,42 @@ const GENERIC_NORMS = new Set(
   ),
 );
 
+/**
+ * Everyday words are not typos of a café. "dessert" is one edit from Essert
+ * and "drops" is one edit from Crops; neither is a misspelled name.
+ */
+const COMMON_WORDS = new Set(
+  [
+    "dessert",
+    "drops",
+    "breakfast",
+    "brunch",
+    "family",
+    "friendly",
+    "view",
+    "nearby",
+    "please",
+    "coffee",
+    "cafe",
+    "quiet",
+    "study",
+    "sweet",
+    "cake",
+    "food",
+    "drink",
+    "where",
+    "something",
+    "فطور",
+    "عائلي",
+    "اطلاله",
+    "قريب",
+    "كوفي",
+    "وين",
+    "حلو",
+    "حلويات",
+  ].map((word) => normalizeShopText(word)),
+);
+
 type Candidate = {
   norm: string;
   nameEn: string;
@@ -146,13 +182,22 @@ export type FuzzyNameHit =
       distance: number;
     };
 
-type Attempt = { raw: string; norm: string; full: boolean };
+type Attempt = { raw: string; norm: string; full: boolean; leadingAlef?: boolean };
 
 function attemptsFor(raw: string): Attempt[] {
   const trimmed = raw.trim();
   const full = normalizeShopText(trimmed);
   const rows: Attempt[] = [];
   if (full) rows.push({ raw: trimmed, norm: full, full: true });
+  const fullChars = Array.from(full);
+  if (fullChars[0] === "ا" && fullChars.length >= 6) {
+    rows.push({
+      raw: trimmed,
+      norm: fullChars.slice(1).join(""),
+      full: true,
+      leadingAlef: true,
+    });
+  }
   for (const token of trimmed.split(/\s+/)) {
     const norm = normalizeShopText(token);
     if (!norm || norm === full) continue;
@@ -169,19 +214,37 @@ function escapeRegExp(value: string): string {
  * Closest catalog or excluded-brand name for a misspelling.
  * Returns null when nothing is close enough, or when two different names tie.
  */
+function sharesStart(left: string, right: string): boolean {
+  const a = Array.from(left);
+  const b = Array.from(right);
+  return Boolean(a[0] && a[0] === b[0]);
+}
+
+function isCommonAsk(raw: string): boolean {
+  const tokens = normalizeShopText(raw).split(" ").filter(Boolean);
+  return tokens.length > 0 && tokens.every((token) => COMMON_WORDS.has(token));
+}
+
 export function fuzzyNameHit(
   raw: string,
   shops: readonly Shop[],
 ): FuzzyNameHit | null {
-  const attempts = attemptsFor(raw).filter(
-    (attempt) => maxEdits(Array.from(attempt.norm).length) > 0,
-  );
+  const attempts = attemptsFor(raw);
   if (attempts.length === 0) return null;
 
   const negated = negatedChainBrandIds(raw);
   const pool = candidatesFor(shops).filter(
     (candidate) => !candidate.brandId || !negated.has(candidate.brandId),
   );
+
+  for (const attempt of attempts) {
+    const exact = pool.find((candidate) => candidate.norm === attempt.norm);
+    if (exact?.brandId && !exact.listed) {
+      return { kind: "excluded", nameEn: exact.nameEn, nameAr: exact.nameAr };
+    }
+  }
+
+  if (isCommonAsk(raw)) return null;
 
   type Scored = Candidate & { distance: number; attempt: Attempt };
   const ranked: Scored[] = [];
@@ -190,11 +253,13 @@ export function fuzzyNameHit(
     const limit = maxEdits(Array.from(attempt.norm).length);
     if (limit <= 0) continue;
     for (const candidate of pool) {
+      if (!attempt.leadingAlef && !sharesStart(attempt.norm, candidate.norm)) continue;
       const lengthGap = Math.abs(
         Array.from(attempt.norm).length - Array.from(candidate.norm).length,
       );
       if (lengthGap > limit) continue;
-      const distance = damerauLevenshtein(attempt.norm, candidate.norm);
+      let distance = damerauLevenshtein(attempt.norm, candidate.norm);
+      if (attempt.leadingAlef && distance === 0) distance = 1;
       if (distance > limit) continue;
       ranked.push({ ...candidate, distance, attempt });
     }

@@ -1,6 +1,7 @@
 import { listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
-import { headingForPicks, pickCafes } from "../lib/picker";
+import { decodePackId, encodePackId } from "../lib/pack";
+import { formatWhatsAppReply, headingForPicks, pickCafes } from "../lib/picker";
 import { officialShopCoords } from "../lib/place-coords";
 import { normalizeShopText } from "../lib/shop-name";
 
@@ -154,6 +155,144 @@ sameIds(
   starbucks,
   "distance sort still returns every Starbucks branch",
 );
+
+for (const ask of ["Starbucks near me", "ستاربكس قريب", "Starbucks quiet"] as const) {
+  const language = ask.startsWith("Starbucks") ? "en" : "ar";
+  const result = idsOf(ask, language);
+  sameIds(
+    result.picks.map((pick) => pick.shop.id),
+    starbucks,
+    `${ask} should keep every Starbucks branch`,
+  );
+  assert(result.mode === "search", `${ask} stays a search`);
+  assert(!result.didYouMean, `${ask} is not a typo`);
+}
+
+const both = idsOf("ستاربكس او دكتور كيف", "ar");
+const bothIds = [...starbucks, ...drCafe];
+sameIds(
+  both.picks.map((pick) => pick.shop.id),
+  bothIds,
+  "ستاربكس او دكتور كيف should return both brands",
+);
+assert(
+  both.picks.every((pick) => pick.shop.id !== "hal-alkeif-kafd"),
+  "هل الكيف is not a dr.CAFE branch",
+);
+
+const panorama = idsOf("starbucks panorama", "en");
+assert(panorama.picks.length === 1, `starbucks panorama should stay one branch, got ${panorama.picks.length}`);
+assert(
+  panorama.picks[0]?.shop.id.includes("panorama"),
+  `starbucks panorama led with ${panorama.picks[0]?.shop.id}`,
+);
+
+for (const ask of [
+  "breakfast",
+  "brunch",
+  "family",
+  "family friendly",
+  "view",
+  "v60",
+  "nearby",
+  "قريب مني",
+  "كوفي",
+  "وين اروح",
+  "فطور",
+  "عائلي",
+  "إطلالة",
+  "مزدحم",
+] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.noMatch !== true, `${ask} should be a recommendation, not no-match`);
+  assert(result.mode === "browse", `${ask} mode ${result.mode}`);
+  assert(!result.didYouMean, `${ask} should not be a did-you-mean`);
+  assert(result.picks.length > 0 && result.picks.length <= 3, `${ask} returns a short list`);
+}
+
+const howAreYou = idsOf("كيف حالك", "ar");
+assert(
+  howAreYou.picks.every((pick) => pick.shop.chainBrand !== "dr-cafe"),
+  `كيف حالك must not list dr.CAFE: ${howAreYou.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+assert(howAreYou.mode !== "search" || howAreYou.picks.length === 0, "كيف حالك is not a brand search");
+
+const doctor = idsOf("دكتور كيف", "ar");
+sameIds(
+  doctor.picks.map((pick) => pick.shop.id),
+  drCafe,
+  "دكتور كيف should return every dr.CAFE branch and nothing else",
+);
+
+const dessert = idsOf("dessert", "en");
+assert(dessert.didYouMean?.nameEn !== "Essert", "dessert must not suggest Essert");
+assert(dessert.noMatch !== true, "dessert is a recommendation");
+
+const drops = idsOf("drops", "en");
+assert(drops.noMatch === true, "drops is not a match");
+assert(!drops.didYouMean, `drops must not suggest ${drops.didYouMean?.nameEn}`);
+assert(drops.picks.length === 0, "drops returns no picks");
+
+const malqaSpelling = pickCafes({ text: "الملقى", language: "ar" });
+assert(malqaSpelling.matchedDistrict === "al-malqa", "الملقى is Al Malqa");
+assert(malqaSpelling.mode === "browse", "الملقى stays a district browse");
+assert(
+  malqaSpelling.picks.every((pick) => pick.shop.neighborhood === "al-malqa"),
+  "الملقى stays inside Al Malqa",
+);
+
+const leadingAlef = idsOf("إستاربكس", "ar");
+sameIds(
+  leadingAlef.picks.map((pick) => pick.shop.id),
+  starbucks,
+  "إستاربكس should return every Starbucks branch",
+);
+assert(
+  leadingAlef.didYouMean?.nameEn === "Starbucks",
+  `إستاربكس did you mean ${leadingAlef.didYouMean?.nameEn}`,
+);
+
+const dunkinShort = idsOf("دنكن", "ar");
+assert(dunkinShort.picks.length === 0, "دنكن returns no cafés");
+assert(dunkinShort.excludedBrand?.nameEn === "Dunkin'", "دنكن is Dunkin'");
+assert(
+  headingForPicks(dunkinShort).includes("مو موجودة في وين"),
+  `دنكن heading: ${headingForPicks(dunkinShort)}`,
+);
+
+const olayaShops = starbucks.filter((shop) => shop.neighborhood === "olaya");
+assert(olayaShops.length === 0, "the catalog has no Starbucks in Al Olaya");
+for (const ask of ["Starbucks Olaya", "ستاربكس العليا"] as const) {
+  const language = ask.startsWith("Starbucks") ? "en" : "ar";
+  const result = idsOf(ask, language);
+  sameIds(
+    result.picks.map((pick) => pick.shop.id),
+    starbucks,
+    `${ask} should show every branch when the district has none`,
+  );
+  const heading = headingForPicks(result);
+  assert(
+    language === "en" ? heading.includes("Al Olaya") : heading.includes("العليا"),
+    `${ask} should say the district has none: ${heading}`,
+  );
+  assert(
+    language === "en" ? heading.includes("Starbucks") : heading.includes("ستاربكس"),
+    `${ask} should name the brand: ${heading}`,
+  );
+  assert(!heading.includes("Three cafes") && !heading.includes("ثلاث قهاوي تناسب اختيارك"), heading);
+}
+
+const packIds = starbucks.map((shop) => shop.id);
+const pack = decodePackId(encodePackId({ locale: "en", shopIds: packIds, ask: "Starbucks", search: true }));
+assert(pack?.shopIds.join(",") === packIds.join(","), "a search pack keeps every Starbucks branch");
+assert(pack?.search === true, "a search pack remembers it was a search");
+
+const wa = formatWhatsAppReply(dr, undefined, "dr.CAFE");
+assert(wa.length < 4096, `WhatsApp dr.CAFE reply is ${wa.length} chars`);
+const listed = wa.split("\n").filter((line) => /^\d+\./.test(line));
+assert(listed.length <= 8, `WhatsApp lists ${listed.length} cafés`);
+assert(listed.length < drCafe.length, "WhatsApp does not list every dr.CAFE branch");
+assert(wa.includes("wain.lol"), "WhatsApp points at the rest of the list");
 
 console.log("check-search-quality: ok");
 console.log(

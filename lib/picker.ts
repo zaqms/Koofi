@@ -1,5 +1,5 @@
 import {
-  chainBrandSearchAliases,
+  CHAIN_BRANDS,
   isChainBrandId,
   isChainShop,
 } from "./chain-brands";
@@ -18,7 +18,7 @@ import { isMeetHalfwayChipAsk } from "./meet-halfway";
 import { coffeeShopsInDistrict } from "./directory-category";
 import { haversineKm } from "./distance";
 import { neighborhoodTightShops } from "./neighborhood-tight";
-import { NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
+import { neighborhoodLabel } from "./neighborhoods";
 import { officialShopCoords } from "./place-coords";
 import { parseIntent } from "./parse-intent";
 import {
@@ -26,12 +26,19 @@ import {
   districtPath,
   exampleBadge,
   isExampleShop,
+  packSharePath,
   shopDisplayName,
 } from "./product";
 import { decorateChatPicks } from "./places";
 import { shopLocation, shopMapsHref } from "./public-url";
 import { dedupeSameBrand, shopBrandKey } from "./shop-brand";
-import { normalizeShopText, scoreCatalogShops } from "./shop-name";
+import { encodePackId } from "./pack";
+import {
+  normalizeShopText,
+  scoreCatalogShops,
+  shopNameAliases,
+  shopTextIncludesAlias,
+} from "./shop-name";
 import type {
   ChatPick,
   City,
@@ -50,92 +57,153 @@ import { shopsWithUniqueWhy, uniqueWhyLines } from "./why-line";
 /** Vibe chips, popular, and district asks stay a three-pack. */
 const TARGET_PICKS = 3;
 
-/** Named search returns every matching branch, then stops. dr.CAFE is the long list. */
-const SEARCH_MATCH_CAP = 30;
+/** Named search returns every matching branch, then stops. Two brands still fit. */
+const SEARCH_MATCH_CAP = 40;
+
+/** WhatsApp lists a short page, then a link to the rest. */
+const WHATSAPP_LIST_CAP = 8;
 
 function fill(template: string, values: Record<string, string>): string {
   return template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? "");
 }
 
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+/**
+ * Words that ask for a suggestion, not a shop name.
+ * "قريب مني" and "وين اروح" stay a normal three-pack.
+ */
+const RECOMMENDATION_WORDS = new Set(
+  [
+    "nearby",
+    "near",
+    "me",
+    "please",
+    "somewhere",
+    "where",
+    "go",
+    "something",
+    "anything",
+    "قريب",
+    "مني",
+    "وين",
+    "اروح",
+    "ابي",
+    "ابغى",
+    "ابغا",
+    "ودي",
+    "مكان",
+    "من",
+    "في",
+    "او",
+    "أو",
+    "or",
+    "and",
+  ].map((word) => normalizeShopText(word)),
+);
+
+export function isRecommendationAsk(raw: string): boolean {
+  const hay = normalizeShopText(raw);
+  if (!hay) return false;
+  const tokens = hay.split(" ").filter(Boolean);
+  return tokens.length > 0 && tokens.every((token) => RECOMMENDATION_WORDS.has(token));
 }
 
-function stripNeighborhoodWords(
-  normalized: string,
-  ids: readonly NeighborhoodId[],
-): string {
-  let hay = normalized;
-  const aliases = ids
-    .flatMap((id) => {
-      const place = NEIGHBORHOODS[id];
-      return [place.id, place.en, place.ar, ...place.aliases];
-    })
-    .map((alias) => normalizeShopText(alias))
-    .filter((alias) => alias.length >= 3)
-    .sort((a, b) => b.length - a.length);
-  for (const alias of aliases) {
-    const pattern = new RegExp(
-      `(^|\\s)${escapeRegExp(alias)}(\\s|$)`,
-      "gu",
-    );
-    hay = hay.replace(pattern, " ");
+function groupKey(shop: Shop): string {
+  if (shop.chainBrand && isChainBrandId(shop.chainBrand)) {
+    return `chain:${shop.chainBrand}`;
   }
-  return hay.replace(/\s+/g, " ").trim();
+  return `brand:${shopBrandKey(shop)}`;
 }
 
-function compactLetters(text: string): string {
-  return text.replace(/[\s-]+/g, "");
-}
-
-function sameAlias(left: string, right: string): boolean {
-  if (!left || !right) return false;
-  if (left === right) return true;
-  const compactLeft = compactLetters(left);
-  const compactRight = compactLetters(right);
-  return compactRight.length >= 4 && compactLeft === compactRight;
-}
-
-/** "ستاربكس" / "ستار بكس" / "Starbucks Al Mathar" name the brand. "starbucks panorama" names one branch. */
-function isBrandWideAsk(
+/**
+ * A brand plus extra words ("Starbucks near me", "ستاربكس او دكتور كيف") keeps
+ * every branch of each named brand. A branch word ("panorama") still narrows.
+ * Hits that only matched by accident stay out once a brand is named.
+ */
+function narrowNamedHits(
   raw: string,
-  hits: readonly { shop: Shop }[],
-  neighborhoods: readonly NeighborhoodId[],
-): boolean {
-  const stripped = stripNeighborhoodWords(
-    normalizeShopText(raw),
-    neighborhoods,
-  );
-  if (!stripped) return false;
-  const shops = hits.map((hit) => hit.shop);
-  const brandIds = new Set(
-    shops.flatMap((shop) =>
-      shop.chainBrand && isChainBrandId(shop.chainBrand)
-        ? [shop.chainBrand]
-        : [],
-    ),
-  );
-  if (brandIds.size === 1) {
-    const id = [...brandIds][0];
-    if (id && isChainBrandId(id)) {
-      for (const alias of chainBrandSearchAliases(id)) {
-        if (sameAlias(stripped, normalizeShopText(alias))) return true;
+  hits: { shop: Shop; score: number }[],
+): { shop: Shop; score: number }[] {
+  const hay = normalizeShopText(raw);
+  const groups = new Map<string, { shop: Shop; score: number }[]>();
+  for (const hit of hits) {
+    const key = groupKey(hit.shop);
+    const list = groups.get(key) ?? [];
+    list.push(hit);
+    groups.set(key, list);
+  }
+
+  const aliasCache = new Map<string, string[]>();
+  const aliasesFor = (shop: Shop) => {
+    const cached = aliasCache.get(shop.id);
+    if (cached) return cached;
+    const aliases = shopNameAliases(shop);
+    aliasCache.set(shop.id, aliases);
+    return aliases;
+  };
+
+  const selected: { shop: Shop; score: number }[] = [];
+  const unnamed: { shop: Shop; score: number }[] = [];
+
+  for (const group of groups.values()) {
+    const aliasSets = group.map((hit) => new Set(aliasesFor(hit.shop)));
+    const shared = [...(aliasSets[0] ?? [])].filter(
+      (alias) =>
+        alias.length >= 4 &&
+        aliasSets.every((set) => set.has(alias)) &&
+        shopTextIncludesAlias(hay, alias),
+    );
+    if (shared.length === 0) {
+      unnamed.push(...group);
+      continue;
+    }
+
+    let bestAlias = "";
+    let bestRows: { shop: Shop; score: number }[] = [];
+    const seenAlias = new Set<string>();
+    for (const hit of group) {
+      for (const alias of aliasesFor(hit.shop)) {
+        if (alias.length < 3 || shared.includes(alias) || seenAlias.has(alias)) continue;
+        if (!shopTextIncludesAlias(hay, alias)) continue;
+        seenAlias.add(alias);
+        const rows = group.filter((row) => aliasesFor(row.shop).includes(alias));
+        if (rows.length === 0 || rows.length === group.length) continue;
+        if (alias.length > bestAlias.length) {
+          bestAlias = alias;
+          bestRows = rows;
+        }
       }
     }
+    selected.push(...(bestAlias ? bestRows : group));
   }
-  const keys = new Set(shops.map((shop) => shopBrandKey(shop)));
-  if (keys.size !== 1) return false;
-  const key = [...keys][0]?.replace(/-/g, " ") ?? "";
-  if (sameAlias(stripped, normalizeShopText(key))) return true;
-  const namesEn = new Set(shops.map((shop) => normalizeShopText(shop.nameEn)));
-  const namesAr = new Set(shops.map((shop) => normalizeShopText(shop.nameAr)));
-  if (namesEn.size === 1 && sameAlias(stripped, [...namesEn][0] ?? "")) {
-    return true;
+
+  if (selected.length > 0) return selected;
+  if (unnamed.length === 0) return [];
+  const best = Math.max(...unnamed.map((hit) => hit.score));
+  return unnamed.filter((hit) => hit.score === best);
+}
+
+function outsideAreaLabel(
+  shops: readonly Shop[],
+  areaId: NeighborhoodId,
+): NonNullable<PickResult["outsideArea"]> {
+  const brands = new Map<string, { en: string; ar: string }>();
+  for (const shop of shops) {
+    const id = shop.chainBrand;
+    if (id && isChainBrandId(id)) {
+      const brand = CHAIN_BRANDS[id];
+      brands.set(id, { en: brand.nameEn, ar: brand.nameAr });
+      continue;
+    }
+    const key = shopBrandKey(shop);
+    if (!brands.has(key)) brands.set(key, { en: shop.nameEn, ar: shop.nameAr });
   }
-  if (namesAr.size === 1 && sameAlias(stripped, [...namesAr][0] ?? "")) {
-    return true;
-  }
-  return false;
+  const rows = [...brands.values()];
+  return {
+    nameEn: rows.map((row) => row.en).join(" and ") || "that café",
+    nameAr: rows.map((row) => row.ar).join(" و ") || "هذي",
+    areaEn: neighborhoodLabel(areaId, "en"),
+    areaAr: neighborhoodLabel(areaId, "ar"),
+  };
 }
 
 function sortSearchHits(
@@ -285,21 +353,18 @@ function searchResult(input: {
   origin?: Pin;
   didYouMean?: NameSuggestion;
 }): PickResult {
-  let pool = input.hits;
-  const brandWide = isBrandWideAsk(
-    input.text,
-    pool,
-    input.intent.neighborhoods,
-  );
+  let pool = narrowNamedHits(input.text, input.hits);
+  let outsideArea: PickResult["outsideArea"];
   if (input.intent.neighborhoods.length > 0) {
     const inArea = pool.filter((hit) =>
       input.intent.neighborhoods.includes(hit.shop.neighborhood),
     );
-    if (inArea.length > 0) pool = inArea;
-  }
-  if (!brandWide && pool.length > 0) {
-    const best = Math.max(...pool.map((hit) => hit.score));
-    pool = pool.filter((hit) => hit.score === best);
+    if (inArea.length > 0) {
+      pool = inArea;
+    } else if (pool.length > 0) {
+      const areaId = input.intent.neighborhoods[0];
+      if (areaId) outsideArea = outsideAreaLabel(pool.map((hit) => hit.shop), areaId);
+    }
   }
 
   const avoided = new Set(input.intent.avoidedNeighborhoods);
@@ -320,6 +385,7 @@ function searchResult(input: {
     thinCatalog: false,
     mode: "search",
     matchCount: shops.length,
+    ...(outsideArea ? { outsideArea } : {}),
     ...(input.didYouMean ? { didYouMean: input.didYouMean } : {}),
     askedNeighborhoods: input.intent.neighborhoods,
     avoidedNeighborhoods: input.intent.avoidedNeighborhoods,
@@ -388,7 +454,7 @@ export function pickCafes(input: {
   }
 
   // A vibe word ("quiet", "coffee") stays a three-pack. A bare misspelling does not.
-  if (!exactDistrict && intent.moments.length === 0) {
+  if (!exactDistrict && intent.moments.length === 0 && !isRecommendationAsk(input.text)) {
     const fuzzy = fuzzyNameHit(input.text, real);
     if (fuzzy?.kind === "excluded") {
       return {
@@ -446,7 +512,8 @@ export function pickCafes(input: {
     namedHits.length === 0 &&
     !matchedDistrict &&
     intent.moments.length === 0 &&
-    intent.neighborhoods.length === 0
+    intent.neighborhoods.length === 0 &&
+    !isRecommendationAsk(input.text)
   ) {
     return {
       language,
@@ -516,6 +583,14 @@ export function pickCafes(input: {
   };
 }
 
+export function searchCountHeading(language: Language, count: number): string {
+  if (count <= 1) return copy.searchMatchOne[language];
+  if (count === 2) return copy.searchMatchTwo[language];
+  const template =
+    count <= 10 ? copy.searchMatchFew[language] : copy.searchMatchMany[language];
+  return fill(template, { count: String(count) });
+}
+
 function excludedHeading(result: PickResult): string | null {
   const brand = result.excludedBrand;
   if (!brand) return null;
@@ -530,6 +605,12 @@ export function headingForPicks(result: PickResult): string {
   const excluded = excludedHeading(result);
   if (excluded) return excluded;
   if (result.noMatch) return copy.noMatch[result.language];
+  if (result.outsideArea && result.mode === "search") {
+    const area = result.outsideArea;
+    const name = result.language === "ar" ? area.nameAr : area.nameEn;
+    const place = result.language === "ar" ? area.areaAr : area.areaEn;
+    return fill(copy.searchOutsideArea[result.language], { name, area: place });
+  }
   const count = result.matchCount ?? result.picks.length;
   if (result.didYouMean && result.mode === "search") {
     const name =
@@ -544,13 +625,7 @@ export function headingForPicks(result: PickResult): string {
           : copy.didYouMeanMany[result.language];
     return fill(template, { name, count: String(count) });
   }
-  if (result.mode === "search") {
-    if (count <= 1) return copy.searchMatchOne[result.language];
-    if (count === 2) return copy.searchMatchTwo[result.language];
-    const template =
-      count <= 10 ? copy.searchMatchFew[result.language] : copy.searchMatchMany[result.language];
-    return fill(template, { count: String(count) });
-  }
+  if (result.mode === "search") return searchCountHeading(result.language, count);
   if (result.picks.length === 0) return copy.emptyCatalog[result.language];
   return result.picks.length === TARGET_PICKS
     ? copy.threePicks[result.language]
@@ -595,8 +670,28 @@ export function formatReply(result: PickResult, spoken?: string): string {
 export function formatWhatsAppReply(
   result: PickResult,
   spoken?: string,
+  ask = "",
 ): string {
-  return formatReply(result, spoken);
+  if (result.mode !== "search" || result.picks.length <= WHATSAPP_LIST_CAP) {
+    return formatReply(result, spoken);
+  }
+  const listed = {
+    ...result,
+    picks: result.picks.slice(0, WHATSAPP_LIST_CAP),
+  };
+  const more = result.picks.length - WHATSAPP_LIST_CAP;
+  const packId = encodePackId({
+    locale: result.language,
+    shopIds: result.picks.map((pick) => pick.shop.id),
+    ask,
+    search: true,
+  });
+  const href = `${PUBLIC_SITE_URL}${packSharePath(packId)}`;
+  return [
+    formatReply(listed, spoken),
+    "",
+    fill(copy.whatsAppMore[result.language], { count: String(more), url: href }),
+  ].join("\n");
 }
 
 export function whatsAppLocations(result: PickResult) {

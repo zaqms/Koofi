@@ -279,16 +279,16 @@ assert(
 );
 
 const dropsPick = pickCafes({ text: "drops", language: "en" });
+assert(dropsPick.noMatch === true, "drops is not a café on the list");
 assert(
-  dropsPick.didYouMean?.nameEn === "Crops",
-  `drops is one edit from Crops, not a random three-pack: ${dropsPick.didYouMean?.nameEn}`,
+  !dropsPick.didYouMean,
+  `drops must not suggest Crops or another café: ${dropsPick.didYouMean?.nameEn}`,
 );
+assert(dropsPick.picks.length === 0, "drops returns no picks");
 assert(
-  dropsPick.picks.every((pick) => pick.shop.id.startsWith("crops-")),
-  `drops must not invent a listing or land on Drip: ${dropsPick.picks.map((pick) => pick.shop.id).join(",")}`,
-);
-assert(
-  dropsPick.picks.every((pick) => !/drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`)),
+  (dropsPick.suggestions ?? []).every(
+    (pick) => !/drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`),
+  ),
   "do not invent a Drops listing",
 );
 

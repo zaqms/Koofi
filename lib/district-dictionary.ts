@@ -65,6 +65,20 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function withFinalAlefYeh(text: string): string[] {
+  const chars = Array.from(text);
+  const last = chars[chars.length - 1];
+  if (last !== "ي" && last !== "ا") return [text];
+  return [text, `${chars.slice(0, -1).join("")}${last === "ي" ? "ا" : "ي"}`];
+}
+
+function sameDistrictText(left: string, right: string): boolean {
+  if (left === right) return true;
+  const a = withFinalAlefYeh(left);
+  const b = withFinalAlefYeh(right);
+  return a.some((variant) => b.includes(variant));
+}
+
 function aliasIndex(haystack: string, alias: string): number {
   const needle = normalize(alias);
   if (!needle) return -1;
@@ -91,7 +105,7 @@ export function isExactDistrictAsk(
   return dictionaryDistrictIds()
     .filter((id) => districtCity(id) === city)
     .some((id) =>
-      placeAliases(id).some((alias) => normalize(alias) === haystack),
+      placeAliases(id).some((alias) => sameDistrictText(normalize(alias), haystack)),
     );
 }
 

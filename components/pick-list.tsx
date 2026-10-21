@@ -26,6 +26,8 @@ type PickListProps = {
   /** Show this many cards, then a "show more" control. Omit to show the list. */
   initialVisible?: number;
   shareable?: boolean;
+  /** Search packs keep every branch and open with the count, not "three cafés". */
+  search?: boolean;
 };
 
 function fillCount(template: string, count: number): string {
@@ -43,6 +45,7 @@ export function PickList({
   mapsSource = "pack",
   initialVisible,
   shareable = true,
+  search = false,
 }: PickListProps) {
   const [expanded, setExpanded] = useState(false);
   const limit =
@@ -52,7 +55,7 @@ export function PickList({
   const resolvedPackId =
     packId ??
     (picks.length > 0
-      ? packIdForPicks({ picks, language, ask })
+      ? packIdForPicks({ picks, language, ask, search })
       : undefined);
 
   useEffect(() => {
@@ -111,6 +114,7 @@ export function PickList({
           uiLanguage={uiLanguage}
           ask={ask}
           packId={resolvedPackId}
+          search={search}
         />
       ) : null}
     </div>

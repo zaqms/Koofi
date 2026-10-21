@@ -66,6 +66,7 @@ import {
   type HalfwayPinInput,
 } from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
+import { searchCountHeading } from "@/lib/picker";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
@@ -90,7 +91,7 @@ import {
 } from "@/lib/track";
 import {
   requestVisitorLocation,
-  useVisitorLocation,
+  usePeekVisitorLocation,
 } from "@/lib/visitor-location";
 import type { DistrictMatch, Language, Pin } from "@/lib/types";
 
@@ -99,6 +100,7 @@ export type ChatRestore = {
   ask: string;
   picks: ChatPick[];
   language: Language;
+  search?: boolean;
 };
 
 export type HalfwayInviteRestore = {
@@ -126,6 +128,7 @@ type AssistantMessage = {
   resultVia?: ChatQueryVia;
   noMatch?: boolean;
   suggestions?: ChatPick[];
+  search?: boolean;
 };
 
 type UserMessage = {
@@ -400,7 +403,12 @@ function restoreMessages(restore: ChatRestore, landing: Language): Message[] {
     id: `pack-picks-${restore.packId}`,
     role: "assistant",
     language: restore.language,
-    text: copy.threePicks[restore.language],
+    text:
+      restore.search || restore.picks.length > 3
+        ? searchCountHeading(restore.language, restore.picks.length)
+        : restore.picks.length === 3
+          ? copy.threePicks[restore.language]
+          : copy.fewerPicks[restore.language],
     picks: restore.picks,
     resultVia: "chip",
   });
@@ -901,9 +909,7 @@ export function Chat({
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   const listFirst = isFixedListChip(selectedChipId);
-  const visitor = useVisitorLocation({
-    auto: !listFirst && !halfwayInvite && !meetHalfwayOpen,
-  });
+  const visitor = usePeekVisitorLocation();
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -1204,6 +1210,10 @@ export function Chat({
               halfwayMore: result.data.halfwayMore,
               noMatch: result.data.noMatch,
               suggestions: result.data.suggestions,
+              search:
+                typeof result.data.matchCount === "number" &&
+                result.data.noMatch !== true &&
+                (result.data.picks?.length ?? 0) > 0,
               halfwayLocations: locations,
               halfwayPaged: paged || undefined,
               halfwayJoined: halfway?.joined || undefined,
@@ -2536,6 +2546,7 @@ export function Chat({
                       : undefined
                   }
                   mapsSource="pack"
+                  search={message.search}
                 />
               ) : null}
               {message.suggestions?.length ? (

@@ -83,8 +83,12 @@ export async function replyForWhatsApp(text: string): Promise<{
     result,
   });
   return {
-    body: formatWhatsAppReply(result, spoken),
-    locations: whatsAppLocations(result),
+    body: formatWhatsAppReply(result, spoken, text),
+    locations: whatsAppLocations(
+      result.picks.length > 8
+        ? { ...result, picks: result.picks.slice(0, 8) }
+        : result,
+    ),
   };
 }
 

@@ -138,8 +138,16 @@ export const copy = {
     en: "Did you mean {name}? {count} branches match",
   },
   noMatch: {
-    ar: "ما لقينا قهوة بهالاسم في القائمة.",
-    en: "No café on the list matches that.",
+    ar: "ما لقيت شي يطابق طلبك.",
+    en: "Nothing on the list matches that.",
+  },
+  searchOutsideArea: {
+    ar: "ما فيه {name} في {area}. هذي الفروع.",
+    en: "No {name} in {area}. Here are the branches.",
+  },
+  whatsAppMore: {
+    ar: "و{count} زيادة على وين: {url}",
+    en: "And {count} more on Wain: {url}",
   },
   noMatchSuggestions: {
     ar: "إذا تبي اقتراحات، هذي قهاوي الناس تدور عليها",

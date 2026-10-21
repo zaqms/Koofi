@@ -277,4 +277,11 @@ export type PickResult = {
   excludedBrand?: NameSuggestion;
   /** Popular cafés under a no-match line. Not search results. */
   suggestions?: PickReason[];
+  /** The ask named a حي that has none of these branches. Picks are the branches anyway. */
+  outsideArea?: {
+    nameEn: string;
+    nameAr: string;
+    areaEn: string;
+    areaAr: string;
+  };
 };

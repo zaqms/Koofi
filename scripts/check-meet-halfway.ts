@@ -1385,8 +1385,10 @@ assert(
     chatUi.includes("locations,") &&
     chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
-    chatUi.includes("auto: !listFirst && !halfwayInvite && !meetHalfwayOpen"),
-  "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
+    chatUi.includes("usePeekVisitorLocation()") &&
+    chatUi.includes("lat: visitor.lat, lng: visitor.lng") &&
+    !chatUi.includes("useVisitorLocation("),
+  "guest /h/ results keep locations; guest field is not the host pin; chat peeks a granted pin and does not prompt",
 );
 assert(
   !chatUi.includes("halfwayLocationsRef.current ?"),

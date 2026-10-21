@@ -61,7 +61,7 @@ function hasArabic(text: string): boolean {
  * Latin stays on word boundaries so "third place" does not become "thirdplace".
  * Joins consecutive tokens only. One token must equal the alias.
  */
-function includesAlias(haystack: string, alias: string): boolean {
+export function shopTextIncludesAlias(haystack: string, alias: string): boolean {
   if (!alias) return false;
   const pattern = new RegExp(`(^|\\s)${escapeRegExp(alias)}(\\s|$)`, "u");
   if (pattern.test(haystack)) return true;
@@ -154,6 +154,8 @@ const GENERIC_ALIASES = new Set(
     "كوفي",
     "كوفيه",
     "كوفه",
+    // «كيف» is "how". It must not pin dr.CAFE or هل الكيف. The full brand phrase still matches.
+    "كيف",
     "مختصه",
     "بن",
     "فنجان",
@@ -371,6 +373,8 @@ function addExtraAlias(into: Set<string>, raw: string): void {
  */
 const CHAIN_TOKEN_BLOCK: Partial<Record<ChainBrandId, readonly string[]>> = {
   "java-time": ["java", "جافا", "time", "تايم"],
+  // «كيف» alone is "how". د.كيف / دكتور كيف / dr cafe still match.
+  "dr-cafe": ["كيف"],
 };
 
 /** Same idea for one row: a plain word in the name that should not name the café alone. */
@@ -536,7 +540,11 @@ export function negatedChainBrandIds(raw: string): Set<ChainBrandId> {
       const needle = normalize(alias);
       if (!needle) continue;
       for (const marker of CHAIN_NEGATION_MARKERS) {
-        if (includesAlias(haystack, normalize(`${marker} ${needle}`))) negated.add(id);
+        const phrase = normalize(`${marker} ${needle}`);
+        // Word match only. Compact-joining would turn «إلا ستاربكس» into إستاربكس.
+        if (!phrase) continue;
+        const pattern = new RegExp(`(^|\\s)${escapeRegExp(phrase)}(\\s|$)`, "u");
+        if (pattern.test(haystack)) negated.add(id);
       }
     }
   }
@@ -588,7 +596,7 @@ export function scoreCatalogShops<T extends Shop>(
     let best = 0;
     for (const alias of shopNameAliases(shop)) {
       if (!aliasUsableInAsk(haystack, alias)) continue;
-      if (!includesAlias(haystack, alias)) continue;
+      if (!shopTextIncludesAlias(haystack, alias)) continue;
       best = Math.max(best, aliasScore(haystack, alias, shop));
     }
     if (best > 0) hits.push({ shop, score: best });

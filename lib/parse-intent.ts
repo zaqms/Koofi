@@ -42,6 +42,8 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "coffee",
     "cafe",
     "café",
+    "كوفي",
+    "كوفيه",
   ],
   roaster: [
     "محمصة",
@@ -60,6 +62,8 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "pour over",
     "specialty",
     "specialty coffee",
+    "v60",
+    "v 60",
   ],
   quiet: [
     "هادئ",
@@ -101,6 +105,9 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "most requested",
     "trending",
     "trendy",
+    "مزدحم",
+    "زحمه",
+    "ازدحام",
   ],
   pastry: [
     "معجنات",
@@ -113,6 +120,14 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "croissant",
     "bakery",
     "best pastries",
+    "breakfast",
+    "brunch",
+    "فطور",
+    "افطار",
+    "إفطار",
+    "dessert",
+    "حلويات",
+    "حلا",
   ],
   study: [
     "مناسب للدراسة",
@@ -132,11 +147,19 @@ const EXTRA_ALIASES: Record<MomentTag, string[]> = {
     "outside",
     "patio",
     "terrace",
+    "view",
+    "إطلالة",
+    "اطلالة",
+    "اطلاله",
   ],
   "with-friends": [
     "قعدة أصحاب",
     "مع الاصحاب",
     "with friends",
+    "family",
+    "family friendly",
+    "عائلي",
+    "عائلات",
   ],
   matcha: [
     "ماتشا",
@@ -197,12 +220,37 @@ function normalize(text: string): string {
     .trim();
 }
 
+/** Final ى/ا: «الملقى» and «الملقا» are the same حي. One token at a time. */
+function withFinalAlefYeh(text: string): string[] {
+  const parts = text.split(" ");
+  const variants = new Set<string>([text]);
+  for (let index = 0; index < parts.length; index += 1) {
+    const token = parts[index] ?? "";
+    const chars = Array.from(token);
+    const last = chars[chars.length - 1];
+    if (last !== "ي" && last !== "ا") continue;
+    const swapped = `${chars.slice(0, -1).join("")}${last === "ي" ? "ا" : "ي"}`;
+    const next = [...parts];
+    next[index] = swapped;
+    variants.add(next.join(" "));
+  }
+  return [...variants];
+}
+
 function includesAlias(haystack: string, alias: string): boolean {
   const needle = normalize(alias);
   if (!needle) return false;
-  if (needle.includes(" ")) return haystack.includes(needle);
-  const pattern = new RegExp(`(^|\\s)${escapeRegExp(needle)}(\\s|$)`, "u");
-  return pattern.test(haystack);
+  for (const hay of withFinalAlefYeh(haystack)) {
+    for (const pin of withFinalAlefYeh(needle)) {
+      if (pin.includes(" ")) {
+        if (hay.includes(pin)) return true;
+        continue;
+      }
+      const pattern = new RegExp(`(^|\\s)${escapeRegExp(pin)}(\\s|$)`, "u");
+      if (pattern.test(hay)) return true;
+    }
+  }
+  return false;
 }
 
 function escapeRegExp(value: string): string {

@@ -9,6 +9,8 @@ export type PackSeed = {
   locale: Language;
   shopIds: string[];
   ask: string;
+  /** Search results use the count line when the pack is opened. */
+  search?: boolean;
 };
 
 export type ResolvedPack = {
@@ -20,9 +22,11 @@ export type ResolvedPack = {
   whys: string[];
   neighborhoodId: NeighborhoodId | null;
   neighborhoodLabel: string;
+  search?: boolean;
 };
 
 const ASK_MAX = 80;
+const PACK_SHOP_CAP = 40;
 
 function checksum(body: string): string {
   let hash = 2166136261;
@@ -60,8 +64,9 @@ export function encodePackId(input: PackSeed): string {
   const payload = JSON.stringify({
     v: 1,
     l: input.locale === "en" ? "e" : "a",
-    s: input.shopIds.filter(Boolean).slice(0, 3),
+    s: input.shopIds.filter(Boolean).slice(0, PACK_SHOP_CAP),
     a: clipAsk(input.ask),
+    ...(input.search ? { k: "s" } : {}),
   });
   const body = utf8ToBase64Url(payload);
   return `${body}.${checksum(body)}`;
@@ -82,6 +87,7 @@ export function decodePackId(id: string): PackSeed | null {
       l?: unknown;
       s?: unknown;
       a?: unknown;
+      k?: unknown;
     };
     if (parsed.v !== 1) return null;
     const locale: Language = parsed.l === "e" ? "en" : parsed.l === "a" ? "ar" : "ar";
@@ -91,9 +97,9 @@ export function decodePackId(id: string): PackSeed | null {
       (shopId): shopId is string =>
         typeof shopId === "string" && /^[a-z0-9][a-z0-9-]*$/i.test(shopId),
     );
-    if (shopIds.length === 0 || shopIds.length > 3) return null;
+    if (shopIds.length === 0 || shopIds.length > PACK_SHOP_CAP) return null;
     const ask = typeof parsed.a === "string" ? clipAsk(parsed.a) : "";
-    return { locale, shopIds, ask };
+    return { locale, shopIds, ask, ...(parsed.k === "s" ? { search: true } : {}) };
   } catch {
     return null;
   }
@@ -145,6 +151,7 @@ export function resolvePack(id: string): ResolvedPack | null {
     whys,
     neighborhoodId,
     neighborhoodLabel: area,
+    ...(seed.search ? { search: true } : {}),
   };
 }
 
@@ -159,5 +166,5 @@ export const packSharePath = publicPackSharePath;
 
 export function knownShopIds(ids: string[]): string[] {
   const allowed = new Set(listRealShops().map((shop) => shop.id));
-  return ids.filter((id) => allowed.has(id)).slice(0, 3);
+  return ids.filter((id) => allowed.has(id)).slice(0, PACK_SHOP_CAP);
 }

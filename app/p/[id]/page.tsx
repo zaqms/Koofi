@@ -67,6 +67,7 @@ export default async function PackPage({ params, searchParams }: PackPageProps) 
           ask: pack.ask,
           picks,
           language: pack.locale,
+          search: pack.search,
         }}
       />
       <SiteFooter language={pack.locale} />

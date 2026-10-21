@@ -209,7 +209,7 @@ function directoryRowsForView(view: CatalogView, city: City) {
     case "discovery":
       return listDirectoryShops(city);
     case "drive-through":
-      return listDriveThroughDirectoryShops();
+      return listDriveThroughDirectoryShops(city);
   }
 }
 
@@ -517,10 +517,14 @@ export function buildLlmsTxt(): string {
   const chains = shops.filter((shop) => isChainShop(shop)).length;
   const local = shops.length - chains;
   const countLabel = llmsCatalogCountLabel(local, chains);
+  const pages = listCatalogShops("pages");
+  const pageChains = pages.filter((shop) => isChainShop(shop)).length;
+  const pageLocal = pages.length - pageChains;
+  const pagesLabel = llmsCatalogCountLabel(pageLocal, pageChains);
   return [
     `# ${PRODUCT_NAME}`,
     "",
-    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${countLabel}). Public catalog for people and agents.`,
+    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${pagesLabel}). Public catalog for people and agents.`,
     "",
     `${PRODUCT_NAME} is a ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
     "",

@@ -224,6 +224,15 @@ export function FixedListBody({
               >
                 {FIXED_LIST_ACTION.pickNeighborhood[language]}
               </Link>
+              {" · "}
+              <button
+                type="button"
+                data-retry-location=""
+                onClick={useMyLocation}
+                className="font-medium underline underline-offset-2"
+              >
+                {FIXED_LIST_ACTION.retryLocation[language]}
+              </button>
             </p>
           ) : (
             <button

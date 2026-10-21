@@ -21,7 +21,7 @@ type Listener = () => void;
 const listeners = new Set<Listener>();
 const pendingSnapshot: VisitorLocation = { status: "pending" };
 
-/** Boolean only — never lat/lng. Lets Safari-lying-as-prompt still auto-Ready. */
+/** Boolean only — never lat/lng. Not enough to call getCurrentPosition. */
 export const VISITOR_GEO_GRANTED_KEY = "wain.visitorGeoGranted.v1";
 
 let snapshot: VisitorLocation = pendingSnapshot;

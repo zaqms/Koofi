@@ -355,9 +355,11 @@ export function listAllDirectoryShops(city: City = DEFAULT_LIVE_CITY): Directory
 }
 
 /** Drive-through directory. See `selectCatalogShops(..., "drive-through")`. */
-export function listDriveThroughDirectoryShops(): DirectoryShop[] {
+export function listDriveThroughDirectoryShops(
+  city: City = DEFAULT_LIVE_CITY,
+): DirectoryShop[] {
   return toDirectoryShops(
-    selectCatalogShops(listShops(), "drive-through"),
+    selectCatalogShops(listShops(city), "drive-through"),
   );
 }
 

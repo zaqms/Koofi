@@ -2559,8 +2559,8 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "c1063e8acf990d162fae36e0808e3965cbb3a9dea46ef6e427eeabc581740891",
-  `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
+  llmsHash === "1940f6225b165d6a8b76d5bd55710ed3448292ae121731bdfa94083663a20a1f",
+  `llms.txt headline follows the default catalog: ${llmsHash}`,
 );
 assert(
   llms.includes("544 local, 48 chain branches"),
@@ -2707,6 +2707,10 @@ assert(
     structuredSrc.includes("listListingDirectoryShops(city)") &&
     structuredSrc.includes("const shops = listPublicShops()"),
   "JSON-LD and llms.txt are built from public listing shops",
+);
+assert(
+  structuredSrc.includes("listDriveThroughDirectoryShops(city)"),
+  "the drive-through catalog view keeps the requested city",
 );
 
 const layoutSrc = read("app/layout.tsx");

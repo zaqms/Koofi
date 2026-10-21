@@ -1831,6 +1831,12 @@ export function Chat({
   openRoutedChipRef.current = openRoutedChip;
 
   function sendChip(chip: ChipPick) {
+    // The Nearby tile is the gesture. Start geolocation in this click,
+    // then let the link navigate. A cold load of /coffee-shops/nearby
+    // does not ask. Denial is the notice on that page.
+    if (chip.id === NEARBY_CHIP.id) {
+      void requestVisitorLocation({ retry: true });
+    }
     trackEvent(
       "chip_tap",
       { chip_id: chip.id, chip_label: chip.label, locale: landing },

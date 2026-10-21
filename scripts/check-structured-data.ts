@@ -117,6 +117,11 @@ assert(list.numberOfItems === listRealShops().length, "default API matches the s
 assert(listedApi.numberOfItems === shops.length, "listing view keeps the sit-down directory");
 assert(catalogViewFromQuery(null) === "pages" && catalogViewFromQuery("all") === "pages", "missing view and all mean every café page");
 assert(catalogViewFromQuery("listing") === "listing", "listing view is explicit");
+assert(
+  readRepo("lib/picker.ts").includes('selectCatalogShops(real, "discovery")') &&
+    !readRepo("lib/picker.ts").includes("isDriveThroughLane"),
+  "chat three-picks use selectCatalogShops discovery",
+);
 assert(list.url === "https://wain.lol/api/shops", "catalog API url");
 const sitemapCafeIds = listSitemapLocs()
   .map((loc) => loc.match(/^https:\/\/wain\.lol\/c\/([^/]+)$/)?.[1] ?? "")

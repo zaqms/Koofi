@@ -267,8 +267,16 @@ assert(
 assert(
   bodySrc.includes('data-location-notice="blocked"') &&
     bodySrc.includes("neighborhoodsPath") &&
-    bodySrc.includes("FIXED_LIST_ACTION.pickNeighborhood"),
-  "denied location is a notice with a neighborhood path, not a bean button",
+    bodySrc.includes("FIXED_LIST_ACTION.pickNeighborhood") &&
+    bodySrc.includes('data-retry-location=""') &&
+    bodySrc.includes("FIXED_LIST_ACTION.retryLocation"),
+  "denied location is a notice with a neighborhood path and Try again, not a bean button",
+);
+assert(
+  /function sendChip\(chip: ChipPick\) \{[\s\S]*?chip\.id === NEARBY_CHIP\.id[\s\S]*?requestVisitorLocation\(\{ retry: true \}\)/.test(
+    chat,
+  ),
+  "the home Nearby tile requests location on the tap, before navigation",
 );
 
 function renderList(id: FixedListId, language: "ar" | "en" = "ar"): string {

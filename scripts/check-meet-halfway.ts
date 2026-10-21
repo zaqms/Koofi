@@ -1164,7 +1164,13 @@ assert(
       permission: "prompt",
       inflight: false,
       rememberedGranted: true,
-    }) === "request" &&
+    }) === "idle" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "pending",
+      permission: "unknown",
+      inflight: false,
+      rememberedGranted: true,
+    }) === "idle" &&
     decideVisitorLocationPeek({
       snapshotStatus: "pending",
       permission: "prompt",
@@ -1183,7 +1189,7 @@ assert(
       inflight: false,
       rememberedGranted: false,
     }) === "use-ready",
-  "auto-Ready reads only when granted/remembered; prompt/denied stay on My pin",
+  "auto-Ready reads only when permission is granted; a remembered flag never prompts",
 );
 
 const visitorLocation = readFileSync(
@@ -1211,6 +1217,12 @@ assert(
     !visitorLocation.includes("language === ") &&
     !visitorPeek.includes("language === "),
   "auto-Ready peek is not gated on locale or /en/h/",
+);
+assert(
+  !readFileSync(join(repoRoot, "lib/fresh-visitor-origin.ts"), "utf8").includes(
+    "readRememberedGeoGranted",
+  ),
+  "the home rail does not turn a remembered grant into a prompt",
 );
 assert(
   !ui.includes("language === \"en\"") &&

@@ -5,7 +5,6 @@ import { isUsableVisitorOrigin } from "./place-coords";
 import type { Pin } from "./types";
 import {
   readGeolocationPermission,
-  readRememberedGeoGranted,
   useVisitorLocationSnapshot,
   type VisitorLocation,
 } from "./visitor-location";
@@ -72,9 +71,12 @@ function readOnce(options: PositionOptions): Promise<PositionRead> {
 
 /**
  * Subscribe and read a fresh fix when location is already allowed.
- * Does not open the browser prompt. A Nearby chip or another location
- * control asks. Denied, timeout, and unusable fixes stay `unavailable`
- * so the rail can keep the city fallback. Returning to the tab reads again.
+ * Does not open the browser prompt. Only a granted permission, or a pin
+ * a gesture already produced, may call getCurrentPosition. A stored
+ * "allowed before" flag is not enough — after a reset that would prompt
+ * on load. A Nearby chip or another location control asks. Denied,
+ * timeout, and unusable fixes stay `unavailable` so the rail can keep
+ * the city fallback. Returning to the tab reads again.
  */
 export function useFreshHomeOrigin(): VisitorLocation {
   const shared = useVisitorLocationSnapshot();
@@ -95,10 +97,7 @@ export function useFreshHomeOrigin(): VisitorLocation {
         return;
       }
 
-      const allowed =
-        permission === "granted" ||
-        readRememberedGeoGranted() ||
-        shared.status === "ready";
+      const allowed = permission === "granted" || shared.status === "ready";
       if (!allowed) {
         if (shared.status === "unavailable" || shared.status === "denied") {
           setLocation({ status: "unavailable" });

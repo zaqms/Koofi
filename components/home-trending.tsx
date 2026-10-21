@@ -14,6 +14,8 @@ type HomeTrendingProps = {
 /**
  * Home preview. Up to four rows, same set in EN and AR. Columns follow the row count:
  * 1, 2, 3 across, and four as an even two-by-two grid (four across is too tight at 390px).
+ * Three across is narrow on phones (~105px a tile at 360px), so that layout uses a smaller
+ * visual and name, and names may break inside a word instead of being cut off.
  */
 const HOME_TRENDING_COUNT = 4;
 
@@ -28,6 +30,7 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
   if (rows.length === 0) return null;
   const rtl = language === "ar";
   const gridCols = trendingGridCols(rows.length);
+  const narrow = rows.length === 3;
 
   return (
     <section
@@ -54,7 +57,9 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
               data-trending-id={shop.id}
               className="flex h-full items-center gap-1 rounded-2xl border border-line bg-foam px-1 py-2"
             >
-              <span className="size-[3.25rem] shrink-0 [&_.relative]:!size-full">
+              <span
+                className={`${narrow ? "size-10" : "size-[3.25rem]"} shrink-0 [&_.relative]:!size-full`}
+              >
                 <ShopVisual
                   nameAr={shop.nameAr}
                   nameEn={shop.nameEn}
@@ -63,7 +68,9 @@ export function HomeTrending({ language, shops }: HomeTrendingProps) {
                   size="sm"
                 />
               </span>
-              <span className="line-clamp-2 min-w-0 flex-1 text-start text-[13px] font-medium leading-[1.2] text-ink">
+              <span
+                className={`line-clamp-2 min-w-0 flex-1 text-start ${narrow ? "text-xs" : "text-[13px]"} font-medium leading-[1.2] text-ink [overflow-wrap:anywhere]`}
+              >
                 {shopDisplayName(shop, language)}
               </span>
             </Link>

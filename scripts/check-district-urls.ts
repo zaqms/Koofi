@@ -1991,7 +1991,7 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") ===
-    "torre-al-rawabi,dm-cafe-roastery-as-sahafah,namq-al-malqa,waqar-al-aziziyah" &&
+    "kultura-as-suwaidi-al-gharbi,espresso-culture-al-mursalat,veni-al-nakheel" &&
     listTrendingThisWeekShops()
       .map((shop) => shop.id)
       .join(",") === TRENDING_THIS_WEEK_IDS.join(",") &&

@@ -64,6 +64,14 @@ function englishFromVibeTag(tag: string): string | null {
   return tag;
 }
 
+/** One vibe tag in the page language. English never returns Arabic script. */
+export function vibeTagLabel(tag: string, language: Language): string | null {
+  const trimmed = tag.trim();
+  if (!trimmed) return null;
+  if (language === "ar") return trimmed;
+  return englishFromVibeTag(trimmed);
+}
+
 /** Display-time vibe labels. EN never returns Arabic script. */
 export function vibeLabels(shop: VibeSource, language: Language): string[] {
   if (language === "ar") {

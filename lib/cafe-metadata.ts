@@ -17,6 +17,11 @@ import type { Language, Shop } from "./types";
 
 export { cafeArMeta, cafeArTitle } from "./ar-content";
 
+/** Share-image alt in the page language. Branch stays `Brand · branch`. */
+export function cafeShareImageAlt(shop: Shop, language: Language): string {
+  return `${shopDisplayName(shop, language)} · ${neighborhoodLabel(shop.neighborhood, language)} · ${PRODUCT_NAME}`;
+}
+
 export function cafePageMetadata(shop: Shop, language: Language): Metadata {
   const title =
     language === "en" ? cafeEnTitle(shop) : cafeArTitle(shop);
@@ -27,7 +32,7 @@ export function cafePageMetadata(shop: Shop, language: Language): Metadata {
     url: cafeOgImagePath(shop.id, language),
     width: 1200,
     height: 630,
-    alt: `${shopDisplayName(shop, "en")} · ${neighborhoodLabel(shop.neighborhood, "en")} · ${PRODUCT_NAME}`,
+    alt: cafeShareImageAlt(shop, language),
   };
 
   return {

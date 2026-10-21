@@ -1,6 +1,11 @@
 import { getShop, listRealShops } from "./catalog";
 import { neighborhoodLabel } from "./neighborhoods";
-import { packPath as publicPackPath, packSharePath as publicPackSharePath } from "./product";
+import {
+  PRODUCT_NAME,
+  packPath as publicPackPath,
+  packSharePath as publicPackSharePath,
+  shopDisplayName,
+} from "./product";
 import type { ChatPick, Language, NeighborhoodId, Shop } from "./types";
 import { uniqueWhyLines } from "./why-line";
 import { shopToChatPick } from "./chat-pick";
@@ -99,20 +104,121 @@ export function decodePackId(id: string): PackSeed | null {
   }
 }
 
-function majorityNeighborhood(shops: Shop[]): NeighborhoodId | null {
+function distinctDistricts(shops: Pick<Shop, "neighborhood">[]): NeighborhoodId[] {
+  const seen: NeighborhoodId[] = [];
+  for (const shop of shops) {
+    if (!seen.includes(shop.neighborhood)) seen.push(shop.neighborhood);
+  }
+  return seen;
+}
+
+/**
+ * One district when every café shares it. Otherwise name the lead district
+ * (the one that appears most, or the first café's when they tie) and the
+ * rest: "Al Malqa and 2 more areas" / "الملقا ومنطقتين زيادة".
+ */
+export function packAreaLabel(
+  shops: Pick<Shop, "neighborhood">[],
+  language: Language,
+): { neighborhoodId: NeighborhoodId | null; label: string } {
+  const districts = distinctDistricts(shops);
+  if (districts.length === 0) return { neighborhoodId: null, label: "" };
+  if (districts.length === 1) {
+    const id = districts[0]!;
+    return { neighborhoodId: id, label: neighborhoodLabel(id, language) };
+  }
+
   const counts = new Map<NeighborhoodId, number>();
   for (const shop of shops) {
     counts.set(shop.neighborhood, (counts.get(shop.neighborhood) ?? 0) + 1);
   }
-  let best: NeighborhoodId | null = null;
-  let n = 0;
-  for (const [id, count] of counts) {
-    if (count > n) {
-      best = id;
-      n = count;
+  let lead = districts[0]!;
+  let best = 0;
+  for (const id of districts) {
+    const count = counts.get(id) ?? 0;
+    if (count > best) {
+      lead = id;
+      best = count;
     }
   }
-  return best;
+
+  const extra = districts.length - 1;
+  const name = neighborhoodLabel(lead, language);
+  const rest =
+    language === "ar"
+      ? extra === 1
+        ? "منطقة ثانية"
+        : extra === 2
+          ? "منطقتين زيادة"
+          : `${extra} مناطق زيادة`
+      : extra === 1
+        ? "1 more area"
+        : `${extra} more areas`;
+  const label = language === "ar" ? `${name} و${rest}` : `${name} and ${rest}`;
+  return { neighborhoodId: null, label };
+}
+
+const SHOP_JOIN: Record<Language, string> = { ar: "، ", en: ", " };
+
+function areaPhrase(area: string, language: Language): string {
+  return language === "ar" ? `في ${area}` : `In ${area}`;
+}
+
+function isBareAreaLine(line: string, language: Language): boolean {
+  return language === "ar" ? line.startsWith("في ") : line.startsWith("In ");
+}
+
+/** Drop a repeated "In Al Jazirah" when a longer line already starts with it. */
+function dedupedWhys(whys: string[], language: Language): string[] {
+  const parts: string[] = [];
+  for (const why of whys) {
+    const line = why.trim();
+    if (!line || parts.includes(line)) continue;
+    const clash = parts.findIndex((prev) => {
+      if (line.startsWith(`${prev} —`) && isBareAreaLine(prev, language)) return true;
+      if (prev.startsWith(`${line} —`) && isBareAreaLine(line, language)) return true;
+      return false;
+    });
+    if (clash === -1) {
+      parts.push(line);
+      continue;
+    }
+    if (line.length > parts[clash]!.length) parts[clash] = line;
+  }
+  return parts;
+}
+
+function areaAlreadySaid(parts: string[], area: string, language: Language): boolean {
+  const phrase = areaPhrase(area, language);
+  return parts.some(
+    (part) => part === area || part === phrase || part.startsWith(`${phrase} —`),
+  );
+}
+
+export type PackShareCopy = {
+  title: string;
+  description: string;
+  imageAlt: string;
+};
+
+/** Title, description, and share-image alt for a pack page. */
+export function packShareCopy(pack: {
+  locale: Language;
+  shops: Shop[];
+  whys: string[];
+  neighborhoodLabel: string;
+}): PackShareCopy {
+  const join = SHOP_JOIN[pack.locale];
+  const names = pack.shops
+    .map((shop) => shopDisplayName(shop, pack.locale))
+    .join(join);
+  const area = pack.neighborhoodLabel.trim();
+  const title = area ? `${names} — ${area}` : names;
+  const parts = dedupedWhys(pack.whys, pack.locale);
+  if (area && !areaAlreadySaid(parts, area, pack.locale)) parts.push(area);
+  const description = parts.filter(Boolean).join(join);
+  const imageAlt = title ? `${title} · ${PRODUCT_NAME}` : PRODUCT_NAME;
+  return { title, description, imageAlt };
 }
 
 export function resolvePack(id: string): ResolvedPack | null {
@@ -129,12 +235,7 @@ export function resolvePack(id: string): ResolvedPack | null {
 
   const locale = seed.locale;
   const whys = uniqueWhyLines(shops, locale);
-  const neighborhoodId = majorityNeighborhood(shops);
-  const area = neighborhoodId
-    ? neighborhoodLabel(neighborhoodId, locale)
-    : shops[0]
-      ? neighborhoodLabel(shops[0].neighborhood, locale)
-      : "";
+  const area = packAreaLabel(shops, locale);
 
   return {
     id,
@@ -143,8 +244,8 @@ export function resolvePack(id: string): ResolvedPack | null {
     shopIds: shops.map((shop) => shop.id),
     shops,
     whys,
-    neighborhoodId,
-    neighborhoodLabel: area,
+    neighborhoodId: area.neighborhoodId,
+    neighborhoodLabel: area.label,
   };
 }
 

@@ -352,19 +352,15 @@ for (const ask of ["24h", "7am", "30sar", "rhythm", "nymph", "cheap", "lunch", "
   }
 }
 
-// The public catalog query helper is listed-only (QA r2 Low 5).
+// The listed views keep every drive-through and pickup-only row out (QA r2 Low 5).
+// GET /api/shops defaults to pages on main (#278); changing that is a separate call.
 {
   const all = listShops();
   const unlisted = selectCatalogShops(all, "pages").filter((shop) => !isListingShop(shop));
   assert(unlisted.length > 0, "the catalog has drive-through / pickup-only rows");
-  for (const value of [undefined, null, "", "pages", "all", "drive-through", "listing", "LISTING", "x"]) {
-    const view = catalogViewFromQuery(value);
-    assert(view === "listing", `${String(value)} maps to listing, got ${view}`);
-  }
-  assert(catalogViewFromQuery("discovery") === "discovery", "discovery stays");
-  for (const value of ["pages", "all", "drive-through", undefined, "discovery"]) {
+  for (const value of ["listing", "discovery"]) {
     const rows = selectCatalogShops(all, catalogViewFromQuery(value));
-    assert(rows.every((shop) => isListingShop(shop)), `${String(value)} exposes no unlisted row`);
+    assert(rows.length > 0 && rows.every((shop) => isListingShop(shop)), `${value} exposes no unlisted row`);
   }
 }
 

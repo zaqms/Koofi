@@ -6,7 +6,9 @@ import type { Pin } from "./types";
 import {
   readGeolocationPermission,
   readRememberedGeoGranted,
+  readSharedVisitorPosition,
   useVisitorLocationSnapshot,
+  watchGeolocationPermission,
   type VisitorLocation,
 } from "./visitor-location";
 
@@ -19,7 +21,7 @@ import {
  * Soft Places stays parked.
  */
 export async function readFreshVisitorPosition(): Promise<VisitorLocation> {
-  const gps = await readOnce({
+  const gps = await readSharedVisitorPosition({
     enableHighAccuracy: true,
     maximumAge: 0,
     timeout: 12_000,
@@ -74,8 +76,12 @@ function readOnce(options: PositionOptions): Promise<PositionRead> {
  * Subscribe and read a fresh fix when location is already allowed.
  * Does not open a second browser prompt: the home chat still owns the
  * first ask. Denied, timeout, and unusable fixes stay `unavailable`
- * so the rail can keep the city fallback. Returning to the tab reads again.
+ * so the rail can keep the city fallback.
+ * A status flip from the shared peek must not start a second GPS read.
+ * Returning to the tab, or a permission change, reads again.
  */
+let freshFix: VisitorLocation | null = null;
+
 export function useFreshHomeOrigin(): VisitorLocation {
   const shared = useVisitorLocationSnapshot();
   const [location, setLocation] = useState<VisitorLocation>({ status: "pending" });
@@ -84,8 +90,9 @@ export function useFreshHomeOrigin(): VisitorLocation {
     let cancelled = false;
     let generation = 0;
     let unwatch = () => {};
+    let wasHidden = false;
 
-    async function refresh() {
+    async function refresh(force: boolean) {
       const gen = ++generation;
       const permission = await readGeolocationPermission();
       if (cancelled || gen !== generation) return;
@@ -106,35 +113,47 @@ export function useFreshHomeOrigin(): VisitorLocation {
         return;
       }
 
+      if (!force && freshFix?.status === "ready") {
+        setLocation(freshFix);
+        return;
+      }
+
       const next = await readFreshVisitorPosition();
+      if (next.status === "ready") freshFix = next;
       if (cancelled || gen !== generation) return;
       setLocation(next);
     }
 
-    void refresh();
+    void refresh(false);
 
-    function onPageShow() {
-      void refresh();
+    function onPageShow(event: PageTransitionEvent) {
+      if (!event.persisted) return;
+      freshFix = null;
+      void refresh(true);
     }
     function onVisible() {
-      if (document.visibilityState === "visible") void refresh();
+      if (document.visibilityState === "hidden") {
+        wasHidden = true;
+        return;
+      }
+      if (!wasHidden) return;
+      wasHidden = false;
+      freshFix = null;
+      void refresh(true);
     }
     window.addEventListener("pageshow", onPageShow);
     document.addEventListener("visibilitychange", onVisible);
 
     void (async () => {
-      if (typeof navigator === "undefined" || !navigator.permissions?.query) return;
-      try {
-        const status = await navigator.permissions.query({ name: "geolocation" });
-        if (cancelled) return;
-        const onChange = () => {
-          void refresh();
-        };
-        status.addEventListener("change", onChange);
-        unwatch = () => status.removeEventListener("change", onChange);
-      } catch {
-        // Some browsers reject geolocation permission queries.
+      const stop = await watchGeolocationPermission(() => {
+        freshFix = null;
+        void refresh(true);
+      });
+      if (cancelled) {
+        stop();
+        return;
       }
+      unwatch = stop;
     })();
 
     return () => {

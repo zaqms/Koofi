@@ -279,15 +279,19 @@ assert(
 );
 
 const dropsPick = pickCafes({ text: "drops", language: "en" });
-assert(dropsPick.noMatch === true, "drops is not a café on the list");
+assert(dropsPick.picks.length === 3, "drops vibe fallback should still return 3");
 assert(
   !dropsPick.didYouMean,
   `drops must not suggest Crops or another café: ${dropsPick.didYouMean?.nameEn}`,
 );
-assert(dropsPick.picks.length === 0, "drops returns no picks");
+assert(dropsPick.noMatch !== true, "drops is a recommendation, not an empty search");
 assert(
-  (dropsPick.suggestions ?? []).every(
-    (pick) => !/drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`),
+  dropsPick.picks.every((pick) => catalogIds.has(pick.shop.id)),
+  "drops fallback invented a shop",
+);
+assert(
+  !dropsPick.picks.some((pick) =>
+    /drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`),
   ),
   "do not invent a Drops listing",
 );

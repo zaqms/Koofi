@@ -1,8 +1,15 @@
 import { listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { decodePackId, encodePackId } from "../lib/pack";
-import { formatWhatsAppReply, headingForPicks, pickCafes } from "../lib/picker";
+import { readFileSync } from "node:fs";
+import { haversineKm } from "../lib/distance";
 import { officialShopCoords } from "../lib/place-coords";
+import {
+  formatWhatsAppReply,
+  headingForPicks,
+  listedResultForWhatsApp,
+  pickCafes,
+} from "../lib/picker";
 import { normalizeShopText } from "../lib/shop-name";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -229,9 +236,98 @@ assert(dessert.didYouMean?.nameEn !== "Essert", "dessert must not suggest Essert
 assert(dessert.noMatch !== true, "dessert is a recommendation");
 
 const drops = idsOf("drops", "en");
-assert(drops.noMatch === true, "drops is not a match");
+assert(drops.noMatch !== true, "drops stays a recommendation");
 assert(!drops.didYouMean, `drops must not suggest ${drops.didYouMean?.nameEn}`);
-assert(drops.picks.length === 0, "drops returns no picks");
+assert(drops.picks.length === 3, "drops still returns 3 cafés");
+assert(
+  drops.picks.every(
+    (pick) => !/drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`),
+  ),
+  "drops must not invent a Drops listing",
+);
+
+const halfMillion = idsOf("Half Million", "en");
+assert(
+  halfMillion.picks.length > 0 &&
+    halfMillion.picks.every((pick) => pick.shop.chainBrand === "half-million"),
+  `Half Million pulled in ${halfMillion.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+assert(
+  !halfMillion.picks.some((pick) => pick.shop.id.startsWith("half-ten")),
+  "Half Million must not include Half Ten",
+);
+
+const drip = idsOf("Drip", "en");
+assert(
+  drip.picks.length > 0 && drip.picks.every((pick) => pick.shop.id.startsWith("drip-")),
+  `Drip pulled in ${drip.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+assert(
+  !drip.picks.some((pick) => pick.shop.id.includes("unique-drip")),
+  "Drip must not include Unique Drip",
+);
+
+const uniqueDrip = idsOf("Unique Drip", "en");
+assert(
+  uniqueDrip.picks.length === 1 && uniqueDrip.picks[0]?.shop.id === "unique-drip-al-mohammadiyah",
+  `Unique Drip returned ${uniqueDrip.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+
+for (const ask of ["ستاربكس Panorama", "Starbucks بانوراما"] as const) {
+  const result = idsOf(ask, "ar");
+  assert(result.picks.length === 1, `${ask} should be one branch, got ${result.picks.length}`);
+  assert(
+    result.picks[0]?.shop.id === "starbucks-panorama-al-mathar",
+    `${ask} led with ${result.picks[0]?.shop.id}`,
+  );
+}
+
+const nearOrigin = { lat: 24.711, lng: 46.675 };
+const nearbyA = pickCafes({ text: "nearby", language: "en", origin: nearOrigin });
+const nearbyB = pickCafes({ text: "nearby", language: "en", origin: nearOrigin });
+const nearbyAr = pickCafes({ text: "قريب مني", language: "ar", origin: nearOrigin });
+const nearbyIds = nearbyA.picks.map((pick) => pick.shop.id);
+assert(nearbyIds.join(",") === nearbyB.picks.map((pick) => pick.shop.id).join(","), "nearby with a pin is stable");
+assert(
+  nearbyIds.join(",") === nearbyAr.picks.map((pick) => pick.shop.id).join(","),
+  "قريب مني uses the same distance order",
+);
+assert(nearbyA.mode === "browse" && nearbyA.picks.length === 3, "nearby stays a three-pack");
+const nearbyKm = nearbyA.picks.map((pick) => {
+  const coords = officialShopCoords(pick.shop);
+  assert(coords != null, `${pick.shop.id} has no pin`);
+  return haversineKm(nearOrigin, coords!);
+});
+assert(nearbyKm[0]! <= nearbyKm[1]! && nearbyKm[1]! <= nearbyKm[2]!, `nearby is not distance-sorted: ${nearbyKm.join(",")}`);
+
+const nearbyPlainA = pickCafes({ text: "nearby", language: "en" });
+const nearbyPlainB = pickCafes({ text: "nearby", language: "en" });
+assert(
+  nearbyPlainA.picks.map((pick) => pick.shop.id).join(",") ===
+    nearbyPlainB.picks.map((pick) => pick.shop.id).join(","),
+  "nearby without a pin must not shuffle",
+);
+const nearbyArPlainA = pickCafes({ text: "قريب مني", language: "ar" });
+const nearbyArPlainB = pickCafes({ text: "قريب مني", language: "ar" });
+assert(
+  nearbyArPlainA.picks.map((pick) => pick.shop.id).join(",") ===
+    nearbyArPlainB.picks.map((pick) => pick.shop.id).join(","),
+  "قريب مني without a pin must not shuffle",
+);
+
+const spokenList = listedResultForWhatsApp(dr);
+assert(spokenList.picks.length === 8, `WhatsApp speech list is ${spokenList.picks.length}`);
+assert(spokenList.matchCount === dr.matchCount, "WhatsApp speech keeps the full count");
+assert(
+  spokenList.picks.every((pick, index) => pick.shop.id === dr.picks[index]?.shop.id),
+  "WhatsApp speech list is the cafés that get listed",
+);
+const waSource = readFileSync(new URL("../lib/whatsapp.ts", import.meta.url), "utf8");
+assert(
+  waSource.includes("listedResultForWhatsApp(result)") &&
+    waSource.includes("result: listed"),
+  "WhatsApp sends the LLM only the listed cafés",
+);
 
 const malqaSpelling = pickCafes({ text: "الملقى", language: "ar" });
 assert(malqaSpelling.matchedDistrict === "al-malqa", "الملقى is Al Malqa");

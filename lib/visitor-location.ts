@@ -71,6 +71,8 @@ type PositionRead =
   | { ok: true; lat: number; lng: number }
   | { ok: false; denied: boolean };
 
+let positionInflight: Promise<PositionRead> | null = null;
+
 function readOnce(options: PositionOptions): Promise<PositionRead> {
   return new Promise((resolve) => {
     navigator.geolocation.getCurrentPosition(
@@ -95,6 +97,22 @@ function readyIfUsable(lat: number, lng: number): VisitorLocation | null {
 }
 
 /**
+ * One in-flight GPS read for the page. Peek and the home rail both call
+ * this; a later caller waits instead of starting a second watch.
+ */
+export function readSharedVisitorPosition(options: PositionOptions): Promise<PositionRead> {
+  if (typeof navigator === "undefined" || !navigator.geolocation) {
+    return Promise.resolve({ ok: false, denied: false });
+  }
+  if (!positionInflight) {
+    positionInflight = readOnce(options).finally(() => {
+      positionInflight = null;
+    });
+  }
+  return positionInflight;
+}
+
+/**
  * Fresh GPS first. A cached low-accuracy fix (carrier / IP) must not become
  * `ready` — that painted "Location unavailable" on every official pin.
  * Soft Places stays parked. Shop distance still uses official place pins only.
@@ -104,7 +122,7 @@ async function readPosition(): Promise<VisitorLocation> {
     return { status: "unavailable" };
   }
 
-  const gps = await readOnce({
+  const gps = await readSharedVisitorPosition({
     enableHighAccuracy: true,
     maximumAge: 0,
     timeout: 12_000,
@@ -135,34 +153,68 @@ async function readPosition(): Promise<VisitorLocation> {
   return { status: "unavailable" };
 }
 
-/** Permissions API only — never opens the browser prompt. */
-export async function readGeolocationPermission(): Promise<GeoPermission> {
-  if (typeof navigator === "undefined") return "unknown";
-  try {
-    const permissions = navigator.permissions;
-    if (!permissions?.query) return "unknown";
-    const status = await permissions.query({ name: "geolocation" });
-    if (
-      status.state === "granted" ||
+/**
+ * One Permissions API read for the whole page. Every card used to query
+ * on its own mount; a second caller waits on this promise instead.
+ */
+let permissionStatusPromise: Promise<PermissionStatus | null> | null = null;
+
+function readPermissionStatus(): Promise<PermissionStatus | null> {
+  if (typeof navigator === "undefined" || !navigator.permissions?.query) {
+    return Promise.resolve(null);
+  }
+  if (!permissionStatusPromise) {
+    permissionStatusPromise = navigator.permissions
+      .query({ name: "geolocation" })
+      .catch(() => null);
+  }
+  return permissionStatusPromise;
+}
+
+function permissionFromStatus(status: PermissionStatus | null): GeoPermission {
+  if (
+    status &&
+    (status.state === "granted" ||
       status.state === "denied" ||
-      status.state === "prompt"
-    ) {
-      return status.state;
-    }
-  } catch {
-    // Some browsers reject geolocation permission queries.
+      status.state === "prompt")
+  ) {
+    return status.state;
   }
   return "unknown";
+}
+
+/** Permissions API only — never opens the browser prompt. */
+export async function readGeolocationPermission(): Promise<GeoPermission> {
+  return permissionFromStatus(await readPermissionStatus());
+}
+
+/** Reuse the same permission object. Does not query again. */
+export async function watchGeolocationPermission(
+  onChange: () => void,
+): Promise<() => void> {
+  const status = await readPermissionStatus();
+  if (!status) return () => {};
+  status.addEventListener("change", onChange);
+  return () => status.removeEventListener("change", onChange);
 }
 
 /**
  * Use a pin that is already allowed. Does not prompt.
  * بيننا auto-Ready only — My pin / موقعي still calls requestVisitorLocation.
+ * One shared flight: many cards may call this on the same commit.
  */
-export async function peekReadyVisitorLocation(): Promise<VisitorLocation> {
-  if (readySnapshotUsable()) return snapshot;
-  if (inflight) return inflight;
+let peekInflight: Promise<VisitorLocation> | null = null;
 
+export function peekReadyVisitorLocation(): Promise<VisitorLocation> {
+  if (readySnapshotUsable()) return Promise.resolve(snapshot);
+  if (peekInflight) return peekInflight;
+  peekInflight = runPeek().finally(() => {
+    peekInflight = null;
+  });
+  return peekInflight;
+}
+
+async function runPeek(): Promise<VisitorLocation> {
   const permission = await readGeolocationPermission();
   if (readySnapshotUsable()) return snapshot;
   if (inflight) return inflight;
@@ -170,7 +222,7 @@ export async function peekReadyVisitorLocation(): Promise<VisitorLocation> {
   const action = decideVisitorLocationPeek({
     snapshotStatus: snapshot.status,
     permission,
-    inflight: false,
+    inflight: Boolean(inflight),
     rememberedGranted: readRememberedGeoGranted(),
   });
   if (action === "request") return requestVisitorLocation({ retry: true });
@@ -212,11 +264,19 @@ export function useVisitorLocationSnapshot(): VisitorLocation {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-/** Subscribe + peek. Does not open the browser prompt. */
+/**
+ * Subscribe + peek. Does not open the browser prompt.
+ * The flag is module-wide so a re-render, a new card, or a dependency
+ * on the snapshot cannot start another permission check.
+ */
+let peekHookStarted = false;
+
 export function usePeekVisitorLocation(): VisitorLocation {
   const location = useVisitorLocationSnapshot();
 
   useEffect(() => {
+    if (peekHookStarted) return;
+    peekHookStarted = true;
     void peekReadyVisitorLocation();
   }, []);
 

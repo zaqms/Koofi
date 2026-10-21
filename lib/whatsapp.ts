@@ -6,6 +6,7 @@ import { isOffTopicAsk } from "./off-topic-intent";
 import { extractMapsUrl, looksLikeHttpUrl } from "./maps-url";
 import {
   formatWhatsAppReply,
+  listedResultForWhatsApp,
   pickCafes,
   whatsAppLocations,
 } from "./picker";
@@ -77,18 +78,15 @@ export async function replyForWhatsApp(text: string): Promise<{
   }
 
   const result = pickCafes({ text });
+  const listed = listedResultForWhatsApp(result);
   const spoken = await speakForPicks({
     userText: text,
     landing: result.language,
-    result,
+    result: listed,
   });
   return {
     body: formatWhatsAppReply(result, spoken, text),
-    locations: whatsAppLocations(
-      result.picks.length > 8
-        ? { ...result, picks: result.picks.slice(0, 8) }
-        : result,
-    ),
+    locations: whatsAppLocations(listed),
   };
 }
 

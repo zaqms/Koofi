@@ -442,7 +442,6 @@ const BATCH7_IDS = [
 /** Al Olaya Scout-11 (#218). The total-keys assert on main did not include these. */
 const BATCH8_IDS = [
   "gedeb-al-olaya",
-  "bossco-roastery-al-olaya",
   "lluvia-caffe-al-olaya",
   "oromiffa-al-olaya",
   "buljah-al-olaya",
@@ -944,7 +943,8 @@ assert(batch4HeroIds.length === 50, "batch 4 50-shop hero set is complete");
 assert(batch5HeroIds.length === 97, "batch 5 hero set is 97 after the N5 Al Rabi drops");
 assert(batch6HeroIds.length === 37, "batch 6 hero set is 37 after the As Suwaidi and Drive Al Rabi drops");
 assert(batch7HeroIds.length === 16, "post-batch-6 hero set is complete");
-assert(batch8HeroIds.length === 11, "Al Olaya Scout-11 hero set is complete");
+assert(batch8HeroIds.length === 10, "Al Olaya Scout-11 hero set is complete (10; BOSS.CO Roastery dropped 21 Oct, closed)");
+assert(!("bossco-roastery-al-olaya" in bakedHeroes), "no BOSS.CO Roastery gallery ships (closed; AGRIO Olaya took over the unit)");
 assert(batch9HeroIds.length === 42, "batch 9 42-shop hero set is complete");
 assert(batch10HeroIds.length === 1, "batch 10 Waqar hero set is complete");
 assert(batch11HeroIds.length === 10, "batch 11 Shoug A1 hero set is complete");

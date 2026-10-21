@@ -747,6 +747,21 @@ assert(
   ),
   "sand-clock-sulimaniyah card 308s to al-muruj",
 );
+assert(
+  LEGACY_SHOP_REDIRECTS.some(
+    (row) =>
+      row.source === "/c/bossco-roastery-al-olaya" &&
+      row.destination === "/c/agrio-olaya" &&
+      row.statusCode === 308,
+  ) &&
+    LEGACY_SHOP_REDIRECTS.some(
+      (row) =>
+        row.source === "/en/c/bossco-roastery-al-olaya" &&
+        row.destination === "/en/c/agrio-olaya" &&
+        row.statusCode === 308,
+    ),
+  "bossco-roastery-al-olaya card 308s to agrio-olaya (closed; AGRIO took over the unit)",
+);
 
 const hero = read("components/home-hero.tsx");
 assert(

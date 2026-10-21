@@ -453,6 +453,8 @@ const REMOVED_SHOP_TARGETS: ReadonlyArray<readonly [string, string]> = [
   ["drive-al-rabi-5", `/${COFFEE_SHOPS_CATEGORY}/drive-through`],
   // Vanilla Coffee Qurtubah dropped (food truck, not a specialty café) → its district page.
   ["vanilla-coffee-qurtubah", `/${COFFEE_SHOPS_CATEGORY}/qurtubah`],
+  // 21 Oct 2026 (AJ via Ajz): BOSS.CO Roastery Al Olaya closed; AGRIO Olaya took over the same unit (#281 QA r1).
+  ["bossco-roastery-al-olaya", `${CARD_PATH_PREFIX}/agrio-olaya`],
 ];
 
 const REMOVED_SHOP_REDIRECTS = REMOVED_SHOP_TARGETS.flatMap(([slug, target]) => {

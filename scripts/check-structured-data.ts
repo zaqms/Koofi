@@ -779,7 +779,7 @@ const outdoorList = fixedListItemListJsonLd("outdoor", "ar");
 const coffeeList = fixedListItemListJsonLd("coffee", "en");
 const workList = fixedListItemListJsonLd("work", "ar");
 assert(fixedListItemListJsonLd("nearby", "ar") == null, "nearby has no ItemList");
-assert(outdoorList?.numberOfItems === 278, "outdoor ItemList is 278 (+ Sample Roastery, Hjeen At Taawun, MID-SAJJ and Harmony, trending adds 21 Oct; + Half Million and Starbucks Rakaa Plaza Al Qadisiyah, Batch R; + Sakaf and Breehant As Salam, Batch S; + Andarena, BeFine, Cobee, Arco, Tahn, Black Wolf, dr.CAFE Ash Shuhada, Peet's and Tim Hortons Granada Mall, Batch SD1)");
+assert(outdoorList?.numberOfItems === 277, "outdoor ItemList is 277 (− BOSS.CO Roastery Al Olaya, closed 21 Oct; + Sample Roastery, Hjeen At Taawun, MID-SAJJ and Harmony, trending adds 21 Oct; + Half Million and Starbucks Rakaa Plaza Al Qadisiyah, Batch R; + Sakaf and Breehant As Salam, Batch S; + Andarena, BeFine, Cobee, Arco, Tahn, Black Wolf, dr.CAFE Ash Shuhada, Peet's and Tim Hortons Granada Mall, Batch SD1)");
 assert(coffeeList?.numberOfItems === 71, "best coffee ItemList is 71 (+ Hjeen Roasters At Taawun, roaster tag, trending add 21 Oct; + Heddah Roaster and Breehant As Salam, roaster tag, Batch S; + Black Wolf Al Shohda, Batch SD1)");
 assert(workList?.numberOfItems === 65, "work ItemList is 65");
 assert(outdoorList?.name === "قهاوي فيها جلسات خارجية في الرياض", "outdoor ItemList name is the H1");

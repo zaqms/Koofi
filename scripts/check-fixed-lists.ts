@@ -226,9 +226,11 @@ assert(
     chat.includes("isFixedListChip(chipId)") &&
     chat.includes("listFirst && !threadVisible ? null") &&
     chat.includes("usePeekVisitorLocation()") &&
-    chat.includes("lat: visitor.lat, lng: visitor.lng") &&
+    !chat
+      .slice(chat.indexOf('fetch("/api/chat"'), chat.indexOf('fetch("/api/chat"') + 700)
+      .includes("visitor.lat") &&
     !chat.includes("useVisitorLocation("),
-  "fixed lists do not auto-send, do not mount the opener H1, and chat peeks a granted pin without prompting",
+  "fixed lists do not auto-send, do not mount the opener H1, and chat peeks a granted pin without prompting or sending it",
 );
 
 const bodySrc = read("components/fixed-list-body.tsx");

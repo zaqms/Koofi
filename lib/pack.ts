@@ -26,7 +26,7 @@ export type ResolvedPack = {
 };
 
 const ASK_MAX = 80;
-const PACK_SHOP_CAP = 40;
+const PACK_SHOP_CAP = 30;
 
 function checksum(body: string): string {
   let hash = 2166136261;

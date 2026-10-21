@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { BeenButton } from "@/components/been-button";
 import { DirectoryCard } from "@/components/directory-card";
 import { SharePackButton } from "@/components/share-pack-button";
@@ -34,6 +34,13 @@ function fillCount(template: string, count: number): string {
   return template.replace("{count}", String(count));
 }
 
+/** «اعرض قهوة وحدة زيادة» / «اعرض قهوتين زيادة» / «اعرض 5 زيادة». */
+function showMoreLabel(language: Language, count: number): string {
+  if (count === 1) return copy.showMoreOne[language];
+  if (count === 2) return copy.showMoreTwo[language];
+  return fillCount(copy.showMore[language], count);
+}
+
 export function PickList({
   picks,
   language,
@@ -48,10 +55,28 @@ export function PickList({
   search = false,
 }: PickListProps) {
   const [expanded, setExpanded] = useState(false);
+  const listId = useId();
+  const listRef = useRef<HTMLOListElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const focusAfter = useRef<"revealed" | "toggle" | null>(null);
   const limit =
     initialVisible && initialVisible > 0 ? initialVisible : picks.length;
+  const collapsible = picks.length > limit;
   const visible = expanded ? picks : picks.slice(0, limit);
   const hidden = picks.length - visible.length;
+
+  // Expanding moves focus to the first card it revealed; collapsing returns it to the toggle.
+  useEffect(() => {
+    const target = focusAfter.current;
+    focusAfter.current = null;
+    if (target === "revealed") {
+      const card = listRef.current?.children.item(limit) as HTMLElement | null;
+      const focusable = card?.querySelector<HTMLElement>("a[href], button");
+      (focusable ?? card)?.focus();
+    } else if (target === "toggle") {
+      toggleRef.current?.focus();
+    }
+  }, [expanded, limit]);
   const resolvedPackId =
     packId ??
     (picks.length > 0
@@ -75,7 +100,7 @@ export function PickList({
 
   return (
     <div>
-      <ol className="grid gap-3">
+      <ol id={listId} ref={listRef} className="grid gap-3">
         {visible.map((pick, index) => (
           <DirectoryCard
             key={pick.id}
@@ -83,18 +108,24 @@ export function PickList({
             language={language}
             mapsSource={mapsSource}
             onMapsClick={() => {
-              postLearnMaps({ shopId: pick.id, pickIndex: index });
+              postLearnMaps({ shopId: pick.id, pickIndex: pick.rank ?? index });
             }}
           />
         ))}
       </ol>
-      {hidden > 0 ? (
+      {collapsible ? (
         <button
+          ref={toggleRef}
           type="button"
+          aria-expanded={expanded}
+          aria-controls={listId}
           className="mt-3 inline-flex min-h-11 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink hover:border-bean"
-          onClick={() => setExpanded(true)}
+          onClick={() => {
+            focusAfter.current = expanded ? "toggle" : "revealed";
+            setExpanded(!expanded);
+          }}
         >
-          {fillCount(copy.showMore[language], hidden)}
+          {expanded ? copy.showLess[language] : showMoreLabel(language, hidden)}
         </button>
       ) : null}
       {SHOW_BEEN_HERE ? (

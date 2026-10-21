@@ -1398,9 +1398,11 @@ assert(
     chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
     chatUi.includes("usePeekVisitorLocation()") &&
-    chatUi.includes("lat: visitor.lat, lng: visitor.lng") &&
+    !chatUi
+      .slice(chatUi.indexOf('fetch("/api/chat"'), chatUi.indexOf('fetch("/api/chat"') + 700)
+      .includes("visitor.lat") &&
     !chatUi.includes("useVisitorLocation("),
-  "guest /h/ results keep locations; guest field is not the host pin; chat peeks a granted pin and does not prompt",
+  "guest /h/ results keep locations; guest field is not the host pin; chat peeks a granted pin, never sends it, and does not prompt",
 );
 assert(
   !chatUi.includes("halfwayLocationsRef.current ?"),

@@ -594,9 +594,7 @@ export function scoreCatalogShops<T extends Shop>(
     const brand = chainBrandIdForShop(shop);
     if (brand && negated.has(brand)) continue;
     let best = 0;
-    for (const alias of shopNameAliases(shop)) {
-      if (!aliasUsableInAsk(haystack, alias)) continue;
-      if (!shopTextIncludesAlias(haystack, alias)) continue;
+    for (const alias of matchedShopAliases(haystack, shop)) {
       best = Math.max(best, aliasScore(haystack, alias, shop));
     }
     if (best > 0) hits.push({ shop, score: best });
@@ -608,6 +606,58 @@ export function scoreCatalogShops<T extends Shop>(
   });
 
   return hits;
+}
+
+/**
+ * The café's own full name, typed as the whole ask. "Found", "Trace" and
+ * "A PLUS" block their bare word as an alias (everyday words), but the
+ * exact name on its own still means that café. A one-word generic name
+ * ("cafe") never counts.
+ */
+export function exactShopNames(
+  shop: Pick<Shop, "nameEn" | "nameAr">,
+): string[] {
+  const names = new Set<string>();
+  for (const raw of [shop.nameEn, shop.nameAr]) {
+    const name = normalize(raw);
+    if (!name) continue;
+    if (!name.includes(" ") && isBlockedAlias(name)) continue;
+    if (NEIGHBORHOOD_ALIASES.has(name) || CHIP_ASKS.has(name)) continue;
+    names.add(name);
+  }
+  return [...names];
+}
+
+/** The name without café words: «محمصة قهوة شفل» → «شفل», "Najd Roastery" → "najd". */
+export function shopCoreNames(shop: Pick<Shop, "nameEn" | "nameAr">): string[] {
+  const names = new Set<string>();
+  for (const raw of [shop.nameEn, shop.nameAr]) {
+    const core = distinctiveTokens(normalize(raw)).join(" ");
+    if (core) names.add(core);
+  }
+  return [...names];
+}
+
+/** Aliases of this shop that the (normalized) ask contains, plus its exact name. */
+export function matchedShopAliases(
+  haystack: string,
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "chainBrand">,
+): string[] {
+  const matched: string[] = [];
+  for (const alias of shopNameAliases(shop)) {
+    if (!aliasUsableInAsk(haystack, alias)) continue;
+    if (!shopTextIncludesAlias(haystack, alias)) continue;
+    matched.push(alias);
+  }
+  for (const name of exactShopNames(shop)) {
+    if (name === haystack && !matched.includes(name)) matched.push(name);
+  }
+  return matched;
+}
+
+/** Generic words (café, coffee, riyadh, the …) that never name a café alone. */
+export function isGenericShopWord(token: string): boolean {
+  return GENERIC_ALIASES.has(normalize(token));
 }
 
 export function matchCatalogShops<T extends Shop>(

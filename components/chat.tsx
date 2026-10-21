@@ -66,7 +66,8 @@ import {
   type HalfwayPinInput,
 } from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
-import { searchCountHeading } from "@/lib/picker";
+import { isNearbyAsk, searchCountHeading } from "@/lib/picker";
+import { sortPicksByDistance } from "@/lib/search-distance";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
@@ -909,7 +910,10 @@ export function Chat({
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   const listFirst = isFixedListChip(selectedChipId);
+  // Peek only: the pin sorts search cards on this device and is never sent.
   const visitor = usePeekVisitorLocation();
+  const visitorRef = useRef(visitor);
+  visitorRef.current = visitor;
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -1204,7 +1208,7 @@ export function Chat({
               role: "assistant",
               language: result.data.language,
               text: result.data.reply,
-              picks: result.data.picks,
+              picks: devicePicks(result.data),
               thinCatalog: result.data.thinCatalog,
               districtMatch: result.data.districtMatch,
               halfwayMore: result.data.halfwayMore,
@@ -1254,12 +1258,27 @@ export function Chat({
     };
   }, [threadKey, pendingId]);
 
+  /** Search branches nearest first, sorted here with the peeked pin. */
+  function devicePicks(data: ChatResponse): ChatPick[] | undefined {
+    const picks = data.picks;
+    const pin = visitorRef.current;
+    const search =
+      typeof data.matchCount === "number" && data.noMatch !== true && (picks?.length ?? 0) > 1;
+    if (!picks || !search || pin.status !== "ready") return picks;
+    return sortPicksByDistance(picks, { lat: pin.lat, lng: pin.lng });
+  }
+
   function send(
     text: string,
     options?: { suggesting?: boolean; via?: "typed" | "chip" },
   ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
+    // Typed "nearby" / «قريب مني» is the Nearby chip: nearest cafés on the device.
+    if ((options?.via ?? "typed") === "typed" && !awaitingMaps && isNearbyAsk(trimmed)) {
+      void sendNearby(trimmed);
+      return;
+    }
     unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
@@ -1302,9 +1321,6 @@ export function Chat({
               via,
               session: readLearnSession(),
               city: cityId,
-              ...(visitor.status === "ready"
-                ? { lat: visitor.lat, lng: visitor.lng }
-                : {}),
             }),
           });
 
@@ -1404,8 +1420,8 @@ export function Chat({
       picks.length === 0
         ? copy.emptyCatalog[landing]
         : picks.length === 3
-          ? copy.closestPicks[landing]
-          : copy.closestFewer[landing];
+          ? copy.threePicks[landing]
+          : copy.fewerPicks[landing];
 
     applyAssistant({
       id: crypto.randomUUID(),

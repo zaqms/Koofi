@@ -214,6 +214,8 @@ export type ChatPick = {
   reviewSnippet?: string;
   lat?: number;
   lng?: number;
+  /** Server order (0-based) when the device re-sorted search cards by distance. */
+  rank?: number;
   /** 1–2 catalog vibe labels. Listing cards recompute via listingCardTags. */
   tags?: string[];
 };
@@ -276,7 +278,8 @@ export type PickResult = {
   /** Fuzzy correction when the typed name was close to a listed shop or brand. */
   didYouMean?: NameSuggestion;
   /** A brand Wain knows and deliberately does not list (Dunkin' and the like). */
-  excludedBrand?: NameSuggestion;
+  /** donut: a donut/dessert-led brand outside the listing policy. */
+  excludedBrand?: NameSuggestion & { donut?: boolean };
   /** Popular cafés under a no-match line. Not search results. */
   suggestions?: PickReason[];
   /** The ask named a حي that has none of these branches. Picks are the branches anyway. */

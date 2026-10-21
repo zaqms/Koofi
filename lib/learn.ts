@@ -83,6 +83,9 @@ function writeTmp(events: LearnEvent[]): void {
   }
 }
 
+/** A search list shows up to 30 cards (SEARCH_MATCH_CAP); a map click on any of them counts. */
+const LEARN_MAX_PICKS = 30;
+
 function append(event: LearnEvent): void {
   memory.push(event);
   if (memory.length > MAX_EVENTS) memory.splice(0, memory.length - MAX_EVENTS);
@@ -101,7 +104,8 @@ export function recordLearnAsk(input: {
   try {
     const text = input.text.trim();
     const shopIds = knownShopIds(input.shopIds);
-    if (!text || shopIds.length !== 3) return;
+    // Three-packs and search lists (1–30 cards), in server order.
+    if (!text || shopIds.length === 0 || shopIds.length > LEARN_MAX_PICKS) return;
     append({
       kind: "ask",
       at: new Date().toISOString(),
@@ -126,7 +130,7 @@ export function recordLearnMaps(input: {
     const pickIndex =
       typeof input.pickIndex === "number" ? input.pickIndex : Number(input.pickIndex);
     if (!getShop(shopId)) return false;
-    if (!Number.isInteger(pickIndex) || pickIndex < 0 || pickIndex > 2) {
+    if (!Number.isInteger(pickIndex) || pickIndex < 0 || pickIndex >= LEARN_MAX_PICKS) {
       return false;
     }
     append({

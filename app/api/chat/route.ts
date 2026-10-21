@@ -32,7 +32,6 @@ import {
   restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
 import { districtPageHidden } from "@/lib/district-dictionary";
-import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import {
   headingForPicks,
   pickCafes,
@@ -57,15 +56,7 @@ type ChatRequest = {
   halfwayMore?: boolean;
   halfwayReroll?: boolean;
   city?: string;
-  lat?: unknown;
-  lng?: unknown;
 };
-
-function parseOrigin(body: ChatRequest) {
-  if (typeof body.lat !== "number" || typeof body.lng !== "number") return undefined;
-  const pin = { lat: body.lat, lng: body.lng };
-  return isUsableVisitorOrigin(pin) ? pin : undefined;
-}
 
 function landingLanguage(value: unknown): Language {
   return value === "en" ? "en" : "ar";
@@ -297,13 +288,13 @@ export async function POST(request: Request) {
     });
   }
 
-  const origin = parseOrigin(body);
+  // No visitor coordinates here: the privacy policy keeps GPS on the device.
+  // The client sorts search branches by distance itself.
   const result = pickCafes({
     text,
     beenIds,
     language: landing,
     ...(city ? { city } : {}),
-    ...(origin ? { origin } : {}),
   });
   const suggestions = toSuggestionPicks(result);
   const [picks, reply] = await Promise.all([

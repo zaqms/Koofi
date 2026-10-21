@@ -1,3 +1,4 @@
+import { copy } from "../lib/copy";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import popularityIndexFile from "../data/popularity-index.json";
@@ -149,28 +150,54 @@ assert(!wa.includes("web.whatsapp.com"), "share must not use WhatsApp Web");
 const catalog = listRealShops();
 const catalogIds = new Set(catalog.map((shop) => shop.id));
 
+/**
+ * A brand ask lists that brand's cafés under the count heading. A word that only
+ * sits inside a café's name stays the pre-search three-pack: the named café
+ * first, two companions, and the locked heading «ثلاث قهاوي تناسب اختيارك».
+ */
 function assertNamedFirst(ask: string, language: "ar" | "en", pred: (id: string) => boolean) {
   const result = pickCafes({ text: ask, language });
-  const matched = new Set(matchCatalogShops(ask, catalog).map((shop) => shop.id));
-  assert(result.mode === "search", `${ask} should be a name search, got ${result.mode}`);
-  assert(result.picks.length > 0, `${ask} should return the matching cafés`);
   assert(
     result.picks.every((pick) => catalogIds.has(pick.shop.id)),
     `${ask} invented a shop: ${result.picks.map((pick) => pick.shop.id).join(", ")}`,
-  );
-  assert(
-    result.picks.every((pick) => matched.has(pick.shop.id)),
-    `${ask} padded with an unrelated café: ${result.picks.map((pick) => pick.shop.id).join(", ")}`,
   );
   assert(
     pred(result.picks[0]!.shop.id),
     `${ask} first pick was ${result.picks[0]?.shop.id} (${result.picks[0]?.shop.nameEn})`,
   );
   const heading = headingForPicks(result);
+  if (result.mode === "search") {
+    const matched = new Set(matchCatalogShops(ask, catalog).map((shop) => shop.id));
+    assert(result.picks.length > 0, `${ask} should return the matching cafés`);
+    assert(
+      result.picks.every((pick) => matched.has(pick.shop.id) || pred(pick.shop.id)),
+      `${ask} padded with an unrelated café: ${result.picks.map((pick) => pick.shop.id).join(", ")}`,
+    );
+    assert(
+      heading !== "Three cafes that suit your choice:" &&
+        heading !== "ثلاث قهاوي تناسب اختيارك",
+      `search heading counts the cafés for ${ask}: ${heading}`,
+    );
+    return;
+  }
+  assert(result.picks.length === 3, `${ask} should return 3, got ${result.picks.length}`);
   assert(
-    heading !== "Three cafes that suit your choice:" &&
-      heading !== "ثلاث قهاوي تناسب اختيارك",
-    `search heading must not be the three-pick line for ${ask}: ${heading}`,
+    headingForPicks(result) === "Three cafes that suit your choice:" ||
+      headingForPicks(result) === "ثلاث قهاوي تناسب اختيارك",
+    `locked heading changed for ${ask}: ${headingForPicks(result)}`,
+  );
+}
+
+// The locked three-pack heading stays verbatim (retiring it needs Amjad's OK).
+assert(copy.threePicks.ar === "ثلاث قهاوي تناسب اختيارك", "locked AR three-pack heading");
+assert(copy.threePicks.en === "Three cafes that suit your choice:", "locked EN three-pack heading");
+for (const ask of ["quiet", "هادي", "espresso", "dr"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.picks.length === 3, `${ask} should return 3, got ${result.picks.length}`);
+  assert(
+    headingForPicks(result) === "Three cafes that suit your choice:" ||
+      headingForPicks(result) === "ثلاث قهاوي تناسب اختيارك",
+    `locked heading changed for ${ask}: ${headingForPicks(result)}`,
   );
 }
 

@@ -1,4 +1,4 @@
-import { listRealShops } from "../lib/catalog";
+import { isListingShop, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { decodePackId, encodePackId } from "../lib/pack";
 import { readFileSync } from "node:fs";
@@ -7,10 +7,13 @@ import { officialShopCoords } from "../lib/place-coords";
 import {
   formatWhatsAppReply,
   headingForPicks,
+  isNearbyAsk,
   listedResultForWhatsApp,
   pickCafes,
 } from "../lib/picker";
 import { normalizeShopText } from "../lib/shop-name";
+import { sortPicksByDistance } from "../lib/search-distance";
+import type { ChatPick } from "../lib/types";
 
 function assert(cond: unknown, message: string): asserts cond {
   if (!cond) throw new Error(message);
@@ -21,10 +24,13 @@ function idsOf(text: string, language: "ar" | "en" = "en") {
 }
 
 const shops = listRealShops();
-const starbucks = shops.filter((shop) => shop.chainBrand === "starbucks");
-const drCafe = shops.filter((shop) => shop.chainBrand === "dr-cafe");
+// Search lists listed branches only (drive-through / pickup rows stay off the count).
+const starbucks = shops.filter((shop) => shop.chainBrand === "starbucks" && isListingShop(shop));
+const drCafeAll = shops.filter((shop) => shop.chainBrand === "dr-cafe");
+const drCafe = drCafeAll.filter((shop) => isListingShop(shop));
 assert(starbucks.length >= 8, `expected the Starbucks branches, got ${starbucks.length}`);
-assert(drCafe.length >= 22, `expected the dr.CAFE branches, got ${drCafe.length}`);
+assert(drCafeAll.length >= 22, `expected the dr.CAFE rows, got ${drCafeAll.length}`);
+assert(drCafe.length >= 8 && drCafe.length < drCafeAll.length, `dr.CAFE listed ${drCafe.length}`);
 
 function sameIds(resultIds: string[], expected: { id: string }[], label: string) {
   const got = [...resultIds].sort().join(",");
@@ -144,24 +150,42 @@ assert(
   "district browse may keep the three-pick line",
 );
 
-const anchor = starbucks
-  .map((shop) => ({ shop, coords: officialShopCoords(shop) }))
-  .find((row) => row.coords);
-assert(anchor?.coords, "a Starbucks branch has a pin");
-const nearest = pickCafes({
-  text: "starbucks",
-  language: "en",
-  origin: anchor!.coords!,
-});
+// Privacy: the visitor pin never reaches the server (lib/legal.ts).
+const pickerSrc = readFileSync(new URL("../lib/picker.ts", import.meta.url), "utf8");
+const routeSrc = readFileSync(new URL("../app/api/chat/route.ts", import.meta.url), "utf8");
+const chatSrc = readFileSync(new URL("../components/chat.tsx", import.meta.url), "utf8");
+assert(!/origin\?: Pin/.test(pickerSrc), "pickCafes takes no visitor origin");
 assert(
-  nearest.picks[0]?.shop.id === anchor!.shop.id,
-  `distance sort should lead with ${anchor!.shop.id}, got ${nearest.picks[0]?.shop.id}`,
+  !/\blat\b|\blng\b|parseOrigin|isUsableVisitorOrigin/.test(routeSrc),
+  "/api/chat reads no visitor coordinates",
 );
-sameIds(
-  nearest.picks.map((pick) => pick.shop.id),
-  starbucks,
-  "distance sort still returns every Starbucks branch",
+const chatPost = chatSrc.slice(
+  chatSrc.indexOf('fetch("/api/chat"'),
+  chatSrc.indexOf('fetch("/api/chat"') + 700,
 );
+assert(chatPost.includes("text: trimmed"), "found the /api/chat POST body");
+assert(!/\blat\b|\blng\b|visitor/.test(chatPost), "the /api/chat POST body carries no pin");
+assert(
+  chatSrc.includes("sortPicksByDistance(picks, { lat: pin.lat, lng: pin.lng })"),
+  "search branches are sorted by distance on the device",
+);
+const legalSrc = readFileSync(new URL("../lib/legal.ts", import.meta.url), "utf8");
+assert(
+  legalSrc.includes("does not send your GPS location"),
+  "privacy policy still promises GPS stays on the device",
+);
+{
+  const pinned = starbucks
+    .map((shop) => ({ shop, coords: officialShopCoords(shop) }))
+    .filter((row) => row.coords);
+  assert(pinned.length >= 2, "two Starbucks branches have pins");
+  const far = pinned[pinned.length - 1]!;
+  const cards = pinned.map((row) => ({ id: row.shop.id, lat: row.coords!.lat, lng: row.coords!.lng })) as unknown as ChatPick[];
+  const sorted = sortPicksByDistance(cards, far.coords!);
+  assert(sorted[0]?.id === far.shop.id, `device sort leads with the nearest, got ${sorted[0]?.id}`);
+  assert(sorted.every((pick, index, all) => index === 0 || haversineKm(far.coords!, { lat: all[index - 1]!.lat!, lng: all[index - 1]!.lng! }) <= haversineKm(far.coords!, { lat: pick.lat!, lng: pick.lng! })), "device sort is nearest first");
+  assert(sorted.find((pick) => pick.id === far.shop.id)?.rank === pinned.length - 1, "device sort keeps the server rank for map-click logs");
+}
 
 for (const ask of ["Starbucks near me", "ستاربكس قريب", "Starbucks quiet"] as const) {
   const language = ask.startsWith("Starbucks") ? "en" : "ar";
@@ -282,24 +306,6 @@ for (const ask of ["ستاربكس Panorama", "Starbucks بانوراما"] as c
   );
 }
 
-const nearOrigin = { lat: 24.711, lng: 46.675 };
-const nearbyA = pickCafes({ text: "nearby", language: "en", origin: nearOrigin });
-const nearbyB = pickCafes({ text: "nearby", language: "en", origin: nearOrigin });
-const nearbyAr = pickCafes({ text: "قريب مني", language: "ar", origin: nearOrigin });
-const nearbyIds = nearbyA.picks.map((pick) => pick.shop.id);
-assert(nearbyIds.join(",") === nearbyB.picks.map((pick) => pick.shop.id).join(","), "nearby with a pin is stable");
-assert(
-  nearbyIds.join(",") === nearbyAr.picks.map((pick) => pick.shop.id).join(","),
-  "قريب مني uses the same distance order",
-);
-assert(nearbyA.mode === "browse" && nearbyA.picks.length === 3, "nearby stays a three-pack");
-const nearbyKm = nearbyA.picks.map((pick) => {
-  const coords = officialShopCoords(pick.shop);
-  assert(coords != null, `${pick.shop.id} has no pin`);
-  return haversineKm(nearOrigin, coords!);
-});
-assert(nearbyKm[0]! <= nearbyKm[1]! && nearbyKm[1]! <= nearbyKm[2]!, `nearby is not distance-sorted: ${nearbyKm.join(",")}`);
-
 const nearbyPlainA = pickCafes({ text: "nearby", language: "en" });
 const nearbyPlainB = pickCafes({ text: "nearby", language: "en" });
 assert(
@@ -329,6 +335,7 @@ assert(
   "Costa without the word coffee still returns both branches",
 );
 
+// Proximity asks run the on-device Nearby flow (the pin never goes to the server).
 for (const ask of [
   "nearby cafes",
   "cafes nearby",
@@ -337,36 +344,24 @@ for (const ask of [
   "near me",
   "coffee near me",
   "قريب",
+  "nearby",
+  "قريب مني",
 ] as const) {
+  assert(isNearbyAsk(ask), `${ask} is a nearby ask (device Nearby flow)`);
   const language = /[A-Za-z]/.test(ask) ? "en" : "ar";
-  const result = pickCafes({ text: ask, language, origin: nearOrigin });
+  const result = pickCafes({ text: ask, language });
   assert(result.noMatch !== true, `${ask} should not be a no-match`);
-  assert(result.distanceSorted === true, `${ask} should sort by distance`);
-  assert(
-    result.picks.map((pick) => pick.shop.id).join(",") === nearbyIds.join(","),
-    `${ask} should use the nearby distance order`,
-  );
-  const heading = headingForPicks(result);
-  assert(
-    language === "en" ? heading === copy.closestPicks.en : heading === copy.closestPicks.ar,
-    `${ask} heading should say closest: ${heading}`,
-  );
-  assert(
-    !heading.includes("Three cafes") && !heading.includes("ثلاث قهاوي تناسب اختيارك"),
-    `${ask} should not use the generic three-pack line`,
-  );
+  assert(result.distanceSorted !== true, `${ask} is never distance-sorted on the server`);
+  assert(headingForPicks(result) === copy.threePicks[language], `${ask} without a pin keeps the three-pack line`);
 }
-const nearbyCafesPlain = pickCafes({ text: "nearby cafes", language: "en" });
-assert(nearbyCafesPlain.noMatch !== true, "nearby cafes without a pin is still a recommendation");
-assert(nearbyCafesPlain.distanceSorted !== true, "nearby cafes without a pin is not a distance sort");
-assert(
-  headingForPicks(nearbyCafesPlain) === copy.threePicks.en,
-  "nearby cafes without a pin keeps the three-pack line",
-);
-const coffeeAlone = pickCafes({ text: "coffee", language: "en", origin: nearOrigin });
-assert(coffeeAlone.distanceSorted !== true, "coffee alone is not a nearby sort");
-const starbucksNear = pickCafes({ text: "Starbucks near me", language: "en", origin: nearOrigin });
-assert(starbucksNear.mode === "search" && starbucksNear.distanceSorted !== true, "Starbucks near me stays a brand search");
+assert(!isNearbyAsk("coffee"), "coffee alone is not a nearby ask");
+assert(!isNearbyAsk("Starbucks near me"), "Starbucks near me is not the Nearby flow");
+const starbucksNear = pickCafes({ text: "Starbucks near me", language: "en" });
+assert(starbucksNear.mode === "search", "Starbucks near me stays a brand search");
+{
+  const chatUi = readFileSync(new URL("../components/chat.tsx", import.meta.url), "utf8");
+  assert(chatUi.includes("isNearbyAsk(trimmed)") && chatUi.includes("void sendNearby(trimmed)"), "typed nearby runs on the device");
+}
 
 function pickedIds(text: string, language: "ar" | "en" = "en"): string[] {
   return pickCafes({ text, language }).picks.map((pick) => pick.shop.id);
@@ -477,6 +472,203 @@ const listed = wa.split("\n").filter((line) => /^\d+\./.test(line));
 assert(listed.length <= 8, `WhatsApp lists ${listed.length} cafés`);
 assert(listed.length < drCafe.length, "WhatsApp does not list every dr.CAFE branch");
 assert(wa.includes("wain.lol"), "WhatsApp points at the rest of the list");
+
+// ---- QA r1 regressions (PR #280 r2) ----
+const byId = new Map(shops.map((shop) => [shop.id, shop]));
+const idList = (result: ReturnType<typeof pickCafes>) => result.picks.map((pick) => pick.shop.id);
+
+// High 2: everyday words never hit the empty state or brand mode.
+for (const ask of [
+  "مقهى", "مقهي", "كافيه", "كافي", "أفضل مقهى", "افضل", "احسن", "الرياض", "مشهور", "جديد",
+  "سهر", "عوائل", "بنات", "بن", "حليب", "هيل", "قهوة", "best", "open", "open now", "riyadh",
+  "in riyadh", "latte", "new", "speciality", "roasters", "rooftop", "wifi", "kids", "date",
+  "ladies", "women", "24 hours", "house", "home", "good", "nice", "sweet", "garden", "corner",
+  "hello", "hi", "thanks", "coffee", "cafe", "café",
+] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.noMatch !== true, `${ask} must not be no-match`);
+  assert(result.mode === "browse", `${ask} must stay a normal pick, got ${result.mode}`);
+  assert(result.picks.length === 3, `${ask} returns three cafés, got ${result.picks.length}`);
+  assert(
+    headingForPicks(result) === copy.threePicks[result.language],
+    `${ask} keeps the locked three-cafés heading: ${headingForPicks(result)}`,
+  );
+}
+
+// High 3: a café's own exact name finds it.
+for (const [ask, id] of [
+  ["Shafel Coffee Roastery", "shafel-roastery-al-yarmouk"],
+  ["محمصة وقهوة نجد", "najd-roastery-al-munsiyah"],
+  ["فوت | محمصة وقهوة مختصة", "voute-fot-al-naseem-sharqi"],
+  ["ريشيو للقهوة المختصة", "ratio-speciality-tuwaiq"],
+  ["A PLUS", "a-plus-as-salam"],
+  ["Fill", "fill-umm-al-hamam-ash-sharqi"],
+  ["molten", "molten-umm-al-hamam-ash-sharqi"],
+  ["Found", "found-ar-rabwah"],
+  ["BREATH", "breath-tuwaiq"],
+  ["Lihaf", "lihaf-tuwaiq"],
+  ["Trace", "trace-al-mursalat"],
+] as const) {
+  const result = pickCafes({ text: ask });
+  assert(byId.has(id), `fixture ${id} exists`);
+  assert(result.mode === "search", `${ask} is a name search, got ${result.mode}`);
+  assert(idList(result).includes(id), `${ask} must find ${id}: ${idList(result).join(",")}`);
+  assert(idList(result)[0] === id || ask === "Shafel Coffee Roastery", `${ask} leads with ${id}`);
+}
+{
+  const shafel = pickCafes({ text: "Shafel Coffee Roastery" });
+  sameIds(idList(shafel), shops.filter((shop) => shop.nameEn === "Shafel Coffee Roastery"), "Shafel keeps all three branches");
+  const arid = pickCafes({ text: "محمصة قهوة شفل | العارض", language: "ar" });
+  assert(idList(arid).join(",") === "shovel-al-arid", `Shovel Al Arid: ${idList(arid).join(",")}`);
+  assert(!arid.outsideArea, "Shovel is in Al Arid, so no away line");
+}
+
+// High 4: no cross-brand bleed.
+const onlyPrefix = (ask: string, prefix: string, count?: number) => {
+  const result = pickCafes({ text: ask });
+  const ids = idList(result);
+  assert(result.mode === "search", `${ask} is a search, got ${result.mode}`);
+  assert(ids.length > 0 && ids.every((id) => id.startsWith(prefix)), `${ask} bled: ${ids.join(",")}`);
+  if (count != null) assert(ids.length === count, `${ask} count ${ids.length}, want ${count}`);
+  assert(result.matchCount === ids.length, `${ask} heading counts what is shown`);
+};
+onlyPrefix("Black Wolf", "black-wolf", 1);
+onlyPrefix("بلاك ولف", "black-wolf", 1);
+onlyPrefix("Black Stamp", "black-stamp");
+onlyPrefix("بي فاين", "befine-");
+onlyPrefix("FYNE", "fyne-");
+onlyPrefix("Half Million", "half-million");
+onlyPrefix("هاف مليون", "half-million");
+onlyPrefix("Half Ten", "half-ten", 1);
+onlyPrefix("Coffee Address", "coffee-address");
+onlyPrefix("Address Mood", "address-mood", 1);
+onlyPrefix("Java Time", "java-time", 1);
+onlyPrefix("Java Cafe", "java-cafe");
+onlyPrefix("%Arabica", "percent-arabica");
+assert(
+  pickCafes({ text: "Half Million" }).picks.length === pickCafes({ text: "هاف مليون", language: "ar" }).picks.length,
+  "Half Million EN and AR counts match",
+);
+assert(
+  pickCafes({ text: "Coffee Address" }).picks.length === pickCafes({ text: "عنوان القهوة", language: "ar" }).picks.length,
+  "Coffee Address EN and AR counts match",
+);
+onlyPrefix("Najd Roastery", "najd-roastery");
+// Brands that share one local key stay apart; an exact name off the listing still shows.
+assert(idList(pickCafes({ text: "Arabica Cafe" })).join(",") === "arabica-cafe-ghubairah", "Arabica Cafe is its own café");
+assert(idList(pickCafes({ text: "Arabica coffee" })).join(",") === "arabica-coffee-al-wisham", "Arabica coffee is its own café");
+assert(idList(pickCafes({ text: "Hjeen Roaster Factory" }))[0] === "hjeen-roaster-factory-al-yasmin", "exact branch name leads");
+
+// High 5: drive words are not Drive Coffee unless it is named.
+for (const ask of ["drive", "drive through", "drive thru", "درايف", "درايف ثرو", "سيارة درايف"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.mode === "browse" && result.picks.length === 3, `${ask} is a normal pick, got ${result.mode} ${result.picks.length}`);
+  assert(result.picks.filter((pick) => pick.shop.id.startsWith("drive-")).length <= 1, `${ask} dumped Drive Coffee`);
+}
+for (const ask of ["Drive Coffee", "درايف كوفي"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.mode === "search", `${ask} names Drive Coffee`);
+  assert(result.picks.every((pick) => isListingShop(pick.shop) && pick.shop.id.startsWith("drive-")), `${ask} lists listed Drive rows only`);
+}
+
+// Medium 6: counts are listed rows only.
+for (const [ask, prefix] of [["dr.CAFE", "drcafe-"], ["Coffee Address", "coffee-address"], ["Java Cafe", "java-cafe"], ["AGRIO", "agrio-"]] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.picks.every((pick) => isListingShop(pick.shop)), `${ask} lists only listed rows`);
+  const listedRows = shops.filter((shop) => shop.id.startsWith(prefix) && isListingShop(shop));
+  assert(result.picks.length === listedRows.length, `${ask} ${result.picks.length} vs listed ${listedRows.length}`);
+}
+{
+  // A branch word still finds that exact branch, listed or not.
+  assert(idList(pickCafes({ text: "agrio rabi" })).join(",") === "agrio-al-rabi", "agrio rabi finds the Al Rabi lane");
+  assert(idList(pickCafes({ text: "اقريو الربيع", language: "ar" })).join(",") === "agrio-al-rabi", "اقريو الربيع finds the Al Rabi lane");
+  const unlisted = drCafeAll.find((shop) => !isListingShop(shop) && /drive|kkia|airport/i.test(shop.id + shop.nameEn));
+  if (unlisted) {
+    const ask = `dr cafe ${unlisted.id.replace(/^drcafe-/, "").replace(/-/g, " ")}`;
+    assert(idList(pickCafes({ text: ask })).includes(unlisted.id), `${ask} finds ${unlisted.id}`);
+  }
+}
+
+// Medium 7: short tokens and drink words are not brand mode (pin + two, as before).
+for (const [ask, lead] of [
+  ["dr", "drcafe-"], ["de", "fabrica-de-cafe"], ["b", "b-cafe"], ["ma", "ma-specialty"],
+  ["ا", ""], ["دا", "da-nonna"], ["espresso", "pivot-espresso"], ["cold brew", ""], ["cup", ""],
+  ["كوب", ""], ["بيت", ""], ["mood", ""], ["مزاج", ""], ["black", ""], ["half", ""],
+  ["million", ""], ["art", ""], ["daily", ""], ["white", ""], ["address", "coffee-address"], ["عنوان", ""],
+] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.mode === "browse", `${ask} must not be brand mode, got ${result.mode}`);
+  assert(result.picks.length === 3, `${ask} returns three, got ${result.picks.length}`);
+  assert(headingForPicks(result) === copy.threePicks[result.language], `${ask} keeps the three-cafés heading`);
+  if (lead) assert(idList(result)[0]?.startsWith(lead), `${ask} still pins ${lead}: ${idList(result)[0]}`);
+}
+
+// Medium 8: cap 30; heading = cards shown.
+{
+  const multi = pickCafes({ text: "Starbucks or dr cafe" });
+  assert(multi.picks.length <= 30 && multi.matchCount === multi.picks.length, `multi-brand ${multi.picks.length}/${multi.matchCount}`);
+  const big = Array.from({ length: 55 }, (_, index) => {
+    const base = starbucks[index % starbucks.length]!;
+    return { ...base, id: `${base.id}-fixture-${index}` };
+  });
+  const fixture = pickCafes({ text: "starbucks", shops: big });
+  assert(fixture.mode === "search", "55-branch fixture is a search");
+  assert(fixture.picks.length <= 30, `cap is 30, got ${fixture.picks.length}`);
+  assert(fixture.matchCount === fixture.picks.length, `heading count ${fixture.matchCount} = shown ${fixture.picks.length}`);
+  assert(!headingForPicks(fixture).includes("55"), "heading never counts unshown cafés");
+  const ids = shops.slice(0, 35).map((shop) => shop.id);
+  assert(decodePackId(encodePackId({ locale: "en", shopIds: ids, ask: "x", search: true }))?.shopIds.length === 30, "pack cap is 30");
+}
+
+// Medium 9: the away line names the brand.
+{
+  const hjeen = pickCafes({ text: "hjeen in olaya" });
+  assert(headingForPicks(hjeen).startsWith("No Hjeen in "), `hjeen away line: ${headingForPicks(hjeen)}`);
+  assert(!headingForPicks(hjeen).includes("Factory"), "away line names the brand, not a branch");
+}
+
+// Low 11: Arabic dual.
+{
+  const dual = { ...pickCafes({ text: "FYNE", language: "ar" }) };
+  const two = { ...dual, language: "ar" as const, picks: pickCafes({ text: "Namq" }).picks, matchCount: 2, didYouMean: { nameEn: "Namq", nameAr: "نمق" } };
+  assert(headingForPicks(two) === "قصدك نمق؟ لقينا فرعين", `dual: ${headingForPicks(two)}`);
+  assert(copy.showMoreOne.ar === "اعرض قهوة وحدة زيادة" && copy.showMoreTwo.ar === "اعرض قهوتين زيادة", "show-more singular/dual");
+}
+
+// Low 10: Show more a11y.
+{
+  const pickList = readFileSync(new URL("../components/pick-list.tsx", import.meta.url), "utf8");
+  assert(pickList.includes("aria-expanded={expanded}") && pickList.includes("aria-controls={listId}"), "show more has aria-expanded/controls");
+  assert(pickList.includes("copy.showLess[language]"), "show more can collapse");
+  assert(pickList.includes('focusAfter.current = expanded ? "toggle" : "revealed"'), "focus moves to the revealed card");
+  assert(pickList.includes("pickIndex: pick.rank ?? index"), "map clicks log the server rank");
+}
+
+// Low 12: logging covers search lists.
+{
+  const learn = readFileSync(new URL("../lib/learn.ts", import.meta.url), "utf8");
+  assert(learn.includes("LEARN_MAX_PICKS = 30") && !learn.includes("shopIds.length !== 3") && !learn.includes("pickIndex > 2"), "learn logs 1–30 cards");
+}
+
+// Low 13: Krispy Kreme and negation.
+for (const ask of ["Krispy Kreme", "كرسبي كريم", "krispy"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.picks.length === 0 && result.excludedBrand?.donut === true, `${ask} is a not-listed donut brand`);
+  assert((result.suggestions ?? []).length === 0, `${ask} adds no suggestions`);
+  assert(headingForPicks(result).includes(result.language === "ar" ? "مو موجودة في وين" : "isn't listed on Wain"), `${ask}: ${headingForPicks(result)}`);
+}
+assert(
+  headingForPicks(pickCafes({ text: "Dunkin" })) === copy.brandNotListedDonut.en &&
+    copy.brandNotListedDonut.en === "Dunkin' isn't listed on Wain. The list is coffee, and Dunkin' is a donut and dessert chain." &&
+    copy.brandNotListedDonut.ar === "دانكن مو موجودة في وين. القائمة للقهوة، ودانكن سلسلة دونات وحلويات.",
+  "Dunkin' copy is unchanged",
+);
+for (const ask of ["مو ستاربكس", "not starbucks"] as const) {
+  const result = pickCafes({ text: ask });
+  assert(result.noMatch !== true && result.mode === "browse" && result.picks.length === 3, `${ask} is a normal pick`);
+  assert(result.picks.every((pick) => pick.shop.chainBrand !== "starbucks"), `${ask} keeps Starbucks out`);
+}
+assert(pickCafes({ text: "xyzzyq" }).noMatch === true, "a name-looking unknown still gets no-match");
 
 console.log("check-search-quality: ok");
 console.log(

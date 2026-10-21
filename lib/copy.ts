@@ -137,6 +137,10 @@ export const copy = {
     ar: "قصدك {name}؟",
     en: "Did you mean {name}?",
   },
+  didYouMeanTwo: {
+    ar: "قصدك {name}؟ لقينا فرعين",
+    en: "Did you mean {name}? 2 branches match",
+  },
   didYouMeanFew: {
     ar: "قصدك {name}؟ لقينا {count} فروع",
     en: "Did you mean {name}? {count} branches match",
@@ -165,6 +169,10 @@ export const copy = {
     ar: "دانكن مو موجودة في وين. القائمة للقهوة، ودانكن سلسلة دونات وحلويات.",
     en: "Dunkin' isn't listed on Wain. The list is coffee, and Dunkin' is a donut and dessert chain.",
   },
+  brandNotListedDonutNamed: {
+    ar: "{name} مو موجودة في وين. القائمة للقهوة، و{name} سلسلة دونات وحلويات.",
+    en: "{name} isn't listed on Wain. The list is coffee, and {name} is a donut and dessert chain.",
+  },
   brandNotListed: {
     ar: "{name} مو موجودة في وين.",
     en: "{name} isn't listed on Wain.",
@@ -172,6 +180,18 @@ export const copy = {
   showMore: {
     ar: "اعرض {count} زيادة",
     en: "Show {count} more",
+  },
+  showMoreOne: {
+    ar: "اعرض قهوة وحدة زيادة",
+    en: "Show 1 more",
+  },
+  showMoreTwo: {
+    ar: "اعرض قهوتين زيادة",
+    en: "Show 2 more",
+  },
+  showLess: {
+    ar: "اعرض أقل",
+    en: "Show fewer",
   },
   thinCatalog: {
     ar: "القائمة عندي بعد صغيرة — هذي اللي أقدر أقترحها، من غير ما ألف أسماء.",

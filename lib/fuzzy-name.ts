@@ -106,6 +106,33 @@ const COMMON_WORDS = new Set(
   ].map((word) => normalizeShopText(word)),
 );
 
+/**
+ * Donut / dessert-led brands outside the listing policy (LISTING-POLICY §1)
+ * that are not in the chain registry. They get the not-listed reply.
+ */
+const NOT_LISTED_DONUT_BRANDS = [
+  {
+    nameEn: "Krispy Kreme",
+    nameAr: "كرسبي كريم",
+    names: ["krispy kreme", "krispy creme", "krispy", "كرسبي كريم", "كريسبي كريم", "كرسبي", "كريسبي"],
+  },
+] as const;
+
+function notListedDonutBrand(raw: string): { nameEn: string; nameAr: string } | null {
+  const hay = normalizeShopText(raw);
+  if (!hay) return null;
+  for (const brand of NOT_LISTED_DONUT_BRANDS) {
+    for (const name of brand.names) {
+      const needle = normalizeShopText(name);
+      if (!needle) continue;
+      if (new RegExp(`(^|\\s)${escapeRegExp(needle)}(\\s|$)`, "u").test(hay)) {
+        return { nameEn: brand.nameEn, nameAr: brand.nameAr };
+      }
+    }
+  }
+  return null;
+}
+
 type Candidate = {
   norm: string;
   nameEn: string;
@@ -173,7 +200,7 @@ function candidatesFor(shops: readonly Shop[]): Candidate[] {
 }
 
 export type FuzzyNameHit =
-  | { kind: "excluded"; nameEn: string; nameAr: string }
+  | { kind: "excluded"; nameEn: string; nameAr: string; donut?: boolean }
   | {
       kind: "listed";
       nameEn: string;
@@ -231,6 +258,9 @@ export function fuzzyNameHit(
 ): FuzzyNameHit | null {
   const attempts = attemptsFor(raw);
   if (attempts.length === 0) return null;
+
+  const donut = notListedDonutBrand(raw);
+  if (donut) return { kind: "excluded", ...donut, donut: true };
 
   const negated = negatedChainBrandIds(raw);
   const pool = candidatesFor(shops).filter(

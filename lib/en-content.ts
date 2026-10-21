@@ -402,12 +402,16 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   "al-shohda": {
-    lead: `Ash Shuhada is a small east-Riyadh list — one cafe added so far.`,
-    hereIntro: `There is **{count}** cafe from Ash Shuhada on the catalog today:`,
-    hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
+    lead: `Ash Shuhada (الشهداء) sits on the east side of Riyadh. This page is the Ash Shuhada set on wain.lol so far.
 
-Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
+[Camel Step – Granada Business](/en/c/camel-step-granada-business), [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), and [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Ash Shuhada on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Ash Shuhada isn’t the stop, these east-Riyadh lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ash Shuhada. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in Ash Shuhada on wain.lol — a Riyadh neighborhood list including Andarena Cafe and Camel Step, each with a Maps link.",
   },
   "al-safa": {
     lead: `As Safa is an east Riyadh neighborhood on the list. Here are the Safa places we’ve added.`,

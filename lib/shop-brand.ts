@@ -19,6 +19,8 @@ const KNOWN_BRANDS = [
   "breehant",
   // Batch S (20 Oct 2026): Namq Al Malqa + As Salam share a brand key (dedupe, older row first).
   "namq",
+  // Batch SD1 (21 Oct 2026): Black Wolf is its own brand, never folded into Black Stamp.
+  "black wolf",
   "roasting house",
   "percent arabica",
   "sand clock",

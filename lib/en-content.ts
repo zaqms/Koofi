@@ -194,7 +194,6 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-rayyan": ["al-rawdah", "al-safa", "al-rawabi", "al-fayha"],
   "al-rawabi": ["al-rayyan", "al-manar", "al-fayha", "al-safa"],
   "al-fayha": ["al-safa", "al-manar", "al-rayyan", "al-rawabi"],
-  "al-raqban": ["al-manar", "al-safa", "al-fayha", "al-rawabi"],
   "al-munsiyah": ["qurtubah", "al-yarmouk", "al-hamra", "al-rawdah"],
   "an-nada": ["al-yasmin", "al-malqa", "hittin", "as-sahafah"],
   "diplomatic-quarter": ["olaya", "al-rahmaniyyah", "diriyah", "kafd"],
@@ -404,7 +403,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-shohda": {
     lead: `Ash Shuhada (الشهداء) sits on the east side of Riyadh. This page is the Ash Shuhada set on wain.lol so far.
 
-[Camel Step – Granada Business](/en/c/camel-step-granada-business), [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), and [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+[Camel Step – Granada Business](/en/c/camel-step-granada-business), [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda), [Specialty Bean Roastery](/en/c/specialty-bean-ghirnatah), [Mkth](/en/c/mkth-ghirnatah), [BIND Specialty Coffee](/en/c/bind-specialty-coffee-ghirnatah), [JAE Specialty Coffee](/en/c/jae-specialty-coffee-ghirnatah), [Semi Specialty Cafe](/en/c/semi-specialty-cafe-ghirnatah), and [Archi Granada](/en/c/archi-ghirnatah) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There are **{count}** cafes from Ash Shuhada on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Ash Shuhada isn’t the stop, these east-Riyadh lists sit next door on the site:`,
@@ -545,15 +544,6 @@ Riyadh only for now. Missing a place you like? Send a Maps link from the site.`,
 Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
     meta: "{countCafe} in Al Fayha on wain.lol — an east Riyadh list including Rukyah and Roof coffee, each with a Maps link.",
   },
-  "al-raqban": {
-    lead: `Al Raqban (الرقبان) is a short east-Riyadh list — one cafe added so far. We only add what we have.`,
-    hereIntro: `There is **{count}** cafe from Al Raqban on the catalog today:`,
-    hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
-    about: `wain.lol is a small Riyadh coffee guide. [About](/en/about).
-
-Riyadh only for now. Send a Maps link from the site if we missed a shop.`,
-    meta: "{countCafe} in Al Raqban on wain.lol — a Riyadh neighborhood list, with a Maps link.",
-  },
   "al-munsiyah": {
     lead: `Al Munsiyah (المونسية) sits on Riyadh’s east belt, past Qurtubah. If you’re already in المونسية and you just want a coffee from the catalog, this is the Al Munsiyah set on wain.lol.
 
@@ -642,7 +632,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "as-salam": {
     lead: `As Salam (السلام) is on the east side of Riyadh. This page is the As Salam set on wain.lol so far.
 
-[THE HAT](/en/c/the-hat-as-salam), [Sakaf Cafe](/en/c/sakaf-as-salam), [Heddah Roaster](/en/c/heddah-roaster-as-salam), [Bu'd Art Cafe](/en/c/bud-art-cafe-as-salam), [Smpl](/en/c/smpl-as-salam), [Namq Cafe](/en/c/namq-as-salam), and [Breehant](/en/c/breehant-as-salam) are on this list today. We don’t invent extras to fill the page.`,
+[THE HAT](/en/c/the-hat-as-salam), [Sakaf Cafe](/en/c/sakaf-as-salam), [Heddah Roaster](/en/c/heddah-roaster-as-salam), [Bu'd Art Cafe](/en/c/bud-art-cafe-as-salam), [Smpl](/en/c/smpl-as-salam), [Breehant](/en/c/breehant-as-salam), and [Cafe & Roastery](/en/c/maqha-mahamasa-al-raqban) on Al Raqban street are among the local cafes on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There are **{count}** cafes from As Salam on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If As Salam isn’t the stop, these east Riyadh lists sit next door on the site:`,
@@ -1022,7 +1012,7 @@ const CNI_BLURBS: Record<string, string> = {
   "cred-al-mughrizat": `**CRED** is on the Al Mughrizat list on wain.lol — only the names we’ve actually added. We don’t pad it. If this card isn’t the stop, the other Al Mughrizat cafes on the catalog are linked below, and the district page has the whole set.`,
   "sulalat-coffee-ar-rabwah": `**Sulalat** is on the Ar Rabwah catalog — east of the Al Olaya–Wurud stretch, its own neighborhood page. Other Rabwah places on the catalog are linked below if you want a different name from the same list.`,
   "taim-specialty-coffee-as-sahafah": `**Taim Specialty Coffee** is on the As Sahafah list. The other Sahafah names we’ve added are linked underneath — short list, only what’s in the catalog. We don’t invent a longer Sahafah set.`,
-  "archi-ghirnatah": `**Archi Granada** is on the Ghirnatah list — east Riyadh. Other Granada-area places on wain.lol are linked below if you want to stay on that side of the city.`,
+  "archi-ghirnatah": `**Archi Granada** is on the Ash Shuhada list — east Riyadh, by Granada. Other Ash Shuhada places on wain.lol are linked below if you want to stay on that side of the city.`,
   "serene-coffee-roastery": `**SERENE COFFEE ROASTERY** is on the Al Hamra list on wain.lol — the east-belt page. Catalog tags on the card: Roastery. Other الحمراء names sit underneath if this one isn’t the stop.`,
   "rimthan-coffee-al-hamra": `**Rimthan + Coffee** is one of the Al Hamra cafes on wain.lol. If you’re already on that east-Riyadh stretch and you want this card, you’re in the right spot. The rest of the Al Hamra catalog is linked below.`,
   "mind-break-al-hamra": `**Mind Break** is on the Al Hamra catalog — its own card on the الحمراء list. Other Al Hamra names we’ve added are linked underneath.`,

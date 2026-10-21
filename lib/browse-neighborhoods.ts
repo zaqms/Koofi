@@ -140,7 +140,6 @@ const NEIGHBORHOOD_ICONS: Record<NeighborhoodId, NeighborhoodIconKind> = {
   "al-rayyan": "palm",
   "al-rawabi": "tree",
   "al-fayha": "flower",
-  "al-raqban": "pin",
   "al-munsiyah": "sail",
   "an-nada": "tree",
   "diplomatic-quarter": "landmark",

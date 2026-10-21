@@ -298,6 +298,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "arco-al-shohda": ["arco shohda", "arco shuhada", "اركو الشهداء"],
   "tahn-al-shohda": ["tahn", "tahn coffee", "طحن قهوة", "طحن قهوة مختصة"],
   "illy-cafe-granada-mall-al-shohda": ["illy", "illy cafe", "illy caffe", "ايلي", "ايللي", "ايلي كافيه"],
+  // 21 Oct 2026: common short spelling.
+  "black-wolf-al-shohda": ["بلاك ولف"],
   "drcafe-ash-shuhada-al-shohda": ["dr cafe shuhada", "drcafe shuhada", "dr cafe shohda", "د.كيف الشهداء", "د كيف الشهداء"],
   "drcafe-granada-mall-al-shohda": ["dr cafe granada", "drcafe granada", "dr cafe granada mall", "د.كيف غرناطة", "د كيف غرناطة", "د.كيف غرناطة مول"],
   "peets-granada-mall-al-shohda": ["peets granada", "peet's granada", "بيتس غرناطة"],
@@ -420,6 +422,8 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "cobee-cafe-al-shohda": ["كوبي"],
   "black-wolf-al-shohda": ["black", "wolf", "بلاك", "وولف"],
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
+  // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
+  "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
 };
 
 function chainBrandIdForShop(

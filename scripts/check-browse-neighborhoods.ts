@@ -232,13 +232,13 @@ for (const row of rowsEn) {
       row.id === "al-takhassusi"
         ? 7
         : row.id === "al-ghadeer"
-          ? 9
+          ? 10 // + MID-SAJJ, trending add 21 Oct
           : row.id === "al-qirawan"
             ? 13
             : row.id === "al-arid"
               ? 10 // drive-al-arid is a chain with unknown dine-in (4 Oct 2026)
               : row.id === "al-aqiq"
-                ? 9 // Batch D3 adds Nahl
+                ? 10 // Batch D3 adds Nahl; trending 21 Oct adds KAFFO
                 : 8;
     assert(
       row.cafeCount === expected,
@@ -251,8 +251,8 @@ for (const row of rowsEn) {
     );
   } else if ((MURUJ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 10,
-      `${row.id} Muruj refill has 10 cafes, got ${row.cafeCount}`,
+      row.cafeCount === 11,
+      `${row.id} Muruj refill has 11 cafes (10 + Savura, trending add 21 Oct), got ${row.cafeCount}`,
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(

@@ -80,10 +80,10 @@ export function shopCardNumber(id: string): string {
  *
  * - `pages` — every real shop with a café page (`/c/{id}` in the sitemap).
  *   Drive-through-only shops stay in this set and are tagged
- *   `catalogLane: "drive-through"`. This is the default `GET /api/shops`.
+ *   `catalogLane: "drive-through"`. Never a public query view.
  * - `listing` — the sit-down directory: local specialty plus dine-in
  *   chains. Drive-through-only rows stay out. District pages, browse,
- *   and `GET /api/shops?view=listing` (the previous API default).
+ *   and the default for any public query (`catalogViewFromQuery`).
  * - `discovery` — homepage specialty feed and Most Popular. Drops every
  *   chain and every drive-through-only row on purpose. Chains stay on
  *   district listings and in `pages`.
@@ -116,21 +116,18 @@ export function selectCatalogShops<T extends Shop>(
   }
 }
 
+/** A view a public query may ask for. Both keep every unlisted row out. */
+export type PublicCatalogView = "listing" | "discovery";
+
 /**
- * `GET /api/shops` query. Missing, `pages`, and `all` are every café page.
- * `listing`, `discovery`, and `drive-through` are the named views above.
+ * A public `?view=` query (not wired to `GET /api/shops` today). Listed-only:
+ * missing, unknown, `pages`, `all`, and `drive-through` are `listing`, so the
+ * drive-through and pickup-only rows can never leave through a query.
  */
 export function catalogViewFromQuery(
   value: string | null | undefined,
-): CatalogView {
-  if (
-    value === "listing" ||
-    value === "discovery" ||
-    value === "drive-through"
-  ) {
-    return value;
-  }
-  return "pages";
+): PublicCatalogView {
+  return value === "discovery" ? "discovery" : "listing";
 }
 
 export function listRealShops(city: City = DEFAULT_LIVE_CITY): Shop[] {

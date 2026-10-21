@@ -10,7 +10,7 @@ const MAX_EVENTS = 400;
 const SESSION_RE = /^[a-f0-9]{12}$/;
 
 export const LEARN_NOTE =
-  "Quiet first-party learning pile. Ask + three shop ids, and Maps taps. Not a ranker. Not public analytics.";
+  "Quiet first-party learning pile. Ask + the shop ids shown (up to 30), and Maps taps. Not a ranker. Not public analytics.";
 
 export type LearnAskEvent = {
   kind: "ask";

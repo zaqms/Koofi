@@ -1082,7 +1082,10 @@ export function Chat({
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
     // Typed "nearby" / «قريب مني» is the Nearby chip: nearest cafés on the device.
+    // The pin stays on the device; the query line is text only, like any typed ask.
     if ((options?.via ?? "typed") === "typed" && !awaitingMaps && isNearbyAsk(trimmed)) {
+      trackChatQuery({ text: trimmed, locale: landing, via: "typed" });
+      setDraft("");
       void sendNearby(trimmed);
       return;
     }

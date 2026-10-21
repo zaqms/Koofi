@@ -64,8 +64,8 @@ const shops = listPublicShops();
 assert(
   shops.length === listListingShops().length &&
     shops.length === listDiscoveryShops().length + shops.filter((shop) => shop.isChain).length &&
-    shops.filter((shop) => shop.isChain).length === 39,
-  "public list is specialty plus the 39 sit-down chains (34 + 5 Batch R Al Qadisiyah)",
+    shops.filter((shop) => shop.isChain).length === 46,
+  "public list is specialty plus the 46 sit-down chains (34 + 5 Batch R Al Qadisiyah + 7 Batch SD1 Al Shohda)",
 );
 assert(shops.length > 0, "catalog is not empty");
 
@@ -715,8 +715,8 @@ const outdoorList = fixedListItemListJsonLd("outdoor", "ar");
 const coffeeList = fixedListItemListJsonLd("coffee", "en");
 const workList = fixedListItemListJsonLd("work", "ar");
 assert(fixedListItemListJsonLd("nearby", "ar") == null, "nearby has no ItemList");
-assert(outdoorList?.numberOfItems === 265, "outdoor ItemList is 265 (+ Half Million and Starbucks Rakaa Plaza Al Qadisiyah, Batch R; + Sakaf and Breehant As Salam, Batch S)");
-assert(coffeeList?.numberOfItems === 69, "best coffee ItemList is 69 (+ Heddah Roaster and Breehant As Salam, roaster tag, Batch S)");
+assert(outdoorList?.numberOfItems === 274, "outdoor ItemList is 274 (+ Half Million and Starbucks Rakaa Plaza Al Qadisiyah, Batch R; + Sakaf and Breehant As Salam, Batch S; + Andarena, BeFine, Cobee, Arco, Tahn, Black Wolf, dr.CAFE Ash Shuhada, Peet's and Tim Hortons Granada Mall, Batch SD1)");
+assert(coffeeList?.numberOfItems === 70, "best coffee ItemList is 70 (+ Heddah Roaster and Breehant As Salam, roaster tag, Batch S; + Black Wolf Al Shohda, Batch SD1)");
 assert(workList?.numberOfItems === 65, "work ItemList is 65");
 assert(outdoorList?.name === "قهاوي فيها جلسات خارجية في الرياض", "outdoor ItemList name is the H1");
 assert(!JSON.stringify(coffeeList).includes("noindex"), "best coffee list stays indexable");

@@ -60736,6 +60736,1600 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "andarena-cafe-al-shohda",
+      "nameAr": "مقهى اندرينا",
+      "nameEn": "Andarena Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd18735ee2db:0x1df41553feb2d438!8m2!3d24.7884919!4d46.733294699999995",
+      "pin": {
+        "lat": 24.7884919,
+        "lng": 46.733294699999995
+      },
+      "logoUrl": "/logos/andarena-cafe-al-shohda.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ2-Jecxj9Lj4RONSy_lMV9B0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 7:00 AM – 2:00 AM",
+          "Saturday: 7:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "befine-coffee-al-shohda",
+      "nameAr": "بي فاين كوفي",
+      "nameEn": "BeFine Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd0038f4e31f:0xd62b1b3077d726c7!8m2!3d24.786702599999998!4d46.7457858",
+      "pin": {
+        "lat": 24.786702599999998,
+        "lng": 46.7457858
+      },
+      "logoUrl": "/logos/befine-coffee-al-masif.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJH-P0OAD9Lj4RxybXdzAbK9Y",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 2:00 AM",
+          "Tuesday: 6:00 AM – 2:00 AM",
+          "Wednesday: 6:00 AM – 2:00 AM",
+          "Thursday: 6:00 AM – 3:00 AM",
+          "Friday: 6:00 AM – 3:00 AM",
+          "Saturday: 6:00 AM – 2:00 AM",
+          "Sunday: 6:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 3,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "cobee-cafe-al-shohda",
+      "nameAr": "كوبي كافيه",
+      "nameEn": "Cobee Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd753a95c917:0x5a0414b7a3665826!8m2!3d24.789558099999997!4d46.7357461",
+      "pin": {
+        "lat": 24.789558099999997,
+        "lng": 46.7357461
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJF8mVOnX9Lj4RJlhmo7cUBFo",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 1:00 AM",
+          "Tuesday: 6:00 AM – 1:00 AM",
+          "Wednesday: 6:00 AM – 1:00 AM",
+          "Thursday: 6:00 AM – 2:00 AM",
+          "Friday: 8:00 AM – 2:00 AM",
+          "Saturday: 8:00 AM – 1:00 AM",
+          "Sunday: 6:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "arco-al-shohda",
+      "nameAr": "اركو",
+      "nameEn": "Arco",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd61dbfbdda5:0xb77ccda886b960e5!8m2!3d24.7903315!4d46.740176600000005",
+      "pin": {
+        "lat": 24.7903315,
+        "lng": 46.740176600000005
+      },
+      "logoUrl": "/logos/arco-al-rabi.jpg",
+      "popularityIndex": 40,
+      "placeId": "ChIJpd3722H9Lj4R5WC5hqjNfLc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:30 AM – 12:00 AM",
+          "Tuesday: 6:30 AM – 12:00 AM",
+          "Wednesday: 6:30 AM – 12:00 AM",
+          "Thursday: 6:30 AM – 12:00 AM",
+          "Friday: 9:00 AM – 2:00 AM",
+          "Saturday: 9:00 AM – 12:00 AM",
+          "Sunday: 6:30 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tahn-al-shohda",
+      "nameAr": "طحن قهوة مختصة",
+      "nameEn": "Tahn Specialty Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd3f282b09d5:0x784d213630fae89f!8m2!3d24.790318!4d46.743287099999996",
+      "pin": {
+        "lat": 24.790318,
+        "lng": 46.743287099999996
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJ1QkrKD_9Lj4Rn-j6MDYhTXg",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:30 AM – 1:00 AM",
+          "Tuesday: 6:30 AM – 1:00 AM",
+          "Wednesday: 6:30 AM – 1:00 AM",
+          "Thursday: 6:30 AM – 1:00 AM",
+          "Friday: 6:30 AM – 1:00 AM",
+          "Saturday: 6:30 AM – 1:00 AM",
+          "Sunday: 6:30 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "black-wolf-al-shohda",
+      "nameAr": "بلاك وولف",
+      "nameEn": "Black Wolf",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd7053f23f3b:0xc7eeccaff5343ee0!8m2!3d24.789417699999998!4d46.735755999999995",
+      "pin": {
+        "lat": 24.789417699999998,
+        "lng": 46.735755999999995
+      },
+      "logoUrl": "/logos/black-wolf-al-shohda.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJOz_yU3D9Lj4R4D409a_M7sc",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 8:00 AM – 2:00 AM",
+          "Tuesday: 8:00 AM – 2:00 AM",
+          "Wednesday: 8:00 AM – 2:00 AM",
+          "Thursday: 8:00 AM – 2:00 AM",
+          "Friday: 8:00 AM – 2:00 AM",
+          "Saturday: 8:00 AM – 2:00 AM",
+          "Sunday: 8:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "illy-cafe-granada-mall-al-shohda",
+      "nameAr": "ايلي كافيه – غرناطة مول",
+      "nameEn": "illy caffè – Granada Mall",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd85efdba3f9:0x1cb87a6b27d26de0!8m2!3d24.7838125!4d46.7305625",
+      "pin": {
+        "lat": 24.7838125,
+        "lng": 46.7305625
+      },
+      "logoUrl": "/logos/illy-cafe-granada-mall-al-shohda.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ-aPb74X9Lj4R4G3SJ2t6uBw",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 9:00 AM – 11:30 PM",
+          "Tuesday: 9:00 AM – 11:30 PM",
+          "Wednesday: 9:00 AM – 11:30 PM",
+          "Thursday: 9:00 AM – 11:30 PM",
+          "Friday: 1:00 – 11:30 PM",
+          "Saturday: 9:00 AM – 11:30 PM",
+          "Sunday: 9:00 AM – 11:30 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 30
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "drcafe-ash-shuhada-al-shohda",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
+      "nameAr": "د.كيف كافيه",
+      "nameEn": "dr.CAFE",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2eff5afad247b5:0x84bb199d1c32ffac!8m2!3d24.783973900000003!4d46.7480426",
+      "pin": {
+        "lat": 24.783973900000003,
+        "lng": 46.7480426
+      },
+      "logoUrl": "/logos/drcafe-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJtUfS-lr_Lj4RrP8yHJ0Zu4Q",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "drcafe-granada-mall-al-shohda",
+      "isChain": true,
+      "chainBrand": "dr-cafe",
+      "nameAr": "د.كيف كافيه",
+      "nameEn": "dr.CAFE",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd8c4a2d9823:0x6a255627a293fce7!8m2!3d24.7815574!4d46.730621899999996",
+      "pin": {
+        "lat": 24.7815574,
+        "lng": 46.730621899999996
+      },
+      "logoUrl": "/logos/drcafe-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJI5gtSoz9Lj4R5_yToidWJWo",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 8:00 AM – 12:00 AM",
+          "Tuesday: 8:00 AM – 12:00 AM",
+          "Wednesday: 8:00 AM – 12:00 AM",
+          "Thursday: 8:00 AM – 12:00 AM",
+          "Friday: 12:00 PM – 1:00 AM",
+          "Saturday: 8:00 AM – 12:00 AM",
+          "Sunday: 8:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 12,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "peets-granada-mall-al-shohda",
+      "isChain": true,
+      "chainBrand": "peets",
+      "nameAr": "بيتس كوفي",
+      "nameEn": "Peet's Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdb9ac78f879:0x9d7f0b464ddde5e8!8m2!3d24.782891000000003!4d46.729825000000005",
+      "pin": {
+        "lat": 24.782891000000003,
+        "lng": 46.729825000000005
+      },
+      "logoUrl": "/logos/peets-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJefh4rLn9Lj4R6OXdTUYLf50",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 1:00 AM",
+          "Tuesday: 7:00 AM – 1:00 AM",
+          "Wednesday: 7:00 AM – 1:00 AM",
+          "Thursday: 7:00 AM – 1:00 AM",
+          "Friday: 7:00 AM – 1:00 AM",
+          "Saturday: 7:00 AM – 1:00 AM",
+          "Sunday: 7:00 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "starbucks-granada-mall-al-shohda",
+      "isChain": true,
+      "chainBrand": "starbucks",
+      "nameAr": "ستاربكس",
+      "nameEn": "Starbucks",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd733480fb0b:0x6975469e3346095!8m2!3d24.782574!4d46.7304947",
+      "pin": {
+        "lat": 24.782574,
+        "lng": 46.7304947
+      },
+      "logoUrl": "/logos/starbucks-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJC_uANHP9Lj4RlWA042lUlwY",
+      "dineIn": true,
+      "outdoorSeating": false,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 9:30 AM – 12:00 AM",
+          "Tuesday: 9:30 AM – 12:00 AM",
+          "Wednesday: 9:30 AM – 12:00 AM",
+          "Thursday: 9:30 AM – 1:00 AM",
+          "Friday: 1:00 PM – 1:00 AM",
+          "Saturday: 9:30 AM – 12:00 AM",
+          "Sunday: 9:30 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 9,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 9,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 9,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 9,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 9,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 9,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "half-million-al-shohda",
+      "isChain": true,
+      "chainBrand": "half-million",
+      "nameAr": "هاف مليون",
+      "nameEn": "Half Million",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdada16863e1:0x13bd9c8af7c556de!8m2!3d24.780963000000003!4d46.740935",
+      "pin": {
+        "lat": 24.780963000000003,
+        "lng": 46.740935
+      },
+      "logoUrl": "/logos/half-million-mark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJ4WNooa39Lj4R3lbF94qcvRM",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "tim-hortons-granada-mall-al-shohda",
+      "isChain": true,
+      "chainBrand": "tim-hortons",
+      "nameAr": "تيم هورتنز",
+      "nameEn": "Tim Hortons",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdc01be2ae1f:0x627fa85877c2ec5f!8m2!3d24.7831908!4d46.7298155",
+      "pin": {
+        "lat": 24.7831908,
+        "lng": 46.7298155
+      },
+      "logoUrl": "/logos/tim-hortons-wordmark.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJH67iG8D9Lj4RX-zCd1iof2I",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 12:00 AM",
+          "Tuesday: 7:00 AM – 12:00 AM",
+          "Wednesday: 7:00 AM – 12:00 AM",
+          "Thursday: 7:00 AM – 12:00 AM",
+          "Friday: 7:00 – 10:30 AM, 1:00 PM – 12:00 AM",
+          "Saturday: 7:00 AM – 12:00 AM",
+          "Sunday: 7:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 10,
+              "minute": 30
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "caribou-granada-mall-al-shohda",
+      "isChain": true,
+      "chainBrand": "caribou",
+      "nameAr": "كاريبو كوفي",
+      "nameEn": "Caribou Coffee",
+      "city": "riyadh",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd68e8037217:0xd5ec335f149b0ae5!8m2!3d24.782840999999998!4d46.729898",
+      "pin": {
+        "lat": 24.782840999999998,
+        "lng": 46.729898
+      },
+      "logoUrl": "/logos/caribou-coffee-diplomatic-quarter.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 8:00 AM – 11:00 PM",
+          "Tuesday: 8:00 AM – 11:00 PM",
+          "Wednesday: 8:00 AM – 11:00 PM",
+          "Thursday: 8:00 AM – 11:00 PM",
+          "Friday: 8:00 AM – 11:00 PM",
+          "Saturday: 8:00 AM – 11:00 PM",
+          "Sunday: 8:00 AM – 11:00 PM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 23,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 8,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 23,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

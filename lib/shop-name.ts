@@ -292,6 +292,19 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "heddah-roaster-as-salam": ["heddah", "heddah roaster", "محمصة حدة", "محمصة حده"],
   "sakaf-as-salam": ["sakaf", "sakaf cafe", "سكف"],
   "breehant-as-salam": ["breehant salam", "breehant as salam", "بريهانت السلام"],
+  // Batch SD1 (21 Oct 2026), Al Shohda: branch-qualified names for the second BeFine / Arco
+  // rows and the Granada Mall chain branches; bare tokens are blocked below.
+  "befine-coffee-al-shohda": ["befine shohda", "befine shuhada", "بي فاين الشهداء"],
+  "arco-al-shohda": ["arco shohda", "arco shuhada", "اركو الشهداء"],
+  "tahn-al-shohda": ["tahn", "tahn coffee", "طحن قهوة", "طحن قهوة مختصة"],
+  "illy-cafe-granada-mall-al-shohda": ["illy", "illy cafe", "illy caffe", "ايلي", "ايللي", "ايلي كافيه"],
+  "drcafe-ash-shuhada-al-shohda": ["dr cafe shuhada", "drcafe shuhada", "dr cafe shohda", "د.كيف الشهداء", "د كيف الشهداء"],
+  "drcafe-granada-mall-al-shohda": ["dr cafe granada", "drcafe granada", "dr cafe granada mall", "د.كيف غرناطة", "د كيف غرناطة", "د.كيف غرناطة مول"],
+  "peets-granada-mall-al-shohda": ["peets granada", "peet's granada", "بيتس غرناطة"],
+  "starbucks-granada-mall-al-shohda": ["starbucks granada", "starbucks granada mall", "ستاربكس غرناطة"],
+  "half-million-al-shohda": ["half million shohda", "half million shuhada", "هاف مليون الشهداء"],
+  "tim-hortons-granada-mall-al-shohda": ["tim hortons granada", "تيم هورتنز غرناطة"],
+  "caribou-granada-mall-al-shohda": ["caribou granada", "كاريبو غرناطة"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -400,6 +413,13 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   // are everyday tokens and never pin a single As Salam café alone.
   "bud-art-cafe-as-salam": ["bud", "bu d", "بعد", "art", "آرت", "ارت", "art cafe", "آرت كافيه", "cafe", "كافيه"],
   "heddah-roaster-as-salam": ["حدة", "حده", "حِدّة", "roaster", "محمصة"],
+  // Batch SD1 (21 Oct 2026): «طحن» ("grinding"), «كوبي» ("my cup"), black / wolf / بلاك and
+  // mall / مول / Granada (also the Ghirnatah district) are everyday tokens and never pin an
+  // Al Shohda café alone.
+  "tahn-al-shohda": ["طحن"],
+  "cobee-cafe-al-shohda": ["كوبي"],
+  "black-wolf-al-shohda": ["black", "wolf", "بلاك", "وولف"],
+  "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
 };
 
 function chainBrandIdForShop(

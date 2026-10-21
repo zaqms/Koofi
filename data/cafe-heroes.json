@@ -17171,5 +17171,355 @@
         "uri": "https://maps.google.com/maps/contrib/102174253545008672528"
       }
     }
+  ],
+  "andarena-cafe-al-shohda": [
+    {
+      "src": "/cafe-heroes/andarena-cafe-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Andarena Cafe",
+        "uri": "https://maps.google.com/maps/contrib/118044079652720343370"
+      }
+    },
+    {
+      "src": "/cafe-heroes/andarena-cafe-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "نوره سعد",
+        "uri": "https://maps.google.com/maps/contrib/109306336592188510458"
+      }
+    },
+    {
+      "src": "/cafe-heroes/andarena-cafe-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "نوره سعد",
+        "uri": "https://maps.google.com/maps/contrib/109306336592188510458"
+      }
+    },
+    {
+      "src": "/cafe-heroes/andarena-cafe-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "Andarena Cafe",
+        "uri": "https://maps.google.com/maps/contrib/118044079652720343370"
+      }
+    }
+  ],
+  "befine-coffee-al-shohda": [
+    {
+      "src": "/cafe-heroes/befine-coffee-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Azmat Ali Ansari",
+        "uri": "https://maps.google.com/maps/contrib/102277102426513501210"
+      }
+    },
+    {
+      "src": "/cafe-heroes/befine-coffee-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "بي فاين كوفي - Befine coffee",
+        "uri": "https://maps.google.com/maps/contrib/104115713754770069710"
+      }
+    },
+    {
+      "src": "/cafe-heroes/befine-coffee-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "Manal",
+        "uri": "https://maps.google.com/maps/contrib/116167729006605218634"
+      }
+    },
+    {
+      "src": "/cafe-heroes/befine-coffee-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "Azmat Ali Ansari",
+        "uri": "https://maps.google.com/maps/contrib/102277102426513501210"
+      }
+    }
+  ],
+  "cobee-cafe-al-shohda": [
+    {
+      "src": "/cafe-heroes/cobee-cafe-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Shifa Farhat",
+        "uri": "https://maps.google.com/maps/contrib/115810590922824483089"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cobee-cafe-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "AJ Hmoud",
+        "uri": "https://maps.google.com/maps/contrib/100660903054752458151"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cobee-cafe-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "Zahra Hassan",
+        "uri": "https://maps.google.com/maps/contrib/103205786894471657852"
+      }
+    }
+  ],
+  "arco-al-shohda": [
+    {
+      "src": "/cafe-heroes/arco-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Arco",
+        "uri": "https://maps.google.com/maps/contrib/116087267168285966518"
+      }
+    },
+    {
+      "src": "/cafe-heroes/arco-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "Raghad",
+        "uri": "https://maps.google.com/maps/contrib/116872227618855661979"
+      }
+    },
+    {
+      "src": "/cafe-heroes/arco-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "Raghad",
+        "uri": "https://maps.google.com/maps/contrib/116872227618855661979"
+      }
+    },
+    {
+      "src": "/cafe-heroes/arco-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "Arco",
+        "uri": "https://maps.google.com/maps/contrib/116087267168285966518"
+      }
+    }
+  ],
+  "tahn-al-shohda": [
+    {
+      "src": "/cafe-heroes/tahn-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "طحن قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/113990610088128028498"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tahn-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tahn-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "طحن قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/113990610088128028498"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tahn-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "طحن قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/113990610088128028498"
+      }
+    }
+  ],
+  "black-wolf-al-shohda": [
+    {
+      "src": "/cafe-heroes/black-wolf-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "محمصة ومقهى بلاك وولف | BLACK WOLF",
+        "uri": "https://maps.google.com/maps/contrib/106778718265479384958"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-wolf-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "Jon Mullin",
+        "uri": "https://maps.google.com/maps/contrib/113582461325258249740"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-wolf-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "Faisal Mansour",
+        "uri": "https://maps.google.com/maps/contrib/107893595109723412619"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-wolf-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "محمصة ومقهى بلاك وولف | BLACK WOLF",
+        "uri": "https://maps.google.com/maps/contrib/106778718265479384958"
+      }
+    }
+  ],
+  "illy-cafe-granada-mall-al-shohda": [
+    {
+      "src": "/cafe-heroes/illy-cafe-granada-mall-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "illy cafe | ايللي كافيه",
+        "uri": "https://maps.google.com/maps/contrib/101568874193898748410"
+      }
+    },
+    {
+      "src": "/cafe-heroes/illy-cafe-granada-mall-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "add mop",
+        "uri": "https://maps.google.com/maps/contrib/102715853040982888708"
+      }
+    }
+  ],
+  "drcafe-ash-shuhada-al-shohda": [
+    {
+      "src": "/cafe-heroes/drcafe-ash-shuhada-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Mar Moh",
+        "uri": "https://maps.google.com/maps/contrib/104960575031097097539"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-ash-shuhada-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "mohd k",
+        "uri": "https://maps.google.com/maps/contrib/110341190222175882185"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-ash-shuhada-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "mohd k",
+        "uri": "https://maps.google.com/maps/contrib/110341190222175882185"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-ash-shuhada-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "hazel Anne nichole agustin",
+        "uri": "https://maps.google.com/maps/contrib/112871210132920965701"
+      }
+    }
+  ],
+  "drcafe-granada-mall-al-shohda": [
+    {
+      "src": "/cafe-heroes/drcafe-granada-mall-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Wasim Al-Nahlawi",
+        "uri": "https://maps.google.com/maps/contrib/114921610768397692085"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-granada-mall-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "Anas Ali",
+        "uri": "https://maps.google.com/maps/contrib/115201708718387607748"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-granada-mall-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "dr.CAFE @ Granada Mall | د.كيف @ غرناطة مول | Hybrid V12 Station",
+        "uri": "https://maps.google.com/maps/contrib/102482949159868536979"
+      }
+    },
+    {
+      "src": "/cafe-heroes/drcafe-granada-mall-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "Fawzwah Alshehri",
+        "uri": "https://maps.google.com/maps/contrib/110879719479403534231"
+      }
+    }
+  ],
+  "peets-granada-mall-al-shohda": [
+    {
+      "src": "/cafe-heroes/peets-granada-mall-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Ahmed Hossam",
+        "uri": "https://maps.google.com/maps/contrib/114724367897932199787"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peets-granada-mall-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "Basel Suyyagh",
+        "uri": "https://maps.google.com/maps/contrib/107859558850453519613"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peets-granada-mall-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "Bu HmD",
+        "uri": "https://maps.google.com/maps/contrib/103122592791257551150"
+      }
+    },
+    {
+      "src": "/cafe-heroes/peets-granada-mall-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "Peet's Coffee | Granada Mall",
+        "uri": "https://maps.google.com/maps/contrib/115896459404779241380"
+      }
+    }
+  ],
+  "starbucks-granada-mall-al-shohda": [
+    {
+      "src": "/cafe-heroes/starbucks-granada-mall-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Starbucks",
+        "uri": "https://maps.google.com/maps/contrib/116437863829227441308"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-granada-mall-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "S_T S_R.",
+        "uri": "https://maps.google.com/maps/contrib/104082619283409745719"
+      }
+    }
+  ],
+  "half-million-al-shohda": [
+    {
+      "src": "/cafe-heroes/half-million-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "Half Million",
+        "uri": "https://maps.google.com/maps/contrib/110145177179114689981"
+      }
+    },
+    {
+      "src": "/cafe-heroes/half-million-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "David Huang",
+        "uri": "https://maps.google.com/maps/contrib/114934489970658128867"
+      }
+    },
+    {
+      "src": "/cafe-heroes/half-million-al-shohda/3.jpg",
+      "attribution": {
+        "displayName": "Moha reviews",
+        "uri": "https://maps.google.com/maps/contrib/111453980341046900712"
+      }
+    },
+    {
+      "src": "/cafe-heroes/half-million-al-shohda/4.jpg",
+      "attribution": {
+        "displayName": "Fares Q8",
+        "uri": "https://maps.google.com/maps/contrib/106847112846444943315"
+      }
+    }
+  ],
+  "tim-hortons-granada-mall-al-shohda": [
+    {
+      "src": "/cafe-heroes/tim-hortons-granada-mall-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "ibrahim azid",
+        "uri": "https://maps.google.com/maps/contrib/110304973406594379247"
+      }
+    }
+  ],
+  "caribou-granada-mall-al-shohda": [
+    {
+      "src": "/cafe-heroes/caribou-granada-mall-al-shohda/1.jpg",
+      "attribution": {
+        "displayName": "KHAWLA A",
+        "uri": "https://maps.google.com/maps/contrib/103195435789738898025"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caribou-granada-mall-al-shohda/2.jpg",
+      "attribution": {
+        "displayName": "Omar AlSHathri",
+        "uri": "https://maps.google.com/maps/contrib/101770881966719645465"
+      }
+    }
   ]
 }

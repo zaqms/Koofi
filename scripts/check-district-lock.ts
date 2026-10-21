@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 69, `expected 69 district pages (72 on main minus 5 Drive-only districts, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 68, `expected 68 district pages (Al Raqban folded into As Salam, 21 Oct; 72 on main minus 5 Drive-only districts, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 

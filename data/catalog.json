@@ -2644,6 +2644,8 @@
     },
     {
       "id": "namq-al-malqa",
+      "isChain": true,
+      "chainBrand": "namq",
       "nameAr": "نمق",
       "nameEn": "Namq Cafe",
       "city": "riyadh",
@@ -10336,8 +10338,8 @@
       "nameAr": "محمصة سبيشلتي بين",
       "nameEn": "Specialty Bean Roastery",
       "city": "riyadh",
-      "neighborhood": "ghirnatah",
-      "neighborhoodAr": "غرناطة",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
       "vibeTags": [
         "محمصة",
         "قهوة"
@@ -10461,8 +10463,8 @@
       "nameAr": "مكث",
       "nameEn": "Mkth",
       "city": "riyadh",
-      "neighborhood": "ghirnatah",
-      "neighborhoodAr": "غرناطة",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
       "vibeTags": [
         "قهوة"
       ],
@@ -10584,8 +10586,8 @@
       "nameAr": "بايند قهوة مختصة",
       "nameEn": "BIND Specialty Coffee",
       "city": "riyadh",
-      "neighborhood": "ghirnatah",
-      "neighborhoodAr": "غرناطة",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
       "vibeTags": [
         "قهوة"
       ],
@@ -10877,8 +10879,8 @@
       "nameAr": "جاي قهوة مختصة",
       "nameEn": "JAE Specialty Coffee",
       "city": "riyadh",
-      "neighborhood": "ghirnatah",
-      "neighborhoodAr": "غرناطة",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
       "vibeTags": [
         "قهوة"
       ],
@@ -11123,8 +11125,8 @@
       "nameAr": "سيمي قهوة مختصة",
       "nameEn": "Semi Specialty Cafe",
       "city": "riyadh",
-      "neighborhood": "ghirnatah",
-      "neighborhoodAr": "غرناطة",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
       "vibeTags": [
         "قهوة"
       ],
@@ -11345,8 +11347,8 @@
       "nameAr": "ارتشي غرناطة",
       "nameEn": "Archi Granada",
       "city": "riyadh",
-      "neighborhood": "ghirnatah",
-      "neighborhoodAr": "غرناطة",
+      "neighborhood": "al-shohda",
+      "neighborhoodAr": "الشهداء",
       "vibeTags": [
         "قهوة"
       ],
@@ -18860,8 +18862,8 @@
       "nameAr": "مقهى ومحمصة",
       "nameEn": "Cafe & Roastery",
       "city": "riyadh",
-      "neighborhood": "al-raqban",
-      "neighborhoodAr": "الرقبان",
+      "neighborhood": "as-salam",
+      "neighborhoodAr": "السلام",
       "vibeTags": [
         "محمصة",
         "قهوة"
@@ -60076,6 +60078,8 @@
     },
     {
       "id": "namq-as-salam",
+      "isChain": true,
+      "chainBrand": "namq",
       "nameAr": "نمق",
       "nameEn": "Namq Cafe",
       "city": "riyadh",
@@ -61602,8 +61606,8 @@
       "id": "drcafe-ash-shuhada-al-shohda",
       "isChain": true,
       "chainBrand": "dr-cafe",
-      "nameAr": "د.كيف كافيه",
-      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف الشهداء",
+      "nameEn": "dr.CAFE Ash Shuhada",
       "city": "riyadh",
       "neighborhood": "al-shohda",
       "neighborhoodAr": "الشهداء",
@@ -61650,8 +61654,8 @@
       "id": "drcafe-granada-mall-al-shohda",
       "isChain": true,
       "chainBrand": "dr-cafe",
-      "nameAr": "د.كيف كافيه",
-      "nameEn": "dr.CAFE",
+      "nameAr": "د.كيف غرناطة مول",
+      "nameEn": "dr.CAFE Granada Mall",
       "city": "riyadh",
       "neighborhood": "al-shohda",
       "neighborhoodAr": "الشهداء",

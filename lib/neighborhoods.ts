@@ -481,20 +481,6 @@ export const NEIGHBORHOODS: Record<
       "al fayhaa",
     ],
   },
-  "al-raqban": {
-    id: "al-raqban",
-    ar: "الرقبان",
-    en: "Al Raqban",
-    aliases: [
-      "الرقبان",
-      "رقبان",
-      "raqban",
-      "al raqban",
-      "al-raqban",
-      "alraqban",
-      "Al Raqban",
-    ],
-  },
   "al-munsiyah": {
     id: "al-munsiyah",
     ar: "المونسية",
@@ -788,6 +774,14 @@ export const NEIGHBORHOODS: Record<
       "al-salam",
       "assalam",
       "As Salam",
+      // 21 Oct 2026: Al Raqban is a street inside As Salam; its one café moved here and /coffee-shops/al-raqban redirects.
+      "الرقبان",
+      "رقبان",
+      "raqban",
+      "al raqban",
+      "al-raqban",
+      "alraqban",
+      "Al Raqban",
     ],
   },
   ghubairah: {

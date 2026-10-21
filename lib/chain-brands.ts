@@ -142,6 +142,13 @@ export const CHAIN_BRANDS = {
     nameAr: "ذا كوفي بين آند تي ليف",
     logo: "/logos/coffee-bean-mark.png",
   },
+  // 21 Oct 2026 (Amjad via Ajz): Namq's own Linktree lists 10 Riyadh branches (11 placeIds on Maps), so it is a chain under the 8+ branch rule. Reuses the live Namq mark.
+  namq: {
+    id: "namq",
+    nameEn: "Namq Cafe",
+    nameAr: "نمق",
+    logo: "/logos/namq-al-malqa.jpg",
+  },
 } as const satisfies Record<string, ChainBrand>;
 
 export type ChainBrandId = keyof typeof CHAIN_BRANDS;
@@ -173,6 +180,7 @@ const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   caribou: ["caribou", "caribou coffee", "كاريبو", "كاريبو كوفي", "كاريبو كافيه"],
   // Brand-qualified only: bare "coffee bean" / bean / tea / leaf are everyday words.
   "coffee-bean": ["coffee bean & tea leaf", "coffee bean and tea leaf", "coffee bean tea leaf", "the coffee bean", "cbtl", "كوفي بين آند تي ليف", "كوفي بين اند تي ليف", "ذا كوفي بين", "كوفي بين"],
+  namq: ["namq", "namq cafe", "نمق", "مقهى نمق", "نمق كافيه"],
 };
 
 export function chainBrandSearchAliases(id: ChainBrandId): readonly string[] {
@@ -227,6 +235,7 @@ export function chainBrandKeyFromName(latinName: string): string | null {
   if (latinName.startsWith("veloce")) return "veloce";
   if (latinName.startsWith("costa")) return "costa";
   if (latinName.startsWith("caribou")) return "caribou";
+  if (latinName.startsWith("namq")) return "namq";
   if (latinName.startsWith("the coffee bean") || latinName.startsWith("coffee bean & tea") || latinName.startsWith("coffee bean and tea")) return "coffee-bean";
   if (
     latinName.startsWith("half million") ||

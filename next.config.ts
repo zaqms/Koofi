@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 import { TEMPORARY_DEFAULT_LANDING_MOST_POPULAR } from "./lib/landing-experiment";
-import { LEGACY_CHIP_REDIRECTS, LEGACY_SHOP_REDIRECTS } from "./lib/product";
+import {
+  LEGACY_CHIP_REDIRECTS,
+  LEGACY_DISTRICT_REDIRECTS,
+  LEGACY_SHOP_REDIRECTS,
+} from "./lib/product";
 
 void TEMPORARY_DEFAULT_LANDING_MOST_POPULAR;
 
@@ -27,6 +31,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      ...LEGACY_DISTRICT_REDIRECTS,
       {
         source: "/sitemap/sitemap.xml",
         destination: "/sitemap.xml",

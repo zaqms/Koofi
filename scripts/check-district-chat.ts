@@ -47,7 +47,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 66, `expected 66 live districts (62 + Shubra, Batch F + As Salam, Batch J + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${live.length}`);
+assert(live.length === 65, `expected 65 live districts (Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -279,10 +279,11 @@ assert(
   "missing row adds the neutral bonus on top of the baked index",
 );
 
+// 21 Oct 2026: Namq is a chain (Amjad via Ajz), so Namq Al Malqa leaves the popular picks; Woods Olaya steps up.
 const LOCKED_POPULAR = [
-  "namq-al-malqa",
   "urth-caffe-tahlia-sulimaniyah",
   "breehant-al-yasmin",
+  "woods-olaya",
 ];
 
 function assertPopularUnchanged(ask: string, language: "ar" | "en") {
@@ -389,8 +390,9 @@ assert(extractPrimaryDistrict("الروابي") === "al-rawabi", "الروابي
 assert(extractPrimaryDistrict("Al Rawabi") === "al-rawabi", "Al Rawabi");
 assert(extractPrimaryDistrict("الفيحاء") === "al-fayha", "الفيحاء");
 assert(extractPrimaryDistrict("Al Fayha") === "al-fayha", "Al Fayha");
-assert(extractPrimaryDistrict("الرقبان") === "al-raqban", "الرقبان");
-assert(extractPrimaryDistrict("Al Raqban") === "al-raqban", "Al Raqban");
+// 21 Oct 2026: Al Raqban is a street inside As Salam; asks for it land on As Salam.
+assert(extractPrimaryDistrict("الرقبان") === "as-salam", "الرقبان → as-salam");
+assert(extractPrimaryDistrict("Al Raqban") === "as-salam", "Al Raqban → as-salam");
 assertDistrictTop3("المونسية", "ar", "al-munsiyah");
 assertDistrictTop3("Al Munsiyah", "en", "al-munsiyah");
 assertDistrictTop3("munsiyah", "en", "al-munsiyah");

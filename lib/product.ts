@@ -476,6 +476,31 @@ const REMOVED_SHOP_REDIRECTS = REMOVED_SHOP_TARGETS.flatMap(([slug, target]) => 
  * Sand Clock’s live hex was mis-tagged sulimaniyah; keep the old /c/ URL
  * on the Muruj place so Maps identity does not swap.
  */
+/**
+ * 21 Oct 2026 (Amjad via Ajz): Al Raqban is a street inside As Salam, not a
+ * district. Its one café (maqha-mahamasa-al-raqban, URL unchanged) now lists
+ * under As Salam, and the old district URLs move there permanently.
+ */
+export const LEGACY_DISTRICT_REDIRECTS = [
+  ...(["", "/en"] as const).flatMap((lang) => [
+    {
+      source: `${lang}/coffee-shops/al-raqban`,
+      destination: `${lang}/coffee-shops/as-salam`,
+      statusCode: 308 as const,
+    },
+    {
+      source: `${lang}/n/al-raqban`,
+      destination: `${lang}/coffee-shops/as-salam`,
+      statusCode: 308 as const,
+    },
+    {
+      source: `${lang}/al-raqban`,
+      destination: `${lang}/coffee-shops/as-salam`,
+      statusCode: 308 as const,
+    },
+  ]),
+];
+
 export const LEGACY_SHOP_REDIRECTS = [
   {
     source: `${CARD_PATH_PREFIX}/sand-clock-sulimaniyah`,

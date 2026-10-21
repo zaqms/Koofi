@@ -32,7 +32,6 @@ export const NEIGHBORHOOD_IDS = [
   "al-rayyan",
   "al-rawabi",
   "al-fayha",
-  "al-raqban",
   "al-munsiyah",
   "an-nada",
   "diplomatic-quarter",

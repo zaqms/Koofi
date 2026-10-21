@@ -423,10 +423,11 @@ assert(
   "legacy درايف ثرو still resolves to drive-through",
 );
 
+// 21 Oct 2026: Namq is a chain (Amjad via Ajz), so Namq Al Malqa leaves the popular picks; Woods Olaya steps up.
 const LOCKED_POPULAR = [
-  "namq-al-malqa",
   "urth-caffe-tahlia-sulimaniyah",
   "breehant-al-yasmin",
+  "woods-olaya",
 ];
 
 function assertPopularLock(ask: string, language: "ar" | "en") {

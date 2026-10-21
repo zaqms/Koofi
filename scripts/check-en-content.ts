@@ -135,7 +135,6 @@ for (const district of [
   "al-rayyan",
   "al-rawabi",
   "al-fayha",
-  "al-raqban",
   "al-munsiyah",
   "an-nada",
   "diplomatic-quarter",

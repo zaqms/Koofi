@@ -29,7 +29,7 @@ import { listBrowseDirectoryShops, listRealShops } from "../lib/catalog";
 import { copy } from "../lib/copy";
 import { directoryNeighborhoods } from "../lib/directory";
 import { extractPrimaryDistrict } from "../lib/district-dictionary";
-import { NEIGHBORHOODS } from "../lib/neighborhoods";
+import { NEIGHBORHOODS, STREET_SEARCH_ALIASES, isNeighborhoodId } from "../lib/neighborhoods";
 import { districtPath, neighborhoodsPath } from "../lib/product";
 import { matchCatalogShops } from "../lib/shop-name";
 import { NEIGHBORHOOD_IDS, type NeighborhoodId } from "../lib/types";
@@ -73,12 +73,12 @@ assert(
 );
 
 const AMJAD_POPULAR =
-  "hittin,al-malqa,al-takhassusi,olaya,al-yasmin,al-nakheel,al-aqiq,as-sahafah,al-narjis,al-ghadeer,al-arid,al-qirawan,al-rabi,al-wadi,qurtubah,ghirnatah,diplomatic-quarter,diriyah,sulimaniyah,al-mohammadiyah,al-muruj,al-masif,al-mughrizat,al-rawdah,al-hamra,al-yarmouk,al-munsiyah,al-malaz,al-wurud";
+  "hittin,al-malqa,olaya,al-yasmin,al-nakheel,al-aqiq,as-sahafah,al-narjis,al-ghadeer,al-arid,al-qirawan,al-rabi,al-wadi,qurtubah,ghirnatah,diplomatic-quarter,diriyah,sulimaniyah,al-mohammadiyah,al-muruj,al-masif,al-mughrizat,al-rawdah,al-hamra,al-yarmouk,al-munsiyah,al-malaz,al-wurud";
 assert(
   RIYADH_POPULAR_NEIGHBORHOODS.join(",") === AMJAD_POPULAR,
   "Riyadh Popular follows Amjad's locked order",
 );
-assert(RIYADH_POPULAR_NEIGHBORHOODS.length === 29, "exactly 29 Popular slots");
+assert(RIYADH_POPULAR_NEIGHBORHOODS.length === 28, "exactly 28 Popular slots after the Takhassusi street left the list");
 assert(
   POPULAR_NEIGHBORHOODS_BY_CITY.riyadh.join(",") ===
     RIYADH_POPULAR_NEIGHBORHOODS.join(","),
@@ -95,7 +95,6 @@ assert(
 );
 
 const NEW_POPULAR_DISTRICTS = [
-  "al-takhassusi",
   "al-aqiq",
   "al-ghadeer",
   "al-arid",
@@ -106,7 +105,6 @@ const NEW_POPULAR_DISTRICTS = [
   "al-malaz",
 ] as const;
 const WAVE1_CATALOG_DISTRICTS = [
-  "al-takhassusi",
   "al-aqiq",
   "al-ghadeer",
   "al-arid",
@@ -162,12 +160,8 @@ assert(
   "EN Diplomatic Quarter label",
 );
 assert(
-  browseNeighborhoodLabel("al-takhassusi", "en") === "Al Takhassusi",
-  "EN Al Takhassusi",
-);
-assert(
-  browseNeighborhoodLabel("al-takhassusi", "ar") === "التخصصي",
-  "AR التخصصي",
+  !isNeighborhoodId("al-takhassusi"),
+  "Al Takhassusi is a street, not a district id",
 );
 
 const shops = listBrowseDirectoryShops();
@@ -229,9 +223,7 @@ for (const row of rowsEn) {
   );
   if ((WAVE1_CATALOG_DISTRICTS as readonly string[]).includes(row.id)) {
     const expected =
-      row.id === "al-takhassusi"
-        ? 7
-        : row.id === "al-ghadeer"
+      row.id === "al-ghadeer"
           ? 10 // + MID-SAJJ, trending add 21 Oct
           : row.id === "al-qirawan"
             ? 13
@@ -256,8 +248,8 @@ for (const row of rowsEn) {
     );
   } else if ((MOH_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
-      row.cafeCount === 6,
-      `${row.id} Mohammadiyah refill has 6 cafes (5 + Shal, trending add 18 Oct), got ${row.cafeCount}`,
+      row.cafeCount === 9,
+      `${row.id} Mohammadiyah refill has 9 cafes (6 + Kernel, % Arabica The Zone, SOMO from Takhassusi St), got ${row.cafeCount}`,
     );
   } else if ((MALAZ_REFILL_DISTRICTS as readonly string[]).includes(row.id)) {
     assert(
@@ -287,10 +279,10 @@ for (const row of rowsAr) {
 
 const popularEn = sortNeighborhoodRows(rowsEn, "popular", null, "en");
 const popularAr = sortNeighborhoodRows(rowsAr, "popular", null, "ar");
-const popularLeadEn = popularEn.slice(0, 29);
-const popularLeadAr = popularAr.slice(0, 29);
-assert(popularLeadEn.length === 29, "Popular lead is exactly Amjad's 29 districts");
-assert(popularLeadAr.length === 29, "AR Popular lead is exactly Amjad's 29 districts");
+const popularLeadEn = popularEn.slice(0, 28);
+const popularLeadAr = popularAr.slice(0, 28);
+assert(popularLeadEn.length === 28, "Popular lead is Amjad's list without the Takhassusi street");
+assert(popularLeadAr.length === 28, "AR Popular lead is Amjad's list without التخصصي");
 assert(
   popularLeadEn.map((row) => row.id).join(",") === AMJAD_POPULAR,
   "Popular follows Amjad's locked order",
@@ -306,10 +298,10 @@ assert(
   "Popular lead contains no unranked districts",
 );
 assert(popularEn[0]?.id === "hittin", "Popular lead is Hittin");
-assert(popularEn[2]?.id === "al-takhassusi", "Popular #3 is Al Takhassusi");
-assert(popularEn[5]?.id === "al-nakheel", "Popular #6 is An Nakheel");
-assert(popularEn[16]?.id === "diplomatic-quarter", "Popular #17 is Diplomatic Quarter");
-assert(popularEn[28]?.id === "al-wurud", "Popular #29 is Al Wurud");
+assert(popularEn[2]?.id === "olaya", "Popular #3 is Al Olaya (Takhassusi street removed)");
+assert(popularEn[4]?.id === "al-nakheel", "Popular #5 is An Nakheel");
+assert(popularEn[15]?.id === "diplomatic-quarter", "Popular #16 is Diplomatic Quarter");
+assert(popularEn[27]?.id === "al-wurud", "Popular #28 is Al Wurud");
 assert(
   popularEn.some((row) => row.id === "al-mathar"),
   "Popular tail includes live al-mathar",
@@ -403,7 +395,7 @@ assert(
   "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 68, "A–Z drops the nine chain-only districts (72 on main 592b85e6 − 5 Drive-only + Shubra, Batch F + Umm Al Hamam Ash Sharqi, Batch L − Al Raqban folded into As Salam, 21 Oct)");
+assert(az.length === 67, "A–Z drops chain-only districts, Al Raqban, and the Takhassusi street");
 assert(
   rowsEn.some((row) => row.id === BATCH_L_NEW_DISTRICT && row.cafeCount === 3),
   "Umm Al Hamam Ash Sharqi joins live browse with 3 cafes (Batch L)",
@@ -456,16 +448,14 @@ assert(
 );
 
 assert(
-  filterNeighborhoodRows(rowsEn, "takhassusi").some(
-    (row) => row.id === "al-takhassusi",
-  ),
-  "search finds Al Takhassusi",
+  !filterNeighborhoodRows(rowsEn, "takhassusi").some((row) => (row.id as string) === "al-takhassusi") &&
+    !rowsEn.some((row) => (row.id as string) === "al-takhassusi"),
+  "neighborhood index does not list Al Takhassusi as a district",
 );
 assert(
-  filterNeighborhoodRows(rowsAr, "التخصصي").some(
-    (row) => row.id === "al-takhassusi",
-  ),
-  "search finds التخصصي",
+  STREET_SEARCH_ALIASES["al-takhassusi"].aliases.includes("التخصصي") &&
+    STREET_SEARCH_ALIASES["al-takhassusi"].en === "Al Takhassusi",
+  "التخصصي stays a street search alias",
 );
 assert(
   filterNeighborhoodRows(rowsEn, "olaya").some((row) => row.id === "olaya"),
@@ -698,7 +688,7 @@ assert(!chat.includes("BrowseNeighborhoods"), "browse is not inside chat chrome"
 const featured = new Set<NeighborhoodId>(RIYADH_FEATURED_NEIGHBORHOODS);
 assert(featured.size === 6, "featured ids are unique");
 const popularSet = new Set<NeighborhoodId>(RIYADH_POPULAR_NEIGHBORHOODS);
-assert(popularSet.size === 29, "Popular ids are unique");
+assert(popularSet.size === 28, "Popular ids are unique");
 
 const catalog = listRealShops();
 for (const id of NEW_POPULAR_DISTRICTS) {

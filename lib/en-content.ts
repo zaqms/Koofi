@@ -13,7 +13,7 @@ import { cityLabel } from "./cities";
 import { districtCity } from "./district-city";
 import { filterDirectoryShops } from "./directory";
 import { neighborhoodLabel } from "./neighborhoods";
-import { cardPath, districtPath, PRODUCT_NAME } from "./product";
+import { cardPath, districtPath, PRODUCT_NAME, shopDisplayName } from "./product";
 import type { NeighborhoodId, Shop } from "./types";
 import { vibeLabels } from "./vibe-labels";
 
@@ -198,7 +198,6 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "an-nada": ["al-yasmin", "al-malqa", "hittin", "as-sahafah"],
   "diplomatic-quarter": ["olaya", "al-rahmaniyyah", "diriyah", "kafd"],
   "king-fahd": ["olaya", "sulimaniyah", "al-wurud", "al-masif"],
-  "al-takhassusi": ["olaya", "sulimaniyah", "king-fahd", "al-wurud"],
   "al-aqiq": ["hittin", "al-yasmin", "al-nakheel", "al-malqa"],
   "al-ghadeer": ["al-yasmin", "as-sahafah", "al-narjis", "hittin"],
   "al-arid": ["al-narjis", "al-yasmin", "as-sahafah", "hittin"],
@@ -207,7 +206,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-mohammadiyah": ["olaya", "sulimaniyah", "al-masif", "king-fahd"],
   "al-muruj": ["al-yasmin", "al-nakheel", "al-rabi", "as-sahafah"],
   "al-malaz": ["sulimaniyah", "olaya", "al-rabwah", "al-mughrizat"],
-  "al-mathar": ["olaya", "sulimaniyah", "al-takhassusi", "king-fahd"],
+  "al-mathar": ["olaya", "sulimaniyah", "al-mohammadiyah", "king-fahd"],
   "at-taawun": ["olaya", "al-mughrizat", "al-wurud", "al-rabwah"],
   "al-mursalat": ["al-mughrizat", "al-masif", "al-wurud", "king-fahd"],
   "al-murabba": ["al-malaz", "olaya", "sulimaniyah", "king-fahd"],
@@ -233,9 +232,9 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "as-suwaidi": ["dhahrat-al-badiah", "al-wisham", "badr", "al-malaz"],
   "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
   "al-izdihar": ["al-mughrizat", "olaya", "sulimaniyah", "qurtubah"],
-  "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "al-takhassusi", "al-mathar"],
+  "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "umm-al-hamam-al-gharbi", "al-mathar"],
   jarir: ["al-malaz", "al-murabba", "al-rabwah", "ghubairah"],
-  "umm-al-hamam-al-gharbi": ["diplomatic-quarter", "al-mathar", "al-rahmaniyyah", "al-takhassusi"],
+  "umm-al-hamam-al-gharbi": ["diplomatic-quarter", "al-mathar", "al-rahmaniyyah", "al-mohammadiyah"],
   "umm-al-hamam-ash-sharqi": ["umm-al-hamam-al-gharbi", "al-mathar", "sulimaniyah", "al-rahmaniyyah"],
   "an-nafal": ["al-rabi", "al-masif", "al-wadi", "at-taawun"],
   "king-salman": ["al-mursalat", "an-nazhah", "al-wurud", "king-fahd"],
@@ -1117,10 +1116,10 @@ function districtLink(id: NeighborhoodId): string {
 }
 
 function shopListMarkdown(
-  shops: { id: string; nameEn: string; isChain?: boolean | true }[],
+  shops: (Parameters<typeof shopDisplayName>[0] & { id: string; isChain?: boolean })[],
 ): string {
   return shops
-    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shop.nameEn)}`)
+    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shopDisplayName(shop, "en"))}`)
     .join("\n");
 }
 
@@ -1351,16 +1350,20 @@ ${nearbyIntro ? `${nearbyIntro}\n\n` : ""}${nearby}
 ${copy.about}`;
 }
 
-export function cafeEnTitle(shop: Pick<Shop, "id" | "nameEn" | "neighborhood">): string {
+export function cafeEnTitle(
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "isChain" | "branchEn" | "branchAr">,
+): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.title;
   const district = neighborhoodLabel(shop.neighborhood, "en");
-  return `${shop.nameEn} · ${district} · Riyadh · ${PRODUCT_NAME}`;
+  return `${shopDisplayName(shop, "en")} · ${district} · Riyadh · ${PRODUCT_NAME}`;
 }
 
-export function cafeEnMeta(shop: Pick<Shop, "id" | "nameEn" | "neighborhood">): string {
+export function cafeEnMeta(
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "isChain" | "branchEn" | "branchAr">,
+): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.meta;
   const district = neighborhoodLabel(shop.neighborhood, "en");
-  return `${shop.nameEn} in ${district} on wain.lol — open Maps for the pin and hours.`;
+  return `${shopDisplayName(shop, "en")} in ${district} on wain.lol — open Maps for the pin and hours.`;
 }
 
 function defaultCafeBlurb(shop: Shop): string {
@@ -1375,7 +1378,7 @@ function defaultCafeBlurb(shop: Shop): string {
   const linked = districtPageHidden(shop.neighborhood)
     ? ""
     : " If you want the rest of that neighborhood, the district page is linked below.";
-  return `${opener(shop.nameEn, district, cityName)}${vibeLine}${linked}`;
+  return `${opener(shopDisplayName(shop, "en"), district, cityName)}${vibeLine}${linked}`;
 }
 
 function plainDistrictLabel(id: NeighborhoodId): string {

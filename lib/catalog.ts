@@ -248,6 +248,8 @@ function directoryShopFrom(
     id: shop.id,
     nameAr: shop.nameAr,
     nameEn: shop.nameEn,
+    ...(shop.branchEn ? { branchEn: shop.branchEn } : {}),
+    ...(shop.branchAr ? { branchAr: shop.branchAr } : {}),
     neighborhood: shop.neighborhood,
     neighborhoodAr: shop.neighborhoodAr,
     vibeTags: shop.vibeTags,

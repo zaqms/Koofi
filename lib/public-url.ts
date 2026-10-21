@@ -1,6 +1,6 @@
 import { ENV_KEYS, readEnv } from "./env";
 import { neighborhoodLabel } from "./neighborhoods";
-import { cardPath } from "./product";
+import { cardPath, shopDisplayName } from "./product";
 import type { Language, Pin, Shop } from "./types";
 
 export { cardPath };
@@ -31,12 +31,12 @@ export function shopMapsHref(
 }
 
 export function shopLocation(
-  shop: Pick<Shop, "nameAr" | "nameEn" | "neighborhood" | "neighborhoodAr" | "pin">,
+  shop: Pick<Shop, "nameAr" | "nameEn" | "neighborhood" | "neighborhoodAr" | "pin" | "branchEn" | "branchAr">,
 ): (Pin & { name: string; address: string }) | null {
   if (!shop.pin) return null;
   return {
     ...shop.pin,
-    name: shop.nameEn,
+    name: shopDisplayName(shop, "en"),
     address: `${shop.neighborhoodAr} · ${neighborhoodLabel(shop.neighborhood, "en")}, Riyadh`,
   };
 }

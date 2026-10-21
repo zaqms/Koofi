@@ -356,7 +356,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1475, `sitemap is 1475 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban district page AR/EN, folded into As Salam 21 Oct; 14 Batch SD1 Al Shohda cafés × AR/EN + 6 Batch S As Salam cafés × AR/EN + 8 Batch R Al Qadisiyah cafés × AR/EN + 7 trending adds 18 Oct AR/EN + Trace Al Mursalat AR/EN + 12 Batch Q Ash Shifa cafés AR/EN + 14 Batch P Tuwaiq cafés AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 plus 10 Batch E cafés, 9 Batch F cafés, 15 Batch G cafés, 7 Batch H cafés, 6 Batch I cafés, 8 + 4 Batch J cafés, 12 Batch K cafés, 3 Batch L cafés 13 Batch M cafés and 15 Batch N cafés and 4 Batch O cafés × AR/EN, plus the Shubra and Umm Al Hamam Ash Sharqi districts AR/EN), got ${locs.length}`);
+assert(locs.length === 1473, `sitemap is 1473 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

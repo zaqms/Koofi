@@ -297,7 +297,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "befine-coffee-al-shohda": ["befine shohda", "befine shuhada", "بي فاين الشهداء"],
   // Trending adds 21 Oct: multi-branch brands get a district alias so "brand + district" pins the new branch.
   "hjeen-roasters-at-taawun": ["hjeen taawun", "hjeen at taawun", "هجين التعاون"],
-  "agrio-olaya": ["agrio olaya", "اقريو العليا"],
+  // BOSS.CO Roastery Al Olaya closed and AGRIO took over the unit (21 Oct): old Bossco asks land on AGRIO Olaya.
+  "agrio-olaya": ["agrio olaya", "اقريو العليا", "bossco", "boss.co", "boss co", "bossco roastery", "boss.co roastery", "بوسكو", "محمصة بوسكو", "مقهى ومحمصة بوسكو"],
   "arco-al-shohda": ["arco shohda", "arco shuhada", "اركو الشهداء"],
   "tahn-al-shohda": ["tahn", "tahn coffee", "طحن قهوة", "طحن قهوة مختصة"],
   "illy-cafe-granada-mall-al-shohda": ["illy", "illy cafe", "illy caffe", "ايلي", "ايللي", "ايلي كافيه"],

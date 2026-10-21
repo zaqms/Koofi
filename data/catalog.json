@@ -35576,32 +35576,6 @@
       "example": false
     },
     {
-      "id": "bossco-roastery-al-olaya",
-      "nameAr": "مقهى ومحمصة بوسكو",
-      "nameEn": "BOSS.CO Roastery",
-      "city": "riyadh",
-      "neighborhood": "olaya",
-      "neighborhoodAr": "العليا",
-      "vibeTags": [
-        "قهوة"
-      ],
-      "momentTags": [
-        "qahwa"
-      ],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f03d0a33345ed:0xedb519677804ff02!8m2!3d24.6951492!4d46.6846958",
-      "pin": {
-        "lat": 24.6951492,
-        "lng": 46.6846958
-      },
-      "logoUrl": "/logos/bossco-roastery-al-olaya.jpg",
-      "popularityIndex": 40,
-      "placeId": "ChIJ7UUzo9ADLz4RAv8EeGcZte0",
-      "dineIn": true,
-      "outdoorSeating": true,
-      "pickupOnly": null,
-      "example": false
-    },
-    {
       "id": "lluvia-caffe-al-olaya",
       "nameAr": "يوڤيا كافيه",
       "nameEn": "lluvia Caffe",

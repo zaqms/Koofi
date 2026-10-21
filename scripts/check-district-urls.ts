@@ -1,3 +1,4 @@
+import { matchCatalogShops } from "../lib/shop-name";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -190,8 +191,28 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 65, `expected 65 districts (Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
-assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 543, `specialty discovery is 543 (− BOSS.CO Roastery Al Olaya (closed, AGRIO took over the unit), 21 Oct; 10 trending adds 21 Oct − 2 Namq now chain, 21 Oct + 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 646, `catalog is 646 (− BOSS.CO Roastery Al Olaya (closed, AGRIO took over the unit), 21 Oct; after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+// 21 Oct 2026 (AJ via Ajz, #281 QA r1): BOSS.CO Roastery Al Olaya closed and AGRIO Olaya took over the same unit.
+assert(!getShop("bossco-roastery-al-olaya"), "BOSS.CO Roastery Al Olaya is dropped (closed)");
+assert(getShop("agrio-olaya")?.neighborhood === "olaya", "AGRIO Olaya is the redirect target and is live");
+for (const lang of ["", "/en"] as const) {
+  const rows = LEGACY_SHOP_REDIRECTS.filter((row) => row.source.startsWith(`${lang}/c/bossco-roastery-al-olaya`));
+  assert(
+    rows.length === 2 &&
+      rows.some((row) => row.source === `${lang}/c/bossco-roastery-al-olaya` && row.destination === `${lang}/c/agrio-olaya`) &&
+      rows.some((row) => row.source === `${lang}/c/bossco-roastery-al-olaya/:path*` && row.destination === `${lang}/c/agrio-olaya/:path*`) &&
+      rows.every((row) => row.statusCode === 308),
+    `${lang || "AR"} BOSS.CO café URLs 308 one hop to AGRIO Olaya`,
+  );
+}
+assert(
+  !LEGACY_SHOP_REDIRECTS.some((row) => row.source.replace(/^\/en/, "") === "/c/agrio-olaya"),
+  "AGRIO Olaya is not itself redirected (one hop)",
+);
+for (const ask of ["bossco", "boss.co", "BOSS.CO Roastery", "بوسكو", "مقهى ومحمصة بوسكو"]) {
+  assert(matchCatalogShops(ask, listRealShops())[0]?.id === "agrio-olaya", `"${ask}" lands on AGRIO Olaya (took over the BOSS.CO unit)`);
+}
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -3893,19 +3914,6 @@ const scoutPack: {
     outdoorSeating: true,
   },
   {
-    id: "bossco-roastery-al-olaya",
-    hex: "0x3e2f03d0a33345ed:0xedb519677804ff02",
-    neighborhood: "olaya",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-    logoUrl: "/logos/bossco-roastery-al-olaya.jpg",
-    pin: { lat: 24.6951492, lng: 46.6846958 },
-    coordsInUrl: true,
-    placeId: "ChIJ7UUzo9ADLz4RAv8EeGcZte0",
-    dineIn: true,
-    outdoorSeating: true,
-  },
-  {
     id: "lluvia-caffe-al-olaya",
     hex: "0x3e49e934e277304b:0x6fc1d3970cd7f113",
     neighborhood: "olaya",
@@ -6944,7 +6952,6 @@ for (const id of [
   "latch-al-mughrizat",
   "slant-specialty-coffee-al-izdihar",
   "gedeb-al-olaya",
-  "bossco-roastery-al-olaya",
   "lluvia-caffe-al-olaya",
   "oromiffa-al-olaya",
   "buljah-al-olaya",
@@ -7269,7 +7276,6 @@ const canonicalNames: Record<string, { nameEn: string; nameAr: string }> = {
     nameAr: "سلانت قهوة مختصة",
   },
   "gedeb-al-olaya": { nameEn: "Gedeb", nameAr: "قيدب" },
-  "bossco-roastery-al-olaya": { nameEn: "BOSS.CO Roastery", nameAr: "مقهى ومحمصة بوسكو" },
   "lluvia-caffe-al-olaya": { nameEn: "lluvia Caffe", nameAr: "يوڤيا كافيه" },
   "oromiffa-al-olaya": { nameEn: "Oromiffa", nameAr: "أورميفا" },
   "buljah-al-olaya": { nameEn: "Buljah", nameAr: "بُلجة" },

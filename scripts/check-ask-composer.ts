@@ -67,17 +67,21 @@ function checkSource() {
   const ids = chat.match(/id="koofi-ask"/g) ?? [];
   assert(ids.length === 1, `expected one #koofi-ask, found ${ids.length}`);
   const labels = chat.match(/htmlFor="koofi-ask"/g) ?? [];
-  assert(labels.length === 2, `expected a label on both composer paths, found ${labels.length}`);
+  assert(labels.length === 1, `expected one label for the ask field, found ${labels.length}`);
+  const askUsages = chat.match(/<AskComposerField\b/g) ?? [];
+  assert(askUsages.length === 1, `expected one mounted ask field, found ${askUsages.length}`);
+  assert(!chat.includes("ManualSearchFields"), "search screen must not mount a second ask field");
 
-  const manual = sliceFn(chat, "ManualSearchFields");
   const field = sliceFn(chat, "AskComposerField");
-  assert(manual.includes("<AskComposerField"), "search screen uses the shared ask field");
-  assert(!manual.includes("<textarea"), "search screen does not keep a second textarea");
-  assert(manual.includes('htmlFor="koofi-ask"'), "search screen labels the ask field");
   assert(field.includes('id="koofi-ask"'), "shared field owns #koofi-ask");
   assert(field.includes("ask-composer-paint"), "14px line is paint, not a second field");
   assert(field.includes("aria-hidden"), "paint line is hidden from assistive tech");
   assert(!field.includes("display:none") && !field.includes('"hidden"'), "shared field is never display:none");
+  assert(field.includes('replace(/[\\r\\n]+/g, " ")'), "one-line field normalizes pasted newlines to spaces");
+  assert(
+    /if \(pin \|\| !event\.shiftKey\) event\.preventDefault\(\)/.test(field),
+    "one-line field blocks Shift+Enter",
+  );
 
   const formAt = chat.indexOf("showAskComposer ? (");
   const discoveryAfter = chat.indexOf("pinComposer && discovery && !listFirst ? discovery : null");
@@ -271,14 +275,47 @@ async function proveSurface(page: Page, base: string, surface: Surface, wide: bo
     await page.screenshot({ path: join(shotDir, `${surface.shot}.png`), fullPage: false });
   }
 
+  if (surface.pin) {
+    await field.evaluate((el) => {
+      const input = el as HTMLTextAreaElement;
+      const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set;
+      setter?.call(input, "a\nb");
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    await page.waitForFunction(() => {
+      const el = document.getElementById("koofi-ask");
+      return el instanceof HTMLTextAreaElement && el.value === "a b";
+    });
+    assert((await field.inputValue()) === "a b", `${url} one-line field kept a pasted newline`);
+    await field.fill("line");
+    await field.press("Shift+Enter");
+    assert(!(await field.inputValue()).includes("\n"), `${url} Shift+Enter added a second line`);
+    await field.fill("");
+  }
+
   if (!surface.search || wide) return;
 
   await field.fill("");
   await field.fill(sample);
+  await page.evaluate(() => {
+    const el = document.getElementById("koofi-ask");
+    (window as unknown as { __koofiAsk?: Element | null }).__koofiAsk = el;
+  });
   await field.press("Enter");
   await page.getByText("qa-ask-ok").waitFor({ timeout: 15_000 });
   const after = page.locator("#koofi-ask");
   await after.waitFor({ state: "visible" });
+  const activeAfterSearch = await page.evaluate(() => document.activeElement?.id ?? "");
+  assert(
+    activeAfterSearch === "koofi-ask",
+    `${url} focus left the ask field after search (on ${activeAfterSearch || "nothing"})`,
+  );
+  const sameNode = await page.evaluate(() => {
+    const el = document.getElementById("koofi-ask");
+    const previous = (window as unknown as { __koofiAsk?: Element | null }).__koofiAsk;
+    return !!el && el === previous;
+  });
+  assert(sameNode, `${url} search replaced the ask textbox`);
   assert(
     (await page.getByRole("textbox", { name: surface.name, exact: true }).count()) === 1,
     `${url} search screen lost the named textbox`,
@@ -290,6 +327,8 @@ async function proveSurface(page: Page, base: string, surface: Surface, wide: bo
   assert(searchTabs <= 40, `${url} search screen took ${searchTabs} Tabs`);
   await after.fill(surface.dir === "rtl" ? "ملقا" : "work table");
   assert((await after.inputValue()).length > 0, `${url} could not type on the search screen`);
+  await after.press("Shift+Enter");
+  assert((await after.inputValue()).includes("\n"), `${url} taller field should still take Shift+Enter`);
   if (shotDir) {
     await page.screenshot({ path: join(shotDir, `${surface.shot}-search.png`), fullPage: false });
   }

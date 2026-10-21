@@ -450,16 +450,13 @@ function lastCompletedResultIndex(messages: readonly Message[]): number {
   return -1;
 }
 
-type SearchDraftHandle = {
-  text: string;
-  clear: () => void;
-};
-
 /**
  * One ask textarea for the home pin, the search screen, and other chats.
- * It stays mounted and in the tab order. The 14px line is paint only
+ * Callers keep this node mounted when Home becomes the search screen, so
+ * focus does not fall through to the document. The 14px line is paint only
  * (aria-hidden); metrics that keep iOS from zooming live on
  * `.ask-composer-field` in globals.css.
+ * The one-line pin refuses newlines. The taller field still takes Shift+Enter.
  */
 function AskComposerField({
   pin,
@@ -480,9 +477,9 @@ function AskComposerField({
   repaintKey?: boolean;
 }) {
   const paintRef = useRef<HTMLDivElement>(null);
-  // Chromium's first paint of this field, after Home unmounts and again
-  // when the reply lands, antialiases the placeholder one level off the
-  // live field. A later border invalidation matches it.
+  // Chromium's first paint of the taller search field, and again when the
+  // reply lands, antialiases the placeholder one level off the live field.
+  // A later border invalidation matches it.
   // The color is restored in the same turn, so no frame shows a bare edge.
   useEffect(() => {
     if (repaintKey === undefined) return;
@@ -529,87 +526,21 @@ function AskComposerField({
         rows={1}
         dir={rtl ? "rtl" : "ltr"}
         placeholder={placeholder}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => {
+          const raw = event.target.value;
+          // The pin is one row and overflow-hidden, so a newline is a hidden
+          // second line. Spaces keep a paste readable.
+          onChange(pin ? raw.replace(/[\r\n]+/g, " ") : raw);
+        }}
         onKeyDown={(event) => {
-          if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            onEnter(event.currentTarget);
-          }
+          if (event.key !== "Enter") return;
+          // Shift+Enter inserts a line on the taller field only.
+          if (pin || !event.shiftKey) event.preventDefault();
+          if (!event.shiftKey) onEnter(event.currentTarget);
         }}
         className={field}
       />
     </div>
-  );
-}
-
-function ManualSearchFields({
-  landing,
-  busy,
-  awaitingMaps,
-  draftRef,
-  initialText,
-  onAskForShop,
-}: {
-  landing: Language;
-  busy: boolean;
-  awaitingMaps: boolean;
-  draftRef: { current: SearchDraftHandle };
-  initialText: string;
-  onAskForShop: () => void;
-}) {
-  const [value, setValue] = useState(initialText);
-  const rtl = landing === "ar";
-  const placeholder = awaitingMaps
-    ? copy.mapsPlaceholder[landing]
-    : copy.placeholder[landing];
-
-  // The visible value is the only text that can be sent. The parent reads
-  // this ref from its own layout effect when the search screen closes, so
-  // the write has to land in a layout effect (children run first).
-  useLayoutEffect(() => {
-    draftRef.current.text = value;
-    draftRef.current.clear = () => {
-      draftRef.current.text = "";
-      setValue("");
-    };
-  }, [draftRef, value]);
-
-  return (
-    <>
-      <label className="sr-only" htmlFor="koofi-ask">
-        {placeholder}
-      </label>
-      <div className="flex items-center gap-2">
-        <AskComposerField
-          pin={false}
-          rtl={rtl}
-          value={value}
-          placeholder={placeholder}
-          repaintKey={busy}
-          onChange={(next) => {
-            draftRef.current.text = next;
-            setValue(next);
-          }}
-          onEnter={(field) => {
-            field.form?.requestSubmit();
-          }}
-        />
-        <button
-          type="submit"
-          disabled={busy || !value.trim()}
-          className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
-        >
-          {copy.send[landing]}
-        </button>
-      </div>
-      <div className="mt-2 text-start">
-        <AddShopButton
-          language={landing}
-          disabled={busy}
-          onAdd={onAskForShop}
-        />
-      </div>
-    </>
   );
 }
 
@@ -658,6 +589,9 @@ export function Chat({
     );
   });
   const [draft, setDraft] = useState("");
+  // Search-screen text is separate so send()'s setDraft("") cannot wipe a
+  // line the in-flight guard refused. The ask node itself stays mounted.
+  const [searchText, setSearchText] = useState("");
   const [pendingId, setPendingId] = useState(
     () => pendingSends[threadKey]?.id ?? null,
   );
@@ -720,10 +654,7 @@ export function Chat({
   const [halfwayPinError, setHalfwayPinError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLFormElement>(null);
-  const searchDraftRef = useRef<SearchDraftHandle>({
-    text: "",
-    clear: () => undefined,
-  });
+  const searchDraftRef = useRef("");
   const searchWasOpenRef = useRef(false);
   const [pinnedHome, setPinnedHome] = useState(
     () => !historyIsSearch() && searchPinnedHome,
@@ -1887,11 +1818,11 @@ export function Chat({
     const wasOpen = searchWasOpenRef.current;
     searchWasOpenRef.current = searchScreen;
     if (!wasOpen || searchScreen) return;
-    // The field is gone. Keep its text for the Home composer, and drop
-    // the copy this screen would otherwise send on the next Enter.
-    const carried = searchDraftRef.current.text;
-    searchDraftRef.current.text = "";
-    searchDraftRef.current.clear = () => undefined;
+    // The same textbox switches back to `draft`. Keep what was typed on
+    // the search screen, and drop the copy the next search would send.
+    const carried = searchDraftRef.current;
+    searchDraftRef.current = "";
+    setSearchText("");
     setDraft(carried);
   }, [searchScreen]);
 
@@ -2482,11 +2413,12 @@ export function Chat({
           onSubmit={(event) => {
             event.preventDefault();
             if (searchScreen) {
-              const text = searchDraftRef.current.text;
+              const text = searchDraftRef.current;
               // send() drops an in-flight Enter and keeps the field.
               // Clearing first wiped text the request never accepted.
               if (!text.trim() || inFlightRef.current) return;
-              searchDraftRef.current.clear();
+              searchDraftRef.current = "";
+              setSearchText("");
               send(text);
               return;
             }
@@ -2494,17 +2426,6 @@ export function Chat({
           }}
         >
           <div className={pinComposer ? "mx-auto w-full max-w-lg" : undefined}>
-          {searchScreen ? (
-            <ManualSearchFields
-              landing={landing}
-              busy={busy}
-              awaitingMaps={awaitingMaps}
-              draftRef={searchDraftRef}
-              initialText={draft}
-              onAskForShop={askForShop}
-            />
-          ) : (
-          <>
           <label className="sr-only" htmlFor="koofi-ask">
             {awaitingMaps
               ? copy.mapsPlaceholder[landing]
@@ -2514,14 +2435,28 @@ export function Chat({
             <AskComposerField
               pin={pinComposer}
               rtl={landing === "ar"}
-              value={draft}
+              value={searchScreen ? searchText : draft}
               placeholder={
                 awaitingMaps
                   ? copy.mapsPlaceholder[landing]
                   : copy.placeholder[landing]
               }
-              onChange={setDraft}
-              onEnter={() => send(draft)}
+              repaintKey={searchScreen ? busy : undefined}
+              onChange={(next) => {
+                if (searchScreen) {
+                  searchDraftRef.current = next;
+                  setSearchText(next);
+                  return;
+                }
+                setDraft(next);
+              }}
+              onEnter={(field) => {
+                if (searchScreen) {
+                  field.form?.requestSubmit();
+                  return;
+                }
+                send(draft);
+              }}
             />
             {pinComposer ? (
               <button
@@ -2547,7 +2482,7 @@ export function Chat({
             ) : (
               <button
                 type="submit"
-                disabled={busy || !draft.trim()}
+                disabled={busy || !(searchScreen ? searchText : draft).trim()}
                 className="h-14 rounded-2xl bg-bean px-4 text-sm text-foam disabled:opacity-50"
               >
                 {copy.send[landing]}
@@ -2562,8 +2497,6 @@ export function Chat({
               onAdd={askForShop}
             />
           </div>
-          )}
-          </>
           )}
           </div>
         </form>

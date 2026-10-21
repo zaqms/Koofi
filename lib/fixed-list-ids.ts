@@ -95,8 +95,12 @@ export const FIXED_LIST_ACTION = {
   useLocation: { ar: "استخدم موقعي", en: "Use my location" },
   retryLocation: { ar: "جرّب مرة ثانية", en: "Try again" },
   locationBlocked: {
-    ar: "الموقع مقفل من المتصفح",
-    en: "Location is blocked in the browser",
+    ar: "الموقع مقفل من المتصفح.",
+    en: "Location is blocked in the browser.",
+  },
+  pickNeighborhood: {
+    ar: "اختر حي بداله",
+    en: "Pick a neighborhood instead",
   },
 } as const;
 

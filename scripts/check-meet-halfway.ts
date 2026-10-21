@@ -186,9 +186,11 @@ assert(
     copy.includes("meetHalfwayBadMaps") &&
     copy.includes("meetHalfwayLocationOff") &&
     copy.includes("That Maps share link didn’t drop a pin") &&
-    copy.includes("Location is off on this phone") &&
+    copy.includes("Location is off in the browser") &&
+    !copy.includes("on this phone") &&
     copy.includes("رابط المشاركة ما طلع دبوس") &&
-    copy.includes("الموقع مقفل على هالجوال") &&
+    copy.includes("الموقع مقفل من المتصفح") &&
+    !copy.includes("هالجوال") &&
     copy.includes("نلقى لكم الاثنين أنسب مكان.") &&
     copy.includes("Find the fairest spot for both of you.") &&
     copy.includes("انسخ الرابط") &&
@@ -1162,7 +1164,13 @@ assert(
       permission: "prompt",
       inflight: false,
       rememberedGranted: true,
-    }) === "request" &&
+    }) === "idle" &&
+    decideVisitorLocationPeek({
+      snapshotStatus: "pending",
+      permission: "unknown",
+      inflight: false,
+      rememberedGranted: true,
+    }) === "idle" &&
     decideVisitorLocationPeek({
       snapshotStatus: "pending",
       permission: "prompt",
@@ -1181,7 +1189,7 @@ assert(
       inflight: false,
       rememberedGranted: false,
     }) === "use-ready",
-  "auto-Ready reads only when granted/remembered; prompt/denied stay on My pin",
+  "auto-Ready reads only when permission is granted; a remembered flag never prompts",
 );
 
 const visitorLocation = readFileSync(
@@ -1209,6 +1217,12 @@ assert(
     !visitorLocation.includes("language === ") &&
     !visitorPeek.includes("language === "),
   "auto-Ready peek is not gated on locale or /en/h/",
+);
+assert(
+  !readFileSync(join(repoRoot, "lib/fresh-visitor-origin.ts"), "utf8").includes(
+    "readRememberedGeoGranted",
+  ),
+  "the home rail does not turn a remembered grant into a prompt",
 );
 assert(
   !ui.includes("language === \"en\"") &&
@@ -1309,9 +1323,9 @@ assert(
 const homePage = readFileSync(join(repoRoot, "app/page.tsx"), "utf8");
 const homePageEn = readFileSync(join(repoRoot, "app/en/page.tsx"), "utf8");
 assert(
-  homePage.includes("<HomeLanding language=\"ar\" />") &&
+  homePage.includes("<HomeLanding language=\"ar\" city={DEFAULT_LIVE_CITY} />") &&
     !homePage.includes("meet-halfway") &&
-    homePageEn.includes("<HomeLanding language=\"en\" />") &&
+    homePageEn.includes("<HomeLanding language=\"en\" city={DEFAULT_LIVE_CITY} />") &&
     !homePageEn.includes("meet-halfway"),
   "AR/EN home routes stay the directory landing, not بيننا results",
 );
@@ -1385,7 +1399,8 @@ assert(
     chatUi.includes("locations,") &&
     chatUi.includes("more: more || reroll") &&
     chatUi.includes("initialMe={halfwayGuest ? null : halfwayWaitingMe}") &&
-    chatUi.includes("auto: !listFirst && !halfwayInvite && !meetHalfwayOpen"),
+    chatUi.includes("usePeekVisitorLocation") &&
+    !chatUi.includes("useVisitorLocation("),
   "guest /h/ results keep locations; guest field is not the host pin; no geo prompt on open",
 );
 assert(

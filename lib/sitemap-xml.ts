@@ -1,4 +1,4 @@
-import { listRealShops } from "./catalog";
+import { listShops, selectCatalogShops } from "./catalog";
 import { listLiveCatalogDistrictIds } from "./district-dictionary";
 import {
   aboutPath,
@@ -65,7 +65,7 @@ function sitemapPaths(): string[] {
     "/llms.txt",
   ];
 
-  for (const shop of listRealShops()) {
+  for (const shop of selectCatalogShops(listShops(), "pages")) {
     if (!shop.id) continue;
     paths.push(cardPath(shop.id, "ar"), cardPath(shop.id, "en"));
   }

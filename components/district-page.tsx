@@ -7,11 +7,13 @@ import { SiteFooter } from "@/components/site-footer";
 import { listDirectoryShopsForDistrict } from "@/lib/catalog";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
 import { districtPath } from "@/lib/product";
-import type { Language, NeighborhoodId } from "@/lib/types";
+import type { City, Language, NeighborhoodId } from "@/lib/types";
 
 type DistrictPageProps = {
   language: Language;
   district: NeighborhoodId;
+  /** The district's city. A Jeddah page must not render Riyadh rows. */
+  city: City;
 };
 
 /**
@@ -19,9 +21,9 @@ type DistrictPageProps = {
  * neighborhood uses this — name, count, cards, and SEO body come from
  * catalog + locked district copy. Soft Places stays parked.
  */
-export function DistrictPage({ language, district }: DistrictPageProps) {
+export function DistrictPage({ language, district, city }: DistrictPageProps) {
   const other: Language = language === "ar" ? "en" : "ar";
-  const shops = listDirectoryShopsForDistrict(district);
+  const shops = listDirectoryShopsForDistrict(district, city);
 
   return (
     <main

@@ -88,7 +88,7 @@ import {
 } from "@/lib/track";
 import {
   requestVisitorLocation,
-  useVisitorLocation,
+  usePeekVisitorLocation,
 } from "@/lib/visitor-location";
 import type { DistrictMatch, Language, Pin } from "@/lib/types";
 
@@ -700,7 +700,7 @@ export function Chat({
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   const listFirst = isFixedListChip(selectedChipId);
-  useVisitorLocation({ auto: !listFirst && !halfwayInvite && !meetHalfwayOpen });
+  usePeekVisitorLocation();
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -1638,6 +1638,12 @@ export function Chat({
   openRoutedChipRef.current = openRoutedChip;
 
   function sendChip(chip: ChipPick) {
+    // The Nearby tile is the gesture. Start geolocation in this click,
+    // then let the link navigate. A cold load of /coffee-shops/nearby
+    // does not ask. Denial is the notice on that page.
+    if (chip.id === NEARBY_CHIP.id) {
+      void requestVisitorLocation({ retry: true });
+    }
     trackEvent(
       "chip_tap",
       { chip_id: chip.id, chip_label: chip.label, locale: landing },

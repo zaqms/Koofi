@@ -654,7 +654,7 @@ assert(
 assert(
   landing.includes('pageChipId === "popular"') &&
     landing.includes("popularChipSelected") &&
-    landing.includes("listPopularDirectoryShops()"),
+    landing.includes("listPopularDirectoryShops(city)"),
   "default Most Popular chip serves the popularityIndex ranking",
 );
 const popularRank = listPopularDirectoryShops().map((shop) => shop.id);
@@ -667,7 +667,7 @@ assert(
 assert(
   landing.includes("<HomeTrending") &&
     landing.indexOf("<HomeTrending") < landing.indexOf("<ShopDirectory") &&
-    landing.includes("listPopularDirectoryShops()"),
+    landing.includes("listPopularDirectoryShops(city)"),
   "home shows trending above the café list; Most Popular still ranks that list",
 );
 assert(

@@ -129,6 +129,9 @@ export function ConsentManager({
 
   const button =
     "min-h-11 flex-1 rounded-full border border-ink bg-ink px-4 py-2 text-sm font-semibold text-paper hover:bg-ink/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bean";
+  const compactButton =
+    "inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-ink bg-ink px-3 text-xs font-semibold text-paper hover:bg-ink/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bean";
+  const privacyHref = `${privacyPath(language)}#cookies`;
 
   return (
     <>
@@ -157,31 +160,53 @@ export function ConsentManager({
           lang={language}
           className="fixed inset-x-0 bottom-0 z-50 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:px-3 sm:pb-[max(0.75rem,env(safe-area-inset-bottom))]"
         >
-          <div className="mx-auto w-full max-w-md rounded-2xl border border-line bg-foam px-3 py-3 text-ink shadow-lg sm:px-4 sm:py-4">
-            <p id="wain-consent-title" className="text-sm font-semibold">
+          <div className="mx-auto w-full max-w-md rounded-2xl border border-line bg-foam px-2.5 py-1.5 text-ink shadow-lg sm:px-4 sm:py-4">
+            <p id="wain-consent-title" className="text-sm font-semibold max-sm:sr-only">
               {consentText("title", language)}
             </p>
-            <p className="mt-1 text-xs leading-5 sm:leading-6">{consentText("body", language)}</p>
-            <p className="mt-1 text-xs leading-5 text-ink-soft sm:leading-6">
-              <Link
-                href={`${privacyPath(language)}#cookies`}
-                className="underline underline-offset-2 hover:text-ink"
-              >
-                {consentText("details", language)}
-              </Link>
-              {" · "}
-              <bdi dir="ltr">{CONSENT_CONTACT_EMAIL}</bdi>
-            </p>
-            {choice ? (
-              <p className="mt-1 text-xs text-ink-soft">{consentCopy.current[language][choice]}</p>
-            ) : null}
-            <div className="mt-2 flex gap-2 sm:mt-3">
-              <button type="button" className={button} data-consent="accept">
+            <div className="flex items-center gap-2 sm:hidden">
+              <p className="min-w-0 flex-1 text-xs leading-4">
+                {consentText("compact", language)}{" "}
+                <Link
+                  href={privacyHref}
+                  className="whitespace-nowrap underline underline-offset-2 hover:text-ink"
+                >
+                  {consentText("compactDetails", language)}
+                </Link>
+                {choice ? (
+                  <span className="text-ink-soft"> {consentCopy.current[language][choice]}</span>
+                ) : null}
+              </p>
+              <button type="button" className={compactButton} data-consent="accept">
                 {consentText("accept", language)}
               </button>
-              <button type="button" className={button} data-consent="reject">
+              <button type="button" className={compactButton} data-consent="reject">
                 {consentText("reject", language)}
               </button>
+            </div>
+            <div className="hidden sm:block">
+              <p className="mt-1 text-xs leading-6">{consentText("body", language)}</p>
+              <p className="mt-1 text-xs leading-6 text-ink-soft">
+                <Link
+                  href={privacyHref}
+                  className="underline underline-offset-2 hover:text-ink"
+                >
+                  {consentText("details", language)}
+                </Link>
+                {" · "}
+                <bdi dir="ltr">{CONSENT_CONTACT_EMAIL}</bdi>
+              </p>
+              {choice ? (
+                <p className="mt-1 text-xs text-ink-soft">{consentCopy.current[language][choice]}</p>
+              ) : null}
+              <div className="mt-3 flex gap-2">
+                <button type="button" className={button} data-consent="accept">
+                  {consentText("accept", language)}
+                </button>
+                <button type="button" className={button} data-consent="reject">
+                  {consentText("reject", language)}
+                </button>
+              </div>
             </div>
           </div>
         </div>

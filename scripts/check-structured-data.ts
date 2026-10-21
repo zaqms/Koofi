@@ -1,13 +1,16 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  catalogViewFromQuery,
   filterDirectoryShops,
   getShop,
+  isDriveThroughLane,
   listDirectoryShops,
   listDiscoveryShops,
   listListingDirectoryShops,
   listListingShops,
   listRealShops,
+  selectCatalogShops,
 } from "../lib/catalog";
 import {
   aboutFaqJsonLd,
@@ -32,6 +35,7 @@ import {
   fixedListItemListJsonLd,
   mostPopularItemListJsonLd,
   jsonHasForbiddenPublicFields,
+  listCatalogShops,
   listPublicShops,
   PUBLIC_MCP_ALIAS_PATH,
   PUBLIC_MCP_PATH,
@@ -104,10 +108,50 @@ assert(apiShop.urlEn === `https://wain.lol/en/c/${sample.id}`, "API urlEn");
 assert(apiShop.dateModified === "2026-09-09", "API dateModified");
 assert(publicShopPayload("not-a-shop") === null, "unknown id is null");
 
+const pages = listCatalogShops("pages");
 const list = publicShopsItemList();
+const listedApi = publicShopsItemList("listing");
 assert(list["@type"] === "ItemList", "catalog API is ItemList");
-assert(list.numberOfItems === shops.length, "ItemList count matches");
+assert(list.numberOfItems === pages.length, "default API is every café page");
+assert(list.numberOfItems === listRealShops().length, "default API matches the sitemap café set");
+assert(listedApi.numberOfItems === shops.length, "listing view keeps the sit-down directory");
+assert(catalogViewFromQuery(null) === "pages" && catalogViewFromQuery("all") === "pages", "missing view and all mean every café page");
+assert(catalogViewFromQuery("listing") === "listing", "listing view is explicit");
+assert(
+  readRepo("lib/picker.ts").includes('selectCatalogShops(real, "discovery")') &&
+    !readRepo("lib/picker.ts").includes("isDriveThroughLane"),
+  "chat three-picks use selectCatalogShops discovery",
+);
 assert(list.url === "https://wain.lol/api/shops", "catalog API url");
+const sitemapCafeIds = listSitemapLocs()
+  .map((loc) => loc.match(/^https:\/\/wain\.lol\/c\/([^/]+)$/)?.[1] ?? "")
+  .filter(Boolean)
+  .sort();
+const apiCafeIds = list.itemListElement
+  .map((row) => ("identifier" in row.item ? row.item.identifier : ""))
+  .sort();
+assert(apiCafeIds.join("\n") === sitemapCafeIds.join("\n"), "GET /api/shops ids match sitemap /c/ pages");
+const driveThrough = listRealShops().filter(isDriveThroughLane);
+assert(driveThrough.length > 0, "catalog has drive-through-only shops");
+for (const shop of driveThrough) {
+  const record = publicShopRecord(shop, { includeContext: false });
+  assert(record.catalogLane === "drive-through", `${shop.id} API row is tagged drive-through`);
+  assert(apiCafeIds.includes(shop.id), `${shop.id} is in the default API`);
+  assert(
+    !listedApi.itemListElement.some(
+      (row) => "identifier" in row.item && row.item.identifier === shop.id,
+    ),
+    `${shop.id} stays out of ?view=listing`,
+  );
+}
+assert(
+  selectCatalogShops(listRealShops(), "discovery").every((shop) => !shop.isChain),
+  "discovery view drops chains",
+);
+assert(
+  selectCatalogShops(listRealShops(), "pages").length === listRealShops().length,
+  "pages view is the shared filter for every café page",
+);
 assert(
   list.itemListElement[0]?.item &&
     "identifier" in list.itemListElement[0].item,
@@ -157,6 +201,20 @@ if (noGeoShop) {
 }
 
 const llms = buildLlmsTxt();
+const pageChains = pages.filter((shop) => shop.isChain).length;
+assert(
+  llms.includes(
+    `${pages.length} café pages: ${pages.length - pageChains} local cafés and ${pageChains} chain branches`,
+  ),
+  "llms.txt headline states the default catalog total and the local/chain split",
+);
+const listingChains = shops.filter((shop) => shop.isChain).length;
+assert(
+  llms.includes(
+    `${shops.length}: ${shops.length - listingChains} local, ${listingChains} chain branches`,
+  ),
+  "llms.txt sit-down sentence states the listing total and the local/chain split",
+);
 assert(llms.includes("https://wain.lol/api/shops"), "llms.txt points at /api/shops");
 assert(llms.includes("https://wain.lol/api/mcp"), "llms.txt points at MCP");
 assert(llms.includes("/c/{id}"), "llms.txt mentions cafe cards");
@@ -433,16 +491,20 @@ assert(PUBLIC_MCP_PATH === "/api/mcp", "MCP path is /api/mcp");
 assert(PUBLIC_MCP_ALIAS_PATH === "/mcp", "MCP alias is /mcp");
 assert(publicMcpUrl() === "https://wain.lol/api/mcp", "canonical MCP URL");
 
+const malqaPages = pages.filter((shop) => shop.neighborhood === "al-malqa");
 const malqaSearch = searchPublicShops("الملقا");
-assert(malqaSearch.length === malqaShops.length, "search الملقا matches district list");
+assert(malqaSearch.length === malqaPages.length, "search الملقا matches every café page in the district");
 assert(
   malqaSearch.every((shop) => shop.neighborhood === "al-malqa"),
   "search الملقا is al-malqa only",
 );
 assert(
-  malqaSearch.map((shop) => shop.id).join(",") ===
-    malqaShops.map((shop) => shop.id).join(","),
+  malqaSearch.map((shop) => shop.id).join(",") === malqaPages.map((shop) => shop.id).join(","),
   "search keeps directory order",
+);
+assert(
+  malqaShops.every((shop) => malqaSearch.some((row) => row.id === shop.id)),
+  "sit-down district rows are still in search",
 );
 
 const nameSearch = searchShopResults("IK coffee Downtown");
@@ -451,9 +513,9 @@ assert(
   nameSearch.results[0] && nameSearch.results.every((row) => row.url.startsWith("https://wain.lol/c/")),
   "search urls are wain.lol cards",
 );
-assert(searchPublicShops("").length === shops.length, "empty search is the full catalog");
+assert(searchPublicShops("").length === pages.length, "empty search is every café page");
 assert(
-  searchPublicShops("")[0]?.id === shops[0]?.id,
+  searchPublicShops("")[0]?.id === pages[0]?.id,
   "empty search keeps directory order",
 );
 

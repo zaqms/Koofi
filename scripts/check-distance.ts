@@ -422,6 +422,15 @@ const listingCard = readFileSync(join(process.cwd(), "components/directory-card.
 const cafeDetail = readFileSync(join(process.cwd(), "components/cafe-detail.tsx"), "utf8");
 const shopDistanceUi = readFileSync(join(process.cwd(), "components/shop-distance.tsx"), "utf8");
 assert(
+  listingCard.includes("usePeekVisitorLocation") &&
+    cafeDetail.includes("usePeekVisitorLocation") &&
+    shopDistanceUi.includes("usePeekVisitorLocation") &&
+    !listingCard.includes("useVisitorLocation(") &&
+    !cafeDetail.includes("useVisitorLocation(") &&
+    !shopDistanceUi.includes("useVisitorLocation("),
+  "distance paints from a granted permission and does not prompt on mount",
+);
+assert(
   listingCard.includes(kmOnlyLtr) &&
     cafeDetail.includes(kmOnlyLtr) &&
     !/dir="ltr"\s+data-shop-distance=\{display\.kind\}/.test(listingCard) &&

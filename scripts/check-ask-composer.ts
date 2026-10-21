@@ -329,6 +329,48 @@ async function proveSurface(page: Page, base: string, surface: Surface, wide: bo
   assert((await after.inputValue()).length > 0, `${url} could not type on the search screen`);
   await after.press("Shift+Enter");
   assert((await after.inputValue()).includes("\n"), `${url} taller field should still take Shift+Enter`);
+
+  // Search, Back, type an unsent home draft, Forward, Back. The draft
+  // has to survive on both screens, in the same textbox.
+  await page.evaluate(() => {
+    const el = document.getElementById("koofi-ask");
+    (window as unknown as { __koofiAsk?: Element | null }).__koofiAsk = el;
+  });
+  await page.evaluate(() => history.back());
+  await page.waitForFunction(() => {
+    const el = document.getElementById("koofi-ask");
+    return el instanceof HTMLTextAreaElement && el.className.includes("rounded-full");
+  });
+  const homeDraft = "home draft";
+  await field.fill(homeDraft);
+  assert((await field.inputValue()) === homeDraft, `${url} could not type the unsent home draft`);
+  await page.evaluate(() => history.forward());
+  await page.waitForFunction((expected) => {
+    const el = document.getElementById("koofi-ask");
+    return (
+      el instanceof HTMLTextAreaElement &&
+      el.className.includes("rounded-2xl") &&
+      el.value === expected
+    );
+  }, homeDraft);
+  assert((await field.inputValue()) === homeDraft, `${url} Forward dropped the unsent home draft`);
+  await page.evaluate(() => history.back());
+  await page.waitForFunction((expected) => {
+    const el = document.getElementById("koofi-ask");
+    return (
+      el instanceof HTMLTextAreaElement &&
+      el.className.includes("rounded-full") &&
+      el.value === expected
+    );
+  }, homeDraft);
+  assert((await field.inputValue()) === homeDraft, `${url} Back cleared the unsent home draft`);
+  const sameAfterHistory = await page.evaluate(() => {
+    const el = document.getElementById("koofi-ask");
+    const previous = (window as unknown as { __koofiAsk?: Element | null }).__koofiAsk;
+    return !!el && el === previous;
+  });
+  assert(sameAfterHistory, `${url} history replaced the ask textbox`);
+
   if (shotDir) {
     await page.screenshot({ path: join(shotDir, `${surface.shot}-search.png`), fullPage: false });
   }

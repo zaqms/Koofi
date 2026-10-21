@@ -1817,6 +1817,15 @@ export function Chat({
   useLayoutEffect(() => {
     const wasOpen = searchWasOpenRef.current;
     searchWasOpenRef.current = searchScreen;
+    if (!wasOpen && searchScreen) {
+      // Forward, and the first open, show whatever is unsent on Home.
+      // A real submit has already cleared `draft`, so that field stays
+      // empty. Seeding here used to happen by mounting a second textarea.
+      const seeded = draft;
+      searchDraftRef.current = seeded;
+      setSearchText(seeded);
+      return;
+    }
     if (!wasOpen || searchScreen) return;
     // The same textbox switches back to `draft`. Keep what was typed on
     // the search screen, and drop the copy the next search would send.
@@ -1824,7 +1833,7 @@ export function Chat({
     searchDraftRef.current = "";
     setSearchText("");
     setDraft(carried);
-  }, [searchScreen]);
+  }, [searchScreen, draft]);
 
   useLayoutEffect(() => {
     if (!searchScreen) return;

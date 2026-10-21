@@ -5,6 +5,7 @@ import {
   getShop,
   listDirectoryShops,
   listDiscoveryShops,
+  listListingDirectoryShops,
   listListingShops,
   listRealShops,
 } from "../lib/catalog";
@@ -64,8 +65,8 @@ const shops = listPublicShops();
 assert(
   shops.length === listListingShops().length &&
     shops.length === listDiscoveryShops().length + shops.filter((shop) => shop.isChain).length &&
-    shops.filter((shop) => shop.isChain).length === 46,
-  "public list is specialty plus the 46 sit-down chains (34 + 5 Batch R Al Qadisiyah + 7 Batch SD1 Al Shohda)",
+    shops.filter((shop) => shop.isChain).length === 48,
+  "public list is specialty plus the 48 sit-down chains (34 + 5 Batch R Al Qadisiyah + 7 Batch SD1 Al Shohda + 2 Namq, 21 Oct)",
 );
 assert(shops.length > 0, "catalog is not empty");
 
@@ -114,7 +115,8 @@ assert(
 );
 
 const malqaShops = publicShopsInDistrict("al-malqa");
-const directoryMalqa = filterDirectoryShops(listDirectoryShops(), "al-malqa");
+// 21 Oct 2026: Al Malqa now has a listed chain (Namq), so compare against the listing (specialty + listed chains).
+const directoryMalqa = filterDirectoryShops(listListingDirectoryShops(), "al-malqa");
 assert(malqaShops.length === directoryMalqa.length, "district filter matches directory");
 assert(malqaShops.length > 0, "al-malqa has shops");
 

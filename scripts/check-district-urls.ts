@@ -54,6 +54,7 @@ import {
   mostPopularPath,
   neighborhoodsPath,
   PRODUCT_NAME,
+  LEGACY_DISTRICT_REDIRECTS,
 } from "../lib/product";
 import { listingCardTags } from "../lib/listing-tags";
 import { officialShopCoords } from "../lib/place-coords";
@@ -77,7 +78,7 @@ assert(resolveDistrictSlug("al-manar") === "al-manar", "al-manar resolves");
 assert(resolveDistrictSlug("al-rayyan") === "al-rayyan", "al-rayyan resolves");
 assert(resolveDistrictSlug("al-rawabi") === "al-rawabi", "al-rawabi resolves");
 assert(resolveDistrictSlug("al-fayha") === "al-fayha", "al-fayha resolves");
-assert(resolveDistrictSlug("al-raqban") === "al-raqban", "al-raqban resolves");
+assert(resolveDistrictSlug("al-raqban") === null, "al-raqban is no longer a district slug (308 to as-salam)");
 assert(resolveDistrictSlug("al-munsiyah") === "al-munsiyah", "al-munsiyah resolves");
 assert(resolveDistrictSlug("an-nada") === "an-nada", "an-nada resolves");
 assert(resolveDistrictSlug("diplomatic-quarter") === "diplomatic-quarter", "diplomatic-quarter resolves");
@@ -162,7 +163,7 @@ assert(areas.includes("al-manar"), "directory includes al-manar");
 assert(areas.includes("al-rayyan"), "directory includes al-rayyan");
 assert(areas.includes("al-rawabi"), "directory includes al-rawabi");
 assert(areas.includes("al-fayha"), "directory includes al-fayha");
-assert(areas.includes("al-raqban"), "directory includes al-raqban");
+assert(!(areas as string[]).includes("al-raqban"), "directory drops al-raqban (folded into as-salam)");
 assert(areas.includes("al-munsiyah"), "directory includes al-munsiyah");
 assert(areas.includes("an-nada"), "directory includes an-nada");
 assert(areas.includes("diplomatic-quarter"), "directory includes diplomatic-quarter");
@@ -188,12 +189,12 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 66, `expected 66 districts (62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
-assert(listDiscoveryShops().length === 546, `specialty discovery is 546 (10 trending adds 21 Oct + 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(areas.length === 65, `expected 65 districts (Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
+assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
 assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
-assert(granada.length > 0, "ghirnatah has shops");
+assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
 assert(
   granada.every((shop) => shop.neighborhood === "ghirnatah"),
   "ghirnatah filter stays in district",
@@ -814,16 +815,28 @@ for (const ask of ["الفيحاء", "فيحاء", "fayha", "al fayha", "al-fayh
   assert(parseIntent(ask).neighborhoods.includes("al-fayha"), `parseIntent(${ask}) should hit al-fayha`);
 }
 
-const raqban = filterDirectoryShops(shops, "al-raqban");
-assert(raqban.length === 1, `al-raqban has 1 shop, got ${raqban.length}`);
+// 21 Oct 2026 (Amjad via Ajz): Al Raqban is a street inside As Salam. Its one café lists under As Salam
+// (café URL unchanged) and the old district URLs 308 to the As Salam page.
 assert(
-  raqban.some((shop) => shop.id === "maqha-mahamasa-al-raqban"),
-  "al-raqban includes maqha-mahamasa-al-raqban",
+  filterDirectoryShops(shops, "as-salam").some((shop) => shop.id === "maqha-mahamasa-al-raqban"),
+  "as-salam includes maqha-mahamasa-al-raqban",
 );
-assert(neighborhoodLabel("al-raqban", "ar") === "الرقبان", "al-raqban Arabic label");
-assert(neighborhoodLabel("al-raqban", "en") === "Al Raqban", "al-raqban English label");
 for (const ask of ["الرقبان", "رقبان", "raqban", "al raqban", "al-raqban"]) {
-  assert(parseIntent(ask).neighborhoods.includes("al-raqban"), `parseIntent(${ask}) should hit al-raqban`);
+  assert(parseIntent(ask).neighborhoods.includes("as-salam"), `parseIntent(${ask}) should hit as-salam`);
+}
+{
+  const want = new Map([
+    ["/coffee-shops/al-raqban", "/coffee-shops/as-salam"],
+    ["/en/coffee-shops/al-raqban", "/en/coffee-shops/as-salam"],
+    ["/n/al-raqban", "/coffee-shops/as-salam"],
+    ["/en/n/al-raqban", "/en/coffee-shops/as-salam"],
+    ["/al-raqban", "/coffee-shops/as-salam"],
+    ["/en/al-raqban", "/en/coffee-shops/as-salam"],
+  ]);
+  assert(LEGACY_DISTRICT_REDIRECTS.length === want.size, "6 al-raqban redirects");
+  for (const row of LEGACY_DISTRICT_REDIRECTS) {
+    assert(want.get(row.source) === row.destination && row.statusCode === 308, `${row.source} 308s to ${want.get(row.source)}`);
+  }
 }
 const haiRawdah = getShop("hai-coffee-roasters-al-rawdah");
 const raqbanShop = getShop("maqha-mahamasa-al-raqban");
@@ -833,7 +846,7 @@ assert(
   raqbanShop.mapsShareUrl !== haiRawdah.mapsShareUrl,
   "al-raqban cafe uses a distinct official place hex from HAI Rawdah",
 );
-assert(raqbanShop.neighborhood === "al-raqban", "raqban shop is not folded into al-rawdah");
+assert(raqbanShop.neighborhood === "as-salam", "raqban shop lists under as-salam (not folded into al-rawdah)");
 
 const munsiyah = filterDirectoryShops(shops, "al-munsiyah");
 assert(munsiyah.length === 10, `al-munsiyah has 10 shops, got ${munsiyah.length}`);
@@ -1507,8 +1520,9 @@ const MALAZ_REFILL = {
 {
   // Batch SD1 (21 Oct 2026): Al Shohda becomes a mixed district — Camel Step + 7 local + 7 sit-down chains.
   const rows = listDirectoryShopsForDistrict("al-shohda");
-  assert(rows.length === 15, `al-shohda has 15 shops, got ${rows.length}`);
-  assert(rows.filter((row) => !row.isChain).length === 8, "al-shohda keeps 8 local cafés (Camel Step + 7 Batch SD1)");
+  // 21 Oct 2026: + 6 local rows re-tagged from Ghirnatah (pins inside the Al Shohda polygon).
+  assert(rows.length === 21, `al-shohda has 21 shops, got ${rows.length}`);
+  assert(rows.filter((row) => !row.isChain).length === 14, "al-shohda keeps 14 local cafés (Camel Step + 7 Batch SD1 + 6 from Ghirnatah)");
   assert(rows.some((row) => row.id === "camel-step-granada-business"), "al-shohda keeps Camel Step Granada Business");
   assert(rows.every((row) => row.neighborhood === "al-shohda"), "al-shohda rows stay in district");
 }
@@ -1518,7 +1532,9 @@ const MALAZ_REFILL = {
   // Batch J: THE HAT is As Salam's first specialty café, so the page lists it and the A PLUS drive-through fallback steps back
   // (A PLUS stays live on the drive-through directory).
   // Batch S (20 Oct 2026): 6 more As Salam specialty cafés; THE HAT stays first, A PLUS still steps back.
-  assert(rows.length === 7, `as-salam has 7 shops, got ${rows.length}`);
+  // 21 Oct 2026: + Cafe & Roastery (Al Raqban street, folded in); Namq As Salam is now a chain row (hidden by Local only).
+  assert(rows.length === 8, `as-salam has 8 shops, got ${rows.length}`);
+  assert(rows.filter((row) => !row.isChain).length === 7, "as-salam keeps 7 local cafés");
   assert(rows.some((row) => row.id === "the-hat-as-salam") && !rows.some((row) => row.id === "a-plus-as-salam"), "as-salam lists the-hat-as-salam (DT fallback a-plus steps back)");
   assert(neighborhoodLabel("as-salam", "ar") === "السلام", "as-salam Arabic label");
   assert(neighborhoodLabel("as-salam", "en") === "As Salam", "as-salam English label");
@@ -2029,7 +2045,6 @@ const scoutPack: {
     | "al-fayha"
     | "as-suwaidi-al-gharbi"
     | "as-salam"
-    | "al-raqban"
     | "al-munsiyah"
     | "al-qadisiyah"
     | "al-shohda"
@@ -2694,7 +2709,8 @@ const scoutPack: {
   {
     id: "maqha-mahamasa-al-raqban",
     hex: "0x3e2fa90033b5a43b:0x210c2933359fdb69",
-    neighborhood: "al-raqban",
+    // 21 Oct 2026: Al Raqban is a street inside As Salam; the café lists there (id unchanged).
+    neighborhood: "as-salam",
     vibe: ["محمصة", "قهوة"],
     moments: ["roaster", "qahwa"],
   },
@@ -7490,14 +7506,15 @@ assert(
     rankedCatalog.map((shop) => shop.id).join(","),
   "popular directory follows popularityIndex DESC",
 );
+// 21 Oct 2026: Namq is a chain (Amjad via Ajz), so it leaves Most Popular; Urth leads and Woods Olaya enters the top 3.
 assert(
-  popularShops[0]?.id === "namq-al-malqa",
-  "popular directory lead is namq-al-malqa",
+  popularShops[0]?.id === "urth-caffe-tahlia-sulimaniyah" && !popularShops.some((shop) => shop.id.startsWith("namq-")),
+  "popular directory lead is urth-caffe-tahlia-sulimaniyah (no Namq chain rows)",
 );
 assert(
   popularShops.slice(0, 3).map((shop) => shop.id).join(",") ===
-    "namq-al-malqa,urth-caffe-tahlia-sulimaniyah,breehant-al-yasmin",
-  "popular directory top 3 matches PR #97 lock",
+    "urth-caffe-tahlia-sulimaniyah,breehant-al-yasmin,woods-olaya",
+  "popular directory top 3 (PR #97 lock minus the Namq chain)",
 );
 for (let i = 1; i < popularShops.length; i += 1) {
   const prev = rankedCatalog[i - 1];

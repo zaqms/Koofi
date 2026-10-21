@@ -7,6 +7,7 @@ import {
   shopDisplayName,
 } from "./product";
 import type { ChatPick, Language, NeighborhoodId, Shop } from "./types";
+import { vibeTagLabel } from "./vibe-labels";
 import { uniqueWhyLines } from "./why-line";
 import { shopToChatPick } from "./chat-pick";
 
@@ -160,39 +161,111 @@ export function packAreaLabel(
 
 const SHOP_JOIN: Record<Language, string> = { ar: "، ", en: ", " };
 
-function areaPhrase(area: string, language: Language): string {
-  return language === "ar" ? `في ${area}` : `In ${area}`;
-}
+const GENERIC_VIBE = new Set(["قهوة", "Coffee"]);
 
-function isBareAreaLine(line: string, language: Language): boolean {
-  return language === "ar" ? line.startsWith("في ") : line.startsWith("In ");
-}
-
-/** Drop a repeated "In Al Jazirah" when a longer line already starts with it. */
-function dedupedWhys(whys: string[], language: Language): string[] {
-  const parts: string[] = [];
-  for (const why of whys) {
-    const line = why.trim();
-    if (!line || parts.includes(line)) continue;
-    const clash = parts.findIndex((prev) => {
-      if (line.startsWith(`${prev} —`) && isBareAreaLine(prev, language)) return true;
-      if (prev.startsWith(`${line} —`) && isBareAreaLine(line, language)) return true;
-      return false;
-    });
-    if (clash === -1) {
-      parts.push(line);
-      continue;
-    }
-    if (line.length > parts[clash]!.length) parts[clash] = line;
+/** One area, both areas, or "Al Malqa and 2 more areas" once there are three. */
+function descriptionPlace(
+  shops: Pick<Shop, "neighborhood">[],
+  language: Language,
+): string {
+  const districts = distinctDistricts(shops);
+  if (districts.length === 0) return "";
+  if (districts.length === 1) return neighborhoodLabel(districts[0]!, language);
+  if (districts.length === 2) {
+    const [first, second] = districts.map((id) => neighborhoodLabel(id, language));
+    return language === "ar" ? `${first} و${second}` : `${first} and ${second}`;
   }
-  return parts;
+  return packAreaLabel(shops, language).label;
 }
 
-function areaAlreadySaid(parts: string[], area: string, language: Language): boolean {
-  const phrase = areaPhrase(area, language);
-  return parts.some(
-    (part) => part === area || part === phrase || part.startsWith(`${phrase} —`),
-  );
+function cafeCountPhrase(count: number, language: Language): string {
+  if (language === "ar") {
+    if (count === 1) return "قهوة واحدة";
+    if (count === 2) return "قهوتين";
+    return `${count} قهاوي`;
+  }
+  return count === 1 ? "1 café" : `${count} cafés`;
+}
+
+function shareTag(shop: Pick<Shop, "vibeTags">, language: Language): string | null {
+  for (const tag of shop.vibeTags) {
+    const label = vibeTagLabel(tag, language);
+    if (!label || GENERIC_VIBE.has(tag) || GENERIC_VIBE.has(label)) continue;
+    return language === "en" ? label.toLowerCase() : label;
+  }
+  return null;
+}
+
+function countWord(count: number, language: Language): string {
+  if (language === "ar") {
+    if (count === 1) return "وحدة";
+    if (count === 2) return "ثنتين";
+    return String(count);
+  }
+  if (count === 1) return "one";
+  if (count === 2) return "two";
+  if (count === 3) return "three";
+  return String(count);
+}
+
+function tagBits(
+  shops: Pick<Shop, "vibeTags">[],
+  language: Language,
+): string[] {
+  const counts = new Map<string, number>();
+  const order: string[] = [];
+  for (const shop of shops) {
+    const tag = shareTag(shop, language);
+    if (!tag) continue;
+    if (!counts.has(tag)) order.push(tag);
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+  const only = order.length === 1;
+  return order.map((tag) => {
+    const count = counts.get(tag) ?? 0;
+    if (language === "ar") {
+      if (shops.length === 1 && count === 1) return `فيها ${tag}`;
+      if (only && count === shops.length && shops.length === 2) return `ثنتينهم فيها ${tag}`;
+      if (only && count === shops.length && shops.length > 1) return `كلها فيها ${tag}`;
+      return `${countWord(count, "ar")} فيها ${tag}`;
+    }
+    const label = tag;
+    if (shops.length === 1 && count === 1) return `with ${label}`;
+    if (only && count === shops.length && shops.length === 2) return `both with ${label}`;
+    if (only && count === shops.length && shops.length > 1) return `all with ${label}`;
+    return `${countWord(count, "en")} with ${label}`;
+  });
+}
+
+function joinBits(bits: string[], language: Language): string {
+  if (bits.length <= 1) return bits[0] ?? "";
+  const last = bits[bits.length - 1]!;
+  const rest = bits.slice(0, -1);
+  if (language === "ar") return `${rest.join("، ")} و${last}`;
+  if (rest.length === 1) return `${rest[0]} and ${last}`;
+  return `${rest.join(", ")}, and ${last}`;
+}
+
+/**
+ * One sentence. Two areas are both named; from three up, the lead district
+ * plus the rest ("Al Malqa and 2 more areas"). A tag hangs on the cafés that have it.
+ */
+export function packShareDescription(
+  shops: Pick<Shop, "neighborhood" | "vibeTags">[],
+  language: Language,
+): string {
+  if (shops.length === 0) return "";
+  const place = descriptionPlace(shops, language);
+  const opening =
+    language === "en"
+      ? `${cafeCountPhrase(shops.length, "en")} in ${place}`
+      : `${cafeCountPhrase(shops.length, "ar")} في ${place}`;
+  const bits = tagBits(shops, language);
+  if (bits.length === 0) return `${opening}.`;
+  const tags = joinBits(bits, language);
+  if (shops.length === 1) return `${opening} ${tags}.`;
+  const comma = language === "ar" ? "، " : ", ";
+  return `${opening}${comma}${tags}.`;
 }
 
 export type PackShareCopy = {
@@ -205,20 +278,18 @@ export type PackShareCopy = {
 export function packShareCopy(pack: {
   locale: Language;
   shops: Shop[];
-  whys: string[];
   neighborhoodLabel: string;
 }): PackShareCopy {
-  const join = SHOP_JOIN[pack.locale];
   const names = pack.shops
     .map((shop) => shopDisplayName(shop, pack.locale))
-    .join(join);
+    .join(SHOP_JOIN[pack.locale]);
   const area = pack.neighborhoodLabel.trim();
   const title = area ? `${names} — ${area}` : names;
-  const parts = dedupedWhys(pack.whys, pack.locale);
-  if (area && !areaAlreadySaid(parts, area, pack.locale)) parts.push(area);
-  const description = parts.filter(Boolean).join(join);
-  const imageAlt = title ? `${title} · ${PRODUCT_NAME}` : PRODUCT_NAME;
-  return { title, description, imageAlt };
+  return {
+    title,
+    description: packShareDescription(pack.shops, pack.locale),
+    imageAlt: title ? `${title} · ${PRODUCT_NAME}` : PRODUCT_NAME,
+  };
 }
 
 export function resolvePack(id: string): ResolvedPack | null {

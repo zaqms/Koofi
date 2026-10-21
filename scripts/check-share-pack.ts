@@ -1,9 +1,8 @@
 /**
  * Share-pack copy in Arabic and English:
- * 1. English descriptions use the English tag label (Drive-through), not طلبات السيارة.
- * 2. An area phrase such as "In Al Jazirah" is not repeated.
- * 3. One district when every café shares it; otherwise "Al Malqa and 2 more areas"
- *    / "الملقا ومنطقتين زيادة".
+ * 1. English descriptions use the English tag (drive-through), not طلبات السيارة.
+ * 2. The description is one sentence. Each area is named once.
+ * 3. One district, both districts, or "Al Malqa and 2 more areas" / "الملقا ومنطقتين زيادة".
  * 4. Share-image alt follows the page language. Branch names stay `Brand · branch`.
  */
 import { readFileSync } from "node:fs";
@@ -62,34 +61,32 @@ assert(jazirahAr.copy.title.includes("، "), "AR shops stay Arabic-comma-separat
 assert(!jazirahEn.copy.title.includes(" · dr.CAFE"), "EN title does not join shops with ·");
 
 assert(
-  jazirahEn.copy.description.includes("Drive-through"),
-  `EN description uses the Drive-through label, got ${jazirahEn.copy.description}`,
+  jazirahEn.copy.description ===
+    "3 cafés in Al Jazirah and Al Mathar, all with drive-through.",
+  `EN description, got ${jazirahEn.copy.description}`,
 );
 assert(
-  !jazirahEn.copy.description.includes("طلبات السيارة") &&
-    !ARABIC_SCRIPT.test(jazirahEn.copy.description) &&
+  jazirahAr.copy.description ===
+    "3 قهاوي في الجزيرة والمعذر، كلها فيها طلبات السيارة.",
+  `AR description, got ${jazirahAr.copy.description}`,
+);
+assert(
+  !ARABIC_SCRIPT.test(jazirahEn.copy.description) &&
     !ARABIC_SCRIPT.test(jazirahEn.copy.title) &&
     !ARABIC_SCRIPT.test(jazirahEn.copy.imageAlt),
   `EN share copy leaked Arabic: ${jazirahEn.copy.description}`,
 );
 assert(
-  occurrences(jazirahEn.copy.description, "In Al Jazirah") === 1,
-  `EN area phrase once, got ${occurrences(jazirahEn.copy.description, "In Al Jazirah")} in ${jazirahEn.copy.description}`,
+  occurrences(jazirahEn.copy.description, "Al Jazirah") === 1 &&
+    occurrences(jazirahEn.copy.description, "Al Mathar") === 1 &&
+    !jazirahEn.copy.description.includes("1 more area"),
+  `EN description should name each area once, got ${jazirahEn.copy.description}`,
 );
 assert(
-  !jazirahEn.copy.description.includes("In Al Jazirah —") &&
-    !jazirahEn.copy.description.includes("In Al Jazirah, In Al Jazirah"),
-  `EN description still repeats the area phrase: ${jazirahEn.copy.description}`,
-);
-
-assert(
-  jazirahAr.copy.description.includes("طلبات السيارة") &&
-    !jazirahAr.copy.description.includes("Drive-through"),
-  `AR description keeps the Arabic tag, got ${jazirahAr.copy.description}`,
-);
-assert(
-  occurrences(jazirahAr.copy.description, "في الجزيرة") === 1,
-  `AR area phrase once, got ${occurrences(jazirahAr.copy.description, "في الجزيرة")} in ${jazirahAr.copy.description}`,
+  occurrences(jazirahAr.copy.description, "الجزيرة") === 1 &&
+    occurrences(jazirahAr.copy.description, "المعذر") === 1 &&
+    !jazirahAr.copy.description.includes("منطقة ثانية"),
+  `AR description should name each area once, got ${jazirahAr.copy.description}`,
 );
 
 assert(
@@ -104,28 +101,21 @@ assert(jazirahEn.copy.imageAlt !== jazirahAr.copy.imageAlt, "pack alt follows th
 assert(jazirahAr.copy.imageAlt.includes("الجزيرة ومنطقة ثانية"), "AR pack alt names the spread in Arabic");
 assert(jazirahEn.copy.imageAlt.includes("Al Jazirah and 1 more area"), "EN pack alt names the spread");
 
-const prefixed = packShareCopy({
-  locale: "en",
-  shops: jazirahEn.pack.shops,
-  whys: ["In Al Jazirah", "In Al Jazirah — Drive-through", "In Al Mathar"],
-  neighborhoodLabel: "Al Jazirah and 1 more area",
-});
-assert(
-  occurrences(prefixed.description, "In Al Jazirah") === 1 &&
-    prefixed.description.includes("Drive-through") &&
-    !prefixed.description.includes("طلبات السيارة"),
-  `prefixed EN description, got ${prefixed.description}`,
+const oneTag = share(
+  ["drcafe-al-jazirah", "camel-step-hittin", "tobys-estate-hittin"],
+  "en",
 );
-const prefixedAr = packShareCopy({
-  locale: "ar",
-  shops: jazirahAr.pack.shops,
-  whys: ["في الجزيرة", "في الجزيرة — طلبات السيارة", "في المعذر"],
-  neighborhoodLabel: "الجزيرة ومنطقة ثانية",
-});
+const oneTagAr = share(
+  ["drcafe-al-jazirah", "camel-step-hittin", "tobys-estate-hittin"],
+  "ar",
+);
 assert(
-  occurrences(prefixedAr.description, "في الجزيرة") === 1 &&
-    prefixedAr.description.includes("طلبات السيارة"),
-  `prefixed AR description, got ${prefixedAr.description}`,
+  oneTag.copy.description === "3 cafés in Al Jazirah and Hittin, one with drive-through.",
+  `one-tag EN description, got ${oneTag.copy.description}`,
+);
+assert(
+  oneTagAr.copy.description === "3 قهاوي في الجزيرة وحطين، وحدة فيها طلبات السيارة.",
+  `one-tag AR description, got ${oneTagAr.copy.description}`,
 );
 
 const WADI = ["24cafe-al-wadi", "coffee-address-al-wadi", "java-cafe-al-wadi"];
@@ -143,22 +133,15 @@ assert(
   `shared AR title, got ${wadiAr.copy.title}`,
 );
 assert(
-  occurrences(wadiEn.copy.description, "In Al Wadi") === 1 &&
-    !wadiEn.copy.description.endsWith("Al Wadi"),
-  `shared EN description repeated the area: ${wadiEn.copy.description}`,
+  wadiEn.copy.description === "3 cafés in Al Wadi, all with drive-through.",
+  `shared EN description, got ${wadiEn.copy.description}`,
 );
 assert(
-  occurrences(wadiAr.copy.description, "في الوادي") === 1,
-  `shared AR description repeated the area: ${wadiAr.copy.description}`,
+  wadiAr.copy.description === "3 قهاوي في الوادي، كلها فيها طلبات السيارة.",
+  `shared AR description, got ${wadiAr.copy.description}`,
 );
-assert(
-  wadiEn.copy.description.includes("Drive-through") && !ARABIC_SCRIPT.test(wadiEn.copy.description),
-  `shared EN description tag, got ${wadiEn.copy.description}`,
-);
-assert(
-  wadiAr.copy.description.includes("طلبات السيارة") && !wadiAr.copy.description.includes("Drive-through"),
-  `shared AR description tag, got ${wadiAr.copy.description}`,
-);
+assert(occurrences(wadiEn.copy.description, "Al Wadi") === 1, "Al Wadi is named once");
+assert(occurrences(wadiAr.copy.description, "الوادي") === 1, "الوادي is named once");
 
 const SPREAD = ["jorn-al-malqa", "elixir-bunn-al-nakheel", "idmi-al-yasmin"];
 const spreadEn = share(SPREAD, "en");
@@ -173,20 +156,55 @@ assert(
   `three-district AR area, got ${spreadAr.pack.neighborhoodLabel}`,
 );
 assert(
-  spreadEn.copy.title.endsWith("— Al Malqa and 2 more areas") &&
-    spreadEn.copy.description.endsWith("Al Malqa and 2 more areas"),
-  `three-district EN copy, title ${spreadEn.copy.title} / ${spreadEn.copy.description}`,
+  spreadEn.copy.title.endsWith("— Al Malqa and 2 more areas"),
+  `three-district EN title, got ${spreadEn.copy.title}`,
 );
 assert(
-  spreadAr.copy.title.endsWith("— الملقا ومنطقتين زيادة") &&
-    spreadAr.copy.description.endsWith("الملقا ومنطقتين زيادة"),
-  `three-district AR copy, title ${spreadAr.copy.title} / ${spreadAr.copy.description}`,
+  spreadAr.copy.title.endsWith("— الملقا ومنطقتين زيادة"),
+  `three-district AR title, got ${spreadAr.copy.title}`,
+);
+assert(
+  spreadEn.copy.description === "3 cafés in Al Malqa and 2 more areas, two with roastery.",
+  `three-district EN description, got ${spreadEn.copy.description}`,
+);
+assert(
+  spreadAr.copy.description === "3 قهاوي في الملقا ومنطقتين زيادة، ثنتين فيها محمصة.",
+  `three-district AR description, got ${spreadAr.copy.description}`,
+);
+assert(
+  occurrences(spreadEn.copy.description, "Al Malqa and 2 more areas") === 1 &&
+    !spreadEn.copy.description.includes("An Nakheel") &&
+    !spreadEn.copy.description.includes("Al Yasmin"),
+  `three-district EN description names the lead once, got ${spreadEn.copy.description}`,
 );
 assert(!ARABIC_SCRIPT.test(spreadEn.copy.description), "three-district EN description stays English");
+
+const pair = share(["drcafe-al-jazirah", "drcafe-al-jazirah-2"], "en");
+const pairAr = share(["drcafe-al-jazirah", "drcafe-al-jazirah-2"], "ar");
 assert(
-  spreadEn.copy.description.split("Al Malqa and 2 more areas").length - 1 === 1,
-  "spread area phrase is not duplicated",
+  pair.copy.description === "2 cafés in Al Jazirah, both with drive-through.",
+  `pair EN description, got ${pair.copy.description}`,
 );
+assert(
+  pairAr.copy.description === "قهوتين في الجزيرة، ثنتينهم فيها طلبات السيارة.",
+  `pair AR description, got ${pairAr.copy.description}`,
+);
+
+const solo = share(["drcafe-al-jazirah"], "en");
+const soloAr = share(["drcafe-al-jazirah"], "ar");
+assert(
+  solo.copy.description === "1 café in Al Jazirah with drive-through.",
+  `solo EN description, got ${solo.copy.description}`,
+);
+assert(
+  soloAr.copy.description === "قهوة واحدة في الجزيرة فيها طلبات السيارة.",
+  `solo AR description, got ${soloAr.copy.description}`,
+);
+
+const plain = share(["camel-step-hittin", "tobys-estate-hittin", "just-another-hittin"], "en");
+const plainAr = share(["camel-step-hittin", "tobys-estate-hittin", "just-another-hittin"], "ar");
+assert(plain.copy.description === "3 cafés in Hittin.", `plain EN description, got ${plain.copy.description}`);
+assert(plainAr.copy.description === "3 قهاوي في حطين.", `plain AR description, got ${plainAr.copy.description}`);
 
 const prince = getShop("drcafe-al-jazirah-2");
 assert(prince, "Prince Saad dr.CAFE");

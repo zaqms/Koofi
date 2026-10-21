@@ -249,6 +249,14 @@ export type DistrictMatch = {
   locale: Language;
 };
 
+/** browse = vibe, chip, or district three. search = a named shop or brand. none = nothing relevant. */
+export type PickMode = "browse" | "search" | "none";
+
+export type NameSuggestion = {
+  nameEn: string;
+  nameAr: string;
+};
+
 export type PickResult = {
   language: Language;
   picks: PickReason[];
@@ -258,4 +266,15 @@ export type PickResult = {
   askedMoments: MomentTag[];
   /** Set when the ask named a live district. All picks stay in that حي. */
   matchedDistrict?: NeighborhoodId;
+  mode?: PickMode;
+  /** Relevant matches before the search cap. Browse leaves this unset. */
+  matchCount?: number;
+  /** The ask was below the relevance threshold. Picks stay empty. */
+  noMatch?: boolean;
+  /** Fuzzy correction when the typed name was close to a listed shop or brand. */
+  didYouMean?: NameSuggestion;
+  /** A brand Wain knows and deliberately does not list (Dunkin' and the like). */
+  excludedBrand?: NameSuggestion;
+  /** Popular cafés under a no-match line. Not search results. */
+  suggestions?: PickReason[];
 };

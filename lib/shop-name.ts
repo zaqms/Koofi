@@ -21,11 +21,16 @@ function stripLatinAccents(text: string): string {
     .replace(/[\u0300-\u036F]/g, "");
 }
 
-function normalize(text: string): string {
+/**
+ * Fold a typed ask and a catalog name onto one alphabet.
+ * Arabic: alef variants (أ إ آ ٱ), ة/ه, ى/ي, diacritics, tatweel.
+ * Spacing is kept here; `includesAlias` also joins "ستار بكس" → ستاربكس.
+ */
+export function normalizeShopText(text: string): string {
   return stripLatinAccents(text)
     .toLowerCase()
     .replace(/['’]/g, "")
-    .replace(/[إأآ]/g, "ا")
+    .replace(/[إأآٱ]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/ة/g, "ه")
     .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
@@ -35,14 +40,46 @@ function normalize(text: string): string {
     .trim();
 }
 
+function normalize(text: string): string {
+  return normalizeShopText(text);
+}
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function compactLetters(text: string): string {
+  return text.replace(/[\s-]+/g, "");
+}
+
+function hasArabic(text: string): boolean {
+  return /[\u0600-\u06FF]/.test(text);
+}
+
+/**
+ * Word match, plus spaced Arabic: "ستار بكس" still hits ستاربكس.
+ * Latin stays on word boundaries so "third place" does not become "thirdplace".
+ * Joins consecutive tokens only. One token must equal the alias.
+ */
 function includesAlias(haystack: string, alias: string): boolean {
   if (!alias) return false;
   const pattern = new RegExp(`(^|\\s)${escapeRegExp(alias)}(\\s|$)`, "u");
-  return pattern.test(haystack);
+  if (pattern.test(haystack)) return true;
+  if (!hasArabic(alias) || !hasArabic(haystack)) return false;
+  const compactAlias = compactLetters(alias);
+  if (compactAlias.length < 4) return false;
+  if (compactLetters(haystack) === compactAlias) return true;
+  if (alias.includes(" ")) return false;
+  const parts = haystack.split(" ").filter(Boolean);
+  for (let start = 0; start < parts.length; start += 1) {
+    let joined = "";
+    for (let index = start; index < parts.length; index += 1) {
+      joined += compactLetters(parts[index] ?? "");
+      if (joined === compactAlias) return true;
+      if (!compactAlias.startsWith(joined)) break;
+    }
+  }
+  return false;
 }
 
 const GENERIC_ALIASES = new Set(
@@ -531,10 +568,11 @@ function aliasUsableInAsk(haystack: string, alias: string): boolean {
   return /\d/.test(alias);
 }
 
-export function matchCatalogShops<T extends Shop>(
+/** Name hits with scores. Higher means a longer or exact alias. Empty when the ask is a حي or a chip. */
+export function scoreCatalogShops<T extends Shop>(
   raw: string,
   shops: T[],
-): T[] {
+): { shop: T; score: number }[] {
   const haystack = normalize(raw);
   if (!haystack) return [];
   // Whole-ask حي / chip labels stay vibe+area, even if a shop token sits inside
@@ -561,5 +599,12 @@ export function matchCatalogShops<T extends Shop>(
     return 0;
   });
 
-  return hits.map((hit) => hit.shop);
+  return hits;
+}
+
+export function matchCatalogShops<T extends Shop>(
+  raw: string,
+  shops: T[],
+): T[] {
+  return scoreCatalogShops(raw, shops).map((hit) => hit.shop);
 }

@@ -109,6 +109,54 @@ export const copy = {
     ar: "هذي اللي أقدر أقترحها الحين:",
     en: "This is what I can suggest right now:",
   },
+  searchMatchOne: {
+    ar: "لقينا قهوة وحدة تناسب بحثك",
+    en: "One café matches your search",
+  },
+  searchMatchTwo: {
+    ar: "لقينا قهوتين تناسب بحثك",
+    en: "2 cafés match your search",
+  },
+  searchMatchFew: {
+    ar: "لقينا {count} قهاوي تناسب بحثك",
+    en: "{count} cafés match your search",
+  },
+  searchMatchMany: {
+    ar: "لقينا {count} قهوة تناسب بحثك",
+    en: "{count} cafés match your search",
+  },
+  didYouMeanOne: {
+    ar: "قصدك {name}؟",
+    en: "Did you mean {name}?",
+  },
+  didYouMeanFew: {
+    ar: "قصدك {name}؟ لقينا {count} فروع",
+    en: "Did you mean {name}? {count} branches match",
+  },
+  didYouMeanMany: {
+    ar: "قصدك {name}؟ لقينا {count} فرع",
+    en: "Did you mean {name}? {count} branches match",
+  },
+  noMatch: {
+    ar: "ما لقينا قهوة بهالاسم في القائمة.",
+    en: "No café on the list matches that.",
+  },
+  noMatchSuggestions: {
+    ar: "إذا تبي اقتراحات، هذي قهاوي الناس تدور عليها",
+    en: "If you want a starting point, these are cafés people look for",
+  },
+  brandNotListedDonut: {
+    ar: "دانكن مو موجودة في وين. القائمة للقهوة، ودانكن سلسلة دونات وحلويات.",
+    en: "Dunkin' isn't listed on Wain. The list is coffee, and Dunkin' is a donut and dessert chain.",
+  },
+  brandNotListed: {
+    ar: "{name} مو موجودة في وين.",
+    en: "{name} isn't listed on Wain.",
+  },
+  showMore: {
+    ar: "اعرض {count} زيادة",
+    en: "Show {count} more",
+  },
   thinCatalog: {
     ar: "القائمة عندي بعد صغيرة — هذي اللي أقدر أقترحها، من غير ما ألف أسماء.",
     en: "The list is still small — this is what I can suggest, without inventing names.",

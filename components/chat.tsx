@@ -124,6 +124,8 @@ type AssistantMessage = {
   halfwayPaged?: boolean;
   halfwayJoined?: boolean;
   resultVia?: ChatQueryVia;
+  noMatch?: boolean;
+  suggestions?: ChatPick[];
 };
 
 type UserMessage = {
@@ -143,6 +145,11 @@ type ChatResponse = {
   districtMatch?: DistrictMatch;
   halfwayMore?: boolean;
   halfwayError?: "bad_pin";
+  matchCount?: number;
+  noMatch?: boolean;
+  didYouMean?: { nameEn: string; nameAr: string };
+  excludedBrand?: { nameEn: string; nameAr: string };
+  suggestions?: ChatPick[];
 };
 
 type PendingResult =
@@ -437,7 +444,8 @@ function askBeforePicks(messages: Message[], index: number): string {
 function isEmptyCatalogMessage(message: AssistantMessage): boolean {
   return (
     !message.picks?.length &&
-    (message.text === copy.emptyCatalog.ar ||
+    (message.noMatch === true ||
+      message.text === copy.emptyCatalog.ar ||
       message.text === copy.emptyCatalog.en)
   );
 }
@@ -893,7 +901,9 @@ export function Chat({
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   const listFirst = isFixedListChip(selectedChipId);
-  useVisitorLocation({ auto: !listFirst && !halfwayInvite && !meetHalfwayOpen });
+  const visitor = useVisitorLocation({
+    auto: !listFirst && !halfwayInvite && !meetHalfwayOpen,
+  });
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -1192,6 +1202,8 @@ export function Chat({
               thinCatalog: result.data.thinCatalog,
               districtMatch: result.data.districtMatch,
               halfwayMore: result.data.halfwayMore,
+              noMatch: result.data.noMatch,
+              suggestions: result.data.suggestions,
               halfwayLocations: locations,
               halfwayPaged: paged || undefined,
               halfwayJoined: halfway?.joined || undefined,
@@ -1280,6 +1292,9 @@ export function Chat({
               via,
               session: readLearnSession(),
               city: cityId,
+              ...(visitor.status === "ready"
+                ? { lat: visitor.lat, lng: visitor.lng }
+                : {}),
             }),
           });
 
@@ -2417,7 +2432,14 @@ export function Chat({
                   {copy.meetHalfwayInviteJoined[landing]}
                 </p>
               ) : null}
-              {message.id === "opener" &&
+              {message.noMatch ? (
+                <div
+                  role="status"
+                  className="rounded-2xl border border-dashed border-line bg-foam px-3 py-3 text-sm leading-6"
+                >
+                  {message.text}
+                </div>
+              ) : message.id === "opener" &&
               !threadVisible &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
                 homeSurface ? (
@@ -2502,6 +2524,7 @@ export function Chat({
                   uiLanguage={landing}
                   beenIds={been.ids}
                   onBeen={been.mark}
+                  initialVisible={3}
                   ask={
                     restore && message.id === `pack-picks-${restore.packId}`
                       ? restore.ask
@@ -2514,6 +2537,23 @@ export function Chat({
                   }
                   mapsSource="pack"
                 />
+              ) : null}
+              {message.suggestions?.length ? (
+                <div className="rounded-2xl bg-paper-deep px-2 py-2">
+                  <p className="mb-2 px-1 text-xs leading-5 text-ink-soft">
+                    {copy.noMatchSuggestions[message.language]}
+                  </p>
+                  <PickList
+                    picks={message.suggestions}
+                    language={message.language}
+                    uiLanguage={landing}
+                    beenIds={been.ids}
+                    onBeen={been.mark}
+                    ask={askBeforePicks(shownMessages, index)}
+                    mapsSource="pack"
+                    shareable={false}
+                  />
+                </div>
               ) : null}
               {!busy &&
               index === lastCompletedResultIndex(shownMessages) &&

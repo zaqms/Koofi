@@ -151,19 +151,26 @@ const catalogIds = new Set(catalog.map((shop) => shop.id));
 
 function assertNamedFirst(ask: string, language: "ar" | "en", pred: (id: string) => boolean) {
   const result = pickCafes({ text: ask, language });
-  assert(result.picks.length === 3, `${ask} should return 3, got ${result.picks.length}`);
+  const matched = new Set(matchCatalogShops(ask, catalog).map((shop) => shop.id));
+  assert(result.mode === "search", `${ask} should be a name search, got ${result.mode}`);
+  assert(result.picks.length > 0, `${ask} should return the matching cafés`);
   assert(
     result.picks.every((pick) => catalogIds.has(pick.shop.id)),
     `${ask} invented a shop: ${result.picks.map((pick) => pick.shop.id).join(", ")}`,
   );
   assert(
+    result.picks.every((pick) => matched.has(pick.shop.id)),
+    `${ask} padded with an unrelated café: ${result.picks.map((pick) => pick.shop.id).join(", ")}`,
+  );
+  assert(
     pred(result.picks[0]!.shop.id),
     `${ask} first pick was ${result.picks[0]?.shop.id} (${result.picks[0]?.shop.nameEn})`,
   );
+  const heading = headingForPicks(result);
   assert(
-    headingForPicks(result) === "Three cafes that suit your choice:" ||
-      headingForPicks(result) === "ثلاث قهاوي تناسب اختيارك",
-    `locked heading changed for ${ask}: ${headingForPicks(result)}`,
+    heading !== "Three cafes that suit your choice:" &&
+      heading !== "ثلاث قهاوي تناسب اختيارك",
+    `search heading must not be the three-pick line for ${ask}: ${heading}`,
   );
 }
 
@@ -188,14 +195,18 @@ assertNamedFirst("قهوة سلام", "ar", (id) => id === "salam-cafe-al-malqa"
 assertNamedFirst("Salam Cafe", "en", (id) => id === "salam-cafe-al-malqa");
 
 const breehantPack = pickCafes({ text: "breehant", language: "en" });
+const breehantIds = matchCatalogShops("breehant", catalog)
+  .filter((shop) => shopBrandKey(shop) === "breehant")
+  .map((shop) => shop.id)
+  .sort();
 assert(
-  breehantPack.picks.filter((pick) => shopBrandKey(pick.shop) === "breehant")
-    .length === 1,
-  `breehant pack must brand-dedupe: ${breehantPack.picks.map((pick) => pick.shop.id).join(", ")}`,
+  breehantPack.picks.map((pick) => pick.shop.id).sort().join(",") ===
+    breehantIds.join(","),
+  `breehant search returns every branch, got ${breehantPack.picks.map((pick) => pick.shop.id).join(",")}`,
 );
 assert(
   breehantPack.picks.every((pick) => catalogIds.has(pick.shop.id)),
-  "breehant companions must stay catalog shops",
+  "breehant results must stay catalog shops",
 );
 
 const breehantArHits = matchCatalogShops("بريهانت", catalog);
@@ -268,13 +279,16 @@ assert(
 );
 
 const dropsPick = pickCafes({ text: "drops", language: "en" });
-assert(dropsPick.picks.length === 3, "drops vibe fallback should still return 3");
 assert(
-  dropsPick.picks.every((pick) => catalogIds.has(pick.shop.id)),
-  "drops fallback invented a shop",
+  dropsPick.didYouMean?.nameEn === "Crops",
+  `drops is one edit from Crops, not a random three-pack: ${dropsPick.didYouMean?.nameEn}`,
 );
 assert(
-  !dropsPick.picks.some((pick) => /drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`)),
+  dropsPick.picks.every((pick) => pick.shop.id.startsWith("crops-")),
+  `drops must not invent a listing or land on Drip: ${dropsPick.picks.map((pick) => pick.shop.id).join(",")}`,
+);
+assert(
+  dropsPick.picks.every((pick) => !/drops/i.test(`${pick.shop.id} ${pick.shop.nameEn} ${pick.shop.nameAr}`)),
   "do not invent a Drops listing",
 );
 

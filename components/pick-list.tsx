@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BeenButton } from "@/components/been-button";
 import { DirectoryCard } from "@/components/directory-card";
 import { SharePackButton } from "@/components/share-pack-button";
+import { copy } from "@/lib/copy";
 import { directoryShopFromPick } from "@/lib/listing-shop";
 import { SHOW_BEEN_HERE } from "@/lib/tonight";
 import { postLearnMaps } from "@/lib/learn-session";
@@ -22,7 +23,14 @@ type PickListProps = {
   ask?: string;
   packId?: string;
   mapsSource?: MapsClickSource;
+  /** Show this many cards, then a "show more" control. Omit to show the list. */
+  initialVisible?: number;
+  shareable?: boolean;
 };
+
+function fillCount(template: string, count: number): string {
+  return template.replace("{count}", String(count));
+}
 
 export function PickList({
   picks,
@@ -33,7 +41,14 @@ export function PickList({
   ask = "",
   packId,
   mapsSource = "pack",
+  initialVisible,
+  shareable = true,
 }: PickListProps) {
+  const [expanded, setExpanded] = useState(false);
+  const limit =
+    initialVisible && initialVisible > 0 ? initialVisible : picks.length;
+  const visible = expanded ? picks : picks.slice(0, limit);
+  const hidden = picks.length - visible.length;
   const resolvedPackId =
     packId ??
     (picks.length > 0
@@ -58,7 +73,7 @@ export function PickList({
   return (
     <div>
       <ol className="grid gap-3">
-        {picks.map((pick, index) => (
+        {visible.map((pick, index) => (
           <DirectoryCard
             key={pick.id}
             shop={directoryShopFromPick(pick)}
@@ -70,6 +85,15 @@ export function PickList({
           />
         ))}
       </ol>
+      {hidden > 0 ? (
+        <button
+          type="button"
+          className="mt-3 inline-flex min-h-11 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink hover:border-bean"
+          onClick={() => setExpanded(true)}
+        >
+          {fillCount(copy.showMore[language], hidden)}
+        </button>
+      ) : null}
       {SHOW_BEEN_HERE ? (
         picks.map((pick) => (
           <BeenButton
@@ -80,7 +104,7 @@ export function PickList({
           />
         ))
       ) : null}
-      {picks.length > 0 ? (
+      {shareable && picks.length > 0 ? (
         <SharePackButton
           picks={picks}
           language={language}

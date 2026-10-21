@@ -32,7 +32,13 @@ import {
   restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
 import { districtPageHidden } from "@/lib/district-dictionary";
-import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
+import { isUsableVisitorOrigin } from "@/lib/place-coords";
+import {
+  headingForPicks,
+  pickCafes,
+  toChatPicksWithPlaces,
+  toSuggestionPicks,
+} from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
 import type { DistrictMatch, Language, PickResult } from "@/lib/types";
 import { uniqueWhyLines } from "@/lib/why-line";
@@ -51,7 +57,15 @@ type ChatRequest = {
   halfwayMore?: boolean;
   halfwayReroll?: boolean;
   city?: string;
+  lat?: unknown;
+  lng?: unknown;
 };
+
+function parseOrigin(body: ChatRequest) {
+  if (typeof body.lat !== "number" || typeof body.lng !== "number") return undefined;
+  const pin = { lat: body.lat, lng: body.lng };
+  return isUsableVisitorOrigin(pin) ? pin : undefined;
+}
 
 function landingLanguage(value: unknown): Language {
   return value === "en" ? "en" : "ar";
@@ -283,15 +297,20 @@ export async function POST(request: Request) {
     });
   }
 
+  const origin = parseOrigin(body);
   const result = pickCafes({
     text,
     beenIds,
     language: landing,
     ...(city ? { city } : {}),
+    ...(origin ? { origin } : {}),
   });
+  const suggestions = toSuggestionPicks(result);
   const [picks, reply] = await Promise.all([
     toChatPicksWithPlaces(result),
-    speakForPicks({ userText: text, landing, result }),
+    result.mode === "browse"
+      ? speakForPicks({ userText: text, landing, result })
+      : Promise.resolve(headingForPicks(result)),
   ]);
 
   recordLearnAsk({
@@ -312,6 +331,13 @@ export async function POST(request: Request) {
     reply,
     thinCatalog: result.thinCatalog,
     picks,
+    ...(typeof result.matchCount === "number"
+      ? { matchCount: result.matchCount }
+      : {}),
+    ...(result.noMatch ? { noMatch: true } : {}),
+    ...(result.didYouMean ? { didYouMean: result.didYouMean } : {}),
+    ...(result.excludedBrand ? { excludedBrand: result.excludedBrand } : {}),
+    ...(suggestions.length > 0 ? { suggestions } : {}),
     ...(districtMatch ? { districtMatch } : {}),
   });
 }

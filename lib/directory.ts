@@ -4,6 +4,9 @@ export type DirectoryShop = {
   id: string;
   nameAr: string;
   nameEn: string;
+  /** Chain branch landmark. Omitted on local cafés and on chains with no finer name. */
+  branchEn?: string;
+  branchAr?: string;
   neighborhood: NeighborhoodId;
   neighborhoodAr: string;
   vibeTags: string[];

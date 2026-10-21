@@ -300,8 +300,7 @@ export function shopJsonLd(
   options?: { includeContext?: boolean },
 ): CafeOrCoffeeShopJsonLd {
   const name = shopDisplayName(shop, language);
-  const other =
-    language === "ar" ? shop.nameEn.trim() : shop.nameAr.trim();
+  const other = shopDisplayName(shop, language === "ar" ? "en" : "ar");
   const locality =
     language === "ar"
       ? shop.neighborhoodAr

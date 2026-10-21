@@ -68,8 +68,8 @@ assert(
   publicShopsItemList().numberOfItems === listRealShops().length,
   "GET /api/shops includes every café page",
 );
-assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (Al Raqban folded into As Salam, 21 Oct; 72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L)");
-assert(listSitemapLocs().length === 1475, "sitemap is 1475 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban district page AR/EN, 21 Oct; 14 Batch SD1 Al Shohda cafés × AR/EN + 6 Batch S As Salam cafés × AR/EN + 8 Batch R Al Qadisiyah cafés × AR/EN + 7 trending adds 18 Oct AR/EN + Trace Al Mursalat AR/EN + 12 Batch Q Ash Shifa cafés × AR/EN + 14 Batch P Tuwaiq cafés × AR/EN + 4 Batch O Namar cafés × AR/EN + Found Ar Rabwah AR/EN + 4 legal pages AR/EN + 1111 + 10 Batch E cafés × AR/EN + 9 Batch F cafés × AR/EN + Shubra district AR/EN + 15 Batch G cafés × AR/EN + 7 Batch H cafés × AR/EN + 6 Batch I cafés × AR/EN + 8 Batch J cafés × AR/EN + 4 Batch J other cafés × AR/EN + 12 Batch K cafés × AR/EN + 3 Batch L cafés × AR/EN + Umm Al Hamam Ash Sharqi district AR/EN + 13 Batch M cafés × AR/EN + 15 Batch N cafés × AR/EN)");
+assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (Al Raqban and the Takhassusi street retired)");
+assert(listSitemapLocs().length === 1473, "sitemap is 1473 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");

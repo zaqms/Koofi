@@ -6,8 +6,8 @@ import {
 import { z } from "zod";
 import { getShop } from "./catalog";
 import { directoryNeighborhoods } from "./directory";
-import { isNeighborhoodId, NEIGHBORHOODS, neighborhoodLabel } from "./neighborhoods";
-import { PRODUCT_NAME, PUBLIC_SITE_URL } from "./product";
+import { isNeighborhoodId, NEIGHBORHOODS, neighborhoodLabel, streetShopIdsForAsk } from "./neighborhoods";
+import { PRODUCT_NAME, PUBLIC_SITE_URL, shopDisplayName } from "./product";
 import {
   districtCanonicalUrl,
   jsonHasForbiddenPublicFields,
@@ -75,7 +75,7 @@ function jsonToolResult<T extends Record<string, unknown>>(
 }
 
 function shopTitle(shop: Shop): string {
-  return `${shop.nameEn} / ${shop.nameAr}`;
+  return `${shopDisplayName(shop, "en")} / ${shopDisplayName(shop, "ar")}`;
 }
 
 function shopCitationUrl(shop: Shop): string {
@@ -89,6 +89,7 @@ export function searchPublicShops(query: string): Shop[] {
   if (!trimmed) return shops;
 
   const needle = trimmed.toLowerCase();
+  const streetIds = new Set(streetShopIdsForAsk(trimmed) ?? []);
   const districts = new Set<NeighborhoodId>();
 
   for (const place of Object.values(NEIGHBORHOODS)) {
@@ -106,6 +107,7 @@ export function searchPublicShops(query: string): Shop[] {
   }
 
   return shops.filter((shop) => {
+    if (streetIds.has(shop.id)) return true;
     if (districts.has(shop.neighborhood)) return true;
     if (shop.id.toLowerCase().includes(needle)) return true;
     if (shop.nameEn.toLowerCase().includes(needle)) return true;

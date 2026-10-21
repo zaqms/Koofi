@@ -10,6 +10,7 @@ import { neighborhoodLabel } from "./neighborhoods";
 import {
   cardPath,
   PRODUCT_NAME,
+  shopDisplayName,
   SOCIAL_TWITTER_CARD,
 } from "./product";
 import type { Language, Shop } from "./types";
@@ -26,7 +27,7 @@ export function cafePageMetadata(shop: Shop, language: Language): Metadata {
     url: cafeOgImagePath(shop.id, language),
     width: 1200,
     height: 630,
-    alt: `${shop.nameEn} · ${neighborhoodLabel(shop.neighborhood, "en")} · ${PRODUCT_NAME}`,
+    alt: `${shopDisplayName(shop, "en")} · ${neighborhoodLabel(shop.neighborhood, "en")} · ${PRODUCT_NAME}`,
   };
 
   return {

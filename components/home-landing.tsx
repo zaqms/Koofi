@@ -12,6 +12,7 @@ import {
   listBrowseDirectoryShops,
   listDirectoryShops,
   listDriveThroughDirectoryShops,
+  type DirectoryShop,
 } from "@/lib/catalog";
 import { listPopularDirectoryShops } from "@/lib/most-popular";
 import { listNewThisWeekShops } from "@/lib/new-this-week";
@@ -26,24 +27,36 @@ import {
   isOffHomeChipId,
   mostPopularPath,
 } from "@/lib/product";
-import { CITIES, type Language } from "@/lib/types";
+import { CITIES, type City, type Language } from "@/lib/types";
 
 type HomeLandingProps = {
   language: Language;
   listing?: "popular" | null;
   selectedChipId?: string | null;
+  /** The page's city. Callers pass it; there is no Riyadh fallback. */
+  city: City;
 };
+
+export function homeLandingDirectory(
+  city: City,
+  kind: "popular" | "drive-through" | "discovery",
+): DirectoryShop[] {
+  if (kind === "popular") return listPopularDirectoryShops(city);
+  if (kind === "drive-through") return listDriveThroughDirectoryShops(city);
+  return listDirectoryShops(city);
+}
 
 export function HomeLanding({
   language,
   listing = null,
   selectedChipId,
+  city,
 }: HomeLandingProps) {
   const other: Language = language === "ar" ? "en" : "ar";
   const popular = listing === "popular";
   const bareHome = selectedChipId === undefined && listing == null;
-  const neighborhoodCandidates = CITIES.flatMap((city) =>
-    homeNeighborhoodCandidates(listBrowseDirectoryShops(city), city),
+  const neighborhoodCandidates = CITIES.flatMap((browseCity) =>
+    homeNeighborhoodCandidates(listBrowseDirectoryShops(browseCity), browseCity),
   );
   const pageChipId = selectedChipId !== undefined ? selectedChipId : "popular";
   // Bare `/` and `/en` highlight Most Popular. That selection has to use the
@@ -61,11 +74,14 @@ export function HomeLanding({
       ? restoreOffHomeChipOpen(pageChipId, language)
       : null;
   const chipMoment = chipDirectoryMoment(pageChipId);
-  const directoryShops = popularChipSelected
-    ? listPopularDirectoryShops()
-    : isDriveThroughDirectoryChip(pageChipId)
-      ? listDriveThroughDirectoryShops()
-      : listDirectoryShops();
+  const directoryShops = homeLandingDirectory(
+    city,
+    popularChipSelected
+      ? "popular"
+      : isDriveThroughDirectoryChip(pageChipId)
+        ? "drive-through"
+        : "discovery",
+  );
   // بيننا is its own screen. The home discovery feed stays on bare home
   // and on category landings; /halfway ends after pins, results, and feedback.
   const halfwayScreen = pageChipId === MEET_HALFWAY_CHIP.id;

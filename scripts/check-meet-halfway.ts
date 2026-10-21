@@ -186,9 +186,11 @@ assert(
     copy.includes("meetHalfwayBadMaps") &&
     copy.includes("meetHalfwayLocationOff") &&
     copy.includes("That Maps share link didn’t drop a pin") &&
-    copy.includes("Location is off on this phone") &&
+    copy.includes("Location is off in the browser") &&
+    !copy.includes("on this phone") &&
     copy.includes("رابط المشاركة ما طلع دبوس") &&
-    copy.includes("الموقع مقفل على هالجوال") &&
+    copy.includes("الموقع مقفل من المتصفح") &&
+    !copy.includes("هالجوال") &&
     copy.includes("نلقى لكم الاثنين أنسب مكان.") &&
     copy.includes("Find the fairest spot for both of you.") &&
     copy.includes("انسخ الرابط") &&
@@ -1321,9 +1323,9 @@ assert(
 const homePage = readFileSync(join(repoRoot, "app/page.tsx"), "utf8");
 const homePageEn = readFileSync(join(repoRoot, "app/en/page.tsx"), "utf8");
 assert(
-  homePage.includes("<HomeLanding language=\"ar\" />") &&
+  homePage.includes("<HomeLanding language=\"ar\" city={DEFAULT_LIVE_CITY} />") &&
     !homePage.includes("meet-halfway") &&
-    homePageEn.includes("<HomeLanding language=\"en\" />") &&
+    homePageEn.includes("<HomeLanding language=\"en\" city={DEFAULT_LIVE_CITY} />") &&
     !homePageEn.includes("meet-halfway"),
   "AR/EN home routes stay the directory landing, not بيننا results",
 );

@@ -262,6 +262,23 @@ for (const language of LANGS) {
   assert([...(doc.sections[seven]?.paragraphs ?? [])].join("\n").includes(cookies.heading), `privacy/${language}: section 7 names «${cookies.heading}»`);
 }
 assert(consentCopy.settingsLink.ar === "إعدادات الكوكيز" && consentCopy.settingsLink.en === "Cookie settings", "footer label matches the copy");
+assert(
+  consentCopy.compact.ar === "كوكيز التحليل والإعلانات، بس إذا وافقت." &&
+    consentCopy.compact.en === "Analytics and ads cookies — only if you accept." &&
+    consentCopy.compactDetails.ar === "التفاصيل" &&
+    consentCopy.compactDetails.en === "Details",
+  "small-screen banner is one short line plus a details link",
+);
+const consentUi = read("components/consent-manager.tsx");
+assert(
+  consentUi.includes("sm:hidden") &&
+    consentUi.includes("hidden sm:block") &&
+    consentUi.includes('consentText("compact"') &&
+    consentUi.includes("privacyPath(language)") &&
+    consentUi.includes('data-consent="accept"') &&
+    consentUi.includes('data-consent="reject"'),
+  "mobile consent is a compact bar; desktop keeps the card; Accept and Reject stay",
+);
 for (const kind of KINDS) {
   const [ar, en] = [LEGAL_DOCS[kind].ar, LEGAL_DOCS[kind].en];
   assert(ar.sections.length === en.sections.length, `${kind}: AR/EN section count`);

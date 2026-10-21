@@ -2578,12 +2578,12 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "98e03c9b7726efcd88d4a21fa8c8310ae955a0a98031b7efa8b8ed0786d1f999",
-  `llms.txt counts specialty plus the sit-down chains: ${llmsHash}`,
+  llmsHash === "ae9a3a98d268636dbefc1657b29714edd7115db5b202ab8636e79d22f3748456",
+  `llms.txt headline follows the default catalog: ${llmsHash}`,
 );
 assert(
-  llms.includes("544 local, 48 chain branches"),
-  "llms.txt names the 48 chain branches separately from specialty",
+  llms.includes("592: 544 local, 48 chain branches"),
+  "llms.txt names the sit-down total and the 48 chain branches",
 );
 
 // 16 Sep scope stays: no Starbucks row carries the drive-through tag or chip.
@@ -2723,9 +2723,13 @@ assert(
 );
 assert(
   structuredSrc.includes("publicShopsInDistrict(district)") &&
-    structuredSrc.includes("listListingDirectoryShops()") &&
+    structuredSrc.includes("listListingDirectoryShops(city)") &&
     structuredSrc.includes("const shops = listPublicShops()"),
   "JSON-LD and llms.txt are built from public listing shops",
+);
+assert(
+  structuredSrc.includes("listDriveThroughDirectoryShops(city)"),
+  "the drive-through catalog view keeps the requested city",
 );
 
 const layoutSrc = read("app/layout.tsx");

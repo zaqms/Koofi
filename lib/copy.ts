@@ -300,8 +300,8 @@ export const copy = {
     en: "That Maps share link didn’t drop a pin. Try the full link.",
   },
   meetHalfwayLocationOff: {
-    ar: "الموقع مقفل على هالجوال. حط رابط قوقل ماب تحت.",
-    en: "Location is off on this phone. Paste a Google Maps link below.",
+    ar: "الموقع مقفل من المتصفح. حط رابط قوقل ماب تحت.",
+    en: "Location is off in the browser. Paste a Google Maps link below.",
   },
   meetHalfwayThree: {
     ar: "3 قهاوي بينكم",

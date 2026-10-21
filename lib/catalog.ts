@@ -80,10 +80,10 @@ export function shopCardNumber(id: string): string {
  *
  * - `pages` — every real shop with a café page (`/c/{id}` in the sitemap).
  *   Drive-through-only shops stay in this set and are tagged
- *   `catalogLane: "drive-through"`. Never a public query view.
+ *   `catalogLane: "drive-through"`. This is the default `GET /api/shops`.
  * - `listing` — the sit-down directory: local specialty plus dine-in
  *   chains. Drive-through-only rows stay out. District pages, browse,
- *   and the default for any public query (`catalogViewFromQuery`).
+ *   and `GET /api/shops?view=listing` (the previous API default).
  * - `discovery` — homepage specialty feed and Most Popular. Drops every
  *   chain and every drive-through-only row on purpose. Chains stay on
  *   district listings and in `pages`.
@@ -116,18 +116,21 @@ export function selectCatalogShops<T extends Shop>(
   }
 }
 
-/** A view a public query may ask for. Both keep every unlisted row out. */
-export type PublicCatalogView = "listing" | "discovery";
-
 /**
- * A public `?view=` query (not wired to `GET /api/shops` today). Listed-only:
- * missing, unknown, `pages`, `all`, and `drive-through` are `listing`, so the
- * drive-through and pickup-only rows can never leave through a query.
+ * `GET /api/shops` query. Missing, `pages`, and `all` are every café page.
+ * `listing`, `discovery`, and `drive-through` are the named views above.
  */
 export function catalogViewFromQuery(
   value: string | null | undefined,
-): PublicCatalogView {
-  return value === "discovery" ? "discovery" : "listing";
+): CatalogView {
+  if (
+    value === "listing" ||
+    value === "discovery" ||
+    value === "drive-through"
+  ) {
+    return value;
+  }
+  return "pages";
 }
 
 export function listRealShops(city: City = DEFAULT_LIVE_CITY): Shop[] {
@@ -369,15 +372,28 @@ export function listListingDirectoryShops(
   return toDirectoryShops(listListingShops(city));
 }
 
+/** Keep rows whose catalog city is the page's city. */
+export function shopsInCity<T extends { city: City }>(
+  shops: readonly T[],
+  city: City,
+): T[] {
+  return shops.filter((shop) => shop.city === city);
+}
+
 /**
  * Prod rows for non-chains, plus sit-down chain branches. A district whose
- * rows are all non-qualifying chains returns nothing.
+ * rows are all non-qualifying chains returns nothing. A page city that is
+ * not this district's city returns nothing, so a Jeddah page cannot keep
+ * Riyadh rows.
  */
 export function listDirectoryShopsForDistrict(
   district: NeighborhoodId,
+  city: City = districtCity(district),
 ): DirectoryShop[] {
-  const city = districtCity(district);
-  return toDirectoryShops(districtListingFrom(listRealShops(city), district));
+  if (city !== districtCity(district)) return [];
+  return toDirectoryShops(
+    shopsInCity(districtListingFrom(listRealShops(city), district), city),
+  );
 }
 
 /** Neighborhood index: the same rows the district pages show. */

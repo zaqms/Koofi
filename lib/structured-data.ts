@@ -1,5 +1,13 @@
 import { chainBrandNameEn, isChainShop } from "./chain-brands";
-import { getShop, listListingDirectoryShops, listRealShops } from "./catalog";
+import {
+  getShop,
+  listAllDirectoryShops,
+  listDirectoryShops,
+  listDriveThroughDirectoryShops,
+  listListingDirectoryShops,
+  listRealShops,
+  type CatalogView,
+} from "./catalog";
 import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
 import { districtCity } from "./district-city";
 import { coffeeShopsInDistrict } from "./directory-category";
@@ -19,7 +27,7 @@ import {
   PUBLIC_SITE_URL,
   shopDisplayName,
 } from "./product";
-import type { Language, NeighborhoodId, Shop } from "./types";
+import type { City, Language, NeighborhoodId, Shop } from "./types";
 
 export const SCHEMA_CONTEXT = "https://schema.org" as const;
 
@@ -44,6 +52,9 @@ export const PUBLIC_SHOP_FIELDS = [
   "hasMap",
   "geo",
   "dateModified",
+  "isChain",
+  "brand",
+  "catalogLane",
 ] as const;
 
 const FORBIDDEN_PUBLIC_KEYS = [
@@ -112,6 +123,11 @@ export type PublicShopRecord = {
   brand?: string;
   /** True only for a mass-market chain branch. Omitted otherwise. */
   isChain?: true;
+  /**
+   * Drive-through-only lane. Omitted on sit-down rows, including a
+   * sit-down café that also has a drive-through moment tag.
+   */
+  catalogLane?: "drive-through";
 };
 
 export type ItemListJsonLd = {
@@ -180,19 +196,43 @@ export function websiteJsonLd(language: Language): WebSiteJsonLd {
   };
 }
 
-function shopById(): Map<string, Shop> {
-  return new Map(listRealShops().map((shop) => [shop.id, shop]));
+function shopById(city: City = DEFAULT_LIVE_CITY): Map<string, Shop> {
+  return new Map(listRealShops(city).map((shop) => [shop.id, shop]));
+}
+
+function directoryRowsForView(view: CatalogView, city: City) {
+  switch (view) {
+    case "pages":
+      return listAllDirectoryShops(city);
+    case "listing":
+      return listListingDirectoryShops(city);
+    case "discovery":
+      return listDirectoryShops(city);
+    case "drive-through":
+      return listDriveThroughDirectoryShops(city);
+  }
 }
 
 /**
- * Every listed row: local specialty plus dine-in chains, in directory order.
- * With no chains this is the specialty directory.
+ * Directory order for one `selectCatalogShops` view.
+ * `pages` matches sitemap café pages. `listing` is the sit-down directory.
  */
-export function listPublicShops(): Shop[] {
-  const byId = shopById();
-  return listListingDirectoryShops()
+export function listCatalogShops(
+  view: CatalogView = "pages",
+  city: City = DEFAULT_LIVE_CITY,
+): Shop[] {
+  const byId = shopById(city);
+  return directoryRowsForView(view, city)
     .map((row) => byId.get(row.id))
     .filter((shop): shop is Shop => shop !== undefined);
+}
+
+/**
+ * Sit-down directory: local specialty plus dine-in chains.
+ * District JSON-LD and `GET /api/shops?view=listing`. Not the default API.
+ */
+export function listPublicShops(): Shop[] {
+  return listCatalogShops("listing");
 }
 
 export function publicShopsInDistrict(district: NeighborhoodId): Shop[] {
@@ -322,6 +362,9 @@ export function publicShopRecord(
             : {}),
         }
       : {}),
+    ...(shop.catalogLane === "drive-through"
+      ? { catalogLane: "drive-through" as const }
+      : {}),
   });
 }
 
@@ -396,8 +439,10 @@ export function mostPopularItemListJsonLd(language: Language): ItemListJsonLd {
   };
 }
 
-export function publicShopsItemList(): ItemListJsonLd {
-  const shops = listPublicShops();
+export function publicShopsItemList(
+  view: CatalogView = "pages",
+): ItemListJsonLd {
+  const shops = listCatalogShops(view);
   return {
     "@context": SCHEMA_CONTEXT,
     "@type": "ItemList",
@@ -461,26 +506,33 @@ export function jsonHasForbiddenPublicFields(value: unknown): string[] {
   return [...found];
 }
 
-export function llmsCatalogCountLabel(local: number, chains: number): string {
-  if (chains === 0) return String(local);
-  return `${local} local, ${chains} chain branches`;
+export function llmsCatalogCountLabel(
+  total: number,
+  local: number,
+  chains: number,
+): string {
+  if (chains === 0) return String(total);
+  return `${total}: ${local} local, ${chains} chain branches`;
 }
 
 export function buildLlmsTxt(): string {
   const shops = listPublicShops();
   const chains = shops.filter((shop) => isChainShop(shop)).length;
   const local = shops.length - chains;
-  const countLabel = llmsCatalogCountLabel(local, chains);
+  const countLabel = llmsCatalogCountLabel(shops.length, local, chains);
+  const pages = listCatalogShops("pages");
+  const pageChains = pages.filter((shop) => isChainShop(shop)).length;
+  const pageLocal = pages.length - pageChains;
   return [
     `# ${PRODUCT_NAME}`,
     "",
-    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${countLabel}). Public catalog for people and agents.`,
+    `> ${pages.length} café pages: ${pageLocal} local cafés and ${pageChains} chain branches.`,
     "",
     `${PRODUCT_NAME} is a ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
     "",
     "## Machine-readable catalog",
     "",
-    `- GET ${publicShopsApiUrl()} — full curated catalog (schema.org ItemList of CafeOrCoffeeShop)`,
+    `- GET ${publicShopsApiUrl()} — every café page (schema.org ItemList of CafeOrCoffeeShop), same ids as the sitemap. Drive-through-only shops are included and tagged catalogLane "drive-through". Chains include isChain. Filter with those fields, or GET ${publicShopsApiUrl()}?view=listing for the sit-down directory (${countLabel}). ?view=discovery is the homepage specialty feed (no chains). ?view=drive-through is the drive-through directory.`,
     `- GET ${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}/{id} — one shop`,
     `- MCP (Streamable HTTP, public, no auth): ${publicMcpUrl()} (also ${publicMcpUrl(PUBLIC_MCP_ALIAS_PATH)})`,
     `- Cafe cards embed schema.org CafeOrCoffeeShop JSON-LD: ${PUBLIC_SITE_URL}/c/{id} and ${PUBLIC_SITE_URL}/en/c/{id}`,
@@ -490,17 +542,13 @@ export function buildLlmsTxt(): string {
     "",
     "CORS is open. No auth. Cacheable REST. No secrets.",
     "",
-    "MCP tools (same catalog as GET /api/shops): search, fetch, list_shops, get_shop, list_shops_by_district.",
+    "MCP tools: list_shops and search match GET /api/shops (every café page). get_shop and fetch match GET /api/shops/{id}. list_shops_by_district is the sit-down district page (?view=listing), not drive-through-only rows.",
     "MCP resources: https://wain.lol/api/shops , https://wain.lol/api/shops/{id} , wain://districts , wain://districts/{slug}.",
     "",
     "## Fields",
     "",
     "Catalog-only: Arabic and English names, neighborhood, canonical card URL on wain.lol, Maps URL when present (`sameAs` / `hasMap`), geo when official coordinates exist, `dateModified` when EN card/district copy was last locked.",
-    ...(chains > 0
-      ? [
-          "Mass-market branches also include `brand` and `isChain`. Local specialty rows omit both.",
-        ]
-      : []),
+    "Drive-through-only shops include `catalogLane` \"drive-through\". Sit-down rows omit it. Mass-market branches include `isChain` and `brand`. Local specialty rows omit both. Absent means not that kind, so a client can filter without a second endpoint.",
     "",
     "Not included: hours, ratings, phone, price, reviews, vote counts, or images.",
     "",

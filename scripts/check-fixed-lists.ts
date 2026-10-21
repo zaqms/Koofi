@@ -42,6 +42,7 @@ import { listSitemapLocs } from "../lib/sitemap-xml";
 import {
   fixedListItemListJsonLd,
   listPublicShops,
+  publicShopsItemList,
 } from "../lib/structured-data";
 import { officialShopCoords } from "../lib/place-coords";
 
@@ -62,7 +63,11 @@ const PIN = {
 
 assert(listRealShops().length === 647, "catalog is 647 after the 21 Oct trending adds (10), Batch SD1 Al Shohda (14 adds), Batch S As Salam (6 adds), Batch R Al Qadisiyah (8 adds), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q, Batch P, Batch O and Found Ar Rabwah (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 4 Namar + 14 Tuwaiq + 12 Ash Shifa + 1 Trace Al Mursalat + 7 trending adds 18 Oct + 8 Al Qadisiyah + 6 As Salam + 14 Al Shohda)");
 assert(listListingShops().length === 592, "listing is 592 (10 trending adds 21 Oct + 14 Batch SD1 Al Shohda + 6 Batch S As Salam + 8 Batch R Al Qadisiyah + 7 trending adds 18 Oct + 1 Trace Al Mursalat + 12 Batch Q Ash Shifa + 14 Batch P Tuwaiq + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
-assert(listPublicShops().length === 592, "/api/shops pool is 592");
+assert(listPublicShops().length === 592, "sit-down listing is 592");
+assert(
+  publicShopsItemList().numberOfItems === listRealShops().length,
+  "GET /api/shops includes every café page",
+);
 assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (Al Raqban and the Takhassusi street retired)");
 assert(listSitemapLocs().length === 1473, "sitemap is 1473 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN)");
 
@@ -254,8 +259,27 @@ assert(
   FIXED_LIST_ACTION.useLocation.ar === "استخدم موقعي" &&
     FIXED_LIST_ACTION.useLocation.en === "Use my location" &&
     FIXED_LIST_ACTION.retryLocation.ar === "جرّب مرة ثانية" &&
-    FIXED_LIST_ACTION.retryLocation.en === "Try again",
-  "use my location and retry copy",
+    FIXED_LIST_ACTION.retryLocation.en === "Try again" &&
+    FIXED_LIST_ACTION.locationBlocked.en === "Location is blocked in the browser." &&
+    FIXED_LIST_ACTION.pickNeighborhood.en === "Pick a neighborhood instead" &&
+    FIXED_LIST_ACTION.pickNeighborhood.ar === "اختر حي بداله" &&
+    !FIXED_LIST_ACTION.locationBlocked.en.toLowerCase().includes("phone") &&
+    !FIXED_LIST_ACTION.locationBlocked.ar.includes("جوال"),
+  "use my location and retry copy; a block is a device-neutral notice",
+);
+assert(
+  bodySrc.includes('data-location-notice="blocked"') &&
+    bodySrc.includes("neighborhoodsPath") &&
+    bodySrc.includes("FIXED_LIST_ACTION.pickNeighborhood") &&
+    bodySrc.includes('data-retry-location=""') &&
+    bodySrc.includes("FIXED_LIST_ACTION.retryLocation"),
+  "denied location is a notice with a neighborhood path and Try again, not a bean button",
+);
+assert(
+  /function sendChip\(chip: ChipPick\) \{[\s\S]*?chip\.id === NEARBY_CHIP\.id[\s\S]*?requestVisitorLocation\(\{ retry: true \}\)/.test(
+    chat,
+  ),
+  "the home Nearby tile requests location on the tap, before navigation",
 );
 
 function renderList(id: FixedListId, language: "ar" | "en" = "ar"): string {

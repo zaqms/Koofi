@@ -15,7 +15,7 @@ import { cardPath, shopDisplayName } from "@/lib/product";
 import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import type { MapsClickSource } from "@/lib/track";
 import type { Language } from "@/lib/types";
-import { useVisitorLocation } from "@/lib/visitor-location";
+import { usePeekVisitorLocation } from "@/lib/visitor-location";
 
 type DirectoryCardProps = {
   shop: DirectoryShop;
@@ -24,8 +24,9 @@ type DirectoryCardProps = {
   badge?: string | null;
   onMapsClick?: () => void;
   /**
-   * Fixed lists pass false so a card never opens the geolocation prompt.
-   * Distance still paints once a peek or an explicit tap fills the snapshot.
+   * Cards never open the geolocation prompt. Distance paints when a
+   * location control has filled the snapshot, or when permission is
+   * already granted. Fixed lists still pass false.
    */
   autoLocate?: boolean;
 };
@@ -36,7 +37,7 @@ export function DirectoryCard({
   mapsSource = "list",
   badge = null,
   onMapsClick,
-  autoLocate = true,
+  autoLocate = false,
 }: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
   const area =
@@ -136,7 +137,7 @@ function ListingLocation({
   neighborhood,
   lat,
   lng,
-  autoLocate = true,
+  autoLocate = false,
 }: {
   language: Language;
   neighborhood: string;
@@ -144,7 +145,7 @@ function ListingLocation({
   lng?: number;
   autoLocate?: boolean;
 }) {
-  const visitor = useVisitorLocation({ auto: autoLocate });
+  const visitor = usePeekVisitorLocation();
   const display = shopDistanceForVisitor({
     status: visitor.status,
     lat: visitor.status === "ready" ? visitor.lat : undefined,
@@ -168,7 +169,10 @@ function ListingLocation({
   ) : null;
 
   return (
-    <p className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[12px] leading-4 text-wain-soft-taupe">
+    <p
+      className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-1 gap-y-0.5 text-[12px] leading-4 text-wain-soft-taupe"
+      data-auto-locate={autoLocate ? "on" : "off"}
+    >
       <MapPinIcon className="size-3.5 shrink-0" />
       {distance && order === "distance-first" ? (
         <>

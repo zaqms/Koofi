@@ -1,4 +1,3 @@
-import { CHAIN_BRANDS, isChainBrandId } from "./chain-brands";
 import { listRealShops, selectCatalogShops } from "./catalog";
 import { DEFAULT_LIVE_CITY } from "./cities";
 import { shopToChatPick } from "./chat-pick";

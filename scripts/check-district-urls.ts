@@ -7758,13 +7758,17 @@ const enDistrictRoute = readFileSync(
 );
 assert(
   arDistrictRoute.includes("DistrictPage") &&
-    arDistrictRoute.includes("<DistrictPage language=\"ar\" district={district} />"),
-  "AR coffee-shops/{slug} uses DistrictPage",
+    arDistrictRoute.includes('language="ar"') &&
+    arDistrictRoute.includes("district={district}") &&
+    arDistrictRoute.includes("city={districtCity(district)}"),
+  "AR coffee-shops/{slug} uses DistrictPage for that district's city",
 );
 assert(
   enDistrictRoute.includes("DistrictPage") &&
-    enDistrictRoute.includes("<DistrictPage language=\"en\" district={district} />"),
-  "EN coffee-shops/{slug} uses DistrictPage",
+    enDistrictRoute.includes('language="en"') &&
+    enDistrictRoute.includes("district={district}") &&
+    enDistrictRoute.includes("city={districtCity(district)}"),
+  "EN coffee-shops/{slug} uses DistrictPage for that district's city",
 );
 assert(
   !homeLanding.includes("district") && !homeLanding.includes("DistrictEnBody"),

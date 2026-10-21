@@ -19,11 +19,20 @@ import {
   SHOW_INVITE_CTA,
   SHOW_TONIGHT_CARD,
 } from "@/lib/tonight";
+import { shopDisplayName } from "@/lib/product";
 import type { Language, Shop } from "@/lib/types";
 
 type ViralShareShop = Pick<
   Shop,
-  "id" | "nameAr" | "nameEn" | "neighborhood" | "neighborhoodAr" | "photoUrl" | "logoUrl"
+  | "id"
+  | "nameAr"
+  | "nameEn"
+  | "branchEn"
+  | "branchAr"
+  | "neighborhood"
+  | "neighborhoodAr"
+  | "photoUrl"
+  | "logoUrl"
 >;
 
 type ViralShareActionsProps = {
@@ -478,9 +487,9 @@ function TonightPreview({
         <p className="text-[11px] tracking-[0.14em] text-gold uppercase">
           {copy.tonightEyebrow[language]}
         </p>
-        <p className="mt-1 font-serif text-xl font-semibold text-foam">{shop.nameEn}</p>
+        <p className="mt-1 font-serif text-xl font-semibold text-foam">{shopDisplayName(shop, "en")}</p>
         <p className="mt-1 text-sm text-passport-wash" dir="rtl">
-          {shop.nameAr}
+          {shopDisplayName(shop, "ar")}
         </p>
         <p className="mt-3 inline-flex rounded-full border border-gold bg-charcoal/40 px-2.5 py-0.5 text-[11px] text-gold">
           {area}

@@ -26,6 +26,7 @@ import {
 } from "../lib/tiktok-popularity";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { parseIntent } from "../lib/parse-intent";
+import { searchPublicShops } from "../lib/mcp-catalog";
 import { pickCafes } from "../lib/picker";
 import { districtPath } from "../lib/product";
 import { dedupeSameBrand } from "../lib/shop-brand";
@@ -47,7 +48,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 65, `expected 65 live districts (Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${live.length}`);
+assert(live.length === 63, `expected 63 live districts (Ash Shuhada folded into Ghirnatah), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",
@@ -58,6 +59,12 @@ for (const id of dictionaryDistrictIds()) {
   assert(place, `live district ${id} has no dictionary row`);
   assert(place.ar.trim().length > 0, `${id} missing AR label`);
   assert(place.en.trim().length > 0, `${id} missing EN label`);
+  if (id === "al-shohda") {
+    assert(place.aliases.length === 0, "Ash Shuhada aliases moved to Ghirnatah");
+    assert(extractPrimaryDistrict("الشهداء") === "ghirnatah", "الشهداء extracts Ghirnatah");
+    assert(extractPrimaryDistrict("Ash Shuhada") === "ghirnatah", "Ash Shuhada extracts Ghirnatah");
+    continue;
+  }
   assert(place.aliases.length > 0, `${id} missing aliases`);
   assert(
     extractPrimaryDistrict(place.en) === id,
@@ -112,7 +119,7 @@ assert(extractPrimaryDistrict("Al Olaya") === "olaya", "Al Olaya");
 assert(extractPrimaryDistrict("As Sulimaniyah") === "sulimaniyah", "As Sulimaniyah");
 assert(extractPrimaryDistrict("An Narjis") === "al-narjis", "An Narjis");
 assert(extractPrimaryDistrict("An Nakheel") === "al-nakheel", "An Nakheel");
-assert(extractPrimaryDistrict("Ash Shuhada") === "al-shohda", "Ash Shuhada");
+assert(extractPrimaryDistrict("Ash Shuhada") === "ghirnatah", "Ash Shuhada search lands on Ghirnatah");
 assert(extractPrimaryDistrict("Al Ghadir") === "al-ghadeer", "Al Ghadir");
 assert(extractPrimaryDistrict("King Fahd District") === "king-fahd", "King Fahd District");
 assert(extractPrimaryDistrict("العليا") === "olaya", "العليا");
@@ -409,10 +416,36 @@ assert(extractPrimaryDistrict("السفارات") === "diplomatic-quarter", "ا�
 assert(extractPrimaryDistrict("الملك فهد") === "king-fahd", "الملك فهد");
 assert(extractPrimaryDistrict("King Fahd") === "king-fahd", "King Fahd");
 assert(extractPrimaryDistrict("king fahd") === "king-fahd", "king fahd");
-assertDistrictTop3("التخصصي", "ar", "al-takhassusi");
-assertDistrictTop3("Al Takhassusi", "en", "al-takhassusi");
-assert(extractPrimaryDistrict("التخصصي") === "al-takhassusi", "التخصصي");
-assert(extractPrimaryDistrict("Al Takhassusi") === "al-takhassusi", "Al Takhassusi");
+assert(extractPrimaryDistrict("التخصصي") === null, "التخصصي is a street, not a district");
+assert(extractPrimaryDistrict("Al Takhassusi") === null, "Al Takhassusi is a street, not a district");
+const TAKHASSUSI_STREET_IDS = [
+  "kernel-al-takhassusi",
+  "percent-arabica-the-zone-al-takhassusi",
+  "idmi-nakheel-takhassusi",
+  "groovy-al-takhassusi",
+  "dust-and-verse-al-takhassusi",
+  "somo-al-takhassusi",
+  "glim-al-takhassusi",
+] as const;
+const takhassusiStreet = new Set<string>(TAKHASSUSI_STREET_IDS);
+for (const ask of ["التخصصي", "takhassusi", "مقاهي التخصصي"] as const) {
+  const result = pickCafes({ text: ask, language: ask === "takhassusi" ? "en" : "ar" });
+  assert(result.matchedDistrict == null, `${ask} does not lock a district`);
+  assert(
+    result.picks.length > 0 && result.picks.every((pick) => takhassusiStreet.has(pick.shop.id)),
+    `${ask} picks stay on the street, got ${result.picks.map((pick) => pick.shop.id).join(",")}`,
+  );
+}
+const arabicStreetSearch = searchPublicShops("التخصصي").map((shop) => shop.id);
+assert(
+  arabicStreetSearch.length === TAKHASSUSI_STREET_IDS.length &&
+    arabicStreetSearch.every((id) => takhassusiStreet.has(id)),
+  `MCP التخصصي returns the 7 street cafés, got ${arabicStreetSearch.join(",")}`,
+);
+assert(
+  pickCafes({ text: "ستاربكس التخصصي" }).picks[0]?.shop.id === "starbucks-takhassusi-al-mathar",
+  "ستاربكس التخصصي still names the Starbucks branch",
+);
 assertDistrictTop3("العقيق", "ar", "al-aqiq");
 assertDistrictTop3("Al Aqiq", "en", "al-aqiq");
 assert(extractPrimaryDistrict("العقيق") === "al-aqiq", "العقيق");

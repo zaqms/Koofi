@@ -13,7 +13,7 @@ import { cityLabel } from "./cities";
 import { districtCity } from "./district-city";
 import { filterDirectoryShops } from "./directory";
 import { neighborhoodLabel } from "./neighborhoods";
-import { cardPath, districtPath, PRODUCT_NAME } from "./product";
+import { cardPath, districtPath, PRODUCT_NAME, shopDisplayName } from "./product";
 import type { NeighborhoodId, Shop } from "./types";
 import { vibeLabels } from "./vibe-labels";
 
@@ -183,7 +183,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-mughrizat": ["olaya", "sulimaniyah", "al-rabwah", "qurtubah"],
   ghirnatah: ["al-rabwah", "qurtubah", "al-rawdah", "al-safa"],
   "al-shohda": ["ghirnatah", "qurtubah", "al-safa", "al-rawdah"],
-  "al-safa": ["ghirnatah", "al-rawdah", "qurtubah", "al-shohda"],
+  "al-safa": ["ghirnatah", "al-rawdah", "qurtubah", "al-hamra"],
   "al-rawdah": ["ghirnatah", "al-safa", "al-rabwah", "qurtubah"],
   qurtubah: ["ghirnatah", "al-rawdah", "al-mughrizat", "al-safa"],
   "an-nazhah": ["qurtubah", "al-malqa", "al-yasmin", "olaya"],
@@ -198,7 +198,6 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "an-nada": ["al-yasmin", "al-malqa", "hittin", "as-sahafah"],
   "diplomatic-quarter": ["olaya", "al-rahmaniyyah", "diriyah", "kafd"],
   "king-fahd": ["olaya", "sulimaniyah", "al-wurud", "al-masif"],
-  "al-takhassusi": ["olaya", "sulimaniyah", "king-fahd", "al-wurud"],
   "al-aqiq": ["hittin", "al-yasmin", "al-nakheel", "al-malqa"],
   "al-ghadeer": ["al-yasmin", "as-sahafah", "al-narjis", "hittin"],
   "al-arid": ["al-narjis", "al-yasmin", "as-sahafah", "hittin"],
@@ -207,7 +206,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "al-mohammadiyah": ["olaya", "sulimaniyah", "al-masif", "king-fahd"],
   "al-muruj": ["al-yasmin", "al-nakheel", "al-rabi", "as-sahafah"],
   "al-malaz": ["sulimaniyah", "olaya", "al-rabwah", "al-mughrizat"],
-  "al-mathar": ["olaya", "sulimaniyah", "al-takhassusi", "king-fahd"],
+  "al-mathar": ["olaya", "sulimaniyah", "al-mohammadiyah", "king-fahd"],
   "at-taawun": ["olaya", "al-mughrizat", "al-wurud", "al-rabwah"],
   "al-mursalat": ["al-mughrizat", "al-masif", "al-wurud", "king-fahd"],
   "al-murabba": ["al-malaz", "olaya", "sulimaniyah", "king-fahd"],
@@ -233,9 +232,9 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "as-suwaidi": ["dhahrat-al-badiah", "al-wisham", "badr", "al-malaz"],
   "al-falah": ["as-sahafah", "an-nada", "al-yasmin", "al-narjis"],
   "al-izdihar": ["al-mughrizat", "olaya", "sulimaniyah", "qurtubah"],
-  "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "al-takhassusi", "al-mathar"],
+  "dhahrat-al-badiah": ["badr", "diplomatic-quarter", "umm-al-hamam-al-gharbi", "al-mathar"],
   jarir: ["al-malaz", "al-murabba", "al-rabwah", "ghubairah"],
-  "umm-al-hamam-al-gharbi": ["diplomatic-quarter", "al-mathar", "al-rahmaniyyah", "al-takhassusi"],
+  "umm-al-hamam-al-gharbi": ["diplomatic-quarter", "al-mathar", "al-rahmaniyyah", "al-mohammadiyah"],
   "umm-al-hamam-ash-sharqi": ["umm-al-hamam-al-gharbi", "al-mathar", "sulimaniyah", "al-rahmaniyyah"],
   "an-nafal": ["al-rabi", "al-masif", "al-wadi", "at-taawun"],
   "king-salman": ["al-mursalat", "an-nazhah", "al-wurud", "king-fahd"],
@@ -314,7 +313,9 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   ghirnatah: {
-    lead: `Ghirnatah (غرناطة) is east Riyadh. This page is the Granada-area cafes we’ve put on wain.lol so far.`,
+    lead: `Ghirnatah (غرناطة) is east Riyadh. OSM puts this Granada cluster in غرناطة, including the cafés that were filed under Ash Shuhada. This page is that set.
+
+[Camel Step – Granada Business](/en/c/camel-step-granada-business) is at Granada Business Park. [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda), [Specialty Bean Roastery](/en/c/specialty-bean-ghirnatah), [Mkth](/en/c/mkth-ghirnatah), [BIND Specialty Coffee](/en/c/bind-specialty-coffee-ghirnatah), [JAE Specialty Coffee](/en/c/jae-specialty-coffee-ghirnatah), [Semi Specialty Cafe](/en/c/semi-specialty-cafe-ghirnatah), and [Archi Granada](/en/c/archi-ghirnatah) are among the local cafes on this list today.`,
     hereIntro: `There are **{count}** cafes from Ghirnatah on the list right now:`,
     hereOutro: `Pick one that sounds right, open the card, and hit **Take me there** when you want the pin.`,
     about: `Browse by area or ask the chat. wain.lol stays a clean Riyadh list with Maps. More on [About](/en/about).
@@ -401,16 +402,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   },
   "al-shohda": {
-    lead: `Ash Shuhada (الشهداء) sits on the east side of Riyadh. This page is the Ash Shuhada set on wain.lol so far.
-
-[Camel Step – Granada Business](/en/c/camel-step-granada-business), [Andarena Cafe](/en/c/andarena-cafe-al-shohda), [BeFine Coffee](/en/c/befine-coffee-al-shohda), [Cobee Cafe](/en/c/cobee-cafe-al-shohda), [Arco](/en/c/arco-al-shohda), [Tahn Specialty Coffee](/en/c/tahn-al-shohda), [Black Wolf](/en/c/black-wolf-al-shohda), [illy caffè – Granada Mall](/en/c/illy-cafe-granada-mall-al-shohda), [Specialty Bean Roastery](/en/c/specialty-bean-ghirnatah), [Mkth](/en/c/mkth-ghirnatah), [BIND Specialty Coffee](/en/c/bind-specialty-coffee-ghirnatah), [JAE Specialty Coffee](/en/c/jae-specialty-coffee-ghirnatah), [Semi Specialty Cafe](/en/c/semi-specialty-cafe-ghirnatah), and [Archi Granada](/en/c/archi-ghirnatah) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    lead: `Ash Shuhada (الشهداء) no longer has its own list. Those pins are on the Ghirnatah page.`,
     hereIntro: `There are **{count}** cafes from Ash Shuhada on the catalog today:`,
-    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
-    nearbyIntro: `If Ash Shuhada isn’t the stop, these east-Riyadh lists sit next door on the site:`,
-    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Ash Shuhada. [About](/en/about).
+    hereOutro: `The Granada-area cafés are on the Ghirnatah page.`,
+    nearbyIntro: `These east-Riyadh lists sit next door on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. [Coffee shops in Ghirnatah](/en/coffee-shops/ghirnatah) is the list for these pins. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Ash Shuhada on wain.lol — a Riyadh neighborhood list including Andarena Cafe and Camel Step, each with a Maps link.",
+    meta: "Ash Shuhada cafés are listed under Ghirnatah on wain.lol.",
   },
   "al-safa": {
     lead: `As Safa is an east Riyadh neighborhood on the list. Here are the Safa places we’ve added.`,
@@ -1117,10 +1116,10 @@ function districtLink(id: NeighborhoodId): string {
 }
 
 function shopListMarkdown(
-  shops: { id: string; nameEn: string; isChain?: boolean | true }[],
+  shops: (Parameters<typeof shopDisplayName>[0] & { id: string; isChain?: boolean })[],
 ): string {
   return shops
-    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shop.nameEn)}`)
+    .map((shop) => `- ${shop.isChain ? "{chain} " : ""}${cafeLink(shop.id, shopDisplayName(shop, "en"))}`)
     .join("\n");
 }
 
@@ -1351,16 +1350,20 @@ ${nearbyIntro ? `${nearbyIntro}\n\n` : ""}${nearby}
 ${copy.about}`;
 }
 
-export function cafeEnTitle(shop: Pick<Shop, "id" | "nameEn" | "neighborhood">): string {
+export function cafeEnTitle(
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "isChain" | "branchEn" | "branchAr">,
+): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.title;
   const district = neighborhoodLabel(shop.neighborhood, "en");
-  return `${shop.nameEn} · ${district} · Riyadh · ${PRODUCT_NAME}`;
+  return `${shopDisplayName(shop, "en")} · ${district} · Riyadh · ${PRODUCT_NAME}`;
 }
 
-export function cafeEnMeta(shop: Pick<Shop, "id" | "nameEn" | "neighborhood">): string {
+export function cafeEnMeta(
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "isChain" | "branchEn" | "branchAr">,
+): string {
   if (shop.id === GATE_CAFE_ID) return GOLD_MASTER_GATE.meta;
   const district = neighborhoodLabel(shop.neighborhood, "en");
-  return `${shop.nameEn} in ${district} on wain.lol — open Maps for the pin and hours.`;
+  return `${shopDisplayName(shop, "en")} in ${district} on wain.lol — open Maps for the pin and hours.`;
 }
 
 function defaultCafeBlurb(shop: Shop): string {
@@ -1375,7 +1378,7 @@ function defaultCafeBlurb(shop: Shop): string {
   const linked = districtPageHidden(shop.neighborhood)
     ? ""
     : " If you want the rest of that neighborhood, the district page is linked below.";
-  return `${opener(shop.nameEn, district, cityName)}${vibeLine}${linked}`;
+  return `${opener(shopDisplayName(shop, "en"), district, cityName)}${vibeLine}${linked}`;
 }
 
 function plainDistrictLabel(id: NeighborhoodId): string {

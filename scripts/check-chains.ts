@@ -1100,7 +1100,7 @@ for (const [ask, id] of [
     "andarena-cafe-al-shohda", "befine-coffee-al-shohda", "cobee-cafe-al-shohda", "arco-al-shohda",
     "tahn-al-shohda", "black-wolf-al-shohda", "illy-cafe-granada-mall-al-shohda",
   ] as const;
-  const page = listDirectoryShopsForDistrict("al-shohda");
+  const page = listDirectoryShopsForDistrict("ghirnatah");
   for (const [id, brand, nameEn] of chains) {
     const shop = getShop(id);
     const mark = brand === "caribou" ? "/logos/caribou-coffee-diplomatic-quarter.png" : CHAIN_BRANDS[brand].logo;
@@ -1110,7 +1110,7 @@ for (const [ask, id] of [
         !(shop.momentTags ?? []).includes("drive-through"),
       `${id} is a listed sit-down ${brand} row on the sibling mark`,
     );
-    assert(page.some((row) => row.id === id), `${id} shows on the Al Shohda page`);
+    assert(page.some((row) => row.id === id), `${id} shows on the Ghirnatah page`);
     assert(!listDiscoveryShops().some((row) => row.id === id), `${id} is not specialty discovery`);
     assert(!listPopularPublicShops().some((row) => row.id === id), `${id} is not in Most popular`);
     assert(!filterHalfwayEligible(listDiscoveryShops()).some((row) => row.id === id), `${id} is not in the بيننا pool`);
@@ -1119,7 +1119,7 @@ for (const [ask, id] of [
   for (const id of localIds) {
     const shop = getShop(id);
     assert(shop?.isChain !== true && !shop?.chainBrand && listDiscoveryShops().some((row) => row.id === id), `${id} is local specialty`);
-    assert(page.some((row) => row.id === id) && applyHideChains(page, true).some((row) => row.id === id), `${id} stays on the Al Shohda page with Local only`);
+    assert(page.some((row) => row.id === id) && applyHideChains(page, true).some((row) => row.id === id), `${id} stays on the Ghirnatah page with Local only`);
   }
   assert(!getShop("cobee-cafe-al-shohda")?.logoUrl && !getShop("tahn-al-shohda")?.logoUrl, "Cobee and Tahn are letter tiles");
   assert(getShop("befine-coffee-al-shohda")?.logoUrl === getShop("befine-coffee-al-masif")?.logoUrl, "BeFine Al Shohda reuses the Al Masif mark");
@@ -1130,7 +1130,8 @@ for (const [ask, id] of [
   assert((getShop("black-wolf-al-shohda")?.momentTags ?? []).includes("roaster") && listBestCoffeeShops().some((s) => s.id === "black-wolf-al-shohda"), "Black Wolf (محمصة ومقهى) is a roaster");
   assert(shopBrandKey(getShop("befine-coffee-al-shohda")!) === "befine" && shopBrandKey(getShop("arco-al-shohda")!) === "arco", "BeFine / Arco share their sibling brand keys");
   assert(shopBrandKey(getShop("black-wolf-al-shohda")!) === "black-wolf" && shopBrandKey(getShop("black-stamp-al-masif")!) === "black", "Black Wolf never folds into Black Stamp");
-  assert(page.length === 21 && applyHideChains(page, true).length === 14 && page.some((row) => row.id === "camel-step-granada-business"), `Al Shohda page is 21 (Camel Step + 14 Batch SD1 + 6 re-tagged from Ghirnatah, 21 Oct); Local only keeps 14, got ${page.length}`);
+  assert(page.length === 25 && applyHideChains(page, true).length === 18 && page.some((row) => row.id === "camel-step-granada-business"), `Ghirnatah page is 25 (the old Ash Shuhada rows plus the Granada locals); Local only keeps 18, got ${page.length}`);
+  assert(getShop("camel-step-granada-business")?.neighborhood === "ghirnatah", "Camel Step Granada Business is Ghirnatah");
   for (const [ask, id] of [
     ["andarena", "andarena-cafe-al-shohda"], ["مقهى اندرينا", "andarena-cafe-al-shohda"],
     ["befine shohda", "befine-coffee-al-shohda"], ["بي فاين الشهداء", "befine-coffee-al-shohda"],
@@ -1157,8 +1158,9 @@ for (const [ask, id] of [
     assert(hits[0] === first, `bare ${ask} keeps the older row first, got ${hits.join(",")}`);
   }
 }
-// 21 Oct 2026 (Amjad via Ajz): Namq is a chain (10 Riyadh branches on its own Linktree); Al Raqban folds into As Salam;
-// the six Ghirnatah rows inside the Al Shohda polygon move to al-shohda. Café ids and URLs are unchanged.
+// 21 Oct 2026 (Amjad via Ajz): Namq is a chain (10 Riyadh branches on its own Linktree); Al Raqban folds into As Salam.
+// 21 Oct 2026 (Shoug): OSM puts every Granada-area pin in غرناطة, so the old Ash Shuhada rows (including the six
+// that #277 had tagged al-shohda) list under ghirnatah. Café ids and URLs are unchanged.
 {
   for (const [id, district] of [["namq-al-malqa", "al-malqa"], ["namq-as-salam", "as-salam"]] as const) {
     const shop = getShop(id);
@@ -1183,16 +1185,12 @@ for (const [ask, id] of [
   const salam = listDirectoryShopsForDistrict("as-salam");
   assert(salam.length === 8 && applyHideChains(salam, true).length === 7, `As Salam page is 8; Local only keeps 7 (Namq hidden), got ${salam.length}`);
   assert(!listRealShops().some((shop) => (shop.neighborhood as string) === "al-raqban"), "no row is tagged al-raqban");
-  const moved = ["specialty-bean-ghirnatah", "mkth-ghirnatah", "bind-specialty-coffee-ghirnatah", "jae-specialty-coffee-ghirnatah", "semi-specialty-cafe-ghirnatah", "archi-ghirnatah"] as const;
-  for (const id of moved) {
-    const shop = getShop(id);
-    assert(shop?.neighborhood === "al-shohda" && shop.neighborhoodAr === "الشهداء", `${id} is re-tagged to al-shohda`);
-  }
-  const ghirnatah = listDirectoryShopsForDistrict("ghirnatah").map((shop) => shop.id);
+  assert(!listRealShops().some((shop) => shop.neighborhood === "al-shohda"), "no row is tagged al-shohda");
+  const ghirnatah = listDirectoryShopsForDistrict("ghirnatah");
+  assert(ghirnatah.length === 25, `Ghirnatah holds the 25 Granada-area cafés, got ${ghirnatah.length}`);
   assert(
-    ghirnatah.join(",") === ["file-coffee-ghirnatah", "sanva-specialty-coffee-ghirnatah", "moff-ghirnatah", "quokka-coffee-ghirnatah"].sort().join(",") ||
-      ghirnatah.slice().sort().join(",") === ["file-coffee-ghirnatah", "moff-ghirnatah", "quokka-coffee-ghirnatah", "sanva-specialty-coffee-ghirnatah"].join(","),
-    `Ghirnatah keeps the 4 east-Ghirnatah rows, got ${ghirnatah.join(",")}`,
+    ghirnatah.every((shop) => shop.neighborhood === "ghirnatah" && shop.neighborhoodAr === "غرناطة"),
+    "every Ghirnatah row is tagged غرناطة",
   );
 }
 // AJ add (16 Oct 2026): Found / فاوند, Ar Rabwah — local specialty, letter tile; Places dineIn null → Scout seatingVerdict.
@@ -1963,12 +1961,12 @@ assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows
 
 assert(listDiscoveryShops().length === 544, "specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
 assert(listRealShops().length === 647, "catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
-assert(listLiveDistrictIds().length === 65, "specialty districts are 65 (− Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add; the 3 Drive rows were not a district's only specialty cafe)");
+assert(listLiveDistrictIds().length === 63, "specialty districts are 63 (Ash Shuhada folded into Ghirnatah, Al Raqban into As Salam, and the Takhassusi street retired)");
 assert(
-  catalogDistrictIdsFrom(listRealShops()).length === 78,
-  "catalog rows cover 78 districts (Al Raqban folded into As Salam, 21 Oct; Jarir hidden; 4 Bisat batch + 4 Batch D3 districts + Umm Al Hamam Ash Sharqi, Batch L)",
+  catalogDistrictIdsFrom(listRealShops()).length === 76,
+  "catalog rows cover 76 districts (Ash Shuhada folded into Ghirnatah; Al Raqban and the Takhassusi street retired; Jarir hidden)",
 );
-assert(listLiveCatalogDistrictIds().length === 68, "district pages are 68 (72 on main minus 5 Drive-only, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L, minus Al Raqban folded into As Salam 21 Oct)");
+assert(listLiveCatalogDistrictIds().length === 66, "district pages are 66 (Ash Shuhada folded into Ghirnatah, Al Raqban and the Takhassusi street retired)");
 assert(listDriveThroughDirectoryShops().length === 75, "drive-through is 75 (73 + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah, sit-down + drive-through)");
 assert(listListingShops().length === 592, "listing is 544 local plus the 48 sit-down chains");
 assert(listPublicShops().length === 592, "public list includes the 48 sit-down chains");
@@ -2168,7 +2166,7 @@ const withMixedChainMeta = districtIds.filter((id: NeighborhoodId) =>
   districtEnMeta(id).includes("local specialty plus chain branches"),
 );
 assert(
-  withMixedChainMeta.join(",") === "al-malqa,sulimaniyah,al-rahmaniyyah,al-mughrizat,al-shohda,al-manar,diplomatic-quarter,al-ghadeer,al-qirawan,al-malaz,al-mathar,at-taawun,as-salam,namar,shubra,tuwaiq,as-suwaidi,umm-al-hamam-al-gharbi,an-nafal,ash-shifa,al-qadisiyah,dhahrat-laban",
+  withMixedChainMeta.join(",") === "al-malqa,sulimaniyah,al-rahmaniyyah,al-mughrizat,ghirnatah,al-manar,diplomatic-quarter,al-ghadeer,al-qirawan,al-malaz,al-mathar,at-taawun,as-salam,namar,shubra,tuwaiq,as-suwaidi,umm-al-hamam-al-gharbi,an-nafal,ash-shifa,al-qadisiyah,dhahrat-laban",
   "mixed districts say local specialty plus chain branches",
 );
 assert(
@@ -2396,7 +2394,7 @@ assert(
     "Tuwaiq intro names only local cafes (Drip + 4 Batch P)",
   );
   assert(
-    tuwaiqEn.includes("- {chain} [dr.CAFE](/en/c/drcafe-tuwaiq)"),
+    tuwaiqEn.includes("- {chain} [dr.CAFE · Jeddah Hwy](/en/c/drcafe-tuwaiq)"),
     "Tuwaiq dr.CAFE stays a {chain} list row (hidden with Local only on)",
   );
   const shifaEn = districtEnMarkdown("ash-shifa");
@@ -2413,7 +2411,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "0d2daabec1420a68a449564a9296658a6a9529e08432d32c2e5c456597ab38e4",
+  copyHash === "fd79908eb995b85d650bc1f0fa95a4062a21d1bc048293e47027d80f2788f866",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -2446,10 +2444,19 @@ for (const id of mainDistrictPages) {
   if (rows.some((shop) => !isChainShop(shop))) {
     assert(onPage, `${id} has a non-chain row and keeps its prod page`);
   }
-  if (!onPage) disappeared.push(id);
+  if (!onPage) {
+    if (id === ("al-takhassusi" as NeighborhoodId)) {
+      assert(rows.length === 0, "retired Al Takhassusi street has no catalog rows");
+      continue;
+    }
+    disappeared.push(id);
+  }
 }
 // 21 Oct 2026: Al Raqban (a street inside As Salam) folds into as-salam; its old URLs 308 there.
-const foldedDistricts = new Map<string, NeighborhoodId>([["al-raqban", "as-salam"]]);
+const foldedDistricts = new Map<string, NeighborhoodId>([
+  ["al-raqban", "as-salam"],
+  ["al-shohda", "ghirnatah"],
+]);
 for (const id of disappeared) {
   const into = foldedDistricts.get(id);
   if (into) {

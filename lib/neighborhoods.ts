@@ -272,13 +272,8 @@ export const NEIGHBORHOODS: Record<
       "al ghirnatah",
       "al-ghirnatah",
       "gharnatah",
-    ],
-  },
-  "al-shohda": {
-    id: "al-shohda",
-    ar: "الشهداء",
-    en: "Ash Shuhada",
-    aliases: [
+      // 21 Oct 2026: Shoug — OSM puts the old Ash Shuhada pins in غرناطة.
+      // Search for الشهداء lands on this district. The old URLs 308 here.
       "الشهداء",
       "شهداء",
       "shohda",
@@ -295,6 +290,12 @@ export const NEIGHBORHOODS: Record<
       "alshohda",
       "shuhadaa",
     ],
+  },
+  "al-shohda": {
+    id: "al-shohda",
+    ar: "الشهداء",
+    en: "Ash Shuhada",
+    aliases: [],
   },
   "al-safa": {
     id: "al-safa",
@@ -549,22 +550,6 @@ export const NEIGHBORHOODS: Record<
       "al-malik-fahd",
       "malik fahd",
       "King Fahd",
-    ],
-  },
-  "al-takhassusi": {
-    id: "al-takhassusi",
-    ar: "التخصصي",
-    en: "Al Takhassusi",
-    aliases: [
-      "التخصصي",
-      "تخصصي",
-      "takhassusi",
-      "takhasusi",
-      "takhassussi",
-      "al takhassusi",
-      "al-takhassusi",
-      "altakhassusi",
-      "Al Takhassusi",
     ],
   },
   "al-aqiq": {
@@ -1225,4 +1210,97 @@ export function neighborhoodLabel(
 
 export function isNeighborhoodId(value: string): value is NeighborhoodId {
   return Object.prototype.hasOwnProperty.call(NEIGHBORHOODS, value);
+}
+
+/**
+ * Streets people type as if they were a حي. Not districts: no page, no
+ * featured slot, and they do not lock `/api/chat` to one neighborhood.
+ * Shop-name matching still treats the words as generic, the same way a
+ * district token is blocked from pinning a single café.
+ * Old `/coffee-shops/al-takhassusi` URLs 308 to the neighborhood index.
+ */
+export const STREET_SEARCH_ALIASES = {
+  "al-takhassusi": {
+    ar: "التخصصي",
+    en: "Al Takhassusi",
+    aliases: [
+      "التخصصي",
+      "تخصصي",
+      "takhassusi",
+      "takhasusi",
+      "takhassussi",
+      "al takhassusi",
+      "al-takhassusi",
+      "altakhassusi",
+      "Al Takhassusi",
+    ],
+    /** The seven cafés that used to sit on the retired street district. */
+    shopIds: [
+      "kernel-al-takhassusi",
+      "percent-arabica-the-zone-al-takhassusi",
+      "idmi-nakheel-takhassusi",
+      "groovy-al-takhassusi",
+      "dust-and-verse-al-takhassusi",
+      "somo-al-takhassusi",
+      "glim-al-takhassusi",
+    ],
+  },
+} as const;
+
+const STREET_ASK_FILLER = new Set([
+  "مقاهي",
+  "مقهى",
+  "مقهي",
+  "قهاوي",
+  "قهوه",
+  "cafe",
+  "cafes",
+  "coffee",
+  "shop",
+  "shops",
+  "in",
+  "on",
+  "في",
+  "على",
+]);
+
+function normalizeStreetAsk(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[إأآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+    .replace(/[^\p{L}\p{N}\s-]/gu, " ")
+    .replace(/(^|\s)ال(?=\p{L})/gu, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function streetAliasHaystacks(): Set<string> {
+  const aliases = new Set<string>();
+  for (const street of Object.values(STREET_SEARCH_ALIASES)) {
+    for (const alias of [street.ar, street.en, ...street.aliases]) {
+      const normalized = normalizeStreetAsk(alias);
+      if (normalized) aliases.add(normalized);
+    }
+  }
+  return aliases;
+}
+
+/**
+ * A bare street ask ("التخصصي", "takhassusi", "مقاهي التخصصي") maps to the
+ * cafés on that street. A brand plus the street ("ستاربكس التخصصي") stays a
+ * shop-name search.
+ */
+export function streetShopIdsForAsk(raw: string): readonly string[] | null {
+  const haystack = normalizeStreetAsk(raw);
+  if (!haystack) return null;
+  const aliases = streetAliasHaystacks();
+  const stripped = haystack
+    .split(" ")
+    .filter((word) => word && !STREET_ASK_FILLER.has(word))
+    .join(" ");
+  if (!aliases.has(haystack) && !aliases.has(stripped)) return null;
+  return Object.values(STREET_SEARCH_ALIASES).flatMap((street) => street.shopIds);
 }

@@ -191,7 +191,9 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
   },
   ghirnatah: {
-    lead: `غرناطة شرق الرياض. هذي قهاوي جهة غرناطة اللي حطيناها على wain.lol للحين.`,
+    lead: `غرناطة شرق الرياض. قوقل ماب يحط هالمجموعة في غرناطة، بما فيها القهاوي اللي كانت تحت الشهداء. هذي القائمة.
+
+[خطوة جمل – غرناطة بزنس](/c/camel-step-granada-business) في غرناطة بزنس. [مقهى اندرينا](/c/andarena-cafe-al-shohda) و[بي فاين كوفي](/c/befine-coffee-al-shohda) و[كوبي كافيه](/c/cobee-cafe-al-shohda) و[اركو](/c/arco-al-shohda) و[طحن قهوة مختصة](/c/tahn-al-shohda) و[بلاك وولف](/c/black-wolf-al-shohda) و[ايلي كافيه – غرناطة مول](/c/illy-cafe-granada-mall-al-shohda) و[محمصة سبيشلتي بين](/c/specialty-bean-ghirnatah) و[مكث](/c/mkth-ghirnatah) و[بايند قهوة مختصة](/c/bind-specialty-coffee-ghirnatah) و[جاي قهوة مختصة](/c/jae-specialty-coffee-ghirnatah) و[سيمي قهوة مختصة](/c/semi-specialty-cafe-ghirnatah) و[ارتشي غرناطة](/c/archi-ghirnatah) من القهاوي المحلية بهالقائمة اليوم.`,
     hereIntro: `فيه **{count}** قهاوي من غرناطة بالقائمة الحين:`,
     hereOutro: `اختار اللي تمشي، افتح البطاقة، واضغط **ودّني هناك** إذا تبي الدبوس.`,
     about: `تفرّج على الحي أو اسأل الشات. wain.lol قائمة رياض نظيفة مع الخريطة. المزيد في [عن وين](/about).
@@ -278,16 +280,14 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
   },
   "al-shohda": {
-    lead: `الشهداء حي بشرق الرياض. هذي مجموعة الشهداء على wain.lol للحين.
-
-[خطوة جمل – غرناطة بزنس](/c/camel-step-granada-business) و[مقهى اندرينا](/c/andarena-cafe-al-shohda) و[بي فاين كوفي](/c/befine-coffee-al-shohda) و[كوبي كافيه](/c/cobee-cafe-al-shohda) و[اركو](/c/arco-al-shohda) و[طحن قهوة مختصة](/c/tahn-al-shohda) و[بلاك وولف](/c/black-wolf-al-shohda) و[ايلي كافيه – غرناطة مول](/c/illy-cafe-granada-mall-al-shohda) و[محمصة سبيشلتي بين](/c/specialty-bean-ghirnatah) و[مكث](/c/mkth-ghirnatah) و[بايند قهوة مختصة](/c/bind-specialty-coffee-ghirnatah) و[جاي قهوة مختصة](/c/jae-specialty-coffee-ghirnatah) و[سيمي قهوة مختصة](/c/semi-specialty-cafe-ghirnatah) و[ارتشي غرناطة](/c/archi-ghirnatah) من القهاوي المحلية بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
+    lead: `الشهداء ما عاد لها قائمة لحاله. الدبابيس صارت على صفحة غرناطة.`,
     hereIntro: `فيه **{count}** قهاوي من الشهداء بالكتالوج اليوم:`,
-    hereOutro: `افتح البطاقة، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
-    nearbyIntro: `إذا الشهداء مو الوقف، هالقوائم شرق الرياض جنبكم بالموقع:`,
-    about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل الشهداء. [عن وين](/about).
+    hereOutro: `قهاوي غرناطة على صفحة غرناطة.`,
+    nearbyIntro: `هالقوائم شرق الرياض جنبكم بالموقع:`,
+    about: `wain.lol دليل قهوة صغير في الرياض. [قهوة في غرناطة](/coffee-shops/ghirnatah) هي القائمة لهالدبابيس. [عن وين](/about).
 
 الرياض بس للحين. ناقصك مكان؟ ارمي رابط قوقل ماب من الموقع.`,
-    meta: "قهوة {count} بالشهداء على wain.lol — قائمة حي فيها مقهى اندرينا وخطوة جمل، وعليها رابط قوقل ماب.",
+    meta: "قهاوي الشهداء صارت على قائمة غرناطة في wain.lol.",
   },
   "al-safa": {
     lead: `الصفا حي شرق الرياض بالقائمة. هذي أماكن الصفا اللي ضفناها.`,

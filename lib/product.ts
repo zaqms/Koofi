@@ -472,35 +472,46 @@ const REMOVED_SHOP_REDIRECTS = REMOVED_SHOP_TARGETS.flatMap(([slug, target]) => 
 });
 
 /**
+ * Retired district slugs. One map: locale × path prefix → permanent destination.
+ * Al Raqban is a street inside As Salam (21 Oct 2026). Al Takhassusi is a
+ * street that crosses several districts, so its old URLs go to the index.
+ * Ash Shuhada’s catalog pins are in Ghirnatah, so the empty district URLs
+ * follow the cafés there.
+ */
+const LEGACY_DISTRICT_ROUTES = [
+  {
+    slug: "al-raqban",
+    prefixes: [`/${COFFEE_SHOPS_CATEGORY}`, LEGACY_DISTRICT_PATH_PREFIX, ""] as const,
+    destination: (locale: "" | "/en") => `${locale}/${COFFEE_SHOPS_CATEGORY}/as-salam`,
+  },
+  {
+    slug: "al-takhassusi",
+    prefixes: [`/${COFFEE_SHOPS_CATEGORY}`, LEGACY_DISTRICT_PATH_PREFIX] as const,
+    destination: (locale: "" | "/en") =>
+      locale === "/en" ? `/en${NEIGHBORHOODS_PATH}` : NEIGHBORHOODS_PATH,
+  },
+  {
+    slug: "al-shohda",
+    prefixes: [`/${COFFEE_SHOPS_CATEGORY}`, LEGACY_DISTRICT_PATH_PREFIX] as const,
+    destination: (locale: "" | "/en") => `${locale}/${COFFEE_SHOPS_CATEGORY}/ghirnatah`,
+  },
+] as const;
+
+export const LEGACY_DISTRICT_REDIRECTS = LEGACY_DISTRICT_ROUTES.flatMap((route) =>
+  (["", "/en"] as const).flatMap((locale) =>
+    route.prefixes.map((prefix) => ({
+      source: `${locale}${prefix}/${route.slug}`,
+      destination: route.destination(locale),
+      statusCode: 308 as const,
+    })),
+  ),
+);
+
+/**
  * Retired cafe-card ids. Same 308 pattern as chip slug retags.
  * Sand Clock’s live hex was mis-tagged sulimaniyah; keep the old /c/ URL
  * on the Muruj place so Maps identity does not swap.
  */
-/**
- * 21 Oct 2026 (Amjad via Ajz): Al Raqban is a street inside As Salam, not a
- * district. Its one café (maqha-mahamasa-al-raqban, URL unchanged) now lists
- * under As Salam, and the old district URLs move there permanently.
- */
-export const LEGACY_DISTRICT_REDIRECTS = [
-  ...(["", "/en"] as const).flatMap((lang) => [
-    {
-      source: `${lang}/coffee-shops/al-raqban`,
-      destination: `${lang}/coffee-shops/as-salam`,
-      statusCode: 308 as const,
-    },
-    {
-      source: `${lang}/n/al-raqban`,
-      destination: `${lang}/coffee-shops/as-salam`,
-      statusCode: 308 as const,
-    },
-    {
-      source: `${lang}/al-raqban`,
-      destination: `${lang}/coffee-shops/as-salam`,
-      statusCode: 308 as const,
-    },
-  ]),
-];
-
 export const LEGACY_SHOP_REDIRECTS = [
   {
     source: `${CARD_PATH_PREFIX}/sand-clock-sulimaniyah`,
@@ -586,14 +597,34 @@ export function shopSharePath(
   });
 }
 
+function branchAlreadyInName(name: string, branch: string): boolean {
+  const base = name.trim().toLowerCase();
+  const extra = branch.trim().toLowerCase();
+  if (!extra) return true;
+  return base === extra || base.includes(extra);
+}
+
+/**
+ * A branch (mall, street, or landmark) is appended when the row has one
+ * (`Starbucks · Panorama Mall`). Chain rows are the usual case. The branch
+ * is skipped when the stored name already contains it.
+ */
 export function shopDisplayName(
-  shop: { nameAr: string; nameEn: string },
+  shop: {
+    nameAr: string;
+    nameEn: string;
+    isChain?: boolean;
+    branchEn?: string;
+    branchAr?: string;
+  },
   language: Language,
 ): string {
   const nameAr = shop.nameAr.trim();
   const nameEn = shop.nameEn.trim();
-  if (language === "en") return nameEn;
-  return nameAr || nameEn;
+  const base = language === "en" ? nameEn : nameAr || nameEn;
+  const branch = (language === "en" ? shop.branchEn : shop.branchAr)?.trim();
+  if (!branch || branchAlreadyInName(base, branch)) return base;
+  return `${base} · ${branch}`;
 }
 
 /** Absolute public cafe-card URL for claim prefill. */

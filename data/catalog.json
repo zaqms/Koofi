@@ -6933,7 +6933,7 @@
         "pastry",
         "quiet"
       ],
-      "mapsShareUrl": "https://www.google.com/maps/place/Y97+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee500353c8e81:0xb2f5e1092e400825",
+      "mapsShareUrl": "https://www.google.com/maps/place/Y97+Specialty+Coffee/data=!4m2!3m1!1s0x3e2ee5e693a68873:0x850de971b0fcdaed",
       "pin": {
         "lat": 24.8104463,
         "lng": 46.6439199
@@ -8106,7 +8106,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Al Bujairi",
+      "branchAr": "البجيري"
     },
     {
       "id": "archi-and-jax-diriyah",
@@ -8231,7 +8233,8 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchAr": "آند جاكس"
     },
     {
       "id": "kmr-diriyah",
@@ -10338,8 +10341,8 @@
       "nameAr": "محمصة سبيشلتي بين",
       "nameEn": "Specialty Bean Roastery",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "محمصة",
         "قهوة"
@@ -10463,8 +10466,8 @@
       "nameAr": "مكث",
       "nameEn": "Mkth",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -10586,8 +10589,8 @@
       "nameAr": "بايند قهوة مختصة",
       "nameEn": "BIND Specialty Coffee",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -10879,8 +10882,8 @@
       "nameAr": "جاي قهوة مختصة",
       "nameEn": "JAE Specialty Coffee",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -11125,8 +11128,8 @@
       "nameAr": "سيمي قهوة مختصة",
       "nameEn": "Semi Specialty Cafe",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -11248,8 +11251,8 @@
       "nameAr": "خطوة جمل – غرناطة بزنس",
       "nameEn": "Camel Step – Granada Business",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -11347,8 +11350,8 @@
       "nameAr": "ارتشي غرناطة",
       "nameEn": "Archi Granada",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -20688,8 +20691,8 @@
       "nameAr": "كرنل",
       "nameEn": "KERNEL",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-mohammadiyah",
+      "neighborhoodAr": "المحمدية",
       "vibeTags": [
         "قهوة"
       ],
@@ -20811,8 +20814,8 @@
       "nameAr": "% أرابيكا ذا زون",
       "nameEn": "% Arabica Riyadh The Zone",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-mohammadiyah",
+      "neighborhoodAr": "المحمدية",
       "vibeTags": [
         "قهوة"
       ],
@@ -20934,8 +20937,8 @@
       "nameAr": "محمصة وقهوة إدمي",
       "nameEn": "IDMI Coffee — Al Takhassousi / An Nakheel",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-nakheel",
+      "neighborhoodAr": "النخيل",
       "vibeTags": [
         "محمصة",
         "قهوة"
@@ -21059,8 +21062,8 @@
       "nameAr": "جروفي",
       "nameEn": "groovy | House of French Toast",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-nakheel",
+      "neighborhoodAr": "النخيل",
       "vibeTags": [
         "قهوة"
       ],
@@ -21182,8 +21185,8 @@
       "nameAr": "دوست آند فيرس",
       "nameEn": "DUST & VERSE Takhassusi",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-mathar",
+      "neighborhoodAr": "المعذر",
       "vibeTags": [
         "قهوة"
       ],
@@ -21317,8 +21320,8 @@
       "nameAr": "소모 | سومو",
       "nameEn": "SOMO",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-mohammadiyah",
+      "neighborhoodAr": "المحمدية",
       "vibeTags": [
         "قهوة"
       ],
@@ -21452,8 +21455,8 @@
       "nameAr": "جليم",
       "nameEn": "GLIM",
       "city": "riyadh",
-      "neighborhood": "al-takhassusi",
-      "neighborhoodAr": "التخصصي",
+      "neighborhood": "al-rahmaniyyah",
+      "neighborhoodAr": "الرحمانية",
       "vibeTags": [
         "قهوة"
       ],
@@ -24548,7 +24551,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "King Fahd Rd",
+      "branchAr": "طريق الملك فهد"
     },
     {
       "id": "scout-coffee-al-qirawan",
@@ -30221,7 +30226,9 @@
       "pin": {
         "lat": 24.5640625,
         "lng": 46.7178125
-      }
+      },
+      "branchEn": "Daoud Al Robeib St",
+      "branchAr": "شارع داود الربيب"
     },
     {
       "id": "drive-al-aziziyah",
@@ -30547,7 +30554,9 @@
       "pin": {
         "lat": 24.8298297,
         "lng": 46.5755058
-      }
+      },
+      "branchEn": "Prince Saud bin Jalawi Rd",
+      "branchAr": "طريق الأمير سعود بن جلوي"
     },
     {
       "id": "drive-al-yasmin",
@@ -30675,7 +30684,9 @@
       "pin": {
         "lat": 24.5222259,
         "lng": 46.6874514
-      }
+      },
+      "branchEn": "Al Khaleefa Al Mamoun St",
+      "branchAr": "شارع الخليفة المأمون"
     },
     {
       "id": "drive-al-nakheel",
@@ -30871,7 +30882,9 @@
       "pin": {
         "lat": 24.6855165,
         "lng": 46.7062272
-      }
+      },
+      "branchEn": "Makkah Rd",
+      "branchAr": "طريق مكة"
     },
     {
       "id": "drcafe-al-nahdah",
@@ -31222,7 +31235,9 @@
       "pin": {
         "lat": 24.6570831,
         "lng": 46.7907504
-      }
+      },
+      "branchEn": "Exit 15",
+      "branchAr": "مخرج 15"
     },
     {
       "id": "drcafe-al-jazirah-2",
@@ -31348,7 +31363,9 @@
       "pin": {
         "lat": 24.6817172,
         "lng": 46.7851377
-      }
+      },
+      "branchEn": "Prince Saad Rd",
+      "branchAr": "طريق الأمير سعد بن عبدالرحمن"
     },
     {
       "id": "drcafe-al-aziziyah",
@@ -31835,7 +31852,9 @@
       "pin": {
         "lat": 24.8340945,
         "lng": 46.7346627
-      }
+      },
+      "branchEn": "Thoumamah Rd",
+      "branchAr": "طريق الثمامة"
     },
     {
       "id": "drcafe-shubra",
@@ -32058,7 +32077,9 @@
       "pin": {
         "lat": 24.7012987,
         "lng": 46.7047431
-      }
+      },
+      "branchEn": "Abdulaziz bin Musaed Rd",
+      "branchAr": "طريق عبدالعزيز بن مساعد"
     },
     {
       "id": "drcafe-tuwaiq",
@@ -32106,7 +32127,9 @@
       "pin": {
         "lat": 24.5550754,
         "lng": 46.4918045
-      }
+      },
+      "branchEn": "Jeddah Hwy",
+      "branchAr": "طريق جدة"
     },
     {
       "id": "drcafe-al-mughrizat",
@@ -32154,7 +32177,9 @@
       "pin": {
         "lat": 24.7555574,
         "lng": 46.7301157
-      }
+      },
+      "branchEn": "Mughrizat Park",
+      "branchAr": "حديقة المغرزات"
     },
     {
       "id": "drcafe-al-mathar",
@@ -32203,7 +32228,9 @@
       "pin": {
         "lat": 24.6884683,
         "lng": 46.6655579
-      }
+      },
+      "branchEn": "King Fahd Rd",
+      "branchAr": "طريق الملك فهد"
     },
     {
       "id": "voute-fot-al-naseem-sharqi",
@@ -42345,7 +42372,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Al Qasr",
+      "branchAr": "القصر"
     },
     {
       "id": "rawi-cafe-al-falah",
@@ -47727,7 +47756,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Tala Mall",
+      "branchAr": "تالا مول"
     },
     {
       "id": "starbucks-tala-mall-an-nafal",
@@ -47852,7 +47883,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Tala Mall",
+      "branchAr": "تالا مول"
     },
     {
       "id": "drcafe-an-nafal",
@@ -49157,7 +49190,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "The Plaza",
+      "branchAr": "ذا بلازا"
     },
     {
       "id": "java-time-al-rahmaniyyah",
@@ -49667,7 +49702,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Euromarché",
+      "branchAr": "يورومارشيه"
     },
     {
       "id": "starbucks-panorama-al-mathar",
@@ -49809,7 +49846,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Panorama Mall",
+      "branchAr": "بانوراما مول"
     },
     {
       "id": "starbucks-tafaseel-al-mathar",
@@ -49946,7 +49985,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Tafaseel",
+      "branchAr": "تفاصيل"
     },
     {
       "id": "starbucks-takhassusi-al-mathar",
@@ -50083,7 +50124,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Takhassusi St",
+      "branchAr": "شارع التخصصي"
     },
     {
       "id": "nafees-as-suwaidi-al-gharbi",
@@ -51974,7 +52017,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Oruba Square",
+      "branchAr": "العروبة سكوير"
     },
     {
       "id": "elixir-bunn-umm-al-hamam-ash-sharqi",
@@ -53588,7 +53633,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Safarat",
+      "branchAr": "السفارات"
     },
     {
       "id": "starbucks-oud-square-diplomatic-quarter",
@@ -53725,7 +53772,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Oud Square",
+      "branchAr": "ساحة العود"
     },
     {
       "id": "coffee-table-diplomatic-quarter",
@@ -55387,7 +55436,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Laban Park",
+      "branchAr": "حديقة لبن"
     },
     {
       "id": "found-ar-rabwah",
@@ -58402,7 +58453,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Ibn Taymiyyah Rd",
+      "branchAr": "شارع ابن تيمية"
     },
     {
       "id": "half-million-tirmidhi-ash-shifa",
@@ -58450,7 +58503,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "At Tirmidhi Rd",
+      "branchAr": "شارع الترمذي"
     },
     {
       "id": "trace-al-mursalat",
@@ -59703,7 +59758,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Sheikh Jaber Rd",
+      "branchAr": "شارع الشيخ جابر"
     },
     {
       "id": "half-million-al-qadisiyah",
@@ -59888,7 +59945,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Rakaa Plaza",
+      "branchAr": "ركاء بلازا"
     },
     {
       "id": "starbucks-tamimi-al-qadisiyah",
@@ -60026,7 +60085,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Tamimi Markets",
+      "branchAr": "التميمي"
     },
     {
       "id": "tim-hortons-sheikh-jaber-al-qadisiyah",
@@ -60074,7 +60135,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Sheikh Jaber Rd",
+      "branchAr": "شارع الشيخ جابر"
     },
     {
       "id": "namq-as-salam",
@@ -60746,8 +60809,8 @@
       "nameAr": "مقهى اندرينا",
       "nameEn": "Andarena Cafe",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -60869,8 +60932,8 @@
       "nameAr": "بي فاين كوفي",
       "nameEn": "BeFine Coffee",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -60992,8 +61055,8 @@
       "nameAr": "كوبي كافيه",
       "nameEn": "Cobee Cafe",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61114,8 +61177,8 @@
       "nameAr": "اركو",
       "nameEn": "Arco",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61237,8 +61300,8 @@
       "nameAr": "طحن قهوة مختصة",
       "nameEn": "Tahn Specialty Coffee",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61359,8 +61422,8 @@
       "nameAr": "بلاك وولف",
       "nameEn": "Black Wolf",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "محمصة",
         "قهوة"
@@ -61484,8 +61547,8 @@
       "nameAr": "ايلي كافيه – غرناطة مول",
       "nameEn": "illy caffè – Granada Mall",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61609,8 +61672,8 @@
       "nameAr": "د.كيف الشهداء",
       "nameEn": "dr.CAFE Ash Shuhada",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61648,7 +61711,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Khalid bin Al Walid St",
+      "branchAr": "شارع خالد بن الوليد"
     },
     {
       "id": "drcafe-granada-mall-al-shohda",
@@ -61657,8 +61722,8 @@
       "nameAr": "د.كيف غرناطة مول",
       "nameEn": "dr.CAFE Granada Mall",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61773,7 +61838,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Granada Mall",
+      "branchAr": "غرناطة مول"
     },
     {
       "id": "peets-granada-mall-al-shohda",
@@ -61782,8 +61849,8 @@
       "nameAr": "بيتس كوفي",
       "nameEn": "Peet's Coffee",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -61898,7 +61965,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Granada Mall",
+      "branchAr": "غرناطة مول"
     },
     {
       "id": "starbucks-granada-mall-al-shohda",
@@ -61907,8 +61976,8 @@
       "nameAr": "ستاربكس",
       "nameEn": "Starbucks",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -62023,7 +62092,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Granada Mall",
+      "branchAr": "غرناطة مول"
     },
     {
       "id": "half-million-al-shohda",
@@ -62032,8 +62103,8 @@
       "nameAr": "هاف مليون",
       "nameEn": "Half Million",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -62080,8 +62151,8 @@
       "nameAr": "تيم هورتنز",
       "nameEn": "Tim Hortons",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -62208,7 +62279,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Granada Mall",
+      "branchAr": "غرناطة مول"
     },
     {
       "id": "caribou-granada-mall-al-shohda",
@@ -62217,8 +62290,8 @@
       "nameAr": "كاريبو كوفي",
       "nameEn": "Caribou Coffee",
       "city": "riyadh",
-      "neighborhood": "al-shohda",
-      "neighborhoodAr": "الشهداء",
+      "neighborhood": "ghirnatah",
+      "neighborhoodAr": "غرناطة",
       "vibeTags": [
         "قهوة"
       ],
@@ -62333,7 +62406,9 @@
           }
         ]
       },
-      "example": false
+      "example": false,
+      "branchEn": "Granada Mall",
+      "branchAr": "غرناطة مول"
     },
     {
       "id": "sample-roastery-al-rayyan",

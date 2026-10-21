@@ -150,7 +150,7 @@ export function tonightDistrict(
 }
 
 export function inviteShareText(input: {
-  shop: Pick<Shop, "nameAr" | "nameEn">;
+  shop: Pick<Shop, "nameAr" | "nameEn" | "branchEn" | "branchAr">;
   language: Language;
   cardUrl: string;
 }): string {
@@ -161,7 +161,7 @@ export function inviteShareText(input: {
 }
 
 export function tonightShareText(input: {
-  shop: Pick<Shop, "nameAr" | "nameEn">;
+  shop: Pick<Shop, "nameAr" | "nameEn" | "branchEn" | "branchAr">;
   language: Language;
   cardUrl: string;
   line?: string;

@@ -83,7 +83,7 @@ assert(resolveDistrictSlug("al-munsiyah") === "al-munsiyah", "al-munsiyah resolv
 assert(resolveDistrictSlug("an-nada") === "an-nada", "an-nada resolves");
 assert(resolveDistrictSlug("diplomatic-quarter") === "diplomatic-quarter", "diplomatic-quarter resolves");
 assert(resolveDistrictSlug("king-fahd") === "king-fahd", "king-fahd resolves");
-assert(resolveDistrictSlug("al-takhassusi") === "al-takhassusi", "al-takhassusi resolves");
+assert(resolveDistrictSlug("al-takhassusi") === null, "al-takhassusi is not a district slug");
 assert(resolveDistrictSlug("al-aqiq") === "al-aqiq", "al-aqiq resolves");
 assert(resolveDistrictSlug("al-ghadeer") === "al-ghadeer", "al-ghadeer resolves");
 assert(resolveDistrictSlug("al-arid") === "al-arid", "al-arid resolves");
@@ -151,7 +151,7 @@ assert(neighborhoodsPath("en") === "/en/neighborhoods", "EN view-all neighborhoo
 const shops = listDirectoryShops();
 const areas = directoryNeighborhoods(shops);
 assert(areas.includes("ghirnatah"), "directory includes ghirnatah");
-assert(areas.includes("al-shohda"), "directory includes al-shohda");
+assert(!(areas as readonly string[]).includes("al-shohda"), "directory drops empty al-shohda");
 assert(areas.includes("al-safa"), "directory includes al-safa");
 assert(areas.includes("al-rawdah"), "directory includes al-rawdah");
 assert(areas.includes("qurtubah"), "directory includes qurtubah");
@@ -168,7 +168,7 @@ assert(areas.includes("al-munsiyah"), "directory includes al-munsiyah");
 assert(areas.includes("an-nada"), "directory includes an-nada");
 assert(areas.includes("diplomatic-quarter"), "directory includes diplomatic-quarter");
 assert(areas.includes("king-fahd"), "directory includes king-fahd");
-assert(areas.includes("al-takhassusi"), "directory includes al-takhassusi");
+assert(!(areas as readonly string[]).includes("al-takhassusi"), "directory does not include the Takhassusi street");
 assert(areas.includes("al-aqiq"), "directory includes al-aqiq");
 assert(areas.includes("al-ghadeer"), "directory includes al-ghadeer");
 assert(areas.includes("al-arid"), "directory includes al-arid");
@@ -189,23 +189,19 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 65, `expected 65 districts (Al Raqban folded into As Salam, 21 Oct; 62 + Shubra, Batch F + As Salam, Batch J THE HAT + Umm Al Hamam Ash Sharqi, Batch L + Al Mursalat, Trace AJ add), got ${areas.length}`);
+assert(areas.length === 63, `expected 63 districts (Ash Shuhada folded into Ghirnatah), got ${areas.length}`);
 assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
 assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
-assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
+assert(granada.length === 18, `ghirnatah keeps the 18 local Granada-area cafés, got ${granada.length}`);
 assert(
   granada.every((shop) => shop.neighborhood === "ghirnatah"),
   "ghirnatah filter stays in district",
 );
 
 const shohda = filterDirectoryShops(shops, "al-shohda");
-assert(shohda.length > 0, "al-shohda has shops");
-assert(
-  shohda.every((shop) => shop.neighborhood === "al-shohda"),
-  "al-shohda filter stays in district",
-);
+assert(shohda.length === 0, "al-shohda has no specialty shops");
 
 const safa = filterDirectoryShops(shops, "al-safa");
 assert(safa.length > 0, "al-safa has shops");
@@ -833,9 +829,13 @@ for (const ask of ["الرقبان", "رقبان", "raqban", "al raqban", "al-ra
     ["/al-raqban", "/coffee-shops/as-salam"],
     ["/en/al-raqban", "/en/coffee-shops/as-salam"],
   ]);
-  assert(LEGACY_DISTRICT_REDIRECTS.length === want.size, "6 al-raqban redirects");
-  for (const row of LEGACY_DISTRICT_REDIRECTS) {
-    assert(want.get(row.source) === row.destination && row.statusCode === 308, `${row.source} 308s to ${want.get(row.source)}`);
+  for (const [source, destination] of want) {
+    assert(
+      LEGACY_DISTRICT_REDIRECTS.some(
+        (row) => row.source === source && row.destination === destination && row.statusCode === 308,
+      ),
+      `${source} 308s to ${destination}`,
+    );
   }
 }
 const haiRawdah = getShop("hai-coffee-roasters-al-rawdah");
@@ -1047,12 +1047,22 @@ assert(
   "EN diplomatic-quarter coffee-shops path",
 );
 assert(
-  districtPath("al-takhassusi", "ar") === "/coffee-shops/al-takhassusi",
-  "AR al-takhassusi coffee-shops path",
+  LEGACY_DISTRICT_REDIRECTS.some(
+    (row) =>
+      row.source === "/coffee-shops/al-takhassusi" &&
+      row.destination === "/neighborhoods" &&
+      row.statusCode === 308,
+  ),
+  "AR al-takhassusi 308s to the neighborhood index",
 );
 assert(
-  districtPath("al-takhassusi", "en") === "/en/coffee-shops/al-takhassusi",
-  "EN al-takhassusi coffee-shops path",
+  LEGACY_DISTRICT_REDIRECTS.some(
+    (row) =>
+      row.source === "/en/coffee-shops/al-takhassusi" &&
+      row.destination === "/en/neighborhoods" &&
+      row.statusCode === 308,
+  ),
+  "EN al-takhassusi 308s to the neighborhood index",
 );
 assert(
   districtPath("al-nakheel", "en") === "/en/coffee-shops/al-nakheel",
@@ -1106,7 +1116,6 @@ for (const ask of ["الملك فهد", "حي الملك فهد", "king fahd", "
 
 const WAVE1_DISTRICTS: {
   id:
-    | "al-takhassusi"
     | "al-aqiq"
     | "al-ghadeer"
     | "al-arid"
@@ -1115,20 +1124,6 @@ const WAVE1_DISTRICTS: {
   en: string;
   shops: string[];
 }[] = [
-  {
-    id: "al-takhassusi",
-    ar: "التخصصي",
-    en: "Al Takhassusi",
-    shops: [
-      "kernel-al-takhassusi",
-      "percent-arabica-the-zone-al-takhassusi",
-      "idmi-nakheel-takhassusi",
-      "groovy-al-takhassusi",
-      "dust-and-verse-al-takhassusi",
-      "somo-al-takhassusi",
-      "glim-al-takhassusi",
-    ],
-  },
   {
     id: "al-aqiq",
     ar: "العقيق",
@@ -1315,8 +1310,11 @@ const MOH_REFILL = {
 
 {
   const rows = filterDirectoryShops(shops, MOH_REFILL.id);
-  assert(rows.length === 6, `al-mohammadiyah has 6 shops (5 + Shal, trending add 18 Oct), got ${rows.length}`);
+  assert(rows.length === 9, `al-mohammadiyah has 9 shops (6 + Kernel, % Arabica The Zone, SOMO), got ${rows.length}`);
   assert(rows.some((shop) => shop.id === "shal-al-mohammadiyah"), "al-mohammadiyah includes shal-al-mohammadiyah");
+  for (const id of ["kernel-al-takhassusi", "percent-arabica-the-zone-al-takhassusi", "somo-al-takhassusi"]) {
+    assert(rows.some((shop) => shop.id === id), `al-mohammadiyah includes ${id}`);
+  }
   assert(
     rows.every((shop) => shop.neighborhood === "al-mohammadiyah"),
     "al-mohammadiyah filter stays in district",
@@ -1402,11 +1400,11 @@ const MALAZ_REFILL = {
 {
   const rows = filterDirectoryShops(shops, "al-mathar");
   // Batch J (11 Oct): 4 local adds; Peet's and the 3 Starbucks are chains (listing/directory only, not discovery).
-  assert(rows.length === 5, `al-mathar has 5 local shops, got ${rows.length}`);
+  assert(rows.length === 6, `al-mathar has 6 local shops, got ${rows.length}`);
   assert(
     rows.map((shop) => shop.id).sort().join(",") ===
-      "leto-caffe-al-mathar,opinion-al-mathar,richony-cafe-al-mathar,urth-caffe-al-mathar,waynes-coffee-al-mathar",
-    "al-mathar local set is Opinion plus Richony, L'ETO, Urth and Wayne's",
+      "dust-and-verse-al-takhassusi,leto-caffe-al-mathar,opinion-al-mathar,richony-cafe-al-mathar,urth-caffe-al-mathar,waynes-coffee-al-mathar",
+    "al-mathar local set is Opinion plus Richony, L'ETO, Urth, Wayne's and Dust & Verse",
   );
   assert(neighborhoodLabel("al-mathar", "ar") === "المعذر", "al-mathar Arabic label");
   assert(neighborhoodLabel("al-mathar", "en") === "Al Mathar", "al-mathar English label");
@@ -1518,13 +1516,29 @@ const MALAZ_REFILL = {
 }
 
 {
-  // Batch SD1 (21 Oct 2026): Al Shohda becomes a mixed district — Camel Step + 7 local + 7 sit-down chains.
   const rows = listDirectoryShopsForDistrict("al-shohda");
-  // 21 Oct 2026: + 6 local rows re-tagged from Ghirnatah (pins inside the Al Shohda polygon).
-  assert(rows.length === 21, `al-shohda has 21 shops, got ${rows.length}`);
-  assert(rows.filter((row) => !row.isChain).length === 14, "al-shohda keeps 14 local cafés (Camel Step + 7 Batch SD1 + 6 from Ghirnatah)");
-  assert(rows.some((row) => row.id === "camel-step-granada-business"), "al-shohda keeps Camel Step Granada Business");
-  assert(rows.every((row) => row.neighborhood === "al-shohda"), "al-shohda rows stay in district");
+  assert(rows.length === 0, `al-shohda is empty, got ${rows.length}`);
+  const ghirnatahRows = listDirectoryShopsForDistrict("ghirnatah");
+  assert(ghirnatahRows.length === 25, `ghirnatah has the 25 Granada-area cafés, got ${ghirnatahRows.length}`);
+  assert(
+    ghirnatahRows.some((row) => row.id === "camel-step-granada-business") &&
+      ghirnatahRows.some((row) => row.id === "archi-ghirnatah") &&
+      ghirnatahRows.some((row) => row.id === "starbucks-granada-mall-al-shohda"),
+    "ghirnatah lists Camel Step, Archi, and Granada Mall Starbucks",
+  );
+  for (const [source, destination] of [
+    ["/coffee-shops/al-shohda", "/coffee-shops/ghirnatah"],
+    ["/en/coffee-shops/al-shohda", "/en/coffee-shops/ghirnatah"],
+    ["/n/al-shohda", "/coffee-shops/ghirnatah"],
+    ["/en/n/al-shohda", "/en/coffee-shops/ghirnatah"],
+  ] as const) {
+    assert(
+      LEGACY_DISTRICT_REDIRECTS.some(
+        (row) => row.source === source && row.destination === destination && row.statusCode === 308,
+      ),
+      `${source} 308s to ${destination}`,
+    );
+  }
 }
 
 {
@@ -2054,7 +2068,6 @@ const scoutPack: {
     | "al-rabi"
     | "diplomatic-quarter"
     | "king-fahd"
-    | "al-takhassusi"
     | "al-aqiq"
     | "al-ghadeer"
     | "al-arid"
@@ -2947,7 +2960,7 @@ const scoutPack: {
   {
     id: "kernel-al-takhassusi",
     hex: "0x3e2ee3601e4fa885:0x1f8cbed341f62a18",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-mohammadiyah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/kernel-al-takhassusi.jpg",
@@ -2955,7 +2968,7 @@ const scoutPack: {
   {
     id: "percent-arabica-the-zone-al-takhassusi",
     hex: "0x3e2f1d1c6b289117:0x527881c3e12eddba",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-mohammadiyah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/percent-arabica-the-zone-al-takhassusi.jpg",
@@ -2963,7 +2976,7 @@ const scoutPack: {
   {
     id: "idmi-nakheel-takhassusi",
     hex: "0x3e2ee30019bc1745:0x224a0ace7b458e3c",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-nakheel",
     vibe: ["محمصة", "قهوة"],
     moments: ["roaster", "qahwa"],
     logoUrl: "/logos/idmi-nakheel-takhassusi.png",
@@ -2972,7 +2985,7 @@ const scoutPack: {
   {
     id: "groovy-al-takhassusi",
     hex: "0x3e2ee3934bcf3d21:0x9ae62a9e1b9587f7",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-nakheel",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/groovy-al-takhassusi.jpg",
@@ -2980,7 +2993,7 @@ const scoutPack: {
   {
     id: "dust-and-verse-al-takhassusi",
     hex: "0x3e2f03ad54c60f81:0x294b74ccebfd0c8d",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-mathar",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/dust-and-verse-al-takhassusi.jpg",
@@ -2989,7 +3002,7 @@ const scoutPack: {
   {
     id: "somo-al-takhassusi",
     hex: "0x3e2f1d0008ce3c83:0xa8e94e0f1bfb929b",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-mohammadiyah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/somo-al-takhassusi.jpg",
@@ -2997,7 +3010,7 @@ const scoutPack: {
   {
     id: "glim-al-takhassusi",
     hex: "0x3e2f1d0075b7160f:0xa1bedaec0badf986",
-    neighborhood: "al-takhassusi",
+    neighborhood: "al-rahmaniyyah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/glim-al-takhassusi.jpg",
@@ -6663,7 +6676,7 @@ const scoutPack: {
   {
     id: "andarena-cafe-al-shohda",
     hex: "0x3e2efd18735ee2db:0x1df41553feb2d438",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/andarena-cafe-al-shohda.png",
@@ -6676,7 +6689,7 @@ const scoutPack: {
   {
     id: "befine-coffee-al-shohda",
     hex: "0x3e2efd0038f4e31f:0xd62b1b3077d726c7",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/befine-coffee-al-masif.jpg",
@@ -6689,7 +6702,7 @@ const scoutPack: {
   {
     id: "cobee-cafe-al-shohda",
     hex: "0x3e2efd753a95c917:0x5a0414b7a3665826",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     pin: { lat: 24.789558099999997, lng: 46.7357461 },
@@ -6701,7 +6714,7 @@ const scoutPack: {
   {
     id: "arco-al-shohda",
     hex: "0x3e2efd61dbfbdda5:0xb77ccda886b960e5",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/arco-al-rabi.jpg",
@@ -6714,7 +6727,7 @@ const scoutPack: {
   {
     id: "tahn-al-shohda",
     hex: "0x3e2efd3f282b09d5:0x784d213630fae89f",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     pin: { lat: 24.790318, lng: 46.743287099999996 },
@@ -6726,7 +6739,7 @@ const scoutPack: {
   {
     id: "black-wolf-al-shohda",
     hex: "0x3e2efd7053f23f3b:0xc7eeccaff5343ee0",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["محمصة",  "قهوة"],
     moments: ["roaster",  "qahwa"],
     logoUrl: "/logos/black-wolf-al-shohda.png",
@@ -6739,7 +6752,7 @@ const scoutPack: {
   {
     id: "illy-cafe-granada-mall-al-shohda",
     hex: "0x3e2efd85efdba3f9:0x1cb87a6b27d26de0",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/illy-cafe-granada-mall-al-shohda.png",
@@ -6752,7 +6765,7 @@ const scoutPack: {
   {
     id: "drcafe-ash-shuhada-al-shohda",
     hex: "0x3e2eff5afad247b5:0x84bb199d1c32ffac",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/drcafe-mark.png",
@@ -6765,7 +6778,7 @@ const scoutPack: {
   {
     id: "drcafe-granada-mall-al-shohda",
     hex: "0x3e2efd8c4a2d9823:0x6a255627a293fce7",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/drcafe-mark.png",
@@ -6778,7 +6791,7 @@ const scoutPack: {
   {
     id: "peets-granada-mall-al-shohda",
     hex: "0x3e2efdb9ac78f879:0x9d7f0b464ddde5e8",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/peets-mark.png",
@@ -6791,7 +6804,7 @@ const scoutPack: {
   {
     id: "starbucks-granada-mall-al-shohda",
     hex: "0x3e2efd733480fb0b:0x6975469e3346095",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/starbucks-mark.png",
@@ -6804,7 +6817,7 @@ const scoutPack: {
   {
     id: "half-million-al-shohda",
     hex: "0x3e2efdada16863e1:0x13bd9c8af7c556de",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/half-million-mark.png",
@@ -6817,7 +6830,7 @@ const scoutPack: {
   {
     id: "tim-hortons-granada-mall-al-shohda",
     hex: "0x3e2efdc01be2ae1f:0x627fa85877c2ec5f",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/tim-hortons-wordmark.png",
@@ -6830,7 +6843,7 @@ const scoutPack: {
   {
     id: "caribou-granada-mall-al-shohda",
     hex: "0x3e2efd68e8037217:0xd5ec335f149b0ae5",
-    neighborhood: "al-shohda",
+    neighborhood: "ghirnatah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
     logoUrl: "/logos/caribou-coffee-diplomatic-quarter.png",

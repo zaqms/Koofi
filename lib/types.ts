@@ -36,7 +36,6 @@ export const NEIGHBORHOOD_IDS = [
   "an-nada",
   "diplomatic-quarter",
   "king-fahd",
-  "al-takhassusi",
   "al-aqiq",
   "al-ghadeer",
   "al-arid",
@@ -129,6 +128,13 @@ export type Shop = {
   id: string;
   nameAr: string;
   nameEn: string;
+  /**
+   * Mall, street, or landmark that separates chain branches.
+   * Shown in the display name (`Starbucks · Panorama Mall`).
+   * Local cafés leave these unset.
+   */
+  branchEn?: string;
+  branchAr?: string;
   city: City;
   neighborhood: NeighborhoodId;
   neighborhoodAr: string;
@@ -198,6 +204,10 @@ export type ChatPick = {
   id: string;
   nameAr: string;
   nameEn: string;
+  /** Chain branch landmark. Cards append it to the brand. */
+  branchEn?: string;
+  branchAr?: string;
+  isChain?: true;
   neighborhood: NeighborhoodId;
   neighborhoodAr: string;
   neighborhoodLabel: string;

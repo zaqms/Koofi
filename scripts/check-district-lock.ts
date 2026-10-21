@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 68, `expected 68 district pages (Al Raqban folded into As Salam, 21 Oct; 72 on main minus 5 Drive-only districts, plus Shubra in Batch F and Umm Al Hamam Ash Sharqi in Batch L), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 67, `expected 67 district pages (Al Raqban folded in; the Takhassusi street retired), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -188,8 +188,8 @@ assert(rahmaniyyah?.nameEn === "Ar Rahmaniyyah" && rahmaniyyah?.nameAr === "ال
 assert(rahmaniyyah?.shopCountLive === 7, "Ar Rahmaniyyah sheet shop_count_live is 7 after Batch I r2");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-rahmaniyyah").map((shop) => shop.id).join(",") ===
-    "camel-step-al-rahmaniyyah,peaks-the-tent-al-rahmaniyyah,november-coffee-al-rahmaniyyah,sipology-al-rahmaniyyah,ramli-cafe-al-rahmaniyyah,starbucks-the-plaza-al-rahmaniyyah,java-time-al-rahmaniyyah",
-  "Ar Rahmaniyyah catalog is Camel Step plus the 6 Batch I rows",
+    "camel-step-al-rahmaniyyah,glim-al-takhassusi,peaks-the-tent-al-rahmaniyyah,november-coffee-al-rahmaniyyah,sipology-al-rahmaniyyah,ramli-cafe-al-rahmaniyyah,starbucks-the-plaza-al-rahmaniyyah,java-time-al-rahmaniyyah",
+  "Ar Rahmaniyyah catalog is Camel Step, Glim (moved off Takhassusi St), plus the 6 Batch I rows",
 );
 
 // Batch J (11 Oct): Al Mathar gains 8 cafés (4 local + 3 Starbucks and Peet's sit-down chains), plus 4 other adds elsewhere (Nafees, THE HAT, DISAM, Robusta Bake).
@@ -198,8 +198,8 @@ assert(mathar?.nameEn === "Al Mathar" && mathar?.nameAr === "المعذر", "Al 
 assert(mathar?.shopCountLive === 9, "Al Mathar sheet shop_count_live is 9 after Batch J");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-mathar").map((shop) => shop.id).join(",") ===
-    "opinion-al-mathar,drcafe-al-mathar,richony-cafe-al-mathar,leto-caffe-al-mathar,urth-caffe-al-mathar,waynes-coffee-al-mathar,peets-euromarche-al-mathar,starbucks-panorama-al-mathar,starbucks-tafaseel-al-mathar,starbucks-takhassusi-al-mathar",
-  "Al Mathar catalog is Opinion and the dr.CAFE drive-through plus the 8 Batch J rows",
+    "dust-and-verse-al-takhassusi,opinion-al-mathar,drcafe-al-mathar,richony-cafe-al-mathar,leto-caffe-al-mathar,urth-caffe-al-mathar,waynes-coffee-al-mathar,peets-euromarche-al-mathar,starbucks-panorama-al-mathar,starbucks-tafaseel-al-mathar,starbucks-takhassusi-al-mathar",
+  "Al Mathar catalog is Dust & Verse (moved off Takhassusi St), Opinion and the dr.CAFE drive-through plus the 8 Batch J rows",
 );
 const suwaidiGharbi = rows.find((row) => row.stableId === "as-suwaidi-al-gharbi");
 assert(suwaidiGharbi?.status === "dictionary_only", "as-suwaidi-al-gharbi sheet stays dictionary_only");

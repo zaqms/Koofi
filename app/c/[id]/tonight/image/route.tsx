@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getShop } from "@/lib/catalog";
+import { shopDisplayName } from "@/lib/product";
 import { hasRtlText } from "@/lib/og-bidi";
 import { OG_RTL_ROW, ogFontMeasurer, ogRtlUnits } from "@/lib/og-rtl-text";
 import { loadTonightHeroDataUri } from "@/lib/tonight-hero";
@@ -196,19 +197,19 @@ export async function GET(request: Request, context: ImageContext) {
               color: "#fffaf3",
             }}
           >
-            {shop.nameEn}
+            {shopDisplayName(shop, "en")}
           </div>
           <div
             style={{
               display: "flex",
-              ...rtlRow(shop.nameAr, true),
+              ...rtlRow(shopDisplayName(shop, "ar"), true),
               marginTop: 10,
               fontSize: 38,
               lineHeight: 1.3,
               color: "#f3ead8",
             }}
           >
-            {rtlText(shop.nameAr, 38)}
+            {rtlText(shopDisplayName(shop, "ar"), 38)}
           </div>
           <div
             style={{

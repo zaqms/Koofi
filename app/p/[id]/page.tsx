@@ -25,17 +25,19 @@ export async function generateMetadata({ params }: PackPageProps) {
     return { title: PRODUCT_NAME };
   }
 
+  const betweenShops = pack.locale === "ar" ? "، " : ", ";
   const names = pack.shops
     .map((shop) => shopDisplayName(shop, pack.locale))
-    .join(" · ");
+    .join(betweenShops);
   const area = pack.neighborhoodLabel;
-  const description = [...pack.whys, area].filter(Boolean).join(" · ");
+  const title = area ? `${names} — ${area}` : names;
+  const description = [...pack.whys, area].filter(Boolean).join(betweenShops);
 
   return {
-    title: `${names} · ${area}`,
+    title,
     description,
     openGraph: {
-      title: `${names} · ${area}`,
+      title,
       description,
       locale: pack.locale === "en" ? "en_US" : "ar_SA",
       siteName: PRODUCT_NAME,
@@ -43,7 +45,7 @@ export async function generateMetadata({ params }: PackPageProps) {
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
-      title: `${names} · ${area}`,
+      title,
       description,
     },
   };

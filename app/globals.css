@@ -75,3 +75,66 @@ html[data-hide-chains] [data-chain-only] {
 html[data-hide-chains] [data-local-counts] {
   display: inline;
 }
+
+/*
+ * Ask composer. One real textarea stays in the tab order and the
+ * accessibility tree. The 14px line behind it is paint only (placeholder,
+ * and the value while blurred). The field itself is 16px: iOS Safari zooms
+ * on focus below 16px, treats a zoomed 16px as 14px, and ignores transform
+ * when placing the caret. Do not zoom or scale this control or an ancestor.
+ * Letter-spacing only tightens the 16px run.
+ */
+.ask-composer-field {
+  box-sizing: border-box;
+  margin: 0;
+  appearance: none;
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.012em;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: var(--ink);
+}
+
+.ask-composer-field::placeholder {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: normal;
+}
+
+.ask-composer-field:focus {
+  color: var(--ink);
+  -webkit-text-fill-color: var(--ink);
+}
+
+.ask-composer-paint {
+  color: color-mix(in oklab, var(--ink) 50%, transparent);
+  -webkit-text-fill-color: color-mix(in oklab, var(--ink) 50%, transparent);
+}
+
+.ask-composer-paint[data-has-value="true"] {
+  color: var(--ink);
+  -webkit-text-fill-color: var(--ink);
+}
+
+/* Hide the 14px copy while the 16px field is showing what was typed. */
+.ask-composer:focus-within:has(.ask-composer-field:not(:placeholder-shown))
+  .ask-composer-paint {
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (forced-colors: active) {
+  .ask-composer-field,
+  .ask-composer-field:focus {
+    color: FieldText;
+    -webkit-text-fill-color: FieldText;
+    caret-color: FieldText;
+  }
+
+  .ask-composer-paint {
+    display: none;
+  }
+}

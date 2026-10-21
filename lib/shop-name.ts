@@ -4,7 +4,7 @@ import {
   isChainBrandId,
   type ChainBrandId,
 } from "./chain-brands";
-import { NEIGHBORHOODS } from "./neighborhoods";
+import { NEIGHBORHOODS, STREET_SEARCH_ALIASES } from "./neighborhoods";
 import { MEET_HALFWAY_CHIP, NEARBY_CHIP, VIBE_CHIPS } from "./product";
 import { shopBrandKey } from "./shop-brand";
 import type { Shop } from "./types";
@@ -163,8 +163,20 @@ const GENERIC_ALIASES = new Set(
 );
 
 const NEIGHBORHOOD_ALIASES = new Set(
-  Object.values(NEIGHBORHOODS)
-    .flatMap((place) => [place.id, place.en, place.ar, ...place.aliases])
+  [
+    ...Object.values(NEIGHBORHOODS).flatMap((place) => [
+      place.id,
+      place.en,
+      place.ar,
+      ...place.aliases,
+    ]),
+    // Streets are not districts, but the bare word still must not pin one café.
+    ...Object.values(STREET_SEARCH_ALIASES).flatMap((place) => [
+      place.en,
+      place.ar,
+      ...place.aliases,
+    ]),
+  ]
     .map((alias) => normalize(alias))
     .filter(Boolean),
 );

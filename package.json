@@ -6,7 +6,9 @@
     "dev": "next dev",
     "generate-sitemap": "npx tsx scripts/generate-sitemap.ts",
     "refresh-tiktok-followers": "npx tsx scripts/refresh-tiktok-followers.ts",
-    "prebuild": "npx tsx scripts/generate-sitemap.ts",
+    "prebuild": "npx tsx scripts/check-place-identity.ts && npx tsx scripts/check-branch-names.ts && npx tsx scripts/generate-sitemap.ts",
+    "check-place-identity": "npx tsx scripts/check-place-identity.ts",
+    "check-branch-names": "npx tsx scripts/check-branch-names.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -32,6 +34,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "playwright-core": "^1.64.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -21,11 +21,16 @@ function stripLatinAccents(text: string): string {
     .replace(/[\u0300-\u036F]/g, "");
 }
 
-function normalize(text: string): string {
+/**
+ * Fold a typed ask and a catalog name onto one alphabet.
+ * Arabic: alef variants (أ إ آ ٱ), ة/ه, ى/ي, diacritics, tatweel.
+ * Spacing is kept here; `includesAlias` also joins "ستار بكس" → ستاربكس.
+ */
+export function normalizeShopText(text: string): string {
   return stripLatinAccents(text)
     .toLowerCase()
     .replace(/['’]/g, "")
-    .replace(/[إأآ]/g, "ا")
+    .replace(/[إأآٱ]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/ة/g, "ه")
     .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
@@ -35,14 +40,46 @@ function normalize(text: string): string {
     .trim();
 }
 
+function normalize(text: string): string {
+  return normalizeShopText(text);
+}
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function includesAlias(haystack: string, alias: string): boolean {
+function compactLetters(text: string): string {
+  return text.replace(/[\s-]+/g, "");
+}
+
+function hasArabic(text: string): boolean {
+  return /[\u0600-\u06FF]/.test(text);
+}
+
+/**
+ * Word match, plus spaced Arabic: "ستار بكس" still hits ستاربكس.
+ * Latin stays on word boundaries so "third place" does not become "thirdplace".
+ * Joins consecutive tokens only. One token must equal the alias.
+ */
+export function shopTextIncludesAlias(haystack: string, alias: string): boolean {
   if (!alias) return false;
   const pattern = new RegExp(`(^|\\s)${escapeRegExp(alias)}(\\s|$)`, "u");
-  return pattern.test(haystack);
+  if (pattern.test(haystack)) return true;
+  if (!hasArabic(alias) || !hasArabic(haystack)) return false;
+  const compactAlias = compactLetters(alias);
+  if (compactAlias.length < 4) return false;
+  if (compactLetters(haystack) === compactAlias) return true;
+  if (alias.includes(" ")) return false;
+  const parts = haystack.split(" ").filter(Boolean);
+  for (let start = 0; start < parts.length; start += 1) {
+    let joined = "";
+    for (let index = start; index < parts.length; index += 1) {
+      joined += compactLetters(parts[index] ?? "");
+      if (joined === compactAlias) return true;
+      if (!compactAlias.startsWith(joined)) break;
+    }
+  }
+  return false;
 }
 
 const GENERIC_ALIASES = new Set(
@@ -117,6 +154,8 @@ const GENERIC_ALIASES = new Set(
     "كوفي",
     "كوفيه",
     "كوفه",
+    // «كيف» is "how". It must not pin dr.CAFE or هل الكيف. The full brand phrase still matches.
+    "كيف",
     "مختصه",
     "بن",
     "فنجان",
@@ -346,6 +385,8 @@ function addExtraAlias(into: Set<string>, raw: string): void {
  */
 const CHAIN_TOKEN_BLOCK: Partial<Record<ChainBrandId, readonly string[]>> = {
   "java-time": ["java", "جافا", "time", "تايم"],
+  // «كيف» alone is "how". د.كيف / دكتور كيف / dr cafe still match.
+  "dr-cafe": ["كيف"],
 };
 
 /** Same idea for one row: a plain word in the name that should not name the café alone. */
@@ -511,7 +552,11 @@ export function negatedChainBrandIds(raw: string): Set<ChainBrandId> {
       const needle = normalize(alias);
       if (!needle) continue;
       for (const marker of CHAIN_NEGATION_MARKERS) {
-        if (includesAlias(haystack, normalize(`${marker} ${needle}`))) negated.add(id);
+        const phrase = normalize(`${marker} ${needle}`);
+        // Word match only. Compact-joining would turn «إلا ستاربكس» into إستاربكس.
+        if (!phrase) continue;
+        const pattern = new RegExp(`(^|\\s)${escapeRegExp(phrase)}(\\s|$)`, "u");
+        if (pattern.test(haystack)) negated.add(id);
       }
     }
   }
@@ -543,10 +588,11 @@ function aliasUsableInAsk(haystack: string, alias: string): boolean {
   return /\d/.test(alias);
 }
 
-export function matchCatalogShops<T extends Shop>(
+/** Name hits with scores. Higher means a longer or exact alias. Empty when the ask is a حي or a chip. */
+export function scoreCatalogShops<T extends Shop>(
   raw: string,
   shops: T[],
-): T[] {
+): { shop: T; score: number }[] {
   const haystack = normalize(raw);
   if (!haystack) return [];
   // Whole-ask حي / chip labels stay vibe+area, even if a shop token sits inside
@@ -560,9 +606,7 @@ export function matchCatalogShops<T extends Shop>(
     const brand = chainBrandIdForShop(shop);
     if (brand && negated.has(brand)) continue;
     let best = 0;
-    for (const alias of shopNameAliases(shop)) {
-      if (!aliasUsableInAsk(haystack, alias)) continue;
-      if (!includesAlias(haystack, alias)) continue;
+    for (const alias of matchedShopAliases(haystack, shop)) {
       best = Math.max(best, aliasScore(haystack, alias, shop));
     }
     if (best > 0) hits.push({ shop, score: best });
@@ -573,5 +617,64 @@ export function matchCatalogShops<T extends Shop>(
     return 0;
   });
 
-  return hits.map((hit) => hit.shop);
+  return hits;
+}
+
+/**
+ * The café's own full name, typed as the whole ask. "Found", "Trace" and
+ * "A PLUS" block their bare word as an alias (everyday words), but the
+ * exact name on its own still means that café. A one-word generic name
+ * ("cafe") never counts.
+ */
+export function exactShopNames(
+  shop: Pick<Shop, "nameEn" | "nameAr">,
+): string[] {
+  const names = new Set<string>();
+  for (const raw of [shop.nameEn, shop.nameAr]) {
+    const name = normalize(raw);
+    if (!name) continue;
+    if (!name.includes(" ") && isBlockedAlias(name)) continue;
+    if (NEIGHBORHOOD_ALIASES.has(name) || CHIP_ASKS.has(name)) continue;
+    names.add(name);
+  }
+  return [...names];
+}
+
+/** The name without café words: «محمصة قهوة شفل» → «شفل», "Najd Roastery" → "najd". */
+export function shopCoreNames(shop: Pick<Shop, "nameEn" | "nameAr">): string[] {
+  const names = new Set<string>();
+  for (const raw of [shop.nameEn, shop.nameAr]) {
+    const core = distinctiveTokens(normalize(raw)).join(" ");
+    if (core) names.add(core);
+  }
+  return [...names];
+}
+
+/** Aliases of this shop that the (normalized) ask contains, plus its exact name. */
+export function matchedShopAliases(
+  haystack: string,
+  shop: Pick<Shop, "id" | "nameEn" | "nameAr" | "neighborhood" | "chainBrand">,
+): string[] {
+  const matched: string[] = [];
+  for (const alias of shopNameAliases(shop)) {
+    if (!aliasUsableInAsk(haystack, alias)) continue;
+    if (!shopTextIncludesAlias(haystack, alias)) continue;
+    matched.push(alias);
+  }
+  for (const name of exactShopNames(shop)) {
+    if (name === haystack && !matched.includes(name)) matched.push(name);
+  }
+  return matched;
+}
+
+/** Generic words (café, coffee, riyadh, the …) that never name a café alone. */
+export function isGenericShopWord(token: string): boolean {
+  return GENERIC_ALIASES.has(normalize(token));
+}
+
+export function matchCatalogShops<T extends Shop>(
+  raw: string,
+  shops: T[],
+): T[] {
+  return scoreCatalogShops(raw, shops).map((hit) => hit.shop);
 }

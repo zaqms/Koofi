@@ -160,7 +160,7 @@ export function isChainBrandId(id: string): id is ChainBrandId {
 /** Names a typed ask can use for a mass-market brand, including partials. */
 const CHAIN_BRAND_SEARCH_ALIASES: Record<ChainBrandId, readonly string[]> = {
   starbucks: ["starbucks", "ستاربكس"],
-  dunkin: ["dunkin", "دانكن"],
+  dunkin: ["dunkin", "دانكن", "دنكن"],
   mccafe: ["mccafe", "mc cafe", "ماك كافيه"],
   barns: ["barns", "barn", "barn s", "بارنز"],
   peets: ["peets", "peet s", "بيتس"],

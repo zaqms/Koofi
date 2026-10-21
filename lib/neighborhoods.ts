@@ -28,6 +28,8 @@ export const NEIGHBORHOODS: Record<
     aliases: [
       "الملقا",
       "ملقا",
+      "الملقى",
+      "ملقى",
       "المالقا",
       "malqa",
       "malga",

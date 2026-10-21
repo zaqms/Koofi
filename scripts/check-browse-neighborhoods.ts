@@ -921,6 +921,7 @@ const fresh = readRepo("lib/fresh-visitor-origin.ts");
 assert(
   fresh.includes("requestVisitorLocation") &&
     !fresh.includes("getCurrentPosition") &&
+    !fresh.includes("readRememberedGeoGranted") &&
     !fresh.includes("maximumAge: 60_000") &&
     !fresh.includes("shared.lat") &&
     !fresh.includes("snapshot.lat"),

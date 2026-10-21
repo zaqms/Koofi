@@ -105,9 +105,103 @@ export const copy = {
     ar: "ثلاث قهاوي تناسب اختيارك",
     en: "Three cafes that suit your choice:",
   },
+  // closestPicks / closestFewer are unused on purpose. Retiring the locked
+  // three-pick heading for nearby needs the owner's sign-off; see PickResult.distanceSorted.
+  closestPicks: {
+    ar: "أقرب ثلاث قهاوي لك",
+    en: "Three cafés closest to you:",
+  },
+  closestFewer: {
+    ar: "أقرب القهاوي لك",
+    en: "The closest cafés:",
+  },
   fewerPicks: {
     ar: "هذي اللي أقدر أقترحها الحين:",
     en: "This is what I can suggest right now:",
+  },
+  searchMatchOne: {
+    ar: "لقينا قهوة وحدة تناسب بحثك",
+    en: "One café matches your search",
+  },
+  searchMatchTwo: {
+    ar: "لقينا قهوتين تناسب بحثك",
+    en: "2 cafés match your search",
+  },
+  searchMatchFew: {
+    ar: "لقينا {count} قهاوي تناسب بحثك",
+    en: "{count} cafés match your search",
+  },
+  searchMatchMany: {
+    ar: "لقينا {count} قهوة تناسب بحثك",
+    en: "{count} cafés match your search",
+  },
+  searchMatchCapped: {
+    ar: "لقينا {total} قهوة تناسب بحثك، هذي أول {count}",
+    en: "{total} cafés match your search. Showing the first {count}",
+  },
+  didYouMeanCapped: {
+    ar: "قصدك {name}؟ لقينا {total} فرع، هذي أول {count}",
+    en: "Did you mean {name}? {total} branches match. Showing the first {count}",
+  },
+  didYouMeanOne: {
+    ar: "قصدك {name}؟",
+    en: "Did you mean {name}?",
+  },
+  didYouMeanTwo: {
+    ar: "قصدك {name}؟ لقينا فرعين",
+    en: "Did you mean {name}? 2 branches match",
+  },
+  didYouMeanFew: {
+    ar: "قصدك {name}؟ لقينا {count} فروع",
+    en: "Did you mean {name}? {count} branches match",
+  },
+  didYouMeanMany: {
+    ar: "قصدك {name}؟ لقينا {count} فرع",
+    en: "Did you mean {name}? {count} branches match",
+  },
+  noMatch: {
+    ar: "ما لقيت شي يطابق طلبك.",
+    en: "Nothing on the list matches that.",
+  },
+  searchOutsideArea: {
+    ar: "ما فيه {name} في {area}. هذي الفروع.",
+    en: "No {name} in {area}. Here are the branches.",
+  },
+  whatsAppMore: {
+    ar: "و{count} زيادة على وين: {url}",
+    en: "And {count} more on Wain: {url}",
+  },
+  noMatchSuggestions: {
+    ar: "إذا تبي اقتراحات، هذي قهاوي الناس تدور عليها",
+    en: "If you want a starting point, these are cafés people look for",
+  },
+  brandNotListedDonut: {
+    ar: "دانكن مو موجودة في وين. القائمة للقهوة، ودانكن سلسلة دونات وحلويات.",
+    en: "Dunkin' isn't listed on Wain. The list is coffee, and Dunkin' is a donut and dessert chain.",
+  },
+  brandNotListedDonutNamed: {
+    ar: "{name} مو موجودة في وين. القائمة للقهوة، و{name} سلسلة دونات وحلويات.",
+    en: "{name} isn't listed on Wain. The list is coffee, and {name} is a donut and dessert chain.",
+  },
+  brandNotListed: {
+    ar: "{name} مو موجودة في وين.",
+    en: "{name} isn't listed on Wain.",
+  },
+  showMore: {
+    ar: "اعرض {count} زيادة",
+    en: "Show {count} more",
+  },
+  showMoreOne: {
+    ar: "اعرض قهوة وحدة زيادة",
+    en: "Show 1 more",
+  },
+  showMoreTwo: {
+    ar: "اعرض قهوتين زيادة",
+    en: "Show 2 more",
+  },
+  showLess: {
+    ar: "اعرض أقل",
+    en: "Show fewer",
   },
   thinCatalog: {
     ar: "القائمة عندي بعد صغيرة — هذي اللي أقدر أقترحها، من غير ما ألف أسماء.",

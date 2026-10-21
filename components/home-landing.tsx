@@ -26,18 +26,22 @@ import {
   isOffHomeChipId,
   mostPopularPath,
 } from "@/lib/product";
-import { CITIES, type Language } from "@/lib/types";
+import { DEFAULT_LIVE_CITY } from "@/lib/cities";
+import { CITIES, type City, type Language } from "@/lib/types";
 
 type HomeLandingProps = {
   language: Language;
   listing?: "popular" | null;
   selectedChipId?: string | null;
+  /** Live catalog city for this page. Riyadh unless a caller asks for another. */
+  city?: City;
 };
 
 export function HomeLanding({
   language,
   listing = null,
   selectedChipId,
+  city = DEFAULT_LIVE_CITY,
 }: HomeLandingProps) {
   const other: Language = language === "ar" ? "en" : "ar";
   const popular = listing === "popular";
@@ -64,8 +68,8 @@ export function HomeLanding({
   const directoryShops = popularChipSelected
     ? listPopularDirectoryShops()
     : isDriveThroughDirectoryChip(pageChipId)
-      ? listDriveThroughDirectoryShops()
-      : listDirectoryShops();
+      ? listDriveThroughDirectoryShops(city)
+      : listDirectoryShops(city);
   // بيننا is its own screen. The home discovery feed stays on bare home
   // and on category landings; /halfway ends after pins, results, and feedback.
   const halfwayScreen = pageChipId === MEET_HALFWAY_CHIP.id;

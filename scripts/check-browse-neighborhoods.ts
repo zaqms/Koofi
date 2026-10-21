@@ -929,13 +929,12 @@ assert(tied.join(",") === "hittin,olaya", "equal distance breaks on stable id, n
 
 const fresh = readRepo("lib/fresh-visitor-origin.ts");
 assert(
-  fresh.includes("enableHighAccuracy: true") &&
-    fresh.includes("maximumAge: 0") &&
-    fresh.includes("isUsableVisitorOrigin") &&
+  fresh.includes("requestVisitorLocation") &&
+    !fresh.includes("getCurrentPosition") &&
     !fresh.includes("maximumAge: 60_000") &&
     !fresh.includes("shared.lat") &&
     !fresh.includes("snapshot.lat"),
-  "home rail reads a fresh GPS fix and does not copy the shared snapshot",
+  "home rail joins the one silent read and does not copy the shared snapshot",
 );
 assert(fresh.includes("Soft Places stays parked"), "Soft Places stays parked on the fresh read");
 assert(

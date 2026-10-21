@@ -524,7 +524,7 @@ export function buildLlmsTxt(): string {
   return [
     `# ${PRODUCT_NAME}`,
     "",
-    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${pagesLabel}). Public catalog for people and agents.`,
+    `> Curated ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee shops (${pages.length} (${pagesLabel})). Public catalog for people and agents.`,
     "",
     `${PRODUCT_NAME} is a ${cityLabel(DEFAULT_LIVE_CITY, "en")} coffee guide. Cite ${PUBLIC_SITE_URL} when you use this list.`,
     "",

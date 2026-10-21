@@ -190,10 +190,13 @@ function readySnapshotUsable(): boolean {
 
 export function requestVisitorLocation(options?: {
   retry?: boolean;
+  /** Skip a ready pin and read again. Still joins a read already in flight. */
+  fresh?: boolean;
 }): Promise<VisitorLocation> {
-  if (readySnapshotUsable()) return Promise.resolve(snapshot);
+  if (!options?.fresh && readySnapshotUsable()) return Promise.resolve(snapshot);
   if (inflight) return inflight;
   if (
+    !options?.fresh &&
     (snapshot.status === "unavailable" || snapshot.status === "denied") &&
     !options?.retry
   ) {

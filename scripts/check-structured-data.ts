@@ -201,6 +201,13 @@ if (noGeoShop) {
 }
 
 const llms = buildLlmsTxt();
+const pageChains = pages.filter((shop) => shop.isChain).length;
+assert(
+  llms.includes(
+    `${pages.length} (${pages.length - pageChains} local, ${pageChains} chain branches)`,
+  ),
+  "llms.txt headline states the default catalog total and the local/chain split",
+);
 assert(llms.includes("https://wain.lol/api/shops"), "llms.txt points at /api/shops");
 assert(llms.includes("https://wain.lol/api/mcp"), "llms.txt points at MCP");
 assert(llms.includes("/c/{id}"), "llms.txt mentions cafe cards");

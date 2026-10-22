@@ -3,8 +3,8 @@ import { cache } from "react";
 import { Chat } from "@/components/chat";
 import { SiteFooter } from "@/components/site-footer";
 import { TrackShareInbound } from "@/components/track-share-inbound";
-import { packToChatPicks, resolvePack } from "@/lib/pack";
-import { PRODUCT_NAME, SOCIAL_TWITTER_CARD, shopDisplayName } from "@/lib/product";
+import { packShareCopy, packToChatPicks, resolvePack } from "@/lib/pack";
+import { PRODUCT_NAME, SOCIAL_TWITTER_CARD } from "@/lib/product";
 
 type PackPageProps = {
   params: Promise<{ id: string }>;
@@ -25,28 +25,30 @@ export async function generateMetadata({ params }: PackPageProps) {
     return { title: PRODUCT_NAME };
   }
 
-  const betweenShops = pack.locale === "ar" ? "، " : ", ";
-  const names = pack.shops
-    .map((shop) => shopDisplayName(shop, pack.locale))
-    .join(betweenShops);
-  const area = pack.neighborhoodLabel;
-  const title = area ? `${names} — ${area}` : names;
-  const description = [...pack.whys, area].filter(Boolean).join(betweenShops);
+  const copy = packShareCopy(pack);
+  const image = {
+    url: `/p/${id}/opengraph-image`,
+    width: 1200,
+    height: 630,
+    alt: copy.imageAlt,
+  };
 
   return {
-    title,
-    description,
+    title: copy.title,
+    description: copy.description,
     openGraph: {
-      title,
-      description,
+      title: copy.title,
+      description: copy.description,
       locale: pack.locale === "en" ? "en_US" : "ar_SA",
       siteName: PRODUCT_NAME,
       type: "website",
+      images: [image],
     },
     twitter: {
       card: SOCIAL_TWITTER_CARD,
-      title,
-      description,
+      title: copy.title,
+      description: copy.description,
+      images: [image],
     },
   };
 }

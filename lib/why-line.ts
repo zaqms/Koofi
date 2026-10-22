@@ -1,5 +1,6 @@
 import { neighborhoodLabel } from "./neighborhoods";
 import type { Language, MomentTag, Shop } from "./types";
+import { vibeTagLabel } from "./vibe-labels";
 
 /** Why-line sources Amjad locked. Hours are never invented. */
 const WHY_MOMENTS = [
@@ -142,14 +143,16 @@ export function uniqueWhyLines(
       used.add(fallback);
       return fallback;
     }
-    const vibe = shop.vibeTags.find((tag) => tag && !used.has(tag));
-    if (vibe) {
-      const line =
-        language === "ar" ? `${fallback} — ${vibe}` : `${fallback} — ${vibe}`;
-      if (!used.has(line)) {
-        used.add(line);
-        return line;
-      }
+    // The area phrase is already in the pack. A second shop uses its tag
+    // alone, in the page language, so English does not repeat "In Al Jazirah"
+    // or leak an Arabic tag such as طلبات السيارة.
+    for (const tag of shop.vibeTags) {
+      if (!tag || used.has(tag)) continue;
+      const label = vibeTagLabel(tag, language);
+      if (!label || used.has(label)) continue;
+      used.add(tag);
+      used.add(label);
+      return label;
     }
     return fallback;
   });

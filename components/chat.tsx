@@ -58,10 +58,12 @@ import {
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
 import {
+  clearHalfwayResultsSnapshots,
   clearResultsSnapshot,
   currentResultsHref,
   ensureResultsSnapshotKey,
   readResultsScroll,
+  resultsNavigationShouldRestore,
   resultsSnapshotKey,
   readResultsSnapshot,
   restoreResultsScroll,
@@ -730,6 +732,11 @@ export function Chat({
   }, [halfwayInvite, landing]);
 
   useEffect(() => {
+    if (!sessionExpired && !halfwayInviteExpired) return;
+    clearHalfwayResultsSnapshots();
+  }, [sessionExpired, halfwayInviteExpired]);
+
+  useEffect(() => {
     if (!sessionExpired) return;
     const packId = halfwayInvite?.id ?? halfwayIdFromPath();
     trackEvent(
@@ -1063,6 +1070,10 @@ export function Chat({
   ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
+    if (homeSurface) {
+      const existingKey = resultsSnapshotKey();
+      if (existingKey) clearResultsSnapshot(existingKey);
+    }
     unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
@@ -1607,6 +1618,7 @@ export function Chat({
       { dedupeKey: `meet_halfway_start_new:${source}:${packId ?? landing}` },
     );
     clearHalfwayWaiting();
+    clearHalfwayResultsSnapshots();
     markHalfwayFresh();
     router.replace(homePath(landing));
   }
@@ -1928,7 +1940,7 @@ export function Chat({
       return;
     }
     resultsRestoredFor.current = threadKey;
-    if (threads[threadKey]) {
+    if (!resultsNavigationShouldRestore() || threads[threadKey]) {
       revealResultsRestore();
       return;
     }
@@ -1948,15 +1960,11 @@ export function Chat({
       messages: restored,
       composerLanguage: saved.composerLanguage,
       awaitingMaps: saved.awaitingMaps,
-      halfwayWaitingId: saved.halfwayWaitingId,
-      ...(saved.halfwayWaitingMe ? { halfwayWaitingMe: saved.halfwayWaitingMe } : {}),
     };
     skipResultsClear.current = true;
     setMessages(restored);
     setComposerLanguage(saved.composerLanguage);
     setAwaitingMaps(saved.awaitingMaps);
-    if (saved.halfwayWaitingId) setHalfwayWaitingId(saved.halfwayWaitingId);
-    if (saved.halfwayWaitingMe) setHalfwayWaitingMe(saved.halfwayWaitingMe);
     halfwayLocationsRef.current = lastHalfwayLocations(restored);
     halfwayShownRef.current = shownHalfwayPickIds(restored);
     if (homeSurface) setPinnedHome(false);
@@ -1999,6 +2007,7 @@ export function Chat({
     skipResultsClear.current = false;
     const live = threads[threadKey];
     const scroll = readResultsScroll();
+    const cards = document.querySelectorAll("[data-listing-card]").length;
     writeResultsSnapshot({
       entryKey,
       threadKey,
@@ -2007,9 +2016,8 @@ export function Chat({
       listScroll: scroll.listScroll,
       messages: messages as ResultsMessage[],
       composerLanguage: live?.composerLanguage ?? composerLanguage,
+      cardCount: cards,
       awaitingMaps: live?.awaitingMaps ?? awaitingMaps,
-      halfwayWaitingId: live?.halfwayWaitingId ?? halfwayWaitingId,
-      halfwayWaitingMe: live?.halfwayWaitingMe ?? halfwayWaitingMe,
       savedAt: Date.now(),
     });
   }, [

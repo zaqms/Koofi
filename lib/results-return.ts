@@ -7,9 +7,11 @@
  * back control is a link to `/` or `/en`, so district and list pages lose
  * their place too.
  *
- * Snapshots live in sessionStorage under the history entry key. The café
- * back control calls history.back() only when this card was opened from that
- * entry. A direct visit keeps the home link.
+ * Snapshots live in sessionStorage under the history entry key. They keep
+ * the ask text and the café cards only — no pins, coordinates, or invite id —
+ * and they restore only on back/forward. A direct visit keeps the home link.
+ * A chain of café cards steps back through history and keeps the results
+ * scroll on the original entry.
  */
 
 import { halfwayPath } from "./product";
@@ -19,12 +21,12 @@ export const RESULTS_SNAPSHOT_KEY = "wain.resultsSnapshot.v1";
 export const CAFE_ORIGIN_KEY = "wain.cafeOrigin.v1";
 
 /**
- * A full reload of a search or بيننا entry paints the server page before
- * the session snapshot restores. Runs before first paint and hides that
- * paint only when this history entry already has a snapshot.
+ * Hides the server paint only when this load is a back/forward traversal
+ * and the history entry already has a snapshot. Reload and a freshly typed
+ * URL stay on the server page.
  */
 export const RESULTS_RESTORE_BOOTSTRAP =
-  `(function(){try{var path=location.pathname;if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);var home=path==="/"||path==="/en";var halfway=path==="/halfway"||path==="/en/halfway"||/^\\/(?:en\\/)?h\\/[^/]+$/.test(path);if(!home&&!halfway)return;var state=history.state;if(home&&!(state&&state.wainSearch===true))return;var key=state&&typeof state.wainEntry==="string"?state.wainEntry:"";if(!key&&window.navigation&&window.navigation.currentEntry)key=window.navigation.currentEntry.key||"";if(!key)return;var raw=sessionStorage.getItem(${JSON.stringify(RESULTS_SNAPSHOT_KEY)});if(!raw||raw.indexOf('"entryKey":"'+key+'"')<0)return;document.documentElement.setAttribute("data-results-pending","");}catch(e){}})();`;
+  `(function(){try{window.addEventListener("popstate",function(){window.__wainResultsTraverse=1;});var nav=performance.getEntriesByType("navigation")[0];if(!nav||nav.type!=="back_forward")return;var path=location.pathname;if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);var home=path==="/"||path==="/en";var halfway=path==="/halfway"||path==="/en/halfway"||/^\\/(?:en\\/)?h\\/[^/]+$/.test(path);if(!home&&!halfway)return;var state=history.state;if(home&&!(state&&state.wainSearch===true))return;var key=state&&typeof state.wainEntry==="string"?state.wainEntry:"";if(!key&&window.navigation&&window.navigation.currentEntry)key=window.navigation.currentEntry.key||"";if(!key)return;var raw=sessionStorage.getItem(${JSON.stringify(RESULTS_SNAPSHOT_KEY)});if(!raw||raw.indexOf('"entryKey":"'+key+'"')<0)return;document.documentElement.setAttribute("data-results-pending","");}catch(e){}})();`;
 
 export function revealResultsRestore(): void {
   if (typeof document === "undefined") return;
@@ -32,6 +34,9 @@ export function revealResultsRestore(): void {
 }
 
 const MAX_AGE_MS = 12 * 60 * 60 * 1000;
+/** Results are only useful for the visit that made them. */
+export const RESULTS_SNAPSHOT_TTL_MS = 30 * 60 * 1000;
+const COORDINATE_RE = /\d{1,3}\.\d{4,}/;
 const MAX_STORE_CHARS = 150_000;
 const MAX_ENTRIES = 8;
 
@@ -41,9 +46,13 @@ export type ResultsScroll = {
 };
 
 export type CafeOrigin = {
+  /** History entry of the results screen that started this chain. */
   entryKey: string;
   href: string;
+  /** Café card most recently opened. */
   cafePath: string;
+  /** Every café card opened from those results, oldest first. */
+  trail: string[];
   scrollY: number;
   listScroll: number;
   ts: number;
@@ -58,7 +67,6 @@ export type ResultsMessage = {
   thinCatalog?: boolean;
   districtMatch?: Record<string, unknown>;
   halfwayMore?: boolean;
-  halfwayLocations?: Record<string, unknown>[];
   halfwayPaged?: boolean;
   halfwayJoined?: boolean;
   resultVia?: "typed" | "chip";
@@ -72,9 +80,9 @@ export type ResultsSnapshot = {
   listScroll: number;
   messages: ResultsMessage[];
   composerLanguage: Language;
+  /** Listing cards on screen when the visitor left. Scroll waits for these. */
+  cardCount: number;
   awaitingMaps: boolean;
-  halfwayWaitingId: string | null;
-  halfwayWaitingMe: { lat: number; lng: number } | null;
   savedAt: number;
 };
 
@@ -146,7 +154,41 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function isPick(value: unknown): value is Record<string, unknown> {
+/** Invite sessions store a generic thread key. The id stays in the URL only. */
+export function storageThreadKey(threadKey: string): string {
+  if (/^halfway:[^:]+$/.test(threadKey) && threadKey !== "halfway:session") return "halfway:session";
+  return threadKey;
+}
+
+/** `/h/{id}` is the invite id. Snapshots keep the screen, not the id. */
+export function storageHref(href: string): string {
+  const path = normalizePath(href.split("?")[0]?.split("#")[0] ?? href);
+  if (/^\/en\/h\/[^/]+$/.test(path)) return "/en/h";
+  if (/^\/h\/[^/]+$/.test(path)) return "/h";
+  return path;
+}
+
+export function extractInviteId(threadKey: string, href: string): string | null {
+  const fromHref = href.match(/\/h\/([^/?#]+)/)?.[1];
+  if (fromHref && fromHref !== "expired") return fromHref;
+  const fromThread = threadKey.match(/^halfway:([^:]+)$/)?.[1];
+  if (fromThread && fromThread !== "session") return fromThread;
+  return null;
+}
+
+function stripInviteId(value: string, inviteId: string | null): string {
+  if (!inviteId || inviteId.length < 8) return value;
+  return value.split(inviteId).join("");
+}
+
+function isPick(value: unknown): value is Record<string, unknown> & {
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  neighborhood: string;
+  neighborhoodAr: string;
+  cardPath: string;
+} {
   if (!isRecord(value)) return false;
   return (
     typeof value.id === "string" &&
@@ -161,30 +203,61 @@ function isPick(value: unknown): value is Record<string, unknown> {
   );
 }
 
-function parseMessage(value: unknown): ResultsMessage | null {
+function sanitizePick(value: unknown, inviteId: string | null): Record<string, unknown> | null {
+  if (!isPick(value)) return null;
+  const nameEn = stripInviteId(value.nameEn, inviteId);
+  const neighborhood = stripInviteId(value.neighborhood, inviteId);
+  const pick: Record<string, unknown> = {
+    id: stripInviteId(value.id, inviteId),
+    nameAr: stripInviteId(value.nameAr, inviteId),
+    nameEn,
+    neighborhood,
+    neighborhoodAr: stripInviteId(value.neighborhoodAr, inviteId),
+    vibeTags: value.vibeTags,
+    momentTags: value.momentTags,
+    mapsHref: `https://maps.google.com/?q=${encodeURIComponent(`${nameEn} ${neighborhood} Riyadh`.trim())}`,
+    cardPath: stripInviteId(String(value.cardPath).split("?")[0] ?? "", inviteId),
+  };
+  if (value.isChain === true) pick.isChain = true;
+  for (const key of ["branchEn", "branchAr", "photoUrl", "logoUrl", "why", "neighborhoodLabel"] as const) {
+    const field = value[key];
+    if (typeof field !== "string" || !field || COORDINATE_RE.test(field)) continue;
+    pick[key] = stripInviteId(field, inviteId);
+  }
+  if (Array.isArray(value.tags)) {
+    const tags = value.tags.filter((tag) => typeof tag === "string" && tag && !COORDINATE_RE.test(tag));
+    if (tags.length > 0) pick.tags = tags.map((tag) => stripInviteId(tag, inviteId));
+  }
+  return pick;
+}
+
+function parseMessage(value: unknown, inviteId: string | null): ResultsMessage | null {
   if (!isRecord(value)) return null;
   if (value.role !== "user" && value.role !== "assistant") return null;
   if (typeof value.id !== "string" || typeof value.text !== "string") return null;
   const message: ResultsMessage = {
-    id: value.id,
+    id: stripInviteId(value.id, inviteId) || "m",
     role: value.role,
-    text: value.text,
+    text: stripInviteId(value.text, inviteId),
   };
   if (value.language === "ar" || value.language === "en") message.language = value.language;
   if (value.role === "assistant") {
     if (Array.isArray(value.picks)) {
-      const picks = value.picks.filter(isPick);
+      const picks = value.picks
+        .map((pick) => sanitizePick(pick, inviteId))
+        .filter((pick): pick is Record<string, unknown> => Boolean(pick));
       if (picks.length > 0) message.picks = picks;
     }
     if (value.thinCatalog === true) message.thinCatalog = true;
     if (isRecord(value.districtMatch) && typeof value.districtMatch.district_slug === "string") {
-      message.districtMatch = value.districtMatch;
+      message.districtMatch = {
+        district_slug: value.districtMatch.district_slug,
+        ...(value.districtMatch.locale === "ar" || value.districtMatch.locale === "en"
+          ? { locale: value.districtMatch.locale }
+          : {}),
+      };
     }
     if (typeof value.halfwayMore === "boolean") message.halfwayMore = value.halfwayMore;
-    if (Array.isArray(value.halfwayLocations)) {
-      const locations = value.halfwayLocations.filter(isRecord);
-      if (locations.length > 0) message.halfwayLocations = locations;
-    }
     if (value.halfwayPaged === true) message.halfwayPaged = true;
     if (value.halfwayJoined === true) message.halfwayJoined = true;
     if (value.resultVia === "typed" || value.resultVia === "chip") {
@@ -194,34 +267,34 @@ function parseMessage(value: unknown): ResultsMessage | null {
   return message;
 }
 
-function parsePin(value: unknown): { lat: number; lng: number } | null {
-  if (!isRecord(value)) return null;
-  if (typeof value.lat !== "number" || typeof value.lng !== "number") return null;
-  return { lat: value.lat, lng: value.lng };
-}
-
-export function parseResultsSnapshot(value: unknown): ResultsSnapshot | null {
+export function parseResultsSnapshot(value: unknown, now = Date.now()): ResultsSnapshot | null {
   if (!isRecord(value)) return null;
   if (typeof value.entryKey !== "string" || !value.entryKey) return null;
   if (typeof value.threadKey !== "string" || !value.threadKey) return null;
   if (typeof value.href !== "string" || !value.href.startsWith("/")) return null;
   if (!Array.isArray(value.messages)) return null;
-  const messages = value.messages.map(parseMessage).filter((message): message is ResultsMessage => Boolean(message));
+  const savedAt = typeof value.savedAt === "number" ? value.savedAt : 0;
+  if (now - savedAt > RESULTS_SNAPSHOT_TTL_MS || savedAt > now + 60_000) return null;
+  const inviteId = extractInviteId(
+    value.threadKey,
+    typeof value.href === "string" ? value.href : "",
+  );
+  const messages = value.messages
+    .map((message) => parseMessage(message, inviteId))
+    .filter((message): message is ResultsMessage => Boolean(message));
   if (!resultsThreadRestorable(messages)) return null;
   const composerLanguage = value.composerLanguage === "en" ? "en" : value.composerLanguage === "ar" ? "ar" : null;
   if (!composerLanguage) return null;
-  const savedAt = typeof value.savedAt === "number" ? value.savedAt : 0;
   return {
     entryKey: value.entryKey,
-    threadKey: value.threadKey,
-    href: value.href,
+    threadKey: storageThreadKey(value.threadKey),
+    href: storageHref(value.href),
     scrollY: typeof value.scrollY === "number" ? value.scrollY : 0,
     listScroll: typeof value.listScroll === "number" ? value.listScroll : 0,
     messages,
     composerLanguage,
+    cardCount: typeof value.cardCount === "number" && value.cardCount > 0 ? value.cardCount : 0,
     awaitingMaps: value.awaitingMaps === true,
-    halfwayWaitingId: typeof value.halfwayWaitingId === "string" ? value.halfwayWaitingId : null,
-    halfwayWaitingMe: parsePin(value.halfwayWaitingMe),
     savedAt,
   };
 }
@@ -233,29 +306,39 @@ export function parseCafeOrigin(value: unknown, now = Date.now()): CafeOrigin | 
   if (typeof value.cafePath !== "string" || !cafeCardPathname(value.cafePath)) return null;
   if (typeof value.ts !== "number") return null;
   if (now - value.ts > MAX_AGE_MS) return null;
+  const cafePath = normalizePath(value.cafePath);
+  const trail = Array.isArray(value.trail)
+    ? value.trail.filter((path): path is string => typeof path === "string" && Boolean(cafeCardPathname(path))).map((path) => normalizePath(path))
+    : [];
+  if (!trail.includes(cafePath)) trail.push(cafePath);
   return {
     entryKey: value.entryKey,
-    href: value.href,
-    cafePath: normalizePath(value.cafePath),
+    href: storageHref(value.href),
+    cafePath,
+    trail,
     scrollY: typeof value.scrollY === "number" ? value.scrollY : 0,
     listScroll: typeof value.listScroll === "number" ? value.listScroll : 0,
     ts: value.ts,
   };
 }
 
-function samePlace(previousUrl: string, href: string): boolean {
+const IN_APP_HOSTS = new Set(["wain.lol", "www.wain.lol", "localhost", "127.0.0.1"]);
+
+/** Previous history entry belongs to this tab's own pages. */
+export function previousEntryIsInApp(previous: HistoryLike): boolean {
+  if (!previous?.url) return false;
   try {
-    const url = new URL(previousUrl, "https://wain.lol");
-    const path = `${normalizePath(url.pathname)}${url.search}`;
-    return path === href;
+    const url = new URL(previous.url, "https://wain.lol");
+    return IN_APP_HOSTS.has(url.hostname);
   } catch {
     return false;
   }
 }
 
 /**
- * In-app back when this card was opened from the previous history entry.
- * A direct open (no matching entry) stays on the home fallback.
+ * Step back when the previous entry is in this app, or when this card is
+ * still on the chain we opened from results (browsers without entry URLs).
+ * A direct visit, with no previous entry and no chain, keeps Home.
  */
 export function shouldReturnInApp(input: {
   cafePath: string;
@@ -263,14 +346,70 @@ export function shouldReturnInApp(input: {
   previous: HistoryLike;
   now?: number;
 }): boolean {
+  if (input.previous?.url && !previousEntryIsInApp(input.previous)) return false;
+  if (previousEntryIsInApp(input.previous) || input.previous?.key) return true;
   const origin = input.origin;
-  const previous = input.previous;
-  if (!origin || !previous) return false;
+  if (!origin) return false;
   if (input.now != null && input.now - origin.ts > MAX_AGE_MS) return false;
-  if (normalizePath(origin.cafePath) !== normalizePath(input.cafePath)) return false;
-  if (origin.entryKey && previous.key) return previous.key === origin.entryKey;
-  if (!previous.url) return false;
-  return samePlace(previous.url, origin.href);
+  const trail = origin.trail?.length ? origin.trail : [origin.cafePath];
+  return trail.some((path) => normalizePath(path) === normalizePath(input.cafePath));
+}
+
+/** Keep the results entry and its scroll while the visitor opens more cards. */
+export function nextCafeOrigin(input: {
+  existing: CafeOrigin | null;
+  currentPath: string;
+  destinationPath: string;
+  entryKey: string;
+  href: string;
+  scrollY: number;
+  listScroll: number;
+  now: number;
+}): CafeOrigin {
+  const destination = normalizePath(input.destinationPath);
+  const currentCafe = cafeCardPathname(input.currentPath);
+  const existing = input.existing;
+  if (existing && currentCafe && normalizePath(existing.cafePath) === currentCafe) {
+    const trail = existing.trail.filter((path) => path !== destination);
+    trail.push(destination);
+    return { ...existing, cafePath: destination, trail, ts: input.now };
+  }
+  return {
+    entryKey: input.entryKey,
+    href: storageHref(input.href),
+    cafePath: destination,
+    trail: [destination],
+    scrollY: input.scrollY,
+    listScroll: input.listScroll,
+    ts: input.now,
+  };
+}
+
+export function shouldRestoreResultsNavigation(input: {
+  navigationType?: string | null;
+  traversed?: boolean;
+}): boolean {
+  if (input.traversed) return true;
+  return input.navigationType === "back_forward";
+}
+
+export function resultsNavigationShouldRestore(): boolean {
+  if (typeof window === "undefined") return false;
+  const traversed = (window as Window & { __wainResultsTraverse?: number }).__wainResultsTraverse === 1;
+  let navigationType: string | null = null;
+  try {
+    const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    navigationType = nav?.type ?? null;
+  } catch {
+    navigationType = null;
+  }
+  if (!navigationType) {
+    const legacy = (performance as Performance & { navigation?: { type?: number } }).navigation;
+    if (legacy?.type === 2) navigationType = "back_forward";
+    else if (legacy?.type === 1) navigationType = "reload";
+    else if (legacy?.type === 0) navigationType = "navigate";
+  }
+  return shouldRestoreResultsNavigation({ navigationType, traversed });
 }
 
 export function currentResultsHref(): string {
@@ -338,20 +477,41 @@ function previousHistoryEntry(): HistoryLike {
   return previous ?? null;
 }
 
-function readStore(): StoreFile {
+function snapshotRawIsDirty(raw: string): boolean {
+  return (
+    /"(?:lat|lng|halfwayLocations|halfwayWaitingId|halfwayWaitingMe)"/.test(raw) ||
+    /maps\.google\.com\/\?q=\d/.test(raw) ||
+    /\/h\/(?!expired")[^"\\/]+/.test(raw) ||
+    /"threadKey":"halfway:(?!session")/.test(raw)
+  );
+}
+
+function readStore(now = Date.now()): StoreFile {
   try {
     const raw = window.sessionStorage.getItem(RESULTS_SNAPSHOT_KEY);
     if (!raw) return { entries: [] };
     const parsed = JSON.parse(raw) as { entries?: unknown };
     if (!parsed || !Array.isArray(parsed.entries)) return { entries: [] };
-    return {
-      entries: parsed.entries
-        .map((entry) => parseResultsSnapshot(entry))
-        .filter((entry): entry is ResultsSnapshot => Boolean(entry)),
-    };
+    const entries = parsed.entries
+      .map((entry) => parseResultsSnapshot(entry, now))
+      .filter((entry): entry is ResultsSnapshot => Boolean(entry));
+    if (entries.length !== parsed.entries.length || snapshotRawIsDirty(raw)) {
+      writeStore(entries);
+    }
+    return { entries };
   } catch {
     return { entries: [] };
   }
+}
+
+function isHalfwaySnapshot(entry: ResultsSnapshot): boolean {
+  return (
+    entry.threadKey.startsWith("halfway") ||
+    entry.href === "/halfway" ||
+    entry.href === "/en/halfway" ||
+    entry.href === "/h" ||
+    entry.href === "/en/h"
+  );
 }
 
 function writeStore(entries: ResultsSnapshot[]): void {
@@ -371,25 +531,34 @@ function writeStore(entries: ResultsSnapshot[]): void {
   }
 }
 
-export function readResultsSnapshot(entryKey: string, threadKey: string, href: string): ResultsSnapshot | null {
+export function readResultsSnapshot(entryKey: string, threadKey: string, href: string, now = Date.now()): ResultsSnapshot | null {
   if (typeof window === "undefined") return null;
-  const snapshot = readStore().entries.find(
-    (entry) => entry.entryKey === entryKey && entry.threadKey === threadKey && entry.href === href,
+  const wantThread = storageThreadKey(threadKey);
+  const wantHref = storageHref(href);
+  const snapshot = readStore(now).entries.find(
+    (entry) => entry.entryKey === entryKey && entry.threadKey === wantThread && entry.href === wantHref,
   );
   return snapshot ?? null;
 }
 
-export function writeResultsSnapshot(snapshot: ResultsSnapshot): void {
+export function writeResultsSnapshot(snapshot: ResultsSnapshot, now = Date.now()): void {
   if (typeof window === "undefined") return;
-  if (!resultsThreadRestorable(snapshot.messages)) return;
-  const entries = readStore().entries.filter((entry) => entry.entryKey !== snapshot.entryKey);
-  entries.push(snapshot);
+  const clean = parseResultsSnapshot(snapshot, now);
+  if (!clean) return;
+  const entries = readStore(now).entries.filter((entry) => entry.entryKey !== clean.entryKey);
+  entries.push(clean);
   writeStore(entries);
 }
 
 export function clearResultsSnapshot(entryKey: string): void {
   if (typeof window === "undefined") return;
   writeStore(readStore().entries.filter((entry) => entry.entryKey !== entryKey));
+}
+
+/** Drop بيننا and invite snapshots. Home search stays. */
+export function clearHalfwayResultsSnapshots(): void {
+  if (typeof window === "undefined") return;
+  writeStore(readStore().entries.filter((entry) => !isHalfwaySnapshot(entry)));
 }
 
 function readOrigin(now = Date.now()): CafeOrigin | null {
@@ -454,19 +623,36 @@ export function rememberCafeNavigation(anchor: HTMLAnchorElement, event: MouseEv
   if (!cafePath) return;
   const entryKey = navigationEntryKey() ?? resultsSnapshotKey() ?? "soft";
   const scroll = readResultsScroll();
+  const now = Date.now();
   openedFromResults = true;
-  writeOrigin({
+  const origin = nextCafeOrigin({
+    existing: readOrigin(now),
+    currentPath: window.location.pathname,
+    destinationPath: cafePath,
     entryKey,
     href: currentResultsHref(),
-    cafePath,
     scrollY: scroll.scrollY,
     listScroll: scroll.listScroll,
-    ts: Date.now(),
+    now,
   });
-  const existing = readStore().entries.find((entry) => entry.entryKey === (resultsSnapshotKey() ?? entryKey));
+  writeOrigin(origin);
+  const continuing = Boolean(cafeCardPathname(window.location.pathname));
+  if (continuing) return;
+  const snapshotKey = resultsSnapshotKey() ?? entryKey;
+  const existing = readStore(now).entries.find((entry) => entry.entryKey === snapshotKey);
   if (existing) {
-    writeResultsSnapshot({ ...existing, scrollY: scroll.scrollY, listScroll: scroll.listScroll });
+    writeResultsSnapshot({
+      ...existing,
+      scrollY: scroll.scrollY,
+      listScroll: scroll.listScroll,
+      cardCount: renderedCardCount() || existing.cardCount,
+    }, now);
   }
+}
+
+function renderedCardCount(): number {
+  if (typeof document === "undefined") return 0;
+  return document.querySelectorAll("[data-listing-card]").length;
 }
 
 export function canReturnFromThisCafe(now = Date.now()): boolean {
@@ -504,24 +690,73 @@ export function onCafeBackClick(event: {
   window.history.back();
 }
 
+let scrollRestoreToken = 0;
+
+function applyResultsScroll(scrollY: number, listScroll: number): void {
+  window.scrollTo(0, scrollY);
+  const list = document.querySelector("[data-halfway-results]");
+  if (list instanceof HTMLElement && listScroll > 0) list.scrollTop = listScroll;
+}
+
+/**
+ * Scroll after the restored cards exist. Show-more batches and late layout
+ * otherwise clamp the position short of the card the visitor left.
+ */
 export function restoreResultsScroll(): void {
   if (typeof window === "undefined") return;
+  if (!resultsNavigationShouldRestore()) return;
   const key = resultsSnapshotKey() ?? navigationEntryKey();
   if (!key) return;
+  const href = storageHref(currentResultsHref());
   const origin = readOrigin();
-  const href = currentResultsHref();
   const snapshot = readStore().entries.find((entry) => entry.entryKey === key && entry.href === href);
-  const scroll = origin && origin.entryKey === key && origin.href === href
-    ? { scrollY: origin.scrollY, listScroll: origin.listScroll }
-    : snapshot
-      ? { scrollY: snapshot.scrollY, listScroll: snapshot.listScroll }
-      : null;
-  if (!scroll) return;
-  window.scrollTo(0, scroll.scrollY);
-  const list = document.querySelector("[data-halfway-results]");
-  if (list instanceof HTMLElement && scroll.listScroll > 0) {
-    list.scrollTop = scroll.listScroll;
-  }
+  const fromOrigin = Boolean(origin && origin.entryKey === key && origin.href === href);
+  const scrollY = fromOrigin ? origin?.scrollY : snapshot?.scrollY;
+  const listScroll = fromOrigin ? origin?.listScroll ?? 0 : snapshot?.listScroll ?? 0;
+  if (scrollY == null && listScroll <= 0) return;
+  const targetY = scrollY ?? 0;
+  const cardCount = snapshot?.cardCount ?? 0;
+  const token = ++scrollRestoreToken;
+  const started = performance.now();
+  const tick = () => {
+    if (token !== scrollRestoreToken) return;
+    const cards = renderedCardCount();
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const list = document.querySelector("[data-halfway-results]");
+    const listHeight = list instanceof HTMLElement ? list.scrollHeight - list.clientHeight : 0;
+    const cardsReady = cardCount <= 0 || cards >= cardCount;
+    const pageReady = targetY <= 0 || maxScroll + 2 >= targetY;
+    const listReady = listScroll <= 0 || listHeight + 2 >= listScroll;
+    if (cardsReady && pageReady && listReady) {
+      applyResultsScroll(targetY, listScroll);
+      const root = document.documentElement;
+      let pageHeight = root.scrollHeight;
+      let listHeightSeen = list instanceof HTMLElement ? list.scrollHeight : 0;
+      if (typeof ResizeObserver === "undefined") return;
+      const observer = new ResizeObserver(() => {
+        if (token !== scrollRestoreToken) {
+          observer.disconnect();
+          return;
+        }
+        const nextPage = root.scrollHeight;
+        const nextList = list instanceof HTMLElement ? list.scrollHeight : 0;
+        if (nextPage === pageHeight && nextList === listHeightSeen) return;
+        pageHeight = nextPage;
+        listHeightSeen = nextList;
+        applyResultsScroll(targetY, listScroll);
+      });
+      observer.observe(root);
+      if (list instanceof HTMLElement) observer.observe(list);
+      window.setTimeout(() => observer.disconnect(), 800);
+      return;
+    }
+    if (performance.now() - started > 2500) {
+      applyResultsScroll(targetY, listScroll);
+      return;
+    }
+    requestAnimationFrame(tick);
+  };
+  tick();
 }
 
 export function installCafeReturn(): () => void {

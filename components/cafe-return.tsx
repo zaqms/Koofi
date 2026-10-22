@@ -7,19 +7,13 @@ import { installCafeReturn, revealResultsRestore, restoreResultsScroll } from "@
 export function CafeReturn() {
   useEffect(() => {
     const remove = installCafeReturn();
-    const timers: number[] = [];
-    function restore() {
-      restoreResultsScroll();
-      requestAnimationFrame(() => restoreResultsScroll());
-      timers.push(window.setTimeout(() => restoreResultsScroll(), 60));
-    }
-    restore();
-    timers.push(window.setTimeout(revealResultsRestore, 2500));
-    window.addEventListener("popstate", restore);
+    restoreResultsScroll();
+    const revealTimer = window.setTimeout(revealResultsRestore, 2500);
+    window.addEventListener("popstate", restoreResultsScroll);
     return () => {
       remove();
-      window.removeEventListener("popstate", restore);
-      for (const timer of timers) window.clearTimeout(timer);
+      window.removeEventListener("popstate", restoreResultsScroll);
+      window.clearTimeout(revealTimer);
     };
   }, []);
   return null;

@@ -7,11 +7,18 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   cafeCardPathname,
+  clearHalfwayResultsSnapshots,
+  nextCafeOrigin,
   parseCafeOrigin,
   parseResultsSnapshot,
+  readResultsSnapshot,
+  RESULTS_SNAPSHOT_KEY,
+  RESULTS_SNAPSHOT_TTL_MS,
   resultsThreadRestorable,
   shouldPersistSnapshot,
+  shouldRestoreResultsNavigation,
   shouldReturnInApp,
+  writeResultsSnapshot,
   type ResultsMessage,
 } from "../lib/results-return";
 
@@ -86,11 +93,11 @@ const snapshot = parseResultsSnapshot({
   halfwayWaitingId: null,
   halfwayWaitingMe: null,
   savedAt,
-});
+}, savedAt);
 assert(snapshot?.messages.length === 3, "snapshot keeps the ask and the picks");
 assert(snapshot?.messages[2]?.picks?.[0]?.id === "woods-olaya", "snapshot keeps the café id");
 assert(snapshot?.scrollY === 240, "snapshot keeps scroll");
-assert(parseResultsSnapshot({ ...snapshot, messages: [opener] }) === null, "opener snapshot is dropped");
+assert(parseResultsSnapshot({ ...snapshot, messages: [opener] }, savedAt) === null, "opener snapshot is dropped");
 assert(
   parseResultsSnapshot({
     entryKey: "bad",
@@ -99,8 +106,16 @@ assert(
     messages: [{ id: "a", role: "assistant", text: "x", picks: [{ id: 1 }] }],
     composerLanguage: "ar",
     savedAt,
-  })?.messages[0]?.picks === undefined,
+  }, savedAt)?.messages[0]?.picks === undefined,
   "a pick without a card path is dropped",
+);
+assert(
+  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - RESULTS_SNAPSHOT_TTL_MS - 1000 }, savedAt) === null,
+  "a snapshot older than 30 minutes is dropped",
+);
+assert(
+  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - RESULTS_SNAPSHOT_TTL_MS + 1000 }, savedAt)?.entryKey === "search-1",
+  "a snapshot inside 30 minutes is kept",
 );
 
 const origin = parseCafeOrigin(
@@ -135,12 +150,12 @@ assert(
 );
 assert(
   shouldReturnInApp({
-    cafePath: "/en/c/woods-olaya",
-    origin: origin ? { ...origin, cafePath: "/en/c/woods-olaya" } : null,
-    previous: { key: "search-en", url: "http://localhost:3000/en" },
+    cafePath: "/c/idmi-olaya",
+    origin,
+    previous: { key: "cafe-a", url: "http://localhost:3000/c/woods-olaya" },
     now: savedAt + 1000,
-  }) === false,
-  "EN card does not consume an AR results entry key",
+  }),
+  "an in-app previous café steps back through the chain",
 );
 assert(
   shouldReturnInApp({
@@ -148,13 +163,13 @@ assert(
     origin,
     previous: { key: "other", url: "http://localhost:3000/coffee-shops/olaya" },
     now: savedAt + 1000,
-  }) === false,
-  "a different history entry does not hijack back",
+  }),
+  "an in-app district entry steps back to that list",
 );
 assert(
   shouldReturnInApp({
     cafePath: "/c/woods-olaya",
-    origin,
+    origin: null,
     previous: null,
     now: savedAt + 1000,
   }) === false,
@@ -162,22 +177,62 @@ assert(
 );
 assert(
   shouldReturnInApp({
-    cafePath: "/c/idmi-olaya",
+    cafePath: "/c/woods-olaya",
     origin,
-    previous: { key: "search-1", url: "http://localhost:3000/" },
+    previous: { url: "https://news.example/story" },
     now: savedAt + 1000,
   }) === false,
-  "a different card does not use this origin",
+  "an external previous entry does not leave the site",
 );
 assert(
   shouldReturnInApp({
     cafePath: "/c/woods-olaya",
-    origin: { entryKey: "", href: "/coffee-shops/olaya", cafePath: "/c/woods-olaya", scrollY: 0, listScroll: 0, ts: savedAt },
+    origin: null,
+    previous: { url: "https://news.example/story" },
+    now: savedAt + 1000,
+  }) === false,
+  "an external previous entry with no chain keeps the home fallback",
+);
+assert(
+  shouldReturnInApp({
+    cafePath: "/c/woods-olaya",
+    origin: { entryKey: "", href: "/coffee-shops/olaya", cafePath: "/c/woods-olaya", trail: ["/c/woods-olaya"], scrollY: 0, listScroll: 0, ts: savedAt },
     previous: { url: "https://wain.lol/coffee-shops/olaya" },
     now: savedAt + 1000,
   }),
-  "without an entry key, the previous URL can still match the district",
+  "a district entry on wain.lol is in-app",
 );
+
+const second = nextCafeOrigin({
+  existing: origin,
+  currentPath: "/c/woods-olaya",
+  destinationPath: "/c/idmi-olaya",
+  entryKey: "cafe-page",
+  href: "/c/woods-olaya",
+  scrollY: 0,
+  listScroll: 0,
+  now: savedAt + 2000,
+});
+const third = nextCafeOrigin({
+  existing: second,
+  currentPath: "/c/idmi-olaya",
+  destinationPath: "/c/drip-olaya",
+  entryKey: "cafe-page-2",
+  href: "/c/idmi-olaya",
+  scrollY: 12,
+  listScroll: 0,
+  now: savedAt + 3000,
+});
+assert(third.entryKey === "search-1", "a café chain keeps the original results entry");
+assert(third.scrollY === 240 && third.listScroll === 80, "a café chain keeps the results scroll");
+assert(third.href === "/", "a café chain keeps the results URL");
+assert(third.cafePath === "/c/drip-olaya", "the chain remembers the latest card");
+assert(third.trail.includes("/c/woods-olaya") && third.trail.includes("/c/idmi-olaya"), "the chain remembers every card");
+
+assert(shouldRestoreResultsNavigation({ navigationType: "reload" }) === false, "reload does not restore results");
+assert(shouldRestoreResultsNavigation({ navigationType: "navigate" }) === false, "a fresh navigation does not restore results");
+assert(shouldRestoreResultsNavigation({ navigationType: "back_forward" }), "browser back restores results");
+assert(shouldRestoreResultsNavigation({ navigationType: "reload", traversed: true }), "an in-app back after load still restores");
 
 const detail = read("components/cafe-detail.tsx");
 const cardPage = read("components/cafe-card-page.tsx");
@@ -190,7 +245,8 @@ assert(detail.includes("onClick={onCafeBackClick}"), "card back asks the results
 assert(detail.includes("href={backHref}"), "card back keeps a real href for direct visits");
 assert(cardPage.includes("backHref={home}"), "direct visits still fall back to home");
 assert(layout.includes("<CafeReturn"), "café links are remembered from the root layout");
-assert(layout.includes("RESULTS_RESTORE_BOOTSTRAP"), "a reload hides the server paint until the snapshot restores");
+assert(layout.includes("RESULTS_RESTORE_BOOTSTRAP"), "back/forward can hide the server paint until the snapshot restores");
+assert(read("lib/results-return.ts").includes('nav.type!=="back_forward"'), "reload and fresh loads do not hide the page");
 assert(read("app/globals.css").includes("data-results-pending"), "the pending results paint stays hidden");
 assert(chat.includes("revealResultsRestore"), "chat reveals the page after restoring results");
 assert(capture.includes("installCafeReturn"), "return capture listens for card clicks");
@@ -198,7 +254,106 @@ assert(capture.includes("restoreResultsScroll"), "return restores scroll");
 assert(chat.includes("readResultsSnapshot"), "chat restores a results snapshot");
 assert(chat.includes("writeResultsSnapshot"), "chat stores a results snapshot");
 assert(chat.includes("shouldPersistSnapshot"), "home search is not stored on the bare homepage");
+assert(chat.includes("resultsNavigationShouldRestore"), "chat restores only after back or forward");
+assert(chat.includes("clearHalfwayResultsSnapshots"), "starting over clears the بيننا snapshot");
+assert(chat.includes("clearResultsSnapshot"), "a new home search clears the stored ask");
 assert(directory.includes("cardPath(shop.id, language)"), "list cards still link to the café");
 assert(!read("lib/results-return.ts").includes("URLSearchParams"), "results return does not add a query string");
+
+const inviteId = "AbcdEfghijkLmnopqrST12";
+const hostPin = { lat: 24.713551, lng: 46.675292 };
+const guestPin = { lat: 24.812345, lng: 46.619876 };
+const storage = new Map<string, string>();
+const previousWindow = globalThis.window;
+globalThis.window = {
+  sessionStorage: {
+    getItem: (key: string) => storage.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      storage.set(key, value);
+    },
+    removeItem: (key: string) => {
+      storage.delete(key);
+    },
+  },
+} as unknown as Window & typeof globalThis;
+try {
+  const now = savedAt;
+  writeResultsSnapshot({
+    entryKey: "half-1",
+    threadKey: `halfway:${inviteId}`,
+    href: `/h/${inviteId}`,
+    scrollY: 400,
+    listScroll: 120,
+    cardCount: 6,
+    composerLanguage: "ar",
+    awaitingMaps: false,
+    savedAt: now,
+    messages: [
+      { id: "q", role: "user", text: "قهوة في العليا" },
+      {
+        id: `halfway-picks-${inviteId}`,
+        role: "assistant",
+        text: "ثلاث قهاوي",
+        language: "ar",
+        halfwayMore: true,
+        halfwayLocations: [
+          { lat: hostPin.lat, lng: hostPin.lng },
+          { lat: guestPin.lat, lng: guestPin.lng },
+        ],
+        picks: [
+          {
+            id: "woods-olaya",
+            nameAr: "وودز",
+            nameEn: "WOODS",
+            neighborhood: "olaya",
+            neighborhoodAr: "العليا",
+            vibeTags: [],
+            momentTags: [],
+            mapsHref: `https://maps.google.com/?q=${hostPin.lat},${hostPin.lng}`,
+            cardPath: "/c/woods-olaya",
+            lat: hostPin.lat,
+            lng: hostPin.lng,
+          },
+        ],
+      },
+    ] as ResultsMessage[],
+  }, now);
+  const raw = storage.get(RESULTS_SNAPSHOT_KEY) ?? "";
+  assert(raw.includes("قهوة في العليا"), "the stored session keeps the ask text");
+  assert(raw.includes("woods-olaya"), "the stored session keeps the café id");
+  assert(!raw.includes(inviteId), "the stored session has no invite id");
+  for (const pin of [hostPin, guestPin]) {
+    for (const digits of [4, 5, 6]) {
+      assert(!raw.includes(pin.lat.toFixed(digits)), `stored session has no lat ${pin.lat.toFixed(digits)}`);
+      assert(!raw.includes(pin.lng.toFixed(digits)), `stored session has no lng ${pin.lng.toFixed(digits)}`);
+    }
+  }
+  assert(!raw.includes("halfwayLocations"), "the stored session has no pin list");
+  assert(!raw.includes("halfwayWaiting"), "the stored session has no waiting pin");
+  const restored = readResultsSnapshot("half-1", `halfway:${inviteId}`, `/h/${inviteId}`, now);
+  assert(restored?.messages[0]?.text === "قهوة في العليا", "reading the session restores the ask");
+  assert(restored?.cardCount === 6, "reading the session keeps the card count for scroll");
+  const stale = JSON.parse(raw) as { entries: Array<{ savedAt: number }> };
+  stale.entries[0].savedAt = now - RESULTS_SNAPSHOT_TTL_MS - 1000;
+  storage.set(RESULTS_SNAPSHOT_KEY, JSON.stringify(stale));
+  assert(readResultsSnapshot("half-1", `halfway:${inviteId}`, `/h/${inviteId}`, now) === null, "a stored session older than 30 minutes is discarded");
+  assert(!(storage.get(RESULTS_SNAPSHOT_KEY) ?? "").includes("woods-olaya"), "discarding a stale session removes it from storage");
+  writeResultsSnapshot({
+    entryKey: "half-2",
+    threadKey: "halfway-local:ar",
+    href: "/halfway",
+    scrollY: 0,
+    listScroll: 0,
+    cardCount: 3,
+    composerLanguage: "ar",
+    awaitingMaps: false,
+    savedAt: now,
+    messages: [{ id: "q", role: "user", text: "بيننا" }],
+  }, now);
+  clearHalfwayResultsSnapshots();
+  assert(!(storage.get(RESULTS_SNAPSHOT_KEY) ?? "").includes("بيننا"), "Start a new Halfway clears the stored results");
+} finally {
+  globalThis.window = previousWindow;
+}
 
 console.log("check-results-return: ok");

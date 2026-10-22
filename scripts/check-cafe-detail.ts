@@ -823,16 +823,16 @@ const TRENDING_1021_HERO_COUNTS: Record<string, number> = {
   "harmony-cafe-al-nakheel": 3,
 };
 const TRENDING_1021_IDS = Object.keys(TRENDING_1021_HERO_COUNTS);
-/** Batch DB1 (22 Oct 2026): Dhahrat Al Badiah — Scout's Places frames, hand-ordered; Mulfet wall-quote close-up and the Tim Hortons brand promo graphic dropped. 0 Dev Places Photos calls. */
+/** Batch DB1 (22 Oct 2026): Dhahrat Al Badiah — Scout's Places frames, hand-ordered; Mulfet wall-quote close-up and the Tim Hortons brand promo graphic dropped; r2 (QA r1) also drops the Fuji RAM Clinics storefront, the Athiah real-estate sign and one of Miray's two night storefronts. 0 Dev Places Photos calls. */
 const BATCH_DB1_DB_HERO_COUNTS: Record<string, number> = {
   "narm-cafe-dhahrat-al-badiah": 4,
   "afeen-coffee-flowers-dhahrat-al-badiah": 4,
   "in-front-of-dhahrat-al-badiah": 4,
-  "fuji-cafe-dhahrat-al-badiah": 4,
+  "fuji-cafe-dhahrat-al-badiah": 3,
   "wem-coffee-dhahrat-al-badiah": 4,
   "mjaz-specialty-coffee-dhahrat-al-badiah": 4,
-  "athiah-cafe-dhahrat-al-badiah": 4,
-  "miray-specialty-coffee-dhahrat-al-badiah": 4,
+  "athiah-cafe-dhahrat-al-badiah": 3,
+  "miray-specialty-coffee-dhahrat-al-badiah": 3,
   "mulfet-flowers-coffee-dhahrat-al-badiah": 3,
   "londoner-dhahrat-al-badiah": 4,
   "cozy-dhahrat-al-badiah": 4,

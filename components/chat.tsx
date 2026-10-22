@@ -86,6 +86,12 @@ import {
   type ResultsMessage,
   type ResultsSnapshot,
 } from "@/lib/results-return";
+import {
+  expiredHalfwayShouldClear,
+  halfwayFetchKeepsLongerSnapshot,
+  homeSearchShouldClear,
+  startNewHalfwayShouldClear,
+} from "@/lib/chat-results-actions";
 import { nearbyChatPicks } from "@/lib/nearby";
 import {
   MEET_HALFWAY_CHIP,
@@ -881,7 +887,7 @@ export function Chat({
   }, [halfwayInvite, landing]);
 
   useEffect(() => {
-    if (!sessionExpired && !halfwayInviteExpired) return;
+    if (!expiredHalfwayShouldClear(sessionExpired, halfwayInviteExpired)) return;
     clearChatResultsForNewHalfway();
   }, [sessionExpired, halfwayInviteExpired]);
 
@@ -972,9 +978,15 @@ export function Chat({
           ? readResultsSnapshot(savedKey, threadKey, currentResultsHref())
           : null;
         if (
-          savedList &&
-          resultsSnapshotIsFresh(savedList.savedAt) &&
-          resultsPickCount(savedList.messages) > picks.length
+          halfwayFetchKeepsLongerSnapshot({
+            saved: savedList
+              ? {
+                  savedAt: savedList.savedAt,
+                  pickCount: resultsPickCount(savedList.messages),
+                }
+              : null,
+            incomingPickCount: picks.length,
+          })
         ) {
           return;
         }
@@ -1240,7 +1252,7 @@ export function Chat({
     if (!trimmed || inFlightRef.current) return;
     resultsSnapshotHeld.current = false;
     resultsExpiredBlock.current = false;
-    if (homeSurface) clearChatResultsForNewSearch(resultsSnapshotKey());
+    if (homeSearchShouldClear(homeSurface)) clearChatResultsForNewSearch(resultsSnapshotKey());
     unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
@@ -1792,7 +1804,7 @@ export function Chat({
     clearHalfwayWaiting();
     resultsSnapshotHeld.current = false;
     resultsExpiredBlock.current = false;
-    clearChatResultsForNewHalfway();
+    if (startNewHalfwayShouldClear()) clearChatResultsForNewHalfway();
     markHalfwayFresh();
     router.replace(homePath(landing));
   }

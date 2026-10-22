@@ -5,6 +5,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import vm from "node:vm";
 import ts from "typescript";
 import {
   chatFreshMemoryThread,
@@ -16,6 +17,12 @@ import {
   decideChatResultsSave,
 } from "../components/chat";
 import { getShop } from "../lib/catalog";
+import {
+  expiredHalfwayShouldClear,
+  halfwayFetchKeepsLongerSnapshot,
+  homeSearchShouldClear,
+  startNewHalfwayShouldClear,
+} from "../lib/chat-results-actions";
 import { officialShopCoords, placeIdentityKeys } from "../lib/place-coords";
 import {
   cafeCardPathname,
@@ -27,6 +34,9 @@ import {
   parseResultsSnapshot,
   readCafeReturnToken,
   readResultsSnapshot,
+  resetResultsScroll,
+  RESULTS_RESTORE_BOOTSTRAP,
+  RESULTS_SCROLL_HOLD_MS,
   RESULTS_SNAPSHOT_KEY,
   RESULTS_SNAPSHOT_TTL_MS,
   resultsEntryExpired,
@@ -657,6 +667,60 @@ try {
   globalThis.window = previousWindow;
 }
 
+assert(startNewHalfwayShouldClear(), "Start new Halfway clears the saved list");
+assert(!expiredHalfwayShouldClear(false, false), "a live بيننا session keeps its saved list");
+assert(expiredHalfwayShouldClear(true, false), "an expired بيننا session clears the saved list");
+assert(expiredHalfwayShouldClear(false, true), "an expired invite clears the saved list");
+assert(expiredHalfwayShouldClear(true, true), "both expiry flags clear the saved list");
+assert(homeSearchShouldClear(true), "a new ask on the home composer clears the saved search");
+assert(!homeSearchShouldClear(false), "a directory page does not clear the saved search");
+const keepNow = savedAt;
+assert(
+  halfwayFetchKeepsLongerSnapshot({
+    saved: { savedAt: keepNow, pickCount: 12 },
+    incomingPickCount: 3,
+    now: keepNow,
+  }),
+  "a longer fresh snapshot wins over the invite's first page",
+);
+assert(
+  !halfwayFetchKeepsLongerSnapshot({
+    saved: { savedAt: keepNow, pickCount: 3 },
+    incomingPickCount: 3,
+    now: keepNow,
+  }),
+  "an equal first page can paint when nothing longer is saved",
+);
+assert(
+  !halfwayFetchKeepsLongerSnapshot({
+    saved: { savedAt: keepNow - 31 * 60 * 1000, pickCount: 12 },
+    incomingPickCount: 3,
+    now: keepNow,
+  }),
+  "an expired longer snapshot does not block a fresh invite response",
+);
+assert(
+  !halfwayFetchKeepsLongerSnapshot({
+    saved: null,
+    incomingPickCount: 3,
+    now: keepNow,
+  }),
+  "no saved list does not block the invite response",
+);
+for (const navigationType of ["reload", "navigate"] as const) {
+  assert(
+    decideChatResultsRestore({
+      shouldRestoreNavigation: shouldRestoreResultsNavigation({ navigationType }),
+      snapshot: null,
+      memoryMessages: null,
+      entryExpired: false,
+      persistable: true,
+      now: keepNow,
+    }).apply === null,
+    `the restore decision returns false for ${navigationType}`,
+  );
+}
+
 const chatSource = read("components/chat.tsx");
 const chatFile = ts.createSourceFile(
   "components/chat.tsx",
@@ -665,34 +729,514 @@ const chatFile = ts.createSourceFile(
   true,
   ts.ScriptKind.TSX,
 );
-const chatCalls = new Set<string>();
-const chatProps = new Set<string>();
-const visitChat = (node: ts.Node) => {
-  if (ts.isCallExpression(node)) chatCalls.add(node.expression.getText(chatFile));
-  if (ts.isPropertyAccessExpression(node)) chatProps.add(node.getText(chatFile));
-  ts.forEachChild(node, visitChat);
-};
-visitChat(chatFile);
-for (const name of [
-  "decideChatResultsRestore",
-  "commitChatResultsSave",
-  "clearChatResultsForNewSearch",
-  "clearChatResultsForNewHalfway",
-  "chatMayApplyHalfwayFetch",
-  "resetResultsScroll",
-] as const) {
-  assert(chatCalls.has(name), `the results screen calls ${name}`);
+
+function nodeCalls(node: ts.Node, name: string): boolean {
+  let hit = false;
+  const visit = (current: ts.Node) => {
+    if (hit) return;
+    if (ts.isCallExpression(current)) {
+      const expr = current.expression;
+      const called = ts.isIdentifier(expr) ? expr.text : expr.getText(chatFile);
+      if (called === name) hit = true;
+    }
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return hit;
 }
+
+function nodeReferences(node: ts.Node, name: string): boolean {
+  let hit = false;
+  const visit = (current: ts.Node) => {
+    if (hit) return;
+    if (ts.isIdentifier(current) && current.text === name) hit = true;
+    ts.forEachChild(current, visit);
+  };
+  visit(node);
+  return hit;
+}
+
+function functionNamed(name: string): ts.FunctionDeclaration | ts.FunctionExpression {
+  let found: ts.FunctionDeclaration | ts.FunctionExpression | undefined;
+  const visit = (node: ts.Node) => {
+    if (found) return;
+    if (
+      (ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node)) &&
+      node.name?.text === name
+    ) {
+      found = node;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(chatFile);
+  assert(found, `chat.tsx defines ${name}`);
+  return found;
+}
+
+function assertHandlerClears(handler: ts.Node, decision: string, clear: string, label: string) {
+  assert(nodeCalls(handler, decision), `${label} asks ${decision}`);
+  assert(nodeCalls(handler, clear), `${label} calls ${clear}`);
+}
+
+assertHandlerClears(
+  functionNamed("startNewHalfway"),
+  "startNewHalfwayShouldClear",
+  "clearChatResultsForNewHalfway",
+  "Start new Halfway",
+);
+assertHandlerClears(
+  functionNamed("send"),
+  "homeSearchShouldClear",
+  "clearChatResultsForNewSearch",
+  "a new home search",
+);
+
+let expiryHandler: ts.Node | undefined;
+const findExpiry = (node: ts.Node) => {
+  if (ts.isCallExpression(node) && node.expression.getText(chatFile) === "useEffect") {
+    const callback = node.arguments[0];
+    if (
+      callback &&
+      nodeReferences(callback, "sessionExpired") &&
+      nodeReferences(callback, "halfwayInviteExpired") &&
+      !nodeReferences(callback, "selectedChipId")
+    ) {
+      assert(!expiryHandler, "one invite-expiry handler clears the saved list");
+      expiryHandler = callback;
+    }
+  }
+  ts.forEachChild(node, findExpiry);
+};
+findExpiry(chatFile);
+assert(expiryHandler, "the invite-expiry handler exists");
+assertHandlerClears(
+  expiryHandler,
+  "expiredHalfwayShouldClear",
+  "clearChatResultsForNewHalfway",
+  "invite expiry",
+);
+
+let restoreUsesNavigation = false;
+const findRestore = (node: ts.Node) => {
+  if (ts.isCallExpression(node) && node.expression.getText(chatFile) === "decideChatResultsRestore") {
+    const arg = node.arguments[0];
+    assert(arg && ts.isObjectLiteralExpression(arg), "the restore decision takes the navigation result");
+    const prop = arg.properties.find(
+      (item) => ts.isPropertyAssignment(item) && item.name.getText(chatFile) === "shouldRestoreNavigation",
+    );
+    assert(prop && ts.isPropertyAssignment(prop), "the restore decision receives shouldRestoreNavigation");
+    const init = prop.initializer;
+    restoreUsesNavigation =
+      ts.isCallExpression(init) && init.expression.getText(chatFile) === "resultsNavigationShouldRestore";
+  }
+  ts.forEachChild(node, findRestore);
+};
+findRestore(chatFile);
+assert(restoreUsesNavigation, "reload and a fresh visit do not force the saved list back");
+
+const overlay = functionNamed("loadOverlay");
+let overlayKeepsLonger = false;
+const findKeep = (node: ts.Node) => {
+  if (
+    ts.isIfStatement(node) &&
+    ts.isCallExpression(node.expression) &&
+    node.expression.expression.getText(chatFile) === "halfwayFetchKeepsLongerSnapshot"
+  ) {
+    overlayKeepsLonger = true;
+  }
+  ts.forEachChild(node, findKeep);
+};
+findKeep(overlay);
+assert(overlayKeepsLonger, "the invite re-fetch does not paint over a longer saved list");
+
+const chatProps = new Set<string>();
+const visitProps = (node: ts.Node) => {
+  if (ts.isPropertyAccessExpression(node)) chatProps.add(node.getText(chatFile));
+  ts.forEachChild(node, visitProps);
+};
+visitProps(chatFile);
 assert(chatProps.has("decision.apply"), "the results screen applies a restored list");
 assert(chatProps.has("decision.holdSnapshot"), "the results screen holds a restored list against a later fetch");
 assert(chatProps.has("decision.dropMemory"), "the results screen drops an expired in-memory list");
+assert(nodeCalls(chatFile, "decideChatResultsRestore"), "the results screen calls decideChatResultsRestore");
+assert(nodeCalls(chatFile, "commitChatResultsSave"), "the results screen calls commitChatResultsSave");
+assert(nodeCalls(chatFile, "chatMayApplyHalfwayFetch"), "the results screen calls chatMayApplyHalfwayFetch");
+assert(nodeCalls(chatFile, "resetResultsScroll"), "the results screen calls resetResultsScroll");
 assert(
   chatSource.includes("if (searchScreen || showHalfwayResults) return;"),
   "the auto-scroll guard matches the بيننا show-more line",
 );
+assert(RESULTS_SCROLL_HOLD_MS === 900, "the scroll hold matches the reset window");
 assert(
-  chatSource.includes("resultsPickCount(savedList.messages) > picks.length"),
-  "the invite re-fetch does not paint over a longer saved list",
+  RESULTS_RESTORE_BOOTSTRAP.includes('nav.type!=="back_forward"'),
+  "reload and fresh loads do not hide the page",
 );
+assert(
+  RESULTS_RESTORE_BOOTSTRAP.includes('history.scrollRestoration="auto"'),
+  "the bootstrap gives scroll restoration back",
+);
+assert(
+  RESULTS_RESTORE_BOOTSTRAP.includes('removeEventListener("pageshow",top)'),
+  "the bootstrap does not keep forcing the top after the hold",
+);
+assert(
+  RESULTS_RESTORE_BOOTSTRAP.includes(`setTimeout(release,${RESULTS_SCROLL_HOLD_MS})`),
+  "the bootstrap releases scroll restoration when the hold ends",
+);
+
+type ScrollMode = "auto" | "manual";
+
+/** A fresh read. Direct comparisons get narrowed and then reject the later value. */
+function currentMode(mode: string): ScrollMode {
+  return mode === "manual" ? "manual" : "auto";
+}
+
+function installScrollHarness(initialPath: string) {
+  const listeners = new Map<string, Set<(event?: { persisted?: boolean }) => void>>();
+  const timeouts: { id: number; at: number; fn: () => void }[] = [];
+  const rafs: Array<() => void> = [];
+  let nextId = 1;
+  let now = 0;
+  let pathname = initialPath;
+  let mode: ScrollMode = "auto";
+  let scrolls = 0;
+  const add = (type: string, fn: (event?: { persisted?: boolean }) => void) => {
+    const set = listeners.get(type) ?? new Set();
+    set.add(fn);
+    listeners.set(type, set);
+  };
+  const remove = (type: string, fn: (event?: { persisted?: boolean }) => void) => {
+    listeners.get(type)?.delete(fn);
+  };
+  const history = {
+    get scrollRestoration() {
+      return mode;
+    },
+    set scrollRestoration(value: ScrollMode) {
+      mode = value;
+    },
+    state: null as unknown,
+    pushState(_data: unknown, _unused: string, url?: string | URL | null) {
+      if (url) pathname = new URL(String(url), "http://localhost").pathname;
+    },
+    replaceState(_data: unknown, _unused: string, url?: string | URL | null) {
+      if (url) pathname = new URL(String(url), "http://localhost").pathname;
+    },
+  };
+  const windowMock = {
+    location: {
+      get pathname() {
+        return pathname;
+      },
+      search: "",
+    },
+    history,
+    scrollTo() {
+      scrolls += 1;
+    },
+    addEventListener: add,
+    removeEventListener: remove,
+    setTimeout(fn: () => void, delay = 0) {
+      const id = nextId++;
+      timeouts.push({ id, at: now + delay, fn });
+      return id;
+    },
+    clearTimeout(id: number) {
+      const index = timeouts.findIndex((timer) => timer.id === id);
+      if (index >= 0) timeouts.splice(index, 1);
+    },
+  };
+  const previous = {
+    window: globalThis.window,
+    document: globalThis.document,
+    requestAnimationFrame: globalThis.requestAnimationFrame,
+    HTMLElement: globalThis.HTMLElement,
+  };
+  globalThis.HTMLElement = class HTMLElement {} as unknown as typeof globalThis.HTMLElement;
+  globalThis.window = windowMock as unknown as Window & typeof globalThis;
+  globalThis.document = {
+    documentElement: { scrollTop: 0 },
+    body: { scrollTop: 0 },
+    querySelector() {
+      return null;
+    },
+  } as unknown as Document;
+  globalThis.requestAnimationFrame = ((fn: FrameRequestCallback) => {
+    rafs.push(() => fn(now));
+    return rafs.length;
+  }) as typeof requestAnimationFrame;
+  return {
+    get mode(): ScrollMode {
+      return mode;
+    },
+    get scrolls() {
+      return scrolls;
+    },
+    get pathname() {
+      return pathname;
+    },
+    set pathname(value: string) {
+      pathname = value;
+    },
+    history,
+    flushRaf(limit = 12) {
+      let steps = 0;
+      while (rafs.length > 0 && steps < limit) {
+        const batch = rafs.splice(0, rafs.length);
+        for (const fn of batch) fn();
+        steps += 1;
+      }
+    },
+    runUntil(ms: number) {
+      now = ms;
+      const due = timeouts.filter((timer) => timer.at <= ms).sort((a, b) => a.at - b.at);
+      for (const timer of due) {
+        const index = timeouts.indexOf(timer);
+        if (index < 0) continue;
+        timeouts.splice(index, 1);
+        timer.fn();
+      }
+    },
+    fire(type: string) {
+      for (const fn of [...(listeners.get(type) ?? [])]) fn();
+    },
+    listenerCount(type: string) {
+      return listeners.get(type)?.size ?? 0;
+    },
+    restore() {
+      globalThis.window = previous.window;
+      globalThis.document = previous.document;
+      globalThis.requestAnimationFrame = previous.requestAnimationFrame;
+      globalThis.HTMLElement = previous.HTMLElement;
+    },
+  };
+}
+
+{
+  const harness = installScrollHarness("/en/h/qa-invite");
+  try {
+    resetResultsScroll();
+    assert(currentMode(harness.mode) === "manual", "a fresh invite hold pauses browser scroll restoration");
+    harness.flushRaf(4);
+    assert(currentMode(harness.mode) === "manual", "the hold stays manual while the invite page is current");
+    harness.pathname = "/en/coffee-shops/nearby";
+    harness.flushRaf(8);
+    assert(currentMode(harness.mode) === "auto", "leaving the invite route gives scroll restoration back");
+  } finally {
+    harness.restore();
+  }
+}
+
+{
+  const harness = installScrollHarness("/en/h/qa-invite");
+  try {
+    resetResultsScroll();
+    harness.runUntil(RESULTS_SCROLL_HOLD_MS);
+    assert(currentMode(harness.mode) === "auto", "the invite scroll hold ends by restoring auto");
+    const scrolls = harness.scrolls;
+    harness.fire("pageshow");
+    assert(harness.scrolls === scrolls, "a later pageshow does not force the top after the hold");
+    assert(currentMode(harness.mode) === "auto", "scroll restoration stays auto after the hold");
+  } finally {
+    harness.restore();
+  }
+}
+
+{
+  const harness = installScrollHarness("/en");
+  try {
+    resetResultsScroll();
+    harness.history.pushState({}, "", "/en/coffee-shops/most-popular");
+    assert(currentMode(harness.mode) === "auto", "a history push off the results page releases the hold");
+  } finally {
+    harness.restore();
+  }
+}
+
+function runBootstrap(input: {
+  path: string;
+  navType: string;
+  state: unknown;
+  storage?: Map<string, string>;
+}) {
+  const listeners = new Map<string, Set<(event?: { persisted?: boolean }) => void>>();
+  const timeouts: { id: number; at: number; fn: () => void }[] = [];
+  const rafs: Array<() => void> = [];
+  let nextId = 1;
+  let now = 0;
+  let mode: ScrollMode = "auto";
+  let scrolls = 0;
+  const attributes = new Map<string, string>();
+  const storage = input.storage ?? new Map<string, string>();
+  const sandbox = {
+    Date,
+    JSON,
+    console,
+    location: { pathname: input.path },
+    history: {
+      get scrollRestoration() {
+        return mode;
+      },
+      set scrollRestoration(value: ScrollMode) {
+        mode = value;
+      },
+      state: input.state,
+      pushState(_data: unknown, _unused: string, url?: string) {
+        if (url) sandbox.location.pathname = new URL(url, "http://localhost").pathname;
+      },
+      replaceState(_data: unknown, _unused: string, url?: string) {
+        if (url) sandbox.location.pathname = new URL(url, "http://localhost").pathname;
+      },
+    },
+    document: {
+      documentElement: {
+        setAttribute(name: string, value: string) {
+          attributes.set(name, value);
+        },
+      },
+    },
+    performance: {
+      getEntriesByType() {
+        return [{ type: input.navType }];
+      },
+    },
+    sessionStorage: {
+      getItem(key: string) {
+        return storage.get(key) ?? null;
+      },
+    },
+    window: {
+      navigation: undefined as { activation?: { navigationType?: string }; currentEntry?: { key?: string } } | undefined,
+      addEventListener(type: string, fn: (event?: { persisted?: boolean }) => void) {
+        const set = listeners.get(type) ?? new Set();
+        set.add(fn);
+        listeners.set(type, set);
+      },
+      removeEventListener(type: string, fn: (event?: { persisted?: boolean }) => void) {
+        listeners.get(type)?.delete(fn);
+      },
+      scrollTo() {
+        scrolls += 1;
+      },
+    },
+    requestAnimationFrame(fn: () => void) {
+      rafs.push(fn);
+      return rafs.length;
+    },
+    setTimeout(fn: () => void, delay = 0) {
+      const id = nextId++;
+      timeouts.push({ id, at: now + delay, fn });
+      return id;
+    },
+    clearTimeout(id: number) {
+      const index = timeouts.findIndex((timer) => timer.id === id);
+      if (index >= 0) timeouts.splice(index, 1);
+    },
+  };
+  vm.runInNewContext(RESULTS_RESTORE_BOOTSTRAP, sandbox);
+  return {
+    get mode(): ScrollMode {
+      return mode;
+    },
+    get scrolls() {
+      return scrolls;
+    },
+    location: sandbox.location,
+    history: sandbox.history,
+    pending: () => attributes.has("data-results-pending"),
+    flushRaf(limit = 12) {
+      let steps = 0;
+      while (rafs.length > 0 && steps < limit) {
+        const batch = rafs.splice(0, rafs.length);
+        for (const fn of batch) fn();
+        steps += 1;
+      }
+    },
+    runUntil(ms: number) {
+      const due = timeouts.filter((timer) => timer.at <= ms).sort((a, b) => a.at - b.at);
+      now = ms;
+      for (const timer of due) {
+        const index = timeouts.indexOf(timer);
+        if (index < 0) continue;
+        timeouts.splice(index, 1);
+        timer.fn();
+      }
+    },
+    fire(type: string, event?: { persisted?: boolean }) {
+      for (const fn of [...(listeners.get(type) ?? [])]) fn(event);
+    },
+    pageshowCount() {
+      return listeners.get("pageshow")?.size ?? 0;
+    },
+  };
+}
+
+{
+  const freshInvite = runBootstrap({
+    path: "/en/h/qa-invite",
+    navType: "navigate",
+    state: null,
+  });
+  assert(currentMode(freshInvite.mode) === "auto", "a fresh invite load does not leave scroll restoration manual");
+}
+
+{
+  const storage = new Map<string, string>();
+  storage.set(
+    RESULTS_SNAPSHOT_KEY,
+    JSON.stringify({ entries: [{ entryKey: "k1", savedAt: Date.now() - 31 * 60 * 1000 }] }),
+  );
+  const expired = runBootstrap({
+    path: "/en",
+    navType: "back_forward",
+    state: { wainSearch: true, wainEntry: "k1" },
+    storage,
+  });
+  assert(currentMode(expired.mode) === "manual", "expired back holds scroll restoration while the top is applied");
+  assert(expired.scrolls > 0, "expired back scrolls to the top");
+  expired.runUntil(RESULTS_SCROLL_HOLD_MS);
+  assert(currentMode(expired.mode) === "auto", "expired back restores auto after the hold");
+  const scrolls = expired.scrolls;
+  expired.fire("pageshow", { persisted: false });
+  assert(expired.scrolls === scrolls, "expired back does not keep a pageshow listener that forces the top");
+  assert(expired.pageshowCount() === 1, "the traversal pageshow listener stays, the scroll one does not");
+}
+
+{
+  const storage = new Map<string, string>();
+  storage.set(
+    RESULTS_SNAPSHOT_KEY,
+    JSON.stringify({ entries: [{ entryKey: "k1", savedAt: Date.now() - 31 * 60 * 1000 }] }),
+  );
+  const leaving = runBootstrap({
+    path: "/en",
+    navType: "back_forward",
+    state: { wainSearch: true, wainEntry: "k1" },
+    storage,
+  });
+  assert(currentMode(leaving.mode) === "manual", "expired back starts manual");
+  leaving.location.pathname = "/en/coffee-shops/trending";
+  leaving.flushRaf(8);
+  assert(currentMode(leaving.mode) === "auto", "leaving the expired results route releases scroll restoration");
+}
+
+{
+  const storage = new Map<string, string>();
+  storage.set(
+    RESULTS_SNAPSHOT_KEY,
+    JSON.stringify({ entries: [{ entryKey: "k1", savedAt: Date.now() }] }),
+  );
+  const fresh = runBootstrap({
+    path: "/en",
+    navType: "back_forward",
+    state: { wainSearch: true, wainEntry: "k1" },
+    storage,
+  });
+  assert(currentMode(fresh.mode) === "manual", "a fresh snapshot holds scroll restoration until the list is applied");
+  assert(fresh.pending(), "a fresh snapshot hides the server paint");
+  fresh.runUntil(RESULTS_SCROLL_HOLD_MS);
+  assert(currentMode(fresh.mode) === "auto", "a fresh snapshot gives scroll restoration back after the hold");
+}
 
 console.log("check-results-return: ok");

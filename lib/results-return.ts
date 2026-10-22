@@ -34,9 +34,13 @@ export const RESULTS_SNAPSHOT_TTL_MS = 30 * 60 * 1000;
  * Chrome sometimes reports Back after a reload of the next page as
  * `navigate`; the café-card token covers that. An expired traversal
  * scrolls to the top before the browser restores the old position.
+ * That hold is temporary: scroll restoration returns to `auto` when it
+ * ends, and as soon as the route changes, so later lists can restore.
  */
+export const RESULTS_SCROLL_HOLD_MS = 900;
+
 export const RESULTS_RESTORE_BOOTSTRAP =
-  `(function(){try{window.addEventListener("popstate",function(){window.__wainResultsTraverse=1;});window.addEventListener("pageshow",function(e){if(e.persisted)window.__wainResultsPersisted=1;});var nav=performance.getEntriesByType("navigation")[0];var activation=window.navigation&&window.navigation.activation&&window.navigation.activation.navigationType;if(nav&&nav.type==="reload")return;if(activation==="reload")return;var path=location.pathname;if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);var home=path==="/"||path==="/en";var halfway=path==="/halfway"||path==="/en/halfway"||/^\\/(?:en\\/)?h\\/[^/]+$/.test(path);if(!home&&!halfway)return;var state=history.state;if(home&&!(state&&state.wainSearch===true))return;var key=state&&typeof state.wainEntry==="string"?state.wainEntry:"";if(!key&&window.navigation&&window.navigation.currentEntry)key=window.navigation.currentEntry.key||"";if(!key)return;var token="";try{token=sessionStorage.getItem(${JSON.stringify(CAFE_RETURN_TOKEN_KEY)})||"";}catch(e){}var cafeReturn=token.indexOf('"entryKey":"'+key+'"')>=0;if((!nav||nav.type!=="back_forward")&&activation!=="traverse"&&!cafeReturn)return;var raw=sessionStorage.getItem(${JSON.stringify(RESULTS_SNAPSHOT_KEY)})||"";var fresh=false;if(raw.indexOf('"entryKey":"'+key+'"')>=0){try{var data=JSON.parse(raw);var entries=data.entries||[];for(var i=0;i<entries.length;i++){var entry=entries[i];if(!entry||entry.entryKey!==key||typeof entry.savedAt!=="number")continue;if(Date.now()-entry.savedAt<=${RESULTS_SNAPSHOT_TTL_MS})fresh=true;}}catch(e){}}if(!fresh){try{history.scrollRestoration="manual";}catch(e){}var top=function(){window.scrollTo(0,0);};top();window.addEventListener("pageshow",top);requestAnimationFrame(function(){requestAnimationFrame(top);});return;}try{history.scrollRestoration="manual";}catch(e){}document.documentElement.setAttribute("data-results-pending","");}catch(e){}})();`;
+  `(function(){try{window.addEventListener("popstate",function(){window.__wainResultsTraverse=1;});window.addEventListener("pageshow",function(e){if(e.persisted)window.__wainResultsPersisted=1;});var nav=performance.getEntriesByType("navigation")[0];var activation=window.navigation&&window.navigation.activation&&window.navigation.activation.navigationType;if(nav&&nav.type==="reload")return;if(activation==="reload")return;var path=location.pathname;if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);var home=path==="/"||path==="/en";var halfway=path==="/halfway"||path==="/en/halfway"||/^\\/(?:en\\/)?h\\/[^/]+$/.test(path);if(!home&&!halfway)return;var state=history.state;if(home&&!(state&&state.wainSearch===true))return;var key=state&&typeof state.wainEntry==="string"?state.wainEntry:"";if(!key&&window.navigation&&window.navigation.currentEntry)key=window.navigation.currentEntry.key||"";if(!key)return;var token="";try{token=sessionStorage.getItem(${JSON.stringify(CAFE_RETURN_TOKEN_KEY)})||"";}catch(e){}var cafeReturn=token.indexOf('"entryKey":"'+key+'"')>=0;if((!nav||nav.type!=="back_forward")&&activation!=="traverse"&&!cafeReturn)return;var raw=sessionStorage.getItem(${JSON.stringify(RESULTS_SNAPSHOT_KEY)})||"";var fresh=false;if(raw.indexOf('"entryKey":"'+key+'"')>=0){try{var data=JSON.parse(raw);var entries=data.entries||[];for(var i=0;i<entries.length;i++){var entry=entries[i];if(!entry||entry.entryKey!==key||typeof entry.savedAt!=="number")continue;if(Date.now()-entry.savedAt<=${RESULTS_SNAPSHOT_TTL_MS})fresh=true;}}catch(e){}}var armed=path;var released=false;var timers=[];var nativePush=history.pushState;var nativeReplace=history.replaceState;function norm(p){if(p.length>1&&p.endsWith("/"))p=p.slice(0,-1);return p;}function left(){return norm(location.pathname)!==armed;}function release(){if(released)return;released=true;try{history.scrollRestoration="auto";}catch(e){}window.removeEventListener("pageshow",top);window.removeEventListener("pagehide",release);window.removeEventListener("popstate",onRoute);if(history.pushState===wrappedPush)history.pushState=nativePush;if(history.replaceState===wrappedReplace)history.replaceState=nativeReplace;for(var t=0;t<timers.length;t++)clearTimeout(timers[t]);}function onRoute(){if(left())release();}function top(){if(released)return;if(left()){release();return;}if(!fresh)window.scrollTo(0,0);}function wrappedPush(){var result=nativePush.apply(this,arguments);onRoute();return result;}function wrappedReplace(){var result=nativeReplace.apply(this,arguments);onRoute();return result;}function watch(){if(released)return;if(left()){release();return;}requestAnimationFrame(watch);}try{history.scrollRestoration="manual";}catch(e){}timers.push(setTimeout(release,${RESULTS_SCROLL_HOLD_MS}));try{history.pushState=wrappedPush;history.replaceState=wrappedReplace;}catch(e){}window.addEventListener("pagehide",release);window.addEventListener("popstate",onRoute);if(!fresh){top();window.addEventListener("pageshow",top);requestAnimationFrame(function(){requestAnimationFrame(top);});var delays=[0,50,150,400,800];for(var d=0;d<delays.length;d++)timers.push(setTimeout(top,delays[d]));}else{document.documentElement.setAttribute("data-results-pending","");}requestAnimationFrame(watch);}catch(e){}})();`;
 
 export function revealResultsRestore(): void {
   if (typeof document === "undefined") return;
@@ -806,48 +810,111 @@ function resultsPathname(pathname: string): boolean {
   );
 }
 
+function releaseResultsScrollRestoration(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.history.scrollRestoration = "auto";
+  } catch {
+    // Older browsers keep their default.
+  }
+}
+
 /**
  * Top of a results screen that is not restoring a snapshot.
  * The browser and Next apply their own scroll restoration after the
  * first layout effect, so this repeats through the next paint.
+ * `manual` lasts only for that hold. It returns to `auto` when the hold
+ * ends and as soon as the route changes, so Nearby and the other lists
+ * can restore their own scroll later in the same tab.
  */
 export function resetResultsScroll(): void {
   if (typeof window === "undefined") return;
   stopScrollTopHold?.();
   const token = ++scrollTopToken;
+  const armedPath = normalizePath(window.location.pathname);
   try {
     window.history.scrollRestoration = "manual";
   } catch {
     // Older browsers still get the explicit scroll.
   }
+  const nativePush = window.history.pushState;
+  const nativeReplace = window.history.replaceState;
+  let finished = false;
+  const timers: number[] = [];
+  const leftArmedPath = () => normalizePath(window.location.pathname) !== armedPath;
+  const stopListeners = () => {
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("pageshow", onPageShow);
+    window.removeEventListener("pagehide", finish);
+    window.removeEventListener("popstate", onRoute);
+    try {
+      if (window.history.pushState === wrappedPush) window.history.pushState = nativePush;
+      if (window.history.replaceState === wrappedReplace) window.history.replaceState = nativeReplace;
+    } catch {
+      // Ignore browsers that lock the history methods.
+    }
+    for (const timer of timers) window.clearTimeout(timer);
+  };
+  const finish = () => {
+    if (token !== scrollTopToken || finished) return;
+    finished = true;
+    scrollTopToken += 1;
+    stopListeners();
+    if (stopScrollTopHold === finish) stopScrollTopHold = null;
+    releaseResultsScrollRestoration();
+  };
   const snap = () => {
-    if (token !== scrollTopToken) return;
-    if (!resultsPathname(window.location.pathname)) return;
+    if (token !== scrollTopToken || finished) return;
+    if (leftArmedPath() || !resultsPathname(window.location.pathname)) {
+      finish();
+      return;
+    }
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     const list = document.querySelector("[data-halfway-results]");
     if (list instanceof HTMLElement) list.scrollTop = 0;
   };
+  const onScroll = () => snap();
+  const onPageShow = () => snap();
+  const onRoute = () => {
+    if (leftArmedPath()) finish();
+  };
+  const wrappedPush: History["pushState"] = function (data, unused, url) {
+    nativePush.call(window.history, data, unused, url);
+    onRoute();
+  };
+  const wrappedReplace: History["replaceState"] = function (data, unused, url) {
+    nativeReplace.call(window.history, data, unused, url);
+    onRoute();
+  };
+  const watch = () => {
+    if (token !== scrollTopToken || finished) return;
+    if (leftArmedPath() || !resultsPathname(window.location.pathname)) {
+      finish();
+      return;
+    }
+    requestAnimationFrame(watch);
+  };
   snap();
   requestAnimationFrame(() => {
     snap();
     requestAnimationFrame(snap);
   });
-  const onScroll = () => snap();
+  requestAnimationFrame(watch);
   window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("pageshow", snap);
-  const timers = [0, 50, 150, 400, 800].map((delay) => window.setTimeout(snap, delay));
-  const stop = () => {
-    window.removeEventListener("scroll", onScroll);
-    window.removeEventListener("pageshow", snap);
-    for (const timer of timers) window.clearTimeout(timer);
-  };
-  stopScrollTopHold = stop;
-  window.setTimeout(() => {
-    if (stopScrollTopHold === stop) stopScrollTopHold = null;
-    stop();
-  }, 900);
+  window.addEventListener("pageshow", onPageShow);
+  window.addEventListener("pagehide", finish);
+  window.addEventListener("popstate", onRoute);
+  try {
+    window.history.pushState = wrappedPush;
+    window.history.replaceState = wrappedReplace;
+  } catch {
+    // Path polling still releases the hold on a route change.
+  }
+  for (const delay of [0, 50, 150, 400, 800]) timers.push(window.setTimeout(snap, delay));
+  timers.push(window.setTimeout(finish, RESULTS_SCROLL_HOLD_MS));
+  stopScrollTopHold = finish;
 }
 
 export function writeResultsSnapshot(snapshot: ResultsSnapshot, now = Date.now()): void {
@@ -1027,7 +1094,6 @@ export function restoreResultsScroll(): void {
   if (typeof window === "undefined") return;
   stopScrollTopHold?.();
   stopScrollTopHold = null;
-  scrollTopToken += 1;
   const key = resultsSnapshotKey() ?? navigationEntryKey();
   const href = storageHref(currentResultsHref());
   const snapshot = key
@@ -1042,6 +1108,7 @@ export function restoreResultsScroll(): void {
     resetResultsScroll();
     return;
   }
+  releaseResultsScrollRestoration();
   if (scroll === "leave" || !snapshot || !key) return;
   const origin = readOrigin();
   const fromOrigin = Boolean(origin && origin.entryKey === key && origin.href === href);

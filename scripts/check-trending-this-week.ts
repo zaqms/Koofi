@@ -41,9 +41,9 @@ const LINE_PROMO =
   /\b(paid|promo|sponsored|offers?|discounts?|deals?|free|new menu)\b|%|عرض|عروض|خصم|مجان|برعاية|سبونسر|منيو جديد/i;
 
 const EXPECTED = [
-  "found-ar-rabwah",
-  "hjeen-roasters-at-taawun",
   "kultura-as-suwaidi-al-gharbi",
+  "espresso-culture-al-mursalat",
+  "hjeen-roasters-at-taawun",
 ] as const;
 
 /** Rows dropped in earlier refreshes (25 Sep – 2 Oct) and in the 15–22 Oct refresh. */
@@ -52,8 +52,8 @@ const DROPPED = [
   "dm-cafe-roastery-as-sahafah",
   "namq-al-malqa",
   "waqar-al-aziziyah",
-  "espresso-culture-al-mursalat",
   "veni-al-nakheel",
+  "found-ar-rabwah",
 ] as const;
 
 assert(
@@ -63,7 +63,7 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") === EXPECTED.join(","),
-  "Trending allowlist order is Found, Hjeen At Taawun, then Kultúra",
+  "Trending allowlist order is Kultúra, Espresso Culture, then Hjeen At Taawun",
 );
 assert(
   TRENDING_THIS_WEEK.map((row) => row.id).join(",") === EXPECTED.join(","),
@@ -123,24 +123,22 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK[0]?.lineAr ===
-    "فاوند توه فاتح بالربوة، وأكثر من حساب قهوة بالرياض نزّل تجربته هالأسبوع." &&
+    "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، والناس بالرياض قاعدين ينزّلون عنه." &&
     TRENDING_THIS_WEEK[0]?.lineEn ===
-      "Found just opened in Ar Rabwah, and several Riyadh coffee accounts posted their first visit this week.",
-  "Found's line is the new-opening reason",
+      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and people across Riyadh have been posting about it.",
+  "Kultúra's line is the official-opening reason",
 );
 assert(
   TRENDING_THIS_WEEK[1]?.lineAr ===
-    "هجين كمّل عشر سنين ونزّل محصول «عشرة عمر»، وأكثر من حساب قهوة بالرياض نزّل عنه هالأسبوع." &&
+    "أكثر من شخص نزّل صور قهوته من إسبريسو كالتشر بالمرسلات هالأسبوع." &&
     TRENDING_THIS_WEEK[1]?.lineEn ===
-      "Hjeen marked ten years with its Ashrat Omr crop, and several Riyadh coffee accounts posted about it this week.",
-  "Hjeen's line is the ten-year Ashrat Omr crop reason (no branch claim; the card is the established At Taawun branch)",
+      "Several people shared photos of their coffee at Espresso Culture in Al Mursalat this week.",
+  "Espresso Culture's line is the visit-photos reason (no just-opened claim)",
 );
 assert(
-  TRENDING_THIS_WEEK[2]?.lineAr ===
-    "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، وأكثر من حساب قهوة بالرياض نزّل عنه." &&
-    TRENDING_THIS_WEEK[2]?.lineEn ===
-      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and several Riyadh coffee accounts posted about it.",
-  "Kultúra's line is the official-opening reason",
+  TRENDING_THIS_WEEK[2]?.lineAr === "هجين كمّل عشر سنين ونزّل محصول «عشرة عمر» هالأسبوع." &&
+    TRENDING_THIS_WEEK[2]?.lineEn === "Hjeen marked ten years this week with its new Ashrat Omr crop.",
+  "Hjeen's line is the ten-year Ashrat Omr crop reason (no branch claim; the card is the established At Taawun branch)",
 );
 for (const id of DROPPED) {
   assert(
@@ -220,13 +218,14 @@ const names = listRealShops().flatMap((shop) => [
   shop.nameEn,
   shop.nameAr,
 ]);
-const found = getShop("found-ar-rabwah");
+const espresso = getShop("espresso-culture-al-mursalat");
 const hjeenTaawun = getShop("hjeen-roasters-at-taawun");
 const kultura = getShop("kultura-as-suwaidi-al-gharbi");
 assert(
-  found?.neighborhood === "al-rabwah" && found.nameEn === "Found" && !found.isChain,
-  "Found is a real Al Rabwah café row, not a chain",
+  espresso?.neighborhood === "al-mursalat" && espresso.nameEn === "Espresso Culture" && !espresso.isChain,
+  "Espresso Culture is a real Al Mursalat café row, not a chain",
 );
+assert(!espresso?.logoUrl, "Espresso Culture has no logoUrl, so its card shows a letter tile");
 assert(
   hjeenTaawun?.neighborhood === "at-taawun" &&
     hjeenTaawun.nameEn === "Hjeen Roasters" &&
@@ -238,9 +237,9 @@ assert(
   "Kultúra is a real As Suwaidi Al Gharbi café row, not a chain",
 );
 assert(
-  names.filter((name) => /^found-/.test(name)).length === 1 &&
+  names.filter((name) => /^espresso-culture-/.test(name)).length === 1 &&
     names.filter((name) => name === "hjeen-roasters-at-taawun").length === 1,
-  "Found and Hjeen At Taawun each have exactly one catalog row",
+  "Espresso Culture and Hjeen At Taawun each have exactly one catalog row",
 );
 
 function trendingIds(language: Language): string[] {

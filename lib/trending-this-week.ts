@@ -66,22 +66,20 @@ export function trendingWindowLabel(language: Language): string {
 
 export const TRENDING_THIS_WEEK = [
   {
-    id: "found-ar-rabwah",
-    lineAr: "فاوند توه فاتح بالربوة، وأكثر من حساب قهوة بالرياض نزّل تجربته هالأسبوع.",
+    id: "kultura-as-suwaidi-al-gharbi",
+    lineAr: "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، والناس بالرياض قاعدين ينزّلون عنه.",
     lineEn:
-      "Found just opened in Ar Rabwah, and several Riyadh coffee accounts posted their first visit this week.",
+      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and people across Riyadh have been posting about it.",
+  },
+  {
+    id: "espresso-culture-al-mursalat",
+    lineAr: "أكثر من شخص نزّل صور قهوته من إسبريسو كالتشر بالمرسلات هالأسبوع.",
+    lineEn: "Several people shared photos of their coffee at Espresso Culture in Al Mursalat this week.",
   },
   {
     id: "hjeen-roasters-at-taawun",
-    lineAr: "هجين كمّل عشر سنين ونزّل محصول «عشرة عمر»، وأكثر من حساب قهوة بالرياض نزّل عنه هالأسبوع.",
-    lineEn:
-      "Hjeen marked ten years with its Ashrat Omr crop, and several Riyadh coffee accounts posted about it this week.",
-  },
-  {
-    id: "kultura-as-suwaidi-al-gharbi",
-    lineAr: "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، وأكثر من حساب قهوة بالرياض نزّل عنه.",
-    lineEn:
-      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and several Riyadh coffee accounts posted about it.",
+    lineAr: "هجين كمّل عشر سنين ونزّل محصول «عشرة عمر» هالأسبوع.",
+    lineEn: "Hjeen marked ten years this week with its new Ashrat Omr crop.",
   },
 ] as const;
 

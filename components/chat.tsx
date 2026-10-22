@@ -1940,8 +1940,13 @@ export function Chat({
       return;
     }
     resultsRestoredFor.current = threadKey;
-    if (!resultsNavigationShouldRestore() || threads[threadKey]) {
+    if (!resultsNavigationShouldRestore()) {
       revealResultsRestore();
+      return;
+    }
+    if (threads[threadKey]) {
+      revealResultsRestore();
+      requestAnimationFrame(() => restoreResultsScroll());
       return;
     }
     const entryKey = resultsSnapshotKey();
@@ -2006,17 +2011,22 @@ export function Chat({
     if (!entryKey) return;
     skipResultsClear.current = false;
     const live = threads[threadKey];
+    const href = currentResultsHref();
+    const prior = readResultsSnapshot(entryKey, threadKey, href);
     const scroll = readResultsScroll();
-    const cards = document.querySelectorAll("[data-listing-card]").length;
+    const halfwayList = document.querySelector("[data-halfway-results]");
+    const cards = (halfwayList ?? document).querySelectorAll("[data-listing-card]").length;
+    // Restoring the thread re-renders at the top and would otherwise overwrite
+    // the scroll captured when the visitor opened the café.
     writeResultsSnapshot({
       entryKey,
       threadKey,
-      href: currentResultsHref(),
-      scrollY: scroll.scrollY,
-      listScroll: scroll.listScroll,
+      href,
+      scrollY: Math.max(scroll.scrollY, prior?.scrollY ?? 0),
+      listScroll: Math.max(scroll.listScroll, prior?.listScroll ?? 0),
       messages: messages as ResultsMessage[],
       composerLanguage: live?.composerLanguage ?? composerLanguage,
-      cardCount: cards,
+      cardCount: Math.max(cards, prior?.cardCount ?? 0),
       awaitingMaps: live?.awaitingMaps ?? awaitingMaps,
       savedAt: Date.now(),
     });

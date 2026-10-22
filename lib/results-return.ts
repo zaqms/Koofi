@@ -652,7 +652,9 @@ export function rememberCafeNavigation(anchor: HTMLAnchorElement, event: MouseEv
 
 function renderedCardCount(): number {
   if (typeof document === "undefined") return 0;
-  return document.querySelectorAll("[data-listing-card]").length;
+  const halfway = document.querySelector("[data-halfway-results]");
+  const root = halfway ?? document;
+  return root.querySelectorAll("[data-listing-card]").length;
 }
 
 export function canReturnFromThisCafe(now = Date.now()): boolean {
@@ -720,6 +722,7 @@ export function restoreResultsScroll(): void {
   const started = performance.now();
   const tick = () => {
     if (token !== scrollRestoreToken) return;
+    if (storageHref(currentResultsHref()) !== href) return;
     const cards = renderedCardCount();
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const list = document.querySelector("[data-halfway-results]");

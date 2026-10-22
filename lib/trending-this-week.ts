@@ -4,15 +4,15 @@ import type { Language } from "./types";
 
 /**
  * v1 allowlist. Not derived from data.
- * Window: 2026-10-13 through 2026-10-20.
+ * Window: 2026-10-15 through 2026-10-22.
  * Organic only (listing policy 6): each row has 3+ distinct organic X accounts in the window.
  *
  * lineAr / lineEn render on the Trending page, under each café card.
  * The home tiles have no line slot, so the lines are not rendered there.
  */
 export const TRENDING_THIS_WEEK_WINDOW = {
-  from: "2026-10-13",
-  to: "2026-10-20",
+  from: "2026-10-15",
+  to: "2026-10-22",
 } as const;
 
 const AR_MONTHS = [
@@ -67,21 +67,19 @@ export function trendingWindowLabel(language: Language): string {
 export const TRENDING_THIS_WEEK = [
   {
     id: "kultura-as-suwaidi-al-gharbi",
-    lineAr: "كولتورا فتح فرعه الجديد بالسويدي الغربي، والزحمة عليه من أول أيامه.",
+    lineAr: "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، والناس بالرياض قاعدين ينزّلون عنه.",
     lineEn:
-      "Kultúra opened its new As Suwaidi Al Gharbi branch, and it has been busy since its first days.",
+      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and people across Riyadh have been posting about it.",
   },
   {
     id: "espresso-culture-al-mursalat",
-    lineAr: "إسبريسو كالتشر بالمرسلات توه فاتح، وناس كثير نزّلوا صور قهوتهم منه هالأسبوع.",
-    lineEn:
-      "Espresso Culture just opened in Al Mursalat, and lots of people shared photos of their coffee there this week.",
+    lineAr: "أكثر من شخص نزّل صور قهوته من إسبريسو كالتشر بالمرسلات هالأسبوع.",
+    lineEn: "Several people shared photos of their coffee at Espresso Culture in Al Mursalat this week.",
   },
   {
-    id: "veni-al-nakheel",
-    lineAr: "فيني فتحوا فرعهم الجديد بالنخيل مقابل جامعة الملك سعود، والناس قاعدين ينزّلون أول زياراتهم له.",
-    lineEn:
-      "Veni opened its new branch in An Nakheel, across from King Saud University, and people have been posting their first visits.",
+    id: "hjeen-roasters-at-taawun",
+    lineAr: "هجين كمّل عشر سنين ونزّل محصول «عشرة عمر» هالأسبوع.",
+    lineEn: "Hjeen marked ten years this week with its new Ashrat Omr crop.",
   },
 ] as const;
 

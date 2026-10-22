@@ -125,21 +125,21 @@ assert(
   TRENDING_THIS_WEEK[0]?.lineAr ===
     "فاوند توه فاتح بالربوة، وأكثر من حساب قهوة بالرياض نزّل تجربته هالأسبوع." &&
     TRENDING_THIS_WEEK[0]?.lineEn ===
-      "Found just opened in Al Rabwah, and several Riyadh coffee accounts posted their first visit this week.",
+      "Found just opened in Ar Rabwah, and several Riyadh coffee accounts posted their first visit this week.",
   "Found's line is the new-opening reason",
 );
 assert(
   TRENDING_THIS_WEEK[1]?.lineAr ===
-    "هجين فتح فرعه الجديد بالتعاون، ومع عشر سنين على بدايتهم نزّلوا محصول «عشرة عمر» والناس قاعدين يجربونه." &&
+    "هجين كمّل عشر سنين ونزّل محصول «عشرة عمر»، وأكثر من حساب قهوة بالرياض نزّل عنه هالأسبوع." &&
     TRENDING_THIS_WEEK[1]?.lineEn ===
-      "Hjeen opened its new At Taawun branch and marked ten years with its Ashrat Omr crop, which people have been trying this week.",
-  "Hjeen's line is the new-branch and anniversary-crop reason",
+      "Hjeen marked ten years with its Ashrat Omr crop, and several Riyadh coffee accounts posted about it this week.",
+  "Hjeen's line is the ten-year Ashrat Omr crop reason (no branch claim; the card is the established At Taawun branch)",
 );
 assert(
   TRENDING_THIS_WEEK[2]?.lineAr ===
-    "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، وجمهوره ما وقف عن الزيارة." &&
+    "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، وأكثر من حساب قهوة بالرياض نزّل عنه." &&
     TRENDING_THIS_WEEK[2]?.lineEn ===
-      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and its regulars keep turning up.",
+      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and several Riyadh coffee accounts posted about it.",
   "Kultúra's line is the official-opening reason",
 );
 for (const id of DROPPED) {

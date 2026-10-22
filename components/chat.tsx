@@ -58,6 +58,12 @@ import {
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
 import {
+  halfwayPinFailCopy,
+  halfwayResultsFooterKind,
+  meetHalfwayAskLabel,
+  type HalfwayPinInput,
+} from "@/lib/meet-halfway";
+import {
   clearHalfwayResultsSnapshots,
   clearResultsSnapshot,
   currentResultsHref,
@@ -80,12 +86,6 @@ import {
   type ResultsMessage,
   type ResultsSnapshot,
 } from "@/lib/results-return";
-import {
-  halfwayPinFailCopy,
-  halfwayResultsFooterKind,
-  meetHalfwayAskLabel,
-  type HalfwayPinInput,
-} from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
 import {
   MEET_HALFWAY_CHIP,

@@ -484,10 +484,12 @@ export function decideChatResultsSave(
     return { action: "clear" };
   }
   const priorMessages = input.prior?.messages ?? null;
-  const messages =
-    input.held && priorMessages && resultsPickCount(input.current) < resultsPickCount(priorMessages)
-      ? priorMessages
-      : input.current;
+  const priorRicher =
+    Boolean(priorMessages) &&
+    input.prior != null &&
+    resultsSnapshotIsFresh(input.prior.savedAt, input.now) &&
+    resultsPickCount(input.current) < resultsPickCount(priorMessages ?? []);
+  const messages = priorRicher && priorMessages ? priorMessages : input.current;
   return {
     action: "write",
     snapshot: {
@@ -961,8 +963,21 @@ export function Chat({
         const picks = Array.isArray(data.picks) ? data.picks : [];
         const shopIds = Array.isArray(data.shop_ids) ? data.shop_ids : [];
         // Back/forward already painted the saved list, including show-more
-        // batches. The invite response is only the first page.
+        // batches. The invite response is only the first page, and it must
+        // not replace a longer snapshot even if this load was not detected
+        // as a traversal yet.
         if (!chatMayApplyHalfwayFetch(heldAtStart || resultsSnapshotHeld.current)) return;
+        const savedKey = resultsSnapshotKey();
+        const savedList = savedKey
+          ? readResultsSnapshot(savedKey, threadKey, currentResultsHref())
+          : null;
+        if (
+          savedList &&
+          resultsSnapshotIsFresh(savedList.savedAt) &&
+          resultsPickCount(savedList.messages) > picks.length
+        ) {
+          return;
+        }
         if (picks.length > 0) {
           applyFrozenHalfwayRef.current({
             locations,
@@ -1984,7 +1999,9 @@ export function Chat({
   useEffect(() => {
     // Manual Search scrolls the document. Pinning this nested overflow
     // port on every resize fights iOS keyboard/focus scrolling and flickers.
-    if (searchScreen || resultsSnapshotHeld.current) return;
+    // بيننا show-more appends cards in place; jumping to the end would
+    // hide the cafés that were already on screen.
+    if (searchScreen || showHalfwayResults) return;
     const list = listRef.current;
     const footer = footerRef.current;
     if (!list) return;
@@ -2007,7 +2024,7 @@ export function Chat({
     observer.observe(el);
     if (footer) observer.observe(footer);
     return () => observer.disconnect();
-  }, [messages, busy, meetHalfwayOpen, searchScreen]);
+  }, [messages, busy, meetHalfwayOpen, searchScreen, showHalfwayResults]);
 
   useLayoutEffect(() => {
     const wasOpen = searchWasOpenRef.current;

@@ -16,20 +16,27 @@
  * the results scroll on the original entry.
  */
 
-import { isOfficialMapsPlaceUrl, placeIdentityKeys } from "./place-coords";
+import { getShop, listRealShops } from "./catalog";
+import { isOfficialMapsPlaceUrl, officialShopCoords, placeIdentityKeys } from "./place-coords";
 import { halfwayPath } from "./product";
 import type { Language } from "./types";
 
 export const RESULTS_SNAPSHOT_KEY = "wain.resultsSnapshot.v1";
 export const CAFE_ORIGIN_KEY = "wain.cafeOrigin.v1";
+/** Set when a results screen opens a café card. Survives that card's reload. */
+export const CAFE_RETURN_TOKEN_KEY = "wain.cafeReturnToken.v1";
+/** Results are only useful for the visit that made them. */
+export const RESULTS_SNAPSHOT_TTL_MS = 30 * 60 * 1000;
 
 /**
- * Hides the server paint only when this load is a back/forward traversal
- * and the history entry already has a snapshot. Reload and a freshly typed
- * URL stay on the server page.
+ * Hides the server paint only for a history traversal that still has a
+ * fresh snapshot. Reload and a freshly typed URL stay on the server page.
+ * Chrome sometimes reports Back after a reload of the next page as
+ * `navigate`; the café-card token covers that. An expired traversal
+ * scrolls to the top before the browser restores the old position.
  */
 export const RESULTS_RESTORE_BOOTSTRAP =
-  `(function(){try{window.addEventListener("popstate",function(){window.__wainResultsTraverse=1;});var nav=performance.getEntriesByType("navigation")[0];if(!nav||nav.type!=="back_forward")return;var path=location.pathname;if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);var home=path==="/"||path==="/en";var halfway=path==="/halfway"||path==="/en/halfway"||/^\\/(?:en\\/)?h\\/[^/]+$/.test(path);if(!home&&!halfway)return;var state=history.state;if(home&&!(state&&state.wainSearch===true))return;var key=state&&typeof state.wainEntry==="string"?state.wainEntry:"";if(!key&&window.navigation&&window.navigation.currentEntry)key=window.navigation.currentEntry.key||"";if(!key)return;var raw=sessionStorage.getItem(${JSON.stringify(RESULTS_SNAPSHOT_KEY)});if(!raw||raw.indexOf('"entryKey":"'+key+'"')<0)return;document.documentElement.setAttribute("data-results-pending","");}catch(e){}})();`;
+  `(function(){try{window.addEventListener("popstate",function(){window.__wainResultsTraverse=1;});window.addEventListener("pageshow",function(e){if(e.persisted)window.__wainResultsPersisted=1;});var nav=performance.getEntriesByType("navigation")[0];var activation=window.navigation&&window.navigation.activation&&window.navigation.activation.navigationType;if(nav&&nav.type==="reload")return;if(activation==="reload")return;var path=location.pathname;if(path.length>1&&path.endsWith("/"))path=path.slice(0,-1);var home=path==="/"||path==="/en";var halfway=path==="/halfway"||path==="/en/halfway"||/^\\/(?:en\\/)?h\\/[^/]+$/.test(path);if(!home&&!halfway)return;var state=history.state;if(home&&!(state&&state.wainSearch===true))return;var key=state&&typeof state.wainEntry==="string"?state.wainEntry:"";if(!key&&window.navigation&&window.navigation.currentEntry)key=window.navigation.currentEntry.key||"";if(!key)return;var token="";try{token=sessionStorage.getItem(${JSON.stringify(CAFE_RETURN_TOKEN_KEY)})||"";}catch(e){}var cafeReturn=token.indexOf('"entryKey":"'+key+'"')>=0;if((!nav||nav.type!=="back_forward")&&activation!=="traverse"&&!cafeReturn)return;var raw=sessionStorage.getItem(${JSON.stringify(RESULTS_SNAPSHOT_KEY)})||"";var fresh=false;if(raw.indexOf('"entryKey":"'+key+'"')>=0){try{var data=JSON.parse(raw);var entries=data.entries||[];for(var i=0;i<entries.length;i++){var entry=entries[i];if(!entry||entry.entryKey!==key||typeof entry.savedAt!=="number")continue;if(Date.now()-entry.savedAt<=${RESULTS_SNAPSHOT_TTL_MS})fresh=true;}}catch(e){}}if(!fresh){try{history.scrollRestoration="manual";}catch(e){}var top=function(){window.scrollTo(0,0);};top();window.addEventListener("pageshow",top);requestAnimationFrame(function(){requestAnimationFrame(top);});return;}try{history.scrollRestoration="manual";}catch(e){}document.documentElement.setAttribute("data-results-pending","");}catch(e){}})();`;
 
 export function revealResultsRestore(): void {
   if (typeof document === "undefined") return;
@@ -37,8 +44,6 @@ export function revealResultsRestore(): void {
 }
 
 const MAX_AGE_MS = 12 * 60 * 60 * 1000;
-/** Results are only useful for the visit that made them. */
-export const RESULTS_SNAPSHOT_TTL_MS = 30 * 60 * 1000;
 const COORDINATE_RE = /\d{1,3}\.\d{4,}/;
 const MAX_STORE_CHARS = 150_000;
 const MAX_ENTRIES = 8;
@@ -450,17 +455,80 @@ export function nextCafeOrigin(input: {
   };
 }
 
+export type CafeReturnToken = {
+  entryKey: string;
+  ts: number;
+};
+
+export function markCafeReturn(entryKey: string, now = Date.now()): void {
+  if (typeof window === "undefined" || !entryKey) return;
+  try {
+    window.sessionStorage.setItem(
+      CAFE_RETURN_TOKEN_KEY,
+      JSON.stringify({ entryKey, ts: now }),
+    );
+  } catch {
+    // Private mode still has the history entry marker.
+  }
+}
+
+export function readCafeReturnToken(now = Date.now()): CafeReturnToken | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(CAFE_RETURN_TOKEN_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { entryKey?: unknown; ts?: unknown };
+    if (typeof parsed.entryKey !== "string" || !parsed.entryKey) return null;
+    if (typeof parsed.ts !== "number" || !resultsSnapshotIsFresh(parsed.ts, now)) return null;
+    return { entryKey: parsed.entryKey, ts: parsed.ts };
+  } catch {
+    return null;
+  }
+}
+
+export function clearCafeReturnToken(entryKey?: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (entryKey) {
+      const token = readCafeReturnToken();
+      if (token && token.entryKey !== entryKey) return;
+    }
+    window.sessionStorage.removeItem(CAFE_RETURN_TOKEN_KEY);
+  } catch {
+    // Ignore.
+  }
+}
+
+/**
+ * Back/forward restores. Reload and a typed URL do not.
+ * A popstate, a persisted page, or Navigation API `traverse` counts even
+ * when `performance` still says `reload` (same document after the café
+ * reloaded). Chrome can also report that Back as `navigate`; the token
+ * stamped on the café-card click identifies it.
+ */
 export function shouldRestoreResultsNavigation(input: {
   navigationType?: string | null;
+  activationType?: string | null;
   traversed?: boolean;
+  persisted?: boolean;
+  entryKey?: string | null;
+  returnToken?: CafeReturnToken | null;
 }): boolean {
-  if (input.traversed) return true;
-  return input.navigationType === "back_forward";
+  if (input.traversed || input.persisted) return true;
+  if (input.activationType === "traverse" || input.navigationType === "back_forward") return true;
+  if (input.navigationType === "reload" || input.activationType === "reload") return false;
+  const token = input.returnToken;
+  return Boolean(token && input.entryKey && token.entryKey === input.entryKey);
 }
 
 export function resultsNavigationShouldRestore(): boolean {
   if (typeof window === "undefined") return false;
-  const traversed = (window as Window & { __wainResultsTraverse?: number }).__wainResultsTraverse === 1;
+  const flags = window as Window & {
+    __wainResultsTraverse?: number;
+    __wainResultsPersisted?: number;
+  };
+  const traversed = flags.__wainResultsTraverse === 1;
+  const persisted = flags.__wainResultsPersisted === 1;
   let navigationType: string | null = null;
   try {
     const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
@@ -474,7 +542,23 @@ export function resultsNavigationShouldRestore(): boolean {
     else if (legacy?.type === 1) navigationType = "reload";
     else if (legacy?.type === 0) navigationType = "navigate";
   }
-  return shouldRestoreResultsNavigation({ navigationType, traversed });
+  let activationType: string | null = null;
+  try {
+    const navigation = (window as Window & {
+      navigation?: { activation?: { navigationType?: string } };
+    }).navigation;
+    activationType = navigation?.activation?.navigationType ?? null;
+  } catch {
+    activationType = null;
+  }
+  return shouldRestoreResultsNavigation({
+    navigationType,
+    activationType,
+    traversed,
+    persisted,
+    entryKey: resultsSnapshotKey(),
+    returnToken: readCafeReturnToken(),
+  });
 }
 
 export function currentResultsHref(): string {
@@ -596,6 +680,68 @@ function writeStore(entries: ResultsSnapshot[]): void {
   }
 }
 
+let catalogCoordIndex: Map<string, { lat: number; lng: number }> | null = null;
+
+/** Public café geometry from the catalog. Not the visitor's location. */
+function catalogCoordIndexByPlace(): Map<string, { lat: number; lng: number }> {
+  if (catalogCoordIndex) return catalogCoordIndex;
+  const index = new Map<string, { lat: number; lng: number }>();
+  for (const shop of listRealShops()) {
+    const coords = officialShopCoords(shop);
+    if (!coords) continue;
+    const pin = { lat: coords.lat, lng: coords.lng };
+    index.set(`id:${shop.id}`, pin);
+    for (const key of placeIdentityKeys(shop.mapsShareUrl)) {
+      if (!index.has(key)) index.set(key, pin);
+    }
+  }
+  catalogCoordIndex = index;
+  return index;
+}
+
+/**
+ * The snapshot omits coordinates. Distance needs the café's own public
+ * place pin, looked up by the stored place id, then by catalog id.
+ */
+export function catalogCoordsForPick(pick: Record<string, unknown>): { lat: number; lng: number } | null {
+  const index = catalogCoordIndexByPlace();
+  const placeId = typeof pick.placeId === "string" ? pick.placeId : "";
+  if (placeId) {
+    const byPlace = index.get(placeId);
+    if (byPlace) return { lat: byPlace.lat, lng: byPlace.lng };
+  }
+  const href = typeof pick.mapsHref === "string" ? pick.mapsHref : "";
+  for (const key of placeIdentityKeys(href)) {
+    const byHref = index.get(key);
+    if (byHref) return { lat: byHref.lat, lng: byHref.lng };
+  }
+  const id = typeof pick.id === "string" ? pick.id : "";
+  if (!id) return null;
+  const byId = index.get(`id:${id}`) ?? null;
+  if (byId) return { lat: byId.lat, lng: byId.lng };
+  const shop = getShop(id);
+  const coords = shop ? officialShopCoords(shop) : null;
+  return coords ? { lat: coords.lat, lng: coords.lng } : null;
+}
+
+function withCatalogCoords(snapshot: ResultsSnapshot): ResultsSnapshot {
+  let changed = false;
+  const messages = snapshot.messages.map((message) => {
+    if (!message.picks?.length) return message;
+    let picksChanged = false;
+    const picks = message.picks.map((pick) => {
+      if (typeof pick.lat === "number" && typeof pick.lng === "number") return pick;
+      const coords = catalogCoordsForPick(pick);
+      if (!coords) return pick;
+      picksChanged = true;
+      changed = true;
+      return { ...pick, lat: coords.lat, lng: coords.lng };
+    });
+    return picksChanged ? { ...message, picks } : message;
+  });
+  return changed ? { ...snapshot, messages } : snapshot;
+}
+
 export function readResultsSnapshot(entryKey: string, threadKey: string, href: string, now = Date.now()): ResultsSnapshot | null {
   if (typeof window === "undefined") return null;
   const wantThread = storageThreadKey(threadKey);
@@ -603,7 +749,7 @@ export function readResultsSnapshot(entryKey: string, threadKey: string, href: s
   const snapshot = readStore(now).entries.find(
     (entry) => entry.entryKey === entryKey && entry.threadKey === wantThread && entry.href === wantHref,
   );
-  return snapshot ?? null;
+  return snapshot ? withCatalogCoords(snapshot) : null;
 }
 
 function readRawSnapshotEntries(): Record<string, unknown>[] {
@@ -646,11 +792,62 @@ export function resultsPageScroll(input: {
   return "leave";
 }
 
+let scrollTopToken = 0;
+let stopScrollTopHold: (() => void) | null = null;
+
+function resultsPathname(pathname: string): boolean {
+  const path = normalizePath(pathname);
+  return (
+    path === "/" ||
+    path === "/en" ||
+    path === "/halfway" ||
+    path === "/en/halfway" ||
+    /^\/(?:en\/)?h\/[^/]+$/.test(path)
+  );
+}
+
+/**
+ * Top of a results screen that is not restoring a snapshot.
+ * The browser and Next apply their own scroll restoration after the
+ * first layout effect, so this repeats through the next paint.
+ */
 export function resetResultsScroll(): void {
   if (typeof window === "undefined") return;
-  window.scrollTo(0, 0);
-  const list = document.querySelector("[data-halfway-results]");
-  if (list instanceof HTMLElement) list.scrollTop = 0;
+  stopScrollTopHold?.();
+  const token = ++scrollTopToken;
+  try {
+    window.history.scrollRestoration = "manual";
+  } catch {
+    // Older browsers still get the explicit scroll.
+  }
+  const snap = () => {
+    if (token !== scrollTopToken) return;
+    if (!resultsPathname(window.location.pathname)) return;
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const list = document.querySelector("[data-halfway-results]");
+    if (list instanceof HTMLElement) list.scrollTop = 0;
+  };
+  snap();
+  requestAnimationFrame(() => {
+    snap();
+    requestAnimationFrame(snap);
+  });
+  const onScroll = () => snap();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("pageshow", snap);
+  const timers = [0, 50, 150, 400, 800].map((delay) => window.setTimeout(snap, delay));
+  const stop = () => {
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("pageshow", snap);
+    for (const timer of timers) window.clearTimeout(timer);
+  };
+  stopScrollTopHold = stop;
+  window.setTimeout(() => {
+    if (stopScrollTopHold === stop) stopScrollTopHold = null;
+    stop();
+  }, 900);
 }
 
 export function writeResultsSnapshot(snapshot: ResultsSnapshot, now = Date.now()): void {
@@ -672,6 +869,7 @@ export function writeResultsSnapshot(snapshot: ResultsSnapshot, now = Date.now()
 
 export function clearResultsSnapshot(entryKey: string): void {
   if (typeof window === "undefined") return;
+  clearCafeReturnToken(entryKey);
   writeStore(readStore().entries.filter((entry) => entry.entryKey !== entryKey));
 }
 
@@ -757,6 +955,7 @@ export function rememberCafeNavigation(anchor: HTMLAnchorElement, event: MouseEv
   });
   writeOrigin(origin);
   const continuing = Boolean(cafeCardPathname(window.location.pathname));
+  if (!continuing) markCafeReturn(resultsSnapshotKey() ?? origin.entryKey, now);
   if (continuing) return;
   const snapshotKey = resultsSnapshotKey() ?? entryKey;
   const existing = readStore(now).entries.find((entry) => entry.entryKey === snapshotKey);
@@ -826,6 +1025,9 @@ function applyResultsScroll(scrollY: number, listScroll: number): void {
  */
 export function restoreResultsScroll(): void {
   if (typeof window === "undefined") return;
+  stopScrollTopHold?.();
+  stopScrollTopHold = null;
+  scrollTopToken += 1;
   const key = resultsSnapshotKey() ?? navigationEntryKey();
   const href = storageHref(currentResultsHref());
   const snapshot = key

@@ -5,6 +5,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import ts from "typescript";
 import {
   chatFreshMemoryThread,
   chatMayApplyHalfwayFetch,
@@ -14,12 +15,17 @@ import {
   decideChatResultsRestore,
   decideChatResultsSave,
 } from "../components/chat";
-import { placeIdentityKeys } from "../lib/place-coords";
+import { getShop } from "../lib/catalog";
+import { officialShopCoords, placeIdentityKeys } from "../lib/place-coords";
 import {
   cafeCardPathname,
+  catalogCoordsForPick,
+  clearCafeReturnToken,
+  markCafeReturn,
   nextCafeOrigin,
   parseCafeOrigin,
   parseResultsSnapshot,
+  readCafeReturnToken,
   readResultsSnapshot,
   RESULTS_SNAPSHOT_KEY,
   RESULTS_SNAPSHOT_TTL_MS,
@@ -263,6 +269,35 @@ assert(shouldRestoreResultsNavigation({ navigationType: "reload" }) === false, "
 assert(shouldRestoreResultsNavigation({ navigationType: "navigate" }) === false, "a fresh navigation does not restore results");
 assert(shouldRestoreResultsNavigation({ navigationType: "back_forward" }), "browser back restores results");
 assert(shouldRestoreResultsNavigation({ navigationType: "reload", traversed: true }), "an in-app back after load still restores");
+assert(
+  shouldRestoreResultsNavigation({ navigationType: "navigate", activationType: "traverse" }),
+  "Navigation API traverse restores when performance says navigate",
+);
+assert(
+  shouldRestoreResultsNavigation({
+    navigationType: "navigate",
+    entryKey: "search-1",
+    returnToken: { entryKey: "search-1", ts: savedAt },
+  }),
+  "Back reported as navigate after a café reload still restores",
+);
+assert(
+  shouldRestoreResultsNavigation({
+    navigationType: "reload",
+    activationType: "reload",
+    entryKey: "search-1",
+    returnToken: { entryKey: "search-1", ts: savedAt },
+  }) === false,
+  "reload does not restore even with a café return token",
+);
+assert(
+  shouldRestoreResultsNavigation({
+    navigationType: "navigate",
+    entryKey: "other",
+    returnToken: { entryKey: "search-1", ts: savedAt },
+  }) === false,
+  "a café return token does not restore a different history entry",
+);
 
 const detail = read("components/cafe-detail.tsx");
 const cardPage = read("components/cafe-card-page.tsx");
@@ -280,6 +315,8 @@ assert(read("app/globals.css").includes("data-results-pending"), "the pending re
 assert(capture.includes("installCafeReturn"), "return capture listens for card clicks");
 assert(capture.includes("restoreResultsScroll"), "return restores scroll");
 assert(directory.includes("cardPath(shop.id, language)"), "list cards still link to the café");
+assert(directory.includes("min-w-0 max-w-full"), "a listing card cannot grow past its row");
+assert(directory.includes('className="min-w-0 break-words"'), "the English distance line wraps inside the card");
 assert(!read("lib/results-return.ts").includes("URLSearchParams"), "results return does not add a query string");
 
 const starbucksPlace =
@@ -339,6 +376,17 @@ try {
             lng: hostPin.lng,
           },
           {
+            id: "person-pin-place",
+            nameAr: "وودز",
+            nameEn: "WOODS",
+            neighborhood: "olaya",
+            neighborhoodAr: "العليا",
+            vibeTags: [],
+            momentTags: [],
+            mapsHref: `https://www.google.com/maps/place/WOODS/data=!4m2!3m1!1s0x3e2f0385060a46a1:0x8aa4df79417558b1/@${hostPin.lat},${hostPin.lng},17z`,
+            cardPath: "/c/person-pin-place",
+          },
+          {
             id: "starbucks-panorama-al-mathar",
             nameAr: "ستاربكس",
             nameEn: "Starbucks",
@@ -379,6 +427,29 @@ try {
   assert(placeId.length > 0 && starbucksPlace.includes(placeId), "a restored chain card keeps its place id");
   assert(placeIdentityKeys(starbucksPlace).includes(placeId), "the kept place id is the Maps place identity");
   assert(chain?.isChain === true, "a restored chain card stays a chain");
+  const poisoned = restored?.messages[1]?.picks?.find((pick) => pick.id === "person-pin-place");
+  assert(!poisoned?.mapsHref, "a place link that embeds a person's pin is dropped");
+  assert(!raw.includes(`@${hostPin.lat}`), "the stored session does not keep a person's pin inside a place link");
+  const woods = restored?.messages[1]?.picks?.find((pick) => pick.id === "woods-olaya");
+  const woodsShop = getShop("woods-olaya");
+  const woodsCoords = woodsShop ? officialShopCoords(woodsShop) : null;
+  assert(woodsCoords != null, "the catalog has a public pin for the restored café");
+  assert(
+    woods?.lat === woodsCoords?.lat && woods?.lng === woodsCoords?.lng,
+    "reading the session rehydrates the café pin from the catalog",
+  );
+  assert(
+    catalogCoordsForPick({ id: "woods-olaya", placeId: typeof woods?.placeId === "string" ? woods.placeId : "" })?.lat === woodsCoords?.lat,
+    "catalog lookup by place id returns the café pin",
+  );
+  for (const digits of [4, 5, 6]) {
+    assert(!raw.includes(woodsCoords.lat.toFixed(digits)), "the stored session does not keep the café lat");
+    assert(!raw.includes(woodsCoords.lng.toFixed(digits)), "the stored session does not keep the café lng");
+  }
+  markCafeReturn("half-1", now);
+  assert(readCafeReturnToken(now)?.entryKey === "half-1", "opening a café card stamps a return token");
+  clearCafeReturnToken("half-1");
+  assert(readCafeReturnToken(now) === null, "clearing that results entry drops the return token");
   assert(restored?.savedAt === now, "reading the session does not move savedAt");
   const stale = JSON.parse(raw) as { entries: Array<{ savedAt: number }> };
   stale.entries[0].savedAt = now - RESULTS_SNAPSHOT_TTL_MS - 1000;
@@ -485,6 +556,24 @@ try {
     composerLanguage: "ar",
     awaitingMaps: false,
   });
+  const unheldShrink = decideChatResultsSave({
+    held: false,
+    current: firstPage,
+    prior: twelve,
+    now: now + 10 * 60 * 1000,
+    scrollY: 0,
+    listScroll: 0,
+    cardCount: 3,
+    entryKey: "half-12",
+    threadKey: "halfway-local:ar",
+    href: "/halfway",
+    composerLanguage: "ar",
+    awaitingMaps: false,
+  });
+  assert(
+    unheldShrink.action === "write" && resultsPickCount(unheldShrink.snapshot.messages) === 12,
+    "a re-fetched first page does not overwrite a longer fresh snapshot",
+  );
   assert(heldSave.action === "write" && resultsPickCount(heldSave.snapshot.messages) === 12, "saving during restore keeps the full list");
   assert(heldSave.action === "write" && heldSave.snapshot.savedAt === now, "saving during restore keeps the original savedAt");
   assert(heldSave.action === "write" && heldSave.snapshot.cardCount === 12, "saving during restore keeps the card count for scroll");
@@ -567,5 +656,43 @@ try {
 } finally {
   globalThis.window = previousWindow;
 }
+
+const chatSource = read("components/chat.tsx");
+const chatFile = ts.createSourceFile(
+  "components/chat.tsx",
+  chatSource,
+  ts.ScriptTarget.Latest,
+  true,
+  ts.ScriptKind.TSX,
+);
+const chatCalls = new Set<string>();
+const chatProps = new Set<string>();
+const visitChat = (node: ts.Node) => {
+  if (ts.isCallExpression(node)) chatCalls.add(node.expression.getText(chatFile));
+  if (ts.isPropertyAccessExpression(node)) chatProps.add(node.getText(chatFile));
+  ts.forEachChild(node, visitChat);
+};
+visitChat(chatFile);
+for (const name of [
+  "decideChatResultsRestore",
+  "commitChatResultsSave",
+  "clearChatResultsForNewSearch",
+  "clearChatResultsForNewHalfway",
+  "chatMayApplyHalfwayFetch",
+  "resetResultsScroll",
+] as const) {
+  assert(chatCalls.has(name), `the results screen calls ${name}`);
+}
+assert(chatProps.has("decision.apply"), "the results screen applies a restored list");
+assert(chatProps.has("decision.holdSnapshot"), "the results screen holds a restored list against a later fetch");
+assert(chatProps.has("decision.dropMemory"), "the results screen drops an expired in-memory list");
+assert(
+  chatSource.includes("if (searchScreen || showHalfwayResults) return;"),
+  "the auto-scroll guard matches the بيننا show-more line",
+);
+assert(
+  chatSource.includes("resultsPickCount(savedList.messages) > picks.length"),
+  "the invite re-fetch does not paint over a longer saved list",
+);
 
 console.log("check-results-return: ok");

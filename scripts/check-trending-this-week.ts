@@ -41,27 +41,29 @@ const LINE_PROMO =
   /\b(paid|promo|sponsored|offers?|discounts?|deals?|free|new menu)\b|%|عرض|عروض|خصم|مجان|برعاية|سبونسر|منيو جديد/i;
 
 const EXPECTED = [
+  "found-ar-rabwah",
+  "hjeen-roasters-at-taawun",
   "kultura-as-suwaidi-al-gharbi",
-  "espresso-culture-al-mursalat",
-  "veni-al-nakheel",
 ] as const;
 
-/** 25 Sep – 2 Oct rows. Dropped in the 13–20 Oct refresh. */
+/** Rows dropped in earlier refreshes (25 Sep – 2 Oct) and in the 15–22 Oct refresh. */
 const DROPPED = [
   "torre-al-rawabi",
   "dm-cafe-roastery-as-sahafah",
   "namq-al-malqa",
   "waqar-al-aziziyah",
+  "espresso-culture-al-mursalat",
+  "veni-al-nakheel",
 ] as const;
 
 assert(
-  TRENDING_THIS_WEEK_WINDOW.from === "2026-10-13" &&
-    TRENDING_THIS_WEEK_WINDOW.to === "2026-10-20",
-  "Trending window is 2026-10-13 to 2026-10-20",
+  TRENDING_THIS_WEEK_WINDOW.from === "2026-10-15" &&
+    TRENDING_THIS_WEEK_WINDOW.to === "2026-10-22",
+  "Trending window is 2026-10-15 to 2026-10-22",
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") === EXPECTED.join(","),
-  "Trending allowlist order is Kultúra, Espresso Culture, then Veni",
+  "Trending allowlist order is Found, Hjeen At Taawun, then Kultúra",
 );
 assert(
   TRENDING_THIS_WEEK.map((row) => row.id).join(",") === EXPECTED.join(","),
@@ -121,34 +123,34 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK[0]?.lineAr ===
-    "كولتورا فتح فرعه الجديد بالسويدي الغربي، والزحمة عليه من أول أيامه." &&
+    "فاوند توه فاتح بالربوة، وأكثر من حساب قهوة بالرياض نزّل تجربته هالأسبوع." &&
     TRENDING_THIS_WEEK[0]?.lineEn ===
-      "Kultúra opened its new As Suwaidi Al Gharbi branch, and it has been busy since its first days.",
-  "Kultúra's line is the new-branch reason",
+      "Found just opened in Al Rabwah, and several Riyadh coffee accounts posted their first visit this week.",
+  "Found's line is the new-opening reason",
 );
 assert(
   TRENDING_THIS_WEEK[1]?.lineAr ===
-    "إسبريسو كالتشر بالمرسلات توه فاتح، وناس كثير نزّلوا صور قهوتهم منه هالأسبوع." &&
+    "هجين فتح فرعه الجديد بالتعاون، ومع عشر سنين على بدايتهم نزّلوا محصول «عشرة عمر» والناس قاعدين يجربونه." &&
     TRENDING_THIS_WEEK[1]?.lineEn ===
-      "Espresso Culture just opened in Al Mursalat, and lots of people shared photos of their coffee there this week.",
-  "Espresso Culture's line is the new-opening reason",
+      "Hjeen opened its new At Taawun branch and marked ten years with its Ashrat Omr crop, which people have been trying this week.",
+  "Hjeen's line is the new-branch and anniversary-crop reason",
 );
 assert(
   TRENDING_THIS_WEEK[2]?.lineAr ===
-    "فيني فتحوا فرعهم الجديد بالنخيل مقابل جامعة الملك سعود، والناس قاعدين ينزّلون أول زياراتهم له." &&
+    "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، وجمهوره ما وقف عن الزيارة." &&
     TRENDING_THIS_WEEK[2]?.lineEn ===
-      "Veni opened its new branch in An Nakheel, across from King Saud University, and people have been posting their first visits.",
-  "Veni's line is the new-branch reason",
+      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and its regulars keep turning up.",
+  "Kultúra's line is the official-opening reason",
 );
 for (const id of DROPPED) {
   assert(
     !(TRENDING_THIS_WEEK_IDS as readonly string[]).includes(id),
-    `${id} is off the 13–20 Oct list`,
+    `${id} is off the 15–22 Oct list`,
   );
 }
 assert(
-  trendingWindowLabel("ar") === "13 أكتوبر – 20 أكتوبر" &&
-    trendingWindowLabel("en") === "13 Oct – 20 Oct",
+  trendingWindowLabel("ar") === "15 أكتوبر – 22 أكتوبر" &&
+    trendingWindowLabel("en") === "15 Oct – 22 Oct",
   "window line is derived from the stored dates",
 );
 for (const row of TRENDING_THIS_WEEK) {
@@ -218,27 +220,27 @@ const names = listRealShops().flatMap((shop) => [
   shop.nameEn,
   shop.nameAr,
 ]);
+const found = getShop("found-ar-rabwah");
+const hjeenTaawun = getShop("hjeen-roasters-at-taawun");
 const kultura = getShop("kultura-as-suwaidi-al-gharbi");
-const espressoCulture = getShop("espresso-culture-al-mursalat");
-const veni = getShop("veni-al-nakheel");
+assert(
+  found?.neighborhood === "al-rabwah" && found.nameEn === "Found" && !found.isChain,
+  "Found is a real Al Rabwah café row, not a chain",
+);
+assert(
+  hjeenTaawun?.neighborhood === "at-taawun" &&
+    hjeenTaawun.nameEn === "Hjeen Roasters" &&
+    !hjeenTaawun.isChain,
+  "Hjeen At Taawun is a real At Taawun café row, not a chain",
+);
 assert(
   kultura?.neighborhood === "as-suwaidi-al-gharbi" && kultura.nameEn === "Kultúra" && !kultura.isChain,
   "Kultúra is a real As Suwaidi Al Gharbi café row, not a chain",
 );
 assert(
-  espressoCulture?.neighborhood === "al-mursalat" &&
-    espressoCulture.nameEn === "Espresso Culture" &&
-    !espressoCulture.isChain,
-  "Espresso Culture is a real Al Mursalat café row, not a chain",
-);
-assert(
-  veni?.neighborhood === "al-nakheel" && veni.nameEn === "Veni" && !veni.isChain,
-  "Veni is a real An Nakheel café row, not a chain",
-);
-assert(
-  names.filter((name) => /^espresso-culture-/.test(name)).length === 1 &&
-    names.filter((name) => /^veni-/.test(name)).length === 1,
-  "Espresso Culture and Veni each have exactly one catalog row",
+  names.filter((name) => /^found-/.test(name)).length === 1 &&
+    names.filter((name) => name === "hjeen-roasters-at-taawun").length === 1,
+  "Found and Hjeen At Taawun each have exactly one catalog row",
 );
 
 function trendingIds(language: Language): string[] {

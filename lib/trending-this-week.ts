@@ -4,15 +4,15 @@ import type { Language } from "./types";
 
 /**
  * v1 allowlist. Not derived from data.
- * Window: 2026-10-13 through 2026-10-20.
+ * Window: 2026-10-15 through 2026-10-22.
  * Organic only (listing policy 6): each row has 3+ distinct organic X accounts in the window.
  *
  * lineAr / lineEn render on the Trending page, under each café card.
  * The home tiles have no line slot, so the lines are not rendered there.
  */
 export const TRENDING_THIS_WEEK_WINDOW = {
-  from: "2026-10-13",
-  to: "2026-10-20",
+  from: "2026-10-15",
+  to: "2026-10-22",
 } as const;
 
 const AR_MONTHS = [
@@ -66,22 +66,22 @@ export function trendingWindowLabel(language: Language): string {
 
 export const TRENDING_THIS_WEEK = [
   {
+    id: "found-ar-rabwah",
+    lineAr: "فاوند توه فاتح بالربوة، وأكثر من حساب قهوة بالرياض نزّل تجربته هالأسبوع.",
+    lineEn:
+      "Found just opened in Al Rabwah, and several Riyadh coffee accounts posted their first visit this week.",
+  },
+  {
+    id: "hjeen-roasters-at-taawun",
+    lineAr: "هجين فتح فرعه الجديد بالتعاون، ومع عشر سنين على بدايتهم نزّلوا محصول «عشرة عمر» والناس قاعدين يجربونه.",
+    lineEn:
+      "Hjeen opened its new At Taawun branch and marked ten years with its Ashrat Omr crop, which people have been trying this week.",
+  },
+  {
     id: "kultura-as-suwaidi-al-gharbi",
-    lineAr: "كولتورا فتح فرعه الجديد بالسويدي الغربي، والزحمة عليه من أول أيامه.",
+    lineAr: "كولتورا بالسويدي الغربي خلّص الافتتاح التجريبي وفتح رسميًا، وجمهوره ما وقف عن الزيارة.",
     lineEn:
-      "Kultúra opened its new As Suwaidi Al Gharbi branch, and it has been busy since its first days.",
-  },
-  {
-    id: "espresso-culture-al-mursalat",
-    lineAr: "إسبريسو كالتشر بالمرسلات توه فاتح، وناس كثير نزّلوا صور قهوتهم منه هالأسبوع.",
-    lineEn:
-      "Espresso Culture just opened in Al Mursalat, and lots of people shared photos of their coffee there this week.",
-  },
-  {
-    id: "veni-al-nakheel",
-    lineAr: "فيني فتحوا فرعهم الجديد بالنخيل مقابل جامعة الملك سعود، والناس قاعدين ينزّلون أول زياراتهم له.",
-    lineEn:
-      "Veni opened its new branch in An Nakheel, across from King Saud University, and people have been posting their first visits.",
+      "Kultúra in As Suwaidi Al Gharbi went from soft opening to official opening, and its regulars keep turning up.",
   },
 ] as const;
 

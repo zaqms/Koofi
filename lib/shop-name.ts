@@ -322,6 +322,14 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "half-million-al-shohda": ["half million shohda", "half million shuhada", "هاف مليون الشهداء"],
   "tim-hortons-granada-mall-al-shohda": ["tim hortons granada", "تيم هورتنز غرناطة"],
   "caribou-granada-mall-al-shohda": ["caribou granada", "كاريبو غرناطة"],
+  // Batch DB1 (22 Oct 2026), Dhahrat Al Badiah: name forms for rows whose bare tokens are
+  // everyday words (blocked below), plus the Petromin Tim Hortons branch.
+  "in-front-of-dhahrat-al-badiah": ["in front of", "infrontof", "ifo", "ان فرونت اوف", "إن فرونت أوف"],
+  "athiah-cafe-dhahrat-al-badiah": ["athiah cafe", "athiah", "عذية كافيه", "مقهى عذية", "عذيه كافيه"],
+  "afeen-coffee-flowers-dhahrat-al-badiah": ["afeen", "afeen coffee", "افين", "افين قهوة وزهور"],
+  "mulfet-flowers-coffee-dhahrat-al-badiah": ["mulfet", "ملفت", "مُلفت", "ملفت زهور وقهوة", "مُلفت زهور وقهوة"],
+  "cozy-dhahrat-al-badiah": ["cozy badiah", "cozy dhahrat al badiah", "cozysa", "cozy sa", "كوزي البديعة", "كوزي ظهرة البديعة", "كوزي كافيه"],
+  "tim-hortons-petromin-dhahrat-al-badiah": ["tim hortons petromin", "tim hortons badiah", "tim hortons dhahrat al badiah", "تيم هورتنز بترومين", "تيم هورتنز البديعة"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -439,6 +447,13 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // Batch DB1 (22 Oct 2026): English "cozy" is a quiet-vibe word (parse-intent), "front" / "in" / "of"
+  // and flowers / «زهور» are everyday tokens; none pins a Dhahrat Al Badiah café alone. «كوزي» (the
+  // Arabic name) still matches COZY.
+  "cozy-dhahrat-al-badiah": ["cozy", "cozy cafe", "cozy coffee", "cozy place", "مقهى كوزي", "كافيه كوزي", "قهوة كوزي"],
+  "in-front-of-dhahrat-al-badiah": ["front", "in", "of", "front of", "in front", "ان", "اوف", "فرونت"],
+  "afeen-coffee-flowers-dhahrat-al-badiah": ["flowers", "زهور", "coffee & flowers", "coffee and flowers", "coffee flowers", "قهوة وزهور"],
+  "mulfet-flowers-coffee-dhahrat-al-badiah": ["flowers", "زهور", "flowers & coffee", "flowers and coffee", "flowers coffee", "زهور وقهوة"],
 };
 
 function chainBrandIdForShop(

@@ -21,6 +21,8 @@ const KNOWN_BRANDS = [
   "namq",
   // Batch SD1 (21 Oct 2026): Black Wolf is its own brand, never folded into Black Stamp.
   "black wolf",
+  // Batch DB1 (22 Oct 2026): IN FRONT OF is its own brand, never folded into IN ROW ("in").
+  "in front of",
   "roasting house",
   "percent arabica",
   "sand clock",

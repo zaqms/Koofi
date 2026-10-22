@@ -763,8 +763,8 @@ const DISTRICT_COPY_AR: Partial<Record<NeighborhoodId, DistrictLead>> = {
   "dhahrat-al-badiah": {
     lead: `ظهرة البديعة حي بالرياض. هذي مجموعة ظهرة البديعة على wain.lol للحين.
 
-[وي كافية](/c/way-coffee-dhahrat-al-badiah) بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
-    hereIntro: `فيه قهوة **{count}** من ظهرة البديعة بالكتالوج اليوم:`,
+[وي كافية](/c/way-coffee-dhahrat-al-badiah) و[نرم كافيه](/c/narm-cafe-dhahrat-al-badiah) و[افين قهوة وزهور](/c/afeen-coffee-flowers-dhahrat-al-badiah) و[ان فرونت اوف](/c/in-front-of-dhahrat-al-badiah) و[فوجي كافيه](/c/fuji-cafe-dhahrat-al-badiah) و[ويم كوفي](/c/wem-coffee-dhahrat-al-badiah) و[مجاز قهوة مختصة](/c/mjaz-specialty-coffee-dhahrat-al-badiah) و[عذية كافيه](/c/athiah-cafe-dhahrat-al-badiah) و[ميراي قهوة مختصة](/c/miray-specialty-coffee-dhahrat-al-badiah) و[مُلفت زهور وقهوة](/c/mulfet-flowers-coffee-dhahrat-al-badiah) و[لندنر](/c/londoner-dhahrat-al-badiah) و[كوزي](/c/cozy-dhahrat-al-badiah) من القهاوي المحلية بهالقائمة اليوم. ما نخترع زيادة عشان الصفحة تبين مشغولة.`,
+    hereIntro: `فيه **{count}** قهاوي من ظهرة البديعة بالكتالوج اليوم:`,
     hereOutro: `افتح البطاقة، بعدين **ودّني هناك** للدبوس. الساعات تبقى على قوقل ماب.`,
     nearbyIntro: `إذا ظهرة البديعة مو الوقف، هذي أقرب القوائم بالموقع:`,
     about: `wain.lol دليل قهوة صغير في الرياض. اطلب ثلاث اقتراحات، أو تفرّج على قائمة حي مثل ظهرة البديعة. [عن وين](/about).

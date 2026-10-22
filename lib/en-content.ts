@@ -885,8 +885,8 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "dhahrat-al-badiah": {
     lead: `Dhahrat Al Badiah (ظهرة البديعة) is a Riyadh neighborhood on wain.lol. This page is the Dhahrat Al Badiah set so far.
 
-[WAY Coffee & Bakery](/en/c/way-coffee-dhahrat-al-badiah) is the cafe on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Dhahrat Al Badiah on the catalog today:`,
+[WAY Coffee & Bakery](/en/c/way-coffee-dhahrat-al-badiah), [NARM Cafe](/en/c/narm-cafe-dhahrat-al-badiah), [Afeen Coffee & Flowers](/en/c/afeen-coffee-flowers-dhahrat-al-badiah), [IN FRONT OF](/en/c/in-front-of-dhahrat-al-badiah), [Fuji Cafe](/en/c/fuji-cafe-dhahrat-al-badiah), [WEM Coffee](/en/c/wem-coffee-dhahrat-al-badiah), [Mjaz Specialty Coffee](/en/c/mjaz-specialty-coffee-dhahrat-al-badiah), [Athiah Cafe](/en/c/athiah-cafe-dhahrat-al-badiah), [Miray Specialty Coffee](/en/c/miray-specialty-coffee-dhahrat-al-badiah), [Mulfet Flowers & Coffee](/en/c/mulfet-flowers-coffee-dhahrat-al-badiah), [Londoner](/en/c/londoner-dhahrat-al-badiah), and [COZY](/en/c/cozy-dhahrat-al-badiah) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Dhahrat Al Badiah on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Dhahrat Al Badiah isn’t the stop, these are the closest lists on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Dhahrat Al Badiah. [About](/en/about).

@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 555, `specialty discovery is 555 (11 Batch DB1 Dhahrat Al Badiah local + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 659, `catalog is 659 after Batch DB1 (12 Dhahrat Al Badiah), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -1520,6 +1520,19 @@ const MALAZ_REFILL = {
 }
 
 {
+  // Batch DB1 (22 Oct 2026): Dhahrat Al Badiah becomes a mixed district — WAY + 11 local + Tim Hortons Petromin.
+  const rows = listDirectoryShopsForDistrict("dhahrat-al-badiah");
+  assert(rows.length === 13, `dhahrat-al-badiah has 13 shops, got ${rows.length}`);
+  assert(rows.filter((row) => !row.isChain).length === 12, "dhahrat-al-badiah keeps 12 local cafés (WAY + 11 Batch DB1)");
+  assert(rows.some((row) => row.id === "way-coffee-dhahrat-al-badiah"), "dhahrat-al-badiah keeps WAY");
+  assert(rows.every((row) => row.neighborhood === "dhahrat-al-badiah"), "dhahrat-al-badiah rows stay in district");
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "tim-hortons-petromin-dhahrat-al-badiah"),
+    "tim-hortons-petromin-dhahrat-al-badiah is on the Drive-through directory (sit-down + drive-through)",
+  );
+}
+
+{
   // Batch SD1 (21 Oct 2026): Al Shohda becomes a mixed district — Camel Step + 7 local + 7 sit-down chains.
   const rows = listDirectoryShopsForDistrict("al-shohda");
   // 21 Oct 2026: + 6 local rows re-tagged from Ghirnatah (pins inside the Al Shohda polygon).
@@ -1592,7 +1605,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 75, `Drive-through directory (moment tag) is 75 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah), got ${dt.length}`);
+  assert(dt.length === 76, `Drive-through directory (moment tag) is 76 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah + Tim Hortons Petromin Dhahrat Al Badiah), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -6838,6 +6851,158 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch DB1 (22 Oct 2026): Dhahrat Al Badiah — 11 local (Afeen, WEM, Athiah, Miray and Londoner letter tiles) + Tim Hortons Petromin (sit-down + drive-through, wordmark).
+  {
+    id: "narm-cafe-dhahrat-al-badiah",
+    hex: "0x3e2f1b003db294bf:0xdaf093bbdd89c779",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/narm-cafe-dhahrat-al-badiah.jpg",
+    pin: { lat: 24.593766, lng: 46.6333263 },
+    coordsInUrl: true,
+    placeId: "ChIJv5SyPQAbLz4ReceJ3buT8No",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "afeen-coffee-flowers-dhahrat-al-badiah",
+    hex: "0x3e2f1b38db9536c5:0x1dd14241be6b8cb2",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.598829100000003, lng: 46.6363128 },
+    coordsInUrl: true,
+    placeId: "ChIJxTaV2zgbLz4RsoxrvkFC0R0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "in-front-of-dhahrat-al-badiah",
+    hex: "0x3e2f1b005b2841eb:0x84d078d1202538a6",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/in-front-of-dhahrat-al-badiah.jpg",
+    pin: { lat: 24.591506199999998, lng: 46.6537162 },
+    coordsInUrl: true,
+    placeId: "ChIJ60EoWwAbLz4RpjglINF40IQ",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "fuji-cafe-dhahrat-al-badiah",
+    hex: "0x3e2f1b4432e6f3eb:0x8aa482587600e805",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/fuji-cafe-dhahrat-al-badiah.jpg",
+    pin: { lat: 24.5990619, lng: 46.645206599999995 },
+    coordsInUrl: true,
+    placeId: "ChIJ6_PmMkQbLz4RBegAdliCpIo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "wem-coffee-dhahrat-al-badiah",
+    hex: "0x3e2f1b801b3e3505:0x9693aa5c5589f2aa",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6009118, lng: 46.644845 },
+    coordsInUrl: true,
+    placeId: "ChIJBTU-G4AbLz4RqvKJVVyqk5Y",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "mjaz-specialty-coffee-dhahrat-al-badiah",
+    hex: "0x3e2f1bc795ff912d:0x6a74f1aa4c6fc399",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/mjaz-specialty-coffee-dhahrat-al-badiah.png",
+    pin: { lat: 24.6001777, lng: 46.642727 },
+    coordsInUrl: true,
+    placeId: "ChIJLZH_lccbLz4RmcNvTKrxdGo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "athiah-cafe-dhahrat-al-badiah",
+    hex: "0x3e2f1b17e15f815d:0x240182dd88a5d030",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.605267899999998, lng: 46.6574197 },
+    coordsInUrl: true,
+    placeId: "ChIJXYFf4RcbLz4RMNCliN2CASQ",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "miray-specialty-coffee-dhahrat-al-badiah",
+    hex: "0x3e2f1b004e73aecf:0xeb3d5ad091e72fc6",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.603290899999998, lng: 46.6485572 },
+    coordsInUrl: true,
+    placeId: "ChIJz65zTgAbLz4Rxi_nkdBaPes",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "mulfet-flowers-coffee-dhahrat-al-badiah",
+    hex: "0x3e2f1b00390cb7ed:0xa84d6d06a186dd67",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/mulfet-flowers-coffee-dhahrat-al-badiah.jpg",
+    pin: { lat: 24.598604599999998, lng: 46.6410698 },
+    coordsInUrl: true,
+    placeId: "ChIJ7bcMOQAbLz4RZ92GoQZtTag",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "londoner-dhahrat-al-badiah",
+    hex: "0x3e2f1b0034629763:0x436e4600f111948d",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.5983114, lng: 46.645949 },
+    coordsInUrl: true,
+    placeId: "ChIJY5diNAAbLz4RjZQR8QBGbkM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "cozy-dhahrat-al-badiah",
+    hex: "0x3e2f1b006b62afa5:0x9b8b8f54e7fe4202",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/cozy-dhahrat-al-badiah.jpg",
+    pin: { lat: 24.6080459, lng: 46.6671342 },
+    coordsInUrl: true,
+    placeId: "ChIJpa9iawAbLz4RAkL-51SPi5s",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "tim-hortons-petromin-dhahrat-al-badiah",
+    hex: "0x3e2f1b605fafdee5:0x4e0741098700a67a",
+    neighborhood: "dhahrat-al-badiah",
+    vibe: ["طلبات السيارة"],
+    moments: ["drive-through"],
+    logoUrl: "/logos/tim-hortons-wordmark.png",
+    pin: { lat: 24.5862874, lng: 46.639414099999996 },
+    coordsInUrl: true,
+    placeId: "ChIJ5d6vX2AbLz4ReqYAhwlBB04",
     dineIn: true,
     outdoorSeating: null,
   },

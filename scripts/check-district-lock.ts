@@ -236,8 +236,8 @@ assert(dhahrat?.nameAr === "ظهرة البديعة", "Dhahrat Al Badiah AR lock
 assert(liveCatalog.includes("dhahrat-al-badiah"), "WAY makes Dhahrat Al Badiah a live catalog district");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "dhahrat-al-badiah").map((shop) => shop.id).join(",") ===
-    "way-coffee-dhahrat-al-badiah",
-  "Dhahrat Al Badiah catalog is WAY only",
+    "way-coffee-dhahrat-al-badiah,narm-cafe-dhahrat-al-badiah,afeen-coffee-flowers-dhahrat-al-badiah,in-front-of-dhahrat-al-badiah,fuji-cafe-dhahrat-al-badiah,wem-coffee-dhahrat-al-badiah,mjaz-specialty-coffee-dhahrat-al-badiah,athiah-cafe-dhahrat-al-badiah,miray-specialty-coffee-dhahrat-al-badiah,mulfet-flowers-coffee-dhahrat-al-badiah,londoner-dhahrat-al-badiah,cozy-dhahrat-al-badiah,tim-hortons-petromin-dhahrat-al-badiah",
+  "Dhahrat Al Badiah catalog is WAY + the 12 Batch DB1 rows (22 Oct 2026)",
 );
 
 // Batch L (13 Oct): Umm Al Hamam Ash Sharqi goes live with 3 local cafés; on the locked sheet (dictionary_only), slug matches the al-gharbi sibling.

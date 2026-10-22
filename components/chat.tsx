@@ -58,6 +58,20 @@ import {
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
 import {
+  clearResultsSnapshot,
+  currentResultsHref,
+  ensureResultsSnapshotKey,
+  readResultsScroll,
+  resultsSnapshotKey,
+  readResultsSnapshot,
+  restoreResultsScroll,
+  revealResultsRestore,
+  resultsThreadRestorable,
+  shouldPersistSnapshot,
+  writeResultsSnapshot,
+  type ResultsMessage,
+} from "@/lib/results-return";
+import {
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
   meetHalfwayAskLabel,
@@ -691,6 +705,10 @@ export function Chat({
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
   const halfwayRestoreSeenRef = useRef(false);
+  /** History entry whose results snapshot was already applied this mount. */
+  const resultsRestoredFor = useRef<string | null>(null);
+  /** Skip wiping a snapshot in the same commit that restores it. */
+  const skipResultsClear = useRef(false);
   /** Invite id whose meet_halfway_invite_share hit was already pushed. */
   const halfwayInviteShareSent = useRef<string | null>(null);
   /** In-flight GTM flush for that id, so a second tap waits on the same one. */
@@ -1905,6 +1923,49 @@ export function Chat({
   }, [homeSurface, landing]);
 
   useLayoutEffect(() => {
+    if (resultsRestoredFor.current === threadKey) {
+      revealResultsRestore();
+      return;
+    }
+    resultsRestoredFor.current = threadKey;
+    if (threads[threadKey]) {
+      revealResultsRestore();
+      return;
+    }
+    const entryKey = resultsSnapshotKey();
+    if (!entryKey) {
+      revealResultsRestore();
+      return;
+    }
+    const href = currentResultsHref();
+    const saved = readResultsSnapshot(entryKey, threadKey, href);
+    if (!saved) {
+      revealResultsRestore();
+      return;
+    }
+    const restored = saved.messages as Message[];
+    threads[threadKey] = {
+      messages: restored,
+      composerLanguage: saved.composerLanguage,
+      awaitingMaps: saved.awaitingMaps,
+      halfwayWaitingId: saved.halfwayWaitingId,
+      ...(saved.halfwayWaitingMe ? { halfwayWaitingMe: saved.halfwayWaitingMe } : {}),
+    };
+    skipResultsClear.current = true;
+    setMessages(restored);
+    setComposerLanguage(saved.composerLanguage);
+    setAwaitingMaps(saved.awaitingMaps);
+    if (saved.halfwayWaitingId) setHalfwayWaitingId(saved.halfwayWaitingId);
+    if (saved.halfwayWaitingMe) setHalfwayWaitingMe(saved.halfwayWaitingMe);
+    halfwayLocationsRef.current = lastHalfwayLocations(restored);
+    halfwayShownRef.current = shownHalfwayPickIds(restored);
+    if (homeSurface) setPinnedHome(false);
+    if (halfwaySurface && lastHalfwayResult(restored)) setMeetHalfwayOpen(true);
+    revealResultsRestore();
+    requestAnimationFrame(() => restoreResultsScroll());
+  }, [halfwaySurface, homeSurface, threadKey]);
+
+  useLayoutEffect(() => {
     if (!homeSurface || !threadVisible) return;
     if (historyIsSearch()) return;
     const current = window.history.state;
@@ -1912,13 +1973,53 @@ export function Chat({
       current && typeof current === "object"
         ? { ...(current as Record<string, unknown>) }
         : {};
+    const wainEntry = typeof base.wainEntry === "string" && base.wainEntry
+      ? base.wainEntry
+      : crypto.randomUUID();
     window.history.pushState(
-      { ...base, wainSearch: true },
+      { ...base, wainSearch: true, wainEntry },
       "",
       window.location.href,
     );
     searchPushedInApp = true;
   }, [homeSurface, threadVisible]);
+
+  useLayoutEffect(() => {
+    if (resultsRestoredFor.current !== threadKey) return;
+    if (!shouldPersistSnapshot(window.location.pathname, window.history.state)) return;
+    const restorable = resultsThreadRestorable(messages as ResultsMessage[]);
+    if (!restorable) {
+      if (skipResultsClear.current) return;
+      const existingKey = resultsSnapshotKey();
+      if (existingKey) clearResultsSnapshot(existingKey);
+      return;
+    }
+    const entryKey = ensureResultsSnapshotKey();
+    if (!entryKey) return;
+    skipResultsClear.current = false;
+    const live = threads[threadKey];
+    const scroll = readResultsScroll();
+    writeResultsSnapshot({
+      entryKey,
+      threadKey,
+      href: currentResultsHref(),
+      scrollY: scroll.scrollY,
+      listScroll: scroll.listScroll,
+      messages: messages as ResultsMessage[],
+      composerLanguage: live?.composerLanguage ?? composerLanguage,
+      awaitingMaps: live?.awaitingMaps ?? awaitingMaps,
+      halfwayWaitingId: live?.halfwayWaitingId ?? halfwayWaitingId,
+      halfwayWaitingMe: live?.halfwayWaitingMe ?? halfwayWaitingMe,
+      savedAt: Date.now(),
+    });
+  }, [
+    awaitingMaps,
+    composerLanguage,
+    halfwayWaitingId,
+    halfwayWaitingMe,
+    messages,
+    threadKey,
+  ]);
 
   function backToHome(event: MouseEvent<HTMLAnchorElement>) {
     if (

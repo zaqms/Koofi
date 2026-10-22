@@ -126,6 +126,11 @@ html[data-hide-chains] [data-local-counts] {
   -webkit-text-fill-color: transparent;
 }
 
+/* Hold the server paint until a saved search or بيننا snapshot restores. */
+html[data-results-pending] body {
+  visibility: hidden;
+}
+
 @media (forced-colors: active) {
   .ask-composer-field,
   .ask-composer-field:focus {

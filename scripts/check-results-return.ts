@@ -6,20 +6,33 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  chatFreshMemoryThread,
+  chatMayApplyHalfwayFetch,
+  clearChatResultsForNewHalfway,
+  clearChatResultsForNewSearch,
+  commitChatResultsSave,
+  decideChatResultsRestore,
+  decideChatResultsSave,
+} from "../components/chat";
+import { placeIdentityKeys } from "../lib/place-coords";
+import {
   cafeCardPathname,
-  clearHalfwayResultsSnapshots,
   nextCafeOrigin,
   parseCafeOrigin,
   parseResultsSnapshot,
   readResultsSnapshot,
   RESULTS_SNAPSHOT_KEY,
   RESULTS_SNAPSHOT_TTL_MS,
+  resultsEntryExpired,
+  resultsPickCount,
+  resultsSnapshotIsFresh,
   resultsThreadRestorable,
   shouldPersistSnapshot,
   shouldRestoreResultsNavigation,
   shouldReturnInApp,
   writeResultsSnapshot,
   type ResultsMessage,
+  type ResultsSnapshot,
 } from "../lib/results-return";
 
 function assert(cond: unknown, message: string): asserts cond {
@@ -109,13 +122,30 @@ assert(
   }, savedAt)?.messages[0]?.picks === undefined,
   "a pick without a card path is dropped",
 );
+assert(RESULTS_SNAPSHOT_TTL_MS === 30 * 60 * 1000, "results expire at exactly 30 minutes");
 assert(
-  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - RESULTS_SNAPSHOT_TTL_MS - 1000 }, savedAt) === null,
-  "a snapshot older than 30 minutes is dropped",
+  resultsSnapshotIsFresh(savedAt - RESULTS_SNAPSHOT_TTL_MS, savedAt),
+  "a snapshot exactly 30 minutes old is kept",
 );
 assert(
-  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - RESULTS_SNAPSHOT_TTL_MS + 1000 }, savedAt)?.entryKey === "search-1",
-  "a snapshot inside 30 minutes is kept",
+  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - RESULTS_SNAPSHOT_TTL_MS }, savedAt)?.entryKey === "search-1",
+  "parsing keeps a snapshot that is exactly 30 minutes old",
+);
+assert(
+  !resultsSnapshotIsFresh(savedAt - 31 * 60 * 1000, savedAt),
+  "31 minutes is past the expiry",
+);
+assert(
+  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - 31 * 60 * 1000 }, savedAt) === null,
+  "a snapshot 31 minutes old is dropped",
+);
+assert(
+  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - 12 * 60 * 60 * 1000 }, savedAt) === null,
+  "a snapshot 12 hours old is dropped",
+);
+assert(
+  parseResultsSnapshot({ ...snapshot, savedAt: savedAt - RESULTS_SNAPSHOT_TTL_MS - 1 }, savedAt) === null,
+  "one millisecond past 30 minutes is dropped",
 );
 
 const origin = parseCafeOrigin(
@@ -236,7 +266,6 @@ assert(shouldRestoreResultsNavigation({ navigationType: "reload", traversed: tru
 
 const detail = read("components/cafe-detail.tsx");
 const cardPage = read("components/cafe-card-page.tsx");
-const chat = read("components/chat.tsx");
 const layout = read("app/layout.tsx");
 const capture = read("components/cafe-return.tsx");
 const directory = read("components/directory-card.tsx");
@@ -248,18 +277,13 @@ assert(layout.includes("<CafeReturn"), "café links are remembered from the root
 assert(layout.includes("RESULTS_RESTORE_BOOTSTRAP"), "back/forward can hide the server paint until the snapshot restores");
 assert(read("lib/results-return.ts").includes('nav.type!=="back_forward"'), "reload and fresh loads do not hide the page");
 assert(read("app/globals.css").includes("data-results-pending"), "the pending results paint stays hidden");
-assert(chat.includes("revealResultsRestore"), "chat reveals the page after restoring results");
 assert(capture.includes("installCafeReturn"), "return capture listens for card clicks");
 assert(capture.includes("restoreResultsScroll"), "return restores scroll");
-assert(chat.includes("readResultsSnapshot"), "chat restores a results snapshot");
-assert(chat.includes("writeResultsSnapshot"), "chat stores a results snapshot");
-assert(chat.includes("shouldPersistSnapshot"), "home search is not stored on the bare homepage");
-assert(chat.includes("resultsNavigationShouldRestore"), "chat restores only after back or forward");
-assert(chat.includes("clearHalfwayResultsSnapshots"), "starting over clears the بيننا snapshot");
-assert(chat.includes("clearResultsSnapshot"), "a new home search clears the stored ask");
 assert(directory.includes("cardPath(shop.id, language)"), "list cards still link to the café");
 assert(!read("lib/results-return.ts").includes("URLSearchParams"), "results return does not add a query string");
 
+const starbucksPlace =
+  "https://www.google.com/maps/place/Starbucks+Panorama/data=!4m2!3m1!1s0x3e2ee2abc123:0x99abcdef";
 const inviteId = "AbcdEfghijkLmnopqrST12";
 const hostPin = { lat: 24.713551, lng: 46.675292 };
 const guestPin = { lat: 24.812345, lng: 46.619876 };
@@ -314,6 +338,19 @@ try {
             lat: hostPin.lat,
             lng: hostPin.lng,
           },
+          {
+            id: "starbucks-panorama-al-mathar",
+            nameAr: "ستاربكس",
+            nameEn: "Starbucks",
+            neighborhood: "al-mathar",
+            neighborhoodAr: "المعذر",
+            vibeTags: [],
+            momentTags: [],
+            isChain: true,
+            branchEn: "Panorama",
+            mapsHref: starbucksPlace,
+            cardPath: "/c/starbucks-panorama-al-mathar",
+          },
         ],
       },
     ] as ResultsMessage[],
@@ -330,9 +367,19 @@ try {
   }
   assert(!raw.includes("halfwayLocations"), "the stored session has no pin list");
   assert(!raw.includes("halfwayWaiting"), "the stored session has no waiting pin");
+  assert(!raw.includes("Starbucks al-mathar Riyadh"), "the stored session does not invent a name search");
+  assert(!raw.includes("q=Starbucks"), "the stored session does not search Maps by name");
+  assert(raw.includes("1s0x3e2ee2abc123:0x99abcdef"), "the stored session keeps the café place id");
   const restored = readResultsSnapshot("half-1", `halfway:${inviteId}`, `/h/${inviteId}`, now);
   assert(restored?.messages[0]?.text === "قهوة في العليا", "reading the session restores the ask");
   assert(restored?.cardCount === 6, "reading the session keeps the card count for scroll");
+  const chain = restored?.messages[1]?.picks?.find((pick) => pick.id === "starbucks-panorama-al-mathar");
+  assert(chain?.mapsHref === starbucksPlace, "a restored chain card keeps its place link");
+  const placeId = typeof chain?.placeId === "string" ? chain.placeId : "";
+  assert(placeId.length > 0 && starbucksPlace.includes(placeId), "a restored chain card keeps its place id");
+  assert(placeIdentityKeys(starbucksPlace).includes(placeId), "the kept place id is the Maps place identity");
+  assert(chain?.isChain === true, "a restored chain card stays a chain");
+  assert(restored?.savedAt === now, "reading the session does not move savedAt");
   const stale = JSON.parse(raw) as { entries: Array<{ savedAt: number }> };
   stale.entries[0].savedAt = now - RESULTS_SNAPSHOT_TTL_MS - 1000;
   storage.set(RESULTS_SNAPSHOT_KEY, JSON.stringify(stale));
@@ -350,8 +397,173 @@ try {
     savedAt: now,
     messages: [{ id: "q", role: "user", text: "بيننا" }],
   }, now);
-  clearHalfwayResultsSnapshots();
+  clearChatResultsForNewHalfway();
   assert(!(storage.get(RESULTS_SNAPSHOT_KEY) ?? "").includes("بيننا"), "Start a new Halfway clears the stored results");
+
+  const pages: ResultsMessage[] = [0, 1, 2, 3].map((page) => ({
+    id: `page-${page}`,
+    role: "assistant" as const,
+    text: "ثلاث",
+    language: "ar" as const,
+    halfwayMore: true,
+    picks: [0, 1, 2].map((slot) => ({
+      id: `cafe-${page}-${slot}`,
+      nameAr: "قهوة",
+      nameEn: "Cafe",
+      neighborhood: "olaya",
+      neighborhoodAr: "العليا",
+      vibeTags: [],
+      momentTags: [],
+      isChain: true,
+      mapsHref: starbucksPlace,
+      cardPath: `/c/cafe-${page}-${slot}`,
+    })),
+  }));
+  const twelve: ResultsSnapshot = {
+    entryKey: "half-12",
+    threadKey: "halfway-local:ar",
+    href: "/halfway",
+    scrollY: 198,
+    listScroll: 0,
+    cardCount: 12,
+    composerLanguage: "ar",
+    awaitingMaps: false,
+    savedAt: now,
+    messages: pages,
+  };
+  writeResultsSnapshot(twelve, now);
+  const firstPage = [pages[0]!];
+  const back = decideChatResultsRestore({
+    shouldRestoreNavigation: shouldRestoreResultsNavigation({ navigationType: "back_forward" }),
+    snapshot: readResultsSnapshot("half-12", "halfway-local:ar", "/halfway", now),
+    memoryMessages: firstPage,
+    memorySavedAt: now,
+    entryExpired: false,
+    persistable: true,
+    now,
+  });
+  assert(back.holdSnapshot, "back/forward holds the saved بيننا list");
+  assert(back.apply !== null && resultsPickCount(back.apply.messages) === 12, "back/forward restores all 12 cards, not the first page");
+  assert(chatMayApplyHalfwayFetch(back.holdSnapshot) === false, "the invite re-fetch does not replace a restored list");
+  for (const navigationType of ["reload", "navigate"] as const) {
+    const skipped = decideChatResultsRestore({
+      shouldRestoreNavigation: shouldRestoreResultsNavigation({ navigationType }),
+      snapshot: twelve,
+      memoryMessages: pages,
+      memorySavedAt: now,
+      entryExpired: false,
+      persistable: true,
+      now,
+    });
+    assert(skipped.apply === null && !skipped.holdSnapshot, `${navigationType} does not restore the saved list`);
+    assert(skipped.scroll === "top", `${navigationType} with no restored snapshot starts at the top`);
+  }
+  for (const age of [31 * 60 * 1000, 12 * 60 * 60 * 1000]) {
+    const staleDecision = decideChatResultsRestore({
+      shouldRestoreNavigation: shouldRestoreResultsNavigation({ navigationType: "back_forward" }),
+      snapshot: { ...twelve, savedAt: now - age },
+      memoryMessages: pages,
+      memorySavedAt: now - age,
+      entryExpired: true,
+      persistable: true,
+      now,
+    });
+    assert(staleDecision.apply === null && staleDecision.dropMemory, `back after ${age}ms does not show the old list`);
+    assert(staleDecision.scroll === "top" && !staleDecision.holdSnapshot, `back after ${age}ms starts at the top`);
+  }
+  const heldSave = decideChatResultsSave({
+    held: true,
+    current: firstPage,
+    prior: twelve,
+    now: now + 10 * 60 * 1000,
+    scrollY: 0,
+    listScroll: 0,
+    cardCount: 3,
+    entryKey: "half-12",
+    threadKey: "halfway-local:ar",
+    href: "/halfway",
+    composerLanguage: "ar",
+    awaitingMaps: false,
+  });
+  assert(heldSave.action === "write" && resultsPickCount(heldSave.snapshot.messages) === 12, "saving during restore keeps the full list");
+  assert(heldSave.action === "write" && heldSave.snapshot.savedAt === now, "saving during restore keeps the original savedAt");
+  assert(heldSave.action === "write" && heldSave.snapshot.cardCount === 12, "saving during restore keeps the card count for scroll");
+  commitChatResultsSave({
+    held: true,
+    current: firstPage,
+    prior: readResultsSnapshot("half-12", "halfway-local:ar", "/halfway", now),
+    now: now + 10 * 60 * 1000,
+    scrollY: 0,
+    listScroll: 0,
+    cardCount: 3,
+    entryKey: "half-12",
+    threadKey: "halfway-local:ar",
+    href: "/halfway",
+    composerLanguage: "ar",
+    awaitingMaps: false,
+  });
+  const afterRestoreWrite = readResultsSnapshot("half-12", "halfway-local:ar", "/halfway", now + 10 * 60 * 1000);
+  assert(afterRestoreWrite?.savedAt === now, "a restore write does not restart the 30 minutes");
+  assert(resultsPickCount(afterRestoreWrite?.messages ?? []) === 12, "a restore write does not shrink the list to the first page");
+  writeResultsSnapshot({ ...twelve, savedAt: now + 20 * 60 * 1000, messages: firstPage, cardCount: 3 }, now + 20 * 60 * 1000);
+  assert(readResultsSnapshot("half-12", "halfway-local:ar", "/halfway", now + 20 * 60 * 1000)?.savedAt === now, "writing again still keeps the original savedAt");
+  assert(resultsEntryExpired("half-12", now + 31 * 60 * 1000), "the original savedAt is expired after 31 minutes");
+  writeResultsSnapshot({ ...twelve, savedAt: now + 31 * 60 * 1000 }, now + 31 * 60 * 1000);
+  assert(readResultsSnapshot("half-12", "halfway-local:ar", "/halfway", now + 31 * 60 * 1000) === null, "a restore after 31 minutes does not revive the list");
+  assert(!(storage.get(RESULTS_SNAPSHOT_KEY) ?? "").includes("cafe-0-0"), "an expired list is not written back");
+  writeResultsSnapshot({ ...twelve, entryKey: "half-12h", savedAt: now - 12 * 60 * 60 * 1000 }, now);
+  assert(readResultsSnapshot("half-12h", "halfway-local:ar", "/halfway", now) === null, "a 12 hour old list is never stored");
+  const openerOnly: ResultsMessage[] = [{ id: "opener", role: "assistant", text: "هلا" }];
+  assert(
+    decideChatResultsSave({
+      held: false,
+      current: openerOnly,
+      prior: null,
+      now,
+      scrollY: 0,
+      listScroll: 0,
+      cardCount: 0,
+      entryKey: "home-1",
+      threadKey: "chat:ar:popular",
+      href: "/",
+      composerLanguage: "ar",
+      awaitingMaps: false,
+    }).action === "clear",
+    "a fresh home clears a stored ask",
+  );
+  assert(
+    decideChatResultsSave({
+      held: true,
+      current: openerOnly,
+      prior: twelve,
+      now,
+      scrollY: 0,
+      listScroll: 0,
+      cardCount: 0,
+      entryKey: "half-12",
+      threadKey: "halfway-local:ar",
+      href: "/halfway",
+      composerLanguage: "ar",
+      awaitingMaps: false,
+    }).action === "skip",
+    "the restore paint does not clear the saved list before it is applied",
+  );
+  writeResultsSnapshot({
+    entryKey: "home-1",
+    threadKey: "chat:ar:popular",
+    href: "/",
+    scrollY: 40,
+    listScroll: 0,
+    cardCount: 3,
+    composerLanguage: "ar",
+    awaitingMaps: false,
+    savedAt: now,
+    messages: [{ id: "q", role: "user", text: "قهوة في العليا" }],
+  }, now);
+  clearChatResultsForNewSearch("home-1");
+  assert(readResultsSnapshot("home-1", "chat:ar:popular", "/", now) === null, "starting a new home search clears that saved ask");
+  assert(chatFreshMemoryThread("no-such-thread") === undefined, "a missing thread is not restored");
+  assert(chatMayApplyHalfwayFetch(false) === true, "a fetch can paint results when nothing was restored");
 } finally {
   globalThis.window = previousWindow;
 }

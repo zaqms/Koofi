@@ -8,12 +8,15 @@
  * their place too.
  *
  * Snapshots live in sessionStorage under the history entry key. They keep
- * the ask text and the café cards only — no pins, coordinates, or invite id —
- * and they restore only on back/forward. A direct visit keeps the home link.
- * A chain of café cards steps back through history and keeps the results
- * scroll on the original entry.
+ * the ask text and each café's own place link — no people's pins, no
+ * coordinates taken from those pins, and no invite id. They restore only on
+ * back/forward, and only until 30 minutes after they were first saved.
+ * Reading or restoring does not start that clock again. A direct visit keeps
+ * the home link. A chain of café cards steps back through history and keeps
+ * the results scroll on the original entry.
  */
 
+import { isOfficialMapsPlaceUrl, placeIdentityKeys } from "./place-coords";
 import { halfwayPath } from "./product";
 import type { Language } from "./types";
 
@@ -198,28 +201,86 @@ function isPick(value: unknown): value is Record<string, unknown> & {
     typeof value.neighborhoodAr === "string" &&
     Array.isArray(value.vibeTags) &&
     Array.isArray(value.momentTags) &&
-    typeof value.mapsHref === "string" &&
+    (value.mapsHref === undefined || typeof value.mapsHref === "string") &&
     typeof value.cardPath === "string"
   );
 }
 
-function sanitizePick(value: unknown, inviteId: string | null): Record<string, unknown> | null {
+/**
+ * The café's public Maps place (`/maps/place/` with its place id) stays.
+ * A coordinate search is a person's pin, not that place, so it does not.
+ * Never invent a name search — "Starbucks al-mathar Riyadh" matches several branches.
+ */
+function peoplePins(message: Record<string, unknown>): { lat: number; lng: number }[] {
+  if (!Array.isArray(message.halfwayLocations)) return [];
+  const pins: { lat: number; lng: number }[] = [];
+  for (const row of message.halfwayLocations) {
+    if (!isRecord(row) || typeof row.lat !== "number" || typeof row.lng !== "number") continue;
+    if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) continue;
+    pins.push({ lat: row.lat, lng: row.lng });
+  }
+  return pins;
+}
+
+function embedsPeoplePin(text: string, pins: readonly { lat: number; lng: number }[]): boolean {
+  for (const pin of pins) {
+    for (let digits = 4; digits <= 6; digits += 1) {
+      if (text.includes(pin.lat.toFixed(digits)) || text.includes(pin.lng.toFixed(digits))) return true;
+    }
+  }
+  return false;
+}
+
+function caféPlaceHref(
+  value: string,
+  inviteId: string | null,
+  pins: readonly { lat: number; lng: number }[],
+): string | null {
+  const href = stripInviteId(value, inviteId).trim();
+  if (!href || embedsPeoplePin(href, pins)) return null;
+  if (isOfficialMapsPlaceUrl(href)) return href;
+  if (/[?&](?:q|query)=[-+]?\d/i.test(href)) return null;
+  if (COORDINATE_RE.test(href)) return null;
+  return href;
+}
+
+/** True until 30 minutes after the original save. A later read does not extend it. */
+export function resultsSnapshotIsFresh(savedAt: number, now = Date.now()): boolean {
+  return now - savedAt <= RESULTS_SNAPSHOT_TTL_MS && savedAt <= now + 60_000;
+}
+
+export function resultsPickCount(messages: readonly { picks?: readonly unknown[] }[]): number {
+  let count = 0;
+  for (const message of messages) {
+    if (Array.isArray(message.picks)) count += message.picks.length;
+  }
+  return count;
+}
+
+function sanitizePick(
+  value: unknown,
+  inviteId: string | null,
+  pins: readonly { lat: number; lng: number }[],
+): Record<string, unknown> | null {
   if (!isPick(value)) return null;
-  const nameEn = stripInviteId(value.nameEn, inviteId);
-  const neighborhood = stripInviteId(value.neighborhood, inviteId);
   const pick: Record<string, unknown> = {
     id: stripInviteId(value.id, inviteId),
     nameAr: stripInviteId(value.nameAr, inviteId),
-    nameEn,
-    neighborhood,
+    nameEn: stripInviteId(value.nameEn, inviteId),
+    neighborhood: stripInviteId(value.neighborhood, inviteId),
     neighborhoodAr: stripInviteId(value.neighborhoodAr, inviteId),
     vibeTags: value.vibeTags,
     momentTags: value.momentTags,
-    mapsHref: `https://maps.google.com/?q=${encodeURIComponent(`${nameEn} ${neighborhood} Riyadh`.trim())}`,
     cardPath: stripInviteId(String(value.cardPath).split("?")[0] ?? "", inviteId),
   };
+  const mapsHref = typeof value.mapsHref === "string" ? caféPlaceHref(value.mapsHref, inviteId, pins) : null;
+  if (mapsHref) {
+    pick.mapsHref = mapsHref;
+    const placeId = placeIdentityKeys(mapsHref)[0];
+    if (placeId) pick.placeId = placeId;
+  }
   if (value.isChain === true) pick.isChain = true;
-  for (const key of ["branchEn", "branchAr", "photoUrl", "logoUrl", "why", "neighborhoodLabel"] as const) {
+  for (const key of ["branchEn", "branchAr", "photoUrl", "logoUrl", "why", "neighborhoodLabel", "placeId"] as const) {
     const field = value[key];
     if (typeof field !== "string" || !field || COORDINATE_RE.test(field)) continue;
     pick[key] = stripInviteId(field, inviteId);
@@ -231,7 +292,11 @@ function sanitizePick(value: unknown, inviteId: string | null): Record<string, u
   return pick;
 }
 
-function parseMessage(value: unknown, inviteId: string | null): ResultsMessage | null {
+function parseMessage(
+  value: unknown,
+  inviteId: string | null,
+  pins: readonly { lat: number; lng: number }[] = [],
+): ResultsMessage | null {
   if (!isRecord(value)) return null;
   if (value.role !== "user" && value.role !== "assistant") return null;
   if (typeof value.id !== "string" || typeof value.text !== "string") return null;
@@ -244,7 +309,7 @@ function parseMessage(value: unknown, inviteId: string | null): ResultsMessage |
   if (value.role === "assistant") {
     if (Array.isArray(value.picks)) {
       const picks = value.picks
-        .map((pick) => sanitizePick(pick, inviteId))
+        .map((pick) => sanitizePick(pick, inviteId, pins))
         .filter((pick): pick is Record<string, unknown> => Boolean(pick));
       if (picks.length > 0) message.picks = picks;
     }
@@ -274,13 +339,13 @@ export function parseResultsSnapshot(value: unknown, now = Date.now()): ResultsS
   if (typeof value.href !== "string" || !value.href.startsWith("/")) return null;
   if (!Array.isArray(value.messages)) return null;
   const savedAt = typeof value.savedAt === "number" ? value.savedAt : 0;
-  if (now - savedAt > RESULTS_SNAPSHOT_TTL_MS || savedAt > now + 60_000) return null;
+  if (!resultsSnapshotIsFresh(savedAt, now)) return null;
   const inviteId = extractInviteId(
     value.threadKey,
     typeof value.href === "string" ? value.href : "",
   );
   const messages = value.messages
-    .map((message) => parseMessage(message, inviteId))
+    .map((message) => parseMessage(message, inviteId, isRecord(message) ? peoplePins(message) : []))
     .filter((message): message is ResultsMessage => Boolean(message));
   if (!resultsThreadRestorable(messages)) return null;
   const composerLanguage = value.composerLanguage === "en" ? "en" : value.composerLanguage === "ar" ? "ar" : null;
@@ -541,11 +606,66 @@ export function readResultsSnapshot(entryKey: string, threadKey: string, href: s
   return snapshot ?? null;
 }
 
+function readRawSnapshotEntries(): Record<string, unknown>[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.sessionStorage.getItem(RESULTS_SNAPSHOT_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as { entries?: unknown };
+    if (!parsed || !Array.isArray(parsed.entries)) return [];
+    return parsed.entries.filter(isRecord);
+  } catch {
+    return [];
+  }
+}
+
+/** Original save time, including an entry that is already past 30 minutes. */
+export function resultsEntrySavedAt(entryKey: string): number | null {
+  const entry = readRawSnapshotEntries().find((item) => item.entryKey === entryKey);
+  return entry && typeof entry.savedAt === "number" ? entry.savedAt : null;
+}
+
+export function resultsEntryExpired(entryKey: string, now = Date.now()): boolean {
+  const savedAt = resultsEntrySavedAt(entryKey);
+  if (savedAt == null) return false;
+  return !resultsSnapshotIsFresh(savedAt, now);
+}
+
+/**
+ * Where to put the page when this history entry loads.
+ * A restored snapshot keeps its scroll. Anything else on a results
+ * screen starts at the top, so an expired search does not reuse it.
+ */
+export function resultsPageScroll(input: {
+  navigationRestores: boolean;
+  persistable: boolean;
+  hasFreshSnapshot: boolean;
+}): "saved" | "top" | "leave" {
+  if (input.navigationRestores && input.hasFreshSnapshot) return "saved";
+  if (input.persistable) return "top";
+  return "leave";
+}
+
+export function resetResultsScroll(): void {
+  if (typeof window === "undefined") return;
+  window.scrollTo(0, 0);
+  const list = document.querySelector("[data-halfway-results]");
+  if (list instanceof HTMLElement) list.scrollTop = 0;
+}
+
 export function writeResultsSnapshot(snapshot: ResultsSnapshot, now = Date.now()): void {
   if (typeof window === "undefined") return;
-  const clean = parseResultsSnapshot(snapshot, now);
-  if (!clean) return;
-  const entries = readStore(now).entries.filter((entry) => entry.entryKey !== clean.entryKey);
+  // Read the original clock before readStore drops an expired entry.
+  // A restore that passes Date.now() must not start the 30 minutes over,
+  // and must not bring back a list that has already expired.
+  const originalSavedAt = resultsEntrySavedAt(snapshot.entryKey);
+  const savedAt = originalSavedAt ?? snapshot.savedAt;
+  const clean = parseResultsSnapshot({ ...snapshot, savedAt }, now);
+  const entries = readStore(now).entries.filter((entry) => entry.entryKey !== snapshot.entryKey);
+  if (!clean) {
+    writeStore(entries);
+    return;
+  }
   entries.push(clean);
   writeStore(entries);
 }
@@ -706,12 +826,22 @@ function applyResultsScroll(scrollY: number, listScroll: number): void {
  */
 export function restoreResultsScroll(): void {
   if (typeof window === "undefined") return;
-  if (!resultsNavigationShouldRestore()) return;
   const key = resultsSnapshotKey() ?? navigationEntryKey();
-  if (!key) return;
   const href = storageHref(currentResultsHref());
+  const snapshot = key
+    ? readStore().entries.find((entry) => entry.entryKey === key && entry.href === href)
+    : undefined;
+  const scroll = resultsPageScroll({
+    navigationRestores: resultsNavigationShouldRestore(),
+    persistable: shouldPersistSnapshot(window.location.pathname, window.history.state),
+    hasFreshSnapshot: Boolean(snapshot),
+  });
+  if (scroll === "top") {
+    resetResultsScroll();
+    return;
+  }
+  if (scroll === "leave" || !snapshot || !key) return;
   const origin = readOrigin();
-  const snapshot = readStore().entries.find((entry) => entry.entryKey === key && entry.href === href);
   const fromOrigin = Boolean(origin && origin.entryKey === key && origin.href === href);
   const scrollY = fromOrigin ? origin?.scrollY : snapshot?.scrollY;
   const listScroll = fromOrigin ? origin?.listScroll ?? 0 : snapshot?.listScroll ?? 0;

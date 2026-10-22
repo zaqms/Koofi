@@ -71,6 +71,7 @@ export function MeetHalfwayResultsFooter({
       return (
         <button
           type="button"
+          data-halfway-show-more=""
           disabled={disabled}
           onClick={onMore}
           className="inline-flex h-10 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink disabled:opacity-50"
@@ -91,27 +92,31 @@ export function MeetHalfwayResultsFooter({
 
   return (
     <div className="grid gap-3">
-      <div className="grid gap-2">
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={onMore}
-          className="flex w-full flex-col items-center rounded-2xl bg-paper px-3 py-3.5 text-center disabled:opacity-50"
-        >
-          <span className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink">
-            <RefreshIcon />
-            {copy.meetHalfwayMoreTitle[language]}
-          </span>
-          <span className="mt-1 text-[11px] leading-4 text-ink-soft">
-            {copy.meetHalfwayMoreSub[language]}
-          </span>
-        </button>
-        {kind === "exhausted" ? (
-          <p className="text-center text-xs leading-5 text-ink-soft">
-            {copy.meetHalfwayNoMore[language]}
-          </p>
-        ) : null}
-      </div>
+      {kind === "more" || kind === "exhausted" ? (
+        <div className="grid gap-2">
+          {kind === "more" ? (
+            <button
+              type="button"
+              data-halfway-show-more=""
+              disabled={disabled}
+              onClick={onMore}
+              className="flex w-full flex-col items-center rounded-2xl bg-paper px-3 py-3.5 text-center disabled:opacity-50"
+            >
+              <span className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink">
+                <RefreshIcon />
+                {copy.meetHalfwayMoreTitle[language]}
+              </span>
+              <span className="mt-1 text-[11px] leading-4 text-ink-soft">
+                {copy.meetHalfwayMoreSub[language]}
+              </span>
+            </button>
+          ) : (
+            <p className="text-center text-xs leading-5 text-ink-soft">
+              {copy.meetHalfwayNoMore[language]}
+            </p>
+          )}
+        </div>
+      ) : null}
       {resetKey ? (
         <MeetHalfwayFeedback
           language={language}

@@ -69,6 +69,7 @@ import {
   meetHalfwayReply,
   parseHalfwayPinInputs,
   pickHalfwayShops,
+  accumulateHalfwayPicks,
   halfwayCandidatePool,
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
@@ -487,6 +488,109 @@ const exhausted = pickHalfwayShops({
   beenIds: pool.map((s) => s.id),
 });
 assert(exhausted.length === 0, "exhausted band returns nothing");
+
+const kept = accumulateHalfwayPicks([shops, nextThree]);
+assert(
+  kept.map((shop) => shop.id).join() ===
+    [...shops, ...nextThree].map((shop) => shop.id).join(),
+  "show more keeps the cafés already on screen, then the next ranked batch",
+);
+assert(
+  kept.map((shop) => shop.id).join() ===
+    pool.slice(0, kept.length).map((shop) => shop.id).join(),
+  "accumulated pages stay in the same Most Popular order",
+);
+assert(
+  accumulateHalfwayPicks([shops, shops]).map((shop) => shop.id).join() ===
+    shops.map((shop) => shop.id).join(),
+  "a repeat of the same cafés does not grow the list",
+);
+if (pool.length > shops.length) {
+  assert(nextThree.length > 0 && kept.length > shops.length, "a deeper band reveals another batch");
+  assert(
+    halfwayResultsFooterKind({ halfwayMore: true, paged: false }) === "more",
+    "show more stays while a ranked batch is still unseen",
+  );
+}
+const afterAll = accumulateHalfwayPicks([shops, nextThree, exhausted]);
+assert(afterAll.length === kept.length, "an empty page adds nothing");
+assert(
+  halfwayResultsFooterKind({ halfwayMore: false, paged: true }) === "exhausted",
+  "after the last batch the show-more control is the exhausted state",
+);
+
+const exactThreePins = [
+  { pin: { lat: 24.7047196, lng: 46.6840196 } },
+  { pin: { lat: 24.7334705, lng: 46.6963089 } },
+];
+const exactThreePool = halfwayCandidatePool({
+  locations: exactThreePins,
+  shops: SHOPS,
+});
+assert(
+  exactThreePool.length === 3,
+  `exact-3 band stays 3, got ${exactThreePool.length}`,
+);
+const exactFirst = pickHalfwayShops({
+  locations: exactThreePins,
+  shops: SHOPS,
+});
+const exactNext = pickHalfwayShops({
+  locations: exactThreePins,
+  shops: SHOPS,
+  beenIds: exactFirst.map((shop) => shop.id),
+});
+assert(exactNext.length === 0, "a band of exactly 3 has no next batch");
+assert(
+  accumulateHalfwayPicks([exactFirst, exactNext]).length === exactFirst.length,
+  "show more with nothing left keeps the three already shown",
+);
+assert(
+  halfwayResultsFooterKind({ halfwayMore: false, paged: false }) === null,
+  "a band of exactly 3 hides show more instead of leaving a dead control",
+);
+
+const oneExtraPins = [
+  { pin: { lat: 24.6982742, lng: 46.6832109 } },
+  { pin: { lat: 24.7371909, lng: 46.6944962 } },
+];
+const oneExtraPool = halfwayCandidatePool({
+  locations: oneExtraPins,
+  shops: SHOPS,
+});
+assert(oneExtraPool.length === 4, `one-extra band stays 4, got ${oneExtraPool.length}`);
+const oneExtraFirst = pickHalfwayShops({
+  locations: oneExtraPins,
+  shops: SHOPS,
+});
+const oneExtraNext = pickHalfwayShops({
+  locations: oneExtraPins,
+  shops: SHOPS,
+  beenIds: oneExtraFirst.map((shop) => shop.id),
+});
+assert(
+  oneExtraNext.length === 1,
+  "a short leftover is still a page, not a dead show-more",
+);
+assert(
+  accumulateHalfwayPicks([oneExtraFirst, oneExtraNext])
+    .map((shop) => shop.id)
+    .join() === oneExtraPool.map((shop) => shop.id).join(),
+  "the short last page is appended in ranked order",
+);
+assert(
+  halfwayResultsFooterKind({
+    halfwayMore:
+      pickHalfwayShops({
+        locations: oneExtraPins,
+        shops: SHOPS,
+        beenIds: oneExtraPool.map((shop) => shop.id),
+        limit: 1,
+      }).length > 0,
+    paged: true,
+  }) === "exhausted",
+  "after the short last page, show more is hidden",
+);
 
 const samePin = pickHalfwayShops({
   locations: [
@@ -1276,8 +1380,39 @@ assert(
     resultsFooter.includes("meetHalfwayNoMore") &&
     resultsFooter.includes("meetHalfwayShareResults") &&
     resultsFooter.includes("meetHalfwayStartNew") &&
-    !resultsFooter.includes("Save for later"),
+    !resultsFooter.includes("Save for later") &&
+    resultsFooter.includes('data-halfway-show-more=""'),
   "local two-pin and /h/ guest share one بيننا results footer; Share results + Start a new Halfway",
+);
+{
+  const marker = 'data-halfway-show-more=""';
+  let from = 0;
+  let showMoreButtons = 0;
+  while (from < resultsFooter.length) {
+    const at = resultsFooter.indexOf(marker, from);
+    if (at < 0) break;
+    showMoreButtons += 1;
+    const before = resultsFooter.slice(Math.max(0, at - 320), at);
+    assert(
+      before.includes('kind === "more"'),
+      "show more renders only when another ranked batch exists",
+    );
+    from = at + marker.length;
+  }
+  assert(
+    showMoreButtons === 2,
+    "thread and results screen each have one gated show-more button",
+  );
+}
+const screenShowMore =
+  chatUi.split("<MeetHalfwayResultCards")[1]?.split("onShareResults")[0] ?? "";
+assert(
+  screenShowMore.includes("picks={halfwayVisiblePicks}") &&
+    chatUi.includes("accumulateHalfwayPicks") &&
+    screenShowMore.includes("more: true") &&
+    !screenShowMore.includes("reroll") &&
+    chatUi.includes("if (searchScreen || showHalfwayResults) return;"),
+  "results screen appends the next batch, keeps scroll, and does not rerun the first cafés",
 );
 assert(
   chatUi.includes('surface="screen"') &&

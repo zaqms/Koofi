@@ -58,6 +58,7 @@ import {
   writeHalfwayWaiting,
 } from "@/lib/halfway-waiting";
 import {
+  accumulateHalfwayPicks,
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
   meetHalfwayAskLabel,
@@ -1723,6 +1724,15 @@ export function Chat({
   // Back to Home hides the thread visually. Messages stay in `threads`.
   const threadVisible = hasThread && (!homeSurface || !pinnedHome);
   const halfwayResult = lastHalfwayResult(messages);
+  // Each «show more» response is its own message. The screen keeps every
+  // earlier page, in the same ranked order, instead of swapping the three.
+  const halfwayVisiblePicks = accumulateHalfwayPicks(
+    messages.flatMap((message) =>
+      message.role === "assistant" && typeof message.halfwayMore === "boolean"
+        ? [message.picks ?? []]
+        : [],
+    ),
+  );
   // بيننا first-class screens (invite / waiting / results). Ask composer +
   // أضف قهوة come back on close.
   const showAskComposer = !meetHalfwayOpen && !sessionExpired && !isComingSoon;
@@ -1772,7 +1782,7 @@ export function Chat({
   const showHalfwayResults =
     meetHalfwayOpen &&
     !sessionExpired &&
-    Boolean(halfwayResult?.picks?.length);
+    halfwayVisiblePicks.length > 0;
   const showHalfwaySetup = Boolean(halfwayPicker) && !showHalfwayResults;
   const resultLocations =
     halfwayResult?.halfwayLocations ?? halfwayLocationsRef.current;
@@ -1795,7 +1805,9 @@ export function Chat({
   useEffect(() => {
     // Manual Search scrolls the document. Pinning this nested overflow
     // port on every resize fights iOS keyboard/focus scrolling and flickers.
-    if (searchScreen) return;
+    // بيننا show-more appends cards in place; jumping to the end would
+    // hide the cafés that were already on screen.
+    if (searchScreen || showHalfwayResults) return;
     const list = listRef.current;
     const footer = footerRef.current;
     if (!list) return;
@@ -1818,7 +1830,7 @@ export function Chat({
     observer.observe(el);
     if (footer) observer.observe(footer);
     return () => observer.disconnect();
-  }, [messages, busy, meetHalfwayOpen, searchScreen]);
+  }, [messages, busy, meetHalfwayOpen, searchScreen, showHalfwayResults]);
 
   useLayoutEffect(() => {
     const wasOpen = searchWasOpenRef.current;
@@ -2126,7 +2138,7 @@ export function Chat({
             ) : null}
           </div>
           <MeetHalfwayResultCards
-            picks={halfwayResult.picks}
+            picks={halfwayVisiblePicks}
             language={landing}
             origin={resultOrigin}
           />
@@ -2138,7 +2150,7 @@ export function Chat({
                 halfwayMore: halfwayResult.halfwayMore,
                 paged: halfwayResult.halfwayPaged,
               })}
-              resetKey={halfwayResult.picks.map((pick) => pick.id).join(",")}
+              resetKey={halfwayVisiblePicks.map((pick) => pick.id).join(",")}
               packId={halfwayInvite?.id ?? halfwayWaitingId ?? undefined}
               feedbackSource={
                 halfwayInvite?.id || halfwayWaitingId
@@ -2147,17 +2159,14 @@ export function Chat({
                     : "host"
                   : "local"
               }
-              cafeCount={halfwayResult.picks.length}
-              shopIds={halfwayResult.picks.map((pick) => pick.id)}
+              cafeCount={halfwayVisiblePicks.length}
+              shopIds={halfwayVisiblePicks.map((pick) => pick.id)}
               onMore={() => {
                 const locations =
-                  halfwayResult.halfwayLocations ?? halfwayLocationsRef.current;
-                if (!locations) return;
-                if (halfwayResult.halfwayMore !== false) {
-                  sendMeetHalfway(locations, { more: true });
-                  return;
-                }
-                sendMeetHalfway(locations, { reroll: true });
+                  halfwayResult?.halfwayLocations ??
+                  halfwayLocationsRef.current;
+                if (!locations || halfwayResult?.halfwayMore === false) return;
+                sendMeetHalfway(locations, { more: true });
               }}
               onShareResults={
                 halfwayInvite?.id || halfwayWaitingId

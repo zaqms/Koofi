@@ -281,6 +281,26 @@ export function halfwayResultsFooterKind(input: {
   return null;
 }
 
+/**
+ * Results pages, oldest first. Show more appends the next ranked batch
+ * and keeps cafés already on screen. Duplicate ids (a reroll of the same
+ * shop) stay as the first time they appeared.
+ */
+export function accumulateHalfwayPicks<T extends { id: string }>(
+  pages: readonly (readonly T[])[],
+): T[] {
+  const seen = new Set<string>();
+  const picks: T[] = [];
+  for (const page of pages) {
+    for (const pick of page) {
+      if (!pick.id || seen.has(pick.id)) continue;
+      seen.add(pick.id);
+      picks.push(pick);
+    }
+  }
+  return picks;
+}
+
 export function halfwayPinFailCopy(
   language: Language,
   rows: readonly HalfwayPinInput[],

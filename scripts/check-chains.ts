@@ -2565,8 +2565,8 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "ae9a3a98d268636dbefc1657b29714edd7115db5b202ab8636e79d22f3748456",
-  `llms.txt headline follows the default catalog: ${llmsHash}`,
+  llmsHash === "fec46b5e7049f087624a058cc66bd88454059a06297021cca9a8ae7f5ea19ad4",
+  `llms.txt follows the listed API default and the ?view=all opt-in: ${llmsHash}`,
 );
 assert(
   llms.includes("592: 544 local, 48 chain branches"),

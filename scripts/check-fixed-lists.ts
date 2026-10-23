@@ -10,6 +10,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { FixedListBody } from "../components/fixed-list-body";
 import { isChainShop } from "../lib/chain-brands";
 import {
+  catalogViewFromQuery,
   directoryShopsInOrder,
   listListingShops,
   listRealShops,
@@ -65,8 +66,13 @@ assert(listRealShops().length === 647, "catalog is 647 after the 21 Oct trending
 assert(listListingShops().length === 592, "listing is 592 (10 trending adds 21 Oct + 14 Batch SD1 Al Shohda + 6 Batch S As Salam + 8 Batch R Al Qadisiyah + 7 trending adds 18 Oct + 1 Trace Al Mursalat + 12 Batch Q Ash Shifa + 14 Batch P Tuwaiq + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
 assert(listPublicShops().length === 592, "sit-down listing is 592");
 assert(
-  publicShopsItemList().numberOfItems === listRealShops().length,
-  "GET /api/shops includes every café page",
+  publicShopsItemList().numberOfItems === 592,
+  "GET /api/shops defaults to the listed 592",
+);
+assert(
+  publicShopsItemList(catalogViewFromQuery("all")).numberOfItems === listRealShops().length &&
+    listRealShops().length === 647,
+  "GET /api/shops?view=all is every café page (647)",
 );
 assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (Al Raqban and the Takhassusi street retired)");
 assert(listSitemapLocs().length === 1473, "sitemap is 1473 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN)");

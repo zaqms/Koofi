@@ -10,6 +10,7 @@ import {
   listListingDirectoryShops,
   listListingShops,
   listRealShops,
+  PUBLIC_API_DEFAULT_VIEW,
   selectCatalogShops,
 } from "../lib/catalog";
 import {
@@ -50,10 +51,12 @@ import {
   websiteJsonLd,
 } from "../lib/structured-data";
 import {
+  catalogViewForMcp,
   fetchShopDocument,
   listPublicDistrictSummaries,
   publicDistrictCatalog,
   searchPublicShops,
+  publicShopsAllApiUrl,
   searchShopResults,
 } from "../lib/mcp-catalog";
 
@@ -109,14 +112,57 @@ assert(apiShop.dateModified === "2026-09-09", "API dateModified");
 assert(publicShopPayload("not-a-shop") === null, "unknown id is null");
 
 const pages = listCatalogShops("pages");
-const list = publicShopsItemList();
+// Every café page: GET /api/shops?view=all (explicit opt-in only).
+const list = publicShopsItemList(catalogViewFromQuery("all"));
+const defaultApi = publicShopsItemList();
 const listedApi = publicShopsItemList("listing");
-assert(list["@type"] === "ItemList", "catalog API is ItemList");
-assert(list.numberOfItems === pages.length, "default API is every café page");
-assert(list.numberOfItems === listRealShops().length, "default API matches the sitemap café set");
+assert(list["@type"] === "ItemList" && defaultApi["@type"] === "ItemList", "catalog API is ItemList");
+assert(list.numberOfItems === pages.length, "?view=all is every café page");
+assert(list.numberOfItems === listRealShops().length, "?view=all matches the sitemap café set");
 assert(listedApi.numberOfItems === shops.length, "listing view keeps the sit-down directory");
-assert(catalogViewFromQuery(null) === "pages" && catalogViewFromQuery("all") === "pages", "missing view and all mean every café page");
+assert(
+  defaultApi.numberOfItems === shops.length &&
+    JSON.stringify(defaultApi) === JSON.stringify(listedApi),
+  "default API is the listed sit-down directory (identical to ?view=listing)",
+);
+assert(defaultApi.numberOfItems < list.numberOfItems, "default API is smaller than ?view=all");
+assert(PUBLIC_API_DEFAULT_VIEW === "listing", "public API default view is listing");
+assert(
+  catalogViewFromQuery(null) === "listing" &&
+    catalogViewFromQuery(undefined) === "listing" &&
+    catalogViewFromQuery("") === "listing" &&
+    catalogViewFromQuery("bogus") === "listing",
+  "missing or unknown view is the listed directory",
+);
+assert(
+  catalogViewFromQuery("all") === "pages" && catalogViewFromQuery("pages") === "pages",
+  "?view=all (alias pages) is every café page",
+);
 assert(catalogViewFromQuery("listing") === "listing", "listing view is explicit");
+assert(
+  catalogViewFromQuery("discovery") === "discovery" &&
+    catalogViewFromQuery("drive-through") === "drive-through",
+  "discovery and drive-through views are unchanged",
+);
+assert(
+  defaultApi.itemListElement.every(
+    (row) => !("catalogLane" in row.item),
+  ),
+  "default API has no drive-through-only rows",
+);
+assert(
+  list.itemListElement.some((row) => "catalogLane" in row.item && row.item.catalogLane === "drive-through") &&
+    list.itemListElement.some((row) => "isChain" in row.item && row.item.isChain === true),
+  "?view=all keeps catalogLane and isChain tags",
+);
+{
+  const route = readRepo("app/api/shops/route.ts");
+  assert(
+    route.includes('catalogViewFromQuery(new URL(request.url).searchParams.get("view"))') &&
+      route.includes("publicShopsItemList(view)"),
+    "GET /api/shops reads view through catalogViewFromQuery",
+  );
+}
 assert(
   readRepo("lib/picker.ts").includes('selectCatalogShops(real, "discovery")') &&
     !readRepo("lib/picker.ts").includes("isDriveThroughLane"),
@@ -136,7 +182,13 @@ assert(driveThrough.length > 0, "catalog has drive-through-only shops");
 for (const shop of driveThrough) {
   const record = publicShopRecord(shop, { includeContext: false });
   assert(record.catalogLane === "drive-through", `${shop.id} API row is tagged drive-through`);
-  assert(apiCafeIds.includes(shop.id), `${shop.id} is in the default API`);
+  assert(apiCafeIds.includes(shop.id), `${shop.id} is in ?view=all`);
+  assert(
+    !defaultApi.itemListElement.some(
+      (row) => "identifier" in row.item && row.item.identifier === shop.id,
+    ),
+    `${shop.id} stays out of the default API`,
+  );
   assert(
     !listedApi.itemListElement.some(
       (row) => "identifier" in row.item && row.item.identifier === shop.id,
@@ -206,7 +258,7 @@ assert(
   llms.includes(
     `${pages.length} café pages: ${pages.length - pageChains} local cafés and ${pageChains} chain branches`,
   ),
-  "llms.txt headline states the default catalog total and the local/chain split",
+  "llms.txt headline states the café page total and the local/chain split",
 );
 const listingChains = shops.filter((shop) => shop.isChain).length;
 assert(
@@ -492,8 +544,14 @@ assert(PUBLIC_MCP_ALIAS_PATH === "/mcp", "MCP alias is /mcp");
 assert(publicMcpUrl() === "https://wain.lol/api/mcp", "canonical MCP URL");
 
 const malqaPages = pages.filter((shop) => shop.neighborhood === "al-malqa");
-const malqaSearch = searchPublicShops("الملقا");
-assert(malqaSearch.length === malqaPages.length, "search الملقا matches every café page in the district");
+const malqaListed = shops.filter((shop) => shop.neighborhood === "al-malqa");
+const malqaSearchDefault = searchPublicShops("الملقا");
+assert(
+  malqaSearchDefault.map((shop) => shop.id).join(",") === malqaListed.map((shop) => shop.id).join(","),
+  "default search الملقا is the listed rows in the district",
+);
+const malqaSearch = searchPublicShops("الملقا", "all");
+assert(malqaSearch.length === malqaPages.length, "search الملقا with view all matches every café page in the district");
 assert(
   malqaSearch.every((shop) => shop.neighborhood === "al-malqa"),
   "search الملقا is al-malqa only",
@@ -513,11 +571,42 @@ assert(
   nameSearch.results[0] && nameSearch.results.every((row) => row.url.startsWith("https://wain.lol/c/")),
   "search urls are wain.lol cards",
 );
-assert(searchPublicShops("").length === pages.length, "empty search is every café page");
+assert(searchPublicShops("").length === shops.length, "empty default search is the listed directory");
 assert(
-  searchPublicShops("")[0]?.id === pages[0]?.id,
-  "empty search keeps directory order",
+  searchPublicShops("").map((shop) => shop.id).join(",") === shops.map((shop) => shop.id).join(","),
+  "empty default search keeps listed directory order",
 );
+assert(searchPublicShops("", "listing").length === shops.length, "search view listing is the listed directory");
+assert(searchPublicShops("", "all").length === pages.length, "empty search with view all is every café page");
+assert(
+  searchPublicShops("", "all")[0]?.id === pages[0]?.id,
+  "empty search with view all keeps directory order",
+);
+assert(
+  catalogViewForMcp(undefined) === "listing" &&
+    catalogViewForMcp("listing") === "listing" &&
+    catalogViewForMcp("all") === "pages",
+  "MCP view: omitted is listing, all is every café page",
+);
+assert(publicShopsAllApiUrl() === "https://wain.lol/api/shops?view=all", "MCP all-view resource URL");
+{
+  const mcpSrc = readRepo("lib/mcp-catalog.ts");
+  assert(
+    mcpSrc.includes("async ({ view }) => jsonToolResult(publicShopsItemList(catalogViewForMcp(view)))"),
+    "MCP list_shops defaults to listing and takes view all",
+  );
+  assert(
+    mcpSrc.includes("async ({ query, view }) => jsonToolResult(searchShopResults(query, view))"),
+    "MCP search takes the view",
+  );
+  assert(
+    mcpSrc.includes('text: JSON.stringify(publicShopsItemList("listing"))') &&
+      mcpSrc.includes('text: JSON.stringify(publicShopsItemList("pages"))') &&
+      mcpSrc.includes('"shops-all"'),
+    "MCP shops resource is listed; shops-all resource is every café page",
+  );
+  assert(!mcpSrc.includes('listCatalogShops("pages")'), "MCP enumerations default to the listed view");
+}
 
 const fetched = fetchShopDocument(sample.id);
 assert(fetched, "fetch returns a document");

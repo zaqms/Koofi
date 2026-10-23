@@ -6,6 +6,7 @@ import {
   listDriveThroughDirectoryShops,
   listListingDirectoryShops,
   listRealShops,
+  PUBLIC_API_DEFAULT_VIEW,
   type CatalogView,
 } from "./catalog";
 import { cityLabel, DEFAULT_LIVE_CITY } from "./cities";
@@ -229,7 +230,7 @@ export function listCatalogShops(
 
 /**
  * Sit-down directory: local specialty plus dine-in chains.
- * District JSON-LD and `GET /api/shops?view=listing`. Not the default API.
+ * District JSON-LD and the default `GET /api/shops` (also `?view=listing`).
  */
 export function listPublicShops(): Shop[] {
   return listCatalogShops("listing");
@@ -439,8 +440,9 @@ export function mostPopularItemListJsonLd(language: Language): ItemListJsonLd {
   };
 }
 
+/** `GET /api/shops` body. Defaults to the listed view; `pages` only on `?view=all`. */
 export function publicShopsItemList(
-  view: CatalogView = "pages",
+  view: CatalogView = PUBLIC_API_DEFAULT_VIEW,
 ): ItemListJsonLd {
   const shops = listCatalogShops(view);
   return {
@@ -532,7 +534,7 @@ export function buildLlmsTxt(): string {
     "",
     "## Machine-readable catalog",
     "",
-    `- GET ${publicShopsApiUrl()} — every café page (schema.org ItemList of CafeOrCoffeeShop), same ids as the sitemap. Drive-through-only shops are included and tagged catalogLane "drive-through". Chains include isChain. Filter with those fields, or GET ${publicShopsApiUrl()}?view=listing for the sit-down directory (${countLabel}). ?view=discovery is the homepage specialty feed (no chains). ?view=drive-through is the drive-through directory.`,
+    `- GET ${publicShopsApiUrl()} — the sit-down directory (schema.org ItemList of CafeOrCoffeeShop; ${countLabel}). Chains include isChain. GET ${publicShopsApiUrl()}?view=all is every café page (${pages.length}), same ids as the sitemap: drive-through-only shops are included there and tagged catalogLane "drive-through". ?view=discovery is the homepage specialty feed (no chains). ?view=drive-through is the drive-through directory.`,
     `- GET ${PUBLIC_SITE_URL}${PUBLIC_SHOPS_API_PATH}/{id} — one shop`,
     `- MCP (Streamable HTTP, public, no auth): ${publicMcpUrl()} (also ${publicMcpUrl(PUBLIC_MCP_ALIAS_PATH)})`,
     `- Cafe cards embed schema.org CafeOrCoffeeShop JSON-LD: ${PUBLIC_SITE_URL}/c/{id} and ${PUBLIC_SITE_URL}/en/c/{id}`,
@@ -542,8 +544,8 @@ export function buildLlmsTxt(): string {
     "",
     "CORS is open. No auth. Cacheable REST. No secrets.",
     "",
-    "MCP tools: list_shops and search match GET /api/shops (every café page). get_shop and fetch match GET /api/shops/{id}. list_shops_by_district is the sit-down district page (?view=listing), not drive-through-only rows.",
-    "MCP resources: https://wain.lol/api/shops , https://wain.lol/api/shops/{id} , wain://districts , wain://districts/{slug}.",
+    "MCP tools: list_shops and search match GET /api/shops (the sit-down directory); pass view \"all\" for every café page (GET /api/shops?view=all). get_shop and fetch match GET /api/shops/{id}. list_shops_by_district is the sit-down district page, not drive-through-only rows.",
+    "MCP resources: https://wain.lol/api/shops , https://wain.lol/api/shops?view=all , https://wain.lol/api/shops/{id} , wain://districts , wain://districts/{slug}.",
     "",
     "## Fields",
     "",

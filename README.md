@@ -50,7 +50,7 @@ Machine-readable catalog so agents can pull and cite **wain.lol** for Riyadh cof
 
 | Surface | What it is |
 | --- | --- |
-| `GET /api/shops` | Every café page (same ids as the sitemap). schema.org `ItemList` of `CafeOrCoffeeShop`. Drive-through-only rows include `catalogLane: "drive-through"`; chains include `isChain`. `?view=listing` is the previous sit-down directory, `?view=discovery` the homepage specialty feed, `?view=drive-through` the drive-through directory. CORS open for GET. `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400` |
+| `GET /api/shops` | The listed sit-down directory (local specialty plus dine-in chains; same as `?view=listing`). schema.org `ItemList` of `CafeOrCoffeeShop`; chains include `isChain`. `?view=all` (alias `?view=pages`) is every café page (same ids as the sitemap), only on that explicit opt-in: drive-through-only rows include `catalogLane: "drive-through"`; chains include `isChain`. `?view=discovery` is the homepage specialty feed, `?view=drive-through` the drive-through directory. An unknown `view` falls back to the listed default. CORS open for GET. `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=86400` |
 | `GET /api/shops/[id]` | One shop. 404 `{ "error": "not_found" }` if missing |
 | `/c/[id]` and `/en/c/[id]` | `CafeOrCoffeeShop` JSON-LD in `<script type="application/ld+json">`. Metadata only — cafe-card layout is unchanged |
 | `/coffee-shops/{slug}` and `/en/coffee-shops/{slug}` | `ItemList` JSON-LD of shops in that district |
@@ -83,17 +83,17 @@ Page JSON-LD uses schema.org `name` / `alternateName` / `address` for the page l
 
 ### MCP (same catalog)
 
-Public Streamable HTTP MCP at **`https://wain.lol/api/mcp`** (alias **`https://wain.lol/mcp`**). No auth. CORS open. `list_shops` matches `GET /api/shops` (every café page). `list_shops_by_district` is the sit-down directory, `listPublicShops()` / `?view=listing`.
+Public Streamable HTTP MCP at **`https://wain.lol/api/mcp`** (alias **`https://wain.lol/mcp`**). No auth. CORS open. `list_shops` and `search` match `GET /api/shops` (the listed sit-down directory) by default; pass `view: "all"` for every café page (`GET /api/shops?view=all`). `list_shops_by_district` is the sit-down directory for one district, `listPublicShops()`.
 
 | Tool | What it returns |
 | --- | --- |
-| `search` | ChatGPT-compatible `{ results: [{ id, title, url }] }` in directory order |
+| `search` | ChatGPT-compatible `{ results: [{ id, title, url }] }` in directory order (listed view; `view: "all"` for every café page) |
 | `fetch` | One shop as `{ id, title, text, url, metadata }` (`text` is the `/api/shops/{id}` JSON) |
-| `list_shops` | Full schema.org `ItemList` (identical to `GET /api/shops`) |
+| `list_shops` | schema.org `ItemList` (identical to `GET /api/shops`; `view: "all"` is identical to `GET /api/shops?view=all`) |
 | `get_shop` | One `CafeOrCoffeeShop` (identical to `GET /api/shops/{id}`) |
 | `list_shops_by_district` | Same records, filtered to a neighborhood slug |
 
-Resources: `https://wain.lol/api/shops`, `https://wain.lol/api/shops/{id}`, `wain://districts`, `wain://districts/{slug}`.
+Resources: `https://wain.lol/api/shops` (listed), `https://wain.lol/api/shops?view=all` (every café page), `https://wain.lol/api/shops/{id}`, `wain://districts`, `wain://districts/{slug}`.
 
 Connect ChatGPT / Claude / Gemini / Perplexity / Cursor with Streamable HTTP to `https://wain.lol/api/mcp`. Cite `https://wain.lol`.
 

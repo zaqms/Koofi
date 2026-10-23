@@ -4,7 +4,7 @@ import {
   type McpServer,
 } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { getShop } from "./catalog";
+import { getShop, PUBLIC_API_ALL_VIEW_PARAM, type CatalogView } from "./catalog";
 import { directoryNeighborhoods } from "./directory";
 import { isNeighborhoodId, NEIGHBORHOODS, neighborhoodLabel, streetShopIdsForAsk } from "./neighborhoods";
 import { PRODUCT_NAME, PUBLIC_SITE_URL, shopDisplayName } from "./product";
@@ -21,6 +21,29 @@ import {
   SCHEMA_CONTEXT,
 } from "./structured-data";
 import { NEIGHBORHOOD_IDS, type NeighborhoodId, type Shop } from "./types";
+
+/**
+ * MCP catalog view. Omitted is the listed sit-down directory, the same as the
+ * default `GET /api/shops`. `"all"` is every café page (`GET /api/shops?view=all`),
+ * with drive-through-only rows tagged `catalogLane` and chains tagged `isChain`.
+ */
+const mcpViewSchema = z
+  .enum(["listing", PUBLIC_API_ALL_VIEW_PARAM])
+  .optional()
+  .describe(
+    'Omit for the listed sit-down directory (same as GET /api/shops). Pass "all" for every café page, including drive-through-only rows (GET /api/shops?view=all).',
+  );
+
+export type McpCatalogView = z.infer<typeof mcpViewSchema>;
+
+export function catalogViewForMcp(view: McpCatalogView): CatalogView {
+  return view === PUBLIC_API_ALL_VIEW_PARAM ? "pages" : "listing";
+}
+
+/** `GET /api/shops?view=all`: every café page, explicit opt-in. */
+export function publicShopsAllApiUrl(): string {
+  return `${publicShopsApiUrl()}?view=${PUBLIC_API_ALL_VIEW_PARAM}`;
+}
 
 const READ_ONLY = {
   readOnlyHint: true,
@@ -82,9 +105,12 @@ function shopCitationUrl(shop: Shop): string {
   return `${PUBLIC_SITE_URL}/c/${shop.id}`;
 }
 
-/** Directory-order catalog filter. Every café page. No ranking, scores, or vibe picker. */
-export function searchPublicShops(query: string): Shop[] {
-  const shops = listCatalogShops("pages");
+/**
+ * Directory-order catalog filter. The listed sit-down directory by default;
+ * every café page only when the caller passes `"all"`. No ranking, scores, or vibe picker.
+ */
+export function searchPublicShops(query: string, view?: McpCatalogView): Shop[] {
+  const shops = listCatalogShops(catalogViewForMcp(view));
   const trimmed = query.trim();
   if (!trimmed) return shops;
 
@@ -119,9 +145,9 @@ export function searchPublicShops(query: string): Shop[] {
   });
 }
 
-export function searchShopResults(query: string) {
+export function searchShopResults(query: string, view?: McpCatalogView) {
   return {
-    results: searchPublicShops(query).map((shop) => ({
+    results: searchPublicShops(query, view).map((shop) => ({
       id: shop.id,
       title: shopTitle(shop),
       url: shopCitationUrl(shop),
@@ -189,16 +215,17 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: "Search shops",
       description:
-        "Search every wain.lol café page by shop name, catalog id, or district (Arabic or English). Same shops as GET https://wain.lol/api/shops, in directory order — not ranked. Drive-through-only shops are included. Returns ChatGPT-compatible { results: [{ id, title, url }] }. Cite the url. Prefer list_shops / get_shop when you want catalogLane and isChain.",
+        "Search wain.lol cafés by shop name, catalog id, or district (Arabic or English). Same shops as GET https://wain.lol/api/shops (the listed sit-down directory), in directory order — not ranked. Pass view \"all\" to search every café page, including drive-through-only shops (GET https://wain.lol/api/shops?view=all). Returns ChatGPT-compatible { results: [{ id, title, url }] }. Cite the url. Prefer list_shops / get_shop when you want catalogLane and isChain.",
       inputSchema: z.object({
         query: z
           .string()
           .describe("Shop name, catalog id, or Riyadh district (e.g. الملقا, Al Malqa)."),
+        view: mcpViewSchema,
       }),
       outputSchema: searchOutputSchema,
       annotations: READ_ONLY,
     },
-    async ({ query }) => jsonToolResult(searchShopResults(query)),
+    async ({ query, view }) => jsonToolResult(searchShopResults(query, view)),
   );
 
   server.registerTool(
@@ -227,11 +254,13 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: "List shops",
       description:
-        "Return every café page. Identical to GET https://wain.lol/api/shops: schema.org ItemList of CafeOrCoffeeShop. Drive-through-only shops include catalogLane \"drive-through\". Chains include isChain. The sit-down directory is GET /api/shops?view=listing. No hours, ratings, phone, price, reviews, images, or votes.",
-      inputSchema: z.object({}),
+        "Return the listed sit-down directory (local specialty plus dine-in chains). Identical to GET https://wain.lol/api/shops: schema.org ItemList of CafeOrCoffeeShop. Chains include isChain. Pass view \"all\" for every café page (identical to GET https://wain.lol/api/shops?view=all), where drive-through-only shops include catalogLane \"drive-through\". No hours, ratings, phone, price, reviews, images, or votes.",
+      inputSchema: z.object({
+        view: mcpViewSchema,
+      }),
       annotations: READ_ONLY,
     },
-    async () => jsonToolResult(publicShopsItemList()),
+    async ({ view }) => jsonToolResult(publicShopsItemList(catalogViewForMcp(view))),
   );
 
   server.registerTool(
@@ -259,7 +288,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: "List shops by district",
       description:
-        "Return the sit-down directory for one Riyadh district (local specialty plus dine-in chains), the same rows as the district page. Drive-through-only shops stay on GET /api/shops with catalogLane \"drive-through\" and off this list. district is the catalog slug (al-malqa, hittin, olaya, …).",
+        "Return the sit-down directory for one Riyadh district (local specialty plus dine-in chains), the same rows as the district page. Drive-through-only shops stay on GET /api/shops?view=all with catalogLane \"drive-through\" and off this list. district is the catalog slug (al-malqa, hittin, olaya, …).",
       inputSchema: z.object({
         district: z
           .string()
@@ -281,7 +310,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     {
       title: `${PRODUCT_NAME} curated catalog`,
       description:
-        "Full curated Riyadh coffee catalog. Same JSON as GET /api/shops.",
+        "Listed sit-down Riyadh coffee directory. Same JSON as GET /api/shops. Every café page is the shops-all resource (GET /api/shops?view=all).",
       mimeType: "application/ld+json",
     },
     async (uri) => ({
@@ -289,7 +318,27 @@ export function registerWainMcpCatalog(server: McpServer): void {
         {
           uri: uri.href,
           mimeType: "application/ld+json",
-          text: JSON.stringify(publicShopsItemList()),
+          text: JSON.stringify(publicShopsItemList("listing")),
+        },
+      ],
+    }),
+  );
+
+  server.registerResource(
+    "shops-all",
+    publicShopsAllApiUrl(),
+    {
+      title: `${PRODUCT_NAME} every café page`,
+      description:
+        "Every café page, including drive-through-only rows (catalogLane \"drive-through\") and chains (isChain). Same JSON as GET /api/shops?view=all.",
+      mimeType: "application/ld+json",
+    },
+    async (uri) => ({
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "application/ld+json",
+          text: JSON.stringify(publicShopsItemList("pages")),
         },
       ],
     }),
@@ -299,7 +348,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
     "shop",
     new ResourceTemplate(`${publicShopsApiUrl()}/{id}`, {
       list: async () => ({
-        resources: listCatalogShops("pages").map((shop) => ({
+        resources: listCatalogShops("listing").map((shop) => ({
           uri: publicShopsApiUrl(shop.id),
           name: shop.id,
           title: shopTitle(shop),
@@ -309,7 +358,7 @@ export function registerWainMcpCatalog(server: McpServer): void {
       }),
       complete: {
         id: (value) =>
-          listCatalogShops("pages")
+          listCatalogShops("listing")
             .map((shop) => shop.id)
             .filter((id) => id.toLowerCase().startsWith(value.toLowerCase())),
       },

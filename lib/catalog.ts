@@ -80,10 +80,11 @@ export function shopCardNumber(id: string): string {
  *
  * - `pages` — every real shop with a café page (`/c/{id}` in the sitemap).
  *   Drive-through-only shops stay in this set and are tagged
- *   `catalogLane: "drive-through"`. This is the default `GET /api/shops`.
+ *   `catalogLane: "drive-through"`. Public API and MCP only on explicit
+ *   opt-in: `GET /api/shops?view=all` (alias `?view=pages`).
  * - `listing` — the sit-down directory: local specialty plus dine-in
  *   chains. Drive-through-only rows stay out. District pages, browse,
- *   and `GET /api/shops?view=listing` (the previous API default).
+ *   and the default `GET /api/shops` and MCP catalog tools.
  * - `discovery` — homepage specialty feed and Most Popular. Drops every
  *   chain and every drive-through-only row on purpose. Chains stay on
  *   district listings and in `pages`.
@@ -116,8 +117,16 @@ export function selectCatalogShops<T extends Shop>(
   }
 }
 
+/** Default view for the public `GET /api/shops` and the MCP catalog tools. */
+export const PUBLIC_API_DEFAULT_VIEW = "listing" satisfies CatalogView;
+
+/** Explicit opt-in query value for every café page (`?view=all`). */
+export const PUBLIC_API_ALL_VIEW_PARAM = "all";
+
 /**
- * `GET /api/shops` query. Missing, `pages`, and `all` are every café page.
+ * `GET /api/shops` query. Missing (or unknown) is the listed sit-down
+ * directory. `all` (alias `pages`) is every café page, tagged with
+ * `catalogLane` / `isChain`, and only on that explicit opt-in.
  * `listing`, `discovery`, and `drive-through` are the named views above.
  */
 export function catalogViewFromQuery(
@@ -130,7 +139,10 @@ export function catalogViewFromQuery(
   ) {
     return value;
   }
-  return "pages";
+  if (value === PUBLIC_API_ALL_VIEW_PARAM || value === "pages") {
+    return "pages";
+  }
+  return PUBLIC_API_DEFAULT_VIEW;
 }
 
 export function listRealShops(city: City = DEFAULT_LIVE_CITY): Shop[] {

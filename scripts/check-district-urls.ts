@@ -1517,7 +1517,7 @@ const MALAZ_REFILL = {
     listDriveThroughDirectoryShops().some((shop) => shop.id === "coffee-address-al-murabba") &&
       listDriveThroughDirectoryShops().some((shop) => shop.id === "tim-hortons-king-fahd-cube-al-murabba") &&
       !listDriveThroughDirectoryShops().some((shop) => shop.id === "starbucks-king-fahd-branch-rd-al-murabba"),
-    "Coffee Address and Tim Hortons King Fahd Cube are on the Drive-through directory; Starbucks King Fahd Branch Rd is not (no verified lane)",
+    "Coffee Address and Tim Hortons King Fahd Cube are on the Drive-through directory; Starbucks King Fahd Branch Rd is not (it has a lane, but Starbucks stays untagged under the 16 Sep rule; Tamimi is the only carve-out)",
   );
   assert(neighborhoodLabel("al-murabba", "ar") === "المربع", "al-murabba Arabic label");
   assert(neighborhoodLabel("al-murabba", "en") === "Al Murabba", "al-murabba English label");

@@ -1197,7 +1197,9 @@ for (const [ask, id] of [
 }
 // Batch MR1 (23 Oct 2026): Al Murabba (المربع) — 6 local specialty (Cathy Rose, P3, Companions and Square House letter
 // tiles; Almarfa and Marthad TikTok marks) + 3 listed chains on the catalog marks. Tim Hortons King Fahd Cube has a verified
-// lane (moment tag, no lane, like Tim Hortons Shubra); Starbucks King Fahd Branch Rd has no verified lane, so no tag.
+// lane (moment tag, no lane, like Tim Hortons Shubra); Starbucks King Fahd Branch Rd has a working lane
+// (QA r1: Google drive-through hours, DRIVE THRU / ORDER signs, pick-up window) but stays untagged under the 16 Sep
+// no-drive-through-tag-on-Starbucks rule; Starbucks Tamimi is the only carve-out (AJ, 19 Oct). Coffee Bean IBDAA has no lane.
 // Coffee Address (DT lane) leaves the district page once specialty fills it.
 {
   const localIds = [
@@ -1228,7 +1230,7 @@ for (const [ask, id] of [
   assert(listDriveThroughDirectoryShops().some((row) => row.id === th.id), "Tim Hortons King Fahd Cube is on the Drive-through directory");
   for (const id of ["starbucks-king-fahd-branch-rd-al-murabba", "coffee-bean-tea-leaf-ibdaa-al-murabba"] as const) {
     const shop = getShop(id)!;
-    assert(!shop.momentTags.includes("drive-through") && !listDriveThroughDirectoryShops().some((row) => row.id === id), `${id} has no drive-through tag (no verified lane)`);
+    assert(!shop.momentTags.includes("drive-through") && !listDriveThroughDirectoryShops().some((row) => row.id === id), `${id} has no drive-through tag (Starbucks: 16 Sep rule, lane exists; Coffee Bean: no lane)`);
   }
   for (const id of localIds) {
     const shop = getShop(id);
@@ -1756,7 +1758,7 @@ const SIT_DOWN_ONLY_CHAINS = new Set<string>([
   // 21 Oct 2026: Namq (chain, Amjad via Ajz) — both rows are sit-down cafés, never on the drive-through lane.
   "namq-al-malqa",
   "namq-as-salam",
-  // Batch MR1 (23 Oct 2026) Al Murabba: sit-down chains; no verified drive-through lane at Starbucks King Fahd Branch Rd (Places has no driveThrough field), so no tag.
+  // Batch MR1 (23 Oct 2026) Al Murabba: sit-down chains; Starbucks King Fahd Branch Rd has a working lane but stays untagged under the 16 Sep Starbucks rule (Tamimi is the only carve-out).
   "starbucks-king-fahd-branch-rd-al-murabba",
   "coffee-bean-tea-leaf-ibdaa-al-murabba",
 ]);

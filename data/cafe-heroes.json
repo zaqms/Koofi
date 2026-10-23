@@ -17824,20 +17824,6 @@
         "displayName": "Cathy Rose Cafe كاثي روز كوفي",
         "uri": "https://maps.google.com/maps/contrib/114145391197803018300"
       }
-    },
-    {
-      "src": "/cafe-heroes/cathy-rose-cafe-al-murabba/3.jpg",
-      "attribution": {
-        "displayName": "Cathy Rose Cafe كاثي روز كوفي",
-        "uri": "https://maps.google.com/maps/contrib/114145391197803018300"
-      }
-    },
-    {
-      "src": "/cafe-heroes/cathy-rose-cafe-al-murabba/4.jpg",
-      "attribution": {
-        "displayName": "منى العمودي",
-        "uri": "https://maps.google.com/maps/contrib/110506779229416698581"
-      }
     }
   ],
   "p3-coffee-shop-al-murabba": [
@@ -17850,20 +17836,6 @@
     },
     {
       "src": "/cafe-heroes/p3-coffee-shop-al-murabba/2.jpg",
-      "attribution": {
-        "displayName": "P3 coffee shop",
-        "uri": "https://maps.google.com/maps/contrib/116723303289594127141"
-      }
-    },
-    {
-      "src": "/cafe-heroes/p3-coffee-shop-al-murabba/3.jpg",
-      "attribution": {
-        "displayName": "P3 coffee shop",
-        "uri": "https://maps.google.com/maps/contrib/116723303289594127141"
-      }
-    },
-    {
-      "src": "/cafe-heroes/p3-coffee-shop-al-murabba/4.jpg",
       "attribution": {
         "displayName": "P3 coffee shop",
         "uri": "https://maps.google.com/maps/contrib/116723303289594127141"
@@ -18026,13 +17998,6 @@
       "attribution": {
         "displayName": "yayha Mohammad",
         "uri": "https://maps.google.com/maps/contrib/108819117669756449601"
-      }
-    },
-    {
-      "src": "/cafe-heroes/coffee-bean-tea-leaf-ibdaa-al-murabba/4.jpg",
-      "attribution": {
-        "displayName": "ذا كوفي بين اند تي ليف",
-        "uri": "https://maps.google.com/maps/contrib/111277729947772988062"
       }
     }
   ]

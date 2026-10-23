@@ -823,17 +823,17 @@ const TRENDING_1021_HERO_COUNTS: Record<string, number> = {
   "harmony-cafe-al-nakheel": 3,
 };
 const TRENDING_1021_IDS = Object.keys(TRENDING_1021_HERO_COUNTS);
-/** Batch MR1 (23 Oct 2026): Al Murabba — Scout's Places frames, hand-ordered; promo graphics dropped (Tim Hortons King Fahd Cube idx 1, Square House idx 1). 0 Dev Places calls. */
+/** Batch MR1 (23 Oct 2026): Al Murabba — Scout's Places frames, hand-ordered; promo graphics dropped (Tim Hortons King Fahd Cube idx 1, Square House idx 1); r2 (QA L3) drops P3 idx 1 + 2 (owner promo / render), Cathy Rose idx 1 + 3 (stock-looking latte, near-duplicate storefront) and Coffee Bean IBDAA idx 1 (generic portafilter). 0 Dev Places calls. */
 const BATCH_MR1_HERO_COUNTS: Record<string, number> = {
   "almarfa-al-murabba": 4,
-  "cathy-rose-cafe-al-murabba": 4,
-  "p3-coffee-shop-al-murabba": 4,
+  "cathy-rose-cafe-al-murabba": 2,
+  "p3-coffee-shop-al-murabba": 2,
   "marthad-specialty-coffee-al-murabba": 4,
   "companions-cafe-al-murabba": 4,
   "square-house-cafe-al-murabba": 3,
   "tim-hortons-king-fahd-cube-al-murabba": 3,
   "starbucks-king-fahd-branch-rd-al-murabba": 4,
-  "coffee-bean-tea-leaf-ibdaa-al-murabba": 4,
+  "coffee-bean-tea-leaf-ibdaa-al-murabba": 3,
 };
 const BATCH_MR1_IDS = Object.keys(BATCH_MR1_HERO_COUNTS);
 

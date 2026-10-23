@@ -63578,6 +63578,131 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "kutra-an-nazhah",
+      "nameAr": "كُترة",
+      "nameEn": "KUTRA",
+      "city": "riyadh",
+      "neighborhood": "an-nazhah",
+      "neighborhoodAr": "النزهة",
+      "vibeTags": [
+        "محمصة",
+        "قهوة"
+      ],
+      "momentTags": [
+        "roaster",
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efd007544e16f:0x6de908e47c4c0ed4!8m2!3d24.760758!4d46.716149099999996",
+      "pin": {
+        "lat": 24.760758,
+        "lng": 46.716149099999996
+      },
+      "logoUrl": "/logos/kutra-an-nazhah.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJb-FEdQD9Lj4R1A5MfOQI6W0",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:30 AM – 1:00 AM",
+          "Tuesday: 6:30 AM – 1:00 AM",
+          "Wednesday: 6:30 AM – 1:00 AM",
+          "Thursday: 6:30 AM – 1:00 AM",
+          "Friday: 6:30 AM – 1:00 AM",
+          "Saturday: 6:30 AM – 1:00 AM",
+          "Sunday: 6:30 AM – 1:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 1,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 2,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 3,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 4,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 30
+            },
+            "close": {
+              "day": 0,
+              "hour": 1,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

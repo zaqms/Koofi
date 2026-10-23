@@ -48,7 +48,7 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 64, `expected 64 live districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${live.length}`);
+assert(live.length === 65, `expected 65 live districts (+ Al Murabba with specialty, Batch MR1; Al Raqban folded into As Salam; the Takhassusi street retired), got ${live.length}`);
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",

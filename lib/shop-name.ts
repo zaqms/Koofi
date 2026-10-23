@@ -322,6 +322,14 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "half-million-al-shohda": ["half million shohda", "half million shuhada", "هاف مليون الشهداء"],
   "tim-hortons-granada-mall-al-shohda": ["tim hortons granada", "تيم هورتنز غرناطة"],
   "caribou-granada-mall-al-shohda": ["caribou granada", "كاريبو غرناطة"],
+  // Batch MR1 (23 Oct 2026), Al Murabba: the spelling on Almarfa's own mark («المرفأ»), and the
+  // branch names of the three chain rows (catalog names stay the plain brand).
+  "almarfa-al-murabba": ["المرفأ", "المرفا", "al marfa", "almarfa cafe"],
+  "square-house-cafe-al-murabba": ["square house", "square house cafe", "سكوير هاوس", "دوار المربع", "كافيه دوار المربع"],
+  "p3-coffee-shop-al-murabba": ["p3 coffee", "p3 coffee shop", "بي ثري", "بي ٣"],
+  "tim-hortons-king-fahd-cube-al-murabba": ["tim hortons king fahd", "tim hortons cube", "tim hortons murabba", "tim hortons al murabba", "تيم هورتنز المربع", "تيم هورتنز الملك فهد"],
+  "starbucks-king-fahd-branch-rd-al-murabba": ["starbucks king fahd", "starbucks murabba", "starbucks al murabba", "ستاربكس المربع", "ستاربكس الملك فهد"],
+  "coffee-bean-tea-leaf-ibdaa-al-murabba": ["coffee bean ibdaa", "coffee bean murabba", "coffee bean al murabba", "كوفي بين ابداع", "كوفي بين إبداع", "كوفي بين المربع"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -439,6 +447,12 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // Batch MR1 (23 Oct 2026): everyday words never pin an Al Murabba row alone (square / house / دوار,
+  // rose, shop / coffee shop); the Coffee Bean IBDAA row blocks the same bare tokens as Namar.
+  "square-house-cafe-al-murabba": ["square", "house", "دوار", "سكوير", "هاوس", "square cafe", "house cafe"],
+  "cathy-rose-cafe-al-murabba": ["rose", "روز", "rose cafe"],
+  "p3-coffee-shop-al-murabba": ["shop", "coffee shop", "شوب", "كوفي شوب"],
+  "coffee-bean-tea-leaf-ibdaa-al-murabba": ["bean", "tea", "leaf", "bean tea", "tea leaf", "coffee bean", "ذا", "بين", "آند", "اند", "تي", "ليف", "بين آند", "بين اند"],
 };
 
 function chainBrandIdForShop(

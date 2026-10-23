@@ -823,6 +823,19 @@ const TRENDING_1021_HERO_COUNTS: Record<string, number> = {
   "harmony-cafe-al-nakheel": 3,
 };
 const TRENDING_1021_IDS = Object.keys(TRENDING_1021_HERO_COUNTS);
+/** Batch MR1 (23 Oct 2026): Al Murabba — Scout's Places frames, hand-ordered; promo graphics dropped (Tim Hortons King Fahd Cube idx 1, Square House idx 1). 0 Dev Places calls. */
+const BATCH_MR1_HERO_COUNTS: Record<string, number> = {
+  "almarfa-al-murabba": 4,
+  "cathy-rose-cafe-al-murabba": 4,
+  "p3-coffee-shop-al-murabba": 4,
+  "marthad-specialty-coffee-al-murabba": 4,
+  "companions-cafe-al-murabba": 4,
+  "square-house-cafe-al-murabba": 3,
+  "tim-hortons-king-fahd-cube-al-murabba": 3,
+  "starbucks-king-fahd-branch-rd-al-murabba": 4,
+  "coffee-bean-tea-leaf-ibdaa-al-murabba": 4,
+};
+const BATCH_MR1_IDS = Object.keys(BATCH_MR1_HERO_COUNTS);
 
 
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
@@ -898,6 +911,7 @@ const batchRQdHeroIds = BATCH_R_QD_IDS.filter((id) => bakedHeroes[id]);
 const batchSAsHeroIds = BATCH_S_AS_IDS.filter((id) => bakedHeroes[id]);
 const batchSd1ShHeroIds = BATCH_SD1_SH_IDS.filter((id) => bakedHeroes[id]);
 const trending1021HeroIds = TRENDING_1021_IDS.filter((id) => bakedHeroes[id]);
+const batchMr1HeroIds = BATCH_MR1_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -935,8 +949,9 @@ assert(
       batchRQdHeroIds.length +
       batchSAsHeroIds.length +
       batchSd1ShHeroIds.length +
-      trending1021HeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar, P Tuwaiq, Q Ash Shifa, the Trace Al Mursalat AJ add and the 18 Oct and 21 Oct trending adds and R Al Qadisiyah merge in",
+      trending1021HeroIds.length +
+      batchMr1HeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar, P Tuwaiq, Q Ash Shifa, the Trace Al Mursalat AJ add and the 18 Oct and 21 Oct trending adds and R Al Qadisiyah and MR1 Al Murabba merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -975,6 +990,7 @@ assert(batchRQdHeroIds.length === 8, "Batch R Al Qadisiyah hero set is complete 
 assert(batchSAsHeroIds.length === 6, "Batch S As Salam hero set is complete (6)");
 assert(batchSd1ShHeroIds.length === 14, "Batch SD1 Al Shohda hero set is complete (14)");
 assert(trending1021HeroIds.length === 10, "21 Oct trending adds hero sets are present (10)");
+assert(batchMr1HeroIds.length === 9, "Batch MR1 Al Murabba hero set is complete (9)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],
@@ -1121,6 +1137,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH_S_AS_HERO_COUNTS[id] != null) return BATCH_S_AS_HERO_COUNTS[id]!;
   if (BATCH_SD1_SH_HERO_COUNTS[id] != null) return BATCH_SD1_SH_HERO_COUNTS[id]!;
   if (TRENDING_1021_HERO_COUNTS[id] != null) return TRENDING_1021_HERO_COUNTS[id]!;
+  if (BATCH_MR1_HERO_COUNTS[id] != null) return BATCH_MR1_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

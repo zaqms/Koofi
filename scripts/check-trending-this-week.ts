@@ -356,7 +356,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1473, `sitemap is 1473 (+ 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN), got ${locs.length}`);
+assert(locs.length === 1491, `sitemap is 1491 (+ 9 Batch MR1 Al Murabba cafés × AR/EN; + 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

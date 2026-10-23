@@ -464,8 +464,8 @@ assert(
   "DT lane (catalogLane === drive-through) is 54",
 );
 assert(
-  listDriveThroughDirectoryShops().length === 75,
-  "Drive-through directory is 54 lane rows plus moment-tagged sit-down rows (74 with Tim Hortons Shubra, Batch F; 75 with Starbucks Tamimi Al Qadisiyah, Batch R)",
+  listDriveThroughDirectoryShops().length === 76,
+  "Drive-through directory is 54 lane rows plus moment-tagged sit-down rows (74 with Tim Hortons Shubra, Batch F; 75 with Starbucks Tamimi Al Qadisiyah, Batch R; 76 with Tim Hortons King Fahd Cube Al Murabba, Batch MR1)",
 );
 assert(
   listDriveThroughDirectoryShops().every((shop) =>

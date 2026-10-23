@@ -189,9 +189,10 @@ assert(areas.includes("al-aziziyah"), "directory includes al-aziziyah");
 for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwaidi"] as const) {
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
-assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(areas.includes("al-murabba"), "directory includes al-murabba (Batch MR1: specialty replaces the DT-lane fallback)");
+assert(areas.length === 65, `expected 65 districts (+ Al Murabba with specialty, Batch MR1; Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
+assert(listDiscoveryShops().length === 550, `specialty discovery is 550 (6 Batch MR1 Al Murabba local + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 656, `catalog is 656 after Batch MR1 (9 Al Murabba), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -1504,10 +1505,19 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-murabba");
-  assert(rows.length === 1, `al-murabba has 1 DT-lane shop, got ${rows.length}`);
+  // Batch MR1 (23 Oct 2026): 6 local specialty + 3 listed chains, so the DT-lane fallback (Coffee Address) no longer fills the page.
+  assert(rows.length === 9, `al-murabba has 9 shops (6 local + 3 chains, Batch MR1), got ${rows.length}`);
+  assert(rows.filter((row) => !row.isChain).length === 6, "al-murabba keeps 6 local cafés (Batch MR1)");
+  assert(rows.every((row) => row.neighborhood === "al-murabba"), "al-murabba rows stay in district");
   assert(
-    rows.some((shop) => shop.id === "coffee-address-al-murabba"),
-    "al-murabba includes coffee-address-al-murabba",
+    !rows.some((shop) => shop.id === "coffee-address-al-murabba"),
+    "coffee-address-al-murabba (DT lane) drops off once al-murabba has specialty",
+  );
+  assert(
+    listDriveThroughDirectoryShops().some((shop) => shop.id === "coffee-address-al-murabba") &&
+      listDriveThroughDirectoryShops().some((shop) => shop.id === "tim-hortons-king-fahd-cube-al-murabba") &&
+      !listDriveThroughDirectoryShops().some((shop) => shop.id === "starbucks-king-fahd-branch-rd-al-murabba"),
+    "Coffee Address and Tim Hortons King Fahd Cube are on the Drive-through directory; Starbucks King Fahd Branch Rd is not (it has a lane, but Starbucks stays untagged under the 16 Sep rule; Tamimi is the only carve-out)",
   );
   assert(neighborhoodLabel("al-murabba", "ar") === "المربع", "al-murabba Arabic label");
   assert(neighborhoodLabel("al-murabba", "en") === "Al Murabba", "al-murabba English label");
@@ -1592,7 +1602,7 @@ const MALAZ_REFILL = {
 
 {
   const dt = listDriveThroughDirectoryShops();
-  assert(dt.length === 75, `Drive-through directory (moment tag) is 75 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah), got ${dt.length}`);
+  assert(dt.length === 76, `Drive-through directory (moment tag) is 76 (71 + Coffee Address and dr.CAFE As Suwaidi + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah + Tim Hortons King Fahd Cube Al Murabba), got ${dt.length}`);
   assert(
     listRealShops().filter(isDriveThroughLane).length === 54,
     `DT lane (catalogLane === "drive-through") is 54, got ${listRealShops().filter(isDriveThroughLane).length}`,
@@ -2092,7 +2102,8 @@ const scoutPack: {
     | "al-mursalat"
     | "an-nafal"
     | "king-salman"
-    | "as-suwaidi";
+    | "as-suwaidi"
+    | "al-murabba";
   vibe: string[];
   moments: string[];
   logoUrl?: string;
@@ -6838,6 +6849,120 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // Batch MR1 (23 Oct 2026): Al Murabba — 6 local (Cathy Rose, P3, Companions and Square House letter tiles; Almarfa and Marthad TikTok marks) + Tim Hortons King Fahd Cube (sit-down + drive-through, wordmark), Starbucks King Fahd Branch Rd and The Coffee Bean & Tea Leaf IBDAA Center (sit-down chains on the catalog marks).
+  {
+    id: "almarfa-al-murabba",
+    hex: "0x3e2f05001a1378af:0xb0536abfb97530b6",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/almarfa-al-murabba.jpg",
+    pin: { lat: 24.668209599999997, lng: 46.7002281 },
+    coordsInUrl: true,
+    placeId: "ChIJr3gTGgAFLz4RtjB1ub9qU7A",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "cathy-rose-cafe-al-murabba",
+    hex: "0x3e2f050053229f37:0x9eacff7aea7d860a",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6607576, lng: 46.7122556 },
+    coordsInUrl: true,
+    placeId: "ChIJN58iUwAFLz4RCoZ96nr_rJ4",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "p3-coffee-shop-al-murabba",
+    hex: "0x3e2f05f7f1c45929:0x823981758f6e4686",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6585637, lng: 46.704353499999996 },
+    coordsInUrl: true,
+    placeId: "ChIJKVnE8fcFLz4RhkZuj3WBOYI",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "marthad-specialty-coffee-al-murabba",
+    hex: "0x3e2f05d3786140e1:0x8800083bcfa8c528",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/marthad-specialty-coffee-al-murabba.jpg",
+    pin: { lat: 24.6599847, lng: 46.704312599999994 },
+    coordsInUrl: true,
+    placeId: "ChIJ4UBheNMFLz4RKMWozzsIAIg",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "companions-cafe-al-murabba",
+    hex: "0x3e2f050c92adc387:0xa17934f043fcf29a",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6622864, lng: 46.7083987 },
+    coordsInUrl: true,
+    placeId: "ChIJh8OtkgwFLz4RmvL8Q_A0eaE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "square-house-cafe-al-murabba",
+    hex: "0x3e2f053f16ac6e57:0xc32d66ea42f254fb",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6580998, lng: 46.705046599999996 },
+    coordsInUrl: true,
+    placeId: "ChIJV26sFj8FLz4R-1TyQupmLcM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "tim-hortons-king-fahd-cube-al-murabba",
+    hex: "0x3e2f05e19fe73603:0x97b10033c5854e96",
+    neighborhood: "al-murabba",
+    vibe: ["طلبات السيارة"],
+    moments: ["drive-through"],
+    logoUrl: "/logos/tim-hortons-wordmark.png",
+    pin: { lat: 24.645666199999997, lng: 46.7036198 },
+    coordsInUrl: true,
+    placeId: "ChIJAzbnn-EFLz4Rlk6FxTMAsZc",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "starbucks-king-fahd-branch-rd-al-murabba",
+    hex: "0x3e2f0591ca26b47f:0x7dab6baa94d959b6",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/starbucks-mark.png",
+    pin: { lat: 24.646169999999998, lng: 46.703401 },
+    coordsInUrl: true,
+    placeId: "ChIJf7QmypEFLz4RtlnZlKprq30",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "coffee-bean-tea-leaf-ibdaa-al-murabba",
+    hex: "0x3e2f056328d3fb33:0x6e634573690a5ef8",
+    neighborhood: "al-murabba",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-bean-mark.png",
+    pin: { lat: 24.6651875, lng: 46.7081875 },
+    coordsInUrl: true,
+    placeId: "ChIJM_vTKGMFLz4R-F4KaXNFY24",
     dineIn: true,
     outdoorSeating: null,
   },

@@ -17779,5 +17779,226 @@
         "uri": "https://maps.google.com/maps/contrib/115286003376762679227"
       }
     }
+  ],
+  "almarfa-al-murabba": [
+    {
+      "src": "/cafe-heroes/almarfa-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "1981 KSA",
+        "uri": "https://maps.google.com/maps/contrib/113934366401579190196"
+      }
+    },
+    {
+      "src": "/cafe-heroes/almarfa-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "Heem _Aziz",
+        "uri": "https://maps.google.com/maps/contrib/104699439930557668857"
+      }
+    },
+    {
+      "src": "/cafe-heroes/almarfa-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "Fahad",
+        "uri": "https://maps.google.com/maps/contrib/117946118149732592612"
+      }
+    },
+    {
+      "src": "/cafe-heroes/almarfa-al-murabba/4.jpg",
+      "attribution": {
+        "displayName": "Ghadah khalid",
+        "uri": "https://maps.google.com/maps/contrib/105094585748265610034"
+      }
+    }
+  ],
+  "cathy-rose-cafe-al-murabba": [
+    {
+      "src": "/cafe-heroes/cathy-rose-cafe-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "Cathy Rose Cafe كاثي روز كوفي",
+        "uri": "https://maps.google.com/maps/contrib/114145391197803018300"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cathy-rose-cafe-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "Cathy Rose Cafe كاثي روز كوفي",
+        "uri": "https://maps.google.com/maps/contrib/114145391197803018300"
+      }
+    }
+  ],
+  "p3-coffee-shop-al-murabba": [
+    {
+      "src": "/cafe-heroes/p3-coffee-shop-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "P3 coffee shop",
+        "uri": "https://maps.google.com/maps/contrib/116723303289594127141"
+      }
+    },
+    {
+      "src": "/cafe-heroes/p3-coffee-shop-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "P3 coffee shop",
+        "uri": "https://maps.google.com/maps/contrib/116723303289594127141"
+      }
+    }
+  ],
+  "marthad-specialty-coffee-al-murabba": [
+    {
+      "src": "/cafe-heroes/marthad-specialty-coffee-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "Zeco Riyadh",
+        "uri": "https://maps.google.com/maps/contrib/115431763046567551933"
+      }
+    },
+    {
+      "src": "/cafe-heroes/marthad-specialty-coffee-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "مرثد Speciality coffee",
+        "uri": "https://maps.google.com/maps/contrib/109450960195482722991"
+      }
+    },
+    {
+      "src": "/cafe-heroes/marthad-specialty-coffee-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "مرثد Speciality coffee",
+        "uri": "https://maps.google.com/maps/contrib/109450960195482722991"
+      }
+    },
+    {
+      "src": "/cafe-heroes/marthad-specialty-coffee-al-murabba/4.jpg",
+      "attribution": {
+        "displayName": "مرثد Speciality coffee",
+        "uri": "https://maps.google.com/maps/contrib/109450960195482722991"
+      }
+    }
+  ],
+  "companions-cafe-al-murabba": [
+    {
+      "src": "/cafe-heroes/companions-cafe-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "كافية الصحاب & companies cafe",
+        "uri": "https://maps.google.com/maps/contrib/100230688229590657415"
+      }
+    },
+    {
+      "src": "/cafe-heroes/companions-cafe-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "كافية الصحاب & companies cafe",
+        "uri": "https://maps.google.com/maps/contrib/100230688229590657415"
+      }
+    },
+    {
+      "src": "/cafe-heroes/companions-cafe-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "كافية الصحاب & companies cafe",
+        "uri": "https://maps.google.com/maps/contrib/100230688229590657415"
+      }
+    },
+    {
+      "src": "/cafe-heroes/companions-cafe-al-murabba/4.jpg",
+      "attribution": {
+        "displayName": "Mahmoud Fouad",
+        "uri": "https://maps.google.com/maps/contrib/111123186153286755420"
+      }
+    }
+  ],
+  "square-house-cafe-al-murabba": [
+    {
+      "src": "/cafe-heroes/square-house-cafe-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "Tamer Khalaf",
+        "uri": "https://maps.google.com/maps/contrib/112956008970071993321"
+      }
+    },
+    {
+      "src": "/cafe-heroes/square-house-cafe-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "Square House Cafe مقهى دوار المربع",
+        "uri": "https://maps.google.com/maps/contrib/114118356702456065856"
+      }
+    },
+    {
+      "src": "/cafe-heroes/square-house-cafe-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "رمزي شراحيلي",
+        "uri": "https://maps.google.com/maps/contrib/115965646216856403655"
+      }
+    }
+  ],
+  "tim-hortons-king-fahd-cube-al-murabba": [
+    {
+      "src": "/cafe-heroes/tim-hortons-king-fahd-cube-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "Village Sukkar",
+        "uri": "https://maps.google.com/maps/contrib/118403460736928727697"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tim-hortons-king-fahd-cube-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "Wael Elmasry",
+        "uri": "https://maps.google.com/maps/contrib/109253432963450576320"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tim-hortons-king-fahd-cube-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "Islam Nasr",
+        "uri": "https://maps.google.com/maps/contrib/102907945164608106867"
+      }
+    }
+  ],
+  "starbucks-king-fahd-branch-rd-al-murabba": [
+    {
+      "src": "/cafe-heroes/starbucks-king-fahd-branch-rd-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "BarpolKamowti",
+        "uri": "https://maps.google.com/maps/contrib/111516842236325732863"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-king-fahd-branch-rd-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "Roofy Mug",
+        "uri": "https://maps.google.com/maps/contrib/100574451049276269750"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-king-fahd-branch-rd-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "Mohammad Alajmi",
+        "uri": "https://maps.google.com/maps/contrib/114023361402434712199"
+      }
+    },
+    {
+      "src": "/cafe-heroes/starbucks-king-fahd-branch-rd-al-murabba/4.jpg",
+      "attribution": {
+        "displayName": "Starbucks",
+        "uri": "https://maps.google.com/maps/contrib/111953755209398111328"
+      }
+    }
+  ],
+  "coffee-bean-tea-leaf-ibdaa-al-murabba": [
+    {
+      "src": "/cafe-heroes/coffee-bean-tea-leaf-ibdaa-al-murabba/1.jpg",
+      "attribution": {
+        "displayName": "ذا كوفي بين اند تي ليف",
+        "uri": "https://maps.google.com/maps/contrib/111277729947772988062"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-bean-tea-leaf-ibdaa-al-murabba/2.jpg",
+      "attribution": {
+        "displayName": "Yas AR",
+        "uri": "https://maps.google.com/maps/contrib/117040205248767649599"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-bean-tea-leaf-ibdaa-al-murabba/3.jpg",
+      "attribution": {
+        "displayName": "yayha Mohammad",
+        "uri": "https://maps.google.com/maps/contrib/108819117669756449601"
+      }
+    }
   ]
 }

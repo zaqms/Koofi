@@ -619,14 +619,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   "al-murabba": {
     lead: `Al Murabba (المربع) sits by Al Malaz and Al Olaya. This page is the Al Murabba set on wain.lol so far.
 
-[Coffee Address](/en/c/coffee-address-al-murabba) is the name on this list today. We don’t invent extras to fill the page.`,
-    hereIntro: `There is **{count}** cafe from Al Murabba on the catalog today:`,
+[Almarfa](/en/c/almarfa-al-murabba), [Cathy Rose Cafe](/en/c/cathy-rose-cafe-al-murabba), [P3 Coffee Shop](/en/c/p3-coffee-shop-al-murabba), [Marthad Specialty Coffee](/en/c/marthad-specialty-coffee-al-murabba), [Companions Cafe](/en/c/companions-cafe-al-murabba), and [Square House Cafe](/en/c/square-house-cafe-al-murabba) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There are **{count}** cafes from Al Murabba on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Al Murabba isn’t the stop, these central Riyadh lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Murabba. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Al Murabba on wain.lol — a Riyadh neighborhood list including Coffee Address, with a Maps link.",
+    meta: "{countCafe} in Al Murabba on wain.lol — a Riyadh neighborhood list including Almarfa, with a Maps link.",
   },
   "as-salam": {
     lead: `As Salam (السلام) is on the east side of Riyadh. This page is the As Salam set on wain.lol so far.

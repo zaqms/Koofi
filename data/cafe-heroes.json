@@ -17779,5 +17779,21 @@
         "uri": "https://maps.google.com/maps/contrib/115286003376762679227"
       }
     }
+  ],
+  "kutra-an-nazhah": [
+    {
+      "src": "/cafe-heroes/kutra-an-nazhah/1.jpg",
+      "attribution": {
+        "displayName": "سعد الشهري",
+        "uri": "https://maps.google.com/maps/contrib/111589465245587139637"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kutra-an-nazhah/2.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    }
   ]
 }

@@ -322,6 +322,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "half-million-al-shohda": ["half million shohda", "half million shuhada", "هاف مليون الشهداء"],
   "tim-hortons-granada-mall-al-shohda": ["tim hortons granada", "تيم هورتنز غرناطة"],
   "caribou-granada-mall-al-shohda": ["caribou granada", "كاريبو غرناطة"],
+  // TRENDVERIFY-1023 (23 Oct 2026): KUTRA / كُترة, An Nazhah. The brand writes «كُترة» (with damma); X posts
+  // write «كتره» / «كوفي كتره». The TikTok mark reads "KUTRA COFFEEHOUSE" and the shop sign "KUTRA ROASTERY".
+  "kutra-an-nazhah": ["kutra", "كترة", "كُترة", "كتره", "كوفي كتره", "kutra roastery", "kutra coffeehouse", "محمصة كترة", "محمصة كُترة"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

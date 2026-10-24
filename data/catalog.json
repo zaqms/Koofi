@@ -63578,6 +63578,128 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "opulent-qurtubah",
+      "nameAr": "أوبلنت",
+      "nameEn": "OPULENT",
+      "city": "riyadh",
+      "neighborhood": "qurtubah",
+      "neighborhoodAr": "قرطبة",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2efdab0ccd6c51:0xc8977528b9473a6f!8m2!3d24.8023694!4d46.738572999999995",
+      "pin": {
+        "lat": 24.8023694,
+        "lng": 46.738572999999995
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJUWzNDKv9Lj4RbzpHuSh1l8g",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 7:00 AM – 2:00 AM",
+          "Tuesday: 7:00 AM – 2:00 AM",
+          "Wednesday: 7:00 AM – 2:00 AM",
+          "Thursday: 7:00 AM – 2:00 AM",
+          "Friday: 4:00 PM – 2:00 AM",
+          "Saturday: 7:00 AM – 2:00 AM",
+          "Sunday: 7:00 AM – 2:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 16,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 2,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 7,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 2,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

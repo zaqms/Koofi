@@ -28138,7 +28138,7 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee166b1d2df13:0xea2fc2bb49df5296",
-      "logoUrl": "/logos/happyland-matcha-diriyah.jpg",
+      "logoUrl": "/logos/happyland-matcha-diriyah.png",
       "popularityIndex": 40,
       "placeId": "ChIJE9_SsWbhLj4RllLfSbvCL-o",
       "dineIn": true,
@@ -32252,7 +32252,7 @@
         "lat": 24.7504252,
         "lng": 46.8280744
       },
-      "logoUrl": "/logos/voute-fot-al-naseem-sharqi-ig.jpg",
+      "logoUrl": "/logos/voute-fot-al-naseem-sharqi.png",
       "popularityIndex": 40,
       "placeId": "ChIJIS1_ewKrLz4RQvKtx_ow4us",
       "dineIn": null,
@@ -32347,7 +32347,7 @@
         "lat": 24.7465091,
         "lng": 46.8309965
       },
-      "logoUrl": "/logos/tamper-speciality-al-naseem-sharqi-ig.jpg",
+      "logoUrl": "/logos/tamper-speciality-al-naseem-sharqi.png",
       "popularityIndex": 40,
       "placeId": "ChIJtyf4Bn0BLz4RdghrJaHdlGg",
       "dineIn": true,
@@ -32851,7 +32851,7 @@
         "lat": 24.7473125,
         "lng": 46.8233125
       },
-      "logoUrl": "/logos/public-al-naseem-sharqi-ig.jpg",
+      "logoUrl": "/logos/public-al-naseem-sharqi.png",
       "popularityIndex": 40,
       "placeId": "ChIJXUdAGNIBLz4RHFOjipY2dYc",
       "dineIn": true,
@@ -33153,7 +33153,7 @@
         "lat": 24.68575,
         "lng": 46.7660278
       },
-      "logoUrl": "/logos/on-move-ar-rabwah-ig.jpg",
+      "logoUrl": "/logos/on-move-ar-rabwah.png",
       "popularityIndex": 40,
       "placeId": "ChIJM-SWGwAHLz4RRiLevuPu5ek",
       "dineIn": true,
@@ -33277,7 +33277,7 @@
         "lat": 24.6954227,
         "lng": 46.7621402
       },
-      "logoUrl": "/logos/claz-ar-rabwah-ig.jpg",
+      "logoUrl": "/logos/claz-ar-rabwah.png",
       "popularityIndex": 40,
       "placeId": "ChIJq3pVAwAHLz4RavCJb3Nw_X0",
       "dineIn": true,
@@ -33496,7 +33496,7 @@
         "lat": 24.6970662,
         "lng": 46.7716812
       },
-      "logoUrl": "/logos/somatcha-ar-rabwah-ig.jpg",
+      "logoUrl": "/logos/somatcha-ar-rabwah.png",
       "popularityIndex": 40,
       "placeId": "ChIJky4QKAAHLz4RaqEEQ40-10c",
       "dineIn": true,
@@ -34275,7 +34275,7 @@
         "lat": 24.7690551,
         "lng": 46.6884775
       },
-      "logoUrl": "/logos/voute-fot-al-masif.jpg",
+      "logoUrl": "/logos/voute-fot-al-masif.png",
       "popularityIndex": 40,
       "placeId": "ChIJfQfmzj39Lj4RsO-u6L2b9j0",
       "dineIn": false,
@@ -37146,6 +37146,7 @@
         "lat": 24.8298719,
         "lng": 46.670774099999996
       },
+      "logoUrl": "/logos/abeille-al-narjis.png",
       "popularityIndex": 40,
       "placeId": "ChIJB_YypoH7Lj4RvI3PDpSS3HY",
       "dineIn": null,
@@ -37393,6 +37394,7 @@
         "lat": 24.8020465,
         "lng": 46.672229099999996
       },
+      "logoUrl": "/logos/kava-al-rabi.png",
       "popularityIndex": 40,
       "placeId": "ChIJg2dyt7n9Lj4REH4i6mhSOjk",
       "dineIn": true,
@@ -42763,7 +42765,7 @@
         "lat": 24.7959137,
         "lng": 46.7039772
       },
-      "logoUrl": "/logos/distance-away-al-falah.jpg",
+      "logoUrl": "/logos/distance-away-al-falah.png",
       "popularityIndex": 40,
       "placeId": "ChIJX6dK9vr9Lj4RH_rE5nEXgj8",
       "dineIn": true,
@@ -48368,6 +48370,7 @@
         "lat": 24.7744543,
         "lng": 46.725586299999996
       },
+      "logoUrl": "/logos/katf-al-izdihar.png",
       "popularityIndex": 40,
       "placeId": "ChIJDc74fObhLj4RrndiUXAxekE",
       "dineIn": true,
@@ -54210,6 +54213,7 @@
         "lat": 24.6396528,
         "lng": 46.5398652
       },
+      "logoUrl": "/logos/crete-cafe-dhahrat-laban.png",
       "popularityIndex": 40,
       "placeId": "ChIJbYCfYN4fLz4RWK9FotbTnHU",
       "dineIn": true,
@@ -58525,6 +58529,7 @@
         "lat": 24.739761500000004,
         "lng": 46.6880974
       },
+      "logoUrl": "/logos/trace-al-mursalat.png",
       "popularityIndex": 40,
       "placeId": "ChIJ961ZQ4YDLz4R11qn6C7fDdo",
       "dineIn": true,
@@ -63104,6 +63109,7 @@
         "lat": 24.7990799,
         "lng": 46.5944952
       },
+      "logoUrl": "/logos/haseel-al-malqa.png",
       "popularityIndex": 40,
       "placeId": "ChIJEeGvp6LlLj4RSjbAk5cW6Ec",
       "dineIn": true,
@@ -63597,6 +63603,7 @@
         "lat": 24.8023694,
         "lng": 46.738572999999995
       },
+      "logoUrl": "/logos/opulent-qurtubah.png",
       "popularityIndex": 40,
       "placeId": "ChIJUWzNDKv9Lj4RbzpHuSh1l8g",
       "dineIn": true,

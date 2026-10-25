@@ -17795,5 +17795,69 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "geisha-al-yasmin": [
+    {
+      "src": "/cafe-heroes/geisha-al-yasmin/1.jpg",
+      "attribution": {
+        "displayName": "AbdullaH",
+        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/geisha-al-yasmin/2.jpg",
+      "attribution": {
+        "displayName": "ALhanouf *",
+        "uri": "https://maps.google.com/maps/contrib/114807236032303841374"
+      }
+    }
+  ],
+  "olen-hittin": [
+    {
+      "src": "/cafe-heroes/olen-hittin/1.jpg",
+      "attribution": {
+        "displayName": "Aljazi Saud",
+        "uri": "https://maps.google.com/maps/contrib/106090802155345619262"
+      }
+    },
+    {
+      "src": "/cafe-heroes/olen-hittin/2.jpg",
+      "attribution": {
+        "displayName": "Haneen M",
+        "uri": "https://maps.google.com/maps/contrib/104259647644228976932"
+      }
+    }
+  ],
+  "natrw-dhahrat-laban": [
+    {
+      "src": "/cafe-heroes/natrw-dhahrat-laban/1.jpg",
+      "attribution": {
+        "displayName": "لطيفه السنيدي",
+        "uri": "https://maps.google.com/maps/contrib/102264835694304592545"
+      }
+    },
+    {
+      "src": "/cafe-heroes/natrw-dhahrat-laban/2.jpg",
+      "attribution": {
+        "displayName": "لولي الاحمري",
+        "uri": "https://maps.google.com/maps/contrib/117703873365069647191"
+      }
+    }
+  ],
+  "araoo-al-mahdiyah": [
+    {
+      "src": "/cafe-heroes/araoo-al-mahdiyah/1.jpg",
+      "attribution": {
+        "displayName": "Amani Alqahtani",
+        "uri": "https://maps.google.com/maps/contrib/107326831926328410584"
+      }
+    },
+    {
+      "src": "/cafe-heroes/araoo-al-mahdiyah/2.jpg",
+      "attribution": {
+        "displayName": "Salman Alqahtani",
+        "uri": "https://maps.google.com/maps/contrib/101040688312028085201"
+      }
+    }
   ]
 }

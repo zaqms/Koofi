@@ -129,7 +129,7 @@ for (const row of rows) {
 }
 
 const liveCatalog = listLiveCatalogDistrictIds();
-assert(liveCatalog.length === 67, `expected 67 district pages (Al Raqban folded in; the Takhassusi street retired), got ${liveCatalog.length}`);
+assert(liveCatalog.length === 68, `expected 68 district pages (+ Al Mahdiyah, TRENDVERIFY-1025; Al Raqban folded in; the Takhassusi street retired), got ${liveCatalog.length}`);
 assert(liveCatalog.includes("as-suwaidi"), "as-suwaidi is live with Alwaal Albari");
 assert(listLiveDistrictIds().every((id) => liveCatalog.includes(id)), "specialty live ⊆ catalog live");
 
@@ -269,8 +269,26 @@ assert(
   assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
   assert(
     listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") ===
-      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban,dwell-dhahrat-laban",
-    `${id} catalog is ON OFF plus the 15 Batch N rows and Dwell (trending add 18 Oct)`,
+      "on-off-coffee-dhahrat-laban,filter-cafe-dhahrat-laban,veloce-dhahrat-laban,nakhat-almashrub-dhahrat-laban,crete-cafe-dhahrat-laban,arco-coffee-dhahrat-laban,coffee-address-najd-dhahrat-laban,angel-coffee-dhahrat-laban,ezwa-cafe-dhahrat-laban,sidedoor-dhahrat-laban,portafilter-dhahrat-laban,qasura-coffee-dhahrat-laban,shafel-coffee-dhahrat-laban,yabub-coffee-dhahrat-laban,jadeel-coffee-dhahrat-laban,drcafe-park-dhahrat-laban,dwell-dhahrat-laban,natrw-dhahrat-laban",
+    `${id} catalog is ON OFF plus the 15 Batch N rows Dwell (trending add 18 Oct) and Natrw (TRENDVERIFY-1025, 25 Oct)`,
+  );
+  assert(
+    sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),
+    `sitemap lists ${id} AR + EN`,
+  );
+}
+
+// TRENDVERIFY-1025 (25 Oct): Araoo opens Al Mahdiyah (1 local café); on the locked sheet (dictionary_only), slug and names unchanged.
+{
+  const id = "al-mahdiyah" as const;
+  const row = rows.find((r) => r.stableId === id);
+  assert(row?.status === "dictionary_only", `${id} sheet stays dictionary_only`);
+  assert(row?.nameEn === "Al Mahdiyah" && row?.nameAr === "المهدية", `${id} sheet EN/AR lock`);
+  assert(neighborhoodLabel(id, "en") === "Al Mahdiyah" && neighborhoodLabel(id, "ar") === "المهدية", `${id} labels`);
+  assert(liveCatalog.includes(id) && listLiveDistrictIds().includes(id), `${id} is a live specialty district`);
+  assert(
+    listRealShops().filter((shop) => shop.neighborhood === id).map((shop) => shop.id).join(",") === "araoo-al-mahdiyah",
+    `${id} catalog is Araoo`,
   );
   assert(
     sitemap.includes(`https://wain.lol${districtPath(id, "ar")}`) && sitemap.includes(`https://wain.lol${districtPath(id, "en")}`),

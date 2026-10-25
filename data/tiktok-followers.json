@@ -4534,5 +4534,33 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "geisha-al-yasmin": {
+    "handle": "@geisha.sa",
+    "followers": 6438,
+    "status": "found",
+    "dateChecked": "2026-10-25",
+    "sharedBrandAccount": false
+  },
+  "olen-hittin": {
+    "handle": "@olen.coffee",
+    "followers": 1816,
+    "status": "found",
+    "dateChecked": "2026-10-25",
+    "sharedBrandAccount": false
+  },
+  "natrw-dhahrat-laban": {
+    "handle": "@natrwcafe",
+    "followers": 2118,
+    "status": "found",
+    "dateChecked": "2026-10-25",
+    "sharedBrandAccount": false
+  },
+  "araoo-al-mahdiyah": {
+    "handle": "@araoo.sa",
+    "followers": 438,
+    "status": "found",
+    "dateChecked": "2026-10-25",
+    "sharedBrandAccount": false
   }
 }

@@ -48,7 +48,17 @@ assert(
 );
 
 const live = listLiveDistrictIds();
-assert(live.length === 64, `expected 64 live districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${live.length}`);
+assert(live.length === 65, `expected 65 live districts (+ Al Mahdiyah, TRENDVERIFY-1025; Al Raqban folded into As Salam; the Takhassusi street retired), got ${live.length}`);
+// TRENDVERIFY-1025 (25 Oct): Al Mahdiyah resolves in EN and AR as a حي (Araoo opens it).
+for (const [text, id] of [
+  ["Al Mahdiyah", "al-mahdiyah"],
+  ["المهدية", "al-mahdiyah"],
+  ["حي المهدية", "al-mahdiyah"],
+  ["almahdiyah", "al-mahdiyah"],
+] as const) {
+  assert(extractPrimaryDistrict(text) === id, `${text} → ${id}`);
+  assert(parseIntent(text).neighborhoods.join(",") === id, `${text} is a حي`);
+}
 assert(
   dictionaryDistrictIds().length >= live.length,
   "dictionary smaller than live catalog",

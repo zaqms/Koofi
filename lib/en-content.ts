@@ -242,6 +242,7 @@ export const NEARBY_DISTRICTS: Record<NeighborhoodId, readonly NeighborhoodId[]>
   "ash-shifa": ["badr", "namar", "as-suwaidi", "as-suwaidi-al-gharbi"],
   "al-qadisiyah": ["al-yarmouk", "al-nahdah", "al-munsiyah", "al-hamra"],
   "dhahrat-laban": ["diplomatic-quarter", "umm-al-hamam-al-gharbi", "dhahrat-al-badiah", "al-mathar"],
+  "al-mahdiyah": ["dhahrat-laban", "tuwaiq", "diriyah", "diplomatic-quarter"],
 };
 
 type DistrictLead = {
@@ -999,6 +1000,18 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Dhahrat Laban. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+  },
+  "al-mahdiyah": {
+    lead: `Al Mahdiyah (المهدية) is a west Riyadh neighborhood on wain.lol. This page is the Al Mahdiyah set so far.
+
+[Araoo](/en/c/araoo-al-mahdiyah) is the cafe on this list today. We don’t invent extras to fill the page.`,
+    hereIntro: `There is **{count}** cafe from Al Mahdiyah on the catalog today:`,
+    hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
+    nearbyIntro: `If Al Mahdiyah isn’t the stop, these are the closest lists on the site:`,
+    about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Al Mahdiyah. [About](/en/about).
+
+Riyadh only for now. Missing a place? Send a Maps link from the site.`,
+    meta: "{countCafe} in Al Mahdiyah on wain.lol — a west Riyadh neighborhood list including Araoo, with a Maps link.",
   },
 };
 

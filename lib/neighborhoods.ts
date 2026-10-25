@@ -1198,6 +1198,22 @@ export const NEIGHBORHOODS: Record<
     en: "Jarir",
     aliases: ["جرير", "حي جرير", "jarir", "jareer", "al jarir", "Jarir"],
   },
+  "al-mahdiyah": {
+    id: "al-mahdiyah",
+    ar: "المهدية",
+    en: "Al Mahdiyah",
+    aliases: [
+      "المهدية",
+      "حي المهدية",
+      "المهديه",
+      "al mahdiyah",
+      "al-mahdiyah",
+      "al mahdiya",
+      "almahdiyah",
+      "mahdiyah",
+      "Al Mahdiyah",
+    ],
+  },
 };
 
 export function neighborhoodLabel(

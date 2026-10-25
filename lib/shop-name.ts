@@ -325,6 +325,12 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // TRENDVERIFY-1025 (25 Oct 2026): Geisha Roastery / جيشا (Google: «مقهى ومحمصة جيشا»), OLEN / أولن, Natrw Cafe / ناترو كافية, Araoo / آراو (Google: «محمصة وقهوة أراو»).
+  // Brand-qualified only: bare geisha is also a coffee variety, bare araoo / olen / natrw never need a block beyond the brand words.
+  "geisha-al-yasmin": ["geisha roastery", "geisha roaster", "geisha cafe", "geisha al yasmin", "geisha riyadh", "gisha roastery", "محمصة جيشا", "مقهى ومحمصة جيشا", "جيشا الياسمين", "جيشا روستري"],
+  "olen-hittin": ["olen", "olen cafe", "olen coffee", "olen hittin", "اولن", "أولن", "اولن كافيه", "اولن حطين"],
+  "natrw-dhahrat-laban": ["natrw", "natrw cafe", "natro cafe", "natrw dhahrat laban", "ناترو", "ناترو كافية", "ناترو كافيه", "ناترو ظهرة لبن"],
+  "araoo-al-mahdiyah": ["araoo", "araoo cafe", "araoo coffee", "araoo al mahdiyah", "arao cafe", "آراو", "اراو", "آراو كافيه", "محمصة وقهوة أراو", "محمصة آراو"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +448,9 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // TRENDVERIFY-1025 (25 Oct 2026): bare English "geisha" / "gesha" is a coffee variety, so it never pins the café alone; the brand-qualified aliases above still do.
+  // Arabic «جيشا» stays unblocked: it is the shop's nameAr and check-plg requires it to find the café.
+  "geisha-al-yasmin": ["geisha", "gesha", "gisha"],
 };
 
 function chainBrandIdForShop(

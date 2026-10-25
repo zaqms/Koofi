@@ -119,6 +119,8 @@ const BISAT_BATCH_NEW_DISTRICTS = ["umm-al-hamam-al-gharbi", "an-nafal", "king-s
 const BATCH_D3_NEW_DISTRICTS = ["as-suwaidi-al-gharbi", "ash-shifa", "al-qadisiyah", "dhahrat-laban"] as const;
 // Batch L (13 Oct 2026): Elixir Bunn, Fill and molten open Umm Al Hamam Ash Sharqi (3 local cafés, no chain).
 const BATCH_L_NEW_DISTRICT = "umm-al-hamam-ash-sharqi";
+// TRENDVERIFY-1025 (25 Oct 2026): Araoo opens Al Mahdiyah (1 local café, no chain).
+const TRENDVERIFY_1025_NEW_DISTRICT = "al-mahdiyah";
 // Batch F (5 Oct 2026): Shubra was chain-only (dr.CAFE drive-through lane); 7 local cafés + 2 sit-down chains open it.
 const BATCH_F_SHUBRA_CAFES = 9;
 
@@ -194,10 +196,10 @@ assert(
       (row) =>
         row.id === id &&
         row.cafeCount ===
-          (id === "as-suwaidi-al-gharbi" ? 3 : id === "dhahrat-laban" ? 17 : id === "ash-shifa" ? 13 : id === "al-qadisiyah" ? 9 : 1),
+          (id === "as-suwaidi-al-gharbi" ? 3 : id === "dhahrat-laban" ? 18 : id === "ash-shifa" ? 13 : id === "al-qadisiyah" ? 9 : 1),
     ),
   ),
-  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 3 after Kultúra 18 Oct; Dhahrat Laban 17 after Dwell 18 Oct; Ash Shifa 13 after Batch Q; Al Qadisiyah 9 after Batch R)",
+  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 3 after Kultúra 18 Oct; Dhahrat Laban 18 after Natrw 25 Oct; Ash Shifa 13 after Batch Q; Al Qadisiyah 9 after Batch R)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),
@@ -395,7 +397,11 @@ assert(
   "A–Z includes as-suwaidi now that Alwaal Albari is live",
 );
 assert(az.length === live.length, "A–Z is the live-with-shops districts");
-assert(az.length === 67, "A–Z drops chain-only districts, Al Raqban, and the Takhassusi street");
+assert(az.length === 68, "A–Z drops chain-only districts, Al Raqban, and the Takhassusi street");
+assert(
+  rowsEn.some((row) => row.id === TRENDVERIFY_1025_NEW_DISTRICT && row.cafeCount === 1),
+  "Al Mahdiyah joins live browse with 1 cafe (TRENDVERIFY-1025)",
+);
 assert(
   rowsEn.some((row) => row.id === BATCH_L_NEW_DISTRICT && row.cafeCount === 3),
   "Umm Al Hamam Ash Sharqi joins live browse with 3 cafes (Batch L)",

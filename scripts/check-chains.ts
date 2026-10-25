@@ -929,7 +929,7 @@ for (const [ask, id] of [
 // AJ add (18 Oct 2026): Trace / تريس, Al Mursalat — local specialty, letter tile; Places dineIn true.
 {
   const trace = getShop("trace-al-mursalat");
-  assert(trace && trace.isChain !== true && !trace.chainBrand && !trace.logoUrl && listDiscoveryShops().some((s) => s.id === "trace-al-mursalat"), "Trace Al Mursalat is local specialty with a letter tile");
+  assert(trace && trace.isChain !== true && !trace.chainBrand && trace.logoUrl === "/logos/trace-al-mursalat.png" && existsSync(join(process.cwd(), "public/logos/trace-al-mursalat.png")) && listDiscoveryShops().some((s) => s.id === "trace-al-mursalat"), "Trace Al Mursalat is local specialty with its official TikTok mark (logo sweep 25 Oct)");
   assert(trace?.dineIn === true, "Trace is dine-in on Places");
   const mursalat = listDirectoryShopsForDistrict("al-mursalat").map((s) => s.id);
   assert(mursalat.length === 2 && mursalat.includes("trace-al-mursalat") && mursalat.includes("espresso-culture-al-mursalat"), `Trace and Espresso Culture are the Al Mursalat page rows (Camel Step DT-lane fallback drops off), got ${mursalat.join(",")}`);
@@ -1202,9 +1202,9 @@ for (const [ask, id] of [
   const page = listDirectoryShopsForDistrict("qurtubah");
   assert(
     opulent?.isChain !== true && !opulent?.chainBrand && opulent?.nameEn === "OPULENT" && opulent.nameAr === "أوبلنت" &&
-      opulent.neighborhood === "qurtubah" && opulent.dineIn === true && !opulent.logoUrl &&
+      opulent.neighborhood === "qurtubah" && opulent.dineIn === true && opulent.logoUrl === "/logos/opulent-qurtubah.png" && existsSync(join(process.cwd(), "public/logos/opulent-qurtubah.png")) &&
       opulent.catalogLane !== "drive-through" && !opulent.momentTags.includes("drive-through") && !opulent.momentTags.includes("roaster"),
-    "OPULENT Qurtubah is a local sit-down café on a letter tile",
+    "OPULENT Qurtubah is a local sit-down café with its official TikTok mark (logo sweep 25 Oct)",
   );
   assert(listDiscoveryShops().some((row) => row.id === opulent.id), "OPULENT is specialty discovery");
   assert(page.some((row) => row.id === opulent.id) && applyHideChains(page, true).some((row) => row.id === opulent.id), "OPULENT shows on the Qurtubah page with Local only");

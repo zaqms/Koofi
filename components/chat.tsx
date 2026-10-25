@@ -64,6 +64,8 @@ import {
   type HalfwayPinInput,
 } from "@/lib/meet-halfway";
 import { nearbyChatPicks } from "@/lib/nearby";
+import { isNearbyAsk, searchCountHeading } from "@/lib/picker";
+import { sortPicksByDistance } from "@/lib/search-distance";
 import {
   MEET_HALFWAY_CHIP,
   NEARBY_CHIP,
@@ -97,6 +99,7 @@ export type ChatRestore = {
   ask: string;
   picks: ChatPick[];
   language: Language;
+  search?: boolean;
 };
 
 export type HalfwayInviteRestore = {
@@ -122,6 +125,9 @@ type AssistantMessage = {
   halfwayPaged?: boolean;
   halfwayJoined?: boolean;
   resultVia?: ChatQueryVia;
+  noMatch?: boolean;
+  suggestions?: ChatPick[];
+  search?: boolean;
 };
 
 type UserMessage = {
@@ -141,6 +147,11 @@ type ChatResponse = {
   districtMatch?: DistrictMatch;
   halfwayMore?: boolean;
   halfwayError?: "bad_pin";
+  matchCount?: number;
+  noMatch?: boolean;
+  didYouMean?: { nameEn: string; nameAr: string };
+  excludedBrand?: { nameEn: string; nameAr: string };
+  suggestions?: ChatPick[];
 };
 
 type PendingResult =
@@ -391,7 +402,12 @@ function restoreMessages(restore: ChatRestore, landing: Language): Message[] {
     id: `pack-picks-${restore.packId}`,
     role: "assistant",
     language: restore.language,
-    text: copy.threePicks[restore.language],
+    text:
+      restore.search || restore.picks.length > 3
+        ? searchCountHeading(restore.language, restore.picks.length)
+        : restore.picks.length === 3
+          ? copy.threePicks[restore.language]
+          : copy.fewerPicks[restore.language],
     picks: restore.picks,
     resultVia: "chip",
   });
@@ -435,7 +451,8 @@ function askBeforePicks(messages: Message[], index: number): string {
 function isEmptyCatalogMessage(message: AssistantMessage): boolean {
   return (
     !message.picks?.length &&
-    (message.text === copy.emptyCatalog.ar ||
+    (message.noMatch === true ||
+      message.text === copy.emptyCatalog.ar ||
       message.text === copy.emptyCatalog.en)
   );
 }
@@ -700,7 +717,10 @@ export function Chat({
   );
   const openRoutedChipRef = useRef<(chipId: string) => void>(() => undefined);
   const listFirst = isFixedListChip(selectedChipId);
-  usePeekVisitorLocation();
+  // Peek only: the pin sorts search cards on this device and is never sent.
+  const visitor = usePeekVisitorLocation();
+  const visitorRef = useRef(visitor);
+  visitorRef.current = visitor;
 
   useEffect(() => {
     if (!halfwayInvite) return;
@@ -995,10 +1015,16 @@ export function Chat({
               role: "assistant",
               language: result.data.language,
               text: result.data.reply,
-              picks: result.data.picks,
+              picks: devicePicks(result.data),
               thinCatalog: result.data.thinCatalog,
               districtMatch: result.data.districtMatch,
               halfwayMore: result.data.halfwayMore,
+              noMatch: result.data.noMatch,
+              suggestions: result.data.suggestions,
+              search:
+                typeof result.data.matchCount === "number" &&
+                result.data.noMatch !== true &&
+                (result.data.picks?.length ?? 0) > 0,
               halfwayLocations: locations,
               halfwayPaged: paged || undefined,
               halfwayJoined: halfway?.joined || undefined,
@@ -1039,12 +1065,30 @@ export function Chat({
     };
   }, [threadKey, pendingId]);
 
+  /** Search branches nearest first, sorted here with the peeked pin. */
+  function devicePicks(data: ChatResponse): ChatPick[] | undefined {
+    const picks = data.picks;
+    const pin = visitorRef.current;
+    const search =
+      typeof data.matchCount === "number" && data.noMatch !== true && (picks?.length ?? 0) > 1;
+    if (!picks || !search || pin.status !== "ready") return picks;
+    return sortPicksByDistance(picks, { lat: pin.lat, lng: pin.lng });
+  }
+
   function send(
     text: string,
     options?: { suggesting?: boolean; via?: "typed" | "chip" },
   ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
+    // Typed "nearby" / «قريب مني» is the Nearby chip: nearest cafés on the device.
+    // The pin stays on the device; the query line is text only, like any typed ask.
+    if ((options?.via ?? "typed") === "typed" && !awaitingMaps && isNearbyAsk(trimmed)) {
+      trackChatQuery({ text: trimmed, locale: landing, via: "typed" });
+      setDraft("");
+      void sendNearby(trimmed);
+      return;
+    }
     unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
@@ -2239,7 +2283,14 @@ export function Chat({
                   {copy.meetHalfwayInviteJoined[landing]}
                 </p>
               ) : null}
-              {message.id === "opener" &&
+              {message.noMatch ? (
+                <div
+                  role="status"
+                  className="rounded-2xl border border-dashed border-line bg-foam px-3 py-3 text-sm leading-6"
+                >
+                  {message.text}
+                </div>
+              ) : message.id === "opener" &&
               !threadVisible &&
               !isOffHomeChipId(selectedChipId ?? "") ? (
                 homeSurface ? (
@@ -2324,6 +2375,7 @@ export function Chat({
                   uiLanguage={landing}
                   beenIds={been.ids}
                   onBeen={been.mark}
+                  initialVisible={3}
                   ask={
                     restore && message.id === `pack-picks-${restore.packId}`
                       ? restore.ask
@@ -2335,7 +2387,25 @@ export function Chat({
                       : undefined
                   }
                   mapsSource="pack"
+                  search={message.search}
                 />
+              ) : null}
+              {message.suggestions?.length ? (
+                <div className="rounded-2xl bg-paper-deep px-2 py-2">
+                  <p className="mb-2 px-1 text-xs leading-5 text-ink-soft">
+                    {copy.noMatchSuggestions[message.language]}
+                  </p>
+                  <PickList
+                    picks={message.suggestions}
+                    language={message.language}
+                    uiLanguage={landing}
+                    beenIds={been.ids}
+                    onBeen={been.mark}
+                    ask={askBeforePicks(shownMessages, index)}
+                    mapsSource="pack"
+                    shareable={false}
+                  />
+                </div>
               ) : null}
               {!busy &&
               index === lastCompletedResultIndex(shownMessages) &&

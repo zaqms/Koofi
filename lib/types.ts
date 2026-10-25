@@ -224,6 +224,8 @@ export type ChatPick = {
   reviewSnippet?: string;
   lat?: number;
   lng?: number;
+  /** Server order (0-based) when the device re-sorted search cards by distance. */
+  rank?: number;
   /** 1–2 catalog vibe labels. Listing cards recompute via listingCardTags. */
   tags?: string[];
 };
@@ -259,6 +261,14 @@ export type DistrictMatch = {
   locale: Language;
 };
 
+/** browse = vibe, chip, or district three. search = a named shop or brand. none = nothing relevant. */
+export type PickMode = "browse" | "search" | "none";
+
+export type NameSuggestion = {
+  nameEn: string;
+  nameAr: string;
+};
+
 export type PickResult = {
   language: Language;
   picks: PickReason[];
@@ -268,4 +278,31 @@ export type PickResult = {
   askedMoments: MomentTag[];
   /** Set when the ask named a live district. All picks stay in that حي. */
   matchedDistrict?: NeighborhoodId;
+  mode?: PickMode;
+  /**
+   * Nearby list ordered by distance from a known pin. The heading says closest.
+   * Nothing sets this yet: «أقرب ثلاث قهاوي لك» would retire the locked
+   * three-pick heading, and that needs the owner's sign-off. Kept on purpose until then.
+   */
+  distanceSorted?: boolean;
+  /** Search cards on screen. Browse leaves this unset. */
+  matchCount?: number;
+  /** Every search match when more exist than the cap shows (33 when 30 show). */
+  matchTotal?: number;
+  /** The ask was below the relevance threshold. Picks stay empty. */
+  noMatch?: boolean;
+  /** Fuzzy correction when the typed name was close to a listed shop or brand. */
+  didYouMean?: NameSuggestion;
+  /** A brand Wain knows and deliberately does not list (Dunkin' and the like). */
+  /** donut: a donut/dessert-led brand outside the listing policy. */
+  excludedBrand?: NameSuggestion & { donut?: boolean };
+  /** Popular cafés under a no-match line. Not search results. */
+  suggestions?: PickReason[];
+  /** The ask named a حي that has none of these branches. Picks are the branches anyway. */
+  outsideArea?: {
+    nameEn: string;
+    nameAr: string;
+    areaEn: string;
+    areaAr: string;
+  };
 };

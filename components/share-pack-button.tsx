@@ -13,6 +13,7 @@ type SharePackButtonProps = {
   uiLanguage: Language;
   ask: string;
   packId?: string;
+  search?: boolean;
 };
 
 export function SharePackButton({
@@ -21,6 +22,7 @@ export function SharePackButton({
   uiLanguage,
   ask,
   packId,
+  search,
 }: SharePackButtonProps) {
   const [copied, setCopied] = useState(false);
 
@@ -34,6 +36,7 @@ export function SharePackButton({
       language,
       ask,
       origin,
+      search,
     });
     const id = packId ?? packet.packId;
     trackEvent("share_pack", { locale: language, pack_id: id }, { dedupeKey: `share_pack:${id}` });

@@ -8,11 +8,13 @@ export function packIdForPicks(input: {
   picks: ChatPick[];
   language: Language;
   ask: string;
+  search?: boolean;
 }): string {
   return encodePackId({
     locale: input.language,
     shopIds: input.picks.map((pick) => pick.id),
     ask: input.ask,
+    search: input.search,
   });
 }
 
@@ -21,6 +23,7 @@ export function packetTextForPicks(input: {
   language: Language;
   ask: string;
   origin: string;
+  search?: boolean;
 }): { packId: string; text: string; restoreUrl: string } {
   const packId = packIdForPicks(input);
   const restoreUrl = `${input.origin.replace(/\/$/, "")}${packSharePath(packId)}`;

@@ -5,6 +5,7 @@ import {
   readGeolocationPermission,
   requestVisitorLocation,
   useVisitorLocationSnapshot,
+  watchGeolocationPermission,
   type VisitorLocation,
 } from "./visitor-location";
 
@@ -17,6 +18,7 @@ import {
  * Does not open the browser prompt. Only a granted permission, or a pin
  * a gesture already produced, may read. A stored "allowed before" flag is
  * not enough. Returning to the tab reads once more.
+ * The permission listener reuses the page's one Permissions API read.
  */
 export function useFreshHomeOrigin(): VisitorLocation {
   const shared = useVisitorLocationSnapshot();
@@ -76,18 +78,14 @@ export function useFreshHomeOrigin(): VisitorLocation {
     document.addEventListener("visibilitychange", onVisible);
 
     void (async () => {
-      if (typeof navigator === "undefined" || !navigator.permissions?.query) return;
-      try {
-        const status = await navigator.permissions.query({ name: "geolocation" });
-        if (cancelled) return;
-        const onChange = () => {
-          void refresh(false);
-        };
-        status.addEventListener("change", onChange);
-        unwatch = () => status.removeEventListener("change", onChange);
-      } catch {
-        // Some browsers reject geolocation permission queries.
+      const stop = await watchGeolocationPermission(() => {
+        void refresh(false);
+      });
+      if (cancelled) {
+        stop();
+        return;
       }
+      unwatch = stop;
     })();
 
     return () => {

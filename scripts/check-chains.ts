@@ -694,7 +694,13 @@ for (const [ask, id] of [
     assert(hits[0] === id, `${ask} matches ${id} first, got ${hits.join(",")}`);
   }
   const lIds = new Set<string>(ids);
-  for (const ask of ["fill", "sill", "سيل", "ملء", "molten", "molten cake", "corner", "ركن", "ملتقى", "الشباب", "ام الحمام", "window sill"]) {
+  // QA #280 r1 (High 3): a café's exact name typed alone finds it ("Fill", "molten").
+  // Every other everyday use of those words still pins nothing.
+  for (const [ask, id] of [["fill", "fill-umm-al-hamam-ash-sharqi"], ["Fill", "fill-umm-al-hamam-ash-sharqi"], ["molten", "molten-umm-al-hamam-ash-sharqi"]] as const) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits.join(",") === id, `${ask} (exact café name) finds ${id} only, got ${hits.join(",")}`);
+  }
+  for (const ask of ["sill", "سيل", "ملء", "molten cake", "fill up", "corner", "ركن", "ملتقى", "الشباب", "ام الحمام", "window sill"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.some((hit) => lIds.has(hit)), `${ask} does not pin a Batch L row, got ${hits.join(",")}`);
   }
@@ -937,7 +943,9 @@ for (const [ask, id] of [
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(hits[0] === "trace-al-mursalat", `${ask} matches Trace first, got ${hits.join(",")}`);
   }
-  for (const ask of ["trace", "track and trace", "no trace of coffee"]) {
+  // QA #280 r1 (High 3): the exact name typed alone finds Trace; other uses do not.
+  assert(matchCatalogShops("Trace", listRealShops())[0]?.id === "trace-al-mursalat", "exact name Trace finds Trace");
+  for (const ask of ["track and trace", "no trace of coffee"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.includes("trace-al-mursalat"), `${ask} does not pin Trace, got ${hits.join(",")}`);
   }
@@ -1227,7 +1235,9 @@ for (const [ask, id] of [
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(hits[0] === "found-ar-rabwah", `${ask} matches Found first, got ${hits.join(",")}`);
   }
-  for (const ask of ["found", "i found a cafe", "lost and found"]) {
+  // QA #280 r1 (High 3): the exact name typed alone finds Found; other uses do not.
+  assert(matchCatalogShops("Found", listRealShops())[0]?.id === "found-ar-rabwah", "exact name Found finds Found");
+  for (const ask of ["i found a cafe", "lost and found"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.includes("found-ar-rabwah"), `${ask} does not pin Found, got ${hits.join(",")}`);
   }
@@ -1287,7 +1297,10 @@ for (const [ask, id] of [
     assert(hits[0] === id, `${ask} matches ${id} first, got ${hits.join(",")}`);
   }
   const pIds = new Set<string>(ids);
-  for (const ask of ["breath", "era", "إرا", "ratio", "ريشيو", "lihaf", "لحاف", "taghrid", "تغاريد", "ان في", "ابي قهوة ان في جلسات", "old", "lane", "i need a breath of fresh air"]) {
+  // QA #280 r1 (High 3): the exact names BREATH / Lihaf typed alone find their café.
+  assert(matchCatalogShops("BREATH", listRealShops())[0]?.id === "breath-tuwaiq", "exact name BREATH finds BREATH");
+  assert(matchCatalogShops("Lihaf", listRealShops())[0]?.id === "lihaf-tuwaiq", "exact name Lihaf finds Lihaf");
+  for (const ask of ["era", "إرا", "ratio", "ريشيو", "لحاف", "taghrid", "تغاريد", "ان في", "ابي قهوة ان في جلسات", "old", "lane", "i need a breath of fresh air"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.some((hit) => pIds.has(hit)), `${ask} does not pin a Batch P row, got ${hits.join(",")}`);
   }

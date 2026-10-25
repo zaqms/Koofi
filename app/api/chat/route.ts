@@ -32,7 +32,12 @@ import {
   restoreHalfwayPicks,
 } from "@/lib/meet-halfway";
 import { districtPageHidden } from "@/lib/district-dictionary";
-import { pickCafes, toChatPicksWithPlaces } from "@/lib/picker";
+import {
+  headingForPicks,
+  pickCafes,
+  toChatPicksWithPlaces,
+  toSuggestionPicks,
+} from "@/lib/picker";
 import { recordSuggestion } from "@/lib/suggest";
 import type { DistrictMatch, Language, PickResult } from "@/lib/types";
 import { uniqueWhyLines } from "@/lib/why-line";
@@ -283,15 +288,20 @@ export async function POST(request: Request) {
     });
   }
 
+  // No visitor coordinates here: the privacy policy keeps GPS on the device.
+  // The client sorts search branches by distance itself.
   const result = pickCafes({
     text,
     beenIds,
     language: landing,
     ...(city ? { city } : {}),
   });
+  const suggestions = toSuggestionPicks(result);
   const [picks, reply] = await Promise.all([
     toChatPicksWithPlaces(result),
-    speakForPicks({ userText: text, landing, result }),
+    result.mode === "browse"
+      ? speakForPicks({ userText: text, landing, result })
+      : Promise.resolve(headingForPicks(result)),
   ]);
 
   recordLearnAsk({
@@ -312,6 +322,13 @@ export async function POST(request: Request) {
     reply,
     thinCatalog: result.thinCatalog,
     picks,
+    ...(typeof result.matchCount === "number"
+      ? { matchCount: result.matchCount }
+      : {}),
+    ...(result.noMatch ? { noMatch: true } : {}),
+    ...(result.didYouMean ? { didYouMean: result.didYouMean } : {}),
+    ...(result.excludedBrand ? { excludedBrand: result.excludedBrand } : {}),
+    ...(suggestions.length > 0 ? { suggestions } : {}),
     ...(districtMatch ? { districtMatch } : {}),
   });
 }

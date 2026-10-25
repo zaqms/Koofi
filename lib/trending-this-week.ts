@@ -4,15 +4,15 @@ import type { Language } from "./types";
 
 /**
  * v1 allowlist. Not derived from data.
- * Window: 2026-10-13 through 2026-10-20.
+ * Window: 2026-10-18 through 2026-10-25.
  * Organic only (listing policy 6): each row has 3+ distinct organic X accounts in the window.
  *
  * lineAr / lineEn render on the Trending page, under each café card.
  * The home tiles have no line slot, so the lines are not rendered there.
  */
 export const TRENDING_THIS_WEEK_WINDOW = {
-  from: "2026-10-13",
-  to: "2026-10-20",
+  from: "2026-10-18",
+  to: "2026-10-25",
 } as const;
 
 const AR_MONTHS = [
@@ -66,22 +66,10 @@ export function trendingWindowLabel(language: Language): string {
 
 export const TRENDING_THIS_WEEK = [
   {
-    id: "kultura-as-suwaidi-al-gharbi",
-    lineAr: "كولتورا فتح فرعه الجديد بالسويدي الغربي، والزحمة عليه من أول أيامه.",
-    lineEn:
-      "Kultúra opened its new As Suwaidi Al Gharbi branch, and it has been busy since its first days.",
-  },
-  {
     id: "espresso-culture-al-mursalat",
-    lineAr: "إسبريسو كالتشر بالمرسلات توه فاتح، وناس كثير نزّلوا صور قهوتهم منه هالأسبوع.",
+    lineAr: "إسبريسو كالتشر بالمرسلات للأسبوع الثاني على التوالي، والناس مستمرين ينزّلون صور قهوتهم منه.",
     lineEn:
-      "Espresso Culture just opened in Al Mursalat, and lots of people shared photos of their coffee there this week.",
-  },
-  {
-    id: "veni-al-nakheel",
-    lineAr: "فيني فتحوا فرعهم الجديد بالنخيل مقابل جامعة الملك سعود، والناس قاعدين ينزّلون أول زياراتهم له.",
-    lineEn:
-      "Veni opened its new branch in An Nakheel, across from King Saud University, and people have been posting their first visits.",
+      "Espresso Culture in Al Mursalat is in its second straight week of people sharing photos of their coffee there.",
   },
 ] as const;
 

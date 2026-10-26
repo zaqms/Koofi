@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 547, `specialty discovery is 547 (2 TRENDVERIFY-1026 adds + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 650, `catalog is 650 after TRENDVERIFY-1026 (2 adds), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -774,7 +774,7 @@ assert(
 );
 
 const rayyan = filterDirectoryShops(shops, "al-rayyan");
-assert(rayyan.length === 8, `al-rayyan has 8 shops (7 + Sample Roastery, trending add 21 Oct), got ${rayyan.length}`);
+assert(rayyan.length === 9, `al-rayyan has 9 shops (7 + Sample Roastery, trending add 21 Oct, + Margin, TRENDVERIFY-1026), got ${rayyan.length}`);
 for (const id of [
   "sample-roastery-al-rayyan",
   "kultura-al-rayyan",
@@ -784,6 +784,7 @@ for (const id of [
   "sica-al-rayyan",
   "fabrica-de-cafe-al-rayyan",
   "78-specialty-coffee-al-rayyan",
+  "margin-ar-rayyan",
 ]) {
   assert(rayyan.some((shop) => shop.id === id), `al-rayyan includes ${id}`);
 }
@@ -6843,6 +6844,32 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // TRENDVERIFY-1026 (26 Oct 2026, Scout trending verify): THEN (Al Malqa, letter tile) and Margin Coffee & Roastery (Ar Rayyan); Scout's 2 Places frames each, 0 Dev Places calls.
+  {
+    id: "then-al-malqa",
+    hex: "0x3e2ee59b2ec50a83:0x8902b714afd99c9e",
+    neighborhood: "al-malqa",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.814335999999997, lng: 46.594975899999994 },
+    coordsInUrl: true,
+    placeId: "ChIJgwrFLpvlLj4RnpzZrxS3Aok",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "margin-ar-rayyan",
+    hex: "0x3e2f076c96d4700b:0x58b384d73b5cf563",
+    neighborhood: "al-rayyan",
+    vibe: ["محمصة", "قهوة"],
+    moments: ["roaster", "qahwa"],
+    logoUrl: "/logos/margin-ar-rayyan.png",
+    pin: { lat: 24.707585899999998, lng: 46.7863462 },
+    coordsInUrl: true,
+    placeId: "ChIJC3DUlmwHLz4RY_VcO9eEs1g",
     dineIn: true,
     outdoorSeating: null,
   },

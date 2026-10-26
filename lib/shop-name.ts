@@ -325,6 +325,18 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // KF1 (26 Oct 2026): 11 King Fahd cafés from Scout's daily hunt. Brand-qualified aliases only; bare stage / atmosphere / comfy / selections are everyday words (blocked below).
+  "stage-cafe-king-fahd": ["stage cafe", "stage coffee", "stage king fahd", "ستيج كافيه", "ستيج كوفي", "ستيج الملك فهد"],
+  "hasila-king-fahd": ["hasila cafe", "hasila coffee", "hasila king fahd", "حصيلة كافيه", "حصيلة الملك فهد", "حصيله"],
+  "sica-king-fahd": ["sica king fahd", "sica roastery king fahd", "سيكا الملك فهد"],
+  "atmosphere-specialty-coffee-king-fahd": ["atmosphere specialty coffee", "atmosphere coffee", "atmosphere cafe", "atmosphere king fahd", "أتموسفير", "اتموسفير", "أتموسفير قهوة مختصة"],
+  "comfy-king-fahd": ["comfy cafe", "comfy coffee", "comfy king fahd", "كومفي", "كومفي كافيه"],
+  "deffa-cafe-library-king-fahd": ["deffa", "deffa cafe", "deffa library", "deffa cafe and library", "deffa king fahd", "ضفة مكتبة", "ضفة كافيه"],
+  "sip1-specialty-coffee-king-fahd": ["sip1", "sip 1", "sip one", "sip1 specialty coffee", "sip1 king fahd", "سيب ون", "سيب 1"],
+  "aim-king-fahd": ["aim king fahd", "aim coffee king fahd", "ايم الملك فهد"],
+  "norvi-king-fahd": ["norvi", "norvi cafe", "norvi coffee", "norvi king fahd", "نورفي"],
+  "the-selections-coffee-king-fahd": ["the selections coffee", "selections coffee", "the selections", "selections cafe", "ذا سيليكشنز", "ذا سيليكشنز كوفي", "سيليكشنز"],
+  "deem-king-fahd": ["deem cafe", "deem coffee", "deem king fahd", "ديم كافيه", "ديم الملك فهد"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +454,12 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // KF1 (26 Oct 2026): everyday words never pin a café on their own; brand-qualified names above still match.
+  "stage-cafe-king-fahd": ["stage"],
+  "atmosphere-specialty-coffee-king-fahd": ["atmosphere"],
+  "comfy-king-fahd": ["comfy"],
+  "the-selections-coffee-king-fahd": ["selections", "selection"],
+  "deffa-cafe-library-king-fahd": ["library", "مكتبة"],
 };
 
 function chainBrandIdForShop(

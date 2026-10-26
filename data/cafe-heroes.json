@@ -17795,5 +17795,181 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "stage-cafe-king-fahd": [
+    {
+      "src": "/cafe-heroes/stage-cafe-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "ستيج كافيه | Stage Cafe",
+        "uri": "https://maps.google.com/maps/contrib/104749890459030648696"
+      }
+    },
+    {
+      "src": "/cafe-heroes/stage-cafe-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "Exit",
+        "uri": "https://maps.google.com/maps/contrib/105211440739705694553"
+      }
+    }
+  ],
+  "hasila-king-fahd": [
+    {
+      "src": "/cafe-heroes/hasila-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "Hasila | حصيلة",
+        "uri": "https://maps.google.com/maps/contrib/117303132740712038031"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hasila-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "مزنه الفهيد",
+        "uri": "https://maps.google.com/maps/contrib/110364151000864945726"
+      }
+    }
+  ],
+  "sica-king-fahd": [
+    {
+      "src": "/cafe-heroes/sica-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "Abdullah Alhamdan",
+        "uri": "https://maps.google.com/maps/contrib/101973560834983087912"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sica-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "W.A.Y",
+        "uri": "https://maps.google.com/maps/contrib/107699949114276547710"
+      }
+    }
+  ],
+  "atmosphere-specialty-coffee-king-fahd": [
+    {
+      "src": "/cafe-heroes/atmosphere-specialty-coffee-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "ATMOSPHERE",
+        "uri": "https://maps.google.com/maps/contrib/106227268628670678269"
+      }
+    },
+    {
+      "src": "/cafe-heroes/atmosphere-specialty-coffee-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "ATMOSPHERE",
+        "uri": "https://maps.google.com/maps/contrib/106227268628670678269"
+      }
+    }
+  ],
+  "comfy-king-fahd": [
+    {
+      "src": "/cafe-heroes/comfy-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "amal",
+        "uri": "https://maps.google.com/maps/contrib/102580844567682453174"
+      }
+    },
+    {
+      "src": "/cafe-heroes/comfy-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "thereal hemo",
+        "uri": "https://maps.google.com/maps/contrib/118382733484576802172"
+      }
+    }
+  ],
+  "deffa-cafe-library-king-fahd": [
+    {
+      "src": "/cafe-heroes/deffa-cafe-library-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "ضفة | مكتبة، مقهى، مجتمع",
+        "uri": "https://maps.google.com/maps/contrib/107643619557483949961"
+      }
+    },
+    {
+      "src": "/cafe-heroes/deffa-cafe-library-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "ضفة | مكتبة، مقهى، مجتمع",
+        "uri": "https://maps.google.com/maps/contrib/107643619557483949961"
+      }
+    }
+  ],
+  "sip1-specialty-coffee-king-fahd": [
+    {
+      "src": "/cafe-heroes/sip1-specialty-coffee-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "Leena's reviews",
+        "uri": "https://maps.google.com/maps/contrib/104050980680337199847"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sip1-specialty-coffee-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "Sip1 Specialty Coffee",
+        "uri": "https://maps.google.com/maps/contrib/107233202496539350738"
+      }
+    }
+  ],
+  "aim-king-fahd": [
+    {
+      "src": "/cafe-heroes/aim-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "AbdullaH",
+        "uri": "https://maps.google.com/maps/contrib/100235362699315893274"
+      }
+    },
+    {
+      "src": "/cafe-heroes/aim-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "Aya AbdelWahab",
+        "uri": "https://maps.google.com/maps/contrib/105889402974419811545"
+      }
+    }
+  ],
+  "norvi-king-fahd": [
+    {
+      "src": "/cafe-heroes/norvi-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "Elham",
+        "uri": "https://maps.google.com/maps/contrib/118154612061284741500"
+      }
+    },
+    {
+      "src": "/cafe-heroes/norvi-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "Khalid Almunashit",
+        "uri": "https://maps.google.com/maps/contrib/100407729111333687091"
+      }
+    }
+  ],
+  "the-selections-coffee-king-fahd": [
+    {
+      "src": "/cafe-heroes/the-selections-coffee-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "The selections coffee",
+        "uri": "https://maps.google.com/maps/contrib/108453304689600383349"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-selections-coffee-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "MaHdi Al-Zaeem",
+        "uri": "https://maps.google.com/maps/contrib/102300657129392606385"
+      }
+    }
+  ],
+  "deem-king-fahd": [
+    {
+      "src": "/cafe-heroes/deem-king-fahd/1.jpg",
+      "attribution": {
+        "displayName": "Sam Nasr",
+        "uri": "https://maps.google.com/maps/contrib/113853014155904091078"
+      }
+    },
+    {
+      "src": "/cafe-heroes/deem-king-fahd/2.jpg",
+      "attribution": {
+        "displayName": "أبو عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/118044238620227821123"
+      }
+    }
   ]
 }

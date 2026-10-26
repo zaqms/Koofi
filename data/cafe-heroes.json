@@ -17795,5 +17795,37 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "then-al-malqa": [
+    {
+      "src": "/cafe-heroes/then-al-malqa/1.jpg",
+      "attribution": {
+        "displayName": "TURKI AHMED",
+        "uri": "https://maps.google.com/maps/contrib/114167531235492825886"
+      }
+    },
+    {
+      "src": "/cafe-heroes/then-al-malqa/2.jpg",
+      "attribution": {
+        "displayName": "Manar Humran",
+        "uri": "https://maps.google.com/maps/contrib/107574120411982143982"
+      }
+    }
+  ],
+  "margin-ar-rayyan": [
+    {
+      "src": "/cafe-heroes/margin-ar-rayyan/1.jpg",
+      "attribution": {
+        "displayName": "Tahani Aloinan",
+        "uri": "https://maps.google.com/maps/contrib/113552530564597199882"
+      }
+    },
+    {
+      "src": "/cafe-heroes/margin-ar-rayyan/2.jpg",
+      "attribution": {
+        "displayName": "عبدالرحمن بن عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/104481550909215277164"
+      }
+    }
   ]
 }

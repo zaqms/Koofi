@@ -4534,5 +4534,19 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "then-al-malqa": {
+    "handle": null,
+    "followers": null,
+    "status": "none",
+    "dateChecked": "2026-10-26",
+    "sharedBrandAccount": false
+  },
+  "margin-ar-rayyan": {
+    "handle": "@margin.sa",
+    "followers": 787,
+    "status": "found",
+    "dateChecked": "2026-10-26",
+    "sharedBrandAccount": false
   }
 }

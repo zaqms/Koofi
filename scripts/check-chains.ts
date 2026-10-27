@@ -1263,9 +1263,17 @@ for (const [ask, id] of [
     }
   }
   for (const ask of ["oromiffa badr", "أورميفا بدر", "oromiffa al shifa"]) assert(matchCatalogShops(ask, listRealShops())[0]?.id === "oromiffa-badr", `${ask} matches Oromiffa Badr first`);
-  for (const ask of ["sort", "rev", "myth", "bar", "minute", "cup", "coffee", "specialty coffee", "قهوة مختصة", "cafe", "roaster"]) {
+  // BD1 r2 (27 Oct 2026, QA #298 H1/M1): name fragments and everyday asks never pin a BD1 café; «kon» and «wisp» stay distinctive brand tokens.
+  for (const ask of ["sort", "rev", "myth", "bar", "minute", "cup", "coffee", "specialty coffee", "قهوة مختصة", "cafe", "roaster", "اليوم", "يوم", "الثامن", "ثامن", "هادية", "لون", "فيها", "مفتوحة", "نخل", "nakhl", "ريف", "الريف", "كون", "بار", "مينت", "لامي", "نم", "كب", "tha", "lon", "cafe tha", "ثا", "bar cafe", "bar coffee", "بار كافيه", "Bar Coffee", "يوم الجمعة", "أبي قهوة هادية اليوم", "قهوة مفتوحة اليوم", "أي قهوة مفتوحة يوم الجمعة", "قهوة فيها لون", "قهوة في الريف", "وين ودّك تروح اليوم؟"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.some((id) => (bd1Ids as readonly string[]).includes(id)), `${ask} does not pin a BD1 café, got ${hits.join(",")}`);
+  }
+  // M1: the existing Bar Coffee / «بار كافيه» (bar-coffee-al-mughrizat) keeps its name; BAR Badr answers only to its own qualified names.
+  assert(matchCatalogShops("بار كافيه", listRealShops())[0]?.id === "bar-coffee-al-mughrizat", "«بار كافيه» still resolves to bar-coffee-al-mughrizat");
+  for (const ask of ["Bar Coffee", "bar coffee", "bar cafe", "بار كافيه"]) assert(!matchCatalogShops(ask, listRealShops()).some((shop) => shop.id === "bar-cafe-badr"), `${ask} does not pin BAR Badr`);
+  assert(matchCatalogShops("oromiffa", listRealShops())[0]?.id === "oromiffa-al-olaya", "bare oromiffa still leads with the Al Olaya row");
+  for (const [id, ask] of [["hoy8-coffee-roaster-badr", "اليوم الثامن"], ["hoy8-coffee-roaster-badr", "hoy8"], ["tuus-specialty-coffee-badr", "tuus"], ["laminam-coffee-badr", "laminam"], ["laminam-coffee-badr", "لامي نم"], ["cafe-tha-lon-badr", "ثا لون"], ["cafe-tha-lon-badr", "tha lon"], ["aseeb-al-nakhl-cafe-badr", "عسيب النخل"], ["minute-cup-badr", "مينت كب"], ["kon-cafe-badr", "kon"], ["wisp-specialty-coffee-badr", "wisp"], ["bar-cafe-badr", "قهوة بار"], ["bar-cafe-badr", "bar cafe badr"], ["rev-coffee-badr", "قهوة ريف"]] as const) {
+    assert(matchCatalogShops(ask, listRealShops())[0]?.id === id, `${ask} still matches ${id} first`);
   }
 }
 // AJ add (16 Oct 2026): Found / فاوند, Ar Rabwah — local specialty, letter tile; Places dineIn null → Scout seatingVerdict.

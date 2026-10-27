@@ -332,7 +332,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "kon-cafe-badr": ["kon", "kon cafe", "kon coffee", "kon badr", "كون كافيه", "كون بدر"],
   "myth-coffee-badr": ["myth coffee", "myth cafe", "myth badr", "قهوة ميث", "ميث كافيه", "ميث بدر"],
   "tuus-specialty-coffee-badr": ["tuus", "tuus coffee", "tuus cafe", "tuus specialty coffee", "tuus badr", "طوس", "طوس قهوة مختصة", "طوس كافيه"],
-  "bar-cafe-badr": ["bar cafe", "bar coffee", "bar badr", "bar cafe badr", "قهوة بار", "بار كافيه", "بار بدر"],
+  "bar-cafe-badr": ["bar badr", "bar cafe badr", "قهوة بار", "بار بدر"],
   "cafe-tha-lon-badr": ["tha lon", "thalon", "cafe tha lon", "cafe thalon", "tha lon cafe", "tha lon badr", "ثا لون", "كافيه ثا لون"],
   "minute-cup-badr": ["minute cup", "minute cup coffee", "minute cup cafe", "minute cup badr", "مينت كب", "مينيت كب"],
   "hoy8-coffee-roaster-badr": ["hoy8", "hoy 8", "hoy8 coffee", "hoy8 roaster", "hoy8 coffee roaster", "hoy8 badr", "اليوم الثامن", "محمصة اليوم الثامن", "مقهى اليوم الثامن"],
@@ -458,10 +458,18 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
   // BD1 (27 Oct 2026): everyday words never pin a café on their own; brand-qualified names above still match.
   "sort-badr": ["sort"],
-  "rev-coffee-badr": ["rev"],
+  "rev-coffee-badr": ["rev", "ريف"],
   "myth-coffee-badr": ["myth"],
-  "bar-cafe-badr": ["bar"],
-  "minute-cup-badr": ["minute", "cup"],
+  // "bar cafe" is derived from the id; it and «بار» must not take the existing Bar Coffee / «بار كافيه» (bar-coffee-al-mughrizat).
+  "bar-cafe-badr": ["bar", "بار", "bar cafe", "bar coffee", "بار كافيه"],
+  "minute-cup-badr": ["minute", "cup", "مينت", "كب"],
+  // BD1 r2 (27 Oct 2026, QA #298 H1): single words and fragments derived from the names are everyday words (today, colour, village, palm, ...)
+  // and pinned a BD1 café as lead pick on ordinary asks. Full names, brand-qualified aliases and the Latin brand tokens (kon, wisp, hoy8, tuus, laminam) still match.
+  "hoy8-coffee-roaster-badr": ["يوم", "ثامن", "اليوم", "الثامن"],
+  "cafe-tha-lon-badr": ["tha", "lon", "cafe tha", "ثا", "لون"],
+  "aseeb-al-nakhl-cafe-badr": ["nakhl", "نخل", "النخل"],
+  "kon-cafe-badr": ["كون"],
+  "laminam-coffee-badr": ["لامي", "نم"],
 };
 
 function chainBrandIdForShop(

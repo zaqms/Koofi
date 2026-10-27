@@ -17795,5 +17795,213 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "laminam-coffee-badr": [
+    {
+      "src": "/cafe-heroes/laminam-coffee-badr/1.jpg",
+      "attribution": {
+        "displayName": "Laminam coffee / قهوة لامي نـم",
+        "uri": "https://maps.google.com/maps/contrib/107070525091592603140"
+      }
+    },
+    {
+      "src": "/cafe-heroes/laminam-coffee-badr/2.jpg",
+      "attribution": {
+        "displayName": "Fay",
+        "uri": "https://maps.google.com/maps/contrib/117010095433440080862"
+      }
+    }
+  ],
+  "sort-badr": [
+    {
+      "src": "/cafe-heroes/sort-badr/1.jpg",
+      "attribution": {
+        "displayName": "جوودي علي",
+        "uri": "https://maps.google.com/maps/contrib/114630689164773298567"
+      }
+    },
+    {
+      "src": "/cafe-heroes/sort-badr/2.jpg",
+      "attribution": {
+        "displayName": "نجد Najd",
+        "uri": "https://maps.google.com/maps/contrib/113803544072138779460"
+      }
+    }
+  ],
+  "oromiffa-badr": [
+    {
+      "src": "/cafe-heroes/oromiffa-badr/1.jpg",
+      "attribution": {
+        "displayName": "أورميفا - الشفا | Oromiffa -Al-Shifa‏",
+        "uri": "https://maps.google.com/maps/contrib/115758660302505079610"
+      }
+    },
+    {
+      "src": "/cafe-heroes/oromiffa-badr/2.jpg",
+      "attribution": {
+        "displayName": "مؤيد 2030",
+        "uri": "https://maps.google.com/maps/contrib/108034197064316138886"
+      }
+    }
+  ],
+  "wisp-specialty-coffee-badr": [
+    {
+      "src": "/cafe-heroes/wisp-specialty-coffee-badr/1.jpg",
+      "attribution": {
+        "displayName": "A A",
+        "uri": "https://maps.google.com/maps/contrib/118285113599271125954"
+      }
+    },
+    {
+      "src": "/cafe-heroes/wisp-specialty-coffee-badr/2.jpg",
+      "attribution": {
+        "displayName": "وسب – قهوة مختصة Wisp Speciality Coffee",
+        "uri": "https://maps.google.com/maps/contrib/113458355897919009270"
+      }
+    }
+  ],
+  "aseeb-al-nakhl-cafe-badr": [
+    {
+      "src": "/cafe-heroes/aseeb-al-nakhl-cafe-badr/1.jpg",
+      "attribution": {
+        "displayName": "عسيب النخل كافيه",
+        "uri": "https://maps.google.com/maps/contrib/103146528326025054887"
+      }
+    },
+    {
+      "src": "/cafe-heroes/aseeb-al-nakhl-cafe-badr/2.jpg",
+      "attribution": {
+        "displayName": "عسيب النخل كافيه",
+        "uri": "https://maps.google.com/maps/contrib/103146528326025054887"
+      }
+    }
+  ],
+  "rev-coffee-badr": [
+    {
+      "src": "/cafe-heroes/rev-coffee-badr/1.jpg",
+      "attribution": {
+        "displayName": "Hazza aldousari",
+        "uri": "https://maps.google.com/maps/contrib/109631891522784418060"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rev-coffee-badr/2.jpg",
+      "attribution": {
+        "displayName": "REV",
+        "uri": "https://maps.google.com/maps/contrib/108099335203898954698"
+      }
+    }
+  ],
+  "kon-cafe-badr": [
+    {
+      "src": "/cafe-heroes/kon-cafe-badr/1.jpg",
+      "attribution": {
+        "displayName": "nouf altami",
+        "uri": "https://maps.google.com/maps/contrib/111247679795846616914"
+      }
+    },
+    {
+      "src": "/cafe-heroes/kon-cafe-badr/2.jpg",
+      "attribution": {
+        "displayName": "IBRAHIM ABDULRAHMAN",
+        "uri": "https://maps.google.com/maps/contrib/103105966648596959633"
+      }
+    }
+  ],
+  "myth-coffee-badr": [
+    {
+      "src": "/cafe-heroes/myth-coffee-badr/1.jpg",
+      "attribution": {
+        "displayName": "قهوة ميث |MYTH",
+        "uri": "https://maps.google.com/maps/contrib/113790081011416171598"
+      }
+    },
+    {
+      "src": "/cafe-heroes/myth-coffee-badr/2.jpg",
+      "attribution": {
+        "displayName": "قهوة ميث |MYTH",
+        "uri": "https://maps.google.com/maps/contrib/113790081011416171598"
+      }
+    }
+  ],
+  "tuus-specialty-coffee-badr": [
+    {
+      "src": "/cafe-heroes/tuus-specialty-coffee-badr/1.jpg",
+      "attribution": {
+        "displayName": "طوس قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/114779257847753698908"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tuus-specialty-coffee-badr/2.jpg",
+      "attribution": {
+        "displayName": "طوس قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/114779257847753698908"
+      }
+    }
+  ],
+  "bar-cafe-badr": [
+    {
+      "src": "/cafe-heroes/bar-cafe-badr/1.jpg",
+      "attribution": {
+        "displayName": "abdullah faisal",
+        "uri": "https://maps.google.com/maps/contrib/113559232122421156154"
+      }
+    },
+    {
+      "src": "/cafe-heroes/bar-cafe-badr/2.jpg",
+      "attribution": {
+        "displayName": "Shoug Mohammed",
+        "uri": "https://maps.google.com/maps/contrib/105086719727774281656"
+      }
+    }
+  ],
+  "cafe-tha-lon-badr": [
+    {
+      "src": "/cafe-heroes/cafe-tha-lon-badr/1.jpg",
+      "attribution": {
+        "displayName": "Cafe Tha Lon",
+        "uri": "https://maps.google.com/maps/contrib/104451727964858046997"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cafe-tha-lon-badr/2.jpg",
+      "attribution": {
+        "displayName": "Cafe Tha Lon",
+        "uri": "https://maps.google.com/maps/contrib/104451727964858046997"
+      }
+    }
+  ],
+  "minute-cup-badr": [
+    {
+      "src": "/cafe-heroes/minute-cup-badr/1.jpg",
+      "attribution": {
+        "displayName": "N",
+        "uri": "https://maps.google.com/maps/contrib/107931321378222468795"
+      }
+    },
+    {
+      "src": "/cafe-heroes/minute-cup-badr/2.jpg",
+      "attribution": {
+        "displayName": "alanoud almohammed",
+        "uri": "https://maps.google.com/maps/contrib/102782293252090353651"
+      }
+    }
+  ],
+  "hoy8-coffee-roaster-badr": [
+    {
+      "src": "/cafe-heroes/hoy8-coffee-roaster-badr/1.jpg",
+      "attribution": {
+        "displayName": "Kh",
+        "uri": "https://maps.google.com/maps/contrib/112411776640496407214"
+      }
+    },
+    {
+      "src": "/cafe-heroes/hoy8-coffee-roaster-badr/2.jpg",
+      "attribution": {
+        "displayName": "Meshal Alsuliman",
+        "uri": "https://maps.google.com/maps/contrib/109484045944962071699"
+      }
+    }
   ]
 }

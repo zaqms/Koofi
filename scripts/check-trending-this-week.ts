@@ -356,7 +356,7 @@ assert(
 );
 
 const locs = listSitemapLocs();
-assert(locs.length === 1475, `sitemap is 1475 (+ OPULENT Qurtubah (TRENDVERIFY-1023PM) × AR/EN; + 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN), got ${locs.length}`);
+assert(locs.length === 1501, `sitemap is 1501 (+ 13 BD1 Badr cafés × AR/EN (27 Oct 2026); + OPULENT Qurtubah (TRENDVERIFY-1023PM) × AR/EN; + 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN), got ${locs.length}`);
 assert(
   locs.includes("https://wain.lol/coffee-shops/trending") &&
     locs.includes("https://wain.lol/en/coffee-shops/trending"),

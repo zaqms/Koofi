@@ -4534,5 +4534,26 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "opal-coffee-house-al-narjis": {
+    "handle": "@opalcoffeehouse",
+    "followers": 892,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "caeva-al-qirawan": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "oldlane-hittin": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
   }
 }

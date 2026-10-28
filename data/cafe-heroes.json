@@ -17795,5 +17795,53 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "opal-coffee-house-al-narjis": [
+    {
+      "src": "/cafe-heroes/opal-coffee-house-al-narjis/1.jpg",
+      "attribution": {
+        "displayName": "Fahad",
+        "uri": "https://maps.google.com/maps/contrib/117946118149732592612"
+      }
+    },
+    {
+      "src": "/cafe-heroes/opal-coffee-house-al-narjis/2.jpg",
+      "attribution": {
+        "displayName": "عبدالله عبدالعزيز",
+        "uri": "https://maps.google.com/maps/contrib/106360299801777305084"
+      }
+    }
+  ],
+  "caeva-al-qirawan": [
+    {
+      "src": "/cafe-heroes/caeva-al-qirawan/1.jpg",
+      "attribution": {
+        "displayName": "saleh almaghailith",
+        "uri": "https://maps.google.com/maps/contrib/104729066849816833505"
+      }
+    },
+    {
+      "src": "/cafe-heroes/caeva-al-qirawan/2.jpg",
+      "attribution": {
+        "displayName": "Jory Alshamasi",
+        "uri": "https://maps.google.com/maps/contrib/102750311958832382574"
+      }
+    }
+  ],
+  "oldlane-hittin": [
+    {
+      "src": "/cafe-heroes/oldlane-hittin/1.jpg",
+      "attribution": {
+        "displayName": "fahad",
+        "uri": "https://maps.google.com/maps/contrib/108770392501188227680"
+      }
+    },
+    {
+      "src": "/cafe-heroes/oldlane-hittin/2.jpg",
+      "attribution": {
+        "displayName": "Jubaer Media",
+        "uri": "https://maps.google.com/maps/contrib/111551858449125781605"
+      }
+    }
   ]
 }

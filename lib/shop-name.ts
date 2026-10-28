@@ -325,6 +325,12 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // TRENDVERIFY-1028PM (28 Oct 2026): Opal Coffee House / أوبال كوفي هاوس (An Narjis), Caeva Cafe / كايفا كافيه (Al Qirawan), Old Lane / أولد لين (Hittin).
+  // Opal and Caeva keep their distinctive brand words. Old Lane is the 2nd Old Lane row (live: oldlane-tuwaiq): the new row answers only to Hittin-qualified names,
+  // so bare "old lane" / "oldlane" / «أولد لين» keep leading the existing Tuwaiq row (blocked below).
+  "opal-coffee-house-al-narjis": ["opal coffee", "opal cafe", "opal narjis", "opal an narjis", "أوبال كافيه", "أوبال كوفي", "قهوة أوبال", "أوبال النرجس"],
+  "caeva-al-qirawan": ["caeva coffee", "caeva qirawan", "caeva al qirawan", "كايفا كوفي", "قهوة كايفا", "كايفا القيروان"],
+  "oldlane-hittin": ["old lane hittin", "old lane al hittin", "old lane coffee hittin", "oldlane hittin", "old lane حطين", "oldlane حطين", "أولد لين حطين", "قهوة أولد لين حطين", "كافيه أولد لين حطين", "أولد لين الحطين"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +448,10 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // TRENDVERIFY-1028PM (28 Oct 2026): "house" / «هاوس» never pin Opal; the new Old Lane row never answers to the bare words «old», «lane», «اولد», «لين» or the bare English name
+  // "old lane" (it keeps leading oldlane-tuwaiq). Its whole Arabic name «اولد لين» still matches (check-plg) but ties behind the earlier Tuwaiq row; only Hittin-qualified asks lead it.
+  "opal-coffee-house-al-narjis": ["house", "هاوس", "اوبال هاوس", "coffee house"],
+  "oldlane-hittin": ["old lane", "old", "lane", "اولد", "لين"],
 };
 
 function chainBrandIdForShop(

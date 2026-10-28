@@ -2073,7 +2073,15 @@ assert(
     }
   }
   // The two brands that already have catalog branches keep matching all branches; the new branch never replaces the old first hit.
-  assert(matchCatalogShops("heet coffee", listRealShops())[0]?.id === "heet-coffee-al-qadisiyah", "bare heet coffee still leads with the Al Qadisiyah branch");
+  // QA #299 r2 heet ruling: only district-qualified aliases sit on the new heet row, so every bare, generic or Al Qadisiyah-named ask leads the existing branch (the new one second where it appears) and every Al Aziziyah-named ask leads the new row.
+  for (const ask of ["heet", "heet coffee", "هيت", "heet cafe", "heet café", "heet cafe riyadh", "where is heet cafe", "heet cafe al qadisiyah", "heet cafe qadisiyah", "heet coffee al qadisiyah"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === "heet-coffee-al-qadisiyah", `${ask} leads the Al Qadisiyah heet branch, got ${hits.join(",")}`);
+  }
+  for (const ask of ["heet al aziziyah", "كافيه هيت العزيزية", "قهوة هيت العزيزية", "هيت العزيزية", "heet cafe aziziyah", "heet cafe al aziziyah", "heet coffee aziziyah", "heet coffee al aziziyah", "heet aziziyah", "هيت كافيه العزيزية"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(hits[0] === "heet-coffee-al-aziziyah", `${ask} leads the Al Aziziyah heet branch, got ${hits.join(",")}`);
+  }
   assert(matchCatalogShops("Coffee Address", listRealShops())[0]?.id === "coffee-address-al-hamra", "bare Coffee Address still leads with the first existing branch");
   // BD1's lesson (QA #298 H1): name fragments and everyday asks never pin an AZ1 café. «km» is kilometres, «black» / «heart» are everyday words, «حي» is a neighborhood.
   for (const ask of ["km", "كي", "ام", "كي ام", "5 km", "within 5 km", "أبي قهوة قريبة 5 كم", "black", "heart", "black coffee", "بلاك", "هارت", "قهوة سوداء", "address", "عنوان", "your address", "dar", "دار", "حي", "hay", "qahwat", "dar qahwat", "دار حي", "حي العزيزية", "قهوة في حي", "sn", "sips", "she sips her coffee", "سبس", "فاء", "فاء التعليل", "اليوم", "يوم", "قهوة مفتوحة اليوم", "أبي قهوة هادية اليوم", "أي قهوة مفتوحة يوم الجمعة", "قهوة فيها لون", "coffee", "cafe", "specialty coffee", "قهوة مختصة", "roaster", "specialty coffee Al Aziziyah"]) {

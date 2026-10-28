@@ -340,7 +340,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "zavo-al-aziziyah": ["zavo coffee", "zavo cafe", "زافو كافيه", "زافو العزيزية"],
   "coffee-address-al-aziziyah": ["coffee address aziziyah", "coffee address arafat", "address aziziyah", "عنوان القهوة العزيزية", "عنوان القهوه العزيزيه"],
   "sedf-specialty-coffee-al-aziziyah": ["sedf coffee", "sedf cafe", "sedf aziziyah", "سدف كافيه", "سدف العزيزية"],
-  "heet-coffee-al-aziziyah": ["heet cafe", "heet aziziyah", "heet coffee aziziyah", "هيت العزيزية"],
+  "heet-coffee-al-aziziyah": ["heet aziziyah", "heet coffee aziziyah", "heet cafe aziziyah", "heet cafe al aziziyah", "heet al aziziyah", "هيت العزيزية", "كافيه هيت العزيزية", "هيت كافيه العزيزية", "قهوة هيت العزيزية"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

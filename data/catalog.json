@@ -64986,56 +64986,6 @@
       "example": false
     },
     {
-      "id": "branzac-al-aziziyah",
-      "nameAr": "برانزاك",
-      "nameEn": "BRANZAC",
-      "city": "riyadh",
-      "neighborhood": "al-aziziyah",
-      "neighborhoodAr": "العزيزية",
-      "vibeTags": [
-        "قهوة"
-      ],
-      "momentTags": [
-        "qahwa"
-      ],
-      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f098fd758cd83:0xf64fed1f9a48a01a!8m2!3d24.5924183!4d46.7758213",
-      "pin": {
-        "lat": 24.5924183,
-        "lng": 46.7758213
-      },
-      "popularityIndex": 40,
-      "placeId": "ChIJg81Y148JLz4RGqBImh_tT_Y",
-      "dineIn": true,
-      "outdoorSeating": null,
-      "pickupOnly": null,
-      "openingHours": {
-        "weekdayDescriptions": [
-          "Monday: Closed",
-          "Tuesday: Closed",
-          "Wednesday: Closed",
-          "Thursday: Closed",
-          "Friday: Closed",
-          "Saturday: 4:00 PM – 1:00 AM",
-          "Sunday: Closed"
-        ],
-        "periods": [
-          {
-            "open": {
-              "day": 6,
-              "hour": 16,
-              "minute": 0
-            },
-            "close": {
-              "day": 0,
-              "hour": 1,
-              "minute": 0
-            }
-          }
-        ]
-      },
-      "example": false
-    },
-    {
       "id": "coffee-address-al-aziziyah",
       "nameAr": "عنوان القهوة",
       "nameEn": "Coffee Address",

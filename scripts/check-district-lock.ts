@@ -365,8 +365,8 @@ assert(liveCatalog.includes("al-aziziyah"), "Al Aziziyah stays a live catalog di
 assert(listLiveDistrictIds().includes("al-aziziyah"), "Waqar makes Al Aziziyah a live specialty district");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-aziziyah" && shop.catalogLane !== "drive-through").map((shop) => shop.id).join(",") ===
-    "waqar-al-aziziyah,sama-cafe-al-aziziyah,ovalu-cafe-al-aziziyah,snoo-cafe-al-aziziyah,lucent-coffee-al-aziziyah,mihad-coffee-al-aziziyah,dar-qahwat-hay-al-aziziyah,black-heart-al-aziziyah,haten-cafe-al-aziziyah,faa-cafe-al-aziziyah,km-coffee-al-aziziyah,sips-coffee-al-aziziyah,zavo-al-aziziyah,branzac-al-aziziyah,coffee-address-al-aziziyah,sedf-specialty-coffee-al-aziziyah,heet-coffee-al-aziziyah",
-  "Al Aziziyah specialty catalog is Waqar, SAMA and the 15 AZ1 adds (28 Oct 2026)",
+    "waqar-al-aziziyah,sama-cafe-al-aziziyah,ovalu-cafe-al-aziziyah,snoo-cafe-al-aziziyah,lucent-coffee-al-aziziyah,mihad-coffee-al-aziziyah,dar-qahwat-hay-al-aziziyah,black-heart-al-aziziyah,haten-cafe-al-aziziyah,faa-cafe-al-aziziyah,km-coffee-al-aziziyah,sips-coffee-al-aziziyah,zavo-al-aziziyah,coffee-address-al-aziziyah,sedf-specialty-coffee-al-aziziyah,heet-coffee-al-aziziyah",
+  "Al Aziziyah specialty catalog is Waqar, SAMA and the 14 AZ1 adds (28 Oct 2026)",
 );
 
 assert(

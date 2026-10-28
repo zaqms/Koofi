@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 560, `specialty discovery is 560 (15 AZ1 Al Aziziyah (15 adds, 28 Oct 2026) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 663, `catalog is 663 after 15 AZ1 Al Aziziyah (15 adds, 28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 559, `specialty discovery is 559 (14 AZ1 Al Aziziyah (14 adds, 28 Oct 2026) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 662, `catalog is 662 after 14 AZ1 Al Aziziyah (14 adds, 28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -1571,7 +1571,7 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-aziziyah");
-  assert(rows.length === 17, `al-aziziyah has 17 specialty shops (2 + 15 AZ1 adds, 28 Oct 2026), got ${rows.length}`);
+  assert(rows.length === 16, `al-aziziyah has 16 specialty shops (2 + 14 AZ1 adds, 28 Oct 2026), got ${rows.length}`);
   assert(rows.some((shop) => shop.id === "sama-cafe-al-aziziyah"), "al-aziziyah specialty page includes sama-cafe-al-aziziyah");
   assert(
     rows.some((shop) => shop.id === "waqar-al-aziziyah"),
@@ -1704,11 +1704,11 @@ const MALAZ_REFILL = {
   );
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
-    aziziyah.length === 17 &&
+    aziziyah.length === 16 &&
       aziziyah.some((shop) => shop.id === "waqar-al-aziziyah") &&
       aziziyah.some((shop) => shop.id === "sama-cafe-al-aziziyah") &&
       listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-al-aziziyah"),
-    "al-aziziyah page is specialty Waqar, SAMA and the 15 AZ1 adds (28 Oct 2026); drcafe-al-aziziyah stays on the Drive-through directory",
+    "al-aziziyah page is specialty Waqar, SAMA and the 14 AZ1 adds (28 Oct 2026); drcafe-al-aziziyah stays on the Drive-through directory",
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
@@ -6846,7 +6846,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
-  // AZ1 Al Aziziyah (28 Oct 2026, Scout daily hunt): 15 local sit-down specialty cafés on the existing Al Aziziyah page; Places dineIn true for 14 (KM Coffee: Places empty, Scout seatingVerdict, dineIn true), outdoor per Places. Coffee Address and heet reuse their catalog marks; Dar Qahwat Hay, Faa, sips, ZAVO, BRANZAC and Sedf are letter tiles.
+  // AZ1 Al Aziziyah (28 Oct 2026, Scout daily hunt): 14 local sit-down specialty cafés on the existing Al Aziziyah page; Places dineIn true for 13 (KM Coffee: Places empty, Scout seatingVerdict, dineIn true), outdoor per Places. Coffee Address and heet reuse their catalog marks; Dar Qahwat Hay, Faa, sips, ZAVO and Sedf are letter tiles.
   {
     id: "ovalu-cafe-al-aziziyah",
     hex: "0x3e2f0925e95f761d:0xaa702b31dfbc94bb",
@@ -6983,18 +6983,6 @@ const scoutPack: {
     pin: { lat: 24.5658283, lng: 46.763391 },
     coordsInUrl: true,
     placeId: "ChIJhcWGJwAJLz4RUoXAvaMHBwU",
-    dineIn: true,
-    outdoorSeating: null,
-  },
-  {
-    id: "branzac-al-aziziyah",
-    hex: "0x3e2f098fd758cd83:0xf64fed1f9a48a01a",
-    neighborhood: "al-aziziyah",
-    vibe: ["قهوة"],
-    moments: ["qahwa"],
-    pin: { lat: 24.5924183, lng: 46.7758213 },
-    coordsInUrl: true,
-    placeId: "ChIJg81Y148JLz4RGqBImh_tT_Y",
     dineIn: true,
     outdoorSeating: null,
   },

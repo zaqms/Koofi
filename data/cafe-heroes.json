@@ -17947,13 +17947,6 @@
         "displayName": "قهوة سبس sips coffee",
         "uri": "https://maps.google.com/maps/contrib/105054601797360084605"
       }
-    },
-    {
-      "src": "/cafe-heroes/sips-coffee-al-aziziyah/2.jpg",
-      "attribution": {
-        "displayName": "قهوة سبس sips coffee",
-        "uri": "https://maps.google.com/maps/contrib/105054601797360084605"
-      }
     }
   ],
   "zavo-al-aziziyah": [
@@ -17972,35 +17965,12 @@
       }
     }
   ],
-  "branzac-al-aziziyah": [
-    {
-      "src": "/cafe-heroes/branzac-al-aziziyah/1.jpg",
-      "attribution": {
-        "displayName": "Saif Islam",
-        "uri": "https://maps.google.com/maps/contrib/109216765391653206164"
-      }
-    },
-    {
-      "src": "/cafe-heroes/branzac-al-aziziyah/2.jpg",
-      "attribution": {
-        "displayName": "BRANZAC | برانزاك",
-        "uri": "https://maps.google.com/maps/contrib/112019589115450887478"
-      }
-    }
-  ],
   "coffee-address-al-aziziyah": [
     {
       "src": "/cafe-heroes/coffee-address-al-aziziyah/1.jpg",
       "attribution": {
         "displayName": "Abdo Maziad",
         "uri": "https://maps.google.com/maps/contrib/110263535797056358654"
-      }
-    },
-    {
-      "src": "/cafe-heroes/coffee-address-al-aziziyah/2.jpg",
-      "attribution": {
-        "displayName": "Coffee Address | عنوان القهوة",
-        "uri": "https://maps.google.com/maps/contrib/112427847363588286557"
       }
     }
   ],
@@ -18010,13 +17980,6 @@
       "attribution": {
         "displayName": "ZIYAD",
         "uri": "https://maps.google.com/maps/contrib/107910061457372228062"
-      }
-    },
-    {
-      "src": "/cafe-heroes/sedf-specialty-coffee-al-aziziyah/2.jpg",
-      "attribution": {
-        "displayName": "سدف قهوة مختصة",
-        "uri": "https://maps.google.com/maps/contrib/112468673832242561217"
       }
     }
   ],

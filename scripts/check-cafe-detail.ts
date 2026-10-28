@@ -828,7 +828,7 @@ const TRENDVERIFY_1023PM_HERO_COUNTS: Record<string, number> = {
   "opulent-qurtubah": 2,
 };
 const TRENDVERIFY_1023PM_IDS = Object.keys(TRENDVERIFY_1023PM_HERO_COUNTS);
-/** AZ1 Al Aziziyah (28 Oct 2026): 15 cafés — Scout's 2 Places frames each (30 total; post-alert cap of 2). Idx 1 is a brand promo graphic (Coffee Address) or an owner product shot (sips, Sedf): QA may drop those 3 frames, leaving that café with 1 photo. 0 Dev Places calls. */
+/** AZ1 Al Aziziyah (28 Oct 2026): 14 cafés — Scout's Places frames, 2 each except Coffee Address, sips and Sedf (1 each: their frame 2 is a promo graphic or owner product shot, dropped in r2 per QA #299 M2); 25 shipped. BRANZAC (Saturday-only Places hours) is held out until Scout verifies its hours (QA #299 M3). 0 Dev Places calls. */
 const AZ1_HERO_COUNTS: Record<string, number> = {
   "ovalu-cafe-al-aziziyah": 2,
   "snoo-cafe-al-aziziyah": 2,
@@ -839,11 +839,10 @@ const AZ1_HERO_COUNTS: Record<string, number> = {
   "haten-cafe-al-aziziyah": 2,
   "faa-cafe-al-aziziyah": 2,
   "km-coffee-al-aziziyah": 2,
-  "sips-coffee-al-aziziyah": 2,
+  "sips-coffee-al-aziziyah": 1,
   "zavo-al-aziziyah": 2,
-  "branzac-al-aziziyah": 2,
-  "coffee-address-al-aziziyah": 2,
-  "sedf-specialty-coffee-al-aziziyah": 2,
+  "coffee-address-al-aziziyah": 1,
+  "sedf-specialty-coffee-al-aziziyah": 1,
   "heet-coffee-al-aziziyah": 2,
 };
 const AZ1_IDS = Object.keys(AZ1_HERO_COUNTS);
@@ -1004,7 +1003,7 @@ assert(batchSAsHeroIds.length === 6, "Batch S As Salam hero set is complete (6)"
 assert(batchSd1ShHeroIds.length === 14, "Batch SD1 Al Shohda hero set is complete (14)");
 assert(trending1021HeroIds.length === 10, "21 Oct trending adds hero sets are present (10)");
 assert(trendverify1023pmHeroIds.length === 1, "OPULENT Qurtubah hero set is present (TRENDVERIFY-1023PM)");
-assert(az1HeroIds.length === 15, "all 15 AZ1 Al Aziziyah hero sets are present");
+assert(az1HeroIds.length === 14, "all 14 AZ1 Al Aziziyah hero sets are present");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],

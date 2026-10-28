@@ -1983,8 +1983,8 @@ assert(chainRecord.isChain === true && chainRecord.brand === "Starbucks", "API r
 const localRecord = publicShopRecord(localA, { includeContext: false });
 assert(!("isChain" in localRecord) && !("brand" in localRecord), "local API rows omit chain fields");
 
-assert(listDiscoveryShops().length === 560, "specialty discovery is 560 (15 AZ1 Al Aziziyah (15 adds, 28 Oct 2026) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
-assert(listRealShops().length === 663, "catalog is 663 after 15 AZ1 Al Aziziyah (15 adds, 28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
+assert(listDiscoveryShops().length === 559, "specialty discovery is 559 (14 AZ1 Al Aziziyah (14 adds, 28 Oct 2026) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain)");
+assert(listRealShops().length === 662, "catalog is 662 after 14 AZ1 Al Aziziyah (14 adds, 28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F (9 Shubra), Batch G (15 An Nafal), Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds) Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban)");
 assert(listLiveDistrictIds().length === 64, "specialty districts are 64 (Al Raqban into As Salam, and the Takhassusi street retired)");
 assert(
   catalogDistrictIdsFrom(listRealShops()).length === 77,
@@ -1992,9 +1992,9 @@ assert(
 );
 assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (Al Raqban and the Takhassusi street retired)");
 assert(listDriveThroughDirectoryShops().length === 75, "drive-through is 75 (73 + Tim Hortons Shubra + Starbucks Tamimi Al Qadisiyah, sit-down + drive-through)");
-assert(listListingShops().length === 608, "listing is 560 local plus the 48 sit-down chains");
-assert(listPublicShops().length === 608, "public list includes the 48 sit-down chains");
-assert(listBrowseDirectoryShops().length === 611, "browse is 418 plus the 15 AZ1 Al Aziziyah rows (28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 10 trending-add rows (21 Oct), the 14 Batch SD1 Al Shohda rows, the 6 Batch S As Salam rows, the 8 Batch R Al Qadisiyah rows, the 7 trending-add rows (18 Oct), the 1 Trace Al Mursalat row (which replaces the Camel Step DT-lane fallback on the Al Mursalat page), the 12 Batch Q Ash Shifa rows, the 14 Batch P Tuwaiq rows, the 4 Batch O Namar rows, the 1 Found Ar Rabwah row, the 15 Batch N Dhahrat Laban rows, the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 12 Batch K Umm Al Hamam Al Gharbi rows and the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
+assert(listListingShops().length === 607, "listing is 559 local plus the 48 sit-down chains");
+assert(listPublicShops().length === 607, "public list includes the 48 sit-down chains");
+assert(listBrowseDirectoryShops().length === 610, "browse is 418 plus the 14 AZ1 Al Aziziyah rows (28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 10 trending-add rows (21 Oct), the 14 Batch SD1 Al Shohda rows, the 6 Batch S As Salam rows, the 8 Batch R Al Qadisiyah rows, the 7 trending-add rows (18 Oct), the 1 Trace Al Mursalat row (which replaces the Camel Step DT-lane fallback on the Al Mursalat page), the 12 Batch Q Ash Shifa rows, the 14 Batch P Tuwaiq rows, the 4 Batch O Namar rows, the 1 Found Ar Rabwah row, the 15 Batch N Dhahrat Laban rows, the 13 Batch M Diplomatic Quarter rows, the 10 Batch E At Taawun rows, the 9 Batch F Shubra rows, the 15 Batch G An Nafal rows, the 7 Batch H Al Izdihar rows, the 6 Batch I Ar Rahmaniyyah rows, the 8 Batch J Al Mathar rows and the 4 Batch J other rows, the 12 Batch K Umm Al Hamam Al Gharbi rows and the 3 Batch L Umm Al Hamam Ash Sharqi rows, minus A PLUS (As Salam drive-through fallback steps back behind THE HAT)");
 assert(
   listListingShops().filter((shop) => shop.isChain).length === 48,
   "exactly 48 sit-down chains are listed (21 Oct: + Namq Al Malqa and As Salam; Batch SD1: + 2 dr.CAFE, Peet's, Starbucks, Half Million, Tim Hortons and Caribou Al Shohda; Batch R: + Peet's, Half Million, 2 Starbucks and Tim Hortons Al Qadisiyah; Batch Q: + Java Cafe and 2 Half Million Ash Shifa; Batch O: + Java Cafe and The Coffee Bean & Tea Leaf Namar; 8 on main + Drive Al Ghadeer and Al Qirawan + Veloce At Taawun + Half Million and Tim Hortons Shubra + Costa, Starbucks and dr.CAFE An Nafal + Starbucks and Java Time Ar Rahmaniyyah + Peet's and 3 Starbucks Al Mathar + Starbucks Oruba Square Umm Al Hamam Al Gharbi + Costa, Caribou and 2 Starbucks Diplomatic Quarter + Veloce and dr.CAFE Dhahrat Laban)",
@@ -2018,14 +2018,14 @@ assert(
   listDirectoryShopsForDistrict("al-masif").length === 10,
   "Al Masif listing is unchanged",
 );
-// AZ1 Al Aziziyah (28 Oct 2026): 15 local specialty cafés from Scout's daily hunt (no chain, no drive-through, no shisha). Scout's 2 Places frames each, 0 Dev Places calls.
-// Places dineIn is true for 14 (KM Coffee: Places empty, Scout seatingVerdict); Coffee Address and heet reuse their catalog marks; Dar Qahwat Hay, Faa, sips, ZAVO, BRANZAC and Sedf are letter tiles.
+// AZ1 Al Aziziyah (28 Oct 2026): 14 local specialty cafés from Scout's daily hunt (no chain, no drive-through, no shisha). Scout's Places frames (2 each; 1 each for Coffee Address, sips and Sedf), 0 Dev Places calls. BRANZAC held out (r2).
+// Places dineIn is true for 13 (KM Coffee: Places empty, Scout seatingVerdict); Coffee Address and heet reuse their catalog marks; Dar Qahwat Hay, Faa, sips, ZAVO and Sedf are letter tiles.
 {
-  const az1Ids = ["ovalu-cafe-al-aziziyah", "snoo-cafe-al-aziziyah", "lucent-coffee-al-aziziyah", "mihad-coffee-al-aziziyah", "dar-qahwat-hay-al-aziziyah", "black-heart-al-aziziyah", "haten-cafe-al-aziziyah", "faa-cafe-al-aziziyah", "km-coffee-al-aziziyah", "sips-coffee-al-aziziyah", "zavo-al-aziziyah", "branzac-al-aziziyah", "coffee-address-al-aziziyah", "sedf-specialty-coffee-al-aziziyah", "heet-coffee-al-aziziyah"] as const;
+  const az1Ids = ["ovalu-cafe-al-aziziyah", "snoo-cafe-al-aziziyah", "lucent-coffee-al-aziziyah", "mihad-coffee-al-aziziyah", "dar-qahwat-hay-al-aziziyah", "black-heart-al-aziziyah", "haten-cafe-al-aziziyah", "faa-cafe-al-aziziyah", "km-coffee-al-aziziyah", "sips-coffee-al-aziziyah", "zavo-al-aziziyah", "coffee-address-al-aziziyah", "sedf-specialty-coffee-al-aziziyah", "heet-coffee-al-aziziyah"] as const;
   const az1 = az1Ids.map((id) => getShop(id));
-  assert(az1.every((row) => row && row.isChain !== true && !row.chainBrand && row.neighborhood === "al-aziziyah" && row.dineIn === true && row.catalogLane !== "drive-through" && !row.momentTags.includes("drive-through")), "AZ1: 15 local sit-down Al Aziziyah cafés, no chain, no drive-through");
-  const tiles = ["dar-qahwat-hay-al-aziziyah", "faa-cafe-al-aziziyah", "sips-coffee-al-aziziyah", "zavo-al-aziziyah", "branzac-al-aziziyah", "sedf-specialty-coffee-al-aziziyah"];
-  assert(az1.every((row) => (tiles.includes(row!.id) ? !row!.logoUrl : !!row!.logoUrl)), "AZ1: Dar Qahwat Hay, Faa, sips, ZAVO, BRANZAC and Sedf are letter tiles; the other 9 carry a logo");
+  assert(az1.every((row) => row && row.isChain !== true && !row.chainBrand && row.neighborhood === "al-aziziyah" && row.dineIn === true && row.catalogLane !== "drive-through" && !row.momentTags.includes("drive-through")), "AZ1: 14 local sit-down Al Aziziyah cafés, no chain, no drive-through");
+  const tiles = ["dar-qahwat-hay-al-aziziyah", "faa-cafe-al-aziziyah", "sips-coffee-al-aziziyah", "zavo-al-aziziyah", "sedf-specialty-coffee-al-aziziyah"];
+  assert(az1.every((row) => (tiles.includes(row!.id) ? !row!.logoUrl : !!row!.logoUrl)), "AZ1: Dar Qahwat Hay, Faa, sips, ZAVO and Sedf are letter tiles; the other 9 carry a logo");
   assert(getShop("coffee-address-al-aziziyah")?.logoUrl === getShop("coffee-address-ash-shifa")?.logoUrl, "Coffee Address Al Aziziyah reuses the catalog Coffee Address mark");
   assert(getShop("heet-coffee-al-aziziyah")?.logoUrl === getShop("heet-coffee-al-qadisiyah")?.logoUrl, "heet Al Aziziyah reuses the catalog heet mark");
   assert(az1.every((row) => !row!.momentTags.includes("roaster")), "no AZ1 café carries the roaster tag (best coffee stays 71)");
@@ -2039,15 +2039,12 @@ assert(
     assert(lines.length === 7 && lines.every((l) => l.endsWith("Open 24 hours")) && periods.length === 1 && periods[0]!.open.day === 0 && periods[0]!.open.hour === 0 && !periods[0]!.close, `${id} ships Places "Open 24 hours" as the 24-hour period`);
   }
   {
-    // BRANZAC: Places publishes only Saturday 4:00 PM – 1:00 AM (every other day Closed). Shipped as recorded; QA confirms the hours or drops the row.
-    const hours = getShop("branzac-al-aziziyah")!.openingHours;
-    const periods = hours?.periods ?? [];
-    const lines = hours?.weekdayDescriptions ?? [];
-    assert(lines.length === 7 && lines.filter((l) => l.endsWith("Closed")).length === 6 && lines[5]!.startsWith("Saturday:") && periods.length === 1 && periods[0]!.open.day === 6 && periods[0]!.open.hour === 16 && periods[0]!.close?.day === 0 && periods[0]!.close.hour === 1, "BRANZAC ships Places Saturday 4 PM – 1 AM only, as recorded");
+    // BRANZAC (Places publishes only Saturday 4:00 PM – 1:00 AM, every other day Closed) is held out of AZ1 until Scout verifies its real hours (QA #299 M3, r2).
+    assert(!getShop("branzac-al-aziziyah") && matchCatalogShops("branzac", listRealShops()).length === 0 && matchCatalogShops("برانزاك", listRealShops()).length === 0, "BRANZAC Al Aziziyah is held out of the catalog until Scout verifies its hours");
   }
   const page = listDirectoryShopsForDistrict("al-aziziyah");
-  assert(page.length === 17, `Al Aziziyah page has 17 cafés (Waqar, SAMA + 15 AZ1), got ${page.length}`);
-  assert([...page.map((shop) => shop.id)].sort().join(",") === ["sama-cafe-al-aziziyah", "waqar-al-aziziyah", ...az1Ids].sort().join(","), "Al Aziziyah lists Waqar, SAMA and the 15 AZ1 cafés");
+  assert(page.length === 16, `Al Aziziyah page has 16 cafés (Waqar, SAMA + 14 AZ1), got ${page.length}`);
+  assert([...page.map((shop) => shop.id)].sort().join(",") === ["sama-cafe-al-aziziyah", "waqar-al-aziziyah", ...az1Ids].sort().join(","), "Al Aziziyah lists Waqar, SAMA and the 14 AZ1 cafés");
   const localPage = applyHideChains(page, true);
   for (const row of az1) {
     assert(listDiscoveryShops().some((r) => r.id === row!.id), `${row!.id} is specialty discovery`);
@@ -2066,7 +2063,6 @@ assert(
     ["km-coffee-al-aziziyah", ["km coffee", "KM Coffee", "قهوة كي إم"]],
     ["sips-coffee-al-aziziyah", ["sips coffee", "sips Coffee", "قهوة سبس"]],
     ["zavo-al-aziziyah", ["zavo", "ZAVO", "زافو"]],
-    ["branzac-al-aziziyah", ["branzac", "BRANZAC", "برانزاك"]],
     ["coffee-address-al-aziziyah", ["Coffee Address Al Aziziyah", "coffee address aziziyah", "عنوان القهوة العزيزية"]],
     ["sedf-specialty-coffee-al-aziziyah", ["sedf", "Sedf Specialty Coffee", "سدف قهوة مختصة"]],
     ["heet-coffee-al-aziziyah", ["heet coffee al aziziyah", "heet aziziyah", "هيت العزيزية"]],
@@ -2086,18 +2082,18 @@ assert(
   }
 }
 assert(
-  listDirectoryShopsForDistrict("al-aziziyah").length === 17,
-  "Al Aziziyah lists Waqar, SAMA and the 15 AZ1 cafés",
+  listDirectoryShopsForDistrict("al-aziziyah").length === 16,
+  "Al Aziziyah lists Waqar, SAMA and the 14 AZ1 cafés",
 );
 
 assert(
   districtEnMeta("al-aziziyah") ===
-    "17 cafes in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, heet coffee and OVALU Cafe, with a Maps link.",
+    "16 cafes in Al Aziziyah on wain.lol — a Riyadh neighborhood list including Waqar, heet coffee and OVALU Cafe, with a Maps link.",
   "Al Aziziyah EN meta uses a digit",
 );
 assert(
   districtArMeta("al-aziziyah") ===
-    "17 قهاوي بالعزيزية على wain.lol — قائمة حي فيها وقار وهيت واوفالو، وعليها رابط قوقل ماب.",
+    "16 قهاوي بالعزيزية على wain.lol — قائمة حي فيها وقار وهيت واوفالو، وعليها رابط قوقل ماب.",
   "Al Aziziyah AR meta uses a digit",
 );
 assert(
@@ -2501,7 +2497,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "aec6f9e8fe92c17b645bd585b192ed7c0ca0223b87d61b50aaec4e9b8e9b85ed",
+  copyHash === "3cc597834583331c2751ed9ab37b183f58b00a08653fe1383aeb40a2b19fa8f9",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(
@@ -2653,11 +2649,11 @@ assert(
 const llms = buildLlmsTxt();
 const llmsHash = createHash("sha256").update(llms).digest("hex");
 assert(
-  llmsHash === "e7a2a33d5a293d9721e60de3cc84a3c8e00ceb326d59540bfcdf4f342b60c57e",
+  llmsHash === "9ed04347835db527f207f56d40bc1d3ab0ab9f5de23ca26ef45545efeec2274d",
   `llms.txt headline follows the default catalog: ${llmsHash}`,
 );
 assert(
-  llms.includes("608: 560 local, 48 chain branches"),
+  llms.includes("607: 559 local, 48 chain branches"),
   "llms.txt names the sit-down total and the 48 chain branches",
 );
 

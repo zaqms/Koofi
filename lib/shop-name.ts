@@ -338,7 +338,6 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "km-coffee-al-aziziyah": ["km cafe", "km aziziyah", "كي ام كافيه", "كي إم كافيه"],
   "sips-coffee-al-aziziyah": ["sips cafe", "sips aziziyah", "سبس كافيه", "سبس العزيزية"],
   "zavo-al-aziziyah": ["zavo coffee", "zavo cafe", "زافو كافيه", "زافو العزيزية"],
-  "branzac-al-aziziyah": ["branzac coffee", "branzac cafe", "برانزاك كافيه", "برانزاك العزيزية"],
   "coffee-address-al-aziziyah": ["coffee address aziziyah", "coffee address arafat", "address aziziyah", "عنوان القهوة العزيزية", "عنوان القهوه العزيزيه"],
   "sedf-specialty-coffee-al-aziziyah": ["sedf coffee", "sedf cafe", "sedf aziziyah", "سدف كافيه", "سدف العزيزية"],
   "heet-coffee-al-aziziyah": ["heet cafe", "heet aziziyah", "heet coffee aziziyah", "هيت العزيزية"],
@@ -459,7 +458,7 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // AZ1 (28 Oct 2026): single words and fragments of the new Al Aziziyah names are everyday words (km, black, heart, address, house,
   // neighborhood, ...) and never pin a café alone; full names, brand-qualified aliases and the Latin brand tokens (faa, ovalu, snoo, lucent,
-  // mihad, haten, zavo, branzac, sedf, heet) still match. Coffee Address and heet keep matching as brands (same as their other branches).
+  // mihad, haten, zavo, sedf, heet) still match. Coffee Address and heet keep matching as brands (same as their other branches).
   "snoo-cafe-al-aziziyah": ["sn"],
   "faa-cafe-al-aziziyah": ["فاء"],
   "dar-qahwat-hay-al-aziziyah": ["dar", "qahwat", "hay", "دار", "حي", "دار حي", "dar qahwat"],

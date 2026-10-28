@@ -325,6 +325,23 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // AZ1 (28 Oct 2026): 15 Al Aziziyah cafés from Scout's daily hunt. Brand-qualified aliases only; single words and fragments of the names
+  // that are everyday words (km, black, heart, address, dar, hay, حي, دار ...) are blocked in SHOP_TOKEN_BLOCK below.
+  "ovalu-cafe-al-aziziyah": ["ovalu coffee", "ovalu aziziyah", "اوفالو كافيه", "اوفالو العزيزية"],
+  "snoo-cafe-al-aziziyah": ["snoo coffee", "snoo aziziyah", "سنو العزيزية", "snöo cafe"],
+  "lucent-coffee-al-aziziyah": ["lucent cafe", "lucent aziziyah", "لوسنت كافيه", "لوسنت العزيزية"],
+  "mihad-coffee-al-aziziyah": ["mihad cafe", "mihad aziziyah", "قهوة مهاد", "مهاد كافيه"],
+  "dar-qahwat-hay-al-aziziyah": ["dar qahwat hay aziziyah", "دار قهوة حي العزيزية"],
+  "black-heart-al-aziziyah": ["black heart coffee", "black heart cafe", "black heart aziziyah", "بلاك هارت كافيه", "بلاك هارت العزيزية"],
+  "haten-cafe-al-aziziyah": ["haten coffee", "haten aziziyah", "هاتن كوفي", "هاتن العزيزية"],
+  "faa-cafe-al-aziziyah": ["faa coffee", "faa aziziyah", "فاء كوفي", "فاء العزيزية"],
+  "km-coffee-al-aziziyah": ["km cafe", "km aziziyah", "كي ام كافيه", "كي إم كافيه"],
+  "sips-coffee-al-aziziyah": ["sips cafe", "sips aziziyah", "سبس كافيه", "سبس العزيزية"],
+  "zavo-al-aziziyah": ["zavo coffee", "zavo cafe", "زافو كافيه", "زافو العزيزية"],
+  "branzac-al-aziziyah": ["branzac coffee", "branzac cafe", "برانزاك كافيه", "برانزاك العزيزية"],
+  "coffee-address-al-aziziyah": ["coffee address aziziyah", "coffee address arafat", "address aziziyah", "عنوان القهوة العزيزية", "عنوان القهوه العزيزيه"],
+  "sedf-specialty-coffee-al-aziziyah": ["sedf coffee", "sedf cafe", "sedf aziziyah", "سدف كافيه", "سدف العزيزية"],
+  "heet-coffee-al-aziziyah": ["heet cafe", "heet aziziyah", "heet coffee aziziyah", "هيت العزيزية"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -440,6 +457,16 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "cobee-cafe-al-shohda": ["كوبي"],
   "black-wolf-al-shohda": ["black", "wolf", "بلاك", "وولف"],
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
+  // AZ1 (28 Oct 2026): single words and fragments of the new Al Aziziyah names are everyday words (km, black, heart, address, house,
+  // neighborhood, ...) and never pin a café alone; full names, brand-qualified aliases and the Latin brand tokens (faa, ovalu, snoo, lucent,
+  // mihad, haten, zavo, branzac, sedf, heet) still match. Coffee Address and heet keep matching as brands (same as their other branches).
+  "snoo-cafe-al-aziziyah": ["sn"],
+  "faa-cafe-al-aziziyah": ["فاء"],
+  "dar-qahwat-hay-al-aziziyah": ["dar", "qahwat", "hay", "دار", "حي", "دار حي", "dar qahwat"],
+  "black-heart-al-aziziyah": ["black", "heart", "بلاك", "هارت"],
+  "km-coffee-al-aziziyah": ["km", "كي", "ام", "كي ام"],
+  "sips-coffee-al-aziziyah": ["sips", "سبس"],
+  "coffee-address-al-aziziyah": ["address", "عنوان"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
 };

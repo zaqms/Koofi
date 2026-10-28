@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 559, `specialty discovery is 559 (14 AZ1 Al Aziziyah (14 adds, 28 Oct 2026) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 662, `catalog is 662 after 14 AZ1 Al Aziziyah (14 adds, 28 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -1571,7 +1571,7 @@ const MALAZ_REFILL = {
 
 {
   const rows = listDirectoryShopsForDistrict("al-aziziyah");
-  assert(rows.length === 2, `al-aziziyah has 2 specialty shops, got ${rows.length}`);
+  assert(rows.length === 16, `al-aziziyah has 16 specialty shops (2 + 14 AZ1 adds, 28 Oct 2026), got ${rows.length}`);
   assert(rows.some((shop) => shop.id === "sama-cafe-al-aziziyah"), "al-aziziyah specialty page includes sama-cafe-al-aziziyah");
   assert(
     rows.some((shop) => shop.id === "waqar-al-aziziyah"),
@@ -1704,11 +1704,11 @@ const MALAZ_REFILL = {
   );
   const aziziyah = listDirectoryShopsForDistrict("al-aziziyah");
   assert(
-    aziziyah.length === 2 &&
+    aziziyah.length === 16 &&
       aziziyah.some((shop) => shop.id === "waqar-al-aziziyah") &&
       aziziyah.some((shop) => shop.id === "sama-cafe-al-aziziyah") &&
       listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-al-aziziyah"),
-    "al-aziziyah page is specialty Waqar and SAMA; drcafe-al-aziziyah stays on the Drive-through directory",
+    "al-aziziyah page is specialty Waqar, SAMA and the 14 AZ1 adds (28 Oct 2026); drcafe-al-aziziyah stays on the Drive-through directory",
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
@@ -6845,6 +6845,184 @@ const scoutPack: {
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
     dineIn: true,
     outdoorSeating: null,
+  },
+  // AZ1 Al Aziziyah (28 Oct 2026, Scout daily hunt): 14 local sit-down specialty cafés on the existing Al Aziziyah page; Places dineIn true for 13 (KM Coffee: Places empty, Scout seatingVerdict, dineIn true), outdoor per Places. Coffee Address and heet reuse their catalog marks; Dar Qahwat Hay, Faa, sips, ZAVO and Sedf are letter tiles.
+  {
+    id: "ovalu-cafe-al-aziziyah",
+    hex: "0x3e2f0925e95f761d:0xaa702b31dfbc94bb",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/ovalu-cafe-al-aziziyah.jpg",
+    pin: { lat: 24.5828515, lng: 46.7648528 },
+    coordsInUrl: true,
+    placeId: "ChIJHXZf6SUJLz4Ru5S83zErcKo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "snoo-cafe-al-aziziyah",
+    hex: "0x3e2f090079c637c5:0x6386127b39e784ed",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/snoo-cafe-al-aziziyah.jpg",
+    pin: { lat: 24.5825003, lng: 46.775566999999995 },
+    coordsInUrl: true,
+    placeId: "ChIJxTfGeQAJLz4R7YTnOXsShmM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "lucent-coffee-al-aziziyah",
+    hex: "0x3e2f090015b6f359:0x1afd1e7bcd65d7b2",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/lucent-coffee-al-aziziyah.jpg",
+    pin: { lat: 24.567489199999997, lng: 46.7613044 },
+    coordsInUrl: true,
+    placeId: "ChIJWfO2FQAJLz4RstdlzXse_Ro",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "mihad-coffee-al-aziziyah",
+    hex: "0x3e2f09000cefc86b:0xbd28ea755d75e1c6",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/mihad-coffee-al-aziziyah.jpg",
+    pin: { lat: 24.5834209, lng: 46.7856278 },
+    coordsInUrl: true,
+    placeId: "ChIJa8jvDAAJLz4RxuF1XXXqKL0",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "dar-qahwat-hay-al-aziziyah",
+    hex: "0x3e2f09d68b3e61f7:0xe0538eade9d6e369",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.5840508, lng: 46.7728301 },
+    coordsInUrl: true,
+    placeId: "ChIJ92E-i9YJLz4RaePW6a2OU-A",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "black-heart-al-aziziyah",
+    hex: "0x3e2f09088662ad6d:0x359bcc3fa6f78278",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/black-heart-al-aziziyah.jpg",
+    pin: { lat: 24.5787287, lng: 46.7663045 },
+    coordsInUrl: true,
+    placeId: "ChIJba1ihggJLz4ReIL3pj_MmzU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "haten-cafe-al-aziziyah",
+    hex: "0x3e2f09fb17ff6c1f:0xa8ba64a1a4ea65ec",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/haten-cafe-al-aziziyah.jpg",
+    pin: { lat: 24.5838325, lng: 46.763503199999995 },
+    coordsInUrl: true,
+    placeId: "ChIJH2z_F_sJLz4R7GXqpKFkuqg",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "faa-cafe-al-aziziyah",
+    hex: "0x3e2f092b275e581b:0xa64475c2c423a57b",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.590220199999997, lng: 46.766683199999996 },
+    coordsInUrl: true,
+    placeId: "ChIJG1heJysJLz4Re6UjxMJ1RKY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "km-coffee-al-aziziyah",
+    hex: "0x3e2f0971c850e42f:0xd9e99c49057a89b4",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/km-coffee-al-aziziyah.jpg",
+    pin: { lat: 24.6020458, lng: 46.7699596 },
+    coordsInUrl: true,
+    placeId: "ChIJL-RQyHEJLz4RtIl6BUmc6dk",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "sips-coffee-al-aziziyah",
+    hex: "0x3e2f092501990137:0xaadf23bfd23e5484",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.5808158, lng: 46.7545552 },
+    coordsInUrl: true,
+    placeId: "ChIJNwGZASUJLz4RhFQ-0r8j36o",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "zavo-al-aziziyah",
+    hex: "0x3e2f09002786c585:0x50707a3bdc08552",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.5658283, lng: 46.763391 },
+    coordsInUrl: true,
+    placeId: "ChIJhcWGJwAJLz4RUoXAvaMHBwU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-al-aziziyah",
+    hex: "0x3e2f0900240196b7:0x7eb91e8e56ef5758",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.5719796, lng: 46.778726 },
+    coordsInUrl: true,
+    placeId: "ChIJt5YBJAAJLz4RWFfvVo4euX4",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "sedf-specialty-coffee-al-aziziyah",
+    hex: "0x3e2f09e1ea0578cd:0x17f6c3928698c569",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.588227999999997, lng: 46.7600579 },
+    coordsInUrl: true,
+    placeId: "ChIJzXgF6uEJLz4RacWYhpLD9hc",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "heet-coffee-al-aziziyah",
+    hex: "0x3e2f09ec48e314a1:0x67f84d3e053868e5",
+    neighborhood: "al-aziziyah",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/heet-coffee-al-qadisiyah.png",
+    pin: { lat: 24.5694739, lng: 46.7536288 },
+    coordsInUrl: true,
+    placeId: "ChIJoRTjSOwJLz4R5Wg4BT5N-Gc",
+    dineIn: true,
+    outdoorSeating: true,
   },
 ];
 

@@ -4534,5 +4534,103 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "ovalu-cafe-al-aziziyah": {
+    "handle": "@ovalu.sa",
+    "followers": 2022,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "snoo-cafe-al-aziziyah": {
+    "handle": "@snoocafe",
+    "followers": 1078,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "lucent-coffee-al-aziziyah": {
+    "handle": "@lucent_coffee",
+    "followers": 2842,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "mihad-coffee-al-aziziyah": {
+    "handle": "@mihad_coffee",
+    "followers": 1448,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "dar-qahwat-hay-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "black-heart-al-aziziyah": {
+    "handle": "@blackheart_b_h",
+    "followers": 268,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "haten-cafe-al-aziziyah": {
+    "handle": "@hatencafe",
+    "followers": 4467,
+    "status": "found",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "faa-cafe-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "km-coffee-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "sips-coffee-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "zavo-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "coffee-address-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "sedf-specialty-coffee-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
+  },
+  "heet-coffee-al-aziziyah": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-28",
+    "sharedBrandAccount": false
   }
 }

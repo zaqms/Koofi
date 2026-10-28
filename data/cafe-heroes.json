@@ -17795,5 +17795,208 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "ovalu-cafe-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/ovalu-cafe-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "OVALU Cafe",
+        "uri": "https://maps.google.com/maps/contrib/105867340992452367475"
+      }
+    },
+    {
+      "src": "/cafe-heroes/ovalu-cafe-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "OVALU Cafe",
+        "uri": "https://maps.google.com/maps/contrib/105867340992452367475"
+      }
+    }
+  ],
+  "snoo-cafe-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/snoo-cafe-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "شيخه بندر",
+        "uri": "https://maps.google.com/maps/contrib/106956990525674380453"
+      }
+    },
+    {
+      "src": "/cafe-heroes/snoo-cafe-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "soz",
+        "uri": "https://maps.google.com/maps/contrib/116830911483709592495"
+      }
+    }
+  ],
+  "lucent-coffee-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/lucent-coffee-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "Seham Aljreas",
+        "uri": "https://maps.google.com/maps/contrib/105065022600361104884"
+      }
+    },
+    {
+      "src": "/cafe-heroes/lucent-coffee-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "ibrahim aati",
+        "uri": "https://maps.google.com/maps/contrib/113199185347148130268"
+      }
+    }
+  ],
+  "mihad-coffee-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/mihad-coffee-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "مِهاد - قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/105403297345915713874"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mihad-coffee-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "مِهاد - قهوة مختصة",
+        "uri": "https://maps.google.com/maps/contrib/105403297345915713874"
+      }
+    }
+  ],
+  "dar-qahwat-hay-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/dar-qahwat-hay-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "amal",
+        "uri": "https://maps.google.com/maps/contrib/102580844567682453174"
+      }
+    },
+    {
+      "src": "/cafe-heroes/dar-qahwat-hay-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "amal",
+        "uri": "https://maps.google.com/maps/contrib/102580844567682453174"
+      }
+    }
+  ],
+  "black-heart-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/black-heart-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "بلاك هارت",
+        "uri": "https://maps.google.com/maps/contrib/117130858857994326001"
+      }
+    },
+    {
+      "src": "/cafe-heroes/black-heart-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "صفيه المبارك",
+        "uri": "https://maps.google.com/maps/contrib/105992328669057384298"
+      }
+    }
+  ],
+  "haten-cafe-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/haten-cafe-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "Häs",
+        "uri": "https://maps.google.com/maps/contrib/110434272027113364114"
+      }
+    },
+    {
+      "src": "/cafe-heroes/haten-cafe-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "lamar abdullah",
+        "uri": "https://maps.google.com/maps/contrib/111059270456090486364"
+      }
+    }
+  ],
+  "faa-cafe-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/faa-cafe-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "Abdo Maziad",
+        "uri": "https://maps.google.com/maps/contrib/110263535797056358654"
+      }
+    },
+    {
+      "src": "/cafe-heroes/faa-cafe-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "نوال الدوسري",
+        "uri": "https://maps.google.com/maps/contrib/101889015908674976800"
+      }
+    }
+  ],
+  "km-coffee-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/km-coffee-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "KM",
+        "uri": "https://maps.google.com/maps/contrib/116239783681872219184"
+      }
+    },
+    {
+      "src": "/cafe-heroes/km-coffee-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "KM",
+        "uri": "https://maps.google.com/maps/contrib/116239783681872219184"
+      }
+    }
+  ],
+  "sips-coffee-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/sips-coffee-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "قهوة سبس sips coffee",
+        "uri": "https://maps.google.com/maps/contrib/105054601797360084605"
+      }
+    }
+  ],
+  "zavo-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/zavo-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "noor altamimi",
+        "uri": "https://maps.google.com/maps/contrib/100011811235571363496"
+      }
+    },
+    {
+      "src": "/cafe-heroes/zavo-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "زافو | zavo",
+        "uri": "https://maps.google.com/maps/contrib/107451976601623150100"
+      }
+    }
+  ],
+  "coffee-address-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/coffee-address-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "Abdo Maziad",
+        "uri": "https://maps.google.com/maps/contrib/110263535797056358654"
+      }
+    }
+  ],
+  "sedf-specialty-coffee-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/sedf-specialty-coffee-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "ZIYAD",
+        "uri": "https://maps.google.com/maps/contrib/107910061457372228062"
+      }
+    }
+  ],
+  "heet-coffee-al-aziziyah": [
+    {
+      "src": "/cafe-heroes/heet-coffee-al-aziziyah/1.jpg",
+      "attribution": {
+        "displayName": "هيت قهوة مختصه العزيزيه",
+        "uri": "https://maps.google.com/maps/contrib/111699213392885315931"
+      }
+    },
+    {
+      "src": "/cafe-heroes/heet-coffee-al-aziziyah/2.jpg",
+      "attribution": {
+        "displayName": "هيت قهوة مختصه العزيزيه",
+        "uri": "https://maps.google.com/maps/contrib/111699213392885315931"
+      }
+    }
   ]
 }

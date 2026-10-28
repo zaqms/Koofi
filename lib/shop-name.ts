@@ -322,6 +322,20 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "half-million-al-shohda": ["half million shohda", "half million shuhada", "هاف مليون الشهداء"],
   "tim-hortons-granada-mall-al-shohda": ["tim hortons granada", "تيم هورتنز غرناطة"],
   "caribou-granada-mall-al-shohda": ["caribou granada", "كاريبو غرناطة"],
+  // BD1 (27 Oct 2026): 13 Badr cafés from Scout's daily hunt. Brand-qualified aliases only; bare sort / rev / myth / bar / minute / cup are everyday words (blocked below).
+  "laminam-coffee-badr": ["laminam", "laminam coffee", "laminam badr", "لامي نم", "قهوة لامي نم", "لامينم"],
+  "sort-badr": ["sort cafe", "sort coffee", "sort badr", "سورت كافيه", "سورت بدر"],
+  "oromiffa-badr": ["oromiffa badr", "oromiffa al shifa", "oromiffa roaster badr", "أورميفا بدر", "أورميفا الشفا"],
+  "wisp-specialty-coffee-badr": ["wisp", "wisp coffee", "wisp cafe", "wisp specialty coffee", "wisp speciality coffee", "wisp badr", "وسب", "وسب قهوة مختصة", "وسب كافيه"],
+  "aseeb-al-nakhl-cafe-badr": ["aseeb", "aseeb al nakhl", "aseeb cafe", "asip nkal", "عسيب النخل", "عسيب", "عسيب النخل كافيه"],
+  "rev-coffee-badr": ["rev coffee", "rev cafe", "rev badr", "r3v", "r3v coffee", "قهوة ريف", "ريف كافيه", "ريف بدر"],
+  "kon-cafe-badr": ["kon", "kon cafe", "kon coffee", "kon badr", "كون كافيه", "كون بدر"],
+  "myth-coffee-badr": ["myth coffee", "myth cafe", "myth badr", "قهوة ميث", "ميث كافيه", "ميث بدر"],
+  "tuus-specialty-coffee-badr": ["tuus", "tuus coffee", "tuus cafe", "tuus specialty coffee", "tuus badr", "طوس", "طوس قهوة مختصة", "طوس كافيه"],
+  "bar-cafe-badr": ["bar badr", "bar cafe badr", "قهوة بار", "بار بدر"],
+  "cafe-tha-lon-badr": ["tha lon", "thalon", "cafe tha lon", "cafe thalon", "tha lon cafe", "tha lon badr", "ثا لون", "كافيه ثا لون"],
+  "minute-cup-badr": ["minute cup", "minute cup coffee", "minute cup cafe", "minute cup badr", "مينت كب", "مينيت كب"],
+  "hoy8-coffee-roaster-badr": ["hoy8", "hoy 8", "hoy8 coffee", "hoy8 roaster", "hoy8 coffee roaster", "hoy8 badr", "اليوم الثامن", "محمصة اليوم الثامن", "مقهى اليوم الثامن"],
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
@@ -442,6 +456,20 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // BD1 (27 Oct 2026): everyday words never pin a café on their own; brand-qualified names above still match.
+  "sort-badr": ["sort"],
+  "rev-coffee-badr": ["rev", "ريف"],
+  "myth-coffee-badr": ["myth"],
+  // "bar cafe" is derived from the id; it and «بار» must not take the existing Bar Coffee / «بار كافيه» (bar-coffee-al-mughrizat).
+  "bar-cafe-badr": ["bar", "بار", "bar cafe", "bar coffee", "بار كافيه"],
+  "minute-cup-badr": ["minute", "cup", "مينت", "كب"],
+  // BD1 r2 (27 Oct 2026, QA #298 H1): single words and fragments derived from the names are everyday words (today, colour, village, palm, ...)
+  // and pinned a BD1 café as lead pick on ordinary asks. Full names, brand-qualified aliases and the Latin brand tokens (kon, wisp, hoy8, tuus, laminam) still match.
+  "hoy8-coffee-roaster-badr": ["يوم", "ثامن", "اليوم", "الثامن"],
+  "cafe-tha-lon-badr": ["tha", "lon", "cafe tha", "ثا", "لون"],
+  "aseeb-al-nakhl-cafe-badr": ["nakhl", "نخل", "النخل"],
+  "kon-cafe-badr": ["كون"],
+  "laminam-coffee-badr": ["لامي", "نم"],
 };
 
 function chainBrandIdForShop(

@@ -4534,5 +4534,96 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "laminam-coffee-badr": {
+    "handle": "@laminam_ksa",
+    "followers": 1676,
+    "status": "found",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "sort-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "oromiffa-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "wisp-specialty-coffee-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "aseeb-al-nakhl-cafe-badr": {
+    "handle": "@asip.nkal",
+    "followers": 1655,
+    "status": "found",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "rev-coffee-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "kon-cafe-badr": {
+    "handle": "@koncafe.sa",
+    "followers": 571,
+    "status": "found",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "myth-coffee-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "tuus-specialty-coffee-badr": {
+    "handle": "@tuuscafe",
+    "followers": 3026,
+    "status": "found",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "bar-cafe-badr": {
+    "handle": "@barcafe.sa",
+    "followers": 1498,
+    "status": "found",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "cafe-tha-lon-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "minute-cup-badr": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
+  },
+  "hoy8-coffee-roaster-badr": {
+    "handle": "@hoy8_sa",
+    "followers": 5402,
+    "status": "found",
+    "dateChecked": "2026-10-27",
+    "sharedBrandAccount": false
   }
 }

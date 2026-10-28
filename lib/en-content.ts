@@ -665,14 +665,14 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
     meta: "{countCafe} in Al Wisham on wain.lol — a Riyadh neighborhood list including Arabica coffee, with a Maps link.",
   },
   badr: {
-    lead: `[Shubak Al Bun](/en/c/shubak-al-bun-badr) and [Soliz](/en/c/soliz-badr) are the two cards on this list today. We don’t invent extras to fill the page.`,
+    lead: `[Shubak Al Bun](/en/c/shubak-al-bun-badr), [Soliz](/en/c/soliz-badr), [Laminam Coffee](/en/c/laminam-coffee-badr), [Hoy8 Coffee Roaster](/en/c/hoy8-coffee-roaster-badr), [TUUS Specialty Coffee](/en/c/tuus-specialty-coffee-badr), and [Oromiffa](/en/c/oromiffa-badr) are among the cards on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There is **{count}** cafe from Badr on the catalog today:`,
     hereOutro: `Open a card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Badr isn’t the stop, these south-central lists sit next door on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like Badr. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in Badr on wain.lol — a Riyadh neighborhood list including Shubak Al Bun, with a Maps link.",
+    meta: "{countCafe} in Badr on wain.lol — a Riyadh neighborhood list including Shubak Al Bun, Laminam Coffee and Hoy8, with a Maps link.",
   },
   "al-aziziyah": {
     lead: `Al Aziziyah (العزيزية) sits on the south side of Riyadh. This page is the Al Aziziyah set on wain.lol so far.

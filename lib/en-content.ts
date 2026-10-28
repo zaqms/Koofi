@@ -583,14 +583,14 @@ Riyadh only for now. Know a shop we missed? Send a Maps link from the site.`,
   "king-fahd": {
     lead: `King Fahd District (الملك فهد) is its own district on the catalog — Al Olaya Street runs through it, but this is not the Al Olaya page. This is the King Fahd District set on wain.lol.
 
-[Markab](/en/c/markab-king-fahd) and [Ōkawa](/en/c/okawa-king-fahd) are the two cards we’ve added. Coffee first. We don’t invent extras.`,
+[Markab](/en/c/markab-king-fahd), [Ōkawa](/en/c/okawa-king-fahd), [Stage Cafe](/en/c/stage-cafe-king-fahd), [Hasila](/en/c/hasila-king-fahd), [Sica](/en/c/sica-king-fahd), and [Deem](/en/c/deem-king-fahd) are among the cards on this list today. Coffee first. We don’t invent extras.`,
     hereIntro: `There is **{count}** cafe from King Fahd District on the catalog today:`,
     hereOutro: `Open the card when you want the pin. **Take me there** goes to Google Maps.`,
     nearbyIntro: `If King Fahd District isn’t the stop, these central Riyadh lists sit on the site:`,
     about: `wain.lol is a small Riyadh coffee guide. Ask for three suggestions, or browse a neighborhood list like King Fahd District. [About](/en/about).
 
 Riyadh only for now. Missing a place? Send a Maps link from the site.`,
-    meta: "{countCafe} in King Fahd District on wain.lol — a Riyadh district list including Markab, with a Maps link.",
+    meta: "{countCafe} in King Fahd District on wain.lol — a Riyadh district list including Markab, Stage Cafe and Hasila, with a Maps link.",
   },
   "at-taawun": {
     lead: `At Taawun (التعاون) sits between Al Olaya and Al Mughrizat — a mid-north Riyadh حي of its own. This page is the At Taawun set on wain.lol so far.

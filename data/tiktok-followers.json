@@ -4536,11 +4536,11 @@
     "sharedBrandAccount": false
   },
   "coffee-address-al-naseem-gharbi": {
-    "handle": null,
-    "followers": null,
-    "status": "unverified",
-    "dateChecked": "2026-10-29",
-    "sharedBrandAccount": false
+    "handle": "@addresscafe.sa",
+    "followers": 159500,
+    "status": "found",
+    "dateChecked": "2026-09-26",
+    "sharedBrandAccount": true
   },
   "noura-specialty-coffee-al-naseem-gharbi": {
     "handle": null,

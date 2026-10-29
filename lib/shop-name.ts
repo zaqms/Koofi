@@ -331,7 +331,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "coffee-address-al-naseem-gharbi": ["coffee address naseem", "coffee address al naseem", "coffee address nasim", "coffee address an nasim al gharbi", "coffee address naseem west", "coffee address abdallah ibn massoud", "عنوان القهوة النسيم", "عنوان القهوة النسيم الغربي"],
   "noura-specialty-coffee-al-naseem-gharbi": ["noura coffee", "noura cafe", "noura specialty", "noura naseem", "كافيه نوره", "كافية نورة", "قهوة نورة", "نورة للقهوة المختصة", "نورة النسيم"],
   "sava-al-naseem-gharbi": ["sava coffee", "sava naseem", "سافا كوفي", "قهوة سافا", "سافا النسيم"],
-  "asal-specialty-coffee-al-naseem-gharbi": ["asal cafe", "asal specialty", "asal naseem", "اصال كافيه", "قهوة اصال", "اصال النسيم"],
+  "asal-specialty-coffee-al-naseem-gharbi": ["asal cafe", "asal coffee", "asal specialty", "asal naseem", "اصال كافيه", "قهوة اصال", "اصال النسيم"],
   "thimar-al-wusool-al-naseem-gharbi": ["thimar coffee", "thimar al wusool", "thimar alwusool", "thimar naseem", "قهوة ثمار الوصول", "ثمار الوصول قهوة مختصة", "ثمار الوصول النسيم"],
   "effect-al-naseem-gharbi": ["effect cafe", "effect café", "cafe effect", "effect naseem", "effect al naseem", "افكت كافيه", "قهوة افكت", "إفكت كوفي", "افكت النسيم"],
   "nqt-al-naseem-gharbi": ["nqt coffee", "nqt cafe", "nqt naseem", "نقط كافيه", "قهوة نقط", "نقط النسيم"],

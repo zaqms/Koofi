@@ -830,13 +830,14 @@ const TRENDVERIFY_1023PM_HERO_COUNTS: Record<string, number> = {
 const TRENDVERIFY_1023PM_IDS = Object.keys(TRENDVERIFY_1023PM_HERO_COUNTS);
 /** NG1 An Nasim Al Gharbi (29 Oct 2026): Scout's 2 Places frames each (post-alert cap), 0 Dev Places calls. Frame 2 dropped for Coffee Address (brand promo graphic),
  * SAVA Cafe (studio cookie shot) and Beek Cup (menu board); Noura frame 2 has a face blurred, Coffee Address and effect frame 1 have plates blurred,
- * Malath frame 1 has a customer's name blurred and frame 2 is cropped; Thimar Al Wusool ships its drink frame first. */
+ * Malath frame 1 has a customer's name blurred and frame 2 is cropped; Thimar Al Wusool ships its drink frame only
+ * (#301 r2, QA r1 M1: its storefront frame 2 was a pre-opening shot and is dropped). 16 frames shipped. */
 const NG1_GHARBI_HERO_COUNTS: Record<string, number> = {
   "coffee-address-al-naseem-gharbi": 1,
   "noura-specialty-coffee-al-naseem-gharbi": 2,
   "sava-al-naseem-gharbi": 1,
   "asal-specialty-coffee-al-naseem-gharbi": 2,
-  "thimar-al-wusool-al-naseem-gharbi": 2,
+  "thimar-al-wusool-al-naseem-gharbi": 1,
   "effect-al-naseem-gharbi": 2,
   "nqt-al-naseem-gharbi": 2,
   "madawi-coffee-al-naseem-gharbi": 2,

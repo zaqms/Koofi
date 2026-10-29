@@ -17795,5 +17795,137 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "coffee-address-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/coffee-address-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "محمداحمدحبرون-Mohammed habroon",
+        "uri": "https://maps.google.com/maps/contrib/117710235517769758311"
+      }
+    }
+  ],
+  "noura-specialty-coffee-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/noura-specialty-coffee-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "Ahmed Ghobashy",
+        "uri": "https://maps.google.com/maps/contrib/107108507756526136093"
+      }
+    },
+    {
+      "src": "/cafe-heroes/noura-specialty-coffee-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Ahmed Eldmiry",
+        "uri": "https://maps.google.com/maps/contrib/107735172598203511645"
+      }
+    }
+  ],
+  "sava-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/sava-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "سافا كافيه",
+        "uri": "https://maps.google.com/maps/contrib/104827460394475355189"
+      }
+    }
+  ],
+  "asal-specialty-coffee-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/asal-specialty-coffee-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "Youssef AL Otaibi",
+        "uri": "https://maps.google.com/maps/contrib/104423276318025964940"
+      }
+    },
+    {
+      "src": "/cafe-heroes/asal-specialty-coffee-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Mohnad Galal",
+        "uri": "https://maps.google.com/maps/contrib/107020125732336026277"
+      }
+    }
+  ],
+  "thimar-al-wusool-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/thimar-al-wusool-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "كوفي ثمار الوصول ( قهوة مختصة )",
+        "uri": "https://maps.google.com/maps/contrib/105492531372212928378"
+      }
+    }
+  ],
+  "effect-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/effect-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "Lamya ahmad",
+        "uri": "https://maps.google.com/maps/contrib/100201867934366577594"
+      }
+    },
+    {
+      "src": "/cafe-heroes/effect-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Abdullah J",
+        "uri": "https://maps.google.com/maps/contrib/114294085716864008107"
+      }
+    }
+  ],
+  "nqt-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/nqt-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "sLman",
+        "uri": "https://maps.google.com/maps/contrib/108840509068826157888"
+      }
+    },
+    {
+      "src": "/cafe-heroes/nqt-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "رهف دغريري",
+        "uri": "https://maps.google.com/maps/contrib/100786017580245529900"
+      }
+    }
+  ],
+  "madawi-coffee-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/madawi-coffee-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "Mohamed Ali",
+        "uri": "https://maps.google.com/maps/contrib/107046446570310525573"
+      }
+    },
+    {
+      "src": "/cafe-heroes/madawi-coffee-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "Massimo",
+        "uri": "https://maps.google.com/maps/contrib/100183956380102401549"
+      }
+    }
+  ],
+  "beek-cup-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/beek-cup-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "Super Weman",
+        "uri": "https://maps.google.com/maps/contrib/106721541698288051172"
+      }
+    }
+  ],
+  "malath-delicious-al-naseem-gharbi": [
+    {
+      "src": "/cafe-heroes/malath-delicious-al-naseem-gharbi/1.jpg",
+      "attribution": {
+        "displayName": "munera abdullah",
+        "uri": "https://maps.google.com/maps/contrib/101934395324360387408"
+      }
+    },
+    {
+      "src": "/cafe-heroes/malath-delicious-al-naseem-gharbi/2.jpg",
+      "attribution": {
+        "displayName": "فيصل الشمري",
+        "uri": "https://maps.google.com/maps/contrib/115670517829123057298"
+      }
+    }
   ]
 }

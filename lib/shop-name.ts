@@ -325,6 +325,19 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // NG1 (29 Oct 2026): 10 An Nasim Al Gharbi cafés from Scout's daily hunt. Brand-qualified aliases only; the single words in these names that are
+  // everyday words or given names (address, noura, asal, thimar, wusool, effect, نقط, madawi, beek, cup, malath, delicious ...) are blocked below.
+  // Coffee Address: bare asks keep the existing branches first (catalog order); An Nasim Al Gharbi-named asks lead this branch.
+  "coffee-address-al-naseem-gharbi": ["coffee address naseem", "coffee address al naseem", "coffee address nasim", "coffee address an nasim al gharbi", "coffee address naseem west", "coffee address abdallah ibn massoud", "عنوان القهوة النسيم", "عنوان القهوة النسيم الغربي"],
+  "noura-specialty-coffee-al-naseem-gharbi": ["noura coffee", "noura cafe", "noura specialty", "noura naseem", "كافيه نوره", "كافية نورة", "قهوة نورة", "نورة للقهوة المختصة", "نورة النسيم"],
+  "sava-al-naseem-gharbi": ["sava coffee", "sava naseem", "سافا كوفي", "قهوة سافا", "سافا النسيم"],
+  "asal-specialty-coffee-al-naseem-gharbi": ["asal cafe", "asal coffee", "asal specialty", "asal naseem", "اصال كافيه", "قهوة اصال", "اصال النسيم"],
+  "thimar-al-wusool-al-naseem-gharbi": ["thimar coffee", "thimar al wusool", "thimar alwusool", "thimar naseem", "قهوة ثمار الوصول", "ثمار الوصول قهوة مختصة", "ثمار الوصول النسيم"],
+  "effect-al-naseem-gharbi": ["effect cafe", "effect café", "cafe effect", "effect naseem", "effect al naseem", "افكت كافيه", "قهوة افكت", "إفكت كوفي", "افكت النسيم"],
+  "nqt-al-naseem-gharbi": ["nqt coffee", "nqt cafe", "nqt naseem", "نقط كافيه", "قهوة نقط", "نقط النسيم"],
+  "madawi-coffee-al-naseem-gharbi": ["madawi cafe", "madawi naseem", "قهوة مضاوي", "مضاوي كافيه", "مضاوي قهوة مختصة", "مضاوي النسيم"],
+  "beek-cup-al-naseem-gharbi": ["beek cup cafe", "beek cup coffee", "pick cup cafe", "beek cup naseem", "بيك كوب كافيه", "بيك كوب النسيم"],
+  "malath-delicious-al-naseem-gharbi": ["malath cafe", "malath coffee", "malath naseem", "malathdelicious", "ملاذ كافيه", "قهوة ملاذ", "ملاذ ديليشيز قهوة وحلويات", "ملاذ النسيم"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +455,18 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // NG1 (29 Oct 2026): single words of the new An Nasim Al Gharbi names are everyday words or given names and never pin a café alone
+  // (address / عنوان, noura / نورة, asal is honey, thimar / ثمار fruits, wusool / وصول arrival, effect, نقط points, madawi / مضاوي, beek, cup / كوب,
+  // malath / ملاذ refuge, delicious). Full names and the brand-qualified aliases above still match.
+  "coffee-address-al-naseem-gharbi": ["address", "عنوان"],
+  "noura-specialty-coffee-al-naseem-gharbi": ["noura", "نوره", "نورة", "للقهوه"],
+  "asal-specialty-coffee-al-naseem-gharbi": ["asal"],
+  "thimar-al-wusool-al-naseem-gharbi": ["thimar", "wusool", "ثمار", "وصول"],
+  "effect-al-naseem-gharbi": ["effect"],
+  "nqt-al-naseem-gharbi": ["نقط"],
+  "madawi-coffee-al-naseem-gharbi": ["madawi", "مضاوي"],
+  "beek-cup-al-naseem-gharbi": ["beek", "cup", "بيك", "كوب"],
+  "malath-delicious-al-naseem-gharbi": ["malath", "delicious", "ملاذ", "ديليشيز"],
 };
 
 function chainBrandIdForShop(

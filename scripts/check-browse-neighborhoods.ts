@@ -226,7 +226,7 @@ for (const row of rowsEn) {
       row.id === "al-ghadeer"
           ? 10 // + MID-SAJJ, trending add 21 Oct
           : row.id === "al-qirawan"
-            ? 13
+            ? 14 // + Caeva Cafe, TRENDVERIFY-1028PM
             : row.id === "al-arid"
               ? 10 // drive-al-arid is a chain with unknown dine-in (4 Oct 2026)
               : row.id === "al-aqiq"

@@ -56129,7 +56129,7 @@
     {
       "id": "oldlane-tuwaiq",
       "nameAr": "أولد لين",
-      "nameEn": "Oldlane",
+      "nameEn": "Old Lane",
       "city": "riyadh",
       "neighborhood": "tuwaiq",
       "neighborhoodAr": "طويق",
@@ -63706,6 +63706,184 @@
           }
         ]
       },
+      "example": false
+    },
+    {
+      "id": "opal-coffee-house-al-narjis",
+      "nameAr": "أوبال كوفي هاوس",
+      "nameEn": "Opal Coffee House",
+      "city": "riyadh",
+      "neighborhood": "al-narjis",
+      "neighborhoodAr": "النرجس",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee5002388fa49:0xb4faf2cb0a627560!8m2!3d24.8695663!4d46.655806399999996",
+      "pin": {
+        "lat": 24.8695663,
+        "lng": 46.655806399999996
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJSfqIIwDlLj4RYHViCsvy-rQ",
+      "dineIn": true,
+      "outdoorSeating": true,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: 6:00 AM – 12:00 AM",
+          "Tuesday: 6:00 AM – 12:00 AM",
+          "Wednesday: 6:00 AM – 12:00 AM",
+          "Thursday: 6:00 AM – 1:00 AM",
+          "Friday: 1:00 PM – 1:00 AM",
+          "Saturday: 6:00 AM – 12:00 AM",
+          "Sunday: 6:00 AM – 12:00 AM"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 1,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 1,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 2,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 2,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 3,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 3,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 4,
+              "hour": 0,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 4,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 5,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 5,
+              "hour": 13,
+              "minute": 0
+            },
+            "close": {
+              "day": 6,
+              "hour": 1,
+              "minute": 0
+            }
+          },
+          {
+            "open": {
+              "day": 6,
+              "hour": 6,
+              "minute": 0
+            },
+            "close": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
+    },
+    {
+      "id": "caeva-al-qirawan",
+      "nameAr": "كايفا كافيه",
+      "nameEn": "Caeva Cafe",
+      "city": "riyadh",
+      "neighborhood": "al-qirawan",
+      "neighborhoodAr": "القيروان",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee7da333b9657:0x6258c565a53f4864!8m2!3d24.825803600000004!4d46.591370999999995",
+      "pin": {
+        "lat": 24.825803600000004,
+        "lng": 46.591370999999995
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJV5Y7M9rnLj4RZEg_pWXFWGI",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "example": false
+    },
+    {
+      "id": "oldlane-hittin",
+      "nameAr": "أولد لين",
+      "nameEn": "Old Lane",
+      "city": "riyadh",
+      "neighborhood": "hittin",
+      "neighborhoodAr": "حطين",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee147d7b16187:0xf27d32cf720765f5!8m2!3d24.7706566!4d46.59235400000001",
+      "pin": {
+        "lat": 24.7706566,
+        "lng": 46.59235400000001
+      },
+      "logoUrl": "/logos/oldlane-tuwaiq.png",
+      "popularityIndex": 40,
+      "placeId": "ChIJh2Gx10fhLj4R9WUHcs8yffI",
+      "seatingVerdict": {
+        "dineIn": true,
+        "source": "scout",
+        "date": "2026-10-28"
+      },
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
       "example": false
     }
   ]

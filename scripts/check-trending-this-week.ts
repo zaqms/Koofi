@@ -40,28 +40,32 @@ function escapeHtml(text: string): string {
 const LINE_PROMO =
   /\b(paid|promo|sponsored|offers?|discounts?|deals?|free|new menu)\b|%|عرض|عروض|خصم|مجان|برعاية|سبونسر|منيو جديد/i;
 
-const EXPECTED = [
-  "kultura-as-suwaidi-al-gharbi",
-  "espresso-culture-al-mursalat",
-  "veni-al-nakheel",
-] as const;
+const EXPECTED = ["espresso-culture-al-mursalat"] as const;
 
-/** 25 Sep – 2 Oct rows. Dropped in the 13–20 Oct refresh. */
+/** Rows dropped in earlier refreshes (25 Sep – 2 Oct, 13–20 Oct) and in the 18–25 Oct refresh (still off for 22–29 Oct). */
 const DROPPED = [
   "torre-al-rawabi",
   "dm-cafe-roastery-as-sahafah",
   "namq-al-malqa",
   "waqar-al-aziziyah",
+  "kultura-as-suwaidi-al-gharbi",
+  "veni-al-nakheel",
 ] as const;
 
+/** Home tiles: 1 row = grid-cols-1, 2 rows = grid-cols-2, 3 rows = grid-cols-3. */
+const EXPECTED_COUNT: number = EXPECTED.length;
+const EXPECTED_GRID =
+  EXPECTED_COUNT === 1 ? "grid-cols-1" : EXPECTED_COUNT === 2 ? "grid-cols-2" : "grid-cols-3";
+const OTHER_GRIDS = ["grid-cols-1", "grid-cols-2", "grid-cols-3"].filter((g) => g !== EXPECTED_GRID);
+
 assert(
-  TRENDING_THIS_WEEK_WINDOW.from === "2026-10-13" &&
-    TRENDING_THIS_WEEK_WINDOW.to === "2026-10-20",
-  "Trending window is 2026-10-13 to 2026-10-20",
+  TRENDING_THIS_WEEK_WINDOW.from === "2026-10-22" &&
+    TRENDING_THIS_WEEK_WINDOW.to === "2026-10-29",
+  "Trending window is 2026-10-22 to 2026-10-29",
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") === EXPECTED.join(","),
-  "Trending allowlist order is Kultúra, Espresso Culture, then Veni",
+  "Trending allowlist is Espresso Culture alone",
 );
 assert(
   TRENDING_THIS_WEEK.map((row) => row.id).join(",") === EXPECTED.join(","),
@@ -121,34 +125,20 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK[0]?.lineAr ===
-    "كولتورا فتح فرعه الجديد بالسويدي الغربي، والزحمة عليه من أول أيامه." &&
+    "إسبريسو كالتشر بالمرسلات لسّا الناس ينزّلون صور قهوتهم منه، حتى بعد أسابيع من افتتاحه." &&
     TRENDING_THIS_WEEK[0]?.lineEn ===
-      "Kultúra opened its new As Suwaidi Al Gharbi branch, and it has been busy since its first days.",
-  "Kultúra's line is the new-branch reason",
-);
-assert(
-  TRENDING_THIS_WEEK[1]?.lineAr ===
-    "إسبريسو كالتشر بالمرسلات توه فاتح، وناس كثير نزّلوا صور قهوتهم منه هالأسبوع." &&
-    TRENDING_THIS_WEEK[1]?.lineEn ===
-      "Espresso Culture just opened in Al Mursalat, and lots of people shared photos of their coffee there this week.",
-  "Espresso Culture's line is the new-opening reason",
-);
-assert(
-  TRENDING_THIS_WEEK[2]?.lineAr ===
-    "فيني فتحوا فرعهم الجديد بالنخيل مقابل جامعة الملك سعود، والناس قاعدين ينزّلون أول زياراتهم له." &&
-    TRENDING_THIS_WEEK[2]?.lineEn ===
-      "Veni opened its new branch in An Nakheel, across from King Saud University, and people have been posting their first visits.",
-  "Veni's line is the new-branch reason",
+      "Espresso Culture in Al Mursalat still has people posting photos of their coffee there, weeks after it opened.",
+  "Espresso Culture's line is the still-posting photos reason",
 );
 for (const id of DROPPED) {
   assert(
     !(TRENDING_THIS_WEEK_IDS as readonly string[]).includes(id),
-    `${id} is off the 13–20 Oct list`,
+    `${id} is off the 22–29 Oct list`,
   );
 }
 assert(
-  trendingWindowLabel("ar") === "13 أكتوبر – 20 أكتوبر" &&
-    trendingWindowLabel("en") === "13 Oct – 20 Oct",
+  trendingWindowLabel("ar") === "22 أكتوبر – 29 أكتوبر" &&
+    trendingWindowLabel("en") === "22 Oct – 29 Oct",
   "window line is derived from the stored dates",
 );
 for (const row of TRENDING_THIS_WEEK) {
@@ -218,13 +208,7 @@ const names = listRealShops().flatMap((shop) => [
   shop.nameEn,
   shop.nameAr,
 ]);
-const kultura = getShop("kultura-as-suwaidi-al-gharbi");
 const espressoCulture = getShop("espresso-culture-al-mursalat");
-const veni = getShop("veni-al-nakheel");
-assert(
-  kultura?.neighborhood === "as-suwaidi-al-gharbi" && kultura.nameEn === "Kultúra" && !kultura.isChain,
-  "Kultúra is a real As Suwaidi Al Gharbi café row, not a chain",
-);
 assert(
   espressoCulture?.neighborhood === "al-mursalat" &&
     espressoCulture.nameEn === "Espresso Culture" &&
@@ -232,13 +216,8 @@ assert(
   "Espresso Culture is a real Al Mursalat café row, not a chain",
 );
 assert(
-  veni?.neighborhood === "al-nakheel" && veni.nameEn === "Veni" && !veni.isChain,
-  "Veni is a real An Nakheel café row, not a chain",
-);
-assert(
-  names.filter((name) => /^espresso-culture-/.test(name)).length === 1 &&
-    names.filter((name) => /^veni-/.test(name)).length === 1,
-  "Espresso Culture and Veni each have exactly one catalog row",
+  names.filter((name) => /^espresso-culture-/.test(name)).length === 1,
+  "Espresso Culture has exactly one catalog row",
 );
 
 function trendingIds(language: Language): string[] {
@@ -252,8 +231,10 @@ function trendingIds(language: Language): string[] {
     assert(!html.includes(row.lineAr), `${language} does not render the Arabic line`);
     assert(!html.includes(escapeHtml(row.lineEn)), `${language} does not render the English line`);
   }
-  assert(html.includes("grid-cols-3"), `${language} lays three rows out three across`);
-  assert(!html.includes("grid-cols-2"), `${language} three rows do not use the two-column grid`);
+  assert(html.includes(EXPECTED_GRID), `${language} lays ${EXPECTED.length} rows out as ${EXPECTED_GRID}`);
+  for (const other of OTHER_GRIDS) {
+    assert(!html.includes(other), `${language} ${EXPECTED.length} rows do not use ${other}`);
+  }
   assert(
     html.includes(language === "ar" ? "ترند الأسبوع" : "Trending this week"),
     `${language} keeps the existing heading`,
@@ -263,11 +244,11 @@ function trendingIds(language: Language): string[] {
 
 assert(
   trendingIds("ar").join(",") === EXPECTED.join(","),
-  "AR home Trending renders all three in allowlist order",
+  "AR home Trending renders every row in allowlist order",
 );
 assert(
   trendingIds("en").join(",") === EXPECTED.join(","),
-  "EN home Trending renders all three in allowlist order",
+  "EN home Trending renders every row in allowlist order",
 );
 
 const PROMO = /\b(paid|promo|sponsored|offer)\b|عروض|برعاية|سبونسر/i;

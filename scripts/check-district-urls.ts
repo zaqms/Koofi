@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 555, `specialty discovery is 555 (10 NG1 An Nasim Al Gharbi local (29 Oct 2026) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 658, `catalog is 658 after 10 NG1 An Nasim Al Gharbi (29 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -1712,16 +1712,26 @@ const MALAZ_REFILL = {
   );
   const gharbi = listDirectoryShopsForDistrict("an-nasim-al-gharbi");
   assert(
-    gharbi.length === 3 &&
+    gharbi.length === 13 &&
       gharbi.every((shop) => shop.neighborhood === "an-nasim-al-gharbi") &&
       [
         "trivali-roaster-al-naseem-gharbi",
         "gusn-coffee-al-naseem-gharbi",
         "be-such-al-naseem-gharbi",
+        "coffee-address-al-naseem-gharbi",
+        "noura-specialty-coffee-al-naseem-gharbi",
+        "sava-al-naseem-gharbi",
+        "asal-specialty-coffee-al-naseem-gharbi",
+        "thimar-al-wusool-al-naseem-gharbi",
+        "effect-al-naseem-gharbi",
+        "nqt-al-naseem-gharbi",
+        "madawi-coffee-al-naseem-gharbi",
+        "beek-cup-al-naseem-gharbi",
+        "malath-delicious-al-naseem-gharbi",
       ].every((id) => gharbi.some((shop) => shop.id === id)) &&
       !gharbi.some((shop) => shop.id === "drcafe-an-nasim-al-gharbi") &&
       listDriveThroughDirectoryShops().some((shop) => shop.id === "drcafe-an-nasim-al-gharbi"),
-    "an-nasim-al-gharbi lists the Scout-3; the kiosk dr.CAFE stays on Drive-through",
+    "an-nasim-al-gharbi lists the Scout-3 and the 10 NG1 cafés (29 Oct 2026); the kiosk dr.CAFE stays on Drive-through",
   );
   assert(
     listDirectoryShopsForDistrict("kkia").length === 0 &&
@@ -6843,6 +6853,130 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // NG1 (29 Oct 2026, Scout daily hunt): 10 An Nasim Al Gharbi cafés; Coffee Address reuses the catalog mark, SAVA Cafe and Malath Delicious carry new TikTok marks, the other 7 are letter tiles. Scout's Places frames, 0 Dev Places calls.
+  {
+    id: "coffee-address-al-naseem-gharbi",
+    hex: "0x3e2f01170e8ead19:0x34114ac941f9d39f",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.726678999999997, lng: 46.813932 },
+    coordsInUrl: true,
+    placeId: "ChIJGa2ODhcBLz4Rn9P5QclKETQ",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "noura-specialty-coffee-al-naseem-gharbi",
+    hex: "0x3e2fa92786eea47b:0xaf0aa482368d594d",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.718180099999998, lng: 46.844125399999996 },
+    coordsInUrl: true,
+    placeId: "ChIJe6TuhiepLz4RTVmNNoKkCq8",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "sava-al-naseem-gharbi",
+    hex: "0x3e2fa98c71783443:0x925088af47c17a9",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/sava-al-naseem-gharbi.jpg",
+    pin: { lat: 24.7161264, lng: 46.8283468 },
+    coordsInUrl: true,
+    placeId: "ChIJQzR4cYypLz4RqRd89IoIJQk",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "asal-specialty-coffee-al-naseem-gharbi",
+    hex: "0x3e2f01639a7cfd87:0x36dd9eae96cab10f",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7233919, lng: 46.816342000000006 },
+    coordsInUrl: true,
+    placeId: "ChIJh_18mmMBLz4RD7HKlq6e3TY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "thimar-al-wusool-al-naseem-gharbi",
+    hex: "0x3e2fabae6aea7e93:0xe6fe4249690e6cfe",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7241961, lng: 46.8286705 },
+    coordsInUrl: true,
+    placeId: "ChIJk37qaq6rLz4R_mwOaUlC_uY",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "effect-al-naseem-gharbi",
+    hex: "0x3e2f01ae678ba0e5:0x470fd24e9676f31e",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.734251099999998, lng: 46.808927499999996 },
+    coordsInUrl: true,
+    placeId: "ChIJ5aCLZ64BLz4RHvN2lk7SD0c",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "nqt-al-naseem-gharbi",
+    hex: "0x3e2f010feac3ff1f:0xb2e8f78e7ea5dbda",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7434381, lng: 46.8201904 },
+    coordsInUrl: true,
+    placeId: "ChIJH__D6g8BLz4R2tulfo736LI",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "madawi-coffee-al-naseem-gharbi",
+    hex: "0x3e2fa90055e4dbe7:0x5142d6458616f7a1",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7230657, lng: 46.8405627 },
+    coordsInUrl: true,
+    placeId: "ChIJ59vkVQCpLz4RofcWhkXWQlE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "beek-cup-al-naseem-gharbi",
+    hex: "0x3e2f01889d6884ed:0x51557a83f63eff3d",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.7293985, lng: 46.806420499999994 },
+    coordsInUrl: true,
+    placeId: "ChIJ7YRonYgBLz4RPf8-9oN6VVE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "malath-delicious-al-naseem-gharbi",
+    hex: "0x3e2fab24797a5be9:0xb13a2c140e6a47ff",
+    neighborhood: "an-nasim-al-gharbi",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/malath-delicious-al-naseem-gharbi.jpg",
+    pin: { lat: 24.7379988, lng: 46.8295141 },
+    coordsInUrl: true,
+    placeId: "ChIJ6Vt6eSSrLz4R_0dqDhQsOrE",
     dineIn: true,
     outdoorSeating: null,
   },

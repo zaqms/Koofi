@@ -85,6 +85,7 @@ import { listSitemapLocs } from "../lib/sitemap-xml";
 import { buildLlmsTxt, listPublicShops, publicShopRecord } from "../lib/structured-data";
 import {
   CHAIN_POPULARITY_BASE,
+  TIKTOK_FOLLOWERS,
   TIKTOK_NEUTRAL_BONUS,
   chainPopularityIndex,
 } from "../lib/tiktok-popularity";
@@ -1227,7 +1228,12 @@ for (const [ask, id] of [
   assert(opal?.nameEn === "Opal Coffee House" && opal.nameAr === "أوبال كوفي هاوس" && opal.neighborhood === "al-narjis" && !opal.logoUrl && opal.outdoorSeating === true && opal.openingHours?.periods?.length === 7, "Opal Coffee House An Narjis row (letter tile, 7 hour periods, outdoor seating)");
   assert(caeva?.nameEn === "Caeva Cafe" && caeva.nameAr === "كايفا كافيه" && caeva.neighborhood === "al-qirawan" && !caeva.logoUrl && !caeva.openingHours && !("hours" in caeva), "Caeva Al Qirawan row (letter tile, hours empty: Places has none)");
   assert(oldH?.nameEn === "Old Lane" && oldH.nameAr === "أولد لين" && oldH.neighborhood === "hittin" && oldH.logoUrl === "/logos/oldlane-tuwaiq.png" && getShop("oldlane-tuwaiq")?.logoUrl === oldH.logoUrl && !oldH.openingHours && oldH.seatingVerdict?.dineIn === true && oldH.seatingVerdict.source === "scout", "Old Lane Hittin reuses the live Old Lane mark, hours empty, seating from Scout");
-  assert(getShop("oldlane-tuwaiq")?.nameEn === "Oldlane" && getShop("oldlane-tuwaiq")?.neighborhood === "tuwaiq", "the live Old Lane Tuwaiq row is untouched");
+  // #300 r2 (29 Oct 2026): both Old Lane rows carry the same display name "Old Lane" (Scout: the shared official brand account @oldlane.sa, bio «قهوة اولد لين | OLD LANE COFFEE»).
+  const oldT = getShop("oldlane-tuwaiq");
+  assert(oldT?.nameEn === "Old Lane" && oldT.nameAr === "أولد لين" && oldT.neighborhood === "tuwaiq" && oldT.logoUrl === "/logos/oldlane-tuwaiq.png", "the live Old Lane Tuwaiq row reads Old Lane / أولد لين, slug and mark unchanged");
+  assert(oldH?.nameEn === oldT?.nameEn && oldH?.nameAr === oldT?.nameAr && oldH?.logoUrl === oldT?.logoUrl, "both Old Lane rows share nameEn, nameAr and the mark");
+  const ttH = TIKTOK_FOLLOWERS["oldlane-hittin"];
+  assert(ttH?.status === "found" && ttH.handle === "@oldlane.sa" && ttH.followers === 1986 && ttH.sharedBrandAccount === true, "Old Lane Hittin records the shared brand TikTok @oldlane.sa (1,986)");
   for (const row of rows28) {
     assert(listDiscoveryShops().some((r) => r.id === row!.id), `${row!.id} is specialty discovery`);
     const page = listDirectoryShopsForDistrict(row!.neighborhood);
@@ -1236,7 +1242,11 @@ for (const [ask, id] of [
   for (const [id, asks] of [
     ["opal-coffee-house-al-narjis", ["opal", "Opal Coffee House", "opal coffee", "opal cafe", "opal narjis", "أوبال", "أوبال كوفي هاوس", "قهوة أوبال", "أوبال النرجس"]],
     ["caeva-al-qirawan", ["caeva", "Caeva Cafe", "caeva coffee", "caeva qirawan", "كايفا", "كايفا كافيه", "قهوة كايفا", "كايفا القيروان"]],
-    ["oldlane-hittin", ["old lane hittin", "Old Lane Hittin", "oldlane hittin", "old lane al hittin", "old lane حطين", "أولد لين حطين", "قهوة أولد لين حطين", "كافيه أولد لين حطين"]],
+    ["oldlane-hittin", ["old lane hittin", "Old Lane Hittin", "oldlane hittin", "old lane al hittin", "old lane حطين", "أولد لين حطين", "قهوة أولد لين حطين", "كافيه أولد لين حطين",
+      // #300 r2: QA r1 M1 + L1 phrasings, and Hittin-named asks inside a longer sentence.
+      "old lane in hittin", "old lane at hittin", "old lane cafe hittin", "old lane cafe al hittin", "old lane coffee in hittin", "old lane branch hittin", "old lane branch in hittin", "old lane hattin",
+      "oldlane al hittin", "Oldlane al hittin", "oldlane in hittin", "أولد لين hittin", "أولد لين al hittin", "أولد لين في حطين", "وين اولد لين حطين",
+      "where is old lane hittin", "where is old lane in hittin", "the new old lane in hittin", "old lane hittin riyadh"]],
   ] as const) {
     for (const ask of asks) {
       const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
@@ -1244,13 +1254,18 @@ for (const [ask, id] of [
     }
   }
   // Two Old Lane rows: every bare or Tuwaiq-named ask keeps leading the existing Tuwaiq row; the bare words never pin the new row.
-  for (const ask of ["old lane", "Old Lane", "oldlane", "Oldlane", "أولد لين", "old lane tuwaiq", "oldlane tuwaiq", "old lane cafe", "where is old lane"]) {
+  for (const ask of ["old lane", "Old Lane", "OLD LANE", "oldlane", "Oldlane", "أولد لين", "اولد لين", "قهوة أولد لين", "old lane tuwaiq", "oldlane tuwaiq", "old lane طويق", "أولد لين طويق", "old lane cafe", "old lane coffee", "where is old lane", "where is old lane tuwaiq", "old lane riyadh", "اولد", "لين"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(hits[0] === "oldlane-tuwaiq", `${ask} leads the existing Old Lane Tuwaiq row, got ${hits.join(",")}`);
   }
   for (const ask of ["old", "lane", "old cafe", "a cafe in an old lane", "اولد", "لين", "old lane", "Old Lane", "old lane tuwaiq"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.includes("oldlane-hittin"), `${ask} does not pin Old Lane Hittin, got ${hits.join(",")}`);
+  }
+  // #300 r2: the rename must not let the bare English words pin the Tuwaiq row either.
+  for (const ask of ["old", "lane", "old cafe", "old coffee", "lane cafe", "old town", "old school coffee", "memory lane", "fast lane", "old fashioned", "the old way"]) {
+    const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
+    assert(!hits.includes("oldlane-tuwaiq") && !hits.includes("oldlane-hittin"), `${ask} does not pin an Old Lane row, got ${hits.join(",")}`);
   }
   // Everyday words and districts never pin a new café.
   for (const ask of ["house", "هاوس", "coffee house", "a coffee house with a view", "coffee", "cafe", "قهوة", "كافيه", "كوفي", "hittin", "حطين", "an narjis", "النرجس", "al qirawan", "القيروان", "quiet cafe with outdoor seating", "قهوة هادية بحطين", "كوفي هاوس"]) {
@@ -2455,7 +2470,7 @@ assert(
   const tuwaiqEn = districtEnMarkdown("tuwaiq");
   const tuwaiqAr = districtArMarkdown("tuwaiq");
   assert(
-    tuwaiqEn.includes("[Drip](/en/c/drip-tuwaiq), [IRLO](/en/c/irlo-tuwaiq), [Quba](/en/c/quba-tuwaiq), [Oldlane](/en/c/oldlane-tuwaiq), and [BREATH](/en/c/breath-tuwaiq) are among the local cafes on this list today.") &&
+    tuwaiqEn.includes("[Drip](/en/c/drip-tuwaiq), [IRLO](/en/c/irlo-tuwaiq), [Quba](/en/c/quba-tuwaiq), [Old Lane](/en/c/oldlane-tuwaiq), and [BREATH](/en/c/breath-tuwaiq) are among the local cafes on this list today.") &&
       tuwaiqAr.includes("[دريب](/c/drip-tuwaiq) و[أرلو كافيه](/c/irlo-tuwaiq) و[قوبا](/c/quba-tuwaiq) و[أولد لين](/c/oldlane-tuwaiq) و[بريث](/c/breath-tuwaiq) من القهاوي المحلية بهالقائمة اليوم."),
     "Tuwaiq intro names only local cafes (Drip + 4 Batch P)",
   );
@@ -2477,7 +2492,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "cef68c776efae907243b7d8c1c94a6209dbda8246c3b3f95be399c18fb7126d3",
+  copyHash === "804b767b77c1dd47a4b369e0bf0538164feae8df9b2ed0ccc33f9f7ff8f881bc",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(

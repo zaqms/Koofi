@@ -849,7 +849,7 @@ Riyadh only for now. Missing a place? Send a Maps link from the site.`,
   tuwaiq: {
     lead: `Tuwaiq (طويق) sits on the southwest side of Riyadh. This page is the Tuwaiq set on wain.lol so far.
 
-[Drip](/en/c/drip-tuwaiq), [IRLO](/en/c/irlo-tuwaiq), [Quba](/en/c/quba-tuwaiq), [Oldlane](/en/c/oldlane-tuwaiq), and [BREATH](/en/c/breath-tuwaiq) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
+[Drip](/en/c/drip-tuwaiq), [IRLO](/en/c/irlo-tuwaiq), [Quba](/en/c/quba-tuwaiq), [Old Lane](/en/c/oldlane-tuwaiq), and [BREATH](/en/c/breath-tuwaiq) are among the local cafes on this list today. We don’t invent extras to fill the page.`,
     hereIntro: `There are **{count}** cafes from Tuwaiq on the catalog today:`,
     hereOutro: `Open the card, then **Take me there** for the pin. Hours stay on Google Maps.`,
     nearbyIntro: `If Tuwaiq isn’t the stop, these are the nearest lists on the site so far. Al Hazm is close too, but its only cafe is a drive-thru, so it isn’t listed here:`,

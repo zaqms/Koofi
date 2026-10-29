@@ -4550,10 +4550,10 @@
     "sharedBrandAccount": false
   },
   "oldlane-hittin": {
-    "handle": null,
-    "followers": null,
-    "status": "unverified",
-    "dateChecked": "2026-10-28",
-    "sharedBrandAccount": false
+    "handle": "@oldlane.sa",
+    "followers": 1986,
+    "status": "found",
+    "dateChecked": "2026-10-29",
+    "sharedBrandAccount": true
   }
 }

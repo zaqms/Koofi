@@ -329,11 +329,11 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // name and logo as cafe-tale-kafd, so bare "cafe tale" / «كافي تيل» keep leading KAFD (the live row); only
   // Izdihar-named asks lead this one. Maps labels it «كوفى تيل».
   // Brand spellings both rows share (website cafetale.com; Maps «كوفى تيل»); KAFD stays first on these.
-  "cafe-tale-kafd": ["cafetale", "كوفي تيل", "كافيه تيل"],
+  "cafe-tale-kafd": ["cafetale", "كوفي تيل", "كافيه تيل", "tale cafe", "tale coffee", "the tale cafe", "تيل كافيه", "قهوة تيل"],
   "cafe-tale-al-izdihar": [
     "cafetale", "كوفي تيل", "كافيه تيل",
     "cafe tale izdihar", "cafe tale al-izdihar", "cafe tale azdihar", "cafe tale al azdihar", "cafetale izdihar",
-    "كافي تيل الازدهار", "كافي تيل حي الازدهار", "كوفي تيل الازدهار", "كوفى تيل الازدهار", "كافيه تيل الازدهار",
+    "كافي تيل الازدهار", "كافي تيل حي الازدهار", "كوفي تيل الازدهار", "كوفى تيل الازدهار", "كافيه تيل الازدهار", "قهوة تيل الازدهار", "تيل الازدهار", "tale izdihar",
   ],
 };
 
@@ -452,9 +452,10 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
-  // LINKCHECK-1030: "tale" / «تيل» are plain words (fairy tale, «تيل» = tulle/linen); neither Cafe Tale row
-  // answers to them alone. "cafe tale" / «كافي تيل» and the branch-named phrases still match.
-  "cafe-tale-kafd": ["tale", "تيل"],
+  // LINKCHECK-1030: "tale" is a plain word (fairy tale); neither Cafe Tale row answers to it alone. «تيل» (Google's
+  // Arabic name, «كوفى تيل») still finds KAFD as on main (#304 QA Q1 default); the Izdihar row blocks both.
+  // "cafe tale" / «كافي تيل», "tale cafe" / «قهوة تيل» and the branch-named phrases still match.
+  "cafe-tale-kafd": ["tale"],
   "cafe-tale-al-izdihar": ["tale", "تيل"],
 };
 

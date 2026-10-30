@@ -1219,7 +1219,7 @@ for (const [ask, id] of [
 }
 // LINKCHECK-1030 (30 Oct 2026): Cafe Tale / كافي تيل, Al Izdihar — second Riyadh row of the KAFD brand (same name, same
 // cafetale.com site, reused KAFD logo). Two rows, so specialty, not a chain. Bare brand asks keep leading KAFD; only
-// Izdihar-named asks lead this row; "tale" / «تيل» alone pin neither row.
+// Izdihar-named asks lead this row; bare "tale" pins neither row, bare «تيل» finds KAFD (#304 QA Q1 default).
 {
   const tale = getShop("cafe-tale-al-izdihar");
   const kafd = getShop("cafe-tale-kafd");
@@ -1234,15 +1234,15 @@ for (const [ask, id] of [
   );
   assert(listDiscoveryShops().some((row) => row.id === tale.id) && listDiscoveryShops().some((row) => row.id === kafd!.id), "both Cafe Tale rows are specialty discovery");
   assert(page.some((row) => row.id === tale.id) && applyHideChains(page, true).some((row) => row.id === tale.id), "Cafe Tale shows on the Al Izdihar page with Local only");
-  for (const ask of ["cafe tale", "Cafe Tale", "كافي تيل", "cafetale", "كوفى تيل", "كوفي تيل", "كافيه تيل", "cafe tale kafd", "كافي تيل كافد", "where is cafe tale"]) {
+  for (const ask of ["cafe tale", "Cafe Tale", "كافي تيل", "cafetale", "كوفى تيل", "كوفي تيل", "كافيه تيل", "cafe tale kafd", "كافي تيل كافد", "where is cafe tale", "tale cafe", "tale coffee", "the tale cafe", "تيل كافيه", "قهوة تيل", "تيل"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(hits[0] === "cafe-tale-kafd", `${ask} keeps leading cafe-tale-kafd, got ${hits.join(",")}`);
   }
-  for (const ask of ["cafe tale izdihar", "cafe tale al izdihar", "Cafe Tale Al Izdihar", "cafe tale azdihar", "cafetale izdihar", "كافي تيل الازدهار", "كافي تيل الإزدهار", "كوفى تيل الازدهار"]) {
+  for (const ask of ["cafe tale izdihar", "cafe tale al izdihar", "Cafe Tale Al Izdihar", "cafe tale azdihar", "cafetale izdihar", "كافي تيل الازدهار", "كافي تيل الإزدهار", "كوفى تيل الازدهار", "قهوة تيل الازدهار", "تيل الازدهار", "tale izdihar"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(hits[0] === "cafe-tale-al-izdihar", `${ask} leads cafe-tale-al-izdihar, got ${hits.join(",")}`);
   }
-  for (const ask of ["tale", "تيل", "fairy tale", "tale cafe", "coffee tale", "قهوة تيل", "izdihar", "al izdihar", "الازدهار", "coffee", "cafe", "قهوة"]) {
+  for (const ask of ["tale", "Tale", "fairy tale", "a tale of two cities", "coffee tale", "folk tale", "izdihar", "al izdihar", "الازدهار", "coffee", "cafe", "قهوة"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.includes("cafe-tale-al-izdihar") && !hits.includes("cafe-tale-kafd"), `${ask} pins no Cafe Tale row, got ${hits.join(",")}`);
   }

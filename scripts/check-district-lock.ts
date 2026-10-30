@@ -207,8 +207,8 @@ assert(suwaidiGharbi?.nameEn === "As Suwaidi Al Gharbi" && suwaidiGharbi?.nameAr
 assert(suwaidiGharbi?.shopCountLive === 2, "As Suwaidi Al Gharbi sheet shop_count_live is 2 after Batch J");
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "as-suwaidi-al-gharbi").map((shop) => shop.id).join(",") ===
-    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi,kultura-as-suwaidi-al-gharbi",
-  "As Suwaidi Al Gharbi catalog is Tul Cafe, Nafees and Kultúra (trending add 18 Oct)",
+    "tul-cafe-as-suwaidi-al-gharbi,nafees-as-suwaidi-al-gharbi,kultura-as-suwaidi-al-gharbi,filter-roastery-as-suwaidi-al-gharbi,deers-as-suwaidi-al-gharbi,blt-roastery-as-suwaidi-al-gharbi,cathaf-as-suwaidi-al-gharbi,lofty-coffee-as-suwaidi-al-gharbi,yaseer-as-suwaidi-al-gharbi,goose-valley-as-suwaidi-al-gharbi,oyw-as-suwaidi-al-gharbi,matel-as-suwaidi-al-gharbi,berry-pierce-as-suwaidi-al-gharbi,lumeter-as-suwaidi-al-gharbi,wathab-as-suwaidi-al-gharbi",
+  "As Suwaidi Al Gharbi catalog is Tul Cafe, Nafees and Kultúra (trending add 18 Oct) plus the 12 SG1 cafés (30 Oct 2026)",
 );
 const ashShifa = rows.find((row) => row.stableId === "ash-shifa");
 assert(ashShifa?.status === "dictionary_only", "ash-shifa sheet stays dictionary_only");

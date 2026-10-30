@@ -17795,5 +17795,21 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "cafe-tale-al-mughrizat": [
+    {
+      "src": "/cafe-heroes/cafe-tale-al-mughrizat/1.jpg",
+      "attribution": {
+        "displayName": "Dan Joy Roy",
+        "uri": "https://maps.google.com/maps/contrib/113115664608925945287"
+      }
+    },
+    {
+      "src": "/cafe-heroes/cafe-tale-al-mughrizat/2.jpg",
+      "attribution": {
+        "displayName": "Cafe Tale",
+        "uri": "https://maps.google.com/maps/contrib/113204193511719340949"
+      }
+    }
   ]
 }

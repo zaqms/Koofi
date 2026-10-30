@@ -55,21 +55,21 @@ function read(path: string): string {
 }
 
 const PIN = {
-  nearby: 593,
+  nearby: 594,
   outdoor: 278,
   coffee: 71,
   work: 65,
 } as const;
 
-assert(listRealShops().length === 648, "catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 Al Shohda (14 adds), Batch S As Salam (6 adds), Batch R Al Qadisiyah (8 adds), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q, Batch P, Batch O and Found Ar Rabwah (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 4 Namar + 14 Tuwaiq + 12 Ash Shifa + 1 Trace Al Mursalat + 7 trending adds 18 Oct + 8 Al Qadisiyah + 6 As Salam + 14 Al Shohda)");
-assert(listListingShops().length === 593, "listing is 593 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + 14 Batch SD1 Al Shohda + 6 Batch S As Salam + 8 Batch R Al Qadisiyah + 7 trending adds 18 Oct + 1 Trace Al Mursalat + 12 Batch Q Ash Shifa + 14 Batch P Tuwaiq + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
-assert(listPublicShops().length === 593, "sit-down listing is 593");
+assert(listRealShops().length === 649, "catalog is 649 after Cafe Tale Al Mughrizat (LINKCHECK-1030B), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 Al Shohda (14 adds), Batch S As Salam (6 adds), Batch R Al Qadisiyah (8 adds), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q, Batch P, Batch O and Found Ar Rabwah (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 4 Namar + 14 Tuwaiq + 12 Ash Shifa + 1 Trace Al Mursalat + 7 trending adds 18 Oct + 8 Al Qadisiyah + 6 As Salam + 14 Al Shohda)");
+assert(listListingShops().length === 594, "listing is 594 (1 Cafe Tale Al Mughrizat (LINKCHECK-1030B) + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + 14 Batch SD1 Al Shohda + 6 Batch S As Salam + 8 Batch R Al Qadisiyah + 7 trending adds 18 Oct + 1 Trace Al Mursalat + 12 Batch Q Ash Shifa + 14 Batch P Tuwaiq + 1 Found Ar Rabwah + 413 + 10 Batch E At Taawun + 9 Batch F Shubra + 15 Batch G An Nafal + 7 Batch H Al Izdihar + 6 Batch I Ar Rahmaniyyah + 8 Batch J Al Mathar + 4 Batch J other adds + 12 Batch K Umm Al Hamam Al Gharbi + 3 Batch L Umm Al Hamam Ash Sharqi + 13 Batch M Diplomatic Quarter + 15 Batch N Dhahrat Laban + 4 Batch O Namar)");
+assert(listPublicShops().length === 594, "sit-down listing is 594");
 assert(
   publicShopsItemList().numberOfItems === listRealShops().length,
   "GET /api/shops includes every café page",
 );
 assert(listLiveCatalogDistrictIds().length === 67, "district pages are 67 (Al Raqban and the Takhassusi street retired)");
-assert(listSitemapLocs().length === 1475, "sitemap is 1475 (+ OPULENT Qurtubah (TRENDVERIFY-1023PM) × AR/EN; + 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN)");
+assert(listSitemapLocs().length === 1477, "sitemap is 1477 (+ Cafe Tale Al Mughrizat (LINKCHECK-1030B) × AR/EN; + OPULENT Qurtubah (TRENDVERIFY-1023PM) × AR/EN; + 10 trending adds 21 Oct cafés × AR/EN; − Al Raqban and Al Takhassusi district pages AR/EN)");
 
 assert(FIXED_LIST_NEARBY_PAGE_SIZE === 12, "Nearby shows 12, then show more");
 assert(formatDistanceKm(1.2, "ar") === "1.2 كم", "AR distance is 1.2 كم");

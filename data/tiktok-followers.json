@@ -4534,5 +4534,89 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "filter-roastery-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "deers-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "blt-roastery-as-suwaidi-al-gharbi": {
+    "handle": "@bltcafeksa",
+    "followers": 2423,
+    "status": "found",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "cathaf-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "lofty-coffee-as-suwaidi-al-gharbi": {
+    "handle": "@lofty.coffee",
+    "followers": 1034,
+    "status": "found",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "yaseer-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "goose-valley-as-suwaidi-al-gharbi": {
+    "handle": "@goosevalley.sa",
+    "followers": 825,
+    "status": "found",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "oyw-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "matel-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "berry-pierce-as-suwaidi-al-gharbi": {
+    "handle": "@1berry_pierce",
+    "followers": 302,
+    "status": "found",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "lumeter-as-suwaidi-al-gharbi": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
+  },
+  "wathab-as-suwaidi-al-gharbi": {
+    "handle": "@wathab.26",
+    "followers": 191,
+    "status": "found",
+    "dateChecked": "2026-10-30",
+    "sharedBrandAccount": false
   }
 }

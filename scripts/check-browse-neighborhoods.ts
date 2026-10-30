@@ -194,10 +194,10 @@ assert(
       (row) =>
         row.id === id &&
         row.cafeCount ===
-          (id === "as-suwaidi-al-gharbi" ? 3 : id === "dhahrat-laban" ? 17 : id === "ash-shifa" ? 13 : id === "al-qadisiyah" ? 9 : 1),
+          (id === "as-suwaidi-al-gharbi" ? 15 : id === "dhahrat-laban" ? 17 : id === "ash-shifa" ? 13 : id === "al-qadisiyah" ? 9 : 1),
     ),
   ),
-  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 3 after Kultúra 18 Oct; Dhahrat Laban 17 after Dwell 18 Oct; Ash Shifa 13 after Batch Q; Al Qadisiyah 9 after Batch R)",
+  "Batch D3 districts stay on live browse (As Suwaidi Al Gharbi 15 after SG1 30 Oct; Dhahrat Laban 17 after Dwell 18 Oct; Ash Shifa 13 after Batch Q; Al Qadisiyah 9 after Batch R)",
 );
 assert(
   live.every((id) => rowsEn.some((row) => row.id === id)),

@@ -325,6 +325,20 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // SG1 As Suwaidi West (30 Oct 2026): brand- or district-qualified names for the 12 new rows. Everyday words and fragments of the new names
+  // (filter / فلتر, blt, وقهوه, lofty, goose / valley / فالي, on / your / way, berry / pierce / بيري / بيرس, «كثف», «يسير», «مثيل», «وثاب») are blocked below.
+  "filter-roastery-as-suwaidi-al-gharbi": ["filter roastery suwaidi", "filter roastery as suwaidi", "filter roastery as suwaidi al gharbi", "filter roastery suwaidi west", "محمصة فلتر السويدي", "محمصة فلتر السويدي الغربي", "فلتر السويدي"],
+  "deers-as-suwaidi-al-gharbi": ["deers coffee", "deers cafe", "deers speciality", "deers specialty coffee", "ديرز", "ديرز كوفي", "قهوة ديرز"],
+  "blt-roastery-as-suwaidi-al-gharbi": ["blt roastery", "blt cafe", "blt coffee", "blt specialty coffee", "محمصة بلت", "قهوة بلت", "بلت كافيه", "بلت محمصة"],
+  "cathaf-as-suwaidi-al-gharbi": ["cathaf", "cathaf coffee", "قهوة كثف", "كافيه كثف", "كثف كوفي"],
+  "lofty-coffee-as-suwaidi-al-gharbi": ["lofty cafe", "lofty coffee shop", "لوفتي", "لوفتي كوفي", "قهوة لوفتي"],
+  "yaseer-as-suwaidi-al-gharbi": ["yaseer", "yaseer cafe", "يسير كافيه", "يسير كوفي", "كوفي يسير", "كافيه يسير"],
+  "goose-valley-as-suwaidi-al-gharbi": ["goose valley", "goose valley coffee", "غوس فالي كافيه", "قهوة غوس فالي", "كافيه غوس فالي"],
+  "oyw-as-suwaidi-al-gharbi": ["oyw", "oyw cafe", "oyw coffee", "oyw roastery", "oyw on your way", "اويو", "محمصة اويو", "قهوة اويو", "اويو كافيه"],
+  "matel-as-suwaidi-al-gharbi": ["matel", "matel coffee", "قهوة مثيل", "كافيه مثيل", "مثيل كوفي"],
+  "berry-pierce-as-suwaidi-al-gharbi": ["berry pierce", "berry pierce coffee", "بيري بيرس", "قهوة بيري بيرس", "بيري بيرس كوفي"],
+  "lumeter-as-suwaidi-al-gharbi": ["lumeter cafe", "lumeter coffee", "لوميتير", "لوميتير كافيه", "قهوة لوميتير"],
+  "wathab-as-suwaidi-al-gharbi": ["wathab", "wathab coffee", "wthab", "قهوة وثاب", "مقهى وثاب", "وثاب كافيه", "وثاب قهوة"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +456,19 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // SG1 As Suwaidi West (30 Oct 2026): everyday words and fragments never pin a new café: "filter" / «فلتر» (filter coffee), "blt" (the sandwich),
+  // «وقهوه» ("and coffee"), "lofty", "goose" / "valley" / «فالي», "on" / "your" / "way" (OYW – On Your Way), "berry" / "pierce" / «بيري» / «بيرس»,
+  // «كثف» (thick), «يسير» (easy / small), «مثيل» (similar), «وثاب» (leaping). Their brand-qualified names still match (aliases above).
+  "filter-roastery-as-suwaidi-al-gharbi": ["filter", "فلتر"],
+  "blt-roastery-as-suwaidi-al-gharbi": ["blt", "وقهوه", "بلت وقهوه"],
+  "cathaf-as-suwaidi-al-gharbi": ["كثف"],
+  "lofty-coffee-as-suwaidi-al-gharbi": ["lofty"],
+  "yaseer-as-suwaidi-al-gharbi": ["يسير"],
+  "goose-valley-as-suwaidi-al-gharbi": ["goose", "valley", "فالي"],
+  "oyw-as-suwaidi-al-gharbi": ["on", "your", "way", "oyw on", "on your way", "your way"],
+  "matel-as-suwaidi-al-gharbi": ["مثيل"],
+  "berry-pierce-as-suwaidi-al-gharbi": ["berry", "pierce", "بيري", "بيرس"],
+  "wathab-as-suwaidi-al-gharbi": ["وثاب"],
 };
 
 function chainBrandIdForShop(

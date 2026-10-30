@@ -337,7 +337,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "oyw-as-suwaidi-al-gharbi": ["oyw", "oyw cafe", "oyw coffee", "oyw roastery", "oyw on your way", "اويو", "محمصة اويو", "قهوة اويو", "اويو كافيه"],
   "matel-as-suwaidi-al-gharbi": ["matel", "matel coffee", "قهوة مثيل", "كافيه مثيل", "مثيل كوفي"],
   "berry-pierce-as-suwaidi-al-gharbi": ["berry pierce", "berry pierce coffee", "بيري بيرس", "قهوة بيري بيرس", "بيري بيرس كوفي"],
-  "lumeter-as-suwaidi-al-gharbi": ["lumeter cafe", "lumeter coffee", "لوميتير", "لوميتير كافيه", "قهوة لوميتير"],
+  // r2 (#303 QA L5): reviewers spell Lumeter "Le Métier"; the full phrase only — "metier" / "le" alone pin nothing.
+  "lumeter-as-suwaidi-al-gharbi": ["lumeter cafe", "lumeter coffee", "لوميتير", "لوميتير كافيه", "قهوة لوميتير", "le metier", "le métier", "lemetier"],
   "wathab-as-suwaidi-al-gharbi": ["wathab", "wathab coffee", "wthab", "قهوة وثاب", "مقهى وثاب", "وثاب كافيه", "وثاب قهوة"],
 };
 

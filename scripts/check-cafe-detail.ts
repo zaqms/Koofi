@@ -829,7 +829,8 @@ const TRENDVERIFY_1023PM_HERO_COUNTS: Record<string, number> = {
 };
 const TRENDVERIFY_1023PM_IDS = Object.keys(TRENDVERIFY_1023PM_HERO_COUNTS);
 /** SG1 As Suwaidi Al Gharbi (30 Oct 2026): Scout's 2 Places frames each (post-alert cap), 0 Dev Places calls. Cathaf's frame 2 (studio product shot) dropped;
- * Cathaf frame 1 has a car plate blurred, Berry Pierce frame 1 a barista's head blurred, and Wathab frame 1 a landlord's "for sale" banner (phone numbers) blurred. 23 frames shipped. */
+ * Cathaf frame 1 has a car plate blurred and Berry Pierce frame 1 a barista's head blurred. r2 (#303 QA r1 M1): Wathab's pre-opening storefront frame dropped;
+ * its Bdoor Abdullah interior frame is now 1.jpg. 22 frames shipped. */
 const SG1_SUWAIDI_GHARBI_HERO_COUNTS: Record<string, number> = {
   "filter-roastery-as-suwaidi-al-gharbi": 2,
   "deers-as-suwaidi-al-gharbi": 2,
@@ -842,7 +843,7 @@ const SG1_SUWAIDI_GHARBI_HERO_COUNTS: Record<string, number> = {
   "matel-as-suwaidi-al-gharbi": 2,
   "berry-pierce-as-suwaidi-al-gharbi": 2,
   "lumeter-as-suwaidi-al-gharbi": 2,
-  "wathab-as-suwaidi-al-gharbi": 2,
+  "wathab-as-suwaidi-al-gharbi": 1,
 };
 const SG1_SUWAIDI_GHARBI_IDS = Object.keys(SG1_SUWAIDI_GHARBI_HERO_COUNTS);
 

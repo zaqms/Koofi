@@ -1260,7 +1260,7 @@ for (const [ask, id] of [
     ["oyw-as-suwaidi-al-gharbi", ["OYW – On Your Way", "oyw", "OYW", "oyw cafe", "oyw coffee", "oyw roastery", "أويو", "اويو", "محمصة اويو"]],
     ["matel-as-suwaidi-al-gharbi", ["Matel Cafe", "matel", "مثيل كافيه", "قهوة مثيل", "كافيه مثيل"]],
     ["berry-pierce-as-suwaidi-al-gharbi", ["Berry Pierce Cafe", "berry pierce", "بيري بيرس", "بيري بيرس كافيه"]],
-    ["lumeter-as-suwaidi-al-gharbi", ["Lumeter", "lumeter", "lumeter cafe", "كوفي لوميتير", "لوميتير"]],
+    ["lumeter-as-suwaidi-al-gharbi", ["Lumeter", "lumeter", "lumeter cafe", "كوفي لوميتير", "لوميتير", "le metier", "Le Métier", "lemetier"]],
     ["wathab-as-suwaidi-al-gharbi", ["Wathab Cafe", "wathab", "wathab coffee", "وثاب قهوة مختصة", "قهوة وثاب", "مقهى وثاب"]],
   ] as const) {
     for (const ask of asks) {
@@ -1274,7 +1274,7 @@ for (const [ask, id] of [
     assert(hits[0] === "filter-roastery-al-falah" && hits.includes("filter-roastery-as-suwaidi-al-gharbi"), `bare ${ask} keeps Filter Roastery Al Falah first, got ${hits.join(",")}`);
   }
   // Single words of the new names are everyday words or fragments and never pin an SG1 café on ordinary phrases.
-  for (const ask of ["filter", "فلتر", "filter coffee", "v60 filter", "قهوة فلتر", "blt", "BLT", "blt sandwich", "a blt and coffee", "وقهوة", "حلا وقهوة", "كيك وقهوة", "كثف", "حليب كثف", "قهوة كثيفة", "lofty", "lofty goals", "a lofty space", "يسير", "مبلغ يسير", "شي يسير", "قهوة بسعر يسير", "goose", "valley", "فالي", "silicon valley coffee", "on your way", "coffee on your way", "grab coffee on your way", "on the way", "your way", "on", "your", "way", "on my way", "مثيل", "لا مثيل له", "قهوة ما لها مثيل", "berry", "berries", "berry smoothie", "بيري", "بيرس", "بلو بيري", "pierce", "coffee with berry", "وثاب", "اسد وثاب", "deer", "oh deer", "meter", "as suwaidi al gharbi", "السويدي الغربي", "coffee in as suwaidi al gharbi", "قهوة السويدي الغربي", "specialty coffee suwaidi", "قهوة مختصة السويدي", "suwaidi", "السويدي", "roastery", "محمصة", "specialty coffee", "قهوة مختصة", "cafe", "coffee", "كافيه", "قهوة", "starbucks", "ستاربكس", "drive through"]) {
+  for (const ask of ["filter", "فلتر", "filter coffee", "v60 filter", "قهوة فلتر", "blt", "BLT", "blt sandwich", "a blt and coffee", "وقهوة", "حلا وقهوة", "كيك وقهوة", "كثف", "حليب كثف", "قهوة كثيفة", "lofty", "lofty goals", "a lofty space", "يسير", "مبلغ يسير", "شي يسير", "قهوة بسعر يسير", "goose", "valley", "فالي", "silicon valley coffee", "on your way", "coffee on your way", "grab coffee on your way", "on the way", "your way", "on", "your", "way", "on my way", "مثيل", "لا مثيل له", "قهوة ما لها مثيل", "berry", "berries", "berry smoothie", "بيري", "بيرس", "بلو بيري", "pierce", "coffee with berry", "وثاب", "اسد وثاب", "deer", "oh deer", "meter", "metier", "métier", "le", "le cafe", "le petit cafe", "as suwaidi al gharbi", "السويدي الغربي", "coffee in as suwaidi al gharbi", "قهوة السويدي الغربي", "specialty coffee suwaidi", "قهوة مختصة السويدي", "suwaidi", "السويدي", "roastery", "محمصة", "specialty coffee", "قهوة مختصة", "cafe", "coffee", "كافيه", "قهوة", "starbucks", "ستاربكس", "drive through"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.some((id) => (sg1Ids as readonly string[]).includes(id)), `${ask} does not pin an SG1 café, got ${hits.join(",")}`);
   }

@@ -325,6 +325,16 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // LINKCHECK-1030 (30 Oct 2026): Cafe Tale's second Riyadh row, Al Izdihar (Uthman Ibn Affan Rd). Same brand,
+  // name and logo as cafe-tale-kafd, so bare "cafe tale" / «كافي تيل» keep leading KAFD (the live row); only
+  // Izdihar-named asks lead this one. Maps labels it «كوفى تيل».
+  // Brand spellings both rows share (website cafetale.com; Maps «كوفى تيل»); KAFD stays first on these.
+  "cafe-tale-kafd": ["cafetale", "كوفي تيل", "كافيه تيل"],
+  "cafe-tale-al-izdihar": [
+    "cafetale", "كوفي تيل", "كافيه تيل",
+    "cafe tale izdihar", "cafe tale al-izdihar", "cafe tale azdihar", "cafe tale al azdihar", "cafetale izdihar",
+    "كافي تيل الازدهار", "كافي تيل حي الازدهار", "كوفي تيل الازدهار", "كوفى تيل الازدهار", "كافيه تيل الازدهار",
+  ],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +452,10 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // LINKCHECK-1030: "tale" / «تيل» are plain words (fairy tale, «تيل» = tulle/linen); neither Cafe Tale row
+  // answers to them alone. "cafe tale" / «كافي تيل» and the branch-named phrases still match.
+  "cafe-tale-kafd": ["tale", "تيل"],
+  "cafe-tale-al-izdihar": ["tale", "تيل"],
 };
 
 function chainBrandIdForShop(

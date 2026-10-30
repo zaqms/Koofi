@@ -325,6 +325,22 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // LINKCHECK-1030B (30 Oct 2026): Cafe Tale's An Nazhah row (King Abdullah Rd, Spinneys La Strada Yard; the pin is inside
+  // the OSM النزهة polygon, #305 QA H1; Google says An Nuzhah). Same brand, name and logo as cafe-tale-kafd, so bare brand
+  // asks keep leading KAFD (the live row); only Nazhah / Nuzhah / La Strada / Spinneys-named asks lead this one. The
+  // Mughrizat phrases stay because Scout's first note and nearby addresses say المغرزات.
+  // Brand spellings both rows share (website cafetale.com; Maps «كوفى تيل»); KAFD stays first on these.
+  "cafe-tale-kafd": ["cafetale", "كوفي تيل", "كافيه تيل", "tale cafe", "tale coffee", "the tale cafe", "تيل كافيه", "قهوة تيل"],
+  "cafe-tale-an-nazhah": [
+    "cafetale", "كوفي تيل", "كافيه تيل", "tale cafe", "tale coffee", "the tale cafe",
+    "cafe tale nazhah", "cafe tale an-nazhah", "cafe tale al nazhah", "tale cafe nazhah", "tale cafe an nazhah", "tale coffee nazhah", "tale nazhah", "cafetale nazhah",
+    "cafe tale nuzhah", "cafe tale an nuzhah", "cafe tale al nuzhah", "cafe tale an-nuzhah", "tale cafe nuzhah", "tale cafe an nuzhah", "tale coffee nuzhah", "tale nuzhah", "cafetale nuzhah",
+    "cafe tale mughrizat", "cafe tale al mughrizat", "cafe tale al-mughrizat", "cafe tale almughrizat", "tale cafe mughrizat", "tale cafe al mughrizat", "tale coffee mughrizat", "tale mughrizat", "cafetale mughrizat",
+    "cafe tale la strada", "cafe tale spinneys", "cafe tale king abdullah road", "tale cafe la strada", "tale cafe spinneys",
+    "كافي تيل النزهة", "كافي تيل حي النزهة", "كوفي تيل النزهة", "قهوة تيل النزهة", "تيل النزهة", "كافيه تيل النزهة",
+    "كافي تيل المغرزات", "كافي تيل حي المغرزات", "كوفي تيل المغرزات", "قهوة تيل المغرزات", "تيل المغرزات",
+    "كافي تيل سبينيس", "كافي تيل لا سترادا",
+  ],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +458,11 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // LINKCHECK-1030B: "tale" is a plain word (fairy tale); no Cafe Tale row answers to it alone (same rule as #304 r2).
+  // «تيل» (Google's Arabic brand name) still finds KAFD first, then this row; blocking it here too (#305 QA L2) would
+  // drop this row from bare «تيل» / «قهوة تيل», so it stays unblocked. Brand and branch phrases still match.
+  "cafe-tale-kafd": ["tale"],
+  "cafe-tale-an-nazhah": ["tale"],
 };
 
 function chainBrandIdForShop(

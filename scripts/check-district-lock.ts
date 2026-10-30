@@ -177,8 +177,8 @@ assert(liveCatalog.includes("al-izdihar"), "Slant makes Al Izdihar a live catalo
 // Batch H (9 Oct): Al Izdihar gains 7 local cafés (McCafe dropped per Amjad, r3); local-only district.
 assert(
   listRealShops().filter((shop) => shop.neighborhood === "al-izdihar").map((shop) => shop.id).join(",") ===
-    "slant-specialty-coffee-al-izdihar,convoy-coffee-al-izdihar,knoll-al-izdihar,steam-roastery-al-izdihar,temper-al-izdihar,katf-al-izdihar,rakiza-al-izdihar,hijana-al-izdihar",
-  "Al Izdihar catalog is Slant plus the 7 Batch H rows",
+    "slant-specialty-coffee-al-izdihar,convoy-coffee-al-izdihar,knoll-al-izdihar,steam-roastery-al-izdihar,temper-al-izdihar,katf-al-izdihar,rakiza-al-izdihar,hijana-al-izdihar,cafe-tale-al-izdihar",
+  "Al Izdihar catalog is Slant plus the 7 Batch H rows and Cafe Tale (LINKCHECK-1030, 30 Oct 2026)",
 );
 assert(izdihar?.shopCountLive === 8, "Izdihar sheet shop_count_live is 8 after Batch H");
 

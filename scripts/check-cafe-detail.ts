@@ -828,9 +828,9 @@ const TRENDVERIFY_1023PM_HERO_COUNTS: Record<string, number> = {
   "opulent-qurtubah": 2,
 };
 const TRENDVERIFY_1023PM_IDS = Object.keys(TRENDVERIFY_1023PM_HERO_COUNTS);
-/** LINKCHECK-1030B (30 Oct 2026): Cafe Tale Al Mughrizat — Scout's 2 Places frames (user night storefront with guests and a reflected car blurred; owner Sea Salt Matcha product shot, droppable). 0 Dev Places calls. */
+/** LINKCHECK-1030B (30 Oct 2026): Cafe Tale An Nazhah — 1 Places frame (user night storefront, guests and a reflected car blurred). r2 (#305 QA L1): the owner's Sea Salt Matcha product shot was dropped. 0 Dev Places calls. */
 const LINKCHECK_1030B_HERO_COUNTS: Record<string, number> = {
-  "cafe-tale-al-mughrizat": 2,
+  "cafe-tale-an-nazhah": 1,
 };
 const LINKCHECK_1030B_IDS = Object.keys(LINKCHECK_1030B_HERO_COUNTS);
 
@@ -950,7 +950,7 @@ assert(
       trending1021HeroIds.length +
       trendverify1023pmHeroIds.length +
       linkcheck1030bHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar, P Tuwaiq, Q Ash Shifa, the Trace Al Mursalat AJ add and the 18 Oct and 21 Oct trending adds and R Al Qadisiyah and the OPULENT Qurtubah and Cafe Tale Al Mughrizat adds merge in",
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar, P Tuwaiq, Q Ash Shifa, the Trace Al Mursalat AJ add and the 18 Oct and 21 Oct trending adds and R Al Qadisiyah and the OPULENT Qurtubah and Cafe Tale An Nazhah adds merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -990,7 +990,7 @@ assert(batchSAsHeroIds.length === 6, "Batch S As Salam hero set is complete (6)"
 assert(batchSd1ShHeroIds.length === 14, "Batch SD1 Al Shohda hero set is complete (14)");
 assert(trending1021HeroIds.length === 10, "21 Oct trending adds hero sets are present (10)");
 assert(trendverify1023pmHeroIds.length === 1, "OPULENT Qurtubah hero set is present (TRENDVERIFY-1023PM)");
-assert(linkcheck1030bHeroIds.length === 1, "Cafe Tale Al Mughrizat hero set is present (LINKCHECK-1030B)");
+assert(linkcheck1030bHeroIds.length === 1, "Cafe Tale An Nazhah hero set is present (LINKCHECK-1030B)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],

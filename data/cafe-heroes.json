@@ -17795,5 +17795,149 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "velu-al-fayha": [
+    {
+      "src": "/cafe-heroes/velu-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "ABO -IBRAHIM Alshammri",
+        "uri": "https://maps.google.com/maps/contrib/108135850322106573604"
+      }
+    },
+    {
+      "src": "/cafe-heroes/velu-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "Noura mohammad",
+        "uri": "https://maps.google.com/maps/contrib/108305585193423205285"
+      }
+    }
+  ],
+  "rexsa-al-fayha": [
+    {
+      "src": "/cafe-heroes/rexsa-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "Shrabon Dass",
+        "uri": "https://maps.google.com/maps/contrib/103428314420399666988"
+      }
+    },
+    {
+      "src": "/cafe-heroes/rexsa-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "Abdulaziz AlAQIL",
+        "uri": "https://maps.google.com/maps/contrib/111847140086229305464"
+      }
+    }
+  ],
+  "vase-coffee-al-fayha": [
+    {
+      "src": "/cafe-heroes/vase-coffee-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "mohammed alobaid",
+        "uri": "https://maps.google.com/maps/contrib/102293493346495118763"
+      }
+    },
+    {
+      "src": "/cafe-heroes/vase-coffee-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "Tahany -",
+        "uri": "https://maps.google.com/maps/contrib/107146962954110779794"
+      }
+    }
+  ],
+  "coffee-address-al-fayha-haroon-al-rashid": [
+    {
+      "src": "/cafe-heroes/coffee-address-al-fayha-haroon-al-rashid/1.jpg",
+      "attribution": {
+        "displayName": "Hasan Al botmah",
+        "uri": "https://maps.google.com/maps/contrib/112237136472683312258"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-al-fayha-haroon-al-rashid/2.jpg",
+      "attribution": {
+        "displayName": "خذ العلم",
+        "uri": "https://maps.google.com/maps/contrib/115768591873292153488"
+      }
+    }
+  ],
+  "coffee-address-al-fayha-al-shafei": [
+    {
+      "src": "/cafe-heroes/coffee-address-al-fayha-al-shafei/1.jpg",
+      "attribution": {
+        "displayName": "Sulaiman Altayar",
+        "uri": "https://maps.google.com/maps/contrib/101797373183598211933"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-al-fayha-al-shafei/2.jpg",
+      "attribution": {
+        "displayName": "هند العتيبية",
+        "uri": "https://maps.google.com/maps/contrib/111476733306275709667"
+      }
+    }
+  ],
+  "lammah-al-fayha": [
+    {
+      "src": "/cafe-heroes/lammah-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "Rwa Em",
+        "uri": "https://maps.google.com/maps/contrib/116774968610178472438"
+      }
+    },
+    {
+      "src": "/cafe-heroes/lammah-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "لمسة فن",
+        "uri": "https://maps.google.com/maps/contrib/112530647392788560324"
+      }
+    }
+  ],
+  "tasty-portal-al-fayha": [
+    {
+      "src": "/cafe-heroes/tasty-portal-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "Abdulazaiz Nasser",
+        "uri": "https://maps.google.com/maps/contrib/108401320467145552173"
+      }
+    },
+    {
+      "src": "/cafe-heroes/tasty-portal-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "محمد المطرودي",
+        "uri": "https://maps.google.com/maps/contrib/107222679633924991905"
+      }
+    }
+  ],
+  "mood-interface-al-fayha": [
+    {
+      "src": "/cafe-heroes/mood-interface-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "Joy Wu",
+        "uri": "https://maps.google.com/maps/contrib/110838251654662102744"
+      }
+    },
+    {
+      "src": "/cafe-heroes/mood-interface-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "S",
+        "uri": "https://maps.google.com/maps/contrib/109810081674157817023"
+      }
+    }
+  ],
+  "brood-al-fayha": [
+    {
+      "src": "/cafe-heroes/brood-al-fayha/1.jpg",
+      "attribution": {
+        "displayName": "Noura mohammad",
+        "uri": "https://maps.google.com/maps/contrib/108305585193423205285"
+      }
+    },
+    {
+      "src": "/cafe-heroes/brood-al-fayha/2.jpg",
+      "attribution": {
+        "displayName": "عيد",
+        "uri": "https://maps.google.com/maps/contrib/111806539991687959268"
+      }
+    }
   ]
 }

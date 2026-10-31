@@ -4534,5 +4534,68 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "velu-al-fayha": {
+    "handle": "@velu.cafe",
+    "followers": 2706,
+    "status": "found",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "rexsa-al-fayha": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "vase-coffee-al-fayha": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "coffee-address-al-fayha-haroon-al-rashid": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "coffee-address-al-fayha-al-shafei": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "lammah-al-fayha": {
+    "handle": "@lammahcafe",
+    "followers": 1,
+    "status": "found",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "tasty-portal-al-fayha": {
+    "handle": "@tasty.portal",
+    "followers": 805,
+    "status": "found",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "mood-interface-al-fayha": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
+  },
+  "brood-al-fayha": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-10-31",
+    "sharedBrandAccount": false
   }
 }

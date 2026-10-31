@@ -325,6 +325,17 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // Batch FH1 (31 Oct 2026): Al Fayha. Two Coffee Address pins in one district: street-qualified asks pick the branch,
+  // bare "coffee address" / «عنوان القهوة» keep main's order. VASE Fayha is the second VASE branch: bare vase stays Al Manar.
+  "velu-al-fayha": ["velu cafe", "velu coffee", "ڤيلو", "فيلو كافيه", "ڤيلو كافيه"],
+  "rexsa-al-fayha": ["rexsa coffee", "rexsa speciality coffee", "rexsa specialty coffee", "ريكسا كافية", "ريكسا كوفي"],
+  "vase-coffee-al-fayha": ["vase fayha", "vase al fayha", "vase coffee fayha", "vase cafe fayha", "ڤازا الفيحاء", "فازا الفيحاء"],
+  "coffee-address-al-fayha-haroon-al-rashid": ["coffee address fayha", "coffee address al fayha", "عنوان القهوة الفيحاء", "coffee address haroon", "coffee address haroon al rashid", "coffee address harun al rashid", "coffee address fayha haroon", "coffee address haroon rashid", "عنوان القهوة هارون", "عنوان القهوة هارون الرشيد", "عنوان القهوة الفيحاء هارون الرشيد"],
+  "coffee-address-al-fayha-al-shafei": ["coffee address fayha", "coffee address al fayha", "عنوان القهوة الفيحاء", "coffee address shafei", "coffee address al shafei", "coffee address shafi", "coffee address imam shafei", "coffee address fayha shafei", "عنوان القهوة الشافعي", "عنوان القهوة الامام الشافعي", "عنوان القهوة الفيحاء الشافعي"],
+  "lammah-al-fayha": ["lammah coffee", "lamma cafe", "لمة كافيه", "لمه كافيه", "لمة كافي", "قهوة لمة", "لمة قهوة مختصة"],
+  "tasty-portal-al-fayha": ["tasty portal cafe", "tasty portal coffee", "تيستي بورتل كافيه"],
+  "mood-interface-al-fayha": ["mood interface cafe", "mood interface coffee", "واجهة الكيف كافيه", "قهوة واجهة الكيف"],
+  "brood-al-fayha": ["brood cafe", "brewd", "brewd coffee", "بروود كافيه"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +453,12 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // Batch FH1 (31 Oct 2026): everyday / shared tokens never pin an Al Fayha café alone; brand-qualified names still match.
+  // VASE Fayha and «لمة» keep their names (nameAr must self-match); bare vase stays Al Manar first by catalog order.
+  "coffee-address-al-fayha-haroon-al-rashid": ["address", "عنوان"],
+  "coffee-address-al-fayha-al-shafei": ["address", "عنوان"],
+  "tasty-portal-al-fayha": ["tasty", "portal", "تيستي"],
+  "mood-interface-al-fayha": ["mood", "interface", "واجهه", "كيف", "واجهة", "الكيف"],
 };
 
 function chainBrandIdForShop(

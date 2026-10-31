@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 546, `specialty discovery is 546 (1 The Lobby Olaya (31 Oct 2026) local + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 649, `catalog is 649 after 1 The Lobby Olaya (31 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -6843,6 +6843,19 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // The Lobby Olaya (31 Oct 2026, LINKCHECK-1031): letter tile, Places dineIn true, outdoorSeating empty. Scout's Places frames, 0 Dev Places calls.
+  {
+    id: "the-lobby-olaya",
+    hex: "0x3e2f1d3c03bceb8b:0x96be7b9f77bab7a5",
+    neighborhood: "olaya",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.702924, lng: 46.666609099999995 },
+    coordsInUrl: true,
+    placeId: "ChIJi-u8AzwdLz4Rpbe6d597vpY",
     dineIn: true,
     outdoorSeating: null,
   },

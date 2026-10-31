@@ -17795,5 +17795,21 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "the-lobby-olaya": [
+    {
+      "src": "/cafe-heroes/the-lobby-olaya/1.jpg",
+      "attribution": {
+        "displayName": "Khalid",
+        "uri": "https://maps.google.com/maps/contrib/101180819475959515270"
+      }
+    },
+    {
+      "src": "/cafe-heroes/the-lobby-olaya/2.jpg",
+      "attribution": {
+        "displayName": "Osama",
+        "uri": "https://maps.google.com/maps/contrib/106379974619619877848"
+      }
+    }
   ]
 }

@@ -325,6 +325,8 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // The Lobby Olaya (31 Oct 2026): "the lobby coffee bar" sign; brand-qualified asks only.
+  "the-lobby-olaya": ["the lobby coffee bar", "lobby coffee bar", "the lobby coffee", "lobby coffee", "the lobby cafe", "lobby cafe", "the lobby takhassusi", "ذا لوبي كافيه", "لوبي كافيه", "لوبي كوفي بار", "ذا لوبي العليا"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +444,8 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // The Lobby Olaya (31 Oct 2026): bare lobby (hotel lobby) / «ذا» never pin the café.
+  "the-lobby-olaya": ["lobby", "لوبي", "ذا"],
 };
 
 function chainBrandIdForShop(

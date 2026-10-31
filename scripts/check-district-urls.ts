@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 554, `specialty discovery is 554 (9 FH1 Al Fayha (31 Oct 2026) local + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 657, `catalog is 657 after 9 FH1 Al Fayha (31 Oct 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -805,8 +805,8 @@ for (const ask of ["الروابي", "روابي", "rawabi", "al rawabi", "ar-ra
 }
 
 const fayha = filterDirectoryShops(shops, "al-fayha");
-assert(fayha.length === 3, `al-fayha has 3 shops (+ in row, trending add 18 Oct), got ${fayha.length}`);
-for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha", "in-row-al-fayha"]) {
+assert(fayha.length === 12, `al-fayha has 12 shops (+ in row, trending add 18 Oct; + 9 FH1 31 Oct 2026), got ${fayha.length}`);
+for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha", "in-row-al-fayha", "velu-al-fayha", "rexsa-al-fayha", "vase-coffee-al-fayha", "coffee-address-al-fayha-haroon-al-rashid", "coffee-address-al-fayha-al-shafei", "lammah-al-fayha", "tasty-portal-al-fayha", "mood-interface-al-fayha", "brewd-al-fayha"]) {
   assert(fayha.some((shop) => shop.id === id), `al-fayha includes ${id}`);
 }
 assert(neighborhoodLabel("al-fayha", "ar") === "الفيحاء", "al-fayha Arabic label");
@@ -6843,6 +6843,122 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // FH1 (31 Oct 2026, Scout daily hunt): 9 Al Fayha cafés; VASE reuses the VASE Al Manar mark and both Coffee Address rows the shared Coffee Address mark, VELU, REXSA, TASTY PORTAL and LAMMAH carry new marks, MooD INTERFACE and Brewd are letter tiles. Scout's Places frames, 0 Dev Places calls.
+  {
+    id: "velu-al-fayha",
+    hex: "0x3e2f0750eb62f141:0x9388079e80f35394",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/velu-al-fayha.png",
+    pin: { lat: 24.678372200000002, lng: 46.8098259 },
+    coordsInUrl: true,
+    placeId: "ChIJQfFi61AHLz4RlFPzgJ4HiJM",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "rexsa-al-fayha",
+    hex: "0x3e2f07592d578525:0x593db4b33d836536",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/rexsa-al-fayha.png",
+    pin: { lat: 24.6826273, lng: 46.8147993 },
+    coordsInUrl: true,
+    placeId: "ChIJJYVXLVkHLz4RNmWDPbO0PVk",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "vase-coffee-al-fayha",
+    hex: "0x3e2f07eb01b07859:0x61fd2a840129759b",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/vase-coffee-al-manar.jpg",
+    pin: { lat: 24.6897198, lng: 46.815825499999995 },
+    coordsInUrl: true,
+    placeId: "ChIJWXiwAesHLz4Rm3UpAYQq_WE",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-al-fayha-haroon-al-rashid",
+    hex: "0x3e2f0700070c1153:0x604ae8fbb6ed9b99",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.673673899999997, lng: 46.803469799999995 },
+    coordsInUrl: true,
+    placeId: "ChIJUxEMBwAHLz4RmZvttvvoSmA",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "coffee-address-al-fayha-al-shafei",
+    hex: "0x3e2f00d9b00a042f:0x3a992f65897200ea",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.6921656, lng: 46.8104728 },
+    coordsInUrl: true,
+    placeId: "ChIJLwQKsNkALz4R6gByiWUvmTo",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "lammah-al-fayha",
+    hex: "0x3e2f07720e3c8be7:0x9bd617ec5b7796a8",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/lammah-al-fayha.png",
+    pin: { lat: 24.683244199999997, lng: 46.8184766 },
+    coordsInUrl: true,
+    placeId: "ChIJ54s8DnIHLz4RqJZ3W-wX1ps",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "tasty-portal-al-fayha",
+    hex: "0x3e2f074943e53acf:0xa29cc797125fa969",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/tasty-portal-al-fayha.png",
+    pin: { lat: 24.6808195, lng: 46.8143862 },
+    coordsInUrl: true,
+    placeId: "ChIJzzrlQ0kHLz4RaalfEpfHnKI",
+    dineIn: true,
+    outdoorSeating: false,
+  },
+  {
+    id: "mood-interface-al-fayha",
+    hex: "0x3e2f07002b71e5d9:0xc0cdd722b137f1ea",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.6918951, lng: 46.810575 },
+    coordsInUrl: true,
+    placeId: "ChIJ2eVxKwAHLz4R6vE3sSLXzcA",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "brewd-al-fayha",
+    hex: "0x3e2f07ec187614d7:0x5af465ad0d2ee9f1",
+    neighborhood: "al-fayha",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.693434999999997, lng: 46.8117106 },
+    coordsInUrl: true,
+    placeId: "ChIJ1xR2GOwHLz4R8ekuDa1l9Fo",
     dineIn: true,
     outdoorSeating: null,
   },

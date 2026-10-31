@@ -828,6 +828,19 @@ const TRENDVERIFY_1023PM_HERO_COUNTS: Record<string, number> = {
   "opulent-qurtubah": 2,
 };
 const TRENDVERIFY_1023PM_IDS = Object.keys(TRENDVERIFY_1023PM_HERO_COUNTS);
+/** FH1 Al Fayha (31 Oct 2026): Scout's 2 Places frames each, 0 Dev Places calls. Coffee Address Haroon Al Rashid frame 2 has a customer's face blurred and frame 1 its far terrace patrons (r2); Coffee Address Al Shafei frame 1 has guests', staff and back-room diners' faces blurred. 18 frames shipped. */
+const FH1_FAYHA_HERO_COUNTS: Record<string, number> = {
+  "velu-al-fayha": 2,
+  "rexsa-al-fayha": 2,
+  "vase-coffee-al-fayha": 2,
+  "coffee-address-al-fayha-haroon-al-rashid": 2,
+  "coffee-address-al-fayha-al-shafei": 2,
+  "lammah-al-fayha": 2,
+  "tasty-portal-al-fayha": 2,
+  "mood-interface-al-fayha": 2,
+  "brewd-al-fayha": 2,
+};
+const FH1_FAYHA_IDS = Object.keys(FH1_FAYHA_HERO_COUNTS);
 
 
 /** BATCH14: Batch D1 As Suwaidi (4 Oct 2026) Places galleries — 4 frames each (Era 3 after #247 r2/r3 dropped its ad and studio-promo frames), Google credit per frame. */
@@ -904,6 +917,7 @@ const batchSAsHeroIds = BATCH_S_AS_IDS.filter((id) => bakedHeroes[id]);
 const batchSd1ShHeroIds = BATCH_SD1_SH_IDS.filter((id) => bakedHeroes[id]);
 const trending1021HeroIds = TRENDING_1021_IDS.filter((id) => bakedHeroes[id]);
 const trendverify1023pmHeroIds = TRENDVERIFY_1023PM_IDS.filter((id) => bakedHeroes[id]);
+const fh1FayhaHeroIds = FH1_FAYHA_IDS.filter((id) => bakedHeroes[id]);
 assert(
   Object.keys(bakedHeroes).length ===
     50 +
@@ -942,8 +956,9 @@ assert(
       batchSAsHeroIds.length +
       batchSd1ShHeroIds.length +
       trending1021HeroIds.length +
-      trendverify1023pmHeroIds.length,
-  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar, P Tuwaiq, Q Ash Shifa, the Trace Al Mursalat AJ add and the 18 Oct and 21 Oct trending adds and R Al Qadisiyah and the OPULENT Qurtubah add merge in",
+      trendverify1023pmHeroIds.length +
+      fh1FayhaHeroIds.length,
+  "batch 1–5 cafe-heroes stay; batches 6–14, D2 Al Falah, D3, E At Taawun, F Shubra, G An Nafal, H Al Izdihar, I Ar Rahmaniyyah, J Al Mathar, K Umm Al Hamam Al Gharbi, L Umm Al Hamam Ash Sharqi, M Diplomatic Quarter, N Dhahrat Laban, the Found Ar Rabwah AJ add, O Namar, P Tuwaiq, Q Ash Shifa, the Trace Al Mursalat AJ add and the 18 Oct and 21 Oct trending adds and R Al Qadisiyah and the OPULENT Qurtubah add and FH1 Al Fayha (31 Oct 2026) merge in",
 );
 assert(batch2HeroIds.length === 49, "batch 2 hero set is 49 after the Get Up Rabwah drop");
 assert(batch3HeroIds.length === 49, "batch 3 hero set is 49 after the Vanilla Coffee Qurtubah drop");
@@ -983,6 +998,7 @@ assert(batchSAsHeroIds.length === 6, "Batch S As Salam hero set is complete (6)"
 assert(batchSd1ShHeroIds.length === 14, "Batch SD1 Al Shohda hero set is complete (14)");
 assert(trending1021HeroIds.length === 10, "21 Oct trending adds hero sets are present (10)");
 assert(trendverify1023pmHeroIds.length === 1, "OPULENT Qurtubah hero set is present (TRENDVERIFY-1023PM)");
+assert(fh1FayhaHeroIds.length === 9, "FH1 Al Fayha (31 Oct 2026) hero sets are present (9)");
 for (const [id, credits] of [
   ["starbucks-panorama-al-mathar", "Chelsea Hall|Starbucks"],
   ["starbucks-tafaseel-al-mathar", "Shane Sibal|Aziz PT"],
@@ -1130,6 +1146,7 @@ function expectedHeroCount(id: string): number {
   if (BATCH_SD1_SH_HERO_COUNTS[id] != null) return BATCH_SD1_SH_HERO_COUNTS[id]!;
   if (TRENDING_1021_HERO_COUNTS[id] != null) return TRENDING_1021_HERO_COUNTS[id]!;
   if (TRENDVERIFY_1023PM_HERO_COUNTS[id] != null) return TRENDVERIFY_1023PM_HERO_COUNTS[id]!;
+  if (FH1_FAYHA_HERO_COUNTS[id] != null) return FH1_FAYHA_HERO_COUNTS[id]!;
   if (id === "latch-al-mughrizat") return 3;
   if (id === "jaro-cafe-al-naseem-sharqi") return 1;
   if (id === "jaam-coffee-ar-rabwah" || id === "coffee-address-al-masif") return 2;

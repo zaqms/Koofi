@@ -828,7 +828,7 @@ const TRENDVERIFY_1023PM_HERO_COUNTS: Record<string, number> = {
   "opulent-qurtubah": 2,
 };
 const TRENDVERIFY_1023PM_IDS = Object.keys(TRENDVERIFY_1023PM_HERO_COUNTS);
-/** FH1 Al Fayha (31 Oct 2026): Scout's 2 Places frames each, 0 Dev Places calls. Coffee Address Haroon Al Rashid frame 2 has a customer's face blurred and Coffee Address Al Shafei frame 1 has guests' and staff faces blurred. 18 frames shipped. */
+/** FH1 Al Fayha (31 Oct 2026): Scout's 2 Places frames each, 0 Dev Places calls. Coffee Address Haroon Al Rashid frame 2 has a customer's face blurred and frame 1 its far terrace patrons (r2); Coffee Address Al Shafei frame 1 has guests', staff and back-room diners' faces blurred. 18 frames shipped. */
 const FH1_FAYHA_HERO_COUNTS: Record<string, number> = {
   "velu-al-fayha": 2,
   "rexsa-al-fayha": 2,
@@ -838,7 +838,7 @@ const FH1_FAYHA_HERO_COUNTS: Record<string, number> = {
   "lammah-al-fayha": 2,
   "tasty-portal-al-fayha": 2,
   "mood-interface-al-fayha": 2,
-  "brood-al-fayha": 2,
+  "brewd-al-fayha": 2,
 };
 const FH1_FAYHA_IDS = Object.keys(FH1_FAYHA_HERO_COUNTS);
 

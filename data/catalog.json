@@ -64098,7 +64098,7 @@
     },
     {
       "id": "lammah-al-fayha",
-      "nameAr": "لمة",
+      "nameAr": "لمة كافيه",
       "nameEn": "LAMMAH Cafe",
       "city": "riyadh",
       "neighborhood": "al-fayha",
@@ -64465,9 +64465,9 @@
       "example": false
     },
     {
-      "id": "brood-al-fayha",
+      "id": "brewd-al-fayha",
       "nameAr": "قهوة بروود",
-      "nameEn": "Brood Coffee",
+      "nameEn": "Brewd Coffee",
       "city": "riyadh",
       "neighborhood": "al-fayha",
       "neighborhoodAr": "الفيحاء",

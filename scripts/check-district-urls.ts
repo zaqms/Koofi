@@ -806,7 +806,7 @@ for (const ask of ["الروابي", "روابي", "rawabi", "al rawabi", "ar-ra
 
 const fayha = filterDirectoryShops(shops, "al-fayha");
 assert(fayha.length === 12, `al-fayha has 12 shops (+ in row, trending add 18 Oct; + 9 FH1 31 Oct 2026), got ${fayha.length}`);
-for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha", "in-row-al-fayha", "velu-al-fayha", "rexsa-al-fayha", "vase-coffee-al-fayha", "coffee-address-al-fayha-haroon-al-rashid", "coffee-address-al-fayha-al-shafei", "lammah-al-fayha", "tasty-portal-al-fayha", "mood-interface-al-fayha", "brood-al-fayha"]) {
+for (const id of ["rukyah-al-fayha", "roof-coffee-al-fayha", "in-row-al-fayha", "velu-al-fayha", "rexsa-al-fayha", "vase-coffee-al-fayha", "coffee-address-al-fayha-haroon-al-rashid", "coffee-address-al-fayha-al-shafei", "lammah-al-fayha", "tasty-portal-al-fayha", "mood-interface-al-fayha", "brewd-al-fayha"]) {
   assert(fayha.some((shop) => shop.id === id), `al-fayha includes ${id}`);
 }
 assert(neighborhoodLabel("al-fayha", "ar") === "الفيحاء", "al-fayha Arabic label");
@@ -6846,7 +6846,7 @@ const scoutPack: {
     dineIn: true,
     outdoorSeating: null,
   },
-  // FH1 (31 Oct 2026, Scout daily hunt): 9 Al Fayha cafés; VASE reuses the VASE Al Manar mark and both Coffee Address rows the shared Coffee Address mark, VELU, REXSA, TASTY PORTAL and LAMMAH carry new marks, MooD INTERFACE and Brood are letter tiles. Scout's Places frames, 0 Dev Places calls.
+  // FH1 (31 Oct 2026, Scout daily hunt): 9 Al Fayha cafés; VASE reuses the VASE Al Manar mark and both Coffee Address rows the shared Coffee Address mark, VELU, REXSA, TASTY PORTAL and LAMMAH carry new marks, MooD INTERFACE and Brewd are letter tiles. Scout's Places frames, 0 Dev Places calls.
   {
     id: "velu-al-fayha",
     hex: "0x3e2f0750eb62f141:0x9388079e80f35394",
@@ -6951,7 +6951,7 @@ const scoutPack: {
     outdoorSeating: null,
   },
   {
-    id: "brood-al-fayha",
+    id: "brewd-al-fayha",
     hex: "0x3e2f07ec187614d7:0x5af465ad0d2ee9f1",
     neighborhood: "al-fayha",
     vibe: ["قهوة"],

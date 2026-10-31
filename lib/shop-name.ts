@@ -335,7 +335,7 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "lammah-al-fayha": ["lammah coffee", "lamma cafe", "لمة كافيه", "لمه كافيه", "لمة كافي", "قهوة لمة", "لمة قهوة مختصة"],
   "tasty-portal-al-fayha": ["tasty portal cafe", "tasty portal coffee", "تيستي بورتل كافيه"],
   "mood-interface-al-fayha": ["mood interface cafe", "mood interface coffee", "واجهة الكيف كافيه", "قهوة واجهة الكيف"],
-  "brood-al-fayha": ["brood cafe", "brewd", "brewd coffee", "بروود كافيه"],
+  "brewd-al-fayha": ["brewd cafe", "brood", "brood coffee", "brood cafe", "بروود كافيه"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -454,9 +454,10 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
   // Batch FH1 (31 Oct 2026): everyday / shared tokens never pin an Al Fayha café alone; brand-qualified names still match.
-  // VASE Fayha and «لمة» keep their names (nameAr must self-match); bare vase stays Al Manar first by catalog order.
+  // LAMMAH is «لمة كافيه»: bare «لمة» (a get-together) never pins it. VASE Fayha keeps «ڤازا» (nameAr must self-match); bare vase stays Al Manar first by catalog order.
   "coffee-address-al-fayha-haroon-al-rashid": ["address", "عنوان"],
   "coffee-address-al-fayha-al-shafei": ["address", "عنوان"],
+  "lammah-al-fayha": ["لمة", "لمه", "لمّة"],
   "tasty-portal-al-fayha": ["tasty", "portal", "تيستي"],
   "mood-interface-al-fayha": ["mood", "interface", "واجهه", "كيف", "واجهة", "الكيف"],
 };

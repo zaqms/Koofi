@@ -1219,14 +1219,14 @@ for (const [ask, id] of [
 }
 // FH1 Al Fayha (31 Oct 2026): 9 local specialty cafés from Scout's daily hunt (no chain, no drive-through). Scout's Places frames (18), 0 Dev Places calls.
 // Coffee Address stays specialty (Amjad carve-out): two Al Fayha pins, told apart by branchEn/branchAr (Haroon Al Rashid Rd, Al Imam Al Shafei St) and street-qualified asks.
-// VASE Fayha is the 2nd branch of the live VASE Al Manar and reuses its mark. VELU, REXSA, TASTY PORTAL and LAMMAH carry new marks; MooD INTERFACE and Brood are letter tiles.
+// VASE Fayha is the 2nd branch of the live VASE Al Manar and reuses its mark. VELU, REXSA, TASTY PORTAL and LAMMAH carry new marks; MooD INTERFACE and Brewd are letter tiles. Brewd's sign reads "Brewd" / «بروود»; LAMMAH is «لمة كافيه» so bare «لمة» stays generic.
 {
-  const fh1Ids = ["velu-al-fayha", "rexsa-al-fayha", "vase-coffee-al-fayha", "coffee-address-al-fayha-haroon-al-rashid", "coffee-address-al-fayha-al-shafei", "lammah-al-fayha", "tasty-portal-al-fayha", "mood-interface-al-fayha", "brood-al-fayha"] as const;
+  const fh1Ids = ["velu-al-fayha", "rexsa-al-fayha", "vase-coffee-al-fayha", "coffee-address-al-fayha-haroon-al-rashid", "coffee-address-al-fayha-al-shafei", "lammah-al-fayha", "tasty-portal-al-fayha", "mood-interface-al-fayha", "brewd-al-fayha"] as const;
   const fh1 = fh1Ids.map((id) => getShop(id));
   assert(fh1.every((row) => row && row.isChain !== true && !row.chainBrand && row.neighborhood === "al-fayha" && row.neighborhoodAr === "الفيحاء" && row.catalogLane !== "drive-through" && !row.momentTags.includes("drive-through")), "FH1: 9 local Al Fayha cafés, no chain, no drive-through");
   assert(fh1.filter((row) => row!.dineIn !== true).map((row) => row!.id).join(",") === "rexsa-al-fayha" && getShop("rexsa-al-fayha")?.dineIn == null, "FH1: Places dineIn true for 8; REXSA's Places dineIn is empty and stays null");
-  const tiles = ["mood-interface-al-fayha", "brood-al-fayha"];
-  assert(fh1.every((row) => (tiles.includes(row!.id) ? !row!.logoUrl : !!row!.logoUrl)), "FH1: 2 letter tiles (MooD INTERFACE, Brood); the other 7 carry a logo");
+  const tiles = ["mood-interface-al-fayha", "brewd-al-fayha"];
+  assert(fh1.every((row) => (tiles.includes(row!.id) ? !row!.logoUrl : !!row!.logoUrl)), "FH1: 2 letter tiles (MooD INTERFACE, Brewd); the other 7 carry a logo");
   for (const id of ["velu-al-fayha", "rexsa-al-fayha", "tasty-portal-al-fayha", "lammah-al-fayha"]) {
     assert(getShop(id)?.logoUrl === `/logos/${id}.png` && existsSync(join(process.cwd(), "public", "logos", `${id}.png`)), `${id} ships its mark`);
   }
@@ -1259,10 +1259,10 @@ for (const [ask, id] of [
     ["vase-coffee-al-fayha", ["vase fayha", "vase coffee fayha", "vase al fayha", "ڤازا الفيحاء", "فازا الفيحاء"]],
     ["coffee-address-al-fayha-haroon-al-rashid", ["coffee address haroon", "coffee address haroon al rashid", "coffee address harun al rashid", "coffee address fayha haroon", "عنوان القهوة هارون الرشيد", "عنوان القهوة هارون"]],
     ["coffee-address-al-fayha-al-shafei", ["coffee address shafei", "coffee address al shafei", "coffee address imam shafei", "coffee address fayha shafei", "عنوان القهوة الشافعي", "عنوان القهوة الامام الشافعي"]],
-    ["lammah-al-fayha", ["LAMMAH Cafe", "lammah", "lammah cafe", "لمة", "لمة كافيه", "قهوة لمة"]],
+    ["lammah-al-fayha", ["LAMMAH Cafe", "lammah", "lammah cafe", "لمة كافيه", "لمه كافيه", "قهوة لمة"]],
     ["tasty-portal-al-fayha", ["TASTY PORTAL", "tasty portal", "تيستي بورتل", "بورتل"]],
     ["mood-interface-al-fayha", ["MooD INTERFACE", "mood interface", "واجهة الكيف", "قهوة واجهة الكيف"]],
-    ["brood-al-fayha", ["Brood Coffee", "brood", "brood cafe", "بروود", "قهوة بروود", "brewd"]],
+    ["brewd-al-fayha", ["Brewd Coffee", "brewd", "brewd coffee", "brewd cafe", "brood", "brood coffee", "brood cafe", "بروود", "قهوة بروود"]],
   ] as const) {
     for (const ask of asks) {
       const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
@@ -1284,7 +1284,7 @@ for (const [ask, id] of [
     assert(!hits.includes("coffee-address-al-fayha-haroon-al-rashid") && !hits.includes("coffee-address-al-fayha-al-shafei"), `bare ${ask} does not list an Al Fayha Coffee Address row, got ${hits.join(",")}`);
   }
   // Single words of the new names are everyday words and never pin an FH1 café.
-  for (const ask of ["tasty", "tasty coffee", "portal", "تيستي", "mood", "good mood", "coffee mood", "interface", "واجهة", "كيف", "الكيف", "كيف حالك", "قهوة الكيف", "fayha", "الفيحاء", "قهوة في الفيحاء"]) {
+  for (const ask of ["tasty", "tasty coffee", "portal", "تيستي", "mood", "good mood", "coffee mood", "interface", "واجهة", "كيف", "الكيف", "كيف حالك", "قهوة الكيف", "fayha", "الفيحاء", "قهوة في الفيحاء", "لمة", "لمه", "لمّة", "لمة حلوة", "لمة اصحاب", "لمة الاصحاب", "لمة عائلية", "لمة العيلة", "لمة شباب", "جلسة لمة", "مكان لمة", "كافيه لمة حلوة", "لمة بنات"]) {
     const hits = matchCatalogShops(ask, listRealShops()).map((shop) => shop.id);
     assert(!hits.some((id) => (fh1Ids as readonly string[]).includes(id)), `${ask} does not pin an FH1 café, got ${hits.join(",")}`);
   }
@@ -2507,7 +2507,7 @@ assert(
 }
 const copyHash = createHash("sha256").update(copyBlob).digest("hex");
 assert(
-  copyHash === "14a7795d84a7c15fb5681297c0f13a31bb436b397df787e0e92e4f47a2a1bab1",
+  copyHash === "d6b9c27ece2a2e80bd4abcbd83237c40a39c6d73e19b3c5cf0117427a27b02f1",
   `district copy hash includes the house count helper: ${copyHash}`,
 );
 assert(

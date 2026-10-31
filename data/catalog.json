@@ -63707,6 +63707,51 @@
         ]
       },
       "example": false
+    },
+    {
+      "id": "the-lobby-olaya",
+      "nameAr": "ذا لوبي",
+      "nameEn": "The Lobby",
+      "city": "riyadh",
+      "neighborhood": "olaya",
+      "neighborhoodAr": "العليا",
+      "vibeTags": [
+        "قهوة"
+      ],
+      "momentTags": [
+        "qahwa"
+      ],
+      "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2f1d3c03bceb8b:0x96be7b9f77bab7a5!8m2!3d24.702924!4d46.666609099999995",
+      "pin": {
+        "lat": 24.702924,
+        "lng": 46.666609099999995
+      },
+      "popularityIndex": 40,
+      "placeId": "ChIJi-u8AzwdLz4Rpbe6d597vpY",
+      "dineIn": true,
+      "outdoorSeating": null,
+      "pickupOnly": null,
+      "openingHours": {
+        "weekdayDescriptions": [
+          "Monday: Open 24 hours",
+          "Tuesday: Open 24 hours",
+          "Wednesday: Open 24 hours",
+          "Thursday: Open 24 hours",
+          "Friday: Open 24 hours",
+          "Saturday: Open 24 hours",
+          "Sunday: Open 24 hours"
+        ],
+        "periods": [
+          {
+            "open": {
+              "day": 0,
+              "hour": 0,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "example": false
     }
   ]
 }

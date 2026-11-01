@@ -35,11 +35,14 @@ import {
 } from "@/lib/fixed-list-ids";
 import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
 import {
-  LIST_SCROLL_KEY,
+  LIST_SCROLL_MAX_WAIT_MS,
   listScrollRestoreTarget,
+  listScrollShouldRelease,
   nearbyListScrollSettled,
+  releaseListScroll,
   rememberListScroll,
-  type ListScrollRecord,
+  takeListScroll,
+  writeListScroll,
 } from "@/lib/list-scroll";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import { trackEvent } from "@/lib/track";
@@ -100,19 +103,44 @@ export function FixedListBody({
   const [sort, setSort] = useState<FixedListSort>("popular");
   const [permission, setPermission] = useState<GeoPermission>("unknown");
   const listScrollRestored = useRef(false);
+  const listScrollStarted = useRef<number | null>(null);
+  const listScrollMoved = useRef(false);
+  const [listScrollTick, setListScrollTick] = useState(0);
 
   useEffect(() => {
     function onPageHide() {
       const record = rememberListScroll(window.location.pathname, window.scrollY);
       if (!record) return;
       try {
-        window.sessionStorage.setItem(LIST_SCROLL_KEY, JSON.stringify(record));
+        writeListScroll(window.sessionStorage, record);
       } catch {
         // Private mode still has the browser's own scroll restoration.
       }
     }
     window.addEventListener("pagehide", onPageHide);
     return () => window.removeEventListener("pagehide", onPageHide);
+  }, []);
+
+  useEffect(() => {
+    listScrollStarted.current = performance.now();
+    function onMove() {
+      if (listScrollMoved.current) return;
+      listScrollMoved.current = true;
+      setListScrollTick((tick) => tick + 1);
+    }
+    const options = { passive: true, capture: true } as const;
+    window.addEventListener("wheel", onMove, options);
+    window.addEventListener("touchstart", onMove, options);
+    window.addEventListener("touchmove", onMove, options);
+    window.addEventListener("keydown", onMove, options);
+    const timer = window.setTimeout(() => setListScrollTick((tick) => tick + 1), LIST_SCROLL_MAX_WAIT_MS);
+    return () => {
+      window.removeEventListener("wheel", onMove, options);
+      window.removeEventListener("touchstart", onMove, options);
+      window.removeEventListener("touchmove", onMove, options);
+      window.removeEventListener("keydown", onMove, options);
+      window.clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
@@ -139,16 +167,11 @@ export function FixedListBody({
   });
 
   useLayoutEffect(() => {
-    if (listScrollRestored.current || !scrollSettled) return;
-    listScrollRestored.current = true;
-    let record: ListScrollRecord | null = null;
+    if (listScrollRestored.current) return;
+    const elapsedMs = performance.now() - (listScrollStarted.current ?? performance.now());
+    let record = null;
     try {
-      const parsed = JSON.parse(window.sessionStorage.getItem(LIST_SCROLL_KEY) ?? "null") as
-        | { path?: unknown; y?: unknown }
-        | null;
-      if (parsed && typeof parsed.path === "string" && typeof parsed.y === "number") {
-        record = { path: parsed.path, y: parsed.y };
-      }
+      record = takeListScroll(window.sessionStorage);
     } catch {
       record = null;
     }
@@ -159,16 +182,22 @@ export function FixedListBody({
     } catch {
       navigationType = null;
     }
-    const y = listScrollRestoreTarget({
+    const decision = {
       navigationType,
       pathname: window.location.pathname,
       record,
-      settled: true,
-    });
+      settled: scrollSettled,
+      elapsedMs,
+      userMoved: listScrollMoved.current,
+    };
+    if (!listScrollShouldRelease(decision)) return;
+    listScrollRestored.current = true;
+    releaseListScroll();
+    const y = listScrollRestoreTarget(decision);
     if (y == null) return;
     window.scrollTo(0, y);
     window.requestAnimationFrame(() => window.scrollTo(0, y));
-  }, [scrollSettled]);
+  }, [scrollSettled, listScrollTick]);
 
   const pool = popularFallbackOn ? popularFallback : shops;
   const chainCount = shops.filter((shop) => shop.isChain).length;

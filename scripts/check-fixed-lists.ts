@@ -39,9 +39,15 @@ import { listLiveCatalogDistrictIds } from "../lib/district-dictionary";
 import { listPopularDirectoryShops, listPopularPublicShops } from "../lib/most-popular";
 import { chipSharePath, isFixedListChip, isStaticDirectoryChip } from "../lib/product";
 import {
+  LIST_SCROLL_KEY,
+  LIST_SCROLL_MAX_WAIT_MS,
   listScrollRestoreTarget,
   nearbyListScrollSettled,
+  releaseListScroll,
   rememberListScroll,
+  resetListScrollHold,
+  takeListScroll,
+  writeListScroll,
 } from "../lib/list-scroll";
 import { listSitemapLocs } from "../lib/sitemap-xml";
 import {
@@ -136,8 +142,76 @@ assert(
   }),
   "lists without the location swap can restore immediately",
 );
+assert(LIST_SCROLL_MAX_WAIT_MS <= 2000 && LIST_SCROLL_MAX_WAIT_MS >= 1500, "the restore wait is about two seconds");
+assert(
+  listScrollRestoreTarget({
+    navigationType: "back_forward",
+    pathname: "/en/coffee-shops/nearby",
+    record: { path: "/en/coffee-shops/nearby", y: 1190 },
+    settled: true,
+    elapsedMs: 500,
+    userMoved: true,
+  }) === null,
+  "scrolling while location settles cancels the restore",
+);
+assert(
+  listScrollRestoreTarget({
+    navigationType: "back_forward",
+    pathname: "/en/coffee-shops/nearby",
+    record: { path: "/en/coffee-shops/nearby", y: 1190 },
+    settled: true,
+    elapsedMs: LIST_SCROLL_MAX_WAIT_MS,
+  }) === null,
+  "a location fix after the wait does not jump the page",
+);
+{
+  resetListScrollHold();
+  const bag = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => bag.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      bag.set(key, value);
+    },
+    removeItem: (key: string) => {
+      bag.delete(key);
+    },
+  };
+  const saved = rememberListScroll("/en/coffee-shops/nearby", 1190);
+  assert(saved?.y === 1190, "Nearby can remember 1190");
+  writeListScroll(storage, saved!);
+  const raw = storage.getItem(LIST_SCROLL_KEY) ?? "";
+  assert(!raw.includes("lat") && !raw.includes("lng") && !raw.includes("entry"), "storage stays path and offset");
+  const first = takeListScroll(storage);
+  assert(storage.getItem(LIST_SCROLL_KEY) === null, "the first mount consumes the offset");
+  assert(
+    listScrollRestoreTarget({
+      navigationType: "back_forward",
+      pathname: "/en/coffee-shops/nearby",
+      record: first,
+      settled: true,
+    }) === 1190,
+    "the Back that saved the offset still restores it",
+  );
+  releaseListScroll();
+  const second = takeListScroll(storage);
+  assert(second === null, "a second Nearby mount in the same document does not restore");
+  assert(
+    listScrollRestoreTarget({
+      navigationType: "back_forward",
+      pathname: "/en/coffee-shops/nearby",
+      record: second,
+      settled: true,
+    }) === null,
+    "a fresh navigation in that document does not restore",
+  );
+  resetListScrollHold();
+}
 const fixedListBody = read("components/fixed-list-body.tsx");
 assert(fixedListBody.includes('addEventListener("pagehide"'), "the list page saves scroll when the document is left");
+assert(fixedListBody.includes("takeListScroll"), "the list page takes the offset once");
+assert(fixedListBody.includes("releaseListScroll"), "the list page drops the offset after using it");
+assert(fixedListBody.includes('addEventListener("wheel"'), "a wheel cancels a pending restore");
+assert(fixedListBody.includes("LIST_SCROLL_MAX_WAIT_MS"), "a pending restore does not wait forever");
 assert(
   fixedListBody.includes("listScrollRestoreTarget"),
   "the list page restores that scroll on the way back",

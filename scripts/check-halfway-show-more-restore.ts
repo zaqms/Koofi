@@ -5,6 +5,8 @@
  * A reloaded بيننا page has neither, so the button hides.
  *
  * Needs the app on HALFWAY_SHOW_MORE_URL (default http://localhost:3000).
+ * Each run sends a fresh x-forwarded-for so the invite write limit
+ * (12 per IP per 10 minutes) does not fail the next run on the same server.
  */
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
@@ -29,6 +31,25 @@ function assert(cond: unknown, message: string): asserts cond {
 }
 
 const base = process.env.HALFWAY_SHOW_MORE_URL ?? "http://localhost:3000";
+function octet(): number {
+  return 10 + Math.floor(Math.random() * 240);
+}
+const forwardedFor = `10.${octet()}.${octet()}.${octet()}`;
+
+function forwardedHeaders(json = false): Record<string, string> {
+  return {
+    "x-forwarded-for": forwardedFor,
+    ...(json ? { "content-type": "application/json" } : {}),
+  };
+}
+
+function contextOptions(extra?: { permissions?: Array<"clipboard-read" | "clipboard-write"> }) {
+  return {
+    viewport: { width: 390, height: 844 } as const,
+    extraHTTPHeaders: { "x-forwarded-for": forwardedFor },
+    ...extra,
+  };
+}
 function mustPin(lat: number, lng: number): { lat: number; lng: number } {
   const pin = roundHalfwayPin(lat, lng);
   if (!pin) throw new Error("fixture pin");
@@ -149,13 +170,13 @@ async function installBack(
 async function createInvite(): Promise<string> {
   const created = (await fetch(`${base}/api/halfway/invite`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: forwardedHeaders(true),
     body: JSON.stringify({ lat: hostPin.lat, lng: hostPin.lng, locale: "ar", seed: true }),
   }).then((res) => res.json())) as { id?: string; error?: string };
   assert(created.id, `invite create failed: ${created.error ?? "no id"}`);
   const joined = await fetch(`${base}/api/halfway/invite`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: forwardedHeaders(true),
     body: JSON.stringify({ id: created.id, lat: guestPin.lat, lng: guestPin.lng }),
   });
   assert(joined.ok, `guest join failed: ${joined.status}`);
@@ -166,9 +187,7 @@ async function restoredShowMore(
   browser: import("playwright-core").Browser,
   input: { id: string; host: boolean; picks: ReturnType<typeof shopToChatPick>[] },
 ) {
-  const context = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-  });
+  const context = await browser.newContext(contextOptions());
   const page = await context.newPage();
   const posts: { halfwayMore?: boolean; halfway?: { locations?: { lat?: number; lng?: number }[] } }[] = [];
   page.on("request", (req) => {
@@ -199,7 +218,19 @@ async function restoredShowMore(
   });
   await page.goto(`${base}/h/${input.id}`, { waitUntil: "domcontentloaded" });
   const button = page.locator("[data-halfway-show-more]");
-  await button.waitFor({ timeout: 20000 });
+  try {
+    await button.waitFor({ timeout: 20000 });
+  } catch (error) {
+    const info = await page.evaluate(() => ({
+      text: document.body.innerText.slice(0, 600),
+      heading: document.querySelector("[data-halfway-heading]")?.textContent ?? null,
+      more: document.querySelectorAll("[data-halfway-show-more]").length,
+      end: document.querySelector("[data-halfway-end]")?.textContent ?? null,
+      results: Boolean(document.querySelector("[data-halfway-results]")),
+    }));
+    console.error("INVITE DUMP", JSON.stringify(info));
+    throw error;
+  }
   await page.locator("[data-halfway-results]").getByText("•").waitFor({ timeout: 10000 });
   const response = page.waitForResponse(
     (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
@@ -220,62 +251,73 @@ async function restoredShowMore(
   await context.close();
 }
 
-async function refetchOnly(
+async function failedInviteReadHidesShowMore(
   browser: import("playwright-core").Browser,
   picks: ReturnType<typeof shopToChatPick>[],
 ) {
   const created = (await fetch(`${base}/api/halfway/invite`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: forwardedHeaders(true),
     body: JSON.stringify({ lat: hostPin.lat, lng: hostPin.lng, locale: "ar", seed: true }),
   }).then((res) => res.json())) as { id?: string; error?: string };
   assert(created.id, `host-only invite failed: ${created.error ?? "no id"}`);
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const context = await browser.newContext(contextOptions());
   const page = await context.newPage();
-  const posts: { halfwayMore?: boolean; halfway?: { locations?: { lat?: number; lng?: number }[] } }[] = [];
-  page.on("request", (req) => {
-    if (req.method() !== "POST" || !req.url().includes("/api/chat")) return;
-    try {
-      posts.push(JSON.parse(req.postData() || "{}"));
-    } catch {
-      posts.push({});
-    }
+  await page.route("**/api/halfway/invite**", (route) => {
+    if (route.request().method() !== "GET") return route.continue();
+    return route.fulfill({
+      status: 500,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "bad", locations: [] }),
+    });
   });
   await installBack(
     page,
     snapshotJson({ threadKey: `halfway:${created.id}`, href: `/h/${created.id}`, picks }),
     null,
   );
-  await page.goto(`${base}/h/${created.id}`, { waitUntil: "domcontentloaded" });
-  const button = page.locator("[data-halfway-show-more]");
-  await button.waitFor({ timeout: 20000 });
-  const joined = await fetch(`${base}/api/halfway/invite`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: created.id, lat: guestPin.lat, lng: guestPin.lng }),
-  });
-  assert(joined.ok, "refetch guest join failed");
-  const response = page.waitForResponse(
-    (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
+  const nonOk = page.waitForResponse(
+    (res) =>
+      res.url().includes("/api/halfway/invite") &&
+      res.request().method() === "GET" &&
+      res.status() >= 400,
     { timeout: 20000 },
   );
-  await button.click();
-  await response;
-  const more = posts.filter((post) => post.halfwayMore === true);
-  assert(more.length >= 1, "refetch Show more sent no /api/chat");
-  assert(
-    samePins(more[0], [hostPin, guestPin]),
-    `refetch pins ${JSON.stringify(more[0]?.halfway?.locations)}`,
-  );
+  await page.goto(`${base}/h/${created.id}`, { waitUntil: "domcontentloaded" });
+  await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+  await nonOk;
+  const started = Date.now();
+  while (Date.now() - started < 1000) {
+    const count = await page.locator("[data-halfway-show-more]").count();
+    assert(count === 0, "a non-ok invite read left Show more on screen");
+    await page.waitForTimeout(100);
+  }
   await context.close();
 }
 
 async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
-  const context = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    permissions: ["clipboard-read", "clipboard-write"],
-  });
+  const context = await browser.newContext(
+    contextOptions({ permissions: ["clipboard-read", "clipboard-write"] }),
+  );
   const page = await context.newPage();
+  let sessionPins = false;
+  await page.route("**/api/halfway/invite**", (route) => {
+    if (!sessionPins || route.request().method() !== "GET") return route.continue();
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        locations: [
+          { lat: hostPin.lat, lng: hostPin.lng },
+          { lat: guestPin.lat, lng: guestPin.lng },
+        ],
+        joined: true,
+        picks: [],
+        shop_ids: [],
+        halfwayMore: true,
+      }),
+    });
+  });
   const posts: { halfwayMore?: boolean; halfway?: { locations?: { lat?: number; lng?: number }[] } }[] = [];
   page.on("request", (req) => {
     if (req.method() !== "POST" || !req.url().includes("/api/chat")) return;
@@ -308,7 +350,7 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
   assert(invite.id, "بيننا copy link did not mint an invite");
   const joined = await fetch(`${base}/api/halfway/invite`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: forwardedHeaders(true),
     body: JSON.stringify({ id: invite.id, lat: wideGuest.lat, lng: wideGuest.lng }),
   });
   assert(joined.ok, "بيننا guest join failed");
@@ -331,6 +373,19 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
     samePins(inPage[0], [wideHost, wideGuest]),
     `in-page بيننا pins ${JSON.stringify(inPage[0]?.halfway?.locations)}`,
   );
+  await page.waitForFunction(() => {
+    const button = document.querySelector("[data-halfway-show-more]");
+    return button instanceof HTMLElement && button.getAttribute("aria-disabled") !== "true";
+  });
+  sessionPins = true;
+  await page.evaluate(() => {
+    delete (window as unknown as { __wainHalfwayHeld?: string }).__wainHalfwayHeld;
+    window.dispatchEvent(new Event("focus"));
+  });
+  await page.waitForFunction(
+    () => (window as unknown as { __wainHalfwayHeld?: string }).__wainHalfwayHeld === "session",
+    { timeout: 10000 },
+  );
   await page.evaluate(() => {
     (window as unknown as { __sameDoc?: number }).__sameDoc = 1;
   });
@@ -343,7 +398,20 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
   assert(same, "بيننا Back reloaded the document, so it was not a soft Back");
   const before = posts.filter((post) => post.halfwayMore === true).length;
   const button = page.locator("[data-halfway-show-more]");
-  await button.waitFor({ timeout: 20000 });
+  try {
+    await button.waitFor({ timeout: 20000 });
+  } catch (error) {
+    const info = await page.evaluate(() => ({
+      text: document.body.innerText.slice(0, 700),
+      results: Boolean(document.querySelector("[data-halfway-results]")),
+      end: document.querySelector("[data-halfway-end]")?.textContent ?? null,
+      heading: document.querySelector("[data-halfway-heading]")?.textContent ?? null,
+      held: (window as unknown as { __wainHalfwayHeld?: string }).__wainHalfwayHeld ?? null,
+      href: location.pathname,
+    }));
+    console.error("SOFT BACK DUMP", JSON.stringify(info));
+    throw error;
+  }
   const response = page.waitForResponse(
     (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
   );
@@ -352,7 +420,7 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
   const more = posts.filter((post) => post.halfwayMore === true);
   assert(more.length > before, "soft-Back بيننا Show more sent no /api/chat");
   assert(
-    samePins(more[more.length - 1], [wideHost, wideGuest]),
+    samePins(more[more.length - 1], [hostPin, guestPin]),
     `soft-Back بيننا pins ${JSON.stringify(more[more.length - 1]?.halfway?.locations)}`,
   );
   await context.close();
@@ -366,7 +434,7 @@ async function reloadedBainna(browser: import("playwright-core").Browser) {
     href: "/halfway",
     picks,
   });
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const context = await browser.newContext(contextOptions());
   const page = await context.newPage();
   let morePosts = 0;
   page.on("request", (req) => {
@@ -431,13 +499,13 @@ async function main() {
       await restoredShowMore(browser, { id: hostId, host: true, picks });
       await restoredShowMore(browser, { id: guestId, host: false, picks });
     }
-    if (!only || only === "refetch") await refetchOnly(browser, picks);
+    if (!only || only === "refetch") await failedInviteReadHidesShowMore(browser, picks);
     if (!only || only === "soft") await inPageThenSoftBack(browser);
     if (!only || only === "reload") await reloadedBainna(browser);
   } finally {
     await browser.close();
   }
-  console.log("check-halfway-show-more-restore: ok");
+  console.log(`check-halfway-show-more-restore: ok (${forwardedFor})`);
 }
 
 main().catch((error: unknown) => {

@@ -865,6 +865,14 @@ export function Chat({
   const [halfwayAddedNotice, setHalfwayAddedNotice] = useState("");
   /** Restored list has no session to page. Hide Show more instead of a dead tap. */
   const [halfwayPinsBlocked, setHalfwayPinsBlocked] = useState(false);
+  /**
+   * Invite id is known but this paint has no pair yet. Hide Show more until
+   * the on-load read returns a pair or fails — a tap must not be the thing
+   * that discovers the miss.
+   */
+  const [halfwayPinsPending, setHalfwayPinsPending] = useState(false);
+  /** Copy-link id for this document. Not sessionStorage — a reload has neither. */
+  const halfwaySessionIdRef = useRef<string | null>(halfwayInvite?.id ?? null);
   const sendMeetHalfwayRef = useRef<
     (
       locations: HalfwayPinInput[],
@@ -1526,6 +1534,7 @@ export function Chat({
     setHalfwayFriendPin(null);
     halfwayJoinSeenRef.current = false;
     setHalfwayWaitingId(id);
+    halfwaySessionIdRef.current = id;
     setHalfwayPinError(null);
     // Invite navigation pushes this hit itself, with GTM's eventCallback,
     // so the redirect can wait for it. Copy link stays on this page.
@@ -1944,6 +1953,7 @@ export function Chat({
     halfwayJoinSeenRef.current = false;
     clearHalfwayWaiting();
     halfwayPinsMemory.delete(threadKey);
+    halfwaySessionIdRef.current = null;
     halfwayLocationsRef.current = null;
     halfwayShownRef.current = [];
   }
@@ -2078,6 +2088,7 @@ export function Chat({
   const showMoreButtonVisible =
     showHalfwayResults &&
     !halfwayPinsBlocked &&
+    !halfwayPinsPending &&
     halfwayResultsFooterKind({
       halfwayMore: halfwayResult?.halfwayMore,
       paged: halfwayResult?.halfwayPaged,
@@ -2089,10 +2100,20 @@ export function Chat({
     if (!wasVisible || showMoreButtonVisible) return;
     if (!pendingPointerFocusEnd.current) return;
     pendingPointerFocusEnd.current = false;
-    const end = listRef.current?.querySelector("[data-halfway-end]");
-    const status = listRef.current?.querySelector("[data-halfway-status]");
-    const target = end ?? status;
-    if (target instanceof HTMLElement) target.focus();
+    const root = listRef.current;
+    const end = root?.querySelector("[data-halfway-end]");
+    if (end instanceof HTMLElement) {
+      end.focus();
+      return;
+    }
+    const status = root?.querySelector("[data-halfway-status]");
+    const statusText = status?.textContent?.trim() ?? "";
+    if (statusText && status instanceof HTMLElement) {
+      status.focus();
+      return;
+    }
+    const heading = root?.querySelector("[data-halfway-heading]");
+    if (heading instanceof HTMLElement) heading.focus();
   }, [showMoreButtonVisible]);
 
   useEffect(() => {
@@ -2258,7 +2279,14 @@ export function Chat({
       // and the ref only redraws the place line.
       halfwayLocationsRef.current = recovered ?? lastHalfwayLocations(restored);
       halfwayShownRef.current = shownHalfwayPickIds(restored);
-      setHalfwayPinsBlocked(!recovered && !halfwayInvite?.id && !halfwayIdFromPath());
+      const pendingInviteId = halfwayInvite?.id ?? halfwayIdFromPath();
+      if (!recovered && pendingInviteId) {
+        setHalfwayPinsPending(true);
+        setHalfwayPinsBlocked(false);
+      } else {
+        setHalfwayPinsPending(false);
+        setHalfwayPinsBlocked(!recovered);
+      }
       if (homeSurface) setPinnedHome(false);
       if (halfwaySurface && lastHalfwayResult(restored)) setMeetHalfwayOpen(true);
     }
@@ -2276,31 +2304,89 @@ export function Chat({
         invite: halfwayInvite?.locations ?? null,
       })
     ) {
+      if (halfwayPinsPending) setHalfwayPinsPending(false);
       return;
     }
     const inviteId = halfwayInvite?.id ?? halfwayIdFromPath();
-    if (!inviteId) return;
+    if (!inviteId) {
+      if (halfwayPinsPending) setHalfwayPinsPending(false);
+      return;
+    }
     let cancelled = false;
     void (async () => {
+      let failed = false;
       try {
         const response = await fetch(
           `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
           { cache: "no-store" },
         );
-        if (!response.ok || cancelled) return;
+        if (cancelled) return;
+        if (!response.ok) {
+          failed = true;
+          return;
+        }
         const data = (await response.json()) as HalfwayOverlayResponse;
         const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
-        if (cancelled || !pins) return;
+        if (cancelled) return;
+        if (!pins) {
+          failed = true;
+          return;
+        }
         halfwayLocationsRef.current = pins;
         setHalfwayPinsBlocked(false);
       } catch {
-        // The click refetches. A short or failed read does not hide Show more.
+        if (!cancelled) failed = true;
+      } finally {
+        if (!cancelled) {
+          if (failed) setHalfwayPinsBlocked(true);
+          setHalfwayPinsPending(false);
+        }
       }
     })();
     return () => {
       cancelled = true;
     };
   }, [showHalfwayResults, halfwayPinsBlocked, messages, halfwayInvite, threadKey]);
+
+  useEffect(() => {
+    if (!showHalfwayResults) return;
+    let cancelled = false;
+    async function refreshHeldPins() {
+      const painted = halfwayPinPair(lastHalfwayLocations(messages));
+      const inviteId =
+        halfwayInvite?.id ?? halfwayIdFromPath() ?? halfwaySessionIdRef.current;
+      if (!painted || !inviteId) return;
+      try {
+        const response = await fetch(
+          `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
+          { cache: "no-store" },
+        );
+        if (cancelled || !response.ok) return;
+        const data = (await response.json()) as HalfwayOverlayResponse;
+        const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
+        if (cancelled || !pins) return;
+        const same =
+          pins.length === painted.length &&
+          pins.every(
+            (pin, index) => pin.lat === painted[index]?.lat && pin.lng === painted[index]?.lng,
+          );
+        if (same) return;
+        // Painted cards keep their pair. A café click remembers this session pair.
+        halfwayLocationsRef.current = pins;
+        (window as unknown as { __wainHalfwayHeld?: string }).__wainHalfwayHeld = "session";
+      } catch {
+        // The painted pair still pages. A missed refresh leaves the ref as it was.
+      }
+    }
+    const onFocus = () => {
+      void refreshHeldPins();
+    };
+    window.addEventListener("focus", onFocus);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [showHalfwayResults, messages, halfwayInvite, threadKey]);
 
   useLayoutEffect(() => {
     if (!homeSurface || !threadVisible) return;
@@ -2547,10 +2633,13 @@ export function Chat({
           ref={listRef}
           data-halfway-results=""
           className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-4"
-          aria-live="polite"
         >
           <div className="space-y-1.5 text-center">
-            <h1 className="text-[1.65rem] font-semibold tracking-tight text-ink">
+            <h1
+              tabIndex={-1}
+              data-halfway-heading=""
+              className="text-[1.65rem] font-semibold tracking-tight text-ink"
+            >
               {copy.meetHalfwayResultsHeading[landing]}
             </h1>
             <p
@@ -2582,7 +2671,7 @@ export function Chat({
             surface="screen"
             disabled={busy}
             kind={
-              halfwayPinsBlocked
+              halfwayPinsBlocked || halfwayPinsPending
                 ? null
                 : halfwayResultsFooterKind({
                     halfwayMore: halfwayResult.halfwayMore,

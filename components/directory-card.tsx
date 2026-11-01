@@ -29,6 +29,8 @@ type DirectoryCardProps = {
    * already granted. Fixed lists still pass false.
    */
   autoLocate?: boolean;
+  /** بيننا results mark each row so keyboard show-more can focus the new card. */
+  halfwayCard?: boolean;
 };
 
 export function DirectoryCard({
@@ -38,6 +40,7 @@ export function DirectoryCard({
   badge = null,
   onMapsClick,
   autoLocate = false,
+  halfwayCard = false,
 }: DirectoryCardProps) {
   const name = shopDisplayName(shop, language);
   const area =
@@ -59,6 +62,7 @@ export function DirectoryCard({
       <div className="flex min-w-0 items-center gap-3">
         <Link
           href={href}
+          {...(halfwayCard ? { "data-halfway-card": "" } : {})}
           className="flex min-w-0 flex-1 items-center gap-3 rounded-xl outline-none hover:bg-wain-warm-cream/60 focus-visible:ring-2 focus-visible:ring-bean"
         >
           <ShopVisual

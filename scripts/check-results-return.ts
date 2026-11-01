@@ -17,6 +17,7 @@ import {
   decideChatResultsSave,
 } from "../components/chat";
 import { getShop } from "../lib/catalog";
+import { halfwayMoreAfterRestore } from "../lib/meet-halfway";
 import {
   expiredHalfwayShouldClear,
   halfwayFetchKeepsLongerSnapshot,
@@ -456,6 +457,77 @@ try {
     assert(!raw.includes(woodsCoords.lat.toFixed(digits)), "the stored session does not keep the café lat");
     assert(!raw.includes(woodsCoords.lng.toFixed(digits)), "the stored session does not keep the café lng");
   }
+  const restoredAssistant = restored?.messages.find((message) => message.role === "assistant");
+  assert(restoredAssistant?.halfwayMore === true, "restored بيننا still knows another page exists");
+  assert(
+    !("halfwayLocations" in (restoredAssistant ?? {})),
+    "restored بيننا does not keep the pins",
+  );
+  const beenIds = (restoredAssistant?.picks ?? []).map((pick) => String(pick.id));
+  const beforeMore = storage.get(RESULTS_SNAPSHOT_KEY) ?? "";
+  const invitePins = [hostPin, guestPin];
+  const hostRequest = halfwayMoreAfterRestore({
+    restored: null,
+    remembered: null,
+    invite: invitePins,
+    beenIds,
+    inviteId,
+    text: "اعرض قهاوي أكثر",
+    landing: "ar",
+  });
+  const guestRequest = halfwayMoreAfterRestore({
+    restored: null,
+    remembered: null,
+    invite: invitePins,
+    beenIds,
+    inviteId,
+    text: "Show more cafés",
+    landing: "en",
+  });
+  assert(
+    hostRequest?.url === "/api/chat" && hostRequest.method === "POST",
+    "host show more after restore sends /api/chat",
+  );
+  assert(
+    guestRequest?.url === "/api/chat" && guestRequest.method === "POST",
+    "guest show more after restore sends /api/chat",
+  );
+  assert(
+    hostRequest?.body.halfway.locations.length === 2 &&
+      guestRequest?.body.halfway.locations.length === 2 &&
+      hostRequest.body.halfwayMore === true &&
+      guestRequest.body.beenIds.join() === beenIds.join(),
+    "host and guest page the invite session the page already loaded",
+  );
+  const localRequest = halfwayMoreAfterRestore({
+    restored: null,
+    remembered: invitePins,
+    invite: null,
+    beenIds,
+    inviteId: null,
+    text: "اعرض قهاوي أكثر",
+    landing: "ar",
+  });
+  assert(
+    localRequest?.method === "POST" && localRequest.body.halfway.id === undefined,
+    "بيننا show more after restore uses in-memory pins and does not store an invite id",
+  );
+  assert(
+    halfwayMoreAfterRestore({
+      restored: null,
+      remembered: null,
+      invite: null,
+      beenIds,
+      inviteId: null,
+      text: "اعرض قهاوي أكثر",
+      landing: "ar",
+    }) === null,
+    "show more stays hidden when a restored بيننا has no session to page",
+  );
+  assert(
+    storage.get(RESULTS_SNAPSHOT_KEY) === beforeMore && !beforeMore.includes("halfwayLocations"),
+    "show more does not write pins or the invite id back to sessionStorage",
+  );
   markCafeReturn("half-1", now);
   assert(readCafeReturnToken(now)?.entryKey === "half-1", "opening a café card stamps a return token");
   clearCafeReturnToken("half-1");

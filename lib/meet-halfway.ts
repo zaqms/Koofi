@@ -281,6 +281,139 @@ export function halfwayResultsFooterKind(input: {
   return null;
 }
 
+/**
+ * Spoken after every show-more. 1 قهوة وحدة، 2 قهوتين، 3–10 قهاوي، 11+ قهوة.
+ * English keeps the digit and café/cafés.
+ */
+export function meetHalfwayAddedNotice(count: number, language: Language): string {
+  const n = Math.max(0, Math.floor(count));
+  if (language === "en") {
+    if (n === 1) return "1 more café added";
+    return `${n} more cafés added`;
+  }
+  if (n === 1) return "انضافت قهوة وحدة";
+  if (n === 2) return "انضافت قهوتين";
+  if (n >= 11) return `انضافت ${n} قهوة`;
+  return `انضافت ${n} قهاوي`;
+}
+
+/**
+ * Results pages, oldest first. Show more appends the next ranked batch
+ * and keeps cafés already on screen. Duplicate ids (a reroll of the same
+ * shop) stay as the first time they appeared.
+ */
+export function accumulateHalfwayPicks<T extends { id: string }>(
+  pages: readonly (readonly T[])[],
+): T[] {
+  const seen = new Set<string>();
+  const picks: T[] = [];
+  for (const page of pages) {
+    for (const pick of page) {
+      if (!pick.id || seen.has(pick.id)) continue;
+      seen.add(pick.id);
+      picks.push(pick);
+    }
+  }
+  return picks;
+}
+
+/** Two real pins, or nothing. Text and districts are dropped so only coordinates move. */
+export function halfwayPinPair(
+  rows: readonly HalfwayPinInput[] | null | undefined,
+): HalfwayPinInput[] | null {
+  if (!rows) return null;
+  const pins: HalfwayPinInput[] = [];
+  for (const row of rows) {
+    if (!row) continue;
+    const { lat, lng } = row;
+    if (typeof lat !== "number" || typeof lng !== "number") continue;
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+    pins.push({ lat, lng });
+  }
+  return pins.length >= 2 ? pins : null;
+}
+
+/**
+ * Pins for Show more after a restore. The snapshot has none.
+ * Memory from this document, then the invite session the page already has.
+ */
+export function resolveHalfwayMorePins(input: {
+  restored?: readonly HalfwayPinInput[] | null;
+  remembered?: readonly HalfwayPinInput[] | null;
+  invite?: readonly HalfwayPinInput[] | null;
+}): HalfwayPinInput[] | null {
+  return (
+    halfwayPinPair(input.restored) ??
+    halfwayPinPair(input.remembered) ??
+    halfwayPinPair(input.invite) ??
+    null
+  );
+}
+
+/** Keep earlier cards. Fill pins only in memory — callers must not store them. */
+export function stampHalfwayLocations<
+  T extends {
+    role: string;
+    halfwayMore?: boolean;
+    halfwayLocations?: HalfwayPinInput[];
+  },
+>(messages: readonly T[], locations: readonly HalfwayPinInput[]): T[] {
+  const pins = halfwayPinPair(locations);
+  if (!pins) return messages as T[];
+  let changed = false;
+  const next = messages.map((message) => {
+    if (message.role !== "assistant" || typeof message.halfwayMore !== "boolean") {
+      return message;
+    }
+    if (halfwayPinPair(message.halfwayLocations)) return message;
+    changed = true;
+    return { ...message, halfwayLocations: pins };
+  });
+  return changed ? next : (messages as T[]);
+}
+
+/**
+ * The Show more request after a restored list. Null means there is no
+ * session to page, so the button stays hidden instead of doing nothing.
+ */
+export function halfwayMoreAfterRestore(input: {
+  restored?: readonly HalfwayPinInput[] | null;
+  remembered?: readonly HalfwayPinInput[] | null;
+  invite?: readonly HalfwayPinInput[] | null;
+  beenIds: readonly string[];
+  inviteId?: string | null;
+  text: string;
+  landing: Language;
+}): {
+  url: "/api/chat";
+  method: "POST";
+  body: {
+    text: string;
+    landing: Language;
+    halfwayMore: true;
+    beenIds: string[];
+    halfway: { locations: HalfwayPinInput[]; id?: string };
+  };
+} | null {
+  const locations = resolveHalfwayMorePins(input);
+  if (!locations) return null;
+  const id = input.inviteId?.trim();
+  return {
+    url: "/api/chat",
+    method: "POST",
+    body: {
+      text: input.text,
+      landing: input.landing,
+      halfwayMore: true,
+      beenIds: input.beenIds.filter(Boolean),
+      halfway: {
+        locations,
+        ...(id ? { id } : {}),
+      },
+    },
+  };
+}
+
 export function halfwayPinFailCopy(
   language: Language,
   rows: readonly HalfwayPinInput[],

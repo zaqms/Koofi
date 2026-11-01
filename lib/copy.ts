@@ -213,6 +213,11 @@ export const copy = {
     ar: "3 قهاوي بينكم",
     en: "3 cafés between you",
   },
+  /** Results heading. No count — the list grows past the first three. */
+  meetHalfwayResultsHeading: {
+    ar: "قهاوي بينكم",
+    en: "Cafés between you",
+  },
   meetHalfwayEmpty: {
     ar: "ما في أكثر بهالمنطقة",
     en: "That's all in this area.",
@@ -263,12 +268,8 @@ export const copy = {
     en: "Others",
   },
   meetHalfwayMoreTitle: {
-    ar: "اعرض 3 قهاوي مختلفة",
-    en: "Show 3 different cafés",
-  },
-  meetHalfwayMoreSub: {
-    ar: "خلنا نطلع لك ترشيحات جديدة",
-    en: "Get a new set of recommendations",
+    ar: "اعرض قهاوي أكثر",
+    en: "Show more cafés",
   },
   meetHalfwayNoMore: {
     ar: "ما في أكثر بهالمنطقة",

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic, Source_Serif_4 } from "next/font/google";
 import { headers } from "next/headers";
+import { CafeReturn } from "@/components/cafe-return";
+import { RESULTS_RESTORE_BOOTSTRAP } from "@/lib/results-return";
 import { ConsentManager } from "@/components/consent-manager";
 import { CONSENT_AUTOLOAD_SCRIPT, consentBootstrapScript } from "@/lib/consent";
 import { htmlDir, htmlLang, localeFromRequestHeaders } from "@/lib/locale";
@@ -79,6 +81,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){try{if(localStorage.getItem(${JSON.stringify(HIDE_CHAINS_STORAGE_KEY)})==="1")document.documentElement.setAttribute("data-hide-chains","")}catch(e){}})();`,
           }}
         />
+        <script dangerouslySetInnerHTML={{ __html: RESULTS_RESTORE_BOOTSTRAP }} />
         {/* Consent first: Consent Mode v2 defaults denied, consent click
             guards; it is the only GTM loader (lib/consent.ts). GTM loads only
             after Accept AND where #252 allows trackers: the redaction
@@ -94,6 +97,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-dvh bg-paper text-ink antialiased">
         <CityProvider>{children}</CityProvider>
+        <CafeReturn />
         <ConsentManager language={language} trackers={trackers} />
       </body>
     </html>

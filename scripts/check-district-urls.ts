@@ -2453,7 +2453,7 @@ const scoutPack: {
     neighborhood: "al-yarmouk",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/nosound-al-yarmouk.png",
+    logoUrl: "/logos/nosound-qurtubah.png",
     pin: { lat: 24.8099494, lng: 46.7794305 },
   },
   {
@@ -2489,7 +2489,7 @@ const scoutPack: {
     neighborhood: "al-yarmouk",
     vibe: ["محمصة", "قهوة"],
     moments: ["roaster", "qahwa"],
-    logoUrl: "/logos/aleel-roastery-al-yarmouk.png",
+    logoUrl: "/logos/aleel-roastery-al-yarmouk-v2.png",
     pin: { lat: 24.79502, lng: 46.7738079 },
   },
   {

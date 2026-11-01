@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 544, `specialty discovery is 544 (10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 647, `catalog is 647 after the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -363,7 +363,7 @@ assert(
 );
 
 const qurtubah = filterDirectoryShops(shops, "qurtubah");
-assert(qurtubah.length === 11, `qurtubah has 11 shops, got ${qurtubah.length}`);
+assert(qurtubah.length === 12, `qurtubah has 12 shops (+ OPULENT, TRENDVERIFY-1023PM), got ${qurtubah.length}`);
 assert(
   !getShop("vanilla-coffee-qurtubah"),
   "Vanilla Coffee Qurtubah stays dropped — food truck, not a specialty café",
@@ -1799,8 +1799,8 @@ const MALAZ_REFILL = {
     "re-matcha-al-hamra": "/logos/re-matcha-al-hamra.jpg",
     "flow-matcha-at-taawun": "/logos/flow-matcha-at-taawun.jpg",
     "hokkaido-al-hamra": "/logos/hokkaido-al-hamra.png",
-    "happyland-matcha-diriyah": "/logos/happyland-matcha-diriyah.jpg",
-    "somatcha-ar-rabwah": "/logos/somatcha-ar-rabwah-ig.jpg",
+    "happyland-matcha-diriyah": "/logos/happyland-matcha-diriyah.png",
+    "somatcha-ar-rabwah": "/logos/somatcha-ar-rabwah.png",
   };
   for (const [id, logoUrl] of Object.entries(harvestLogos)) {
     const shop = matchaRows.find((row) => row.id === id);
@@ -2825,7 +2825,7 @@ const scoutPack: {
     neighborhood: "an-nasim-ash-sharqi",
     vibe: ["محمصة", "قهوة"],
     moments: ["roaster", "qahwa"],
-    logoUrl: "/logos/voute-fot-al-naseem-sharqi-ig.jpg",
+    logoUrl: "/logos/voute-fot-al-naseem-sharqi.png",
     pin: { lat: 24.7504252, lng: 46.8280744 },
   },
   {
@@ -2843,7 +2843,7 @@ const scoutPack: {
     neighborhood: "an-nasim-ash-sharqi",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/tamper-speciality-al-naseem-sharqi-ig.jpg",
+    logoUrl: "/logos/tamper-speciality-al-naseem-sharqi.png",
     pin: { lat: 24.7465091, lng: 46.8309965 },
   },
   {
@@ -2897,7 +2897,7 @@ const scoutPack: {
     neighborhood: "an-nasim-ash-sharqi",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/public-al-naseem-sharqi-ig.jpg",
+    logoUrl: "/logos/public-al-naseem-sharqi.png",
     pin: { lat: 24.7473125, lng: 46.8233125 },
   },
   {
@@ -3578,7 +3578,7 @@ const scoutPack: {
     neighborhood: "diriyah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/happyland-matcha-diriyah.jpg",
+    logoUrl: "/logos/happyland-matcha-diriyah.png",
   },
   {
     id: "hjeen-roaster-saudi-90s-ar-rabwah",
@@ -3599,7 +3599,7 @@ const scoutPack: {
     neighborhood: "al-rabwah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/on-move-ar-rabwah-ig.jpg",
+    logoUrl: "/logos/on-move-ar-rabwah.png",
     pin: { lat: 24.68575, lng: 46.7660278 },
     coordsInUrl: true,
     placeId: "ChIJM-SWGwAHLz4RRiLevuPu5ek",
@@ -3612,7 +3612,7 @@ const scoutPack: {
     neighborhood: "al-rabwah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/claz-ar-rabwah-ig.jpg",
+    logoUrl: "/logos/claz-ar-rabwah.png",
     pin: { lat: 24.6954227, lng: 46.7621402 },
     coordsInUrl: true,
     placeId: "ChIJq3pVAwAHLz4RavCJb3Nw_X0",
@@ -3651,7 +3651,7 @@ const scoutPack: {
     neighborhood: "al-rabwah",
     vibe: ["قهوة"],
     moments: ["matcha", "qahwa"],
-    logoUrl: "/logos/somatcha-ar-rabwah-ig.jpg",
+    logoUrl: "/logos/somatcha-ar-rabwah.png",
     pin: { lat: 24.6970662, lng: 46.7716812 },
     coordsInUrl: true,
     placeId: "ChIJky4QKAAHLz4RaqEEQ40-10c",
@@ -4172,6 +4172,7 @@ const scoutPack: {
     neighborhood: "al-narjis",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/abeille-al-narjis.png",
     pin: { lat: 24.8298719, lng: 46.670774099999996 },
     coordsInUrl: true,
     placeId: "ChIJB_YypoH7Lj4RvI3PDpSS3HY",
@@ -4197,6 +4198,7 @@ const scoutPack: {
     neighborhood: "al-rabi",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/kava-al-rabi.png",
     pin: { lat: 24.8020465, lng: 46.672229099999996 },
     coordsInUrl: true,
     placeId: "ChIJg2dyt7n9Lj4REH4i6mhSOjk",
@@ -4608,7 +4610,7 @@ const scoutPack: {
     neighborhood: "al-falah",
     vibe: ["قهوة"],
     moments: ["qahwa"],
-    logoUrl: "/logos/distance-away-al-falah.jpg",
+    logoUrl: "/logos/distance-away-al-falah.png",
     pin: { lat: 24.7959137, lng: 46.7039772 },
     coordsInUrl: true,
     placeId: "ChIJX6dK9vr9Lj4RH_rE5nEXgj8",
@@ -5173,6 +5175,7 @@ const scoutPack: {
     neighborhood: "al-izdihar",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/katf-al-izdihar.png",
     pin: { lat: 24.7744543, lng: 46.725586299999996 },
     coordsInUrl: true,
     placeId: "ChIJDc74fObhLj4RrndiUXAxekE",
@@ -5840,6 +5843,7 @@ const scoutPack: {
     neighborhood: "dhahrat-laban",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/crete-cafe-dhahrat-laban.png",
     pin: { lat: 24.6396528, lng: 46.5398652 },
     coordsInUrl: true,
     placeId: "ChIJbYCfYN4fLz4RWK9FotbTnHU",
@@ -6385,6 +6389,7 @@ const scoutPack: {
     neighborhood: "al-mursalat",
     vibe: ["قهوة"],
     moments: ["qahwa"],
+    logoUrl: "/logos/trace-al-mursalat.png",
     pin: { lat: 24.739761500000004, lng: 46.6880974 },
     coordsInUrl: true,
     placeId: "ChIJ961ZQ4YDLz4R11qn6C7fDdo",

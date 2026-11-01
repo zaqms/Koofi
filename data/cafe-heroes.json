@@ -17779,5 +17779,21 @@
         "uri": "https://maps.google.com/maps/contrib/115286003376762679227"
       }
     }
+  ],
+  "opulent-qurtubah": [
+    {
+      "src": "/cafe-heroes/opulent-qurtubah/1.jpg",
+      "attribution": {
+        "displayName": "Ghzwa Alotipe",
+        "uri": "https://maps.google.com/maps/contrib/115083434813806804558"
+      }
+    },
+    {
+      "src": "/cafe-heroes/opulent-qurtubah/2.jpg",
+      "attribution": {
+        "displayName": "Judy",
+        "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
+      }
+    }
   ]
 }

@@ -322,6 +322,9 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   "half-million-al-shohda": ["half million shohda", "half million shuhada", "هاف مليون الشهداء"],
   "tim-hortons-granada-mall-al-shohda": ["tim hortons granada", "تيم هورتنز غرناطة"],
   "caribou-granada-mall-al-shohda": ["caribou granada", "كاريبو غرناطة"],
+  // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
+  // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
+  "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {

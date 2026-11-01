@@ -71,9 +71,15 @@ export function MeetHalfwayResultsFooter({
             <button
               type="button"
               data-halfway-show-more=""
-              disabled={disabled}
-              onClick={onMore}
-              className="flex w-full items-center justify-center rounded-2xl bg-paper px-3 py-3.5 text-center disabled:opacity-50"
+              aria-disabled={disabled || undefined}
+              onClick={(event) => {
+                if (disabled) {
+                  event.preventDefault();
+                  return;
+                }
+                onMore(event);
+              }}
+              className="flex w-full items-center justify-center rounded-2xl bg-paper px-3 py-3.5 text-center aria-disabled:opacity-50"
             >
               <span className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink">
                 <span aria-hidden className="text-base leading-none">

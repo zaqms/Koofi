@@ -6,8 +6,8 @@ import type { Language } from "./types";
  * v1 allowlist. Not derived from data.
  * Window: 2026-10-25 through 2026-11-01.
  * Organic only (listing policy 6): each row has 3+ distinct organic X accounts in the window.
- * 25 Oct – 1 Nov exception: Espresso Culture has 2 distinct organic accounts in the window
- * (third straight week); kept on Ajz's request, pending Amjad's or Shoug's own yes.
+ * 25 Oct – 1 Nov: Espresso Culture has 3 distinct organic X accounts in the window:
+ * @Ablx_6 (27 Oct, names Al Mursalat), @abutmmm (30 Oct), @NaiiifM9 (31 Oct).
  *
  * lineAr / lineEn render on the Trending page, under each café card.
  * The home tiles have no line slot, so the lines are not rendered there.

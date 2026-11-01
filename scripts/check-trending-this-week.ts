@@ -42,7 +42,7 @@ const LINE_PROMO =
 
 const EXPECTED = ["espresso-culture-al-mursalat"] as const;
 
-/** Rows dropped in earlier refreshes (25 Sep – 2 Oct, 13–20 Oct) and in the 18–25 Oct refresh (still off for 25 Oct – 1 Nov). */
+/** Rows dropped in earlier refreshes (25 Sep – 2 Oct, 13–20 Oct). Kultúra and Veni: dropped in this refresh (25 Oct – 1 Nov); they were the 13–20 Oct rows on main. */
 const DROPPED = [
   "torre-al-rawabi",
   "dm-cafe-roastery-as-sahafah",

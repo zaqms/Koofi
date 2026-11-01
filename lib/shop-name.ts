@@ -325,6 +325,12 @@ const EXTRA_ALIASES: Record<string, readonly string[]> = {
   // TRENDVERIFY-1023PM (23 Oct 2026): OPULENT / أوبلنت, Qurtubah. Google lists it as "OPULENT BAKERY&CAFE"
   // and «اوبلنت بيكري كوفي»; bare bakery / coffee words never pin it (no block needed: they are generic already).
   "opulent-qurtubah": ["opulent", "أوبلنت", "اوبلنت", "opulent bakery", "opulent bakery cafe", "opulent bakery coffee", "اوبلنت بيكري", "اوبلنت بيكري كوفي"],
+  // MN1 Al Manar (1 Nov 2026): brand-qualified names for rows whose bare word is blocked below, plus branch asks for the
+  // new ARCHI and Coffee Address (Al Jama St / «شارع الجمة») rows. Bare "archi" / Coffee Address asks keep the older rows first.
+  "fact-cafe-al-manar": ["fact cafe", "fact coffee", "فاكت كافيه", "فاكت كافية"],
+  "eyaab-al-manar": ["eyaab cafe", "eyaab coffee", "قهوة اياب", "قهوه اياب", "اياب كافيه", "إياب كافيه"],
+  "archi-al-manar": ["archi manar", "archi al manar", "ارتشي المنار"],
+  "coffee-address-al-manar": ["coffee address manar", "coffee address al manar", "coffee address jama", "coffee address al jama", "عنوان القهوة المنار", "عنوان القهوه المنار", "عنوان القهوة الجمة", "عنوان القهوة شارع الجمة"],
 };
 
 function addAlias(into: Set<string>, raw: string): void {
@@ -442,6 +448,11 @@ const SHOP_TOKEN_BLOCK: Record<string, readonly string[]> = {
   "illy-cafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول", "caffè", "caffe"],
   // 21 Oct 2026: renamed to "dr.CAFE Granada Mall"; bare mall / Granada words never pin it.
   "drcafe-granada-mall-al-shohda": ["mall", "مول", "granada", "غرناطة", "granada mall", "غرناطة مول"],
+  // MN1 Al Manar (1 Nov 2026): "fact" ("fun fact", "in fact") and «إياب» ("return", «ذهاب وإياب») are everyday words and never
+  // pin a café alone; "address" / «عنوان» stay with the older Coffee Address rows. «فاكت», "eyaab" and «قهوة إياب» still match.
+  "fact-cafe-al-manar": ["fact"],
+  "eyaab-al-manar": ["اياب", "إياب"],
+  "coffee-address-al-manar": ["address", "عنوان"],
 };
 
 function chainBrandIdForShop(

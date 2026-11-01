@@ -17795,5 +17795,155 @@
         "uri": "https://maps.google.com/maps/contrib/112123493919980985513"
       }
     }
+  ],
+  "zonzi-al-manar": [
+    {
+      "src": "/cafe-heroes/zonzi-al-manar/1.jpg",
+      "attribution": {
+        "displayName": "Rabillion",
+        "uri": "https://maps.google.com/maps/contrib/105388138066425234221"
+      }
+    },
+    {
+      "src": "/cafe-heroes/zonzi-al-manar/2.jpg",
+      "attribution": {
+        "displayName": "Laris off",
+        "uri": "https://maps.google.com/maps/contrib/113239050645374743635"
+      }
+    },
+    {
+      "src": "/cafe-heroes/zonzi-al-manar/3.jpg",
+      "attribution": {
+        "displayName": "أبو عبدالله",
+        "uri": "https://maps.google.com/maps/contrib/107820422262846927214"
+      }
+    },
+    {
+      "src": "/cafe-heroes/zonzi-al-manar/4.jpg",
+      "attribution": {
+        "displayName": "Z A i D",
+        "uri": "https://maps.google.com/maps/contrib/115791152875299978298"
+      }
+    }
+  ],
+  "fact-cafe-al-manar": [
+    {
+      "src": "/cafe-heroes/fact-cafe-al-manar/1.jpg",
+      "attribution": {
+        "displayName": "hadeel",
+        "uri": "https://maps.google.com/maps/contrib/117233592596502810015"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fact-cafe-al-manar/2.jpg",
+      "attribution": {
+        "displayName": "Rawan",
+        "uri": "https://maps.google.com/maps/contrib/106581220999161570409"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fact-cafe-al-manar/3.jpg",
+      "attribution": {
+        "displayName": "عبدالرحمن التويجري",
+        "uri": "https://maps.google.com/maps/contrib/109288119032778173192"
+      }
+    },
+    {
+      "src": "/cafe-heroes/fact-cafe-al-manar/4.jpg",
+      "attribution": {
+        "displayName": "M",
+        "uri": "https://maps.google.com/maps/contrib/115104771600375707386"
+      }
+    }
+  ],
+  "archi-al-manar": [
+    {
+      "src": "/cafe-heroes/archi-al-manar/1.jpg",
+      "attribution": {
+        "displayName": "Mstr Prashant",
+        "uri": "https://maps.google.com/maps/contrib/116596140644841286513"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-al-manar/2.jpg",
+      "attribution": {
+        "displayName": "Khalid AlShareef - خالد الشريف",
+        "uri": "https://maps.google.com/maps/contrib/117705208851433084765"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-al-manar/3.jpg",
+      "attribution": {
+        "displayName": "Mstr Prashant",
+        "uri": "https://maps.google.com/maps/contrib/116596140644841286513"
+      }
+    },
+    {
+      "src": "/cafe-heroes/archi-al-manar/4.jpg",
+      "attribution": {
+        "displayName": "عبد الرحمن",
+        "uri": "https://maps.google.com/maps/contrib/107664816358314016227"
+      }
+    }
+  ],
+  "eyaab-al-manar": [
+    {
+      "src": "/cafe-heroes/eyaab-al-manar/1.jpg",
+      "attribution": {
+        "displayName": "maged ahmad",
+        "uri": "https://maps.google.com/maps/contrib/107264863100377072306"
+      }
+    },
+    {
+      "src": "/cafe-heroes/eyaab-al-manar/2.jpg",
+      "attribution": {
+        "displayName": "maram",
+        "uri": "https://maps.google.com/maps/contrib/102621200324149478103"
+      }
+    },
+    {
+      "src": "/cafe-heroes/eyaab-al-manar/3.jpg",
+      "attribution": {
+        "displayName": "هاجر القاسم",
+        "uri": "https://maps.google.com/maps/contrib/110857192631478920788"
+      }
+    },
+    {
+      "src": "/cafe-heroes/eyaab-al-manar/4.jpg",
+      "attribution": {
+        "displayName": "Rola Suliman",
+        "uri": "https://maps.google.com/maps/contrib/114699237513160591593"
+      }
+    }
+  ],
+  "coffee-address-al-manar": [
+    {
+      "src": "/cafe-heroes/coffee-address-al-manar/1.jpg",
+      "attribution": {
+        "displayName": "الفيصل",
+        "uri": "https://maps.google.com/maps/contrib/117321105946708358969"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-al-manar/2.jpg",
+      "attribution": {
+        "displayName": "R B",
+        "uri": "https://maps.google.com/maps/contrib/101403954941612597737"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-al-manar/3.jpg",
+      "attribution": {
+        "displayName": "السيدة غيداء",
+        "uri": "https://maps.google.com/maps/contrib/111801254809476934123"
+      }
+    },
+    {
+      "src": "/cafe-heroes/coffee-address-al-manar/4.jpg",
+      "attribution": {
+        "displayName": "Yusif Muthanna (AL-shikh)",
+        "uri": "https://maps.google.com/maps/contrib/108188638676935150242"
+      }
+    }
   ]
 }

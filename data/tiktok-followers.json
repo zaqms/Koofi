@@ -4534,5 +4534,40 @@
     "status": "unverified",
     "dateChecked": "2026-10-23",
     "sharedBrandAccount": false
+  },
+  "zonzi-al-manar": {
+    "handle": "@zonzi.sa",
+    "followers": 705,
+    "status": "found",
+    "dateChecked": "2026-11-01",
+    "sharedBrandAccount": false
+  },
+  "fact-cafe-al-manar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-11-01",
+    "sharedBrandAccount": false
+  },
+  "archi-al-manar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-11-01",
+    "sharedBrandAccount": false
+  },
+  "eyaab-al-manar": {
+    "handle": "@eyaab.coffee",
+    "followers": 72,
+    "status": "found",
+    "dateChecked": "2026-11-01",
+    "sharedBrandAccount": false
+  },
+  "coffee-address-al-manar": {
+    "handle": null,
+    "followers": null,
+    "status": "unverified",
+    "dateChecked": "2026-11-01",
+    "sharedBrandAccount": false
   }
 }

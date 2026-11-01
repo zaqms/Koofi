@@ -89,7 +89,11 @@ export function MeetHalfwayResultsFooter({
               </span>
             </button>
           ) : (
-            <p className="text-center text-xs leading-5 text-ink-soft">
+            <p
+              tabIndex={-1}
+              data-halfway-end=""
+              className="text-center text-xs leading-5 text-ink-soft"
+            >
               {copy.meetHalfwayNoMore[language]}
             </p>
           )}

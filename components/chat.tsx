@@ -856,8 +856,11 @@ export function Chat({
   const halfwayPageRef = useRef(1);
   /** Index of the first card the latest show-more should announce. */
   const pendingAddedFrom = useRef<number | null>(null);
-  /** Enter/Space moves focus. A pointer tap leaves focus on the button. */
+  /** Enter/Space moves focus to the new card. A pointer tap does not. */
   const pendingKeyboardFocus = useRef(false);
+  /** Pointer add: if the button then unmounts, focus the end message. */
+  const pendingPointerFocusEnd = useRef(false);
+  const showMoreButtonWasVisible = useRef(false);
   const moreLockRef = useRef(false);
   const [halfwayAddedNotice, setHalfwayAddedNotice] = useState("");
   /** Restored list has no session to page. Hide Show more instead of a dead tap. */
@@ -1613,7 +1616,6 @@ export function Chat({
     if (inFlightRef.current) return;
     resultsSnapshotHeld.current = false;
     resultsExpiredBlock.current = false;
-    rememberHalfwayPins(threadKey, locations);
     const more = Boolean(options?.more);
     const reroll = Boolean(options?.reroll);
     const paging = more && !reroll;
@@ -2061,6 +2063,39 @@ export function Chat({
   }, [busy, halfwayVisiblePicks, landing]);
 
   useEffect(() => {
+    if (!showHalfwayResults) return;
+    const onClick = (event: globalThis.MouseEvent) => {
+      const target = event.target;
+      const element = target instanceof Element ? target : null;
+      if (!element?.closest("a")) return;
+      const heldPins = halfwayLocationsRef.current;
+      rememberHalfwayPins(threadKey, heldPins ?? lastHalfwayLocations(messages));
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [showHalfwayResults, threadKey, messages]);
+
+  const showMoreButtonVisible =
+    showHalfwayResults &&
+    !halfwayPinsBlocked &&
+    halfwayResultsFooterKind({
+      halfwayMore: halfwayResult?.halfwayMore,
+      paged: halfwayResult?.halfwayPaged,
+    }) === "more";
+
+  useEffect(() => {
+    const wasVisible = showMoreButtonWasVisible.current;
+    showMoreButtonWasVisible.current = showMoreButtonVisible;
+    if (!wasVisible || showMoreButtonVisible) return;
+    if (!pendingPointerFocusEnd.current) return;
+    pendingPointerFocusEnd.current = false;
+    const end = listRef.current?.querySelector("[data-halfway-end]");
+    const status = listRef.current?.querySelector("[data-halfway-status]");
+    const target = end ?? status;
+    if (target instanceof HTMLElement) target.focus();
+  }, [showMoreButtonVisible]);
+
+  useEffect(() => {
     // Manual Search scrolls the document. Pinning this nested overflow
     // port on every resize fights iOS keyboard/focus scrolling and flickers.
     // بيننا show-more appends cards in place; jumping to the end would
@@ -2219,21 +2254,10 @@ export function Chat({
         remembered: halfwayPinsMemory.get(threadKey) ?? null,
         invite: halfwayInvite?.locations ?? null,
       });
-      const withPins = recovered ? stampHalfwayLocations(restored, recovered) : restored;
-      if (recovered) {
-        rememberHalfwayPins(threadKey, recovered);
-        halfwayLocationsRef.current = recovered;
-        threads[threadKey] = {
-          ...threads[threadKey],
-          messages: withPins,
-          composerLanguage: decision.apply.composerLanguage,
-          awaitingMaps: decision.apply.awaitingMaps,
-          savedAt: decision.apply.savedAt,
-        };
-        setMessages(withPins);
-      }
-      halfwayLocationsRef.current = recovered ?? lastHalfwayLocations(withPins);
-      halfwayShownRef.current = shownHalfwayPickIds(withPins);
+      // Pins stay off the restored messages. Show more reads each source itself,
+      // and the ref only redraws the place line.
+      halfwayLocationsRef.current = recovered ?? lastHalfwayLocations(restored);
+      halfwayShownRef.current = shownHalfwayPickIds(restored);
       setHalfwayPinsBlocked(!recovered && !halfwayInvite?.id && !halfwayIdFromPath());
       if (homeSurface) setPinnedHome(false);
       if (halfwaySurface && lastHalfwayResult(restored)) setMeetHalfwayOpen(true);
@@ -2263,29 +2287,14 @@ export function Chat({
           `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
           { cache: "no-store" },
         );
-        if (!response.ok || cancelled) {
-          if (!cancelled && !response.ok) setHalfwayPinsBlocked(true);
-          return;
-        }
+        if (!response.ok || cancelled) return;
         const data = (await response.json()) as HalfwayOverlayResponse;
         const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
-        if (cancelled) return;
-        if (!pins) {
-          setHalfwayPinsBlocked(true);
-          return;
-        }
-        rememberHalfwayPins(threadKey, pins);
+        if (cancelled || !pins) return;
         halfwayLocationsRef.current = pins;
         setHalfwayPinsBlocked(false);
-        setMessages((current) => {
-          const stamped = stampHalfwayLocations(current, pins);
-          if (stamped === current) return current;
-          const live = threads[threadKey];
-          if (live) live.messages = stamped;
-          return stamped;
-        });
       } catch {
-        if (!cancelled) setHalfwayPinsBlocked(true);
+        // The click refetches. A short or failed read does not hide Show more.
       }
     })();
     return () => {
@@ -2544,7 +2553,13 @@ export function Chat({
             <h1 className="text-[1.65rem] font-semibold tracking-tight text-ink">
               {copy.meetHalfwayResultsHeading[landing]}
             </h1>
-            <p className="sr-only" role="status" aria-live="polite">
+            <p
+              className="sr-only"
+              role="status"
+              aria-live="polite"
+              tabIndex={-1}
+              data-halfway-status=""
+            >
               {halfwayAddedNotice}
             </p>
             <p className="text-sm leading-6 text-ink-soft">
@@ -2590,6 +2605,7 @@ export function Chat({
               if (halfwayResult?.halfwayMore === false) return;
               moreLockRef.current = true;
               const keyboard = event.detail === 0;
+              pendingPointerFocusEnd.current = !keyboard;
               const from = halfwayVisiblePicks.length;
               const beenIds = halfwayVisiblePicks.map((pick) => pick.id);
               void (async () => {
@@ -2635,7 +2651,6 @@ export function Chat({
                     return;
                   }
                   const ready = request;
-                  rememberHalfwayPins(threadKey, ready.body.halfway.locations);
                   halfwayLocationsRef.current = ready.body.halfway.locations;
                   setMessages((current) => {
                     const stamped = stampHalfwayLocations(

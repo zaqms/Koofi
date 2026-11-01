@@ -52,11 +52,11 @@ export function DirectoryCard({
     <li
       data-listing-card=""
       {...(shop.isChain ? { "data-chain-card": "" } : {})}
-      className="rounded-[var(--radius-card)] border border-wain-divider bg-wain-paper px-3.5 py-3.5 shadow-[0_2px_8px_rgba(30,23,20,0.05)]"
+      className="min-w-0 max-w-full rounded-[var(--radius-card)] border border-wain-divider bg-wain-paper px-3.5 py-3.5 shadow-[0_2px_8px_rgba(30,23,20,0.05)]"
       dir={dir}
       lang={language}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex min-w-0 items-center gap-3">
         <Link
           href={href}
           className="flex min-w-0 flex-1 items-center gap-3 rounded-xl outline-none hover:bg-wain-warm-cream/60 focus-visible:ring-2 focus-visible:ring-bean"
@@ -158,6 +158,7 @@ function ListingLocation({
   const showDistance = display.kind === "km" || display.kind === "missing";
   const distance = showDistance ? (
     <span
+      className="min-w-0 break-words"
       dir={display.kind === "km" ? "ltr" : undefined}
       data-shop-distance={display.kind}
       {...(display.kind === "km"

@@ -32,6 +32,7 @@ import { listingCardTags } from "@/lib/listing-tags";
 import { neighborhoodLabel } from "@/lib/neighborhoods";
 import { officialShopCoords } from "@/lib/place-coords";
 import { cardPath, shopDisplayName } from "@/lib/product";
+import { onCafeBackClick } from "@/lib/results-return";
 import { shopMapsHref } from "@/lib/public-url";
 import { shopDistanceForVisitor } from "@/lib/shop-distance-label";
 import { SHOW_DETAIL_FAVORITE } from "@/lib/tonight";
@@ -275,6 +276,7 @@ function CafeDetailHero({
           href={backHref}
           className={heroSquareClass}
           aria-label={copy.backToChat[language]}
+          onClick={onCafeBackClick}
         >
           <DetailBackIcon className="rtl:scale-x-[-1]" />
         </Link>

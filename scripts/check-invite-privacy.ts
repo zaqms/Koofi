@@ -30,6 +30,11 @@ import {
 } from "../lib/analytics-redact";
 import { CONSENT_AUTOLOAD_SCRIPT, consentBootstrapScript, CONSENT_STORAGE_KEY, GTM_SRC } from "../lib/consent";
 import {
+  clearHalfwayResultsSnapshots,
+  RESULTS_SNAPSHOT_KEY,
+  writeResultsSnapshot,
+} from "../lib/results-return";
+import {
   encodeHalfwayInviteId,
   HALFWAY_INVITE_ID_PATTERN,
   isRandomHalfwayInviteId,
@@ -752,6 +757,104 @@ async function main() {
   assert(chat?.text_length === ask.length && chat.text_length_bucket === "11-25", "chat sends length + bucket");
   assert(nb?.text_length_bucket === "11-25", "district search sends a bucket");
   assert(stub.dataLayer.length === 3, `3 pushes (${stub.dataLayer.length})`);
+
+  // Results back-snapshot must not keep pins, coordinates, or the invite id.
+  const memory = new Map<string, string>();
+  (globalThis as { window?: unknown }).window = {
+    sessionStorage: {
+      getItem: (key: string) => memory.get(key) ?? null,
+      setItem: (key: string, value: string) => {
+        memory.set(key, value);
+      },
+      removeItem: (key: string) => {
+        memory.delete(key);
+      },
+    },
+  };
+  const sessionNow = Date.now();
+  writeResultsSnapshot({
+    entryKey: "privacy-half",
+    threadKey: `halfway:${first.id}`,
+    href: `/en/h/${first.id}`,
+    scrollY: 10,
+    listScroll: 0,
+    cardCount: 3,
+    composerLanguage: "en",
+    awaitingMaps: false,
+    savedAt: sessionNow,
+    messages: [
+      { id: "ask", role: "user", text: "meet in the middle" },
+      {
+        id: `halfway-picks-${first.id}`,
+        role: "assistant",
+        text: "Three cafés",
+        language: "en",
+        halfwayMore: false,
+        picks: [
+          {
+            id: "woods-olaya",
+            nameAr: "وودز",
+            nameEn: "WOODS",
+            neighborhood: "olaya",
+            neighborhoodAr: "العليا",
+            vibeTags: ["quiet"],
+            momentTags: ["work"],
+            mapsHref: `https://maps.google.com/?q=${HOST.lat},${HOST.lng}`,
+            cardPath: "/en/c/woods-olaya",
+            lat: HOST.lat,
+            lng: HOST.lng,
+          },
+        ],
+      },
+    ],
+  }, sessionNow);
+  clearHalfwayResultsSnapshots();
+  writeResultsSnapshot({
+    entryKey: "privacy-half",
+    threadKey: `halfway:${first.id}`,
+    href: `/h/${first.id}`,
+    scrollY: 10,
+    listScroll: 0,
+    cardCount: 3,
+    composerLanguage: "ar",
+    awaitingMaps: false,
+    savedAt: sessionNow,
+    messages: [
+      { id: `halfway-picks-${first.id}`, role: "user", text: "بيننا" },
+      {
+        id: "picks",
+        role: "assistant",
+        text: "ثلاث",
+        language: "ar",
+        halfwayMore: true,
+        picks: [
+          {
+            id: "woods-olaya",
+            nameAr: "وودز",
+            nameEn: "WOODS",
+            neighborhood: "olaya",
+            neighborhoodAr: "العليا",
+            vibeTags: [],
+            momentTags: [],
+            mapsHref: `https://maps.google.com/?q=${GUEST.lat},${GUEST.lng}`,
+            cardPath: "/c/woods-olaya",
+            lat: GUEST.lat,
+            lng: GUEST.lng,
+          },
+        ],
+      },
+    ],
+  }, sessionNow);
+  const stored = memory.get(RESULTS_SNAPSHOT_KEY) ?? "";
+  assert(stored.includes("بيننا"), "results session keeps the ask");
+  assert(stored.includes("woods-olaya"), "results session keeps the café");
+  assert(!stored.includes(first.id), "results session drops the invite id");
+  for (const pin of [HOST, GUEST]) {
+    for (const needle of coordinateNeedles(pin)) {
+      assert(!stored.includes(needle), `results session leaks coordinate ${needle}`);
+    }
+  }
+  delete (globalThis as { window?: unknown }).window;
 
   console.log("check-invite-privacy: ok");
 }

@@ -63,6 +63,35 @@ import {
   meetHalfwayAskLabel,
   type HalfwayPinInput,
 } from "@/lib/meet-halfway";
+import {
+  clearHalfwayResultsSnapshots,
+  clearResultsSnapshot,
+  currentResultsHref,
+  ensureResultsSnapshotKey,
+  readResultsScroll,
+  resultsNavigationShouldRestore,
+  resultsSnapshotKey,
+  readResultsSnapshot,
+  resetResultsScroll,
+  restoreResultsScroll,
+  revealResultsRestore,
+  resultsEntryExpired,
+  resultsEntrySavedAt,
+  resultsPageScroll,
+  resultsPickCount,
+  resultsSnapshotIsFresh,
+  resultsThreadRestorable,
+  shouldPersistSnapshot,
+  writeResultsSnapshot,
+  type ResultsMessage,
+  type ResultsSnapshot,
+} from "@/lib/results-return";
+import {
+  expiredHalfwayShouldClear,
+  halfwayFetchKeepsLongerSnapshot,
+  homeSearchShouldClear,
+  startNewHalfwayShouldClear,
+} from "@/lib/chat-results-actions";
 import { nearbyChatPicks } from "@/lib/nearby";
 import {
   MEET_HALFWAY_CHIP,
@@ -335,6 +364,8 @@ type LiveThread = {
   awaitingMaps: boolean;
   halfwayWaitingId?: string | null;
   halfwayWaitingMe?: Pin;
+  /** When this thread was first saved. Restore does not move it. */
+  savedAt?: number;
 };
 
 type ChatProps = {
@@ -354,6 +385,149 @@ type ChatProps = {
 
 const threads: Partial<Record<string, LiveThread>> = {};
 const pendingSends: Partial<Record<string, PendingSend>> = {};
+
+/** Drop a thread whose original save is already past 30 minutes. */
+export function chatFreshMemoryThread(threadKey: string, now = Date.now()): LiveThread | undefined {
+  const thread = threads[threadKey];
+  if (!thread) return undefined;
+  if (typeof thread.savedAt === "number" && !resultsSnapshotIsFresh(thread.savedAt, now)) {
+    delete threads[threadKey];
+    return undefined;
+  }
+  return thread;
+}
+
+export type ChatResultsRestoreDecision = {
+  apply: ResultsSnapshot | null;
+  /** Snapshot or same-session memory is on screen. A re-fetch must not replace it. */
+  holdSnapshot: boolean;
+  /** Expired memory must not stay on screen. */
+  dropMemory: boolean;
+  scroll: "saved" | "top" | "leave";
+};
+
+/**
+ * Back/forward shows the saved list. Reload, a fresh visit, and anything
+ * older than 30 minutes show a new page. The saved list wins over a shorter
+ * copy still in memory (the invite page's first three).
+ */
+export function decideChatResultsRestore(input: {
+  shouldRestoreNavigation: boolean;
+  snapshot: ResultsSnapshot | null;
+  memoryMessages: ResultsMessage[] | null;
+  memorySavedAt?: number;
+  entryExpired: boolean;
+  persistable: boolean;
+  now: number;
+}): ChatResultsRestoreDecision {
+  const memoryStale =
+    typeof input.memorySavedAt === "number" && !resultsSnapshotIsFresh(input.memorySavedAt, input.now);
+  const expired = input.entryExpired || memoryStale;
+  const fresh = input.snapshot && resultsSnapshotIsFresh(input.snapshot.savedAt, input.now) ? input.snapshot : null;
+  const memory =
+    !expired && input.memoryMessages && resultsThreadRestorable(input.memoryMessages)
+      ? input.memoryMessages
+      : null;
+  if (!input.shouldRestoreNavigation || expired || (!fresh && !memory)) {
+    return {
+      apply: null,
+      holdSnapshot: false,
+      dropMemory: expired,
+      scroll: resultsPageScroll({
+        navigationRestores: false,
+        persistable: input.persistable,
+        hasFreshSnapshot: false,
+      }),
+    };
+  }
+  const snapshotRicher = Boolean(fresh && (!memory || resultsPickCount(fresh.messages) >= resultsPickCount(memory)));
+  return {
+    apply: snapshotRicher && fresh ? fresh : null,
+    holdSnapshot: true,
+    dropMemory: false,
+    scroll: "saved",
+  };
+}
+
+/** A restored list stays. The invite/halfway response must not paint over it. */
+export function chatMayApplyHalfwayFetch(restoredSnapshot: boolean): boolean {
+  return !restoredSnapshot;
+}
+
+export function clearChatResultsForNewSearch(entryKey: string | null): void {
+  if (entryKey) clearResultsSnapshot(entryKey);
+}
+
+export function clearChatResultsForNewHalfway(): void {
+  clearHalfwayResultsSnapshots();
+}
+
+type ChatResultsSaveInput = {
+  held: boolean;
+  current: ResultsMessage[];
+  prior: ResultsSnapshot | null;
+  now: number;
+  scrollY: number;
+  listScroll: number;
+  cardCount: number;
+  entryKey: string | null;
+  threadKey: string;
+  href: string;
+  composerLanguage: Language;
+  awaitingMaps: boolean;
+};
+
+/**
+ * Persist the list the visitor actually had. While a snapshot is held,
+ * the server's first page must not replace a longer saved list, and the
+ * original savedAt stays put.
+ */
+export function decideChatResultsSave(
+  input: ChatResultsSaveInput,
+): { action: "write"; snapshot: ResultsSnapshot } | { action: "clear" } | { action: "skip" } {
+  if (!resultsThreadRestorable(input.current)) {
+    if (input.held) return { action: "skip" };
+    return { action: "clear" };
+  }
+  const priorMessages = input.prior?.messages ?? null;
+  const priorRicher =
+    Boolean(priorMessages) &&
+    input.prior != null &&
+    resultsSnapshotIsFresh(input.prior.savedAt, input.now) &&
+    resultsPickCount(input.current) < resultsPickCount(priorMessages ?? []);
+  const messages = priorRicher && priorMessages ? priorMessages : input.current;
+  return {
+    action: "write",
+    snapshot: {
+      entryKey: input.entryKey ?? "",
+      threadKey: input.threadKey,
+      href: input.href,
+      scrollY: Math.max(input.scrollY, input.prior?.scrollY ?? 0),
+      listScroll: Math.max(input.listScroll, input.prior?.listScroll ?? 0),
+      messages,
+      composerLanguage: input.composerLanguage,
+      cardCount: Math.max(input.cardCount, input.prior?.cardCount ?? 0),
+      awaitingMaps: input.awaitingMaps,
+      savedAt: input.prior?.savedAt ?? input.now,
+    },
+  };
+}
+
+/** Same write/clear the results screen runs when its messages change. */
+export function commitChatResultsSave(input: ChatResultsSaveInput): void {
+  const decision = decideChatResultsSave(input);
+  if (decision.action === "skip") return;
+  if (decision.action === "clear") {
+    clearChatResultsForNewSearch(input.entryKey);
+    return;
+  }
+  const entryKey = input.entryKey || ensureResultsSnapshotKey();
+  if (!entryKey) return;
+  writeResultsSnapshot({ ...decision.snapshot, entryKey }, input.now);
+  const savedAt = resultsEntrySavedAt(entryKey);
+  const thread = threads[input.threadKey];
+  if (thread && typeof savedAt === "number") thread.savedAt = savedAt;
+}
 
 /**
  * Bare-home search is one history entry over `/` or `/en`.
@@ -573,21 +747,16 @@ export function Chat({
   const opener = landing === "ar" ? copy.opener : copy.openerEn;
   const [startFresh] = useState(() => consumeHalfwayFresh());
   const [sessionExpired, setSessionExpired] = useState(halfwayInviteExpired);
-  const [messages, setMessages] = useState<Message[]>(() => {
-    const restoredHalfway = halfwayInvite
-      ? restoreHalfwayResultMessage(halfwayInvite)
-      : null;
-    return (
-      threads[threadKey]?.messages ??
-      (restoredHalfway
-        ? [openerMessage(landing), restoredHalfway]
-        : restore
-          ? restoreMessages(restore, landing)
-          : chipOpen?.picks.length
-            ? chipOpenMessages(chipOpen, landing)
-            : [openerMessage(landing)])
-    );
-  });
+  function baselineMessages(): Message[] {
+    const restoredHalfway = halfwayInvite ? restoreHalfwayResultMessage(halfwayInvite) : null;
+    if (restoredHalfway) return [openerMessage(landing), restoredHalfway];
+    if (restore) return restoreMessages(restore, landing);
+    if (chipOpen?.picks.length) return chipOpenMessages(chipOpen, landing);
+    return [openerMessage(landing)];
+  }
+  const [messages, setMessages] = useState<Message[]>(
+    () => chatFreshMemoryThread(threadKey)?.messages ?? baselineMessages(),
+  );
   const [draft, setDraft] = useState("");
   // Search-screen text is separate so send()'s setDraft("") cannot wipe a
   // line the in-flight guard refused. The ask node itself stays mounted.
@@ -691,6 +860,12 @@ export function Chat({
   >(() => undefined);
   const halfwayJoinSeenRef = useRef(false);
   const halfwayRestoreSeenRef = useRef(false);
+  /** History entry whose results snapshot was already applied this mount. */
+  const resultsRestoredFor = useRef<string | null>(null);
+  /** Restored cards are on screen. The invite/halfway re-fetch must leave them. */
+  const resultsSnapshotHeld = useRef(false);
+  /** This mount found an expired list. Do not write it back with a new clock. */
+  const resultsExpiredBlock = useRef(false);
   /** Invite id whose meet_halfway_invite_share hit was already pushed. */
   const halfwayInviteShareSent = useRef<string | null>(null);
   /** In-flight GTM flush for that id, so a second tap waits on the same one. */
@@ -710,6 +885,11 @@ export function Chat({
       { dedupeKey: `meet_halfway_invite_open:${halfwayInvite.id}` },
     );
   }, [halfwayInvite, landing]);
+
+  useEffect(() => {
+    if (!expiredHalfwayShouldClear(sessionExpired, halfwayInviteExpired)) return;
+    clearChatResultsForNewHalfway();
+  }, [sessionExpired, halfwayInviteExpired]);
 
   useEffect(() => {
     if (!sessionExpired) return;
@@ -747,12 +927,14 @@ export function Chat({
   }, [landing]);
 
   useEffect(() => {
+    const savedAt = threads[threadKey]?.savedAt;
     threads[threadKey] = {
       messages,
       composerLanguage,
       awaitingMaps,
       halfwayWaitingId,
       halfwayWaitingMe: halfwayWaitingMe ?? undefined,
+      ...(typeof savedAt === "number" ? { savedAt } : {}),
     };
   }, [
     threadKey,
@@ -769,6 +951,7 @@ export function Chat({
 
     async function loadOverlay() {
       if (!halfwayInvite) return;
+      const heldAtStart = resultsSnapshotHeld.current;
       try {
         const response = await fetch(
           `/api/halfway/invite?id=${encodeURIComponent(halfwayInvite.id)}`,
@@ -785,6 +968,28 @@ export function Chat({
         const locations = overlayPins(data.locations);
         const picks = Array.isArray(data.picks) ? data.picks : [];
         const shopIds = Array.isArray(data.shop_ids) ? data.shop_ids : [];
+        // Back/forward already painted the saved list, including show-more
+        // batches. The invite response is only the first page, and it must
+        // not replace a longer snapshot even if this load was not detected
+        // as a traversal yet.
+        if (!chatMayApplyHalfwayFetch(heldAtStart || resultsSnapshotHeld.current)) return;
+        const savedKey = resultsSnapshotKey();
+        const savedList = savedKey
+          ? readResultsSnapshot(savedKey, threadKey, currentResultsHref())
+          : null;
+        if (
+          halfwayFetchKeepsLongerSnapshot({
+            saved: savedList
+              ? {
+                  savedAt: savedList.savedAt,
+                  pickCount: resultsPickCount(savedList.messages),
+                }
+              : null,
+            incomingPickCount: picks.length,
+          })
+        ) {
+          return;
+        }
         if (picks.length > 0) {
           applyFrozenHalfwayRef.current({
             locations,
@@ -1045,6 +1250,9 @@ export function Chat({
   ) {
     const trimmed = text.trim();
     if (!trimmed || inFlightRef.current) return;
+    resultsSnapshotHeld.current = false;
+    resultsExpiredBlock.current = false;
+    if (homeSearchShouldClear(homeSurface)) clearChatResultsForNewSearch(resultsSnapshotKey());
     unpinSearchHome();
     const suggesting = options?.suggesting ?? awaitingMaps;
     const via = options?.via ?? "typed";
@@ -1379,6 +1587,8 @@ export function Chat({
     },
   ) {
     if (inFlightRef.current) return;
+    resultsSnapshotHeld.current = false;
+    resultsExpiredBlock.current = false;
     const more = Boolean(options?.more);
     const reroll = Boolean(options?.reroll);
     const paging = more && !reroll;
@@ -1547,6 +1757,9 @@ export function Chat({
     const friend = guestPinFromLocations(host, pins);
     if (friend) setHalfwayFriendPin(friend);
     setMessages((current) => {
+      if (input.reason !== "live" && !chatMayApplyHalfwayFetch(resultsSnapshotHeld.current)) {
+        return current;
+      }
       if (lastHalfwayResult(current)) return current;
       const result: AssistantMessage = {
         id: `halfway-picks-${halfwayInvite?.id ?? "session"}`,
@@ -1589,6 +1802,9 @@ export function Chat({
       { dedupeKey: `meet_halfway_start_new:${source}:${packId ?? landing}` },
     );
     clearHalfwayWaiting();
+    resultsSnapshotHeld.current = false;
+    resultsExpiredBlock.current = false;
+    if (startNewHalfwayShouldClear()) clearChatResultsForNewHalfway();
     markHalfwayFresh();
     router.replace(homePath(landing));
   }
@@ -1795,7 +2011,9 @@ export function Chat({
   useEffect(() => {
     // Manual Search scrolls the document. Pinning this nested overflow
     // port on every resize fights iOS keyboard/focus scrolling and flickers.
-    if (searchScreen) return;
+    // بيننا show-more appends cards in place; jumping to the end would
+    // hide the cafés that were already on screen.
+    if (searchScreen || showHalfwayResults) return;
     const list = listRef.current;
     const footer = footerRef.current;
     if (!list) return;
@@ -1818,7 +2036,7 @@ export function Chat({
     observer.observe(el);
     if (footer) observer.observe(footer);
     return () => observer.disconnect();
-  }, [messages, busy, meetHalfwayOpen, searchScreen]);
+  }, [messages, busy, meetHalfwayOpen, searchScreen, showHalfwayResults]);
 
   useLayoutEffect(() => {
     const wasOpen = searchWasOpenRef.current;
@@ -1905,6 +2123,56 @@ export function Chat({
   }, [homeSurface, landing]);
 
   useLayoutEffect(() => {
+    if (resultsRestoredFor.current === threadKey) {
+      revealResultsRestore();
+      return;
+    }
+    resultsRestoredFor.current = threadKey;
+    const entryKey = resultsSnapshotKey();
+    // Expired check before the read, which drops an old entry as it loads it.
+    const entryExpired = entryKey ? resultsEntryExpired(entryKey) : false;
+    const href = currentResultsHref();
+    const saved = entryKey ? readResultsSnapshot(entryKey, threadKey, href) : null;
+    const memory = threads[threadKey];
+    const decision = decideChatResultsRestore({
+      shouldRestoreNavigation: resultsNavigationShouldRestore(),
+      snapshot: saved,
+      memoryMessages: (memory?.messages as ResultsMessage[] | undefined) ?? null,
+      memorySavedAt: memory?.savedAt,
+      entryExpired,
+      persistable: shouldPersistSnapshot(window.location.pathname, window.history.state),
+      now: Date.now(),
+    });
+    resultsSnapshotHeld.current = decision.holdSnapshot;
+    resultsExpiredBlock.current = decision.dropMemory;
+    if (decision.dropMemory) {
+      delete threads[threadKey];
+      setMessages(baselineMessages());
+      setComposerLanguage(landing);
+      setAwaitingMaps(false);
+    }
+    if (decision.apply) {
+      const restored = decision.apply.messages as Message[];
+      threads[threadKey] = {
+        messages: restored,
+        composerLanguage: decision.apply.composerLanguage,
+        awaitingMaps: decision.apply.awaitingMaps,
+        savedAt: decision.apply.savedAt,
+      };
+      setMessages(restored);
+      setComposerLanguage(decision.apply.composerLanguage);
+      setAwaitingMaps(decision.apply.awaitingMaps);
+      halfwayLocationsRef.current = lastHalfwayLocations(restored);
+      halfwayShownRef.current = shownHalfwayPickIds(restored);
+      if (homeSurface) setPinnedHome(false);
+      if (halfwaySurface && lastHalfwayResult(restored)) setMeetHalfwayOpen(true);
+    }
+    if (decision.scroll === "top") resetResultsScroll();
+    else if (decision.scroll === "saved") requestAnimationFrame(() => restoreResultsScroll());
+    revealResultsRestore();
+  }, [halfwaySurface, homeSurface, landing, threadKey]);
+
+  useLayoutEffect(() => {
     if (!homeSurface || !threadVisible) return;
     if (historyIsSearch()) return;
     const current = window.history.state;
@@ -1912,13 +2180,53 @@ export function Chat({
       current && typeof current === "object"
         ? { ...(current as Record<string, unknown>) }
         : {};
+    const wainEntry = typeof base.wainEntry === "string" && base.wainEntry
+      ? base.wainEntry
+      : crypto.randomUUID();
     window.history.pushState(
-      { ...base, wainSearch: true },
+      { ...base, wainSearch: true, wainEntry },
       "",
       window.location.href,
     );
     searchPushedInApp = true;
   }, [homeSurface, threadVisible]);
+
+  useLayoutEffect(() => {
+    if (resultsRestoredFor.current !== threadKey) return;
+    if (resultsExpiredBlock.current) return;
+    if (!shouldPersistSnapshot(window.location.pathname, window.history.state)) return;
+    const entryKey = resultsSnapshotKey();
+    const href = currentResultsHref();
+    const prior = entryKey ? readResultsSnapshot(entryKey, threadKey, href) : null;
+    const scroll = readResultsScroll();
+    const halfwayList = document.querySelector("[data-halfway-results]");
+    const cards = (halfwayList ?? document).querySelectorAll("[data-listing-card]").length;
+    const live = threads[threadKey];
+    // Restoring re-renders at the top. commit keeps the longer saved list
+    // and the original savedAt, so a re-fetch's first page cannot shrink it
+    // and a later Back cannot restart the 30 minutes.
+    commitChatResultsSave({
+      held: resultsSnapshotHeld.current,
+      current: messages as ResultsMessage[],
+      prior,
+      now: Date.now(),
+      scrollY: scroll.scrollY,
+      listScroll: scroll.listScroll,
+      cardCount: cards,
+      entryKey,
+      threadKey,
+      href,
+      composerLanguage: live?.composerLanguage ?? composerLanguage,
+      awaitingMaps: live?.awaitingMaps ?? awaitingMaps,
+    });
+  }, [
+    awaitingMaps,
+    composerLanguage,
+    halfwayWaitingId,
+    halfwayWaitingMe,
+    messages,
+    threadKey,
+  ]);
 
   function backToHome(event: MouseEvent<HTMLAnchorElement>) {
     if (

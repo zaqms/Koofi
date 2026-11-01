@@ -38,6 +38,11 @@ import {
 import { listLiveCatalogDistrictIds } from "../lib/district-dictionary";
 import { listPopularDirectoryShops, listPopularPublicShops } from "../lib/most-popular";
 import { chipSharePath, isFixedListChip, isStaticDirectoryChip } from "../lib/product";
+import {
+  listScrollRestoreTarget,
+  nearbyListScrollSettled,
+  rememberListScroll,
+} from "../lib/list-scroll";
 import { listSitemapLocs } from "../lib/sitemap-xml";
 import {
   fixedListItemListJsonLd,
@@ -53,6 +58,94 @@ function assert(cond: unknown, message: string): asserts cond {
 function read(path: string): string {
   return readFileSync(join(process.cwd(), path), "utf8");
 }
+
+assert(
+  rememberListScroll("/en/c/woods-olaya", 1200) === null,
+  "leaving a café does not replace the list scroll",
+);
+assert(
+  rememberListScroll("/en/coffee-shops/nearby", 1200)?.y === 1200,
+  "Nearby remembers the offset the visitor left",
+);
+assert(
+  !JSON.stringify(rememberListScroll("/en/coffee-shops/nearby", 1200)).includes("lat"),
+  "the list scroll record has no location",
+);
+assert(
+  listScrollRestoreTarget({
+    navigationType: "back_forward",
+    pathname: "/en/coffee-shops/nearby",
+    record: { path: "/en/coffee-shops/nearby", y: 1200 },
+    settled: true,
+  }) === 1200,
+  "Back to Nearby returns the saved offset once the distance list is settled",
+);
+assert(
+  listScrollRestoreTarget({
+    navigationType: "back_forward",
+    pathname: "/en/coffee-shops/nearby",
+    record: { path: "/en/coffee-shops/nearby", y: 1200 },
+    settled: false,
+  }) === null,
+  "Back does not restore while the no-location fallback is still going to swap",
+);
+for (const navigationType of ["navigate", "reload"] as const) {
+  assert(
+    listScrollRestoreTarget({
+      navigationType,
+      pathname: "/en/coffee-shops/nearby",
+      record: { path: "/en/coffee-shops/nearby", y: 1200 },
+      settled: true,
+    }) === null,
+    `${navigationType} does not replay a Nearby scroll`,
+  );
+}
+assert(
+  listScrollRestoreTarget({
+    navigationType: "back_forward",
+    pathname: "/coffee-shops/nearby",
+    record: { path: "/en/coffee-shops/nearby", y: 1200 },
+    settled: true,
+  }) === null,
+  "an English offset is not applied to the Arabic list",
+);
+assert(
+  nearbyListScrollSettled({
+    listId: "nearby",
+    located: false,
+    permission: "granted",
+    visitorStatus: "pending",
+  }) === false,
+  "Nearby waits for a granted location before restoring scroll",
+);
+assert(
+  nearbyListScrollSettled({
+    listId: "nearby",
+    located: true,
+    permission: "granted",
+    visitorStatus: "ready",
+  }),
+  "a distance list is settled",
+);
+assert(
+  nearbyListScrollSettled({
+    listId: "outdoor",
+    located: false,
+    permission: "unknown",
+    visitorStatus: "pending",
+  }),
+  "lists without the location swap can restore immediately",
+);
+const fixedListBody = read("components/fixed-list-body.tsx");
+assert(fixedListBody.includes('addEventListener("pagehide"'), "the list page saves scroll when the document is left");
+assert(
+  fixedListBody.includes("listScrollRestoreTarget"),
+  "the list page restores that scroll on the way back",
+);
+assert(
+  fixedListBody.includes("nearbyListScrollSettled"),
+  "Nearby waits for the settled layout before restoring",
+);
 
 const PIN = {
   nearby: 593,

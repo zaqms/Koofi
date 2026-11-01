@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { DirectoryCard } from "@/components/directory-card";
 import { FixedListPills } from "@/components/fixed-list-nav";
@@ -34,6 +34,13 @@ import {
   type NearbyExplainerState,
 } from "@/lib/fixed-list-ids";
 import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
+import {
+  LIST_SCROLL_KEY,
+  listScrollRestoreTarget,
+  nearbyListScrollSettled,
+  rememberListScroll,
+  type ListScrollRecord,
+} from "@/lib/list-scroll";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import { trackEvent } from "@/lib/track";
 import type { Language, Pin } from "@/lib/types";
@@ -92,6 +99,21 @@ export function FixedListBody({
   const [shown, setShown] = useState(FIXED_LIST_NEARBY_PAGE_SIZE);
   const [sort, setSort] = useState<FixedListSort>("popular");
   const [permission, setPermission] = useState<GeoPermission>("unknown");
+  const listScrollRestored = useRef(false);
+
+  useEffect(() => {
+    function onPageHide() {
+      const record = rememberListScroll(window.location.pathname, window.scrollY);
+      if (!record) return;
+      try {
+        window.sessionStorage.setItem(LIST_SCROLL_KEY, JSON.stringify(record));
+      } catch {
+        // Private mode still has the browser's own scroll restoration.
+      }
+    }
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, []);
 
   useEffect(() => {
     syncHideChainsAttribute(readHideChains());
@@ -109,6 +131,45 @@ export function FixedListBody({
 
   const located = listId === "nearby" && origin != null;
   const popularFallbackOn = listId === "nearby" && !located;
+  const scrollSettled = nearbyListScrollSettled({
+    listId,
+    located,
+    permission,
+    visitorStatus: visitor.status,
+  });
+
+  useLayoutEffect(() => {
+    if (listScrollRestored.current || !scrollSettled) return;
+    listScrollRestored.current = true;
+    let record: ListScrollRecord | null = null;
+    try {
+      const parsed = JSON.parse(window.sessionStorage.getItem(LIST_SCROLL_KEY) ?? "null") as
+        | { path?: unknown; y?: unknown }
+        | null;
+      if (parsed && typeof parsed.path === "string" && typeof parsed.y === "number") {
+        record = { path: parsed.path, y: parsed.y };
+      }
+    } catch {
+      record = null;
+    }
+    let navigationType: string | null = null;
+    try {
+      const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+      navigationType = nav?.type ?? null;
+    } catch {
+      navigationType = null;
+    }
+    const y = listScrollRestoreTarget({
+      navigationType,
+      pathname: window.location.pathname,
+      record,
+      settled: true,
+    });
+    if (y == null) return;
+    window.scrollTo(0, y);
+    window.requestAnimationFrame(() => window.scrollTo(0, y));
+  }, [scrollSettled]);
+
   const pool = popularFallbackOn ? popularFallback : shops;
   const chainCount = shops.filter((shop) => shop.isChain).length;
   // The popular-12 fallback has no chains, so Local only would do nothing there.

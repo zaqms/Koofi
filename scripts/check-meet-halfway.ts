@@ -73,6 +73,7 @@ import {
   halfwayCandidatePool,
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
+  meetHalfwayAddedNotice,
   locationsCentroid,
   meetHalfwayChatPicks,
   restoreHalfwayPicks,
@@ -162,8 +163,14 @@ assert(
     copy.includes("A fair distance, a better meet-up.") &&
     copy.includes("الأكثر مناسبة") &&
     copy.includes("Top Match") &&
-    copy.includes("اعرض 3 قهاوي مختلفة") &&
-    copy.includes("Show 3 different cafés") &&
+    copy.includes("اعرض قهاوي أكثر") &&
+    copy.includes("Show more cafés") &&
+    copy.includes('ar: "قهاوي بينكم"') &&
+    copy.includes('en: "Cafés between you"') &&
+    !copy.includes("اعرض 3 قهاوي مختلفة") &&
+    !copy.includes("Show 3 different cafés") &&
+    !copy.includes("خلنا نطلع لك ترشيحات جديدة") &&
+    !copy.includes("Get a new set of recommendations") &&
     copy.includes("هل النتائج كانت مناسبة؟") &&
     copy.includes("Were these results helpful?") &&
     copy.includes("مو مرّة") &&
@@ -262,6 +269,17 @@ assert(
 assert(
   halfwayResultsFooterKind({}) === null,
   "non-بيننا messages have no results footer",
+);
+assert(
+  meetHalfwayAddedNotice(1, "ar") === "انضافت قهوة وحدة" &&
+    meetHalfwayAddedNotice(2, "ar") === "انضافت قهوتين" &&
+    meetHalfwayAddedNotice(3, "ar") === "انضافت 3 قهاوي" &&
+    meetHalfwayAddedNotice(10, "ar") === "انضافت 10 قهاوي" &&
+    meetHalfwayAddedNotice(11, "ar") === "انضافت 11 قهوة" &&
+    meetHalfwayAddedNotice(1, "en") === "1 more café added" &&
+    meetHalfwayAddedNotice(2, "en") === "2 more cafés added" &&
+    meetHalfwayAddedNotice(3, "en") === "3 more cafés added",
+  "keyboard show-more announces 1, 2, and 3+ with café agreement",
 );
 
 const ui = readFileSync(join(repoRoot, "components/meet-halfway-picker.tsx"), "utf8");
@@ -1373,7 +1391,9 @@ assert(
     chatUi.includes("onShareResults") &&
     chatUi.includes("onStartNew") &&
     resultsFooter.includes("meetHalfwayMoreTitle") &&
-    resultsFooter.includes("meetHalfwayMoreSub") &&
+    !resultsFooter.includes("meetHalfwayMoreSub") &&
+    !resultsFooter.includes("RefreshIcon") &&
+    resultsFooter.includes('aria-hidden className="text-base leading-none"') &&
     resultsFooter.includes('surface !== "screen"') &&
     resultsFooter.includes("meetHalfwayMore") &&
     resultsFooter.includes("MeetHalfwayFeedback") &&
@@ -1411,8 +1431,25 @@ assert(
     chatUi.includes("accumulateHalfwayPicks") &&
     screenShowMore.includes("more: true") &&
     !screenShowMore.includes("reroll") &&
-    chatUi.includes("if (searchScreen || showHalfwayResults) return;"),
+    chatUi.includes("if (searchScreen || showHalfwayResults) return;") &&
+    chatUi.includes("copy.meetHalfwayResultsHeading[landing]") &&
+    chatUi.includes('role="status"') &&
+    chatUi.includes('aria-live="polite"') &&
+    chatUi.includes("meetHalfwayAddedNotice") &&
+    chatUi.includes("event.detail === 0") &&
+    chatUi.includes('querySelectorAll("[data-halfway-card]")') &&
+    chatUi.includes("link.focus()"),
   "results screen appends the next batch, keeps scroll, and does not rerun the first cafés",
+);
+assert(
+  chatUi.includes("if (searchScreen || showHalfwayResults) return;") &&
+    readFileSync(join(repoRoot, "components/meet-halfway-result-cards.tsx"), "utf8").includes(
+      "halfwayCard",
+    ) &&
+    readFileSync(join(repoRoot, "components/directory-card.tsx"), "utf8").includes(
+      'data-halfway-card": ""',
+    ),
+  "keyboard show-more focuses the first new card; auto-scroll guard stays",
 );
 assert(
   chatUi.includes('surface="screen"') &&

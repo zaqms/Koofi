@@ -61,6 +61,7 @@ import {
   accumulateHalfwayPicks,
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
+  meetHalfwayAddedNotice,
   meetHalfwayAskLabel,
   type HalfwayPinInput,
 } from "@/lib/meet-halfway";
@@ -670,6 +671,9 @@ export function Chat({
     shownHalfwayPickIds(threads[threadKey]?.messages ?? []),
   );
   const halfwayPageRef = useRef(1);
+  /** Index of the first card a keyboard show-more should focus once it lands. */
+  const pendingKeyboardAddedFrom = useRef<number | null>(null);
+  const [halfwayAddedNotice, setHalfwayAddedNotice] = useState("");
   const sendMeetHalfwayRef = useRef<
     (
       locations: HalfwayPinInput[],
@@ -1803,6 +1807,19 @@ export function Chat({
   const searchScreen = homeSurface && threadVisible && !showHalfwayResults;
 
   useEffect(() => {
+    if (busy) return;
+    const from = pendingKeyboardAddedFrom.current;
+    if (from == null) return;
+    pendingKeyboardAddedFrom.current = null;
+    const added = halfwayVisiblePicks.length - from;
+    if (added <= 0) return;
+    const text = meetHalfwayAddedNotice(added, landing);
+    setHalfwayAddedNotice((current) => (current === text ? `${text} ` : text));
+    const link = listRef.current?.querySelectorAll("[data-halfway-card]")[from];
+    if (link instanceof HTMLElement) link.focus();
+  }, [busy, halfwayVisiblePicks, landing]);
+
+  useEffect(() => {
     // Manual Search scrolls the document. Pinning this nested overflow
     // port on every resize fights iOS keyboard/focus scrolling and flickers.
     // بيننا show-more appends cards in place; jumping to the end would
@@ -2125,8 +2142,11 @@ export function Chat({
         >
           <div className="space-y-1.5 text-center">
             <h1 className="text-[1.65rem] font-semibold tracking-tight text-ink">
-              {copy.meetHalfwayThree[landing]}
+              {copy.meetHalfwayResultsHeading[landing]}
             </h1>
+            <p className="sr-only" role="status" aria-live="polite">
+              {halfwayAddedNotice}
+            </p>
             <p className="text-sm leading-6 text-ink-soft">
               {copy.meetHalfwayFairSub[landing]}
             </p>
@@ -2161,11 +2181,16 @@ export function Chat({
               }
               cafeCount={halfwayVisiblePicks.length}
               shopIds={halfwayVisiblePicks.map((pick) => pick.id)}
-              onMore={() => {
+              onMore={(event) => {
                 const locations =
                   halfwayResult?.halfwayLocations ??
                   halfwayLocationsRef.current;
                 if (!locations || halfwayResult?.halfwayMore === false) return;
+                // Enter/Space activate the button with detail 0. A pointer
+                // click keeps the scroll position and does not move focus.
+                if (event.detail === 0) {
+                  pendingKeyboardAddedFrom.current = halfwayVisiblePicks.length;
+                }
                 sendMeetHalfway(locations, { more: true });
               }}
               onShareResults={

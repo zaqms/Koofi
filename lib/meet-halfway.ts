@@ -282,6 +282,22 @@ export function halfwayResultsFooterKind(input: {
 }
 
 /**
+ * Spoken after keyboard show-more. 1 قهوة وحدة، 2 قهوتين، 3–10 قهاوي، 11+ قهوة.
+ * English keeps the digit and café/cafés.
+ */
+export function meetHalfwayAddedNotice(count: number, language: Language): string {
+  const n = Math.max(0, Math.floor(count));
+  if (language === "en") {
+    if (n === 1) return "1 more café added";
+    return `${n} more cafés added`;
+  }
+  if (n === 1) return "انضافت قهوة وحدة";
+  if (n === 2) return "انضافت قهوتين";
+  if (n >= 11) return `انضافت ${n} قهوة`;
+  return `انضافت ${n} قهاوي`;
+}
+
+/**
  * Results pages, oldest first. Show more appends the next ranked batch
  * and keeps cafés already on screen. Duplicate ids (a reroll of the same
  * shop) stay as the first time they appeared.

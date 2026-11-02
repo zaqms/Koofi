@@ -63,7 +63,7 @@ import {
   halfwayPinFailCopy,
   halfwayPinPair,
   halfwayResultsFooterKind,
-  meetHalfwayAddedNotice,
+  meetHalfwayAddedStatus,
   meetHalfwayAskLabel,
   resolveHalfwayMorePins,
   stampHalfwayLocations,
@@ -858,7 +858,7 @@ export function Chat({
   const pendingAddedFrom = useRef<number | null>(null);
   /** Enter/Space moves focus to the new card. A pointer tap does not. */
   const pendingKeyboardFocus = useRef(false);
-  /** Pointer add: if the button then unmounts, focus the end message. */
+  /** Pointer add: if the button then unmounts, move focus off the body. */
   const pendingPointerFocusEnd = useRef(false);
   const showMoreButtonWasVisible = useRef(false);
   const moreLockRef = useRef(false);
@@ -871,8 +871,11 @@ export function Chat({
    * that discovers the miss.
    */
   const [halfwayPinsPending, setHalfwayPinsPending] = useState(false);
-  /** Copy-link id for this document. Not sessionStorage — a reload has neither. */
-  const halfwaySessionIdRef = useRef<string | null>(halfwayInvite?.id ?? null);
+  /** True when this pointer add's status line already includes the end copy. */
+  const pointerEndInStatus = useRef(false);
+  const messagesRef = useRef(messages);
+  messagesRef.current = messages;
+  const inviteGetAtRef = useRef(0);
   const sendMeetHalfwayRef = useRef<
     (
       locations: HalfwayPinInput[],
@@ -1534,7 +1537,6 @@ export function Chat({
     setHalfwayFriendPin(null);
     halfwayJoinSeenRef.current = false;
     setHalfwayWaitingId(id);
-    halfwaySessionIdRef.current = id;
     setHalfwayPinError(null);
     // Invite navigation pushes this hit itself, with GTM's eventCallback,
     // so the redirect can wait for it. Copy link stays on this page.
@@ -1953,7 +1955,6 @@ export function Chat({
     halfwayJoinSeenRef.current = false;
     clearHalfwayWaiting();
     halfwayPinsMemory.delete(threadKey);
-    halfwaySessionIdRef.current = null;
     halfwayLocationsRef.current = null;
     halfwayShownRef.current = [];
   }
@@ -2065,12 +2066,18 @@ export function Chat({
     pendingKeyboardFocus.current = false;
     const added = halfwayVisiblePicks.length - from;
     if (added <= 0) return;
-    const text = meetHalfwayAddedNotice(added, landing);
+    const exhausted =
+      halfwayResultsFooterKind({
+        halfwayMore: halfwayResult?.halfwayMore,
+        paged: halfwayResult?.halfwayPaged,
+      }) === "exhausted";
+    pointerEndInStatus.current = exhausted && !keyboard;
+    const text = meetHalfwayAddedStatus(added, landing, exhausted);
     setHalfwayAddedNotice((current) => (current === text ? `${text} ` : text));
     if (!keyboard) return;
     const link = listRef.current?.querySelectorAll("[data-halfway-card]")[from];
     if (link instanceof HTMLElement) link.focus();
-  }, [busy, halfwayVisiblePicks, landing]);
+  }, [busy, halfwayResult, halfwayVisiblePicks, landing]);
 
   useEffect(() => {
     if (!showHalfwayResults) return;
@@ -2101,18 +2108,19 @@ export function Chat({
     if (!pendingPointerFocusEnd.current) return;
     pendingPointerFocusEnd.current = false;
     const root = listRef.current;
+    const heading = root?.querySelector("[data-halfway-heading]");
+    // The status line already speaks the end copy. Focusing that line, or the
+    // visible end message, would read it again. Park on the heading instead.
+    if (pointerEndInStatus.current) {
+      pointerEndInStatus.current = false;
+      if (heading instanceof HTMLElement) heading.focus();
+      return;
+    }
     const end = root?.querySelector("[data-halfway-end]");
     if (end instanceof HTMLElement) {
       end.focus();
       return;
     }
-    const status = root?.querySelector("[data-halfway-status]");
-    const statusText = status?.textContent?.trim() ?? "";
-    if (statusText && status instanceof HTMLElement) {
-      status.focus();
-      return;
-    }
-    const heading = root?.querySelector("[data-halfway-heading]");
     if (heading instanceof HTMLElement) heading.focus();
   }, [showMoreButtonVisible]);
 
@@ -2297,9 +2305,10 @@ export function Chat({
 
   useEffect(() => {
     if (!showHalfwayResults || halfwayPinsBlocked) return;
+    const liveMessages = messagesRef.current;
     if (
       resolveHalfwayMorePins({
-        restored: lastHalfwayLocations(messages),
+        restored: lastHalfwayLocations(liveMessages),
         remembered: halfwayPinsMemory.get(threadKey) ?? null,
         invite: halfwayInvite?.locations ?? null,
       })
@@ -2312,7 +2321,10 @@ export function Chat({
       if (halfwayPinsPending) setHalfwayPinsPending(false);
       return;
     }
-    let cancelled = false;
+    const now = Date.now();
+    if (now - inviteGetAtRef.current < 30_000) return;
+    inviteGetAtRef.current = now;
+    const generation = now;
     void (async () => {
       let failed = false;
       try {
@@ -2320,73 +2332,30 @@ export function Chat({
           `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
           { cache: "no-store" },
         );
-        if (cancelled) return;
+        if (inviteGetAtRef.current !== generation) return;
         if (!response.ok) {
           failed = true;
           return;
         }
         const data = (await response.json()) as HalfwayOverlayResponse;
         const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
-        if (cancelled) return;
+        if (inviteGetAtRef.current !== generation) return;
         if (!pins) {
           failed = true;
           return;
         }
         halfwayLocationsRef.current = pins;
+        rememberHalfwayPins(threadKey, pins);
         setHalfwayPinsBlocked(false);
       } catch {
-        if (!cancelled) failed = true;
+        if (inviteGetAtRef.current === generation) failed = true;
       } finally {
-        if (!cancelled) {
-          if (failed) setHalfwayPinsBlocked(true);
-          setHalfwayPinsPending(false);
-        }
+        if (inviteGetAtRef.current !== generation) return;
+        if (failed) setHalfwayPinsBlocked(true);
+        setHalfwayPinsPending(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
-  }, [showHalfwayResults, halfwayPinsBlocked, messages, halfwayInvite, threadKey]);
-
-  useEffect(() => {
-    if (!showHalfwayResults) return;
-    let cancelled = false;
-    async function refreshHeldPins() {
-      const painted = halfwayPinPair(lastHalfwayLocations(messages));
-      const inviteId =
-        halfwayInvite?.id ?? halfwayIdFromPath() ?? halfwaySessionIdRef.current;
-      if (!painted || !inviteId) return;
-      try {
-        const response = await fetch(
-          `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
-          { cache: "no-store" },
-        );
-        if (cancelled || !response.ok) return;
-        const data = (await response.json()) as HalfwayOverlayResponse;
-        const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
-        if (cancelled || !pins) return;
-        const same =
-          pins.length === painted.length &&
-          pins.every(
-            (pin, index) => pin.lat === painted[index]?.lat && pin.lng === painted[index]?.lng,
-          );
-        if (same) return;
-        // Painted cards keep their pair. A café click remembers this session pair.
-        halfwayLocationsRef.current = pins;
-        (window as unknown as { __wainHalfwayHeld?: string }).__wainHalfwayHeld = "session";
-      } catch {
-        // The painted pair still pages. A missed refresh leaves the ref as it was.
-      }
-    }
-    const onFocus = () => {
-      void refreshHeldPins();
-    };
-    window.addEventListener("focus", onFocus);
-    return () => {
-      cancelled = true;
-      window.removeEventListener("focus", onFocus);
-    };
-  }, [showHalfwayResults, messages, halfwayInvite, threadKey]);
+  }, [showHalfwayResults, halfwayPinsBlocked, halfwayInvite, threadKey]);
 
   useLayoutEffect(() => {
     if (!homeSurface || !threadVisible) return;
@@ -2646,6 +2615,7 @@ export function Chat({
               className="sr-only"
               role="status"
               aria-live="polite"
+              aria-atomic="true"
               tabIndex={-1}
               data-halfway-status=""
             >
@@ -2700,9 +2670,9 @@ export function Chat({
               void (async () => {
                 try {
                   setBusy(true);
-                  let invitePins = halfwayInvite?.locations ?? null;
+                  const invitePins = halfwayInvite?.locations ?? null;
                   const inviteId = halfwayInvite?.id ?? halfwayIdFromPath() ?? null;
-                  let request = halfwayMoreAfterRestore({
+                  const request = halfwayMoreAfterRestore({
                     restored: halfwayResult?.halfwayLocations ?? null,
                     remembered: halfwayPinsMemory.get(threadKey) ?? null,
                     invite: invitePins,
@@ -2711,29 +2681,6 @@ export function Chat({
                     text: copy.meetHalfwayMoreTitle[landing],
                     landing,
                   });
-                  if (!request && inviteId) {
-                    try {
-                      const response = await fetch(
-                        `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
-                        { cache: "no-store" },
-                      );
-                      if (response.ok) {
-                        const data = (await response.json()) as HalfwayOverlayResponse;
-                        invitePins = overlayPins(data.locations);
-                        request = halfwayMoreAfterRestore({
-                          restored: null,
-                          remembered: null,
-                          invite: invitePins,
-                          beenIds,
-                          inviteId,
-                          text: copy.meetHalfwayMoreTitle[landing],
-                          landing,
-                        });
-                      }
-                    } catch {
-                      request = null;
-                    }
-                  }
                   if (!request) {
                     setBusy(false);
                     setHalfwayPinsBlocked(true);
@@ -2768,7 +2715,9 @@ export function Chat({
             onStartNew={() => startNewHalfway("results")}
           />
           {busy ? (
-            <p className="text-sm text-ink-soft">{copy.looking[composerLanguage]}</p>
+            <p className="text-sm text-ink-soft" role="status" aria-live="polite">
+              {copy.looking[composerLanguage]}
+            </p>
           ) : null}
         </div>
       ) : sessionExpired ? (

@@ -818,6 +818,11 @@ async function restoreScrollYields(
   const saved = 160;
   {
     const { context, page } = await openRestored(browser, id, picks, saved);
+    const anchor = await page.evaluate(() => document.documentElement.style.overflowAnchor);
+    assert(
+      anchor === "none",
+      `overflow-anchor was ${JSON.stringify(anchor)} during the watch, wanted "none"`,
+    );
     await page.evaluate(growResults);
     await page.waitForTimeout(250);
     const y = await page.evaluate(() => window.scrollY);
@@ -927,6 +932,105 @@ async function restoreScrollYields(
     assert(
       Math.abs(later - saved) > 80,
       `watcher was still forcing the saved scroll after 800ms (${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // Saved position stays unreachable for ~1.5s. The 800ms window starts at
+    // the first apply, so a late ready() still restores.
+    const tall = 2000;
+    const context = await browser.newContext(contextOptions());
+    const page = await context.newPage();
+    await installBack(
+      page,
+      snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY: tall }),
+      null,
+    );
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+    const early = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+    assert(early + 2 < tall, `page could already hold the save (max ${early})`);
+    await page.waitForTimeout(1500);
+    const mid = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(mid - tall) > 200,
+      `restored before the page was tall enough (${mid}, saved ${tall})`,
+    );
+    await page.evaluate(() => {
+      const bar = document.createElement("div");
+      bar.style.height = "4000px";
+      document.body.prepend(bar);
+    });
+    const landed = await page
+      .waitForFunction((saved) => Math.abs(window.scrollY - saved) <= 16, tall, { timeout: 2000 })
+      .then(() => true)
+      .catch(() => false);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(landed, `delayed ready never restored (${later}, saved ${tall})`);
+    await context.close();
+  }
+  {
+    // Original inline overflow-anchor is "none", not the default. A restore
+    // that writes "auto" would fail. Programmatic click skips pointerdown,
+    // so unmount is what puts the original back.
+    const context = await browser.newContext(contextOptions());
+    const page = await context.newPage();
+    await page.addInitScript(`(() => {
+      const mark = () => {
+        const root = document.documentElement;
+        if (!root) return false;
+        root.style.overflowAnchor = "none";
+        return true;
+      };
+      if (mark()) return;
+      const observer = new MutationObserver(() => {
+        if (mark()) observer.disconnect();
+      });
+      observer.observe(document, { childList: true, subtree: true });
+      document.addEventListener("DOMContentLoaded", () => {
+        mark();
+        observer.disconnect();
+      }, { once: true });
+    })();`);
+    await installBack(
+      page,
+      snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY: saved }),
+      null,
+    );
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+    await page.waitForFunction(
+      (target) => Math.abs(window.scrollY - target) <= 12,
+      saved,
+      { timeout: 4000 },
+    );
+    const href = await page.evaluate(() => {
+      const link = document.querySelector("[data-halfway-card]");
+      if (!(link instanceof HTMLAnchorElement)) return "";
+      link.click();
+      return link.getAttribute("href") ?? "";
+    });
+    assert(href.startsWith("/c/"), `café card did not point at a café (${href})`);
+    await page.waitForURL(/\/c\//, { timeout: 15000 });
+    await page.locator("[data-halfway-results]").waitFor({ state: "detached", timeout: 15000 });
+    await page.evaluate(
+      () =>
+        new Promise((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve(undefined)));
+        }),
+    );
+    const restored = await page.evaluate(() => document.documentElement.style.overflowAnchor);
+    assert(
+      restored === "none",
+      `unmount restored overflow-anchor ${JSON.stringify(restored)}, wanted the original "none"`,
     );
     await context.close();
   }

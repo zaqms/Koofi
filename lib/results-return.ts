@@ -1086,8 +1086,10 @@ let releaseRestoredScroll: (() => void) | null = null;
  * 6px or more is the visitor, so a 6–20px nudge cancels the watcher.
  */
 const RESTORE_SCROLL_TOLERANCE = 4;
-/** How long late layout may still return to the saved position. */
+/** How long late layout may still return to the saved position, from the first apply. */
 const RESTORE_SCROLL_WATCH_MS = 800;
+/** Stop waiting for a page tall enough to hold the save. Same cap as the pre-watch tick. */
+const RESTORE_SCROLL_READY_MS = 2500;
 
 function applyResultsScroll(scrollY: number, listScroll: number): void {
   window.scrollTo(0, scrollY);
@@ -1097,9 +1099,12 @@ function applyResultsScroll(scrollY: number, listScroll: number): void {
 
 /**
  * Keep the saved position through late layout, until the visitor scrolls.
- * Scroll anchoring is off for the watch: a block inserted above the fold
- * must not look like a user scroll. Wheel, touch, pointer, or a key ends
- * it, as does any scroll this restore did not just write.
+ * The 800ms window starts at the first apply, not when the watcher is
+ * created, so a page that is still short can catch up. If it never grows
+ * tall enough, give up after a few seconds. Scroll anchoring is off for
+ * the watch: a block inserted above the fold must not look like a user
+ * scroll. Wheel, touch, pointer, or a key ends it, as does any scroll this
+ * restore did not just write. Unmount releases the same way.
  */
 function watchRestoredScroll(input: {
   token: number;
@@ -1110,6 +1115,8 @@ function watchRestoredScroll(input: {
 }): void {
   let stopped = false;
   let applying = false;
+  let windowArmed = false;
+  let watchTimer = 0;
   let programmaticY = window.scrollY;
   let programmaticList = 0;
   const anchored: { el: HTMLElement; previous: string }[] = [];
@@ -1132,13 +1139,18 @@ function watchRestoredScroll(input: {
     stopped = true;
     if (releaseRestoredScroll === stop) releaseRestoredScroll = null;
     observer.disconnect();
-    window.clearTimeout(timer);
+    window.clearTimeout(watchTimer);
     window.removeEventListener("wheel", stop, true);
     window.removeEventListener("touchstart", stop, true);
     window.removeEventListener("pointerdown", stop, true);
     window.removeEventListener("keydown", stop, true);
     window.removeEventListener("scroll", onScroll, true);
     unpinAnchor();
+  };
+  const armWatchWindow = () => {
+    if (windowArmed || stopped) return;
+    windowArmed = true;
+    watchTimer = window.setTimeout(stop, RESTORE_SCROLL_WATCH_MS);
   };
   const onScroll = (event: Event) => {
     if (stopped || applying || input.token !== scrollRestoreToken) {
@@ -1165,6 +1177,7 @@ function watchRestoredScroll(input: {
       programmaticList = list.scrollTop;
     }
     applying = false;
+    armWatchWindow();
   };
   const root = document.documentElement;
   const observer = new ResizeObserver(() => {
@@ -1195,15 +1208,24 @@ function watchRestoredScroll(input: {
       return;
     }
     pinAnchor(resultsList());
-    if (input.ready() || performance.now() - started > 2500) {
+    if (input.ready()) {
       apply();
+      return;
+    }
+    if (performance.now() - started > RESTORE_SCROLL_READY_MS) {
+      apply();
+      stop();
       return;
     }
     requestAnimationFrame(tick);
   };
-  const timer = window.setTimeout(stop, RESTORE_SCROLL_WATCH_MS);
   releaseRestoredScroll = stop;
   tick();
+}
+
+/** Café navigation unmounts the results page. Put overflow-anchor back and disconnect. */
+export function releaseResultsScrollWatch(): void {
+  releaseRestoredScroll?.();
 }
 
 /**
@@ -1256,7 +1278,7 @@ export function restoreResultsScroll(): void {
     const started = performance.now();
     const tick = () => {
       if (!samePage()) return;
-      if (ready() || performance.now() - started > 2500) {
+      if (ready() || performance.now() - started > RESTORE_SCROLL_READY_MS) {
         applyResultsScroll(targetY, listScroll);
         return;
       }

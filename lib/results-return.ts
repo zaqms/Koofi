@@ -1079,9 +1079,15 @@ export function onCafeBackClick(event: {
 }
 
 let scrollRestoreToken = 0;
+let releaseRestoredScroll: (() => void) | null = null;
 
-/** A scroll this close to the last restore write was ours, not the visitor. */
+/**
+ * A scroll within 4px of the last restore write was ours.
+ * 6px or more is the visitor, so a 6–20px nudge cancels the watcher.
+ */
 const RESTORE_SCROLL_TOLERANCE = 4;
+/** How long late layout may still return to the saved position. */
+const RESTORE_SCROLL_WATCH_MS = 800;
 
 function applyResultsScroll(scrollY: number, listScroll: number): void {
   window.scrollTo(0, scrollY);
@@ -1091,22 +1097,40 @@ function applyResultsScroll(scrollY: number, listScroll: number): void {
 
 /**
  * Keep the saved position through late layout, until the visitor scrolls.
- * Wheel, touch, pointer, or a key ends it, as does any scroll this restore
- * did not just write.
+ * Scroll anchoring is off for the watch: a block inserted above the fold
+ * must not look like a user scroll. Wheel, touch, pointer, or a key ends
+ * it, as does any scroll this restore did not just write.
  */
 function watchRestoredScroll(input: {
   token: number;
   targetY: number;
   listScroll: number;
+  ready: () => boolean;
+  samePage: () => boolean;
 }): void {
   let stopped = false;
   let applying = false;
   let programmaticY = window.scrollY;
   let programmaticList = 0;
+  const anchored: { el: HTMLElement; previous: string }[] = [];
+  const pinned = new Set<HTMLElement>();
   const resultsList = () => document.querySelector("[data-halfway-results]");
+  const pinAnchor = (el: Element | null) => {
+    if (!(el instanceof HTMLElement) || pinned.has(el)) return;
+    pinned.add(el);
+    anchored.push({ el, previous: el.style.overflowAnchor });
+    el.style.overflowAnchor = "none";
+  };
+  const unpinAnchor = () => {
+    for (const item of anchored) item.el.style.overflowAnchor = item.previous;
+    anchored.length = 0;
+    pinned.clear();
+  };
+  releaseRestoredScroll?.();
   const stop = () => {
     if (stopped) return;
     stopped = true;
+    if (releaseRestoredScroll === stop) releaseRestoredScroll = null;
     observer.disconnect();
     window.clearTimeout(timer);
     window.removeEventListener("wheel", stop, true);
@@ -1114,10 +1138,11 @@ function watchRestoredScroll(input: {
     window.removeEventListener("pointerdown", stop, true);
     window.removeEventListener("keydown", stop, true);
     window.removeEventListener("scroll", onScroll, true);
+    unpinAnchor();
   };
   const onScroll = (event: Event) => {
     if (stopped || applying || input.token !== scrollRestoreToken) {
-      if (input.token !== scrollRestoreToken) stop();
+      if (!stopped && input.token !== scrollRestoreToken) stop();
       return;
     }
     const target = event.target;
@@ -1130,7 +1155,7 @@ function watchRestoredScroll(input: {
     }
   };
   const apply = () => {
-    if (stopped || input.token !== scrollRestoreToken) return;
+    if (stopped || input.token !== scrollRestoreToken || !input.samePage()) return;
     applying = true;
     window.scrollTo(0, input.targetY);
     programmaticY = window.scrollY;
@@ -1142,31 +1167,43 @@ function watchRestoredScroll(input: {
     applying = false;
   };
   const root = document.documentElement;
-  let pageHeight = root.scrollHeight;
-  const initialList = resultsList();
-  let listHeightSeen = initialList instanceof HTMLElement ? initialList.scrollHeight : 0;
   const observer = new ResizeObserver(() => {
-    if (stopped || input.token !== scrollRestoreToken) {
+    if (stopped || input.token !== scrollRestoreToken || !input.samePage()) {
       stop();
       return;
     }
-    const nextPage = root.scrollHeight;
-    const list = resultsList();
-    const nextList = list instanceof HTMLElement ? list.scrollHeight : 0;
-    if (nextPage === pageHeight && nextList === listHeightSeen) return;
-    pageHeight = nextPage;
-    listHeightSeen = nextList;
+    pinAnchor(resultsList());
+    if (!input.ready()) return;
     apply();
   });
+  pinAnchor(document.documentElement);
+  pinAnchor(document.body);
+  pinAnchor(document.scrollingElement);
+  pinAnchor(resultsList());
   window.addEventListener("wheel", stop, { capture: true, passive: true });
   window.addEventListener("touchstart", stop, { capture: true, passive: true });
   window.addEventListener("pointerdown", stop, { capture: true, passive: true });
   window.addEventListener("keydown", stop, { capture: true });
   window.addEventListener("scroll", onScroll, { capture: true, passive: true });
-  apply();
   observer.observe(root);
+  const initialList = resultsList();
   if (initialList instanceof HTMLElement) observer.observe(initialList);
-  const timer = window.setTimeout(stop, 800);
+  const started = performance.now();
+  const tick = () => {
+    if (stopped || input.token !== scrollRestoreToken || !input.samePage()) {
+      if (!stopped) stop();
+      return;
+    }
+    pinAnchor(resultsList());
+    if (input.ready() || performance.now() - started > 2500) {
+      apply();
+      return;
+    }
+    requestAnimationFrame(tick);
+  };
+  const timer = window.setTimeout(stop, RESTORE_SCROLL_WATCH_MS);
+  releaseRestoredScroll = stop;
+  tick();
 }
 
 /**
@@ -1201,30 +1238,11 @@ export function restoreResultsScroll(): void {
   const targetY = scrollY ?? 0;
   const cardCount = snapshot?.cardCount ?? 0;
   const token = ++scrollRestoreToken;
-  const started = performance.now();
-  let cancelled = false;
-  const cancel = () => {
-    cancelled = true;
-  };
-  window.addEventListener("wheel", cancel, { capture: true, passive: true });
-  window.addEventListener("touchstart", cancel, { capture: true, passive: true });
-  window.addEventListener("pointerdown", cancel, { capture: true, passive: true });
-  window.addEventListener("keydown", cancel, { capture: true });
-  const dropCancel = () => {
-    window.removeEventListener("wheel", cancel, true);
-    window.removeEventListener("touchstart", cancel, true);
-    window.removeEventListener("pointerdown", cancel, true);
-    window.removeEventListener("keydown", cancel, true);
-  };
-  const tick = () => {
-    if (cancelled || token !== scrollRestoreToken) {
-      dropCancel();
-      return;
-    }
-    if (storageHref(currentResultsHref()) !== href) {
-      dropCancel();
-      return;
-    }
+  const hrefAtStart = href;
+  const samePage = () =>
+    token === scrollRestoreToken && storageHref(currentResultsHref()) === hrefAtStart;
+  const ready = () => {
+    if (!samePage()) return false;
     const cards = renderedCardCount();
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const list = document.querySelector("[data-halfway-results]");
@@ -1232,24 +1250,22 @@ export function restoreResultsScroll(): void {
     const cardsReady = cardCount <= 0 || cards >= cardCount;
     const pageReady = targetY <= 0 || maxScroll + 2 >= targetY;
     const listReady = listScroll <= 0 || listHeight + 2 >= listScroll;
-    if (cardsReady && pageReady && listReady) {
-      dropCancel();
-      if (cancelled) return;
-      if (typeof ResizeObserver === "undefined") {
+    return cardsReady && pageReady && listReady;
+  };
+  if (typeof ResizeObserver === "undefined") {
+    const started = performance.now();
+    const tick = () => {
+      if (!samePage()) return;
+      if (ready() || performance.now() - started > 2500) {
         applyResultsScroll(targetY, listScroll);
         return;
       }
-      watchRestoredScroll({ token, targetY, listScroll });
-      return;
-    }
-    if (performance.now() - started > 2500) {
-      dropCancel();
-      if (!cancelled) applyResultsScroll(targetY, listScroll);
-      return;
-    }
-    requestAnimationFrame(tick);
-  };
-  tick();
+      requestAnimationFrame(tick);
+    };
+    tick();
+    return;
+  }
+  watchRestoredScroll({ token, targetY, listScroll, ready, samePage });
 }
 
 export function installCafeReturn(): () => void {

@@ -821,28 +821,112 @@ async function restoreScrollYields(
     await page.evaluate(growResults);
     await page.waitForTimeout(250);
     const y = await page.evaluate(() => window.scrollY);
-    assert(Math.abs(y - saved) <= 16, `late growth left scroll at ${y}, wanted ${saved}`);
+    assert(
+      Math.abs(y - saved) <= 16,
+      `growth above the viewport left scroll at ${y}, wanted ${saved}`,
+    );
     await context.close();
   }
-  for (const delay of [200, 500]) {
+  {
+    // A scroll with no wheel event must cancel. Wheel-only leaves this pulled back.
     const { context, page } = await openRestored(browser, id, picks, saved);
-    await page.waitForTimeout(delay);
+    await page.waitForTimeout(200);
     const moved = await page.evaluate(() => {
       const from = window.scrollY;
       const room = document.documentElement.scrollHeight - window.innerHeight - from;
       const dy = room >= 80 ? Math.min(180, room) : -Math.min(100, from);
-      const node = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2) ?? document.body;
-      node.dispatchEvent(new WheelEvent("wheel", { deltaY: dy, bubbles: true, cancelable: true }));
       window.scrollBy(0, dy);
       return window.scrollY;
     });
-    assert(Math.abs(moved - saved) > 40, `scroll at ${delay}ms did not leave ${saved} (now ${moved})`);
+    assert(Math.abs(moved - saved) > 40, `scroll without a wheel stayed at ${moved}`);
     await page.evaluate(growResults);
     await page.waitForTimeout(300);
     const later = await page.evaluate(() => window.scrollY);
     assert(
       Math.abs(later - saved) > 40,
-      `scroll at ${delay}ms was pulled back to the saved position (${moved} → ${later}, saved ${saved})`,
+      `scroll without a wheel was pulled back (${moved} → ${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // A wheel that does not move the page must cancel. Scroll-only misses it,
+    // and the next growth above the fold is then forced back to the save.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(500);
+    const held = await page.evaluate(() => {
+      window.dispatchEvent(new WheelEvent("wheel", { deltaY: -40, bubbles: true, cancelable: true }));
+      return window.scrollY;
+    });
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 40,
+      `wheel without a scroll event was ignored (${held} → ${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // 12px is past the 4px tolerance, so it is the visitor.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(200);
+    const moved = await page.evaluate(() => {
+      window.scrollBy(0, 12);
+      return window.scrollY;
+    });
+    assert(Math.abs(moved - saved) >= 6, `12px scroll did not move (${saved} → ${moved})`);
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 8,
+      `a 12px scroll was treated as noise (${moved} → ${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // Saved position is below the first paint, so the watcher has not applied yet.
+    const tall = 2000;
+    const context = await browser.newContext(contextOptions());
+    const page = await context.newPage();
+    await installBack(
+      page,
+      snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY: tall }),
+      null,
+    );
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+    await page.waitForTimeout(150);
+    await page.evaluate(() => {
+      window.scrollBy(0, 80);
+    });
+    await page.evaluate(() => {
+      const bar = document.createElement("div");
+      bar.style.height = "4000px";
+      document.body.prepend(bar);
+    });
+    await page.waitForTimeout(400);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - tall) > 200,
+      `input before the first apply was ignored (landed on ${later}, saved ${tall})`,
+    );
+    await context.close();
+  }
+  {
+    // After 800ms the watcher is gone, so a later growth is not forced back.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(1000);
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 80,
+      `watcher was still forcing the saved scroll after 800ms (${later}, saved ${saved})`,
     );
     await context.close();
   }

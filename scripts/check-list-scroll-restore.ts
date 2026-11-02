@@ -207,6 +207,145 @@ async function checkDelayedRestore(chrome: Browser): Promise<void> {
   await context.close();
 }
 
+async function checkProgrammaticScroll(chrome: Browser): Promise<void> {
+  const context = await chrome.newContext({
+    viewport: { width: 390, height: 844 },
+    locale: "en-US",
+    geolocation: { latitude: 24.7136, longitude: 46.6753 },
+    permissions: ["geolocation"],
+  });
+  const page = await context.newPage();
+  await prepare(page, 3000);
+  await hardBackFrom(page, 1190);
+  await page.waitForTimeout(400);
+  await page.evaluate(() => window.scrollTo(0, 500));
+  await page.waitForTimeout(4500);
+  const y = await page.evaluate(() => Math.round(window.scrollY));
+  assert(Math.abs(y - 1190) > 250, `a scrollTo during the wait was pulled back to ${y}`);
+  await context.close();
+}
+
+async function savedRecord(page: Page): Promise<{ cardId?: string; cardTop?: number; y: number }> {
+  const record = await page.evaluate(() => {
+    const raw = sessionStorage.getItem("wain.listScroll.v1");
+    return raw ? (JSON.parse(raw) as { cardId?: string; cardTop?: number; y: number }) : null;
+  });
+  assert(record, "leaving Nearby stored a scroll record");
+  return record;
+}
+
+async function checkCardAnchor(chrome: Browser): Promise<void> {
+  const context = await chrome.newContext({
+    viewport: { width: 390, height: 844 },
+    locale: "en-US",
+    geolocation: { latitude: 24.7136, longitude: 46.6753 },
+    permissions: ["geolocation"],
+  });
+  const page = await context.newPage();
+  await prepare(page, 3000);
+  await page.goto(`${base}/en/coffee-shops/nearby`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("[data-listing-card]");
+  await page.waitForFunction(
+    () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
+    { timeout: 15000 },
+  );
+  await dismissConsent(page);
+  await page.evaluate(() => window.scrollTo(0, 1190));
+  await page.waitForTimeout(250);
+  const href = await visibleCafe(page);
+  await page.evaluate((url) => window.location.assign(url), href);
+  await page.waitForURL(/\/en\/c\//);
+  const saved = await savedRecord(page);
+  assert(saved.cardId && typeof saved.cardTop === "number", "the record keeps the top card");
+  await page.goBack();
+  await page.waitForSelector("[data-fixed-list-cards]");
+  await page.evaluate(() => {
+    const list = document.querySelector("[data-fixed-list-cards]");
+    const spacer = document.createElement("div");
+    spacer.setAttribute("data-qa-spacer", "");
+    spacer.style.height = "420px";
+    list?.parentElement?.insertBefore(spacer, list);
+  });
+  await page.waitForTimeout(5000);
+  const top = await page.evaluate((id) => {
+    const el = document.querySelector(`[data-shop-id="${id}"]`);
+    return el ? Math.round(el.getBoundingClientRect().top) : null;
+  }, saved.cardId);
+  assert(
+    top != null && Math.abs(top - (saved.cardTop ?? 0)) < 72,
+    `the saved card should sit near ${saved.cardTop}px, got ${top}`,
+  );
+  await context.close();
+}
+
+async function checkMissingCardFallsBack(chrome: Browser): Promise<void> {
+  const context = await chrome.newContext({
+    viewport: { width: 390, height: 844 },
+    locale: "en-US",
+    geolocation: { latitude: 24.7136, longitude: 46.6753 },
+    permissions: ["geolocation"],
+  });
+  const page = await context.newPage();
+  await prepare(page, 3000);
+  await page.goto(`${base}/en/coffee-shops/nearby`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("[data-listing-card]");
+  await page.waitForFunction(
+    () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
+    { timeout: 15000 },
+  );
+  await dismissConsent(page);
+  await page.evaluate(() => window.scrollTo(0, 1190));
+  await page.waitForTimeout(250);
+  const href = await visibleCafe(page);
+  await page.evaluate((url) => window.location.assign(url), href);
+  await page.waitForURL(/\/en\/c\//);
+  await page.evaluate(() => {
+    const raw = sessionStorage.getItem("wain.listScroll.v1");
+    if (!raw) return;
+    const record = JSON.parse(raw) as { cardId?: string };
+    record.cardId = "not-a-real-cafe";
+    sessionStorage.setItem("wain.listScroll.v1", JSON.stringify(record));
+  });
+  await page.goBack();
+  await page.waitForURL(/coffee-shops\/nearby/);
+  await clearScrollTos(page);
+  await page.waitForTimeout(5000);
+  const y = await page.evaluate(() => Math.round(window.scrollY));
+  assert(Math.abs(y - 1190) < 120, `an unknown card should use the saved offset, got ${y}`);
+  await context.close();
+}
+
+async function checkTopDoesNotStore(chrome: Browser): Promise<void> {
+  const context = await chrome.newContext({
+    viewport: { width: 390, height: 844 },
+    locale: "en-US",
+    geolocation: { latitude: 24.7136, longitude: 46.6753 },
+    permissions: ["geolocation"],
+  });
+  const page = await context.newPage();
+  await prepare(page, 0);
+  await page.goto(`${base}/en/coffee-shops/nearby`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("[data-listing-card]");
+  await page.waitForFunction(
+    () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
+    { timeout: 15000 },
+  );
+  await dismissConsent(page);
+  await page.evaluate(() => {
+    sessionStorage.setItem(
+      "wain.listScroll.v1",
+      JSON.stringify({ path: "/en/coffee-shops/nearby", y: 1190, cardId: "woods-olaya", cardTop: 40 }),
+    );
+    window.scrollTo(0, 0);
+  });
+  const href = await visibleCafe(page);
+  await page.evaluate((url) => window.location.assign(url), href);
+  await page.waitForURL(/\/en\/c\//);
+  const stored = await page.evaluate(() => sessionStorage.getItem("wain.listScroll.v1"));
+  assert(stored == null, `leaving at the top stored ${stored}`);
+  await context.close();
+}
+
 async function checkLateFixDoesNotJump(chrome: Browser): Promise<void> {
   const context = await chrome.newContext({
     viewport: { width: 390, height: 844 },
@@ -237,6 +376,10 @@ async function main(): Promise<void> {
     await checkDelayedRestore(chrome);
     await checkCancel(chrome, "key");
     await checkCancel(chrome, "touch");
+    await checkProgrammaticScroll(chrome);
+    await checkCardAnchor(chrome);
+    await checkMissingCardFallsBack(chrome);
+    await checkTopDoesNotStore(chrome);
     await checkLateFixDoesNotJump(chrome);
     console.log("check-list-scroll-restore: ok");
   } finally {

@@ -41,7 +41,10 @@ import { chipSharePath, isFixedListChip, isStaticDirectoryChip } from "../lib/pr
 import {
   LIST_SCROLL_KEY,
   LIST_SCROLL_MAX_WAIT_MS,
+  clearListScroll,
   listScrollAnchorY,
+  listScrollLooksLikeUserMove,
+  listScrollWorthSaving,
   listScrollRestoreTarget,
   nearbyListScrollSettled,
   releaseListScroll,
@@ -73,6 +76,44 @@ assert(
 assert(
   rememberListScroll("/en/coffee-shops/nearby", 1200)?.y === 1200,
   "Nearby remembers the offset the visitor left",
+);
+assert(
+  rememberListScroll("/en/coffee-shops/nearby", 0, { id: "woods-olaya", top: 40 }) === null,
+  "the top of Nearby does not store a café",
+);
+assert(!listScrollWorthSaving(0) && !listScrollWorthSaving(40, 120), "less than one card is still the top");
+assert(
+  listScrollLooksLikeUserMove({
+    cardId: "woods-olaya",
+    cardTop: 90,
+    baselineCardId: "woods-olaya",
+    baselineCardTop: 92,
+    scrollY: 700,
+    baselineScrollY: 1200,
+  }) === false,
+  "scroll anchoring can change the offset without moving the card",
+);
+assert(
+  listScrollLooksLikeUserMove({
+    cardId: "woods-olaya",
+    cardTop: 420,
+    baselineCardId: "woods-olaya",
+    baselineCardTop: 90,
+    scrollY: 700,
+    baselineScrollY: 1200,
+  }),
+  "a scroll that moves the card is the visitor",
+);
+assert(
+  listScrollLooksLikeUserMove({
+    cardId: "woods-olaya",
+    cardTop: 400,
+    baselineCardId: "woods-olaya",
+    baselineCardTop: 90,
+    scrollY: 1200,
+    baselineScrollY: 1204,
+  }) === false,
+  "a layout jump that leaves scrollY put is not the visitor",
 );
 assert(
   !JSON.stringify(rememberListScroll("/en/coffee-shops/nearby", 1200)).includes("lat"),
@@ -202,6 +243,10 @@ assert(
   };
   const saved = rememberListScroll("/en/coffee-shops/nearby", 1190);
   assert(saved?.y === 1190, "Nearby can remember 1190");
+  writeListScroll(storage, saved!);
+  clearListScroll(storage);
+  assert(storage.getItem(LIST_SCROLL_KEY) === null, "leaving near the top clears a stored café");
+  resetListScrollHold();
   writeListScroll(storage, saved!);
   const raw = storage.getItem(LIST_SCROLL_KEY) ?? "";
   assert(!raw.includes("lat") && !raw.includes("lng") && !raw.includes("entry"), "storage stays path and offset");

@@ -36,7 +36,10 @@ import {
 import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
 import {
   LIST_SCROLL_MAX_WAIT_MS,
+  clearListScroll,
   listScrollAnchorY,
+  listScrollLooksLikeUserMove,
+  listScrollMinY,
   listScrollRestoreTarget,
   listScrollShouldRelease,
   nearbyListScrollSettled,
@@ -77,6 +80,26 @@ function topVisibleListCard(): { id: string; top: number } | null {
     return { id, top: Math.round(rect.top) };
   }
   return null;
+}
+
+function trackedListCard(): { id: string; top: number } | null {
+  try {
+    const record = takeListScroll(window.sessionStorage);
+    if (record?.cardId) {
+      const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(record.cardId)}"]`);
+      if (node) return { id: record.cardId, top: Math.round(node.getBoundingClientRect().top) };
+    }
+  } catch {
+    // The card on screen is enough to tell a scroll from layout anchoring.
+  }
+  return topVisibleListCard();
+}
+
+function listCardScreenTop(cardId: string | null): number | null {
+  if (!cardId) return null;
+  const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(cardId)}"]`);
+  if (!node) return null;
+  return Math.round(node.getBoundingClientRect().top);
 }
 
 function listCardDocumentTop(cardId: string | undefined): number | null {
@@ -127,13 +150,31 @@ export function FixedListBody({
   const listScrollRestored = useRef(false);
   const listScrollStarted = useRef<number | null>(null);
   const listScrollMoved = useRef(false);
+  const listScrollBaselineId = useRef<string | null>(null);
+  const listScrollBaselineTop = useRef<number | null>(null);
+  const listScrollBaselineY = useRef<number | null>(null);
+  const listScrollIgnoreUntil = useRef(0);
   const [listScrollTick, setListScrollTick] = useState(0);
 
   useEffect(() => {
     function onPageHide() {
-      const record = rememberListScroll(window.location.pathname, window.scrollY, topVisibleListCard());
-      if (!record) return;
+      const sample = document.querySelector<HTMLElement>("[data-shop-id]");
+      const minY = listScrollMinY(sample ? sample.getBoundingClientRect().height : null);
       try {
+        if (window.scrollY < minY) {
+          clearListScroll(window.sessionStorage);
+          return;
+        }
+        const record = rememberListScroll(
+          window.location.pathname,
+          window.scrollY,
+          topVisibleListCard(),
+          sample ? sample.getBoundingClientRect().height : null,
+        );
+        if (!record) {
+          clearListScroll(window.sessionStorage);
+          return;
+        }
         writeListScroll(window.sessionStorage, record);
       } catch {
         // Private mode still has the browser's own scroll restoration.
@@ -145,22 +186,59 @@ export function FixedListBody({
 
   useEffect(() => {
     listScrollStarted.current = performance.now();
-    function onMove() {
+    function markMoved() {
       if (listScrollMoved.current) return;
       listScrollMoved.current = true;
       setListScrollTick((tick) => tick + 1);
     }
+    function adoptBaseline() {
+      const card = trackedListCard();
+      listScrollBaselineId.current = card?.id ?? null;
+      listScrollBaselineTop.current = card?.top ?? null;
+      listScrollBaselineY.current = window.scrollY;
+    }
+    function onScroll() {
+      if (listScrollMoved.current) return;
+      if (performance.now() < listScrollIgnoreUntil.current) {
+        adoptBaseline();
+        return;
+      }
+      const baselineId = listScrollBaselineId.current;
+      const currentTop = listCardScreenTop(baselineId);
+      if (!baselineId || currentTop == null) {
+        // The list swapped, or nothing was on screen yet. Adopt the new card.
+        adoptBaseline();
+        return;
+      }
+      const moved = listScrollLooksLikeUserMove({
+        cardId: baselineId,
+        cardTop: currentTop,
+        baselineCardId: baselineId,
+        baselineCardTop: listScrollBaselineTop.current,
+        scrollY: window.scrollY,
+        baselineScrollY: listScrollBaselineY.current,
+      });
+      if (!moved) listScrollBaselineY.current = window.scrollY;
+      if (moved) markMoved();
+    }
+    adoptBaseline();
     const options = { passive: true, capture: true } as const;
-    window.addEventListener("wheel", onMove, options);
-    window.addEventListener("touchstart", onMove, options);
-    window.addEventListener("touchmove", onMove, options);
-    window.addEventListener("keydown", onMove, options);
+    window.addEventListener("wheel", markMoved, options);
+    window.addEventListener("touchstart", markMoved, options);
+    window.addEventListener("touchmove", markMoved, options);
+    window.addEventListener("keydown", markMoved, options);
+    window.addEventListener("pointerdown", markMoved, options);
+    window.addEventListener("mousedown", markMoved, options);
+    window.addEventListener("scroll", onScroll, options);
     const timer = window.setTimeout(() => setListScrollTick((tick) => tick + 1), LIST_SCROLL_MAX_WAIT_MS);
     return () => {
-      window.removeEventListener("wheel", onMove, options);
-      window.removeEventListener("touchstart", onMove, options);
-      window.removeEventListener("touchmove", onMove, options);
-      window.removeEventListener("keydown", onMove, options);
+      window.removeEventListener("wheel", markMoved, options);
+      window.removeEventListener("touchstart", markMoved, options);
+      window.removeEventListener("touchmove", markMoved, options);
+      window.removeEventListener("keydown", markMoved, options);
+      window.removeEventListener("pointerdown", markMoved, options);
+      window.removeEventListener("mousedown", markMoved, options);
+      window.removeEventListener("scroll", onScroll, options);
       window.clearTimeout(timer);
     };
   }, []);
@@ -219,8 +297,18 @@ export function FixedListBody({
     if (y == null || !record) return;
     const top = listCardDocumentTop(record.cardId);
     const anchored = listScrollAnchorY(record, top);
+    listScrollIgnoreUntil.current = performance.now() + 80;
     window.scrollTo(0, anchored);
-    window.requestAnimationFrame(() => window.scrollTo(0, anchored));
+    window.requestAnimationFrame(() => {
+      listScrollIgnoreUntil.current = performance.now() + 80;
+      window.scrollTo(0, anchored);
+      const card = record.cardId
+        ? document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(record.cardId)}"]`)
+        : null;
+      listScrollBaselineId.current = record.cardId ?? null;
+      listScrollBaselineTop.current = card ? Math.round(card.getBoundingClientRect().top) : null;
+      listScrollBaselineY.current = window.scrollY;
+    });
   }, [scrollSettled, listScrollTick]);
 
   const pool = popularFallbackOn ? popularFallback : shops;

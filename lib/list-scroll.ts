@@ -15,6 +15,12 @@ export const LIST_SCROLL_KEY = "wain.listScroll.v1";
  */
 export const LIST_SCROLL_MAX_WAIT_MS = 8000;
 
+/** Scrolling less than about one card is still the top. Don't store a café for it. */
+export const LIST_SCROLL_MIN_Y = 160;
+
+/** Layout anchoring can nudge a card by a few pixels. A real scroll moves it further. */
+export const LIST_SCROLL_MOVE_TOLERANCE_PX = 32;
+
 export type ListScrollRecord = {
   path: string;
   /** Page scroll offset. Fallback when the card is not on screen. */
@@ -55,14 +61,27 @@ function cardAnchor(card: { id: string; top: number } | null | undefined): Pick<
   return { cardId: card.id, cardTop: Math.round(card.top) };
 }
 
+/** One card tall, or the default when the card has not been measured. */
+export function listScrollMinY(cardHeight: number | null): number {
+  if (cardHeight != null && Number.isFinite(cardHeight) && cardHeight > 0) {
+    return Math.max(64, Math.round(cardHeight));
+  }
+  return LIST_SCROLL_MIN_Y;
+}
+
+export function listScrollWorthSaving(scrollY: number, cardHeight: number | null = null): boolean {
+  return Number.isFinite(scrollY) && scrollY >= listScrollMinY(cardHeight);
+}
+
 /** Scroll to put back on this history entry. Café cards and home are ignored. */
 export function rememberListScroll(
   pathname: string,
   scrollY: number,
   card?: { id: string; top: number } | null,
+  cardHeight: number | null = null,
 ): ListScrollRecord | null {
   if (!isFixedListScrollPath(pathname)) return null;
-  if (!Number.isFinite(scrollY) || scrollY < 0) return null;
+  if (!listScrollWorthSaving(scrollY, cardHeight)) return null;
   return { path: normalizePath(pathname), y: Math.round(scrollY), ...cardAnchor(card) };
 }
 
@@ -84,6 +103,37 @@ export function readListScroll(raw: string | null): ListScrollRecord | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * The same card staying put while scrollY changes is layout anchoring, not a person.
+ * A different screen position for that card, or a scroll with no card to compare, is movement.
+ * A new card id means the list swapped; that is not movement either.
+ */
+export function listScrollLooksLikeUserMove(input: {
+  cardId: string | null;
+  cardTop: number | null;
+  baselineCardId: string | null;
+  baselineCardTop: number | null;
+  scrollY: number;
+  baselineScrollY: number | null;
+  tolerance?: number;
+}): boolean {
+  const tolerance = input.tolerance ?? LIST_SCROLL_MOVE_TOLERANCE_PX;
+  if (input.cardId && input.cardId !== input.baselineCardId) return false;
+  const cardDelta =
+    input.cardTop != null && input.baselineCardTop != null ? Math.abs(input.cardTop - input.baselineCardTop) : null;
+  const scrollDelta =
+    input.baselineScrollY != null ? Math.abs(input.scrollY - input.baselineScrollY) : null;
+  if (cardDelta != null && input.cardId) {
+    // Anchoring keeps the card still while scrollY changes. A layout jump
+    // moves the card while scrollY stays. A person moves both.
+    if (cardDelta <= tolerance) return false;
+    if (scrollDelta == null || scrollDelta <= tolerance) return false;
+    return true;
+  }
+  if (scrollDelta == null) return false;
+  return scrollDelta > tolerance;
 }
 
 /** Prefer the same card's place in the settled list. Otherwise use the saved offset. */
@@ -128,6 +178,15 @@ export function releaseListScroll(): void {
 /** A new leave saved a new offset. The next document may take it. */
 export function noteListScrollWrite(): void {
   held = undefined;
+}
+
+export function clearListScroll(storage: { removeItem(key: string): void }): void {
+  try {
+    storage.removeItem(LIST_SCROLL_KEY);
+  } catch {
+    // Already empty.
+  }
+  held = null;
 }
 
 export function writeListScroll(

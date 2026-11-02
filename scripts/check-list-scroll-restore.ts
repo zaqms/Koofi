@@ -58,6 +58,16 @@ async function browser(): Promise<Browser> {
 }
 
 async function prepare(page: Page, geoDelayMs: number): Promise<void> {
+  await page.context().addInitScript(() => {
+    try {
+      localStorage.setItem(
+        "wain_consent",
+        JSON.stringify({ v: 1, c: "denied", t: "2026-01-01T00:00:00.000Z" }),
+      );
+    } catch {
+      // Private mode still runs the scroll checks.
+    }
+  });
   await page.context().addInitScript((delay: number) => {
     const geo = navigator.geolocation;
     const original = geo.getCurrentPosition.bind(geo);
@@ -85,11 +95,6 @@ async function clearScrollTos(page: Page): Promise<void> {
   });
 }
 
-async function dismissConsent(page: Page): Promise<void> {
-  const accept = page.locator("[data-consent=accept]");
-  if (await accept.count()) await accept.first().click().catch(() => undefined);
-}
-
 async function visibleCafe(page: Page): Promise<string> {
   const href = await page.evaluate(() => {
     const link = [...document.querySelectorAll('a[href*="/en/c/"]')].find((anchor) => {
@@ -109,7 +114,6 @@ async function hardBackFrom(page: Page, savedY: number): Promise<void> {
     () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
     { timeout: 15000 },
   );
-  await dismissConsent(page);
   await page.evaluate((y) => window.scrollTo(0, y), savedY);
   await page.waitForTimeout(250);
   const href = await visibleCafe(page);
@@ -163,7 +167,7 @@ async function checkStale(chrome: Browser): Promise<void> {
   await context.close();
 }
 
-async function checkCancel(chrome: Browser, kind: "key" | "touch"): Promise<void> {
+async function checkCancel(chrome: Browser, kind: "key" | "touch" | "pointer"): Promise<void> {
   const context = await chrome.newContext({
     viewport: { width: 390, height: 844 },
     locale: "en-US",
@@ -175,9 +179,8 @@ async function checkCancel(chrome: Browser, kind: "key" | "touch"): Promise<void
   await hardBackFrom(page, 1190);
   await page.waitForTimeout(400);
   if (kind === "key") await page.keyboard.press("ArrowDown");
-  else {
-    await page.evaluate(() => window.dispatchEvent(new Event("touchstart")));
-  }
+  else if (kind === "pointer") await page.evaluate(() => window.dispatchEvent(new Event("pointerdown")));
+  else await page.evaluate(() => window.dispatchEvent(new Event("touchstart")));
   await page.waitForTimeout(4500);
   const tos = await scrollTos(page);
   assert(
@@ -249,7 +252,6 @@ async function checkCardAnchor(chrome: Browser): Promise<void> {
     () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
     { timeout: 15000 },
   );
-  await dismissConsent(page);
   await page.evaluate(() => window.scrollTo(0, 1190));
   await page.waitForTimeout(250);
   const href = await visibleCafe(page);
@@ -293,7 +295,6 @@ async function checkMissingCardFallsBack(chrome: Browser): Promise<void> {
     () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
     { timeout: 15000 },
   );
-  await dismissConsent(page);
   await page.evaluate(() => window.scrollTo(0, 1190));
   await page.waitForTimeout(250);
   const href = await visibleCafe(page);
@@ -330,7 +331,6 @@ async function checkTopDoesNotStore(chrome: Browser): Promise<void> {
     () => document.querySelector("[data-fixed-list-mode]")?.getAttribute("data-fixed-list-mode") === "distance",
     { timeout: 15000 },
   );
-  await dismissConsent(page);
   await page.evaluate(() => {
     sessionStorage.setItem(
       "wain.listScroll.v1",
@@ -376,6 +376,7 @@ async function main(): Promise<void> {
     await checkDelayedRestore(chrome);
     await checkCancel(chrome, "key");
     await checkCancel(chrome, "touch");
+    await checkCancel(chrome, "pointer");
     await checkProgrammaticScroll(chrome);
     await checkCardAnchor(chrome);
     await checkMissingCardFallsBack(chrome);

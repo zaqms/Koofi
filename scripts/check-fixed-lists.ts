@@ -83,6 +83,10 @@ assert(
 );
 assert(!listScrollWorthSaving(0) && !listScrollWorthSaving(40, 120), "less than one card is still the top");
 assert(
+  rememberListScroll("/en/coffee-shops/nearby", 150, { id: "woods-olaya", top: 40 }, 110) === null,
+  "leaving at 150px writes nothing",
+);
+assert(
   listScrollLooksLikeUserMove({
     cardId: "woods-olaya",
     cardTop: 90,

@@ -61,10 +61,10 @@ function cardAnchor(card: { id: string; top: number } | null | undefined): Pick<
   return { cardId: card.id, cardTop: Math.round(card.top) };
 }
 
-/** One card tall, or the default when the card has not been measured. */
+/** 160px, or one card when the card is taller than that. */
 export function listScrollMinY(cardHeight: number | null): number {
   if (cardHeight != null && Number.isFinite(cardHeight) && cardHeight > 0) {
-    return Math.max(64, Math.round(cardHeight));
+    return Math.max(LIST_SCROLL_MIN_Y, Math.round(cardHeight));
   }
   return LIST_SCROLL_MIN_Y;
 }

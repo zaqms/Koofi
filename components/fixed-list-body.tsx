@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { BrowseNeighborhoods } from "@/components/browse-neighborhoods";
 import { DirectoryCard } from "@/components/directory-card";
 import { FixedListPills } from "@/components/fixed-list-nav";
@@ -34,6 +34,20 @@ import {
   type NearbyExplainerState,
 } from "@/lib/fixed-list-ids";
 import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
+import {
+  LIST_SCROLL_MAX_WAIT_MS,
+  clearListScroll,
+  listScrollAnchorY,
+  listScrollLooksLikeUserMove,
+  listScrollMinY,
+  listScrollRestoreTarget,
+  listScrollShouldRelease,
+  nearbyListScrollSettled,
+  releaseListScroll,
+  rememberListScroll,
+  takeListScroll,
+  writeListScroll,
+} from "@/lib/list-scroll";
 import { isUsableVisitorOrigin } from "@/lib/place-coords";
 import { trackEvent } from "@/lib/track";
 import type { Language, Pin } from "@/lib/types";
@@ -53,6 +67,47 @@ type FixedListBodyProps = {
   popularFallback: DirectoryShop[];
   neighborhoodCandidates: readonly HomeNeighborhoodCandidate[];
 };
+
+/** Top card still on screen, with its top edge measured from the viewport. */
+function topVisibleListCard(): { id: string; top: number } | null {
+  const nodes = document.querySelectorAll<HTMLElement>("[data-shop-id]");
+  for (const node of nodes) {
+    const rect = node.getBoundingClientRect();
+    if (rect.bottom < 64) continue;
+    if (rect.top > window.innerHeight * 0.9) continue;
+    const id = node.getAttribute("data-shop-id") ?? "";
+    if (!/^[a-z0-9-]{1,80}$/.test(id)) continue;
+    return { id, top: Math.round(rect.top) };
+  }
+  return null;
+}
+
+function trackedListCard(): { id: string; top: number } | null {
+  try {
+    const record = takeListScroll(window.sessionStorage);
+    if (record?.cardId) {
+      const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(record.cardId)}"]`);
+      if (node) return { id: record.cardId, top: Math.round(node.getBoundingClientRect().top) };
+    }
+  } catch {
+    // The card on screen is enough to tell a scroll from layout anchoring.
+  }
+  return topVisibleListCard();
+}
+
+function listCardScreenTop(cardId: string | null): number | null {
+  if (!cardId) return null;
+  const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(cardId)}"]`);
+  if (!node) return null;
+  return Math.round(node.getBoundingClientRect().top);
+}
+
+function listCardDocumentTop(cardId: string | undefined): number | null {
+  if (!cardId) return null;
+  const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(cardId)}"]`);
+  if (!node) return null;
+  return node.getBoundingClientRect().top + window.scrollY;
+}
 
 function originFromVisitor(
   visitor: ReturnType<typeof usePeekVisitorLocation>,
@@ -92,6 +147,101 @@ export function FixedListBody({
   const [shown, setShown] = useState(FIXED_LIST_NEARBY_PAGE_SIZE);
   const [sort, setSort] = useState<FixedListSort>("popular");
   const [permission, setPermission] = useState<GeoPermission>("unknown");
+  const listScrollRestored = useRef(false);
+  const listScrollStarted = useRef<number | null>(null);
+  const listScrollMoved = useRef(false);
+  const listScrollBaselineId = useRef<string | null>(null);
+  const listScrollBaselineTop = useRef<number | null>(null);
+  const listScrollBaselineY = useRef<number | null>(null);
+  const listScrollIgnoreUntil = useRef(0);
+  const [listScrollTick, setListScrollTick] = useState(0);
+
+  useEffect(() => {
+    function onPageHide() {
+      const sample = document.querySelector<HTMLElement>("[data-shop-id]");
+      const minY = listScrollMinY(sample ? sample.getBoundingClientRect().height : null);
+      try {
+        if (window.scrollY < minY) {
+          clearListScroll(window.sessionStorage);
+          return;
+        }
+        const record = rememberListScroll(
+          window.location.pathname,
+          window.scrollY,
+          topVisibleListCard(),
+          sample ? sample.getBoundingClientRect().height : null,
+        );
+        if (!record) {
+          clearListScroll(window.sessionStorage);
+          return;
+        }
+        writeListScroll(window.sessionStorage, record);
+      } catch {
+        // Private mode still has the browser's own scroll restoration.
+      }
+    }
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, []);
+
+  useEffect(() => {
+    listScrollStarted.current = performance.now();
+    function markMoved() {
+      if (listScrollMoved.current) return;
+      listScrollMoved.current = true;
+      setListScrollTick((tick) => tick + 1);
+    }
+    function adoptBaseline() {
+      const card = trackedListCard();
+      listScrollBaselineId.current = card?.id ?? null;
+      listScrollBaselineTop.current = card?.top ?? null;
+      listScrollBaselineY.current = window.scrollY;
+    }
+    function onScroll() {
+      if (listScrollMoved.current) return;
+      if (performance.now() < listScrollIgnoreUntil.current) {
+        adoptBaseline();
+        return;
+      }
+      const baselineId = listScrollBaselineId.current;
+      const currentTop = listCardScreenTop(baselineId);
+      if (!baselineId || currentTop == null) {
+        // The list swapped, or nothing was on screen yet. Adopt the new card.
+        adoptBaseline();
+        return;
+      }
+      const moved = listScrollLooksLikeUserMove({
+        cardId: baselineId,
+        cardTop: currentTop,
+        baselineCardId: baselineId,
+        baselineCardTop: listScrollBaselineTop.current,
+        scrollY: window.scrollY,
+        baselineScrollY: listScrollBaselineY.current,
+      });
+      if (!moved) listScrollBaselineY.current = window.scrollY;
+      if (moved) markMoved();
+    }
+    adoptBaseline();
+    const options = { passive: true, capture: true } as const;
+    window.addEventListener("wheel", markMoved, options);
+    window.addEventListener("touchstart", markMoved, options);
+    window.addEventListener("touchmove", markMoved, options);
+    window.addEventListener("keydown", markMoved, options);
+    window.addEventListener("pointerdown", markMoved, options);
+    window.addEventListener("mousedown", markMoved, options);
+    window.addEventListener("scroll", onScroll, options);
+    const timer = window.setTimeout(() => setListScrollTick((tick) => tick + 1), LIST_SCROLL_MAX_WAIT_MS);
+    return () => {
+      window.removeEventListener("wheel", markMoved, options);
+      window.removeEventListener("touchstart", markMoved, options);
+      window.removeEventListener("touchmove", markMoved, options);
+      window.removeEventListener("keydown", markMoved, options);
+      window.removeEventListener("pointerdown", markMoved, options);
+      window.removeEventListener("mousedown", markMoved, options);
+      window.removeEventListener("scroll", onScroll, options);
+      window.clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     syncHideChainsAttribute(readHideChains());
@@ -109,6 +259,58 @@ export function FixedListBody({
 
   const located = listId === "nearby" && origin != null;
   const popularFallbackOn = listId === "nearby" && !located;
+  const scrollSettled = nearbyListScrollSettled({
+    listId,
+    located,
+    permission,
+    visitorStatus: visitor.status,
+  });
+
+  useLayoutEffect(() => {
+    if (listScrollRestored.current) return;
+    const elapsedMs = performance.now() - (listScrollStarted.current ?? performance.now());
+    let record = null;
+    try {
+      record = takeListScroll(window.sessionStorage);
+    } catch {
+      record = null;
+    }
+    let navigationType: string | null = null;
+    try {
+      const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+      navigationType = nav?.type ?? null;
+    } catch {
+      navigationType = null;
+    }
+    const decision = {
+      navigationType,
+      pathname: window.location.pathname,
+      record,
+      settled: scrollSettled,
+      elapsedMs,
+      userMoved: listScrollMoved.current,
+    };
+    if (!listScrollShouldRelease(decision)) return;
+    listScrollRestored.current = true;
+    releaseListScroll();
+    const y = listScrollRestoreTarget(decision);
+    if (y == null || !record) return;
+    const top = listCardDocumentTop(record.cardId);
+    const anchored = listScrollAnchorY(record, top);
+    listScrollIgnoreUntil.current = performance.now() + 80;
+    window.scrollTo(0, anchored);
+    window.requestAnimationFrame(() => {
+      listScrollIgnoreUntil.current = performance.now() + 80;
+      window.scrollTo(0, anchored);
+      const card = record.cardId
+        ? document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(record.cardId)}"]`)
+        : null;
+      listScrollBaselineId.current = record.cardId ?? null;
+      listScrollBaselineTop.current = card ? Math.round(card.getBoundingClientRect().top) : null;
+      listScrollBaselineY.current = window.scrollY;
+    });
+  }, [scrollSettled, listScrollTick]);
+
   const pool = popularFallbackOn ? popularFallback : shops;
   const chainCount = shops.filter((shop) => shop.isChain).length;
   // The popular-12 fallback has no chains, so Local only would do nothing there.

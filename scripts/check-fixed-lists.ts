@@ -41,6 +41,7 @@ import { chipSharePath, isFixedListChip, isStaticDirectoryChip } from "../lib/pr
 import {
   LIST_SCROLL_KEY,
   LIST_SCROLL_MAX_WAIT_MS,
+  listScrollAnchorY,
   listScrollRestoreTarget,
   nearbyListScrollSettled,
   releaseListScroll,
@@ -142,7 +143,30 @@ assert(
   }),
   "lists without the location swap can restore immediately",
 );
-assert(LIST_SCROLL_MAX_WAIT_MS <= 2000 && LIST_SCROLL_MAX_WAIT_MS >= 1500, "the restore wait is about two seconds");
+assert(LIST_SCROLL_MAX_WAIT_MS >= 7000 && LIST_SCROLL_MAX_WAIT_MS <= 9000, "the restore wait covers a slow high-accuracy fix");
+assert(
+  listScrollRestoreTarget({
+    navigationType: "back_forward",
+    pathname: "/en/coffee-shops/nearby",
+    record: { path: "/en/coffee-shops/nearby", y: 1190 },
+    settled: true,
+    elapsedMs: 3000,
+  }) === 1190,
+  "a location fix at 3 seconds still restores",
+);
+assert(
+  listScrollAnchorY({ path: "/en/coffee-shops/nearby", y: 1190, cardId: "woods-olaya", cardTop: 90 }, 1600) === 1510,
+  "a settled card puts that café back where it was on screen",
+);
+assert(
+  listScrollAnchorY({ path: "/en/coffee-shops/nearby", y: 1190, cardId: "woods-olaya", cardTop: 90 }, null) === 1190,
+  "a missing card falls back to the saved offset",
+);
+{
+  const withCard = rememberListScroll("/en/coffee-shops/nearby", 1190, { id: "woods-olaya", top: 88.4 });
+  assert(withCard?.cardId === "woods-olaya" && withCard.cardTop === 88, "the record keeps the catalog card id and its screen offset");
+  assert(!JSON.stringify(withCard).includes("lat") && !JSON.stringify(withCard).includes("lng"), "the card anchor is not a coordinate");
+}
 assert(
   listScrollRestoreTarget({
     navigationType: "back_forward",

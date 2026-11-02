@@ -9,12 +9,20 @@ import { chipSharePath } from "./product";
 
 export const LIST_SCROLL_KEY = "wain.listScroll.v1";
 
-/** Stop waiting for location and drop the offset. A late fix must not jump the page. */
-export const LIST_SCROLL_MAX_WAIT_MS = 1800;
+/**
+ * A fresh high-accuracy fix often takes more than two seconds.
+ * User input cancels sooner; this only drops a fix that never arrives.
+ */
+export const LIST_SCROLL_MAX_WAIT_MS = 8000;
 
 export type ListScrollRecord = {
   path: string;
+  /** Page scroll offset. Fallback when the card is not on screen. */
   y: number;
+  /** Catalog id of the top visible card. Not a place id and not a coordinate. */
+  cardId?: string;
+  /** That card's top edge, in pixels from the viewport top. */
+  cardTop?: number;
 };
 
 /**
@@ -40,24 +48,55 @@ export function isFixedListScrollPath(pathname: string): boolean {
   return FIXED_LIST_PATHS.has(normalizePath(pathname));
 }
 
+const CARD_ID_RE = /^[a-z0-9-]{1,80}$/;
+
+function cardAnchor(card: { id: string; top: number } | null | undefined): Pick<ListScrollRecord, "cardId" | "cardTop"> {
+  if (!card || !CARD_ID_RE.test(card.id) || !Number.isFinite(card.top)) return {};
+  return { cardId: card.id, cardTop: Math.round(card.top) };
+}
+
 /** Scroll to put back on this history entry. Café cards and home are ignored. */
-export function rememberListScroll(pathname: string, scrollY: number): ListScrollRecord | null {
+export function rememberListScroll(
+  pathname: string,
+  scrollY: number,
+  card?: { id: string; top: number } | null,
+): ListScrollRecord | null {
   if (!isFixedListScrollPath(pathname)) return null;
   if (!Number.isFinite(scrollY) || scrollY < 0) return null;
-  return { path: normalizePath(pathname), y: Math.round(scrollY) };
+  return { path: normalizePath(pathname), y: Math.round(scrollY), ...cardAnchor(card) };
 }
 
 export function readListScroll(raw: string | null): ListScrollRecord | null {
   if (!raw) return null;
   try {
-    const parsed = JSON.parse(raw) as { path?: unknown; y?: unknown };
+    const parsed = JSON.parse(raw) as { path?: unknown; y?: unknown; cardId?: unknown; cardTop?: unknown };
     if (!parsed || typeof parsed.path !== "string" || typeof parsed.y !== "number") return null;
     if (!isFixedListScrollPath(parsed.path)) return null;
     if (!Number.isFinite(parsed.y) || parsed.y < 0) return null;
-    return { path: normalizePath(parsed.path), y: Math.round(parsed.y) };
+    const record: ListScrollRecord = { path: normalizePath(parsed.path), y: Math.round(parsed.y) };
+    if (typeof parsed.cardId === "string" && CARD_ID_RE.test(parsed.cardId)) {
+      record.cardId = parsed.cardId;
+      if (typeof parsed.cardTop === "number" && Number.isFinite(parsed.cardTop)) {
+        record.cardTop = Math.round(parsed.cardTop);
+      }
+    }
+    return record;
   } catch {
     return null;
   }
+}
+
+/** Prefer the same card's place in the settled list. Otherwise use the saved offset. */
+export function listScrollAnchorY(record: ListScrollRecord, cardDocumentTop: number | null): number {
+  if (
+    record.cardId &&
+    typeof record.cardTop === "number" &&
+    cardDocumentTop != null &&
+    Number.isFinite(cardDocumentTop)
+  ) {
+    return Math.max(0, Math.round(cardDocumentTop - record.cardTop));
+  }
+  return Math.max(0, Math.round(record.y));
 }
 
 type ListScrollStorage = {
@@ -95,7 +134,15 @@ export function writeListScroll(
   storage: { setItem(key: string, value: string): void },
   record: ListScrollRecord,
 ): void {
-  storage.setItem(LIST_SCROLL_KEY, JSON.stringify({ path: record.path, y: record.y }));
+  const payload: { path: string; y: number; cardId?: string; cardTop?: number } = {
+    path: record.path,
+    y: record.y,
+  };
+  if (record.cardId && typeof record.cardTop === "number") {
+    payload.cardId = record.cardId;
+    payload.cardTop = record.cardTop;
+  }
+  storage.setItem(LIST_SCROLL_KEY, JSON.stringify(payload));
   noteListScrollWrite();
 }
 

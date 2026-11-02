@@ -36,6 +36,7 @@ import {
 import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
 import {
   LIST_SCROLL_MAX_WAIT_MS,
+  listScrollAnchorY,
   listScrollRestoreTarget,
   listScrollShouldRelease,
   nearbyListScrollSettled,
@@ -63,6 +64,27 @@ type FixedListBodyProps = {
   popularFallback: DirectoryShop[];
   neighborhoodCandidates: readonly HomeNeighborhoodCandidate[];
 };
+
+/** Top card still on screen, with its top edge measured from the viewport. */
+function topVisibleListCard(): { id: string; top: number } | null {
+  const nodes = document.querySelectorAll<HTMLElement>("[data-shop-id]");
+  for (const node of nodes) {
+    const rect = node.getBoundingClientRect();
+    if (rect.bottom < 64) continue;
+    if (rect.top > window.innerHeight * 0.9) continue;
+    const id = node.getAttribute("data-shop-id") ?? "";
+    if (!/^[a-z0-9-]{1,80}$/.test(id)) continue;
+    return { id, top: Math.round(rect.top) };
+  }
+  return null;
+}
+
+function listCardDocumentTop(cardId: string | undefined): number | null {
+  if (!cardId) return null;
+  const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(cardId)}"]`);
+  if (!node) return null;
+  return node.getBoundingClientRect().top + window.scrollY;
+}
 
 function originFromVisitor(
   visitor: ReturnType<typeof usePeekVisitorLocation>,
@@ -109,7 +131,7 @@ export function FixedListBody({
 
   useEffect(() => {
     function onPageHide() {
-      const record = rememberListScroll(window.location.pathname, window.scrollY);
+      const record = rememberListScroll(window.location.pathname, window.scrollY, topVisibleListCard());
       if (!record) return;
       try {
         writeListScroll(window.sessionStorage, record);
@@ -194,9 +216,11 @@ export function FixedListBody({
     listScrollRestored.current = true;
     releaseListScroll();
     const y = listScrollRestoreTarget(decision);
-    if (y == null) return;
-    window.scrollTo(0, y);
-    window.requestAnimationFrame(() => window.scrollTo(0, y));
+    if (y == null || !record) return;
+    const top = listCardDocumentTop(record.cardId);
+    const anchored = listScrollAnchorY(record, top);
+    window.scrollTo(0, anchored);
+    window.requestAnimationFrame(() => window.scrollTo(0, anchored));
   }, [scrollSettled, listScrollTick]);
 
   const pool = popularFallbackOn ? popularFallback : shops;

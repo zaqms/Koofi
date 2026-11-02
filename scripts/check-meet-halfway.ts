@@ -74,6 +74,7 @@ import {
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
   meetHalfwayAddedNotice,
+  meetHalfwayAddedStatus,
   locationsCentroid,
   meetHalfwayChatPicks,
   restoreHalfwayPicks,
@@ -278,7 +279,10 @@ assert(
     meetHalfwayAddedNotice(11, "ar") === "انضافت 11 قهوة" &&
     meetHalfwayAddedNotice(1, "en") === "1 more café added" &&
     meetHalfwayAddedNotice(2, "en") === "2 more cafés added" &&
-    meetHalfwayAddedNotice(3, "en") === "3 more cafés added",
+    meetHalfwayAddedNotice(3, "en") === "3 more cafés added" &&
+    meetHalfwayAddedStatus(2, "en", false) === "2 more cafés added" &&
+    meetHalfwayAddedStatus(2, "en", true) === "2 more cafés added. That's all in this area." &&
+    meetHalfwayAddedStatus(2, "ar", true) === "انضافت قهوتين. ما في أكثر بهالمنطقة",
   "keyboard show-more announces 1, 2, and 3+ with café agreement",
 );
 
@@ -1435,10 +1439,10 @@ assert(
     chatUi.includes("copy.meetHalfwayResultsHeading[landing]") &&
     chatUi.includes('role="status"') &&
     chatUi.includes('aria-live="polite"') &&
-    chatUi.includes("meetHalfwayAddedNotice") &&
+    chatUi.includes("meetHalfwayAddedStatus") &&
     chatUi.includes("event.detail === 0") &&
     chatUi.includes('querySelectorAll("[data-halfway-card]")') &&
-    chatUi.includes("link.focus()") &&
+    chatUi.includes("link.focus({ preventScroll: true })") &&
     chatUi.includes("halfwayMoreAfterRestore") &&
     chatUi.includes("halfwayPinsMemory") &&
     chatUi.includes("pendingKeyboardFocus") &&
@@ -1584,6 +1588,18 @@ assert(
 assert(
   !chatUi.includes("halfwayLocationsRef.current ?"),
   "غيرها is not gated on a remount-volatile ref",
+);
+assert(
+  chatUi.includes(
+    "rememberHalfwayPins(threadKey, heldPins ?? lastHalfwayLocations(messages))",
+  ) &&
+    !chatUi.includes(
+      "rememberHalfwayPins(threadKey, lastHalfwayLocations(messages) ?? heldPins)",
+    ) &&
+    !chatUi.includes('addEventListener("focus",') &&
+    !chatUi.includes("__wainHalfwayHeld") &&
+    chatUi.includes('role="status" aria-live="polite"'),
+  "café click prefers held pins; focus does not reread the invite; looking is announced",
 );
 assert(
   chat.includes("halfwayMore") && chat.includes("meetHalfwayReply"),

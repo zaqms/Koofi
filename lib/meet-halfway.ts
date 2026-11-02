@@ -297,6 +297,17 @@ export function meetHalfwayAddedNotice(count: number, language: Language): strin
   return `انضافت ${n} قهاوي`;
 }
 
+/** Final add: the count, then the existing end line, so keyboard hears both once. */
+export function meetHalfwayAddedStatus(
+  count: number,
+  language: Language,
+  exhausted: boolean,
+): string {
+  const added = meetHalfwayAddedNotice(count, language);
+  if (!exhausted) return added;
+  return `${added}. ${copy.meetHalfwayNoMore[language]}`;
+}
+
 /**
  * Results pages, oldest first. Show more appends the next ranked batch
  * and keeps cafés already on screen. Duplicate ids (a reroll of the same

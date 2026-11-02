@@ -874,8 +874,6 @@ export function Chat({
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
   const inviteGetAtRef = useRef(0);
-  /** Window scroll at the moment Show more was activated. */
-  const anchorScrollY = useRef<number | null>(null);
   const sendMeetHalfwayRef = useRef<
     (
       locations: HalfwayPinInput[],
@@ -2071,9 +2069,9 @@ export function Chat({
         halfwayMore: halfwayResult?.halfwayMore,
         paged: halfwayResult?.halfwayPaged,
       }) === "exhausted";
-    // Keyboard hears the end line in the status region. A pointer tap focuses
-    // the end note itself, so the status line stays the count only.
-    const text = meetHalfwayAddedStatus(added, landing, exhausted && keyboard);
+    // Count, then the existing end line, so the live region reads them in that
+    // order. Focusing the end note as well would speak it first.
+    const text = meetHalfwayAddedStatus(added, landing, exhausted);
     setHalfwayAddedNotice((current) => (current === text ? `${text} ` : text));
   }, [busy, halfwayResult, halfwayVisiblePicks, landing]);
 
@@ -2103,7 +2101,6 @@ export function Chat({
     const wasVisible = showMoreButtonWasVisible.current;
     showMoreButtonWasVisible.current = showMoreButtonVisible;
     if (busy) return;
-    const y = anchorScrollY.current;
     const root = listRef.current;
     if (pendingKeyboardFocus.current && pendingAddedFrom.current != null) {
       const link = root?.querySelectorAll("[data-halfway-card]")[pendingAddedFrom.current];
@@ -2111,28 +2108,13 @@ export function Chat({
     }
     if (wasVisible && !showMoreButtonVisible && pendingPointerFocusEnd.current) {
       pendingPointerFocusEnd.current = false;
-      // The heading is at the top. Focusing it scrolls the new cafés away.
-      // The end note replaces the button and sits outside the live region.
-      const end = root?.querySelector("[data-halfway-end]");
-      if (end instanceof HTMLElement) end.focus({ preventScroll: true });
-      else {
-        const cards = root?.querySelectorAll("[data-halfway-card]");
-        const last = cards?.[cards.length - 1];
-        if (last instanceof HTMLElement) last.focus({ preventScroll: true });
-      }
+      // The status line already says the count and the end copy. Focusing the
+      // end note would speak that copy first. The last new card keeps focus
+      // off the page body without moving the viewport.
+      const cards = root?.querySelectorAll("[data-halfway-card]");
+      const last = cards?.[cards.length - 1];
+      if (last instanceof HTMLElement) last.focus({ preventScroll: true });
     }
-    if (y != null && y > 0) {
-      // A restored page reapplies its saved scroll when the list grows, and
-      // removing the focused button can jump to the top. Put the visitor back
-      // before the next paint, and keep that spot while the watcher settles.
-      const until = performance.now() + 900;
-      const keep = () => {
-        if (window.scrollY + 80 < y) window.scrollTo(0, y);
-        if (performance.now() < until) requestAnimationFrame(keep);
-      };
-      keep();
-    }
-    if (pendingAddedFrom.current == null) anchorScrollY.current = null;
   }, [busy, showMoreButtonVisible]);
 
   useEffect(() => {
@@ -2683,7 +2665,6 @@ export function Chat({
               if (moreLockRef.current || inFlightRef.current) return;
               if (halfwayResult?.halfwayMore === false) return;
               moreLockRef.current = true;
-              anchorScrollY.current = window.scrollY;
               const keyboard = event.detail === 0;
               pendingPointerFocusEnd.current = !keyboard;
               const from = halfwayVisiblePicks.length;

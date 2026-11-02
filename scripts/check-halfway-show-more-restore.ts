@@ -250,10 +250,14 @@ async function restoredShowMore(
     throw error;
   }
   await page.locator("[data-halfway-results]").getByText("•").waitFor({ timeout: 10000 });
-  assert(
-    (await page.locator("[data-halfway-results]").getAttribute("aria-live")) == null,
-    "results div is a live region",
-  );
+  {
+    const results = page.locator("[data-halfway-results]");
+    assertResultsQuiet(
+      await results.getAttribute("aria-live"),
+      await results.getAttribute("role"),
+      input.host ? "host" : "guest",
+    );
+  }
   assert(
     ((await page.locator("[data-halfway-looking]").textContent()) ?? "").trim() === "",
     "looking live region is missing or not empty while idle",
@@ -282,9 +286,14 @@ async function restoredShowMore(
     samePins(more[0], [hostPin, guestPin]),
     `${input.host ? "host" : "guest"} Show more pins ${JSON.stringify(more[0]?.halfway?.locations)}`,
   );
+  await page.waitForFunction(
+    (before) => document.querySelectorAll("[data-halfway-card]").length > before,
+    cardsBefore,
+    { timeout: 15000 },
+  );
   const added = (await page.locator("[data-halfway-card]").count()) - cardsBefore;
   assert(added > 0, `${input.host ? "host" : "guest"} Show more added no cafés`);
-  const expected = meetHalfwayAddedStatus(added, "ar", Boolean(input.keyboard));
+  const expected = meetHalfwayAddedStatus(added, "ar", true);
   try {
     await page.waitForFunction(
       (want) => document.querySelector("[data-halfway-status]")?.textContent?.trim() === want,
@@ -301,10 +310,10 @@ async function restoredShowMore(
       { timeout: 15000 },
     );
   } else {
-    await page.waitForFunction(
-      () => document.activeElement?.hasAttribute("data-halfway-end") === true,
-      { timeout: 15000 },
-    );
+    await page.waitForFunction(() => {
+      const cards = [...document.querySelectorAll("[data-halfway-card]")];
+      return cards.length > 0 && document.activeElement === cards[cards.length - 1];
+    }, { timeout: 15000 });
   }
   assert(
     await page.evaluate(() => document.activeElement !== document.body),
@@ -354,16 +363,22 @@ async function failedInviteReadHidesShowMore(
       res.status() >= 400,
     { timeout: 20000 },
   );
+  // A failed assertion must not leave this promise rejecting with no handler.
+  nonOk.catch(() => {});
   await page.goto(`${base}/h/${created.id}`, { waitUntil: "domcontentloaded" });
   await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
   assert(
     (await page.locator("[data-halfway-show-more]").count()) === 0,
     "Show more was visible before the invite read settled",
   );
-  assert(
-    (await page.locator("[data-halfway-results]").getAttribute("aria-live")) == null,
-    "results div is a live region",
-  );
+  {
+    const results = page.locator("[data-halfway-results]");
+    assertResultsQuiet(
+      await results.getAttribute("aria-live"),
+      await results.getAttribute("role"),
+      "short invite",
+    );
+  }
   const waited = Date.now();
   while (inviteGets < 1 && Date.now() - waited < 5000) {
     await page.waitForTimeout(50);
@@ -625,12 +640,19 @@ function assertSourceGuards() {
   const tagStart = chatSrc.lastIndexOf("<div", at);
   const tag = chatSrc.slice(tagStart, chatSrc.indexOf(">", at) + 1);
   assert(!tag.includes("aria-live"), "results div must not be a live region");
+  assert(!/\brole\s*=\s*["'](?:log|status)["']/.test(tag), "results div must not be a log or status");
   assert(
     chatSrc.includes("inviteGetAtRef.current < 30_000"),
     "invite read must stay throttled to 30s",
   );
-  assert(chatSrc.includes("preventScroll: true"), "show-more focus must not scroll");
   assert(!chatSrc.includes("heading.focus("), "final add must not focus the heading");
+}
+
+function assertResultsQuiet(live: string | null, role: string | null, label: string) {
+  assert(
+    live == null && role !== "log" && role !== "status",
+    `${label} results div is a live region (${live ?? "none"}/${role ?? "none"})`,
+  );
 }
 
 async function finalAddKeepsScroll(
@@ -665,10 +687,16 @@ async function finalAddKeepsScroll(
     await page.goto(`${base}${href}`, { waitUntil: "domcontentloaded" });
     const button = page.locator("[data-halfway-show-more]");
     await button.waitFor({ timeout: 20000 });
-    assert(
-      (await page.locator("[data-halfway-results]").getAttribute("aria-live")) == null,
-      `${label} results div is a live region`,
+    const results = page.locator("[data-halfway-results]");
+    assertResultsQuiet(
+      await results.getAttribute("aria-live"),
+      await results.getAttribute("role"),
+      label,
     );
+    // This fixture restores a snapshot whose saved scroll is 0. The restore
+    // watcher reapplies that for about 800ms after load, which is not a
+    // show-more scroll. Let it finish, then measure the add itself.
+    await page.waitForTimeout(1000);
     const before = await page.evaluate(() => {
       const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
       window.scrollTo(0, max);
@@ -699,32 +727,33 @@ async function finalAddKeepsScroll(
       () => document.querySelector("[data-halfway-show-more]") == null,
       { timeout: 15000 },
     );
-    await page.waitForTimeout(300);
-    const after = await page.evaluate(() => ({
-      y: window.scrollY,
-      height: document.documentElement.scrollHeight,
-      inner: window.innerHeight,
-      focus: document.activeElement?.getAttribute("data-halfway-end") != null
-        ? "end"
-        : document.activeElement?.hasAttribute("data-halfway-card")
-          ? "card"
-          : document.activeElement?.hasAttribute("data-halfway-heading")
-            ? "heading"
-            : document.activeElement?.tagName ?? "none",
-    }));
+    const appeared = Date.now();
+    const afterAdd = await page.evaluate(() => window.scrollY);
     assert(
-      after.y > 150,
-      `${label} scrollY ${before} → ${after.y} focus ${after.focus} height ${after.height} inner ${after.inner}`,
+      Math.abs(afterAdd - before) < 48,
+      `${label} scrollY ${before} → ${afterAdd}`,
     );
-    if (item.keyboard) {
+    for (const wheelAt of [80, 300, 600]) {
+      const elapsed = Date.now() - appeared;
+      if (wheelAt > elapsed) await page.waitForTimeout(wheelAt - elapsed);
+      const moved = await page.evaluate(() => {
+        window.scrollTo(0, document.documentElement.scrollHeight);
+        const from = window.scrollY;
+        const delta = -Math.min(500, from);
+        const node = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2) ?? document.body;
+        node.dispatchEvent(new WheelEvent("wheel", { deltaY: delta, bubbles: true, cancelable: true }));
+        window.scrollBy(0, delta);
+        return { from, y: window.scrollY };
+      });
+      await page.waitForTimeout(400);
+      const later = await page.evaluate(() => window.scrollY);
       assert(
-        await page.evaluate(() => document.activeElement?.hasAttribute("data-halfway-card") === true),
-        `${label} focus left the new card`,
+        moved.from - moved.y >= 80,
+        `${label} wheel at ${wheelAt}ms did not move (${moved.from} → ${moved.y})`,
       );
-    } else {
       assert(
-        await page.evaluate(() => document.activeElement?.hasAttribute("data-halfway-end") === true),
-        `${label} focus left the end note`,
+        later <= moved.y + 24,
+        `${label} wheel at ${wheelAt}ms was undone (${moved.from} → ${moved.y} → ${later})`,
       );
     }
     await context.close();

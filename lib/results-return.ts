@@ -1080,10 +1080,93 @@ export function onCafeBackClick(event: {
 
 let scrollRestoreToken = 0;
 
+/** A scroll this close to the last restore write was ours, not the visitor. */
+const RESTORE_SCROLL_TOLERANCE = 4;
+
 function applyResultsScroll(scrollY: number, listScroll: number): void {
   window.scrollTo(0, scrollY);
   const list = document.querySelector("[data-halfway-results]");
   if (list instanceof HTMLElement && listScroll > 0) list.scrollTop = listScroll;
+}
+
+/**
+ * Keep the saved position through late layout, until the visitor scrolls.
+ * Wheel, touch, pointer, or a key ends it, as does any scroll this restore
+ * did not just write.
+ */
+function watchRestoredScroll(input: {
+  token: number;
+  targetY: number;
+  listScroll: number;
+}): void {
+  let stopped = false;
+  let applying = false;
+  let programmaticY = window.scrollY;
+  let programmaticList = 0;
+  const resultsList = () => document.querySelector("[data-halfway-results]");
+  const stop = () => {
+    if (stopped) return;
+    stopped = true;
+    observer.disconnect();
+    window.clearTimeout(timer);
+    window.removeEventListener("wheel", stop, true);
+    window.removeEventListener("touchstart", stop, true);
+    window.removeEventListener("pointerdown", stop, true);
+    window.removeEventListener("keydown", stop, true);
+    window.removeEventListener("scroll", onScroll, true);
+  };
+  const onScroll = (event: Event) => {
+    if (stopped || applying || input.token !== scrollRestoreToken) {
+      if (input.token !== scrollRestoreToken) stop();
+      return;
+    }
+    const target = event.target;
+    if (target === document || target === document.documentElement || target === document.body) {
+      if (Math.abs(window.scrollY - programmaticY) > RESTORE_SCROLL_TOLERANCE) stop();
+      return;
+    }
+    if (target instanceof HTMLElement && target.hasAttribute("data-halfway-results")) {
+      if (Math.abs(target.scrollTop - programmaticList) > RESTORE_SCROLL_TOLERANCE) stop();
+    }
+  };
+  const apply = () => {
+    if (stopped || input.token !== scrollRestoreToken) return;
+    applying = true;
+    window.scrollTo(0, input.targetY);
+    programmaticY = window.scrollY;
+    const list = resultsList();
+    if (list instanceof HTMLElement && input.listScroll > 0) {
+      list.scrollTop = input.listScroll;
+      programmaticList = list.scrollTop;
+    }
+    applying = false;
+  };
+  const root = document.documentElement;
+  let pageHeight = root.scrollHeight;
+  const initialList = resultsList();
+  let listHeightSeen = initialList instanceof HTMLElement ? initialList.scrollHeight : 0;
+  const observer = new ResizeObserver(() => {
+    if (stopped || input.token !== scrollRestoreToken) {
+      stop();
+      return;
+    }
+    const nextPage = root.scrollHeight;
+    const list = resultsList();
+    const nextList = list instanceof HTMLElement ? list.scrollHeight : 0;
+    if (nextPage === pageHeight && nextList === listHeightSeen) return;
+    pageHeight = nextPage;
+    listHeightSeen = nextList;
+    apply();
+  });
+  window.addEventListener("wheel", stop, { capture: true, passive: true });
+  window.addEventListener("touchstart", stop, { capture: true, passive: true });
+  window.addEventListener("pointerdown", stop, { capture: true, passive: true });
+  window.addEventListener("keydown", stop, { capture: true });
+  window.addEventListener("scroll", onScroll, { capture: true, passive: true });
+  apply();
+  observer.observe(root);
+  if (initialList instanceof HTMLElement) observer.observe(initialList);
+  const timer = window.setTimeout(stop, 800);
 }
 
 /**
@@ -1119,9 +1202,29 @@ export function restoreResultsScroll(): void {
   const cardCount = snapshot?.cardCount ?? 0;
   const token = ++scrollRestoreToken;
   const started = performance.now();
+  let cancelled = false;
+  const cancel = () => {
+    cancelled = true;
+  };
+  window.addEventListener("wheel", cancel, { capture: true, passive: true });
+  window.addEventListener("touchstart", cancel, { capture: true, passive: true });
+  window.addEventListener("pointerdown", cancel, { capture: true, passive: true });
+  window.addEventListener("keydown", cancel, { capture: true });
+  const dropCancel = () => {
+    window.removeEventListener("wheel", cancel, true);
+    window.removeEventListener("touchstart", cancel, true);
+    window.removeEventListener("pointerdown", cancel, true);
+    window.removeEventListener("keydown", cancel, true);
+  };
   const tick = () => {
-    if (token !== scrollRestoreToken) return;
-    if (storageHref(currentResultsHref()) !== href) return;
+    if (cancelled || token !== scrollRestoreToken) {
+      dropCancel();
+      return;
+    }
+    if (storageHref(currentResultsHref()) !== href) {
+      dropCancel();
+      return;
+    }
     const cards = renderedCardCount();
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     const list = document.querySelector("[data-halfway-results]");
@@ -1130,30 +1233,18 @@ export function restoreResultsScroll(): void {
     const pageReady = targetY <= 0 || maxScroll + 2 >= targetY;
     const listReady = listScroll <= 0 || listHeight + 2 >= listScroll;
     if (cardsReady && pageReady && listReady) {
-      applyResultsScroll(targetY, listScroll);
-      const root = document.documentElement;
-      let pageHeight = root.scrollHeight;
-      let listHeightSeen = list instanceof HTMLElement ? list.scrollHeight : 0;
-      if (typeof ResizeObserver === "undefined") return;
-      const observer = new ResizeObserver(() => {
-        if (token !== scrollRestoreToken) {
-          observer.disconnect();
-          return;
-        }
-        const nextPage = root.scrollHeight;
-        const nextList = list instanceof HTMLElement ? list.scrollHeight : 0;
-        if (nextPage === pageHeight && nextList === listHeightSeen) return;
-        pageHeight = nextPage;
-        listHeightSeen = nextList;
+      dropCancel();
+      if (cancelled) return;
+      if (typeof ResizeObserver === "undefined") {
         applyResultsScroll(targetY, listScroll);
-      });
-      observer.observe(root);
-      if (list instanceof HTMLElement) observer.observe(list);
-      window.setTimeout(() => observer.disconnect(), 800);
+        return;
+      }
+      watchRestoredScroll({ token, targetY, listScroll });
       return;
     }
     if (performance.now() - started > 2500) {
-      applyResultsScroll(targetY, listScroll);
+      dropCancel();
+      if (!cancelled) applyResultsScroll(targetY, listScroll);
       return;
     }
     requestAnimationFrame(tick);

@@ -871,11 +871,11 @@ export function Chat({
    * that discovers the miss.
    */
   const [halfwayPinsPending, setHalfwayPinsPending] = useState(false);
-  /** True when this pointer add's status line already includes the end copy. */
-  const pointerEndInStatus = useRef(false);
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
   const inviteGetAtRef = useRef(0);
+  /** Window scroll at the moment Show more was activated. */
+  const anchorScrollY = useRef<number | null>(null);
   const sendMeetHalfwayRef = useRef<
     (
       locations: HalfwayPinInput[],
@@ -2071,12 +2071,10 @@ export function Chat({
         halfwayMore: halfwayResult?.halfwayMore,
         paged: halfwayResult?.halfwayPaged,
       }) === "exhausted";
-    pointerEndInStatus.current = exhausted && !keyboard;
-    const text = meetHalfwayAddedStatus(added, landing, exhausted);
+    // Keyboard hears the end line in the status region. A pointer tap focuses
+    // the end note itself, so the status line stays the count only.
+    const text = meetHalfwayAddedStatus(added, landing, exhausted && keyboard);
     setHalfwayAddedNotice((current) => (current === text ? `${text} ` : text));
-    if (!keyboard) return;
-    const link = listRef.current?.querySelectorAll("[data-halfway-card]")[from];
-    if (link instanceof HTMLElement) link.focus();
   }, [busy, halfwayResult, halfwayVisiblePicks, landing]);
 
   useEffect(() => {
@@ -2101,28 +2099,41 @@ export function Chat({
       paged: halfwayResult?.halfwayPaged,
     }) === "more";
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const wasVisible = showMoreButtonWasVisible.current;
     showMoreButtonWasVisible.current = showMoreButtonVisible;
-    if (!wasVisible || showMoreButtonVisible) return;
-    if (!pendingPointerFocusEnd.current) return;
-    pendingPointerFocusEnd.current = false;
+    if (busy) return;
+    const y = anchorScrollY.current;
     const root = listRef.current;
-    const heading = root?.querySelector("[data-halfway-heading]");
-    // The status line already speaks the end copy. Focusing that line, or the
-    // visible end message, would read it again. Park on the heading instead.
-    if (pointerEndInStatus.current) {
-      pointerEndInStatus.current = false;
-      if (heading instanceof HTMLElement) heading.focus();
-      return;
+    if (pendingKeyboardFocus.current && pendingAddedFrom.current != null) {
+      const link = root?.querySelectorAll("[data-halfway-card]")[pendingAddedFrom.current];
+      if (link instanceof HTMLElement) link.focus({ preventScroll: true });
     }
-    const end = root?.querySelector("[data-halfway-end]");
-    if (end instanceof HTMLElement) {
-      end.focus();
-      return;
+    if (wasVisible && !showMoreButtonVisible && pendingPointerFocusEnd.current) {
+      pendingPointerFocusEnd.current = false;
+      // The heading is at the top. Focusing it scrolls the new cafés away.
+      // The end note replaces the button and sits outside the live region.
+      const end = root?.querySelector("[data-halfway-end]");
+      if (end instanceof HTMLElement) end.focus({ preventScroll: true });
+      else {
+        const cards = root?.querySelectorAll("[data-halfway-card]");
+        const last = cards?.[cards.length - 1];
+        if (last instanceof HTMLElement) last.focus({ preventScroll: true });
+      }
     }
-    if (heading instanceof HTMLElement) heading.focus();
-  }, [showMoreButtonVisible]);
+    if (y != null && y > 0) {
+      // A restored page reapplies its saved scroll when the list grows, and
+      // removing the focused button can jump to the top. Put the visitor back
+      // before the next paint, and keep that spot while the watcher settles.
+      const until = performance.now() + 900;
+      const keep = () => {
+        if (window.scrollY + 80 < y) window.scrollTo(0, y);
+        if (performance.now() < until) requestAnimationFrame(keep);
+      };
+      keep();
+    }
+    if (pendingAddedFrom.current == null) anchorScrollY.current = null;
+  }, [busy, showMoreButtonVisible]);
 
   useEffect(() => {
     // Manual Search scrolls the document. Pinning this nested overflow
@@ -2305,56 +2316,65 @@ export function Chat({
 
   useEffect(() => {
     if (!showHalfwayResults || halfwayPinsBlocked) return;
-    const liveMessages = messagesRef.current;
-    if (
-      resolveHalfwayMorePins({
-        restored: lastHalfwayLocations(liveMessages),
-        remembered: halfwayPinsMemory.get(threadKey) ?? null,
-        invite: halfwayInvite?.locations ?? null,
-      })
-    ) {
-      if (halfwayPinsPending) setHalfwayPinsPending(false);
-      return;
-    }
-    const inviteId = halfwayInvite?.id ?? halfwayIdFromPath();
-    if (!inviteId) {
-      if (halfwayPinsPending) setHalfwayPinsPending(false);
-      return;
-    }
-    const now = Date.now();
-    if (now - inviteGetAtRef.current < 30_000) return;
-    inviteGetAtRef.current = now;
-    const generation = now;
-    void (async () => {
-      let failed = false;
-      try {
-        const response = await fetch(
-          `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
-          { cache: "no-store" },
-        );
-        if (inviteGetAtRef.current !== generation) return;
-        if (!response.ok) {
-          failed = true;
-          return;
-        }
-        const data = (await response.json()) as HalfwayOverlayResponse;
-        const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
-        if (inviteGetAtRef.current !== generation) return;
-        if (!pins) {
-          failed = true;
-          return;
-        }
-        halfwayLocationsRef.current = pins;
-        rememberHalfwayPins(threadKey, pins);
-        setHalfwayPinsBlocked(false);
-      } catch {
-        if (inviteGetAtRef.current === generation) failed = true;
-      } finally {
-        if (inviteGetAtRef.current !== generation) return;
-        if (failed) setHalfwayPinsBlocked(true);
-        setHalfwayPinsPending(false);
+    const run = () => {
+      const liveMessages = messagesRef.current;
+      if (
+        resolveHalfwayMorePins({
+          restored: lastHalfwayLocations(liveMessages),
+          remembered: halfwayPinsMemory.get(threadKey) ?? null,
+          invite: halfwayInvite?.locations ?? null,
+        })
+      ) {
+        if (halfwayPinsPending) setHalfwayPinsPending(false);
+        return;
       }
-    })();
+      const inviteId = halfwayInvite?.id ?? halfwayIdFromPath();
+      if (!inviteId) {
+        if (halfwayPinsPending) setHalfwayPinsPending(false);
+        return;
+      }
+      const now = Date.now();
+      if (now - inviteGetAtRef.current < 30_000) return;
+      inviteGetAtRef.current = now;
+      const generation = now;
+      void (async () => {
+        let failed = false;
+        try {
+          const response = await fetch(
+            `/api/halfway/invite?id=${encodeURIComponent(inviteId)}`,
+            { cache: "no-store" },
+          );
+          if (inviteGetAtRef.current !== generation) return;
+          if (!response.ok) {
+            failed = true;
+            return;
+          }
+          const data = (await response.json()) as HalfwayOverlayResponse;
+          const pins = resolveHalfwayMorePins({ invite: overlayPins(data.locations) });
+          if (inviteGetAtRef.current !== generation) return;
+          if (!pins) {
+            failed = true;
+            return;
+          }
+          halfwayLocationsRef.current = pins;
+          rememberHalfwayPins(threadKey, pins);
+          setHalfwayPinsBlocked(false);
+        } catch {
+          if (inviteGetAtRef.current === generation) failed = true;
+        } finally {
+          if (inviteGetAtRef.current !== generation) return;
+          if (failed) setHalfwayPinsBlocked(true);
+          setHalfwayPinsPending(false);
+        }
+      })();
+    };
+    run();
+    const onVisible = () => {
+      if (document.visibilityState === "hidden") return;
+      run();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
   }, [showHalfwayResults, halfwayPinsBlocked, halfwayInvite, threadKey]);
 
   useLayoutEffect(() => {
@@ -2663,6 +2683,7 @@ export function Chat({
               if (moreLockRef.current || inFlightRef.current) return;
               if (halfwayResult?.halfwayMore === false) return;
               moreLockRef.current = true;
+              anchorScrollY.current = window.scrollY;
               const keyboard = event.detail === 0;
               pendingPointerFocusEnd.current = !keyboard;
               const from = halfwayVisiblePicks.length;
@@ -2714,11 +2735,13 @@ export function Chat({
             }
             onStartNew={() => startNewHalfway("results")}
           />
-          {busy ? (
-            <p className="text-sm text-ink-soft" role="status" aria-live="polite">
-              {copy.looking[composerLanguage]}
-            </p>
-          ) : null}
+          <p
+            className="text-sm text-ink-soft"
+            role="status" aria-live="polite"
+            data-halfway-looking=""
+          >
+            {busy ? copy.looking[composerLanguage] : ""}
+          </p>
         </div>
       ) : sessionExpired ? (
         <div

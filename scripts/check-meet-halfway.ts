@@ -1442,7 +1442,7 @@ assert(
     chatUi.includes("meetHalfwayAddedStatus") &&
     chatUi.includes("event.detail === 0") &&
     chatUi.includes('querySelectorAll("[data-halfway-card]")') &&
-    chatUi.includes("link.focus()") &&
+    chatUi.includes("link.focus({ preventScroll: true })") &&
     chatUi.includes("halfwayMoreAfterRestore") &&
     chatUi.includes("halfwayPinsMemory") &&
     chatUi.includes("pendingKeyboardFocus") &&

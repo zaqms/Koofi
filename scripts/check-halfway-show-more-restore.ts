@@ -8,6 +8,7 @@
  * Each run sends a fresh x-forwarded-for so the invite write limit
  * (12 per IP per 10 minutes) does not fail the next run on the same server.
  */
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -43,11 +44,14 @@ function forwardedHeaders(json = false): Record<string, string> {
   };
 }
 
-function contextOptions(extra?: { permissions?: Array<"clipboard-read" | "clipboard-write"> }) {
+function contextOptions(extra?: {
+  permissions?: Array<"clipboard-read" | "clipboard-write">;
+  viewport?: { width: number; height: number };
+}) {
   return {
-    viewport: { width: 390, height: 844 } as const,
+    viewport: extra?.viewport ?? { width: 390, height: 844 },
     extraHTTPHeaders: { "x-forwarded-for": forwardedFor },
-    ...extra,
+    ...(extra?.permissions ? { permissions: extra.permissions } : {}),
   };
 }
 function mustPin(lat: number, lng: number): { lat: number; lng: number } {
@@ -246,6 +250,14 @@ async function restoredShowMore(
     throw error;
   }
   await page.locator("[data-halfway-results]").getByText("•").waitFor({ timeout: 10000 });
+  assert(
+    (await page.locator("[data-halfway-results]").getAttribute("aria-live")) == null,
+    "results div is a live region",
+  );
+  assert(
+    ((await page.locator("[data-halfway-looking]").textContent()) ?? "").trim() === "",
+    "looking live region is missing or not empty while idle",
+  );
   const getsBeforeFocus = inviteGets;
   await spamFocus(page);
   assert(
@@ -272,7 +284,7 @@ async function restoredShowMore(
   );
   const added = (await page.locator("[data-halfway-card]").count()) - cardsBefore;
   assert(added > 0, `${input.host ? "host" : "guest"} Show more added no cafés`);
-  const expected = meetHalfwayAddedStatus(added, "ar", true);
+  const expected = meetHalfwayAddedStatus(added, "ar", Boolean(input.keyboard));
   try {
     await page.waitForFunction(
       (want) => document.querySelector("[data-halfway-status]")?.textContent?.trim() === want,
@@ -290,7 +302,7 @@ async function restoredShowMore(
     );
   } else {
     await page.waitForFunction(
-      () => document.activeElement?.hasAttribute("data-halfway-heading") === true,
+      () => document.activeElement?.hasAttribute("data-halfway-end") === true,
       { timeout: 15000 },
     );
   }
@@ -313,6 +325,10 @@ async function failedInviteReadHidesShowMore(
   assert(created.id, `host-only invite failed: ${created.error ?? "no id"}`);
   const context = await browser.newContext(contextOptions());
   const page = await context.newPage();
+  let inviteGets = 0;
+  page.on("request", (req) => {
+    if (req.method() === "GET" && req.url().includes("/api/halfway/invite")) inviteGets += 1;
+  });
   let releaseGets = false;
   await page.route("**/api/halfway/invite**", async (route) => {
     if (route.request().method() !== "GET") return route.continue();
@@ -343,6 +359,25 @@ async function failedInviteReadHidesShowMore(
   assert(
     (await page.locator("[data-halfway-show-more]").count()) === 0,
     "Show more was visible before the invite read settled",
+  );
+  assert(
+    (await page.locator("[data-halfway-results]").getAttribute("aria-live")) == null,
+    "results div is a live region",
+  );
+  const waited = Date.now();
+  while (inviteGets < 1 && Date.now() - waited < 5000) {
+    await page.waitForTimeout(50);
+  }
+  assert(inviteGets >= 1, "short invite never requested the invite");
+  const getsBefore = inviteGets;
+  await page.evaluate(() => {
+    document.dispatchEvent(new Event("visibilitychange"));
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await page.waitForTimeout(400);
+  assert(
+    inviteGets === getsBefore,
+    `invite read ran again within 30s (${inviteGets - getsBefore} extra GETs)`,
   );
   releaseGets = true;
   await nonOk;
@@ -580,7 +615,124 @@ async function shortReadThenShowMore(
   await context.close();
 }
 
+function assertSourceGuards() {
+  const chatSrc = readFileSync(
+    join(dirname(fileURLToPath(import.meta.url)), "../components/chat.tsx"),
+    "utf8",
+  );
+  const at = chatSrc.indexOf('data-halfway-results=""');
+  assert(at > 0, "results marker missing");
+  const tagStart = chatSrc.lastIndexOf("<div", at);
+  const tag = chatSrc.slice(tagStart, chatSrc.indexOf(">", at) + 1);
+  assert(!tag.includes("aria-live"), "results div must not be a live region");
+  assert(
+    chatSrc.includes("inviteGetAtRef.current < 30_000"),
+    "invite read must stay throttled to 30s",
+  );
+  assert(chatSrc.includes("preventScroll: true"), "show-more focus must not scroll");
+  assert(!chatSrc.includes("heading.focus("), "final add must not focus the heading");
+}
+
+async function finalAddKeepsScroll(
+  browser: import("playwright-core").Browser,
+  picks: ReturnType<typeof shopToChatPick>[],
+) {
+  const id = await createInvite();
+  const cases: Array<{
+    lang: "ar" | "en";
+    keyboard: boolean;
+    viewport: { width: number; height: number };
+  }> = [
+    { lang: "ar", keyboard: false, viewport: { width: 390, height: 844 } },
+    { lang: "ar", keyboard: true, viewport: { width: 390, height: 844 } },
+    { lang: "en", keyboard: false, viewport: { width: 390, height: 844 } },
+    { lang: "en", keyboard: true, viewport: { width: 390, height: 844 } },
+    { lang: "ar", keyboard: false, viewport: { width: 1280, height: 800 } },
+    { lang: "ar", keyboard: true, viewport: { width: 1280, height: 800 } },
+    { lang: "en", keyboard: false, viewport: { width: 1280, height: 800 } },
+    { lang: "en", keyboard: true, viewport: { width: 1280, height: 800 } },
+  ];
+  for (const item of cases) {
+    const label = `${item.lang} ${item.keyboard ? "keyboard" : "pointer"} ${item.viewport.width}`;
+    const context = await browser.newContext(contextOptions({ viewport: item.viewport }));
+    const page = await context.newPage();
+    const href = item.lang === "en" ? `/en/h/${id}` : `/h/${id}`;
+    await installBack(page, snapshotJson({ threadKey: `halfway:${id}`, href, picks }), null);
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}${href}`, { waitUntil: "domcontentloaded" });
+    const button = page.locator("[data-halfway-show-more]");
+    await button.waitFor({ timeout: 20000 });
+    assert(
+      (await page.locator("[data-halfway-results]").getAttribute("aria-live")) == null,
+      `${label} results div is a live region`,
+    );
+    const before = await page.evaluate(() => {
+      const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo(0, max);
+      return window.scrollY;
+    });
+    assert(before > 150, `${label} scrollY before the add was ${before}`);
+    const done = page.waitForResponse(
+      (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
+      { timeout: 20000 },
+    );
+    if (item.keyboard) {
+      await page.evaluate(() => {
+        const el = document.querySelector("[data-halfway-show-more]");
+        if (el instanceof HTMLElement) el.focus({ preventScroll: true });
+      });
+      await page.keyboard.press("Space");
+    } else {
+      await page.evaluate(() => {
+        const el = document.querySelector("[data-halfway-show-more]");
+        if (!(el instanceof HTMLElement)) return;
+        el.dispatchEvent(
+          new MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }),
+        );
+      });
+    }
+    await done;
+    await page.waitForFunction(
+      () => document.querySelector("[data-halfway-show-more]") == null,
+      { timeout: 15000 },
+    );
+    await page.waitForTimeout(300);
+    const after = await page.evaluate(() => ({
+      y: window.scrollY,
+      height: document.documentElement.scrollHeight,
+      inner: window.innerHeight,
+      focus: document.activeElement?.getAttribute("data-halfway-end") != null
+        ? "end"
+        : document.activeElement?.hasAttribute("data-halfway-card")
+          ? "card"
+          : document.activeElement?.hasAttribute("data-halfway-heading")
+            ? "heading"
+            : document.activeElement?.tagName ?? "none",
+    }));
+    assert(
+      after.y > 150,
+      `${label} scrollY ${before} → ${after.y} focus ${after.focus} height ${after.height} inner ${after.inner}`,
+    );
+    if (item.keyboard) {
+      assert(
+        await page.evaluate(() => document.activeElement?.hasAttribute("data-halfway-card") === true),
+        `${label} focus left the new card`,
+      );
+    } else {
+      assert(
+        await page.evaluate(() => document.activeElement?.hasAttribute("data-halfway-end") === true),
+        `${label} focus left the end note`,
+      );
+    }
+    await context.close();
+  }
+}
+
 async function main() {
+  assertSourceGuards();
   const probe = await fetch(base).catch(() => null);
   assert(
     probe && (probe.ok || probe.status === 307 || probe.status === 308),
@@ -612,6 +764,7 @@ async function main() {
     }
     if (!only || only === "soft") await inPageThenSoftBack(browser);
     if (!only || only === "reload") await reloadedBainna(browser);
+    if (!only || only === "scroll") await finalAddKeepsScroll(browser, picks);
   } finally {
     await browser.close();
   }

@@ -1,3 +1,4 @@
+import { isTemporarilyClosed } from "./temporary-closure";
 import type { Metadata } from "next";
 import { countedCafesAr, countedCafesEn } from "./cafe-count";
 import { listDiscoveryShops, listListingShops } from "./catalog";
@@ -27,7 +28,7 @@ function rankLikeMostPopular(shops: readonly Shop[]): Shop[] {
   if (ranked.length === shops.length) return ranked;
   const seen = new Set(ranked.map((shop) => shop.id));
   const rest = shops
-    .filter((shop) => !seen.has(shop.id))
+    .filter((shop) => !seen.has(shop.id) && !isTemporarilyClosed(shop))
     .slice()
     .sort((a, b) => a.id.localeCompare(b.id));
   return [...ranked, ...rest];

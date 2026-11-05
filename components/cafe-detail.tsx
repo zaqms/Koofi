@@ -26,6 +26,7 @@ import {
 } from "@/lib/cafe-detail";
 import type { CafeRaveLine } from "@/lib/cafe-raves";
 import { copy } from "@/lib/copy";
+import { temporaryClosureLabel } from "@/lib/temporary-closure";
 import type { DirectoryShop } from "@/lib/directory";
 import { listingLocationOrder } from "@/lib/listing-location";
 import { listingCardTags } from "@/lib/listing-tags";
@@ -74,7 +75,10 @@ export function CafeDetail({
   const tags = listingCardTags(shop, language);
   const photos = cafeDetailHeroPhotos(shop);
   const description = cafeDetailDescription(shop);
-  const status = cafeDetailHoursStatus(shop, language);
+  const closureNote = temporaryClosureLabel(shop, language);
+  const status = closureNote
+    ? { kind: "closed" as const, label: closureNote }
+    : cafeDetailHoursStatus(shop, language);
   const coords = officialShopCoords(shop);
   const raveItems = raves ?? [];
 
@@ -111,6 +115,14 @@ export function CafeDetail({
         <h1 className="text-[1.75rem] font-semibold leading-tight tracking-[-0.02em] break-words">
           {name}
         </h1>
+        {closureNote ? (
+          <p
+            data-temporarily-closed=""
+            className="mt-1.5 inline-flex rounded-full bg-wain-warm-cream px-2.5 py-0.5 text-xs font-medium leading-5 text-[#a33a2b]"
+          >
+            {closureNote}
+          </p>
+        ) : null}
         <CafeDetailLocation
           language={language}
           neighborhood={area}

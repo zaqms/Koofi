@@ -156,6 +156,11 @@
       "logoUrl": "/logos/woods-olaya.jpg",
       "popularityIndex": 89.1,
       "placeId": "ChIJLbkCFlgDLz4RnTOlP8wH6mA",
+      "temporaryClosure": {
+        "reason": "renovation",
+        "verifiedAt": "2026-11-04",
+        "recheckAt": "2026-11-18"
+      },
       "dineIn": true,
       "outdoorSeating": true,
       "pickupOnly": null,

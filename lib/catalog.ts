@@ -326,6 +326,7 @@ function directoryShopFrom(
           ...(shop.chainBrand ? { chainBrand: shop.chainBrand } : {}),
         }
       : {}),
+    ...(shop.temporaryClosure ? { temporarilyClosed: true as const } : {}),
   };
 }
 

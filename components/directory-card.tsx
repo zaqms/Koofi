@@ -81,6 +81,14 @@ export function DirectoryCard({
             <h3 className="text-lg font-semibold leading-tight break-words">
               {name}
             </h3>
+            {shop.temporarilyClosed ? (
+              <p
+                data-temporarily-closed=""
+                className="mt-1 text-xs font-medium leading-4 text-[#a33a2b]"
+              >
+                {copy.temporarilyClosedRenovation[language]}
+              </p>
+            ) : null}
             <ListingLocation
               language={language}
               neighborhood={area}

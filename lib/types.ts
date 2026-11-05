@@ -124,6 +124,14 @@ export type OpeningHours = {
   periods?: OpeningHoursPeriod[];
 };
 
+export type TemporaryClosure = {
+  reason: "renovation";
+  /** ISO date Scout verified the closure. */
+  verifiedAt: string;
+  /** ISO date Scout rechecks. */
+  recheckAt: string;
+};
+
 export type Shop = {
   id: string;
   nameAr: string;
@@ -197,6 +205,12 @@ export type Shop = {
   baynanaEligible?: boolean | null;
   /** Google Places id (`ChIJ…`). Scout `correct_place_id` wins on rematch. */
   placeId?: string;
+  /**
+   * Scout-verified temporary closure (Maps "Temporarily closed").
+   * The row and its page stay live with a note; recommendation surfaces
+   * (Most Popular, بيننا, chat picks, fixed lists) skip it until removed.
+   */
+  temporaryClosure?: TemporaryClosure;
   example: boolean;
 };
 

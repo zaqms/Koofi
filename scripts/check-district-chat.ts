@@ -281,10 +281,11 @@ assert(
 );
 
 // 21 Oct 2026: Namq is a chain (Amjad via Ajz), so Namq Al Malqa leaves the popular picks; Woods Olaya steps up.
+// 5 Nov 2026: Woods Olaya temporarily closed for renovation (Scout, Maps); Woods Al Yasmin steps up until the note comes off.
 const LOCKED_POPULAR = [
   "urth-caffe-tahlia-sulimaniyah",
   "breehant-al-yasmin",
-  "woods-olaya",
+  "woods-al-yasmin",
 ];
 
 function assertPopularUnchanged(ask: string, language: "ar" | "en") {

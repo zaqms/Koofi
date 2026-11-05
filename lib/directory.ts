@@ -26,6 +26,8 @@ export type DirectoryShop = {
   /** Mass-market branch. Omitted on local cafés so existing rows stay unchanged. */
   isChain?: true;
   chainBrand?: string;
+  /** Temporary closure note (AR/EN copy key lives in lib/copy.ts). */
+  temporarilyClosed?: true;
 };
 
 export function directoryNeighborhoods(

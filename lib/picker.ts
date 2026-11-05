@@ -25,6 +25,7 @@ import {
 import { decorateChatPicks } from "./places";
 import { shopLocation, shopMapsHref } from "./public-url";
 import { dedupeSameBrand } from "./shop-brand";
+import { isTemporarilyClosed } from "./temporary-closure";
 import { matchCatalogShops } from "./shop-name";
 import type {
   ChatPick,
@@ -262,7 +263,10 @@ export function pickCafes(input: {
     intent.neighborhoods,
   );
   const citywide = catalog.filter(
-    (shop) => !been.has(shop.id) && !avoided.has(shop.neighborhood),
+    (shop) =>
+      !been.has(shop.id) &&
+      !avoided.has(shop.neighborhood) &&
+      !isTemporarilyClosed(shop),
   );
   const matchedDistrict = extractPrimaryDistrict(input.text, city);
 

@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { isTemporarilyClosed } from "../lib/temporary-closure";
 import {
   getShop,
   listDirectoryShops,
@@ -7503,9 +7504,12 @@ assert(
 
 const popularShops = listPopularDirectoryShops();
 const rankedCatalog = rankByPopularity(listDiscoveryShops());
+// 5 Nov 2026: temporarily closed cafés (Woods Olaya) stay listed but leave Most Popular.
 assert(
-  popularShops.length === listDiscoveryShops().length,
-  "popular directory lists the specialty discovery catalog",
+  popularShops.length ===
+    listDiscoveryShops().filter((shop) => !isTemporarilyClosed(shop)).length &&
+    popularShops.length === 544,
+  "popular directory lists the specialty discovery catalog minus temporarily closed (544)",
 );
 assert(
   popularShops.map((shop) => shop.id).join(",") ===
@@ -7519,8 +7523,8 @@ assert(
 );
 assert(
   popularShops.slice(0, 3).map((shop) => shop.id).join(",") ===
-    "urth-caffe-tahlia-sulimaniyah,breehant-al-yasmin,woods-olaya",
-  "popular directory top 3 (PR #97 lock minus the Namq chain)",
+    "urth-caffe-tahlia-sulimaniyah,breehant-al-yasmin,woods-al-yasmin",
+  "popular directory top 3 (PR #97 lock minus the Namq chain; Woods Al Yasmin while Woods Olaya is temporarily closed)",
 );
 for (let i = 1; i < popularShops.length; i += 1) {
   const prev = rankedCatalog[i - 1];

@@ -240,6 +240,8 @@ export type ChatPick = {
   lng?: number;
   /** 1–2 catalog vibe labels. Listing cards recompute via listingCardTags. */
   tags?: string[];
+  /** Scout temporary-closure note is on the row (name asks only). */
+  temporarilyClosed?: true;
 };
 
 export type ShopSuggestion = {

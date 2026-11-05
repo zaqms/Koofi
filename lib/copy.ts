@@ -517,7 +517,7 @@ export const copy = {
     en: "Open now",
   },
   temporarilyClosedRenovation: {
-    ar: "مقفل مؤقتًا للتجديد",
+    ar: "مغلق مؤقتًا للتجديد",
     en: "Temporarily closed for renovation",
   },
   detailClosedNow: {

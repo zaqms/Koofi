@@ -27,7 +27,8 @@ import {
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 import { parseIntent } from "../lib/parse-intent";
 import { searchPublicShops } from "../lib/mcp-catalog";
-import { pickCafes } from "../lib/picker";
+import { nearbyChatPicks } from "../lib/nearby";
+import { pickCafes, toChatPicks } from "../lib/picker";
 import { districtPath } from "../lib/product";
 import { dedupeSameBrand } from "../lib/shop-brand";
 import { matchCatalogShops } from "../lib/shop-name";
@@ -539,3 +540,40 @@ console.log(
     )
     .join("\n"),
 );
+
+// 5 Nov 2026: a temporarily closed café (Woods Olaya) is never a general chat
+// recommendation or a near-me pick, but a name ask still finds it with the note.
+{
+  const seeded = (seed: number) => () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const realRandom = Math.random;
+  const generalAsks = [
+    "late night", "work", "pastry", "quiet", "مقهى هادي", "near tahlia",
+    "outdoor", "جلسات خارجية", "roastery", "cafes in olaya", "most popular",
+  ];
+  let closedHits = 0;
+  try {
+    for (let s = 1; s <= 20; s += 1) {
+      Math.random = seeded(s);
+      for (const ask of generalAsks) {
+        if (pickCafes({ text: ask }).picks.some((p) => p.shop.id === "woods-olaya")) closedHits += 1;
+      }
+      for (const language of ["ar", "en"] as const) {
+        if (
+          nearbyChatPicks({ origin: { lat: 24.6982742, lng: 46.6832109 }, language }).some(
+            (p) => p.id === "woods-olaya",
+          )
+        ) closedHits += 1;
+      }
+    }
+  } finally {
+    Math.random = realRandom;
+  }
+  assert(closedHits === 0, `temporarily closed woods-olaya leaked into general/near-me chat ${closedHits} times`);
+  const namedPick = toChatPicks(pickCafes({ text: "woods" })).find((p) => p.id === "woods-olaya");
+  assert(namedPick?.temporarilyClosed === true, "name ask still finds woods-olaya and carries the closure note");
+}

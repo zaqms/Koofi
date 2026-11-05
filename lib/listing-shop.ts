@@ -18,6 +18,7 @@ export function directoryShopFromPick(pick: ChatPick): DirectoryShop {
     photoUrl: pick.photoUrl,
     logoUrl: pick.logoUrl,
     catalogIndex: -1,
+    ...(pick.temporarilyClosed ? { temporarilyClosed: true as const } : {}),
     ...(pick.lat != null && pick.lng != null
       ? { lat: pick.lat, lng: pick.lng }
       : {}),

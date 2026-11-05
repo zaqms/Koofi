@@ -516,6 +516,10 @@ export const copy = {
     ar: "مفتوح الآن",
     en: "Open now",
   },
+  temporarilyClosedRenovation: {
+    ar: "مغلق مؤقتًا للتجديد",
+    en: "Temporarily closed for renovation",
+  },
   detailClosedNow: {
     ar: "مغلق",
     en: "Closed",

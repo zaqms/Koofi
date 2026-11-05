@@ -1,3 +1,4 @@
+import { isTemporarilyClosed } from "./temporary-closure";
 import type { NeighborhoodId, Shop } from "./types";
 
 /**
@@ -45,6 +46,8 @@ function popularityScore(shop: Shop): number {
 export function rankByPopularity(shops: readonly Shop[]): Shop[] {
   return shops
     .filter((shop) => shop.popularityIndex != null)
+    // Don't recommend a temporarily closed café. Its page stays live.
+    .filter((shop) => !isTemporarilyClosed(shop))
     .slice()
     .sort((a, b) => {
       const delta = popularityScore(b) - popularityScore(a);

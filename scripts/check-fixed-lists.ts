@@ -56,9 +56,9 @@ function read(path: string): string {
 
 const PIN = {
   nearby: 593,
-  outdoor: 278,
-  coffee: 71,
-  work: 65,
+  outdoor: 277,
+  coffee: 70,
+  work: 64,
 } as const;
 
 assert(listRealShops().length === 648, "catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 Al Shohda (14 adds), Batch S As Salam (6 adds), Batch R Al Qadisiyah (8 adds), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q, Batch P, Batch O and Found Ar Rabwah (468 + 10 At Taawun + 9 Shubra + 15 An Nafal + 7 Al Izdihar + 6 Ar Rahmaniyyah + 8 Al Mathar + 4 other adds + 12 Umm Al Hamam Al Gharbi + 3 Umm Al Hamam Ash Sharqi + 13 Diplomatic Quarter + 15 Dhahrat Laban + 1 Found Ar Rabwah + 4 Namar + 14 Tuwaiq + 12 Ash Shifa + 1 Trace Al Mursalat + 7 trending adds 18 Oct + 8 Al Qadisiyah + 6 As Salam + 14 Al Shohda)");
@@ -112,8 +112,8 @@ assert(
 );
 assert(
   outdoor.filter((shop) => isChainShop(shop)).length === 20 &&
-    outdoor.filter((shop) => !isChainShop(shop)).length === 258,
-  "outdoor is 258 local + 20 chains (trending adds 21 Oct: Sample Roastery Al Rayyan, Hjeen At Taawun, MID-SAJJ Al Ghadeer and Harmony An Nakheel; 21 Oct: Namq Al Malqa moves to chains; Batch SD1 adds Andarena, BeFine, Cobee, Arco, Tahn and Black Wolf, plus dr.CAFE Ash Shuhada, Peet's and Tim Hortons Granada Mall as chains; Batch S adds Sakaf and Breehant As Salam; Batch R adds Half Million and Starbucks Rakaa Plaza Al Qadisiyah as chains; Batch Q adds Light Dose and Butterfly Ash Shifa, plus Java Cafe and Half Million Tirmidhi Ash Shifa as chains; Batch P adds IRLO, Ratio, Quba, Gedeb, BREATH, Lihaf, Inverno, Era, Haqwa and Nv Tuwaiq; Batch O adds Freedom Namar, plus Java Cafe and The Coffee Bean & Tea Leaf Namar as chains; Batch N adds Crete, Ezwa and Jadeel Dhahrat Laban; Batch M adds 8 Diplomatic Quarter local cafés plus Costa and Caribou DQ as chains; Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
+    outdoor.filter((shop) => !isChainShop(shop)).length === 257,
+  "outdoor is 257 local + 20 chains (5 Nov: Woods Olaya temporarily closed, skipped while the note is on; trending adds 21 Oct: Sample Roastery Al Rayyan, Hjeen At Taawun, MID-SAJJ Al Ghadeer and Harmony An Nakheel; 21 Oct: Namq Al Malqa moves to chains; Batch SD1 adds Andarena, BeFine, Cobee, Arco, Tahn and Black Wolf, plus dr.CAFE Ash Shuhada, Peet's and Tim Hortons Granada Mall as chains; Batch S adds Sakaf and Breehant As Salam; Batch R adds Half Million and Starbucks Rakaa Plaza Al Qadisiyah as chains; Batch Q adds Light Dose and Butterfly Ash Shifa, plus Java Cafe and Half Million Tirmidhi Ash Shifa as chains; Batch P adds IRLO, Ratio, Quba, Gedeb, BREATH, Lihaf, Inverno, Era, Haqwa and Nv Tuwaiq; Batch O adds Freedom Namar, plus Java Cafe and The Coffee Bean & Tea Leaf Namar as chains; Batch N adds Crete, Ezwa and Jadeel Dhahrat Laban; Batch M adds 8 Diplomatic Quarter local cafés plus Costa and Caribou DQ as chains; Veloce At Taawun is a chain with outdoor seating; Batch F adds mhj cafe and Coffee Address Shubra; Batch G adds 6 An Nafal local cafés; Batch H adds CONVOY, temper, Rakiza and Hijana; Batch I adds Sipology and Ramli Cafe, plus Starbucks Ar Rahmaniyyah as a chain; Batch J adds Richony Cafe and Urth Caffé Al Mathar, plus Peet's Euromarché as a chain; Batch J other adds Nafees; Batch K adds ARCHI, Caffeination, Café Kitsuné, Jaam Coffee, MIDWAY Coffee, Hamasat Coffee and Mazaj Cafe Umm Al Hamam Al Gharbi; Starbucks Oruba has no outdoor seating)",
 );
 
 const coffee = listBestCoffeeShops();

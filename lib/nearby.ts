@@ -3,6 +3,7 @@ import { shopToChatPick } from "./chat-pick";
 import { haversineKm } from "./distance";
 import { officialShopCoords } from "./place-coords";
 import { dedupeSameBrand } from "./shop-brand";
+import { isTemporarilyClosed } from "./temporary-closure";
 import type { ChatPick, Language, Pin, Shop } from "./types";
 import { uniqueWhyLines } from "./why-line";
 
@@ -25,6 +26,8 @@ export function pickNearestShops(
 
   for (const shop of shops) {
     if (been.has(shop.id)) continue;
+    // Don't send people to a temporarily closed café.
+    if (isTemporarilyClosed(shop)) continue;
     const coords = officialShopCoords(shop);
     if (!coords) continue;
     ranked.push({ shop, km: haversineKm(origin, coords) });

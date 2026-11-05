@@ -32,5 +32,6 @@ export function shopToChatPick(
     logoUrl: shop.logoUrl,
     ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
     ...(tags.length > 0 ? { tags } : {}),
+    ...(shop.temporaryClosure ? { temporarilyClosed: true as const } : {}),
   };
 }

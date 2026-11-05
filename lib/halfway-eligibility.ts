@@ -38,6 +38,7 @@ export type HalfwayEligibleShop = Pick<
   | "catalogLane"
   | "isChain"
   | "seatingVerdict"
+  | "temporaryClosure"
 >;
 
 export function isHalfwayDenied(id: string): boolean {
@@ -59,6 +60,7 @@ export function isHalfwaySitDown(shop: HalfwayEligibleShop): boolean {
 
 export function isHalfwayEligible(shop: HalfwayEligibleShop): boolean {
   if (shop.isChain === true) return false;
+  if (shop.temporaryClosure != null) return false;
   if (isHalfwayDenied(shop.id)) return false;
   if (isPickupOnlyTagged(shop)) return false;
   if (shop.baynanaEligible === false) return false;

@@ -4010,7 +4010,7 @@
         "lat": 24.805938,
         "lng": 46.6146229
       },
-      "logoUrl": "/logos/basementers-al-yasmin.jpg",
+      "logoUrl": "/logos/basementers-al-yasmin.png",
       "popularityIndex": 67.4,
       "placeId": "ChIJw3kT8A_lLj4RPkjxv-xvVZQ",
       "dineIn": true,
@@ -10479,7 +10479,7 @@
         "lat": 24.7914143,
         "lng": 46.7348591
       },
-      "logoUrl": "/logos/mkth-ghirnatah.jpg",
+      "logoUrl": "/logos/mkth-ghirnatah.png",
       "popularityIndex": 81.7,
       "placeId": "ChIJgfo9vIL9Lj4R9bcmn_MRLQ4",
       "dineIn": true,
@@ -11018,7 +11018,7 @@
         "lat": 24.794175,
         "lng": 46.7480144
       },
-      "logoUrl": "/logos/moff-ghirnatah.jpg",
+      "logoUrl": "/logos/moff-ghirnatah.png",
       "popularityIndex": 47.3,
       "placeId": "ChIJ9Sm-IMz_Lj4RA6XpjqGDCA0",
       "dineIn": true,
@@ -11141,7 +11141,7 @@
         "lat": 24.7946345,
         "lng": 46.7331844
       },
-      "logoUrl": "/logos/semi-specialty-cafe-ghirnatah.jpg",
+      "logoUrl": "/logos/semi-specialty-cafe-ghirnatah.png",
       "popularityIndex": 73,
       "placeId": "ChIJhww8klj9Lj4RG8u2KCKMRV0",
       "dineIn": true,
@@ -15870,7 +15870,7 @@
         "lat": 24.8099494,
         "lng": 46.7794305
       },
-      "logoUrl": "/logos/nosound-al-yarmouk.png",
+      "logoUrl": "/logos/nosound-qurtubah.png",
       "popularityIndex": 51.2,
       "placeId": "ChIJF1af2SP_Lj4RDWqYxOFFDtI",
       "dineIn": true,
@@ -16061,7 +16061,7 @@
         "lat": 24.79502,
         "lng": 46.7738079
       },
-      "logoUrl": "/logos/aleel-roastery-al-yarmouk.png",
+      "logoUrl": "/logos/aleel-roastery-al-yarmouk-v2.png",
       "popularityIndex": 50.8,
       "placeId": "ChIJjyQTZJL_Lj4RJQV26FDR_CQ",
       "dineIn": true,
@@ -20704,7 +20704,7 @@
         "lat": 24.7360284,
         "lng": 46.6481283
       },
-      "logoUrl": "/logos/kernel-al-takhassusi.jpg",
+      "logoUrl": "/logos/kernel-al-takhassusi.png",
       "popularityIndex": 40,
       "placeId": "ChIJhahPHmDjLj4RGCr2QdO-jB8",
       "dineIn": true,
@@ -21075,7 +21075,7 @@
         "lat": 24.7525597,
         "lng": 46.6390522
       },
-      "logoUrl": "/logos/groovy-al-takhassusi.jpg",
+      "logoUrl": "/logos/groovy-al-takhassusi.png",
       "popularityIndex": 40,
       "placeId": "ChIJIT3PS5PjLj4R94eVG54q5po",
       "dineIn": true,
@@ -22647,7 +22647,7 @@
         "drive-through"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3bd0ad3f463:0x8d3dee05263debed",
-      "logoUrl": "/logos/ulica-al-ghadeer.jpg",
+      "logoUrl": "/logos/ulica-al-ghadeer.png",
       "popularityIndex": 40,
       "placeId": "ChIJY_TTCr3jLj4R7es9JgXuPY0",
       "dineIn": null,
@@ -22871,7 +22871,7 @@
         "lat": 24.7772312,
         "lng": 46.6606971
       },
-      "logoUrl": "/logos/brsk-al-ghadeer.jpg",
+      "logoUrl": "/logos/brsk-al-ghadeer.png",
       "popularityIndex": 40,
       "placeId": "ChIJZ3gqKebjLj4Rn4-EcDHrolo",
       "dineIn": true,
@@ -25224,7 +25224,7 @@
         "lat": 24.7578883,
         "lng": 46.6524653
       },
-      "logoUrl": "/logos/terra-cafe-al-muruj.jpg",
+      "logoUrl": "/logos/terra-cafe-al-muruj.png",
       "popularityIndex": 40,
       "placeId": "ChIJb8HxCwDjLj4RGatyVGYPvng",
       "dineIn": true,
@@ -25736,7 +25736,7 @@
         "lat": 24.6614598,
         "lng": 46.7443033
       },
-      "logoUrl": "/logos/canto-malaz-mark.png",
+      "logoUrl": "/logos/canto-al-malaz.png",
       "popularityIndex": 40,
       "placeId": "ChIJbZg1RREFLz4R_tcSTu4Njbs",
       "dineIn": true,
@@ -26437,7 +26437,7 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee1006cf2209b:0xf3841da23256fe4b",
-      "logoUrl": "/logos/with-heart-diriyah.jpg",
+      "logoUrl": "/logos/with-heart-diriyah.png",
       "popularityIndex": 40,
       "placeId": "ChIJmyDybADhLj4RS_5WMqIdhPM",
       "dineIn": true,
@@ -27269,7 +27269,7 @@
         "qahwa"
       ],
       "mapsShareUrl": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x3e2ee3210b6fff2b:0xfc195ee361241e01",
-      "logoUrl": "/logos/iota-al-ghadeer.jpg",
+      "logoUrl": "/logos/iota-al-ghadeer.png",
       "popularityIndex": 40,
       "placeId": "ChIJK_9vCyHjLj4RAR4kYeNeGfw",
       "dineIn": true,
@@ -34369,7 +34369,7 @@
         "lat": 24.7631233,
         "lng": 46.6836994
       },
-      "logoUrl": "/logos/brsk-al-masif.jpg",
+      "logoUrl": "/logos/brsk-al-masif.png",
       "popularityIndex": 40,
       "catalogLane": "drive-through",
       "placeId": "ChIJ51dKIub9Lj4RfSdFfLQ8WKk",
@@ -35386,7 +35386,7 @@
         "lat": 24.7587419,
         "lng": 46.7270237
       },
-      "logoUrl": "/logos/bunatetu-al-mughrizat.jpg",
+      "logoUrl": "/logos/bunatetu-al-mughrizat.png",
       "popularityIndex": 40,
       "placeId": "ChIJcZtPEx4DLz4RHcqgOckOENo",
       "dineIn": true,
@@ -35672,7 +35672,7 @@
         "lat": 24.7018287,
         "lng": 46.6812624
       },
-      "logoUrl": "/logos/oromiffa-al-olaya.jpg",
+      "logoUrl": "/logos/oromiffa-al-olaya.png",
       "popularityIndex": 40,
       "placeId": "ChIJecSqaz0DLz4R2-FURY0VVTA",
       "dineIn": true,
@@ -35724,7 +35724,7 @@
         "lat": 24.7064389,
         "lng": 46.6792442
       },
-      "logoUrl": "/logos/19-gram-al-olaya.jpg",
+      "logoUrl": "/logos/19-gram-al-olaya.png",
       "popularityIndex": 40,
       "placeId": "ChIJy5rWpA8DLz4RgBwl-yBeiqc",
       "dineIn": true,
@@ -35828,7 +35828,7 @@
         "lat": 24.7078427,
         "lng": 46.6746905
       },
-      "logoUrl": "/logos/key-cafe-al-olaya.jpg",
+      "logoUrl": "/logos/key-cafe-al-olaya.png",
       "popularityIndex": 40,
       "placeId": "ChIJgfRwXocDLz4RP0f4h0U0pYA",
       "dineIn": true,
@@ -35880,7 +35880,7 @@
         "lat": 24.841562999999997,
         "lng": 46.6659942
       },
-      "logoUrl": "/logos/crops-al-narjis.jpg",
+      "logoUrl": "/logos/crops-al-narjis.png",
       "popularityIndex": 40,
       "placeId": "ChIJi65bZmj9Lj4Rlj7E4AyjwDA",
       "dineIn": true,
@@ -36252,7 +36252,7 @@
         "lat": 24.787708199999997,
         "lng": 46.767900999999995
       },
-      "logoUrl": "/logos/orkt-al-hamra.jpg",
+      "logoUrl": "/logos/orkt-al-hamra.png",
       "popularityIndex": 40,
       "placeId": "ChIJqUsrqzX_Lj4RxZyWS8Tf0Sw",
       "dineIn": null,
@@ -36872,7 +36872,7 @@
         "lat": 24.7561514,
         "lng": 46.653934199999995
       },
-      "logoUrl": "/logos/behind-al-muruj.jpg",
+      "logoUrl": "/logos/behind-al-muruj.png",
       "popularityIndex": 40,
       "placeId": "ChIJP5e9awDjLj4RFgBhYe_q_K0",
       "dineIn": true,
@@ -37517,7 +37517,7 @@
         "lat": 24.7966244,
         "lng": 46.6514974
       },
-      "logoUrl": "/logos/sociable-al-rabi.jpg",
+      "logoUrl": "/logos/sociable-al-rabi.png",
       "popularityIndex": 40,
       "placeId": "ChIJdRiKr43jLj4Rb8nAsBGmqCs",
       "dineIn": true,
@@ -37763,7 +37763,7 @@
         "lat": 24.7980923,
         "lng": 46.6666336
       },
-      "logoUrl": "/logos/atea-al-rabi.jpg",
+      "logoUrl": "/logos/atea-al-rabi.png",
       "popularityIndex": 40,
       "placeId": "ChIJo7pWrDPjLj4RvgIlfG0oLmM",
       "dineIn": true,
@@ -38166,7 +38166,7 @@
         "lat": 24.7941798,
         "lng": 46.6554988
       },
-      "logoUrl": "/logos/wacafe-al-rabi.jpg",
+      "logoUrl": "/logos/wacafe-al-rabi.png",
       "popularityIndex": 40,
       "placeId": "ChIJZ6DSZZbjLj4RDfd1meG7_NQ",
       "dineIn": true,
@@ -49217,6 +49217,7 @@
         "lat": 24.7150727,
         "lng": 46.6598696
       },
+      "logoUrl": "/logos/java-time-al-rahmaniyyah.png",
       "popularityIndex": 40,
       "placeId": "ChIJHaCCJQAdLz4RX71Bm29oGVI",
       "dineIn": true,
@@ -52702,7 +52703,7 @@
         "lat": 24.680665899999997,
         "lng": 46.6232317
       },
-      "logoUrl": "/logos/wacafe-al-rabi.jpg",
+      "logoUrl": "/logos/wacafe-al-rabi.png",
       "popularityIndex": 40,
       "placeId": "ChIJ5XSwgSAdLz4RQDzNG0kJlUM",
       "dineIn": true,

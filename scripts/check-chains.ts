@@ -535,8 +535,9 @@ assert(
 {
   const javaTime = getShop("java-time-al-rahmaniyyah");
   assert(
-    javaTime?.isChain === true && javaTime.chainBrand === "java-time" && shopBrandKey(javaTime) === "java-time" && !javaTime.logoUrl,
-    "Java Time row is brand java-time (letter tile, no Java Cafe mark)",
+    javaTime?.isChain === true && javaTime.chainBrand === "java-time" && shopBrandKey(javaTime) === "java-time" &&
+      javaTime.logoUrl === "/logos/java-time-al-rahmaniyyah.png" && existsSync(join(process.cwd(), "public/logos/java-time-al-rahmaniyyah.png")),
+    "Java Time row is brand java-time with its official Java Time badge (logo sweep 1 Nov), never the Java Cafe mark",
   );
   assert(CHAIN_BRANDS["java-time"].logo === null, "Java Time registry has no logo");
   assert(

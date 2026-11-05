@@ -4,15 +4,17 @@ import type { Language } from "./types";
 
 /**
  * v1 allowlist. Not derived from data.
- * Window: 2026-10-13 through 2026-10-20.
+ * Window: 2026-10-29 through 2026-11-05.
  * Organic only (listing policy 6): each row has 3+ distinct organic X accounts in the window.
+ * 29 Oct – 5 Nov: Espresso Culture has 4 distinct organic X accounts in the window:
+ * @abutmmm (30 Oct), @NaiiifM9 (31 Oct), @Riy_coffeeholic (3 Nov, names Al Mursalat), @sama3044 (4 Nov).
  *
  * lineAr / lineEn render on the Trending page, under each café card.
  * The home tiles have no line slot, so the lines are not rendered there.
  */
 export const TRENDING_THIS_WEEK_WINDOW = {
-  from: "2026-10-13",
-  to: "2026-10-20",
+  from: "2026-10-29",
+  to: "2026-11-05",
 } as const;
 
 const AR_MONTHS = [
@@ -66,22 +68,10 @@ export function trendingWindowLabel(language: Language): string {
 
 export const TRENDING_THIS_WEEK = [
   {
-    id: "kultura-as-suwaidi-al-gharbi",
-    lineAr: "كولتورا فتح فرعه الجديد بالسويدي الغربي، والزحمة عليه من أول أيامه.",
-    lineEn:
-      "Kultúra opened its new As Suwaidi Al Gharbi branch, and it has been busy since its first days.",
-  },
-  {
     id: "espresso-culture-al-mursalat",
-    lineAr: "إسبريسو كالتشر بالمرسلات توه فاتح، وناس كثير نزّلوا صور قهوتهم منه هالأسبوع.",
+    lineAr: "إسبريسو كالتشر للأسبوع الرابع، وزبائن جدد لسا ينزّلون صور قهوتهم منه في المرسلات.",
     lineEn:
-      "Espresso Culture just opened in Al Mursalat, and lots of people shared photos of their coffee there this week.",
-  },
-  {
-    id: "veni-al-nakheel",
-    lineAr: "فيني فتحوا فرعهم الجديد بالنخيل مقابل جامعة الملك سعود، والناس قاعدين ينزّلون أول زياراتهم له.",
-    lineEn:
-      "Veni opened its new branch in An Nakheel, across from King Saud University, and people have been posting their first visits.",
+      "Espresso Culture is in its fourth week, with fresh customers still posting photos of their coffee there in Al Mursalat.",
   },
 ] as const;
 

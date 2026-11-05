@@ -2014,7 +2014,7 @@ assert(
 );
 assert(
   TRENDING_THIS_WEEK_IDS.join(",") ===
-    "kultura-as-suwaidi-al-gharbi,espresso-culture-al-mursalat,veni-al-nakheel" &&
+    "espresso-culture-al-mursalat" &&
     listTrendingThisWeekShops()
       .map((shop) => shop.id)
       .join(",") === TRENDING_THIS_WEEK_IDS.join(",") &&

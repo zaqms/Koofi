@@ -1,5 +1,6 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { MeetHalfwayFeedback } from "@/components/meet-halfway-feedback";
 import { ShareIcon } from "@/components/share-icon";
 import { copy } from "@/lib/copy";
@@ -18,40 +19,12 @@ type MeetHalfwayResultsFooterProps = {
   feedbackSource?: MeetHalfwayFeedbackSource;
   cafeCount?: number;
   shopIds?: string[];
-  onMore: () => void;
+  onMore: (event: MouseEvent<HTMLButtonElement>) => void;
   onShareResults?: () => void;
   onStartNew?: () => void;
 };
 
-function RefreshIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="16"
-      height="16"
-      aria-hidden
-      className="shrink-0"
-    >
-      <path
-        d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-      <path
-        d="M17.2 4.8v3.6h3.6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-/** Shared refresh / exhausted / share / new line for local two-pin and /h/ guest results. */
+/** Shared add / exhausted / share / new line for local two-pin and /h/ guest results. */
 export function MeetHalfwayResultsFooter({
   language,
   kind,
@@ -71,6 +44,7 @@ export function MeetHalfwayResultsFooter({
       return (
         <button
           type="button"
+          data-halfway-show-more=""
           disabled={disabled}
           onClick={onMore}
           className="inline-flex h-10 items-center rounded-full border border-line bg-foam px-3 text-sm text-ink disabled:opacity-50"
@@ -91,27 +65,36 @@ export function MeetHalfwayResultsFooter({
 
   return (
     <div className="grid gap-3">
-      <div className="grid gap-2">
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={onMore}
-          className="flex w-full flex-col items-center rounded-2xl bg-paper px-3 py-3.5 text-center disabled:opacity-50"
-        >
-          <span className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink">
-            <RefreshIcon />
-            {copy.meetHalfwayMoreTitle[language]}
-          </span>
-          <span className="mt-1 text-[11px] leading-4 text-ink-soft">
-            {copy.meetHalfwayMoreSub[language]}
-          </span>
-        </button>
-        {kind === "exhausted" ? (
-          <p className="text-center text-xs leading-5 text-ink-soft">
-            {copy.meetHalfwayNoMore[language]}
-          </p>
-        ) : null}
-      </div>
+      {kind === "more" || kind === "exhausted" ? (
+        <div className="grid gap-2">
+          {kind === "more" ? (
+            <button
+              type="button"
+              data-halfway-show-more=""
+              aria-disabled={disabled || undefined}
+              onClick={(event) => {
+                if (disabled) {
+                  event.preventDefault();
+                  return;
+                }
+                onMore(event);
+              }}
+              className="flex w-full items-center justify-center rounded-2xl bg-paper px-3 py-3.5 text-center aria-disabled:opacity-50"
+            >
+              <span className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink">
+                <span aria-hidden className="text-base leading-none">
+                  +
+                </span>
+                {copy.meetHalfwayMoreTitle[language]}
+              </span>
+            </button>
+          ) : (
+            <p className="text-center text-xs leading-5 text-ink-soft">
+              {copy.meetHalfwayNoMore[language]}
+            </p>
+          )}
+        </div>
+      ) : null}
       {resetKey ? (
         <MeetHalfwayFeedback
           language={language}

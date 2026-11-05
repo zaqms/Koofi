@@ -69,9 +69,11 @@ import {
   meetHalfwayReply,
   parseHalfwayPinInputs,
   pickHalfwayShops,
+  accumulateHalfwayPicks,
   halfwayCandidatePool,
   halfwayPinFailCopy,
   halfwayResultsFooterKind,
+  meetHalfwayAddedNotice,
   locationsCentroid,
   meetHalfwayChatPicks,
   restoreHalfwayPicks,
@@ -161,8 +163,14 @@ assert(
     copy.includes("A fair distance, a better meet-up.") &&
     copy.includes("الأكثر مناسبة") &&
     copy.includes("Top Match") &&
-    copy.includes("اعرض 3 قهاوي مختلفة") &&
-    copy.includes("Show 3 different cafés") &&
+    copy.includes("اعرض قهاوي أكثر") &&
+    copy.includes("Show more cafés") &&
+    copy.includes('ar: "قهاوي بينكم"') &&
+    copy.includes('en: "Cafés between you"') &&
+    !copy.includes("اعرض 3 قهاوي مختلفة") &&
+    !copy.includes("Show 3 different cafés") &&
+    !copy.includes("خلنا نطلع لك ترشيحات جديدة") &&
+    !copy.includes("Get a new set of recommendations") &&
     copy.includes("هل النتائج كانت مناسبة؟") &&
     copy.includes("Were these results helpful?") &&
     copy.includes("مو مرّة") &&
@@ -261,6 +269,17 @@ assert(
 assert(
   halfwayResultsFooterKind({}) === null,
   "non-بيننا messages have no results footer",
+);
+assert(
+  meetHalfwayAddedNotice(1, "ar") === "انضافت قهوة وحدة" &&
+    meetHalfwayAddedNotice(2, "ar") === "انضافت قهوتين" &&
+    meetHalfwayAddedNotice(3, "ar") === "انضافت 3 قهاوي" &&
+    meetHalfwayAddedNotice(10, "ar") === "انضافت 10 قهاوي" &&
+    meetHalfwayAddedNotice(11, "ar") === "انضافت 11 قهوة" &&
+    meetHalfwayAddedNotice(1, "en") === "1 more café added" &&
+    meetHalfwayAddedNotice(2, "en") === "2 more cafés added" &&
+    meetHalfwayAddedNotice(3, "en") === "3 more cafés added",
+  "keyboard show-more announces 1, 2, and 3+ with café agreement",
 );
 
 const ui = readFileSync(join(repoRoot, "components/meet-halfway-picker.tsx"), "utf8");
@@ -487,6 +506,109 @@ const exhausted = pickHalfwayShops({
   beenIds: pool.map((s) => s.id),
 });
 assert(exhausted.length === 0, "exhausted band returns nothing");
+
+const kept = accumulateHalfwayPicks([shops, nextThree]);
+assert(
+  kept.map((shop) => shop.id).join() ===
+    [...shops, ...nextThree].map((shop) => shop.id).join(),
+  "show more keeps the cafés already on screen, then the next ranked batch",
+);
+assert(
+  kept.map((shop) => shop.id).join() ===
+    pool.slice(0, kept.length).map((shop) => shop.id).join(),
+  "accumulated pages stay in the same Most Popular order",
+);
+assert(
+  accumulateHalfwayPicks([shops, shops]).map((shop) => shop.id).join() ===
+    shops.map((shop) => shop.id).join(),
+  "a repeat of the same cafés does not grow the list",
+);
+if (pool.length > shops.length) {
+  assert(nextThree.length > 0 && kept.length > shops.length, "a deeper band reveals another batch");
+  assert(
+    halfwayResultsFooterKind({ halfwayMore: true, paged: false }) === "more",
+    "show more stays while a ranked batch is still unseen",
+  );
+}
+const afterAll = accumulateHalfwayPicks([shops, nextThree, exhausted]);
+assert(afterAll.length === kept.length, "an empty page adds nothing");
+assert(
+  halfwayResultsFooterKind({ halfwayMore: false, paged: true }) === "exhausted",
+  "after the last batch the show-more control is the exhausted state",
+);
+
+const exactThreePins = [
+  { pin: { lat: 24.7047196, lng: 46.6840196 } },
+  { pin: { lat: 24.7334705, lng: 46.6963089 } },
+];
+const exactThreePool = halfwayCandidatePool({
+  locations: exactThreePins,
+  shops: SHOPS,
+});
+assert(
+  exactThreePool.length === 3,
+  `exact-3 band stays 3, got ${exactThreePool.length}`,
+);
+const exactFirst = pickHalfwayShops({
+  locations: exactThreePins,
+  shops: SHOPS,
+});
+const exactNext = pickHalfwayShops({
+  locations: exactThreePins,
+  shops: SHOPS,
+  beenIds: exactFirst.map((shop) => shop.id),
+});
+assert(exactNext.length === 0, "a band of exactly 3 has no next batch");
+assert(
+  accumulateHalfwayPicks([exactFirst, exactNext]).length === exactFirst.length,
+  "show more with nothing left keeps the three already shown",
+);
+assert(
+  halfwayResultsFooterKind({ halfwayMore: false, paged: false }) === null,
+  "a band of exactly 3 hides show more instead of leaving a dead control",
+);
+
+const oneExtraPins = [
+  { pin: { lat: 24.6982742, lng: 46.6832109 } },
+  { pin: { lat: 24.7371909, lng: 46.6944962 } },
+];
+const oneExtraPool = halfwayCandidatePool({
+  locations: oneExtraPins,
+  shops: SHOPS,
+});
+assert(oneExtraPool.length === 4, `one-extra band stays 4, got ${oneExtraPool.length}`);
+const oneExtraFirst = pickHalfwayShops({
+  locations: oneExtraPins,
+  shops: SHOPS,
+});
+const oneExtraNext = pickHalfwayShops({
+  locations: oneExtraPins,
+  shops: SHOPS,
+  beenIds: oneExtraFirst.map((shop) => shop.id),
+});
+assert(
+  oneExtraNext.length === 1,
+  "a short leftover is still a page, not a dead show-more",
+);
+assert(
+  accumulateHalfwayPicks([oneExtraFirst, oneExtraNext])
+    .map((shop) => shop.id)
+    .join() === oneExtraPool.map((shop) => shop.id).join(),
+  "the short last page is appended in ranked order",
+);
+assert(
+  halfwayResultsFooterKind({
+    halfwayMore:
+      pickHalfwayShops({
+        locations: oneExtraPins,
+        shops: SHOPS,
+        beenIds: oneExtraPool.map((shop) => shop.id),
+        limit: 1,
+      }).length > 0,
+    paged: true,
+  }) === "exhausted",
+  "after the short last page, show more is hidden",
+);
 
 const samePin = pickHalfwayShops({
   locations: [
@@ -1269,15 +1391,71 @@ assert(
     chatUi.includes("onShareResults") &&
     chatUi.includes("onStartNew") &&
     resultsFooter.includes("meetHalfwayMoreTitle") &&
-    resultsFooter.includes("meetHalfwayMoreSub") &&
+    !resultsFooter.includes("meetHalfwayMoreSub") &&
+    !resultsFooter.includes("RefreshIcon") &&
+    resultsFooter.includes('aria-hidden className="text-base leading-none"') &&
     resultsFooter.includes('surface !== "screen"') &&
     resultsFooter.includes("meetHalfwayMore") &&
     resultsFooter.includes("MeetHalfwayFeedback") &&
     resultsFooter.includes("meetHalfwayNoMore") &&
     resultsFooter.includes("meetHalfwayShareResults") &&
     resultsFooter.includes("meetHalfwayStartNew") &&
-    !resultsFooter.includes("Save for later"),
+    !resultsFooter.includes("Save for later") &&
+    resultsFooter.includes('data-halfway-show-more=""'),
   "local two-pin and /h/ guest share one بيننا results footer; Share results + Start a new Halfway",
+);
+{
+  const marker = 'data-halfway-show-more=""';
+  let from = 0;
+  let showMoreButtons = 0;
+  while (from < resultsFooter.length) {
+    const at = resultsFooter.indexOf(marker, from);
+    if (at < 0) break;
+    showMoreButtons += 1;
+    const before = resultsFooter.slice(Math.max(0, at - 320), at);
+    assert(
+      before.includes('kind === "more"'),
+      "show more renders only when another ranked batch exists",
+    );
+    from = at + marker.length;
+  }
+  assert(
+    showMoreButtons === 2,
+    "thread and results screen each have one gated show-more button",
+  );
+}
+const screenShowMore =
+  chatUi.split("<MeetHalfwayResultCards")[1]?.split("onShareResults")[0] ?? "";
+assert(
+  screenShowMore.includes("picks={halfwayVisiblePicks}") &&
+    chatUi.includes("accumulateHalfwayPicks") &&
+    screenShowMore.includes("more: true") &&
+    !screenShowMore.includes("reroll") &&
+    chatUi.includes("if (searchScreen || showHalfwayResults) return;") &&
+    chatUi.includes("copy.meetHalfwayResultsHeading[landing]") &&
+    chatUi.includes('role="status"') &&
+    chatUi.includes('aria-live="polite"') &&
+    chatUi.includes("meetHalfwayAddedNotice") &&
+    chatUi.includes("event.detail === 0") &&
+    chatUi.includes('querySelectorAll("[data-halfway-card]")') &&
+    chatUi.includes("link.focus()") &&
+    chatUi.includes("halfwayMoreAfterRestore") &&
+    chatUi.includes("halfwayPinsMemory") &&
+    chatUi.includes("pendingKeyboardFocus") &&
+    !/!busy \? \(\s*<MeetHalfwayResultsFooter/.test(chatUi) &&
+    resultsFooter.includes("aria-disabled={disabled || undefined}") &&
+    resultsFooter.includes("if (disabled)"),
+  "results screen appends the next batch, keeps scroll, and does not rerun the first cafés",
+);
+assert(
+  chatUi.includes("if (searchScreen || showHalfwayResults) return;") &&
+    readFileSync(join(repoRoot, "components/meet-halfway-result-cards.tsx"), "utf8").includes(
+      "halfwayCard",
+    ) &&
+    readFileSync(join(repoRoot, "components/directory-card.tsx"), "utf8").includes(
+      'data-halfway-card": ""',
+    ),
+  "keyboard show-more focuses the first new card; auto-scroll guard stays",
 );
 assert(
   chatUi.includes('surface="screen"') &&

@@ -23,6 +23,7 @@ export function MeetHalfwayResultCards({
           key={pick.id}
           shop={directoryShopFromPick(pick)}
           language={language}
+          halfwayCard
           mapsSource="pack"
           badge={index === 0 ? copy.meetHalfwayBestMatch[language] : null}
           onMapsClick={() => {

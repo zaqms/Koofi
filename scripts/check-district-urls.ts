@@ -190,8 +190,8 @@ for (const id of ["umm-al-hamam-al-gharbi", "an-nafal", "king-salman", "as-suwai
   assert(areas.includes(id), `directory includes ${id} (Bisat batch)`);
 }
 assert(areas.length === 64, `expected 64 districts (Al Raqban folded into As Salam; the Takhassusi street retired), got ${areas.length}`);
-assert(listDiscoveryShops().length === 545, `specialty discovery is 545 (1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
-assert(listRealShops().length === 648, `catalog is 648 after OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
+assert(listDiscoveryShops().length === 550, `specialty discovery is 550 (5 MN1 Al Manar (1 Nov 2026) local + 1 OPULENT Qurtubah (TRENDVERIFY-1023PM) + 10 trending adds 21 Oct + − 2 Namq now chain, 21 Oct; 7 Batch SD1 Al Shohda local + 6 Batch S As Salam local + 3 Batch R Al Qadisiyah local + 7 trending adds 18 Oct + 1 Trace Al Mursalat AJ add + 9 Batch Q Ash Shifa local + 14 Batch P Tuwaiq local + 2 Batch O Namar local + 1 Found Ar Rabwah AJ add + 403 + 9 Batch E At Taawun local + 7 Batch F Shubra local + 12 Batch G An Nafal local + 7 Batch H Al Izdihar local + 4 Batch I Ar Rahmaniyyah local + 4 Batch J Al Mathar local + 4 Batch J other adds + 11 Batch K Umm Al Hamam Al Gharbi local + 3 Batch L Umm Al Hamam Ash Sharqi local + 9 Batch M Diplomatic Quarter local + 13 Batch N Dhahrat Laban local; Veloce is a chain), got ${listDiscoveryShops().length}`);
+assert(listRealShops().length === 653, `catalog is 653 after 5 MN1 Al Manar (1 Nov 2026), OPULENT Qurtubah (TRENDVERIFY-1023PM), the 21 Oct trending adds (10), Batch SD1 (14 Al Shohda), Batch S (6 As Salam), Batch R (8 Al Qadisiyah), the 18 Oct trending adds (7), Trace Al Mursalat (AJ add), Batch Q (12 Ash Shifa), Batch P (14 Tuwaiq), Batch O (4 Namar), Found Ar Rabwah (AJ add), D1, D2, D3, Batch E, Batch F, Batch G, Batch H (7 Al Izdihar), Batch I (6 Ar Rahmaniyyah), Batch J (8 Al Mathar + 4 other adds), Batch K (12 Umm Al Hamam Al Gharbi), Batch L (3 Umm Al Hamam Ash Sharqi) and Batch M (13 Diplomatic Quarter) and Batch N (15 Dhahrat Laban), got ${listRealShops().length}`);
 
 const granada = filterDirectoryShops(shops, "ghirnatah");
 assert(granada.length === 4, `ghirnatah keeps the 4 east-Ghirnatah rows after 6 moved to al-shohda (21 Oct), got ${granada.length}`);
@@ -755,8 +755,8 @@ assert(
 );
 
 const manar = filterDirectoryShops(shops, "al-manar");
-assert(manar.length === 3, `al-manar has 3 shops, got ${manar.length}`);
-for (const id of ["vase-coffee-al-manar", "recaf-al-manar", "on-off-coffee-al-manar"]) {
+assert(manar.length === 8, `al-manar has 8 shops (+ 5 MN1 1 Nov 2026), got ${manar.length}`);
+for (const id of ["vase-coffee-al-manar", "recaf-al-manar", "on-off-coffee-al-manar", "zonzi-al-manar", "fact-cafe-al-manar", "archi-al-manar", "eyaab-al-manar", "coffee-address-al-manar"]) {
   assert(manar.some((shop) => shop.id === id), `al-manar includes ${id}`);
 }
 assert(neighborhoodLabel("al-manar", "ar") === "المنار", "al-manar Arabic label");
@@ -6843,6 +6843,71 @@ const scoutPack: {
     pin: { lat: 24.782840999999998, lng: 46.729898 },
     coordsInUrl: true,
     placeId: "ChIJF3ID6Gj9Lj4R5QqbFF8z7NU",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  // MN1 Al Manar (1 Nov 2026): Scout's daily hunt, 5 local specialty cafés; official Maps pins, all inside OSM rel 13253996 «حي المنار».
+  {
+    id: "zonzi-al-manar",
+    hex: "0x3e2f0183188161bf:0x5cd6826bfd98d5f7",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/zonzi-al-manar.png",
+    pin: { lat: 24.7216395, lng: 46.790273899999995 },
+    coordsInUrl: true,
+    placeId: "ChIJv2GBGIMBLz4R99WY_WuC1lw",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "fact-cafe-al-manar",
+    hex: "0x3e2f01beda33531d:0xfd566c39783232da",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    pin: { lat: 24.729159499999998, lng: 46.8060232 },
+    coordsInUrl: true,
+    placeId: "ChIJHVMz2r4BLz4R2jIyeDlsVv0",
+    dineIn: true,
+    outdoorSeating: true,
+  },
+  {
+    id: "archi-al-manar",
+    hex: "0x3e2f01abb633d7fd:0x65e49e4bdbd2e5ce",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/archi-diriyah.jpg",
+    pin: { lat: 24.7139375, lng: 46.7941875 },
+    coordsInUrl: true,
+    placeId: "ChIJ_dcztqsBLz4RzuXS20ue5GU",
+    dineIn: null,
+    outdoorSeating: null,
+  },
+  {
+    id: "eyaab-al-manar",
+    hex: "0x3e2f012a6985cb21:0x3f7d1b6309147b87",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/eyaab-al-manar.png",
+    pin: { lat: 24.7234373, lng: 46.7963787 },
+    coordsInUrl: true,
+    placeId: "ChIJIcuFaSoBLz4Rh3sUCWMbfT8",
+    dineIn: true,
+    outdoorSeating: null,
+  },
+  {
+    id: "coffee-address-al-manar",
+    hex: "0x3e2f01006e15109f:0x668c387dc8b494cd",
+    neighborhood: "al-manar",
+    vibe: ["قهوة"],
+    moments: ["qahwa"],
+    logoUrl: "/logos/coffee-address-mark.png",
+    pin: { lat: 24.7203859, lng: 46.789476699999994 },
+    coordsInUrl: true,
+    placeId: "ChIJnxAVbgABLz4RzZS0yH04jGY",
     dineIn: true,
     outdoorSeating: null,
   },

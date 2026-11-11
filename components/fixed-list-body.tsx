@@ -37,11 +37,13 @@ import { mostPopularHeading, neighborhoodsPath } from "@/lib/product";
 import {
   LIST_SCROLL_MAX_WAIT_MS,
   clearListScroll,
+  installListScrollTraverseListener,
+  listScrollTraverseRecent,
   listScrollAnchorY,
   listScrollLooksLikeUserMove,
-  listScrollMinY,
   listScrollRestoreTarget,
   listScrollShouldRelease,
+  listScrollShownToRestore,
   nearbyListScrollSettled,
   releaseListScroll,
   rememberListScroll,
@@ -67,6 +69,23 @@ type FixedListBodyProps = {
   popularFallback: DirectoryShop[];
   neighborhoodCandidates: readonly HomeNeighborhoodCandidate[];
 };
+
+/** Café card href, Arabic or English, with or without a query. Not a Maps link. */
+function isCafeCardHref(href: string): boolean {
+  if (!href || href.startsWith("#")) return false;
+  let path = href;
+  if (href.startsWith("http://") || href.startsWith("https://")) {
+    try {
+      path = new URL(href).pathname;
+    } catch {
+      return false;
+    }
+  }
+  const cut = path.search(/[?#]/);
+  if (cut >= 0) path = path.slice(0, cut);
+  if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
+  return /^\/(?:en\/)?c\/[^/]+$/.test(path);
+}
 
 /** Top card still on screen, with its top edge measured from the viewport. */
 function topVisibleListCard(): { id: string; top: number } | null {
@@ -100,13 +119,6 @@ function listCardScreenTop(cardId: string | null): number | null {
   const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(cardId)}"]`);
   if (!node) return null;
   return Math.round(node.getBoundingClientRect().top);
-}
-
-function listCardDocumentTop(cardId: string | undefined): number | null {
-  if (!cardId) return null;
-  const node = document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(cardId)}"]`);
-  if (!node) return null;
-  return node.getBoundingClientRect().top + window.scrollY;
 }
 
 function originFromVisitor(
@@ -154,22 +166,28 @@ export function FixedListBody({
   const listScrollBaselineTop = useRef<number | null>(null);
   const listScrollBaselineY = useRef<number | null>(null);
   const listScrollIgnoreUntil = useRef(0);
+  const listScrollBack = useRef<boolean | null>(null);
+  const listScrollNavType = useRef<string | null>(null);
+  const shownRef = useRef(shown);
+  const openedCardRef = useRef<{ id: string; top: number } | null>(null);
   const [listScrollTick, setListScrollTick] = useState(0);
 
   useEffect(() => {
-    function onPageHide() {
+    shownRef.current = shown;
+  }, [shown]);
+
+  useEffect(() => {
+    installListScrollTraverseListener();
+
+    function persist(card: { id: string; top: number } | null) {
       const sample = document.querySelector<HTMLElement>("[data-shop-id]");
-      const minY = listScrollMinY(sample ? sample.getBoundingClientRect().height : null);
       try {
-        if (window.scrollY < minY) {
-          clearListScroll(window.sessionStorage);
-          return;
-        }
         const record = rememberListScroll(
           window.location.pathname,
           window.scrollY,
-          topVisibleListCard(),
+          card,
           sample ? sample.getBoundingClientRect().height : null,
+          shownRef.current,
         );
         if (!record) {
           clearListScroll(window.sessionStorage);
@@ -180,8 +198,38 @@ export function FixedListBody({
         // Private mode still has the browser's own scroll restoration.
       }
     }
+
+    function onPageHide() {
+      // A click already stored the opened card. A hard navigation that
+      // never clicked (the address bar, or a scripted assign) uses the
+      // top card on screen.
+      persist(openedCardRef.current ?? topVisibleListCard());
+    }
+
+    function onClick(event: MouseEvent) {
+      if (event.defaultPrevented) return;
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const element = event.target instanceof Element ? event.target : null;
+      if (!element) return;
+      const link = element.closest("a");
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (!isCafeCardHref(link.getAttribute("href") ?? "")) return;
+      const card = link.closest("[data-shop-id]");
+      if (!(card instanceof HTMLElement)) return;
+      const id = card.getAttribute("data-shop-id") ?? "";
+      if (!/^[a-z0-9-]{1,80}$/.test(id)) return;
+      const anchor = { id, top: Math.round(card.getBoundingClientRect().top) };
+      openedCardRef.current = anchor;
+      // Next.js <Link> stays in this document, so pagehide does not fire.
+      persist(anchor);
+    }
+
     window.addEventListener("pagehide", onPageHide);
-    return () => window.removeEventListener("pagehide", onPageHide);
+    window.addEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("pagehide", onPageHide);
+      window.removeEventListener("click", onClick, true);
+    };
   }, []);
 
   useEffect(() => {
@@ -268,19 +316,29 @@ export function FixedListBody({
 
   useLayoutEffect(() => {
     if (listScrollRestored.current) return;
+    if (listScrollBack.current == null) {
+      let navigationType: string | null = null;
+      try {
+        const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+        navigationType = nav?.type ?? null;
+      } catch {
+        navigationType = null;
+      }
+      listScrollNavType.current = navigationType;
+      // A full Back reloads the document (`back_forward`). A <Link> Back
+      // stays in the document, so only the popstate flag says it was Back.
+      listScrollBack.current =
+        navigationType !== "reload" &&
+        (navigationType === "back_forward" || listScrollTraverseRecent());
+    }
+    const navigationType = listScrollNavType.current;
+    const traversed = listScrollBack.current === true && navigationType !== "back_forward";
     const elapsedMs = performance.now() - (listScrollStarted.current ?? performance.now());
     let record = null;
     try {
       record = takeListScroll(window.sessionStorage);
     } catch {
       record = null;
-    }
-    let navigationType: string | null = null;
-    try {
-      const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
-      navigationType = nav?.type ?? null;
-    } catch {
-      navigationType = null;
     }
     const decision = {
       navigationType,
@@ -289,27 +347,66 @@ export function FixedListBody({
       settled: scrollSettled,
       elapsedMs,
       userMoved: listScrollMoved.current,
+      traversed,
     };
+    // The extra cards have to be in the document before scroll. Otherwise
+    // the anchor is missing and the browser clamps the offset to 12 cards.
+    const needed = listScrollShownToRestore(decision);
+    if (needed != null && shown < needed) {
+      setShown(needed);
+      return;
+    }
     if (!listScrollShouldRelease(decision)) return;
     listScrollRestored.current = true;
     releaseListScroll();
     const y = listScrollRestoreTarget(decision);
     if (y == null || !record) return;
-    const top = listCardDocumentTop(record.cardId);
-    const anchored = listScrollAnchorY(record, top);
-    listScrollIgnoreUntil.current = performance.now() + 80;
-    window.scrollTo(0, anchored);
-    window.requestAnimationFrame(() => {
-      listScrollIgnoreUntil.current = performance.now() + 80;
-      window.scrollTo(0, anchored);
-      const card = record.cardId
-        ? document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(record.cardId)}"]`)
+    const anchorId = record.cardId;
+    const savedTop = record.cardTop;
+    // The browser's history snapshot can land a moment after we scroll, a
+    // little short of the card. Re-measure and correct until that settles.
+    // Stop when the visitor actually moves, so we don't pull them back.
+    const apply = (focus: boolean) => {
+      if (listScrollMoved.current) return;
+      const card = anchorId
+        ? document.querySelector<HTMLElement>(`[data-shop-id="${CSS.escape(anchorId)}"]`)
         : null;
-      listScrollBaselineId.current = record.cardId ?? null;
+      const docTop = card ? card.getBoundingClientRect().top + window.scrollY : null;
+      const fallback = listScrollAnchorY(record, docTop);
+      const liveTop = card ? card.getBoundingClientRect().top : null;
+      const y =
+        liveTop != null && typeof savedTop === "number"
+          ? Math.max(0, Math.round(window.scrollY + (liveTop - savedTop)))
+          : fallback;
+      listScrollIgnoreUntil.current = performance.now() + 80;
+      window.scrollTo(0, y);
+      if (focus) {
+        const link = card?.querySelector('a[href*="/c/"]');
+        // preventScroll keeps the anchor. Without this, Back leaves focus on body.
+        if (link instanceof HTMLElement && document.activeElement !== link) {
+          link.focus({ preventScroll: true });
+        }
+      }
+      listScrollBaselineId.current = anchorId ?? null;
       listScrollBaselineTop.current = card ? Math.round(card.getBoundingClientRect().top) : null;
       listScrollBaselineY.current = window.scrollY;
-    });
-  }, [scrollSettled, listScrollTick]);
+    };
+    const path = window.location.pathname;
+    const run = (focus: boolean) => {
+      if (window.location.pathname !== path) return;
+      apply(focus);
+    };
+    run(true);
+    const frame = window.requestAnimationFrame(() => run(false));
+    const timers = [
+      window.setTimeout(() => run(true), 50),
+      window.setTimeout(() => run(false), 140),
+    ];
+    return () => {
+      window.cancelAnimationFrame(frame);
+      for (const timer of timers) window.clearTimeout(timer);
+    };
+  }, [scrollSettled, listScrollTick, shown]);
 
   const pool = popularFallbackOn ? popularFallback : shops;
   const chainCount = shops.filter((shop) => shop.isChain).length;
@@ -549,7 +646,13 @@ export function FixedListBody({
         <button
           type="button"
           data-fixed-show-more=""
-          onClick={() => setShown((count) => count + FIXED_LIST_NEARBY_PAGE_SIZE)}
+          onClick={() =>
+            setShown((count) => {
+              const next = count + FIXED_LIST_NEARBY_PAGE_SIZE;
+              shownRef.current = next;
+              return next;
+            })
+          }
           className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-full border border-line bg-paper text-sm text-ink"
         >
           {FIXED_LIST_ACTION.showMore[language]}

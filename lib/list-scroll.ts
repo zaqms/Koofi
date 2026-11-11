@@ -2,12 +2,17 @@
  * Fixed-list pages (Nearby and the other chip lists) keep their scroll on
  * Back. The browser restores it before location swaps the fallback chrome
  * for the distance list, and that swap pulls the page to the wrong offset.
- * We remember only the path and the scroll offset — no coordinates.
+ * Nearby also forgets Show more, because that count is component state and
+ * a café `<Link>` never unloads the document. We remember the path, the
+ * scroll offset, the opened card, and how many cards were open — no coordinates.
  */
-import { FIXED_LIST_IDS } from "./fixed-list-ids";
+import { FIXED_LIST_IDS, FIXED_LIST_NEARBY_PAGE_SIZE } from "./fixed-list-ids";
 import { chipSharePath } from "./product";
 
 export const LIST_SCROLL_KEY = "wain.listScroll.v1";
+
+/** Nearby is a few hundred cafés. A stored count above this is corrupt. */
+export const LIST_SCROLL_MAX_SHOWN = 2000;
 
 /**
  * A fresh high-accuracy fix often takes more than two seconds.
@@ -25,10 +30,15 @@ export type ListScrollRecord = {
   path: string;
   /** Page scroll offset. Fallback when the card is not on screen. */
   y: number;
-  /** Catalog id of the top visible card. Not a place id and not a coordinate. */
+  /** Catalog id of the opened card, or the top visible one. Not a place id and not a coordinate. */
   cardId?: string;
   /** That card's top edge, in pixels from the viewport top. */
   cardTop?: number;
+  /**
+   * Cards Nearby had open. Omitted for the first page. Restored before
+   * scrolling so the anchor is in the document and the offset is not clamped.
+   */
+  shown?: number;
 };
 
 /**
@@ -73,22 +83,53 @@ export function listScrollWorthSaving(scrollY: number, cardHeight: number | null
   return Number.isFinite(scrollY) && scrollY >= listScrollMinY(cardHeight);
 }
 
-/** Scroll to put back on this history entry. Café cards and home are ignored. */
+/**
+ * Show more past the first page. The first page is the default state, so it
+ * is not stored. A corrupt or huge count is dropped or capped.
+ */
+export function listScrollShownCount(value: number | null | undefined): number | undefined {
+  if (value == null || !Number.isFinite(value)) return undefined;
+  const shown = Math.round(value);
+  if (shown <= FIXED_LIST_NEARBY_PAGE_SIZE) return undefined;
+  if (shown > LIST_SCROLL_MAX_SHOWN) return LIST_SCROLL_MAX_SHOWN;
+  return shown;
+}
+
+/**
+ * Scroll to put back on this history entry. Café cards and home are ignored.
+ * A Show more count is kept even when the page is still at the top, so Back
+ * can reopen those cards. The top of an unexpanded list still stores nothing.
+ */
 export function rememberListScroll(
   pathname: string,
   scrollY: number,
   card?: { id: string; top: number } | null,
   cardHeight: number | null = null,
+  shown?: number | null,
 ): ListScrollRecord | null {
   if (!isFixedListScrollPath(pathname)) return null;
-  if (!listScrollWorthSaving(scrollY, cardHeight)) return null;
-  return { path: normalizePath(pathname), y: Math.round(scrollY), ...cardAnchor(card) };
+  const extra = listScrollShownCount(shown);
+  const worth = listScrollWorthSaving(scrollY, cardHeight);
+  if (!worth && extra == null) return null;
+  const y = Number.isFinite(scrollY) ? Math.max(0, Math.round(scrollY)) : 0;
+  return {
+    path: normalizePath(pathname),
+    y,
+    ...cardAnchor(card),
+    ...(extra != null ? { shown: extra } : {}),
+  };
 }
 
 export function readListScroll(raw: string | null): ListScrollRecord | null {
   if (!raw) return null;
   try {
-    const parsed = JSON.parse(raw) as { path?: unknown; y?: unknown; cardId?: unknown; cardTop?: unknown };
+    const parsed = JSON.parse(raw) as {
+      path?: unknown;
+      y?: unknown;
+      cardId?: unknown;
+      cardTop?: unknown;
+      shown?: unknown;
+    };
     if (!parsed || typeof parsed.path !== "string" || typeof parsed.y !== "number") return null;
     if (!isFixedListScrollPath(parsed.path)) return null;
     if (!Number.isFinite(parsed.y) || parsed.y < 0) return null;
@@ -99,6 +140,8 @@ export function readListScroll(raw: string | null): ListScrollRecord | null {
         record.cardTop = Math.round(parsed.cardTop);
       }
     }
+    const shown = typeof parsed.shown === "number" ? listScrollShownCount(parsed.shown) : undefined;
+    if (shown != null) record.shown = shown;
     return record;
   } catch {
     return null;
@@ -193,7 +236,7 @@ export function writeListScroll(
   storage: { setItem(key: string, value: string): void },
   record: ListScrollRecord,
 ): void {
-  const payload: { path: string; y: number; cardId?: string; cardTop?: number } = {
+  const payload: { path: string; y: number; cardId?: string; cardTop?: number; shown?: number } = {
     path: record.path,
     y: record.y,
   };
@@ -201,6 +244,8 @@ export function writeListScroll(
     payload.cardId = record.cardId;
     payload.cardTop = record.cardTop;
   }
+  const shown = listScrollShownCount(record.shown);
+  if (shown != null) payload.shown = shown;
   storage.setItem(LIST_SCROLL_KEY, JSON.stringify(payload));
   noteListScrollWrite();
 }
@@ -208,7 +253,38 @@ export function writeListScroll(
 /** Test hook. Production mounts share one held offset for the document. */
 export function resetListScrollHold(): void {
   held = undefined;
+  listScrollTraverseAt = 0;
 }
+
+/**
+ * A café `<Link>` stays in this document, so `pagehide` never fires and the
+ * performance navigation type stays `navigate`. `popstate` (and a bfcache
+ * `pageshow`) is the Back signal for that visit. It stays recent for a few
+ * seconds so a slow mount still sees it, and a later pill click does not.
+ */
+let listScrollTraverseAt = 0;
+let listScrollTraverseInstalled = false;
+
+export const LIST_SCROLL_TRAVERSE_MS = 4000;
+
+export function installListScrollTraverseListener(): void {
+  if (listScrollTraverseInstalled || typeof window === "undefined") return;
+  listScrollTraverseInstalled = true;
+  const mark = () => {
+    listScrollTraverseAt = performance.now();
+  };
+  window.addEventListener("popstate", mark, true);
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) mark();
+  });
+}
+
+export function listScrollTraverseRecent(now = typeof performance !== "undefined" ? performance.now() : 0): boolean {
+  if (listScrollTraverseAt <= 0) return false;
+  return now - listScrollTraverseAt >= 0 && now - listScrollTraverseAt < LIST_SCROLL_TRAVERSE_MS;
+}
+
+if (typeof window !== "undefined") installListScrollTraverseListener();
 
 /**
  * Nearby's first paint is the no-location list. Distance replaces that
@@ -228,7 +304,30 @@ export function nearbyListScrollSettled(input: {
   return false;
 }
 
-/** Back/forward only. Reload and a fresh visit keep the browser's own position. */
+function listScrollIsBack(input: { navigationType: string | null; traversed?: boolean }): boolean {
+  if (input.navigationType === "reload") return false;
+  return input.navigationType === "back_forward" || input.traversed === true;
+}
+
+/**
+ * Cards to put back before any scroll. Independent of the offset: the
+ * anchor card has to be in the document first, or the browser clamps `y`.
+ * Reload and a fresh visit stay on the first page.
+ */
+export function listScrollShownToRestore(input: {
+  navigationType: string | null;
+  pathname: string;
+  record: ListScrollRecord | null;
+  traversed?: boolean;
+}): number | null {
+  if (!listScrollIsBack(input)) return null;
+  const record = input.record;
+  if (!record) return null;
+  if (normalizePath(record.path) !== normalizePath(input.pathname)) return null;
+  return listScrollShownCount(record.shown) ?? null;
+}
+
+/** Back/forward, including a client Back that never reloads the document. Reload and a fresh visit keep the browser's own position. */
 export function listScrollRestoreTarget(input: {
   navigationType: string | null;
   pathname: string;
@@ -236,11 +335,13 @@ export function listScrollRestoreTarget(input: {
   settled: boolean;
   elapsedMs?: number;
   userMoved?: boolean;
+  /** Set when this document caught a popstate or a bfcache pageshow. */
+  traversed?: boolean;
 }): number | null {
   if (input.userMoved) return null;
   if ((input.elapsedMs ?? 0) >= LIST_SCROLL_MAX_WAIT_MS) return null;
   if (!input.settled) return null;
-  if (input.navigationType !== "back_forward") return null;
+  if (!listScrollIsBack(input)) return null;
   const record = input.record;
   if (!record) return null;
   if (normalizePath(record.path) !== normalizePath(input.pathname)) return null;
@@ -260,11 +361,12 @@ export function listScrollShouldRelease(input: {
   settled: boolean;
   elapsedMs?: number;
   userMoved?: boolean;
+  traversed?: boolean;
 }): boolean {
   if (!input.record) return true;
   if (input.userMoved) return true;
   if ((input.elapsedMs ?? 0) >= LIST_SCROLL_MAX_WAIT_MS) return true;
-  if (input.navigationType !== "back_forward") return true;
+  if (!listScrollIsBack(input)) return true;
   if (normalizePath(input.record.path) !== normalizePath(input.pathname)) return true;
   if (input.record.y <= 0) return true;
   return input.settled;

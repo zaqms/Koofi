@@ -44,6 +44,7 @@ import {
   clearListScroll,
   listScrollAnchorY,
   listScrollLooksLikeUserMove,
+  listScrollShownToRestore,
   listScrollWorthSaving,
   listScrollRestoreTarget,
   nearbyListScrollSettled,
@@ -234,6 +235,85 @@ assert(
   "a location fix after the wait does not jump the page",
 );
 {
+  const expanded = rememberListScroll(
+    "/en/coffee-shops/nearby",
+    2601,
+    { id: "btw-olaya", top: 217 },
+    null,
+    24,
+  );
+  assert(expanded?.shown === 24 && expanded.cardId === "btw-olaya", "Show more is stored with the opened card");
+  assert(!JSON.stringify(expanded).includes("lat") && !JSON.stringify(expanded).includes("lng"), "Show more does not store a coordinate");
+  assert(
+    rememberListScroll("/en/coffee-shops/nearby", 40, { id: "btw-olaya", top: 10 }, 180, 24)?.shown === 24,
+    "Show more is kept even when the page is still at the top",
+  );
+  assert(
+    rememberListScroll("/en/coffee-shops/nearby", 40, null, 180, 12) === null,
+    "the first page at the top still stores nothing",
+  );
+  assert(
+    listScrollShownToRestore({
+      navigationType: "navigate",
+      traversed: true,
+      pathname: "/en/coffee-shops/nearby",
+      record: expanded,
+    }) === 24,
+    "a client Back restores the Show more count",
+  );
+  assert(
+    listScrollRestoreTarget({
+      navigationType: "navigate",
+      traversed: true,
+      pathname: "/en/coffee-shops/nearby",
+      record: expanded,
+      settled: true,
+    }) === 2601,
+    "a client Back restores the offset saved on the café link",
+  );
+  assert(
+    listScrollShownToRestore({
+      navigationType: "back_forward",
+      pathname: "/en/coffee-shops/nearby",
+      record: { path: "/en/coffee-shops/nearby", y: 2601, shown: 36 },
+    }) === 36,
+    "a full Back restores two Show more taps",
+  );
+  assert(
+    listScrollShownToRestore({
+      navigationType: "reload",
+      traversed: true,
+      pathname: "/en/coffee-shops/nearby",
+      record: expanded,
+    }) === null,
+    "reloading the list does not reopen Show more",
+  );
+  assert(
+    listScrollShownToRestore({
+      navigationType: "navigate",
+      pathname: "/en/coffee-shops/nearby",
+      record: expanded,
+    }) === null,
+    "a fresh visit does not reopen Show more",
+  );
+  resetListScrollHold();
+  const bag = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => bag.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      bag.set(key, value);
+    },
+    removeItem: (key: string) => {
+      bag.delete(key);
+    },
+  };
+  writeListScroll(storage, expanded!);
+  const roundTrip = takeListScroll(storage);
+  assert(roundTrip?.shown === 24 && roundTrip.cardId === "btw-olaya" && roundTrip.y === 2601, "Show more survives sessionStorage");
+  assert(!JSON.stringify(roundTrip).includes("lat"), "the stored Show more record has no location");
+  resetListScrollHold();
+}
+{
   resetListScrollHold();
   const bag = new Map<string, string>();
   const storage = {
@@ -281,6 +361,8 @@ assert(
 }
 const fixedListBody = read("components/fixed-list-body.tsx");
 assert(fixedListBody.includes('addEventListener("pagehide"'), "the list page saves scroll when the document is left");
+assert(fixedListBody.includes('addEventListener("click"'), "a café link saves the list before client navigation");
+assert(fixedListBody.includes("listScrollShownToRestore"), "Back restores the Show more count before scrolling");
 assert(fixedListBody.includes("takeListScroll"), "the list page takes the offset once");
 assert(fixedListBody.includes("releaseListScroll"), "the list page drops the offset after using it");
 assert(fixedListBody.includes('addEventListener("wheel"'), "a wheel cancels a pending restore");

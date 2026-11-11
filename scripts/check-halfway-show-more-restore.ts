@@ -69,6 +69,7 @@ function snapshotJson(input: {
   threadKey: string;
   href: string;
   picks: ReturnType<typeof shopToChatPick>[];
+  scrollY?: number;
 }): string {
   const memory = new Map<string, string>();
   const previous = (globalThis as { window?: unknown }).window;
@@ -90,7 +91,7 @@ function snapshotJson(input: {
         entryKey: ENTRY,
         threadKey: input.threadKey,
         href: input.href,
-        scrollY: 0,
+        scrollY: input.scrollY ?? 0,
         listScroll: 0,
         cardCount: input.picks.length,
         composerLanguage: "ar",
@@ -269,7 +270,7 @@ async function restoredShowMore(
     `${input.host ? "host" : "guest"} focus sent ${inviteGets - getsBeforeFocus} invite GETs`,
   );
   const cardsBefore = await page.locator("[data-halfway-card]").count();
-  const response = page.waitForResponse(
+  const response = armResponse(page, 
     (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
     { timeout: 20000 },
   );
@@ -356,7 +357,7 @@ async function failedInviteReadHidesShowMore(
     snapshotJson({ threadKey: `halfway:${created.id}`, href: `/h/${created.id}`, picks }),
     null,
   );
-  const nonOk = page.waitForResponse(
+  const nonOk = armResponse(page, 
     (res) =>
       res.url().includes("/api/halfway/invite") &&
       res.request().method() === "GET" &&
@@ -436,7 +437,7 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
       (button) => button.textContent?.trim() === "انسخ الرابط" && !button.disabled,
     ),
   );
-  const created = page.waitForResponse(
+  const created = armResponse(page, 
     (res) => res.url().includes("/api/halfway/invite") && res.request().method() === "POST",
   );
   await copy.click();
@@ -456,7 +457,7 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
   }
   const firstButton = page.locator("[data-halfway-show-more]");
   await firstButton.waitFor({ timeout: 20000 });
-  const firstResponse = page.waitForResponse(
+  const firstResponse = armResponse(page, 
     (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
   );
   await firstButton.click();
@@ -502,7 +503,7 @@ async function inPageThenSoftBack(browser: import("playwright-core").Browser) {
     console.error("SOFT BACK DUMP", JSON.stringify(info));
     throw error;
   }
-  const response = page.waitForResponse(
+  const response = armResponse(page, 
     (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
   );
   await button.click();
@@ -614,7 +615,7 @@ async function shortReadThenShowMore(
   const getsBefore = inviteGets;
   await spamFocus(page);
   assert(inviteGets === getsBefore, `short read focus sent ${inviteGets - getsBefore} invite GETs`);
-  const response = page.waitForResponse(
+  const response = armResponse(page, 
     (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
     { timeout: 20000 },
   );
@@ -640,7 +641,10 @@ function assertSourceGuards() {
   const tagStart = chatSrc.lastIndexOf("<div", at);
   const tag = chatSrc.slice(tagStart, chatSrc.indexOf(">", at) + 1);
   assert(!tag.includes("aria-live"), "results div must not be a live region");
-  assert(!/\brole\s*=\s*["'](?:log|status)["']/.test(tag), "results div must not be a log or status");
+  assert(
+    !/\brole\s*=\s*["'](?:alert|log|status|marquee|timer)["']/.test(tag),
+    "results div must not be a live role",
+  );
   assert(
     chatSrc.includes("inviteGetAtRef.current < 30_000"),
     "invite read must stay throttled to 30s",
@@ -648,11 +652,23 @@ function assertSourceGuards() {
   assert(!chatSrc.includes("heading.focus("), "final add must not focus the heading");
 }
 
+const LIVE_ROLES = new Set(["alert", "log", "status", "marquee", "timer"]);
+
 function assertResultsQuiet(live: string | null, role: string | null, label: string) {
   assert(
-    live == null && role !== "log" && role !== "status",
+    live == null && (role == null || !LIVE_ROLES.has(role)),
     `${label} results div is a live region (${live ?? "none"}/${role ?? "none"})`,
   );
+}
+
+function armResponse(
+  page: import("playwright-core").Page,
+  predicate: (res: import("playwright-core").Response) => boolean,
+  options?: { timeout?: number },
+) {
+  const pending = page.waitForResponse(predicate, { timeout: options?.timeout ?? 20000 });
+  pending.catch(() => {});
+  return pending;
 }
 
 async function finalAddKeepsScroll(
@@ -703,7 +719,7 @@ async function finalAddKeepsScroll(
       return window.scrollY;
     });
     assert(before > 150, `${label} scrollY before the add was ${before}`);
-    const done = page.waitForResponse(
+    const done = armResponse(page, 
       (res) => res.url().includes("/api/chat") && res.request().method() === "POST",
       { timeout: 20000 },
     );
@@ -760,6 +776,266 @@ async function finalAddKeepsScroll(
   }
 }
 
+async function openRestored(
+  browser: import("playwright-core").Browser,
+  id: string,
+  picks: ReturnType<typeof shopToChatPick>[],
+  scrollY: number,
+) {
+  const context = await browser.newContext(contextOptions());
+  const page = await context.newPage();
+  await installBack(
+    page,
+    snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY }),
+    null,
+  );
+  await page.route("**/api/halfway/invite**", (route) => {
+    if (route.request().method() === "GET") return route.abort();
+    return route.continue();
+  });
+  await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+  await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+  await page.waitForFunction(
+    (saved) => Math.abs(window.scrollY - saved) <= 12,
+    scrollY,
+    { timeout: 4000 },
+  );
+  return { context, page };
+}
+
+function growResults() {
+  const bar = document.createElement("div");
+  bar.setAttribute("data-restore-grow", "");
+  bar.style.height = "480px";
+  document.body.prepend(bar);
+}
+
+async function restoreScrollYields(
+  browser: import("playwright-core").Browser,
+  picks: ReturnType<typeof shopToChatPick>[],
+) {
+  const id = await createInvite();
+  const saved = 160;
+  {
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    const anchor = await page.evaluate(() => document.documentElement.style.overflowAnchor);
+    assert(
+      anchor === "none",
+      `overflow-anchor was ${JSON.stringify(anchor)} during the watch, wanted "none"`,
+    );
+    await page.evaluate(growResults);
+    await page.waitForTimeout(250);
+    const y = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(y - saved) <= 16,
+      `growth above the viewport left scroll at ${y}, wanted ${saved}`,
+    );
+    await context.close();
+  }
+  {
+    // A scroll with no wheel event must cancel. Wheel-only leaves this pulled back.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(200);
+    const moved = await page.evaluate(() => {
+      const from = window.scrollY;
+      const room = document.documentElement.scrollHeight - window.innerHeight - from;
+      const dy = room >= 80 ? Math.min(180, room) : -Math.min(100, from);
+      window.scrollBy(0, dy);
+      return window.scrollY;
+    });
+    assert(Math.abs(moved - saved) > 40, `scroll without a wheel stayed at ${moved}`);
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 40,
+      `scroll without a wheel was pulled back (${moved} → ${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // A wheel that does not move the page must cancel. Scroll-only misses it,
+    // and the next growth above the fold is then forced back to the save.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(500);
+    const held = await page.evaluate(() => {
+      window.dispatchEvent(new WheelEvent("wheel", { deltaY: -40, bubbles: true, cancelable: true }));
+      return window.scrollY;
+    });
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 40,
+      `wheel without a scroll event was ignored (${held} → ${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // 12px is past the 4px tolerance, so it is the visitor.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(200);
+    const moved = await page.evaluate(() => {
+      window.scrollBy(0, 12);
+      return window.scrollY;
+    });
+    assert(Math.abs(moved - saved) >= 6, `12px scroll did not move (${saved} → ${moved})`);
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 8,
+      `a 12px scroll was treated as noise (${moved} → ${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // Saved position is below the first paint, so the watcher has not applied yet.
+    const tall = 2000;
+    const context = await browser.newContext(contextOptions());
+    const page = await context.newPage();
+    await installBack(
+      page,
+      snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY: tall }),
+      null,
+    );
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+    await page.waitForTimeout(150);
+    await page.evaluate(() => {
+      window.scrollBy(0, 80);
+    });
+    await page.evaluate(() => {
+      const bar = document.createElement("div");
+      bar.style.height = "4000px";
+      document.body.prepend(bar);
+    });
+    await page.waitForTimeout(400);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - tall) > 200,
+      `input before the first apply was ignored (landed on ${later}, saved ${tall})`,
+    );
+    await context.close();
+  }
+  {
+    // After 800ms the watcher is gone, so a later growth is not forced back.
+    const { context, page } = await openRestored(browser, id, picks, saved);
+    await page.waitForTimeout(1000);
+    await page.evaluate(growResults);
+    await page.waitForTimeout(300);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(later - saved) > 80,
+      `watcher was still forcing the saved scroll after 800ms (${later}, saved ${saved})`,
+    );
+    await context.close();
+  }
+  {
+    // Saved position stays unreachable for ~1.5s. The 800ms window starts at
+    // the first apply, so a late ready() still restores.
+    const tall = 2000;
+    const context = await browser.newContext(contextOptions());
+    const page = await context.newPage();
+    await installBack(
+      page,
+      snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY: tall }),
+      null,
+    );
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+    const early = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+    assert(early + 2 < tall, `page could already hold the save (max ${early})`);
+    await page.waitForTimeout(1500);
+    const mid = await page.evaluate(() => window.scrollY);
+    assert(
+      Math.abs(mid - tall) > 200,
+      `restored before the page was tall enough (${mid}, saved ${tall})`,
+    );
+    await page.evaluate(() => {
+      const bar = document.createElement("div");
+      bar.style.height = "4000px";
+      document.body.prepend(bar);
+    });
+    const landed = await page
+      .waitForFunction((saved) => Math.abs(window.scrollY - saved) <= 16, tall, { timeout: 2000 })
+      .then(() => true)
+      .catch(() => false);
+    const later = await page.evaluate(() => window.scrollY);
+    assert(landed, `delayed ready never restored (${later}, saved ${tall})`);
+    await context.close();
+  }
+  {
+    // Original inline overflow-anchor is "none", not the default. A restore
+    // that writes "auto" would fail. Programmatic click skips pointerdown,
+    // so unmount is what puts the original back.
+    const context = await browser.newContext(contextOptions());
+    const page = await context.newPage();
+    await page.addInitScript(`(() => {
+      const mark = () => {
+        const root = document.documentElement;
+        if (!root) return false;
+        root.style.overflowAnchor = "none";
+        return true;
+      };
+      if (mark()) return;
+      const observer = new MutationObserver(() => {
+        if (mark()) observer.disconnect();
+      });
+      observer.observe(document, { childList: true, subtree: true });
+      document.addEventListener("DOMContentLoaded", () => {
+        mark();
+        observer.disconnect();
+      }, { once: true });
+    })();`);
+    await installBack(
+      page,
+      snapshotJson({ threadKey: `halfway:${id}`, href: `/h/${id}`, picks, scrollY: saved }),
+      null,
+    );
+    await page.route("**/api/halfway/invite**", (route) => {
+      if (route.request().method() === "GET") return route.abort();
+      return route.continue();
+    });
+    await page.goto(`${base}/h/${id}`, { waitUntil: "domcontentloaded" });
+    await page.locator("[data-halfway-results]").waitFor({ timeout: 20000 });
+    await page.waitForFunction(
+      (target) => Math.abs(window.scrollY - target) <= 12,
+      saved,
+      { timeout: 4000 },
+    );
+    const href = await page.evaluate(() => {
+      const link = document.querySelector("[data-halfway-card]");
+      if (!(link instanceof HTMLAnchorElement)) return "";
+      link.click();
+      return link.getAttribute("href") ?? "";
+    });
+    assert(href.startsWith("/c/"), `café card did not point at a café (${href})`);
+    await page.waitForURL(/\/c\//, { timeout: 15000 });
+    await page.locator("[data-halfway-results]").waitFor({ state: "detached", timeout: 15000 });
+    await page.evaluate(
+      () =>
+        new Promise((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve(undefined)));
+        }),
+    );
+    const restored = await page.evaluate(() => document.documentElement.style.overflowAnchor);
+    assert(
+      restored === "none",
+      `unmount restored overflow-anchor ${JSON.stringify(restored)}, wanted the original "none"`,
+    );
+    await context.close();
+  }
+}
+
 async function main() {
   assertSourceGuards();
   const probe = await fetch(base).catch(() => null);
@@ -794,6 +1070,7 @@ async function main() {
     if (!only || only === "soft") await inPageThenSoftBack(browser);
     if (!only || only === "reload") await reloadedBainna(browser);
     if (!only || only === "scroll") await finalAddKeepsScroll(browser, picks);
+    if (!only || only === "yield") await restoreScrollYields(browser, picks);
   } finally {
     await browser.close();
   }

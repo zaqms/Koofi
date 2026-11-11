@@ -78,6 +78,7 @@ import {
   resultsNavigationShouldRestore,
   resultsSnapshotKey,
   readResultsSnapshot,
+  releaseResultsScrollWatch,
   resetResultsScroll,
   restoreResultsScroll,
   revealResultsRestore,
@@ -2295,6 +2296,10 @@ export function Chat({
     else if (decision.scroll === "saved") requestAnimationFrame(() => restoreResultsScroll());
     revealResultsRestore();
   }, [halfwaySurface, homeSurface, landing, threadKey]);
+
+  useLayoutEffect(() => {
+    return () => releaseResultsScrollWatch();
+  }, []);
 
   useEffect(() => {
     if (!showHalfwayResults || halfwayPinsBlocked) return;
